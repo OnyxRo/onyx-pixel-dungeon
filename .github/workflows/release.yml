@@ -2,7 +2,8 @@ name: Build and release
 
 # Builds the game, tests floor generation, and publishes a GitHub release
 # with the Windows zip, the small Windows installer and the cross-platform jar.
-# Runs when a version tag like v0.1.0 is pushed, or by hand from the Actions tab.
+# Runs when a version tag like v0.1.0 is pushed, or by hand with "Run workflow" on the
+# Actions tab. A manual run tags the release with appVersionName from build.gradle.
 
 on:
   push:
@@ -47,6 +48,10 @@ jobs:
             vendor/ShatteredPD-$SHATTERED_TAG-Windows.zip \
             dist
 
+      - name: Read the version
+        id: ver
+        run: echo "version=$(grep -oP "appVersionName = '\K[^']+" build.gradle)" >> "$GITHUB_OUTPUT"
+
       - name: Keep the builds as a workflow artifact
         uses: actions/upload-artifact@v4
         with:
@@ -54,8 +59,10 @@ jobs:
           path: dist/*
 
       - name: Publish release
-        if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.ref_type == 'tag' && github.ref_name || format('v{0}', steps.ver.outputs.version) }}
+          name: Onyx's Pixel Dungeon ${{ steps.ver.outputs.version }}
+          target_commitish: ${{ github.sha }}
           files: dist/*
           body_path: .github/release-notes.md
