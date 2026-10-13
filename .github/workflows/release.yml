@@ -1,0 +1,61 @@
+name: Build and release
+
+# Builds the game, tests floor generation, and publishes a GitHub release
+# with the Windows zip, the small Windows installer and the cross-platform jar.
+# Runs when a version tag like v0.1.0 is pushed, or by hand from the Actions tab.
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  SHATTERED_TAG: v4.0.2
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Download the official Shattered release used for libraries and the Windows runtime
+        run: |
+          mkdir -p vendor
+          base="https://github.com/00-Evan/shattered-pixel-dungeon/releases/download/$SHATTERED_TAG"
+          curl -fsSL -o vendor/ShatteredPD-$SHATTERED_TAG-Java.jar    "$base/ShatteredPD-$SHATTERED_TAG-Java.jar"
+          curl -fsSL -o vendor/ShatteredPD-$SHATTERED_TAG-Windows.zip "$base/ShatteredPD-$SHATTERED_TAG-Windows.zip"
+
+      - name: Test floor generation across 500 seeded dungeons
+        run: |
+          scripts/compile.sh vendor/ShatteredPD-$SHATTERED_TAG-Java.jar testbuild
+          mkdir -p testbuild/test
+          javac -nowarn -cp "testbuild/classes:testbuild/lib/libs.jar" -d testbuild/test scripts/test/WorldShuffleTest.java
+          cd testbuild/classes && java -cp ".:../lib/libs.jar:../test" WorldShuffleTest 500
+
+      - name: Package
+        run: |
+          scripts/package-windows.sh \
+            vendor/ShatteredPD-$SHATTERED_TAG-Java.jar \
+            vendor/ShatteredPD-$SHATTERED_TAG-Windows.zip \
+            dist
+
+      - name: Keep the builds as a workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: onyx-pixel-dungeon
+          path: dist/*
+
+      - name: Publish release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          body_path: .github/release-notes.md
