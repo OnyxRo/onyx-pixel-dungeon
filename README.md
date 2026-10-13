@@ -27,6 +27,8 @@ All of this lives in [`WorldShuffle.java`](core/src/main/java/com/shatteredpixel
 
 Download `OnyxPixelDungeon-<version>-Windows.zip` from [Releases](../../releases), unzip it anywhere, and double-click **Onyx Pixel Dungeon.exe**. Java is bundled, so nothing else needs to be installed. If SmartScreen warns about an unrecognized app, click **More info** and then **Run anyway**.
 
+There is also a small installer, `OnyxPixelDungeon-<version>-Windows-Installer.zip` (under 10 MB). Unzip it and double-click **Install.bat**. It downloads the official Shattered Pixel Dungeon Windows release from GitHub for its launcher and Java runtime, checks the download's checksum, sets the game up in a folder next to the installer, and adds a desktop shortcut.
+
 Saves live in `%APPDATA%\.onyxrothman`, separate from any Shattered Pixel Dungeon install.
 
 On Mac or Linux with Java 11 or newer installed, run the `.jar` from Releases with `java -jar OnyxPixelDungeon-<version>.jar`. On a Mac, add `-XstartOnFirstThread` before `-jar`.
@@ -45,6 +47,8 @@ There is also a Gradle-free path that borrows libGDX and the other libraries fro
 ```
 scripts/package-windows.sh ShatteredPD-v4.0.2-Java.jar ShatteredPD-v4.0.2-Windows.zip dist
 ```
+
+This makes both Windows zips and a cross-platform jar.
 
 To check that floor generation never crashes, compile with `scripts/compile.sh` and run `scripts/test/WorldShuffleTest.java`, which builds every floor of a few thousand seeded dungeons without opening a window.
 

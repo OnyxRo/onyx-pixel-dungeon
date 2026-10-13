@@ -6,6 +6,9 @@
 #
 #   scripts/package-windows.sh <ShatteredPD-vX-Java.jar> <ShatteredPD-vX-Windows.zip> <out dir>
 #
+# It makes two zips. The full one has everything (about 80 MB). The installer one is
+# small (under 10 MB) and downloads the official Windows release itself when run.
+#
 # Both inputs come from https://github.com/00-Evan/shattered-pixel-dungeon/releases
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -67,5 +70,35 @@ printf '%s\r\n' \
   "Licensed under the GNU GPL v3 (see LICENSE.txt)." > "$APP/README.txt"
 
 ( cd "$WORK" && zip -q -r -9 "$OUT/OnyxPixelDungeon-$VERSION-Windows.zip" "$NAME" )
+
+# 4. small installer: only this game's classes and the assets it changed, placed ahead
+#    of the official jars on the classpath. Install.ps1 fetches the official build.
+BASE_TAG="$(basename "$WINZIP" | grep -oP 'v[0-9][^-]*(?=-Windows)')"
+BASE_URL="https://github.com/00-Evan/shattered-pixel-dungeon/releases/download/$BASE_TAG/$(basename "$WINZIP")"
+BASE_SHA="$(sha256sum "$WINZIP" | cut -d' ' -f1 | tr a-f A-F)"
+SLIM="$WORK/slim"; mkdir -p "$SLIM/x" "$WORK/official"
+( cd "$WORK/official" && unzip -q "$DEPS" )
+( cd "$WORK/build/classes" && find . -type f ) | while read -r f; do
+  if [[ "$f" == *.class ]] || ! cmp -s "$WORK/build/classes/$f" "$WORK/official/$f"; then
+    mkdir -p "$SLIM/x/$(dirname "$f")" && cp "$WORK/build/classes/$f" "$SLIM/x/$f"
+  fi
+done
+INST="$WORK/installer/Onyx's Pixel Dungeon Installer"; mkdir -p "$INST/files"
+( cd "$SLIM/x" && jar cfm "$INST/files/OnyxPixelDungeon.jar" "$WORK/manifest.txt" . )
+sed -e "s|__BASE_URL__|$BASE_URL|" -e "s|__BASE_SHA256__|$BASE_SHA|" -e "s|__VERSION__|$VERSION|" \
+  "$ROOT/scripts/windows-installer/Install.ps1" > "$INST/files/Install.ps1"
+cp "$ROOT/scripts/windows-installer/Install.bat" "$INST/Install.bat"
+cp "$ROOT/LICENSE.txt" "$INST/files/LICENSE.txt"
+printf '%s\r\n' \
+  "$NAME $VERSION installer" \
+  "" \
+  "Double-click Install.bat. It downloads the game's Java runtime from GitHub" \
+  "(the official Shattered Pixel Dungeon release, about 100 MB), sets everything up" \
+  "in a folder next to this file, and puts a shortcut on your desktop." \
+  "" \
+  "If Windows SmartScreen warns about Install.bat, click \"More info\" and then \"Run anyway\"." \
+  "" \
+  "Run Install.bat again any time to reinstall. Saves are kept in %APPDATA%\\.onyxrothman." > "$INST/README.txt"
+( cd "$WORK/installer" && zip -q -r -9 "$OUT/OnyxPixelDungeon-$VERSION-Windows-Installer.zip" "$(basename "$INST")" )
 rm -rf "$WORK"
 ls -la "$OUT"
