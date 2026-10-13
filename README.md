@@ -43,9 +43,11 @@ All of this lives in [`WorldShuffle.java`](core/src/main/java/com/shatteredpixel
 
 ## Playing on Windows
 
-Download `OnyxPixelDungeon-<version>-Windows.zip` from [Releases](../../releases), unzip it anywhere, and double-click **Onyx Pixel Dungeon.exe**. Java is bundled, so nothing else needs to be installed. If SmartScreen warns about an unrecognized app, click **More info** and then **Run anyway**.
+Download `OnyxPixelDungeon-<version>-Windows.zip` from [Releases](../../releases), unzip it anywhere, and double-click **Play.bat**. Java is bundled, so nothing else needs to be installed. If SmartScreen warns about an unrecognized app, click **More info** and then **Run anyway**.
 
 There is also a small installer, `OnyxPixelDungeon-<version>-Windows-Installer.zip` (about 16 MB). Unzip it and double-click **Install.bat**. It downloads the official Shattered Pixel Dungeon Windows release from GitHub for its launcher and Java runtime, checks the download's checksum, sets the game up in a folder next to the installer, and adds a desktop shortcut.
+
+**Staying up to date.** Both Windows downloads include **Play.bat**, and the installer's desktop shortcut runs it too. Each launch checks GitHub for a newer release and, if there is one, downloads just the game file (about 17 MB) and starts the new version. If you're offline it starts the version you have. You only need a fresh download when a release moves to a newer Shattered base, and Play.bat will tell you when that happens.
 
 Saves live in `%APPDATA%\.onyxrothman`, separate from any Shattered Pixel Dungeon install.
 

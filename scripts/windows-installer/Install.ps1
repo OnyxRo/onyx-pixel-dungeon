@@ -55,6 +55,11 @@ $Cfg = @("[Application]", "app.classpath=`$APPDIR\OnyxPixelDungeon.jar") + $Libs
     "java-options=-XX:+IgnoreUnrecognizedVMOptions")
 Set-Content -Path (Join-Path $App "$ExeName.cfg") -Value $Cfg -Encoding Ascii
 
+# the launcher that checks GitHub for updates, and the installed version it compares against
+Copy-Item (Join-Path $Files "Play.ps1") $Target
+Copy-Item (Join-Path $Files "Play.bat") $Target
+Set-Content -Path (Join-Path $App "onyx-version.txt") -Value @("__VERSION__", "__BASE_TAG__") -Encoding Ascii
+
 Rename-Item (Join-Path $Target "Shattered Pixel Dungeon.exe") "$ExeName.exe"
 Rename-Item (Join-Path $Target "Shattered Pixel Dungeon.ico") "$ExeName.ico"
 Copy-Item (Join-Path $Files "LICENSE.txt") $Target
@@ -62,11 +67,13 @@ Copy-Item (Join-Path $Files "LICENSE.txt") $Target
 # desktop shortcut
 $Shell = New-Object -ComObject WScript.Shell
 $Link = $Shell.CreateShortcut((Join-Path ([Environment]::GetFolderPath("Desktop")) "$GameName.lnk"))
-$Link.TargetPath = Join-Path $Target "$ExeName.exe"
+$Link.TargetPath = Join-Path $env:SystemRoot "System32\WindowsPowerShell\v1.0\powershell.exe"
+$Link.Arguments = "-NoProfile -ExecutionPolicy Bypass -WindowStyle Minimized -File `"$(Join-Path $Target 'Play.ps1')`""
 $Link.WorkingDirectory = $Target
 $Link.IconLocation = Join-Path $Target "$ExeName.ico"
 $Link.Save()
 
 Write-Host ""
-Write-Host "Done. There's a shortcut on your desktop, or open the '$GameName' folder here." -ForegroundColor Green
+Write-Host "Done. Play from the shortcut on your desktop, or Play.bat in the '$GameName' folder." -ForegroundColor Green
+Write-Host "Both check for a new version each time you launch, so you won't need to reinstall."
 Write-Host ""
