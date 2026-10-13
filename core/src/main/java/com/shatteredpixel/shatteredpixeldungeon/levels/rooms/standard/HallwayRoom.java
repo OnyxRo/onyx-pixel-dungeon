@@ -52,7 +52,11 @@ public class HallwayRoom extends StandardRoom {
 	@Override
 	public void merge(Level l, Room other, Rect merge, int mergeTerrain) {
 		super.merge(l, other, merge, mergeTerrain);
-		Painter.set(l, connected.get(other), Terrain.EMPTY_SP);
+		//caves and halls layouts can merge rooms that only border each other (no door),
+		//which can happen now that city rooms appear in those worlds (see WorldShuffle)
+		if (connected.get(other) != null) {
+			Painter.set(l, connected.get(other), Terrain.EMPTY_SP);
+		}
 	}
 
 	//FIXME lots of copy-pasta from tunnel rooms here

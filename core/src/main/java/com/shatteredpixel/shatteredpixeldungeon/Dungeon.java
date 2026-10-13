@@ -70,6 +70,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.WorldShuffle;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
@@ -300,7 +301,10 @@ public class Dungeon {
 		Actor.clear();
 		
 		Level level;
-		if (branch == 0) {
+		if (branch == 0 && WorldShuffle.shuffles(depth)) {
+			//every floor a new world, see WorldShuffle
+			level = WorldShuffle.create(WorldShuffle.worldFor(depth));
+		} else if (branch == 0) {
 			switch (depth) {
 				case 1:
 				case 2:

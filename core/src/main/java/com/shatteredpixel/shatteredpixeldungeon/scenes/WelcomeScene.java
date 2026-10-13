@@ -115,6 +115,7 @@ public class WelcomeScene extends PixelScene {
 		title.y = insets.top + 2 + (topRegion - title.height()) / 2f;
 
 		align(title);
+		TitleScene.addTitleName(this, title, landscape());
 
 		if (landscape()){
 			placeTorch(title.x + 30, title.y + 35);

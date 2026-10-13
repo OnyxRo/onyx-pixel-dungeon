@@ -4,19 +4,19 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:9.2.0'
+        //android plugin removed: this fork builds desktop only
     }
 }
 
 allprojects {
 
     ext {
-        appName = 'Shattered Pixel Dungeon'
-        appPackageName = 'com.shatteredpixel.shatteredpixeldungeon'
+        appName = "Onyx's Pixel Dungeon"
+        appPackageName = 'com.onyxrothman.onyxpixeldungeon'
 
         //Full releases gets +2 on version code, needed for an F-Droid quirk
         appVersionCode = 922
-        appVersionName = '4.0.2'
+        appVersionName = '0.1.0'
 
         appJavaCompatibility = JavaVersion.VERSION_11
 

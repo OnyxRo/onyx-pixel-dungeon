@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TitleBackground;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
@@ -64,6 +65,8 @@ import java.util.Date;
 public class TitleScene extends PixelScene {
 
 	private Image title;
+	private RenderedTextBlock titleName;
+	private RenderedTextBlock tagline;
 	private Fireball leftFB;
 	private Fireball rightFB;
 	private Image signs;
@@ -113,6 +116,8 @@ public class TitleScene extends PixelScene {
 		title.y = insets.top + 2 + (topRegion - title.height()) / 2f;
 
 		align(title);
+
+		titleName = addTitleName(this, title, landscape());
 
 		if (landscape()){
 			leftFB = placeTorch(title.x + 30, title.y + 35);
@@ -242,6 +247,13 @@ public class TitleScene extends PixelScene {
 			btnAbout.setRect(btnSettings.right()+2, btnSettings.top(), btnSettings.width(), BTN_HEIGHT);
 		}
 
+		tagline = PixelScene.renderTextBlock(Messages.get(this, "tagline"), 8);
+		tagline.hardlight(0xE8C66A);
+		float tagY = Math.min(title.y + title.height() + 2, btnPlay.top() - tagline.height() - 2);
+		tagline.setPos(insets.left + (w - tagline.width()) / 2f, tagY);
+		align(tagline);
+		add(tagline);
+
 		version = new BitmapText( "v" + Game.version, pixelFont);
 		version.measure();
 		version.hardlight( 0x888888 );
@@ -304,12 +316,25 @@ public class TitleScene extends PixelScene {
 		fadeIn();
 	}
 
+	//the banner art reads "Pixel Dungeon"; the first word of the name is drawn over it here
+	public static RenderedTextBlock addTitleName( PixelScene scene, Image title, boolean landscape ){
+		RenderedTextBlock name = PixelScene.renderTextBlock(Messages.get(TitleScene.class, "title_name"), 24);
+		name.hardlight(0xC3CF9F);
+		name.setPos(title.x + (title.width() - name.width()) / 2f,
+				title.y + (landscape ? 11 : 24) - name.height() / 2f);
+		PixelScene.align(name);
+		scene.add(name);
+		return name;
+	}
+
 	private float uiAlpha;
 
 	public void updateFade() {
 		float alpha = GameMath.gate(0f, uiAlpha, 1f);
 
 		title.am = alpha;
+		titleName.alpha(alpha);
+		tagline.alpha(alpha);
 		leftFB.am = alpha;
 		rightFB.am = alpha;
 		//signs.am = alpha; handles this itself
