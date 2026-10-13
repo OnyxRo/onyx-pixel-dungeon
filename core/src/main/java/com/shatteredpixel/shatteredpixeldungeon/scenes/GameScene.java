@@ -72,6 +72,7 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.levels.WorldShuffle;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
@@ -660,6 +661,9 @@ public class GameScene extends PixelScene {
 			} else {
 				GLog.h(Messages.get(this, "return"), Dungeon.depth);
 			}
+
+			//every floor a new world: name ported worlds and the mod they come from
+			WorldShuffle.announce(Dungeon.level);
 
 			if (Dungeon.hero.hasTalent(Talent.ROGUES_FORESIGHT)
 					&& Dungeon.level instanceof RegularLevel && Dungeon.branch == 0){

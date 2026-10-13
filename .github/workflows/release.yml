@@ -34,12 +34,12 @@ jobs:
           curl -fsSL -o vendor/ShatteredPD-$SHATTERED_TAG-Java.jar    "$base/ShatteredPD-$SHATTERED_TAG-Java.jar"
           curl -fsSL -o vendor/ShatteredPD-$SHATTERED_TAG-Windows.zip "$base/ShatteredPD-$SHATTERED_TAG-Windows.zip"
 
-      - name: Test floor generation across 500 seeded dungeons
+      - name: Test floor generation, strings and saves across 1000 seeded dungeons
         run: |
           scripts/compile.sh vendor/ShatteredPD-$SHATTERED_TAG-Java.jar testbuild
           mkdir -p testbuild/test
           javac -nowarn -cp "testbuild/classes:testbuild/lib/libs.jar" -d testbuild/test scripts/test/WorldShuffleTest.java
-          cd testbuild/classes && java -cp ".:../lib/libs.jar:../test" WorldShuffleTest 500
+          cd testbuild/classes && java -cp ".:../lib/libs.jar:../test" WorldShuffleTest 1000
 
       - name: Package
         run: |

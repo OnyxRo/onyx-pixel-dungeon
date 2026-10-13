@@ -57,8 +57,9 @@ public class WorldShuffleTest {
 		Game.versionCode = 9999;
 		Messages.setup(Languages.ENGLISH);
 
-		String[] names = {"Sewers", "Prison", "Caves", "City", "Halls"};
 		Map<String, Integer> counts = new HashMap<>();
+		java.util.Set<String> arrivals = new java.util.HashSet<>();
+		int saved = 0;
 		int floors = 0, failures = 0;
 		HeroClass[] classes = {HeroClass.WARRIOR, HeroClass.MAGE, HeroClass.ROGUE, HeroClass.HUNTRESS, HeroClass.DUELIST, HeroClass.CLERIC};
 
@@ -76,10 +77,36 @@ public class WorldShuffleTest {
 					floors++;
 					String w = l.getClass().getSimpleName().replace("Level", "");
 					if (WorldShuffle.shuffles(d)) {
-						String world = names[WorldShuffle.worldOf(l)];
+						String world = l.getClass().getSimpleName().replace("Level", "");
 						counts.merge(world, 1, Integer::sum);
 						if (WorldShuffle.worldOf(l) == WorldShuffle.homeWorld(d)) {
 							throw new IllegalStateException("shuffled floor kept its home world");
+						}
+						if (WorldShuffle.worldOf(l) < 0) {
+							throw new IllegalStateException("shuffled floor is not a known world");
+						}
+						if (WorldShuffle.isPortedWorld(l)) {
+							String arrive = Messages.get(WorldShuffle.class, "arrive",
+									Messages.get(l.getClass(), "name"), Messages.get(l.getClass(), "mod"));
+							if (arrive.contains("!!!")) {
+								throw new IllegalStateException("missing world strings for " + world + ": " + arrive);
+							}
+							if (arrivals.add(world)) {
+								if (arrivals.size() <= 3) System.out.println("  log line: " + arrive);
+								//save and reload the floor, the way the game does between sessions
+								com.watabou.utils.Bundle b = new com.watabou.utils.Bundle();
+								Dungeon.level = l;
+								b.put("level", l);
+								Dungeon.level = null;
+								com.watabou.utils.Bundle reread = com.watabou.utils.Bundle.read(
+										new java.io.ByteArrayInputStream(bundleBytes(b)));
+								Level back = (Level) reread.get("level");
+								if (back.getClass() != l.getClass() || !back.tilesTex().equals(l.tilesTex())
+										|| back.map.length != l.map.length) {
+									throw new IllegalStateException("save and reload changed " + world);
+								}
+								saved++;
+							}
 						}
 						w = world.substring(0, 2).toUpperCase();
 					} else {
@@ -95,8 +122,19 @@ public class WorldShuffleTest {
 			}
 			if (s < 8) System.out.println(line);
 		}
+		System.out.println("ported worlds saved and reloaded: " + saved);
 		System.out.println("floors generated: " + floors + ", failures: " + failures);
-		System.out.println("shuffled-floor worlds: " + counts);
+		System.out.println("shuffled-floor worlds (" + counts.size() + " of " + (WorldShuffle.worldCount()) + "): " + new java.util.TreeMap<>(counts));
+		if (seeds >= 100 && counts.size() < WorldShuffle.worldCount()) {
+			System.out.println("FAIL: some worlds never appeared");
+			failures++;
+		}
 		System.exit(failures == 0 ? 0 : 1);
+	}
+
+	private static byte[] bundleBytes(com.watabou.utils.Bundle b) throws java.io.IOException {
+		java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
+		com.watabou.utils.Bundle.write(b, out);
+		return out.toByteArray();
 	}
 }
