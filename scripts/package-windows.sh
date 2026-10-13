@@ -7,7 +7,7 @@
 #   scripts/package-windows.sh <ShatteredPD-vX-Java.jar> <ShatteredPD-vX-Windows.zip> <out dir>
 #
 # It makes two zips. The full one has everything (about 80 MB). The installer one is
-# small (under 10 MB) and downloads the official Windows release itself when run.
+# small (about 16 MB) and downloads the official Windows release itself when run.
 #
 # Both inputs come from https://github.com/00-Evan/shattered-pixel-dungeon/releases
 set -euo pipefail

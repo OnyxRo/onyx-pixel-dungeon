@@ -4,7 +4,7 @@ Most floors are built in a randomly chosen world, out of 24. That's Shattered's 
 
 **Windows.** Download `OnyxPixelDungeon-<version>-Windows.zip`, unzip it, and run **Onyx Pixel Dungeon.exe**. Java is included. If SmartScreen warns you, click **More info** and then **Run anyway**.
 
-**Smaller Windows download.** `OnyxPixelDungeon-<version>-Windows-Installer.zip` is under 10 MB. Unzip it and run **Install.bat**, which downloads the official Shattered Pixel Dungeon runtime from GitHub and sets the game up.
+**Smaller Windows download.** `OnyxPixelDungeon-<version>-Windows-Installer.zip` is about 16 MB. Unzip it and run **Install.bat**, which downloads the official Shattered Pixel Dungeon runtime from GitHub and sets the game up.
 
 **Mac or Linux.** With Java 11 or newer installed, run `java -jar OnyxPixelDungeon-<version>.jar`. On a Mac, add `-XstartOnFirstThread` before `-jar`.
 
