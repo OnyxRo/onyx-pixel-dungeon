@@ -18,7 +18,7 @@ His writing rules apply to anything written for him, including commit messages, 
 
 A fork of Shattered Pixel Dungeon v4.0.2 called Onyx's Pixel Dungeon. Tagline "Every floor a new world."
 
-- **World shuffle.** Most floors are built in a world other than their usual one. There are 24 worlds, Shattered's five plus 19 ported from four other GPLv3 mods. See `core/.../levels/WorldShuffle.java`.
+- **World shuffle.** Most floors are built in a world other than their usual one. There are 54 worlds, Shattered's five plus 49 ported from 14 other mods. See `core/.../levels/WorldShuffle.java`.
 - **Stage matching.** Onyx wants each floor to use a world made for that stage, not a deep world scaled down. Each world has a region in `WorldShuffle.REGIONS`, taken from where its mod used it, and a shuffled floor only picks from its own region's worlds. Transformation's tower styles are `ANY_REGION` and share one slot. Shattered's own five now only appear on their fixed floors. When porting monsters later, use each mod's monsters for that same stage.
 - **Depth sets danger.** The world sets the look (tileset, water, decoration painter, ambient effects, music). Monsters, loot and traps always follow the actual depth. Ported worlds always use their floor's usual trap list.
 - **Fixed floors.** Floor 1, boss floors (5, 10, 15, 20, 25), floor 26, and quest floors 4, 9, 14, 19 never shuffle, so the Ghost, Wandmaker, Blacksmith and Imp quests always appear.
@@ -38,6 +38,26 @@ All in `core/.../levels/worlds/`, art in `assets/environment/worlds/`, music in 
 | Devoted PD (Arackulele) | Gardens, Coldhouse, Forge, Citadel, Ashen Void | Own painters. Four tracks from Cevin2006's soundtrack (credited). Forge's track was missing from the repo |
 | Magic Ling PD (LingASDJ) | Ancient Mystery City, Dragon Cave, Pale Palace, Lost Tomb, Hollow | Hollow's door mimics left out. Music not used, no clear credits |
 | Transformation PD (dongyusangyu) | Astral Library, Frost Archive, Gothic Castle, Sky Alchemy Greenhouse, Tower Core Gearworks, Chinese Hall | TowerPainter. Music not used, no clear credits |
+
+**Second wave, 30 more worlds (54 in total, from 14 mods).** Generated in bulk from tile sheets in more Shattered family mods. Each is a small `WorldLevel` subclass that uses its region's Shattered painter, ambience and music, and the mod's water sheet where it had one.
+
+| Mod | Worlds |
+| --- | --- |
+| Shattered PD Matt Edition | Guild Hall, Snowfield |
+| Pixel Dungeon Reforged | Kobold Caves |
+| Shittened PD | Christmas Caves |
+| Summoning PD Reincarnated | Abyss |
+| Re-ARranged PD | Labs, Ancient Temple |
+| Experienced PD | Arena |
+| Cursed PD (Legacy) | Beach, Surface, Jungle Temple, Dolya Haven |
+| Ryuse's PD | Polluted Sewers |
+| Abyssalnite PD | Abyssal Sewers, Prison, Caves, City, Halls |
+| Rat King PD 2 | Rat King's Sewers |
+| Transformation PD | UES, Lush Surface |
+| Magic Ling PD | Golden City, Desert Wilds, Cold Lands, Dead Lands, Ghost Manor, Frozen Vault, Overgrown Garden, Tengu's Hideout |
+| Devoted PD | True Void |
+
+Things to know about the second wave. The world names and regions were chosen from each tile sheet's look and file name, not checked against each mod's `Dungeon.newLevel`, so correct them as Onyx playtests. None have been seen in the game yet, only built headlessly. Left out as unfinished or duplicate sheets. Magic Ling's morpheus, zero, zero spring, bubble and halloween, Transformation's winter surface, Matt Edition's snowless ice. Cursed PD's current repo uses a taller 256x384 tile layout that does not fit. Licenses and art credits for these mods have not been checked. Onyx said on 2026-10-13 that this is a personal project and licensing is not a concern for now, so check them before any public release.
 
 Most world classes extend `WorldLevel`, which handles painter setup, traps, music and ambient visuals. Each world is its own class so saved games reload correctly. World name strings are in `messages/levels/levels.properties` under `levels.worlds.*`.
 

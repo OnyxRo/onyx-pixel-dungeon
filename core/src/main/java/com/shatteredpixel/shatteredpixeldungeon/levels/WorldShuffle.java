@@ -36,6 +36,36 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.HollowLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.IceCavesLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.LostTombLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.ModWorld;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.GuildLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.SnowfieldLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.KoboldCavesLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.ChristmasCavesLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.AbyssLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.LabsLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.ArrangedTempleLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.ArenaLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.BeachLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.SurfaceLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.CursedTempleLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.DolyaHavenLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.PollutedSewersLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.UesLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.LushSurfaceLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.GoldenCityLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.WildsLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.ColdLandsLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.DiedLandsLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.GhostManorLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.ColdChestLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.LingGardenLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.TenguHideoutLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.TrueVoidLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.AbyssalSewersLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.AbyssalPrisonLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.AbyssalCavesLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.AbyssalCityLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.AbyssalHallsLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.RatKingSewersLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.NecropolisLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.PalePalaceLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.SkyAlchemyGreenhouseLevel;
@@ -93,7 +123,34 @@ public class WorldShuffle {
 			AncientCityLevel.class, DragonCaveLevel.class, PalePalaceLevel.class, LostTombLevel.class, HollowLevel.class,
 			//Transformation Pixel Dungeon
 			AstralLibraryLevel.class, FrostArchiveLevel.class, GothicCastleLevel.class,
-			SkyAlchemyGreenhouseLevel.class, TowerCoreGearworksLevel.class, ChineseHallLevel.class
+			SkyAlchemyGreenhouseLevel.class, TowerCoreGearworksLevel.class, ChineseHallLevel.class,
+			//second wave, worlds from more of the Shattered family of mods
+			//Shattered Pixel Dungeon Matt Edition
+			GuildLevel.class, SnowfieldLevel.class,
+			//Pixel Dungeon Reforged
+			KoboldCavesLevel.class,
+			//Shittened Pixel Dungeon
+			ChristmasCavesLevel.class,
+			//Summoning Pixel Dungeon Reincarnated
+			AbyssLevel.class,
+			//Re-ARranged Pixel Dungeon
+			LabsLevel.class, ArrangedTempleLevel.class,
+			//Experienced Pixel Dungeon
+			ArenaLevel.class,
+			//Cursed Pixel Dungeon
+			BeachLevel.class, SurfaceLevel.class, CursedTempleLevel.class, DolyaHavenLevel.class,
+			//Ryuse's Pixel Dungeon
+			PollutedSewersLevel.class,
+			//Transformation Pixel Dungeon
+			UesLevel.class, LushSurfaceLevel.class,
+			//Magic Ling Pixel Dungeon
+			GoldenCityLevel.class, WildsLevel.class, ColdLandsLevel.class, DiedLandsLevel.class, GhostManorLevel.class, ColdChestLevel.class, LingGardenLevel.class, TenguHideoutLevel.class,
+			//Devoted Pixel Dungeon
+			TrueVoidLevel.class,
+			//Abyssalnite Pixel Dungeon
+			AbyssalSewersLevel.class, AbyssalPrisonLevel.class, AbyssalCavesLevel.class, AbyssalCityLevel.class, AbyssalHallsLevel.class,
+			//Rat King Pixel Dungeon 2
+			RatKingSewersLevel.class
 	};
 
 	/** A world that fits any region, used for Transformation's tower styles. */
@@ -111,7 +168,34 @@ public class WorldShuffle {
 			//the Hollow was a deep holiday area past floor 26
 			CITY, SEWERS, CITY, CAVES, HALLS,
 			//Transformation: tower styles rotated freely in their mod
-			ANY_REGION, ANY_REGION, ANY_REGION, ANY_REGION, ANY_REGION, ANY_REGION
+			ANY_REGION, ANY_REGION, ANY_REGION, ANY_REGION, ANY_REGION, ANY_REGION,
+			//second wave. These regions were picked from each tile set's look and name, not checked against the mods
+			//Shattered Pixel Dungeon Matt Edition
+			PRISON, CAVES,
+			//Pixel Dungeon Reforged
+			CAVES,
+			//Shittened Pixel Dungeon
+			CAVES,
+			//Summoning Pixel Dungeon Reincarnated
+			HALLS,
+			//Re-ARranged Pixel Dungeon
+			HALLS, CITY,
+			//Experienced Pixel Dungeon
+			PRISON,
+			//Cursed Pixel Dungeon
+			SEWERS, SEWERS, CAVES, CITY,
+			//Ryuse's Pixel Dungeon
+			SEWERS,
+			//Transformation Pixel Dungeon
+			ANY_REGION, ANY_REGION,
+			//Magic Ling Pixel Dungeon
+			CITY, CAVES, PRISON, HALLS, PRISON, CAVES, SEWERS, PRISON,
+			//Devoted Pixel Dungeon
+			HALLS,
+			//Abyssalnite Pixel Dungeon
+			SEWERS, PRISON, CAVES, CITY, HALLS,
+			//Rat King Pixel Dungeon 2
+			SEWERS
 	};
 
 	//the source mod's app icon for each world, in the same order as WORLDS. Null for Shattered's own
@@ -119,12 +203,48 @@ public class WorldShuffle {
 	private static final String DEVOTED        = "interfaces/mods/devoted.png";
 	private static final String MAGIC_LING     = "interfaces/mods/magicling.png";
 	private static final String TRANSFORMATION = "interfaces/mods/transformation.png";
+	private static final String MATT = "interfaces/mods/matt.png";
+	private static final String REFORGED = "interfaces/mods/reforged.png";
+	private static final String SHITTENED = "interfaces/mods/shittened.png";
+	private static final String SUMMONING = "interfaces/mods/summoning.png";
+	private static final String REARRANGED = "interfaces/mods/rearranged.png";
+	private static final String EXPERIENCED = "interfaces/mods/experienced.png";
+	private static final String RYUSE = "interfaces/mods/ryuse.png";
+	private static final String ABYSSALNITE = "interfaces/mods/abyssalnite.png";
+	private static final String RKPD2 = "interfaces/mods/rkpd2.png";
+	private static final String CURSED = "interfaces/mods/cursed.png";
 	private static final String[] LOGOS = {
 			null, null, null, null, null,
 			COMBUSTED, COMBUSTED, COMBUSTED,
 			DEVOTED, DEVOTED, DEVOTED, DEVOTED, DEVOTED,
 			MAGIC_LING, MAGIC_LING, MAGIC_LING, MAGIC_LING, MAGIC_LING,
-			TRANSFORMATION, TRANSFORMATION, TRANSFORMATION, TRANSFORMATION, TRANSFORMATION, TRANSFORMATION
+			TRANSFORMATION, TRANSFORMATION, TRANSFORMATION, TRANSFORMATION, TRANSFORMATION, TRANSFORMATION,
+			//Shattered Pixel Dungeon Matt Edition
+			MATT, MATT,
+			//Pixel Dungeon Reforged
+			REFORGED,
+			//Shittened Pixel Dungeon
+			SHITTENED,
+			//Summoning Pixel Dungeon Reincarnated
+			SUMMONING,
+			//Re-ARranged Pixel Dungeon
+			REARRANGED, REARRANGED,
+			//Experienced Pixel Dungeon
+			EXPERIENCED,
+			//Cursed Pixel Dungeon
+			CURSED, CURSED, CURSED, CURSED,
+			//Ryuse's Pixel Dungeon
+			RYUSE,
+			//Transformation Pixel Dungeon
+			TRANSFORMATION, TRANSFORMATION,
+			//Magic Ling Pixel Dungeon
+			MAGIC_LING, MAGIC_LING, MAGIC_LING, MAGIC_LING, MAGIC_LING, MAGIC_LING, MAGIC_LING, MAGIC_LING,
+			//Devoted Pixel Dungeon
+			DEVOTED,
+			//Abyssalnite Pixel Dungeon
+			ABYSSALNITE, ABYSSALNITE, ABYSSALNITE, ABYSSALNITE, ABYSSALNITE,
+			//Rat King Pixel Dungeon 2
+			RKPD2
 	};
 
 	/** The asset path of the icon of the mod a floor's world comes from, or null for Shattered's own worlds. */
