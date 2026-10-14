@@ -21,18 +21,24 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.WorldShuffle;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollingListPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 
 /**
  * A quick catalog of what each mod contributes to the game, mod by mod.
  * Worlds come straight from WorldShuffle, so new ones show up here on their own.
+ * In a sandbox run, clicking a world skips straight to a floor built in it.
  */
 public class WndCompendium extends Window {
 
@@ -83,11 +89,19 @@ public class WndCompendium extends Window {
 				Image icon = logo != null ? new Image(logo) : Icons.get(Icons.STAIRS);
 				final float scale = logo != null ? 16f / icon.height : 1f;
 
+				final int target = world;
 				list.addItem( new ScrollingListPane.ListItem( icon, null,
 						Messages.get(this, "world", Messages.titleCase(WorldShuffle.menuName(world)), stage) ) {
 					{
 						//mod icons are stored at twice the size of a list icon
 						this.icon.scale.set( scale );
+					}
+
+					@Override
+					public boolean onClick( float x, float y ) {
+						if (!inside( x, y )) return false;
+						visit( target );
+						return true;
 					}
 				} );
 			}
@@ -101,6 +115,33 @@ public class WndCompendium extends Window {
 		}
 
 		list.setRect( 0, top, WIDTH, height - top );
+	}
+
+	//a shuffled floor from each stage, for visiting a world made for that stage
+	private static final int[] STAGE_FLOORS = { 2, 7, 12, 17, 22 };
+
+	//clicking a world goes straight to it. Only sandbox runs can do that, a normal run just gets told so
+	private void visit( int world ) {
+		if (!Dungeon.sandbox || Dungeon.hero == null || !Dungeon.hero.isAlive()) {
+			GLog.w( Messages.get(this, "sandbox_only") );
+			return;
+		}
+
+		int region = WorldShuffle.regionOf(world);
+		int floor;
+		if (region != WorldShuffle.ANY_REGION) {
+			floor = STAGE_FLOORS[region];
+		} else {
+			//worlds for any stage are shown on the current floor where that floor allows it
+			floor = WorldShuffle.canForce(Dungeon.depth) ? Dungeon.depth : STAGE_FLOORS[0];
+		}
+
+		hide();
+		Dungeon.sandboxWorld = world;
+		Level.beforeTransition();
+		InterlevelScene.mode = InterlevelScene.Mode.SANDBOX;
+		InterlevelScene.returnDepth = floor;
+		Game.switchScene( InterlevelScene.class );
 	}
 
 }
