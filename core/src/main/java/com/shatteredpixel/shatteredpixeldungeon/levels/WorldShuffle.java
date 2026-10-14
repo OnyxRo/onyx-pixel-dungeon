@@ -307,6 +307,12 @@ public class WorldShuffle {
 		return name;
 	}
 
+	/** The mod a world comes from, for menus. */
+	public static String modName( int world ){
+		if (world < 0 || world >= WORLDS.length) return "";
+		return world <= HALLS ? "Shattered Pixel Dungeon" : Messages.get(WORLDS[world], "mod");
+	}
+
 	public static int worldFor( int depth ){
 		if (!shuffles(depth)) return homeWorld(depth);
 

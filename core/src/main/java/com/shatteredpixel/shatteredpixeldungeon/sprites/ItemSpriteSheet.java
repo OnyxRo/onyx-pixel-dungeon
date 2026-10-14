@@ -369,6 +369,16 @@ public class ItemSpriteSheet {
 			assignItemRect(i, 15, 15);
 	}
 	
+	//items ported from other mods. Row 13 of the sheet, 16 slots
+	private static final int MOD_ITEMS      =                               xy(1, 13);
+
+	public static final int WARPICK = MOD_ITEMS+0;
+	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;
+	static{
+		assignItemRect(WARPICK, 15, 14);
+		assignItemRect(WOODEN_BOOMERANG, 12, 12);
+	}
+
 	private static final int ARMOR          =                               xy(1, 12);  //16 slots
 	public static final int ARMOR_CLOTH     = ARMOR+0;
 	public static final int ARMOR_LEATHER   = ARMOR+1;

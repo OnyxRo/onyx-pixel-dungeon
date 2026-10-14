@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollingListPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Game;
 
@@ -146,58 +147,62 @@ public class WndSandboxFloor extends Window {
 		resize( WIDTH, (int)btnGo.bottom() );
 	}
 
-	//the list of worlds to force, in the same order as the shuffle keeps them
+	//the list of worlds to force, grouped by the mod each comes from
 	private class WndWorlds extends Window {
 
-		private static final int ROW_HEIGHT = 15;
-		private static final int ROW_GAP    = 1;
+		private static final int LIST_WIDTH = 126;
 
 		public WndWorlds() {
 
 			super();
 
-			int cols = PixelScene.landscape() ? 3 : 2;
-			int btnWidth = PixelScene.landscape() ? 72 : 61;
-			int width = cols * btnWidth + (cols - 1) * ROW_GAP;
+			int height = (int)Math.min( 200, PixelScene.uiCamera.height - 40 );
 
-			RenderedTextBlock title = PixelScene.renderTextBlock( Messages.get(WndSandbox.class, "pick"), 9 );
+			RenderedTextBlock title = PixelScene.renderTextBlock( Messages.get(WndSandbox.class, "pick"), 12 );
 			title.hardlight( TITLE_COLOR );
-			title.setPos( (width - title.width()) / 2, 0 );
+			title.setPos( (LIST_WIDTH - title.width()) / 2, 0 );
 			PixelScene.align(title);
 			add( title );
 
-			float top = title.bottom() + 2*ROW_GAP + 1;
-			RedButton shuffle = worldButton( -1 );
-			shuffle.setRect( 0, top, width, ROW_HEIGHT );
-			top = shuffle.bottom() + ROW_GAP;
+			float top = title.bottom() + GAP;
 
-			int count = WorldShuffle.worldCount();
-			float bottom = top;
-			for (int w = 0; w < count; w++) {
-				RedButton btn = worldButton( w );
-				btn.multiline = true;
-				btn.setRect(
-						(w % cols) * (btnWidth + ROW_GAP),
-						top + (w / cols) * (ROW_HEIGHT + ROW_GAP),
-						btnWidth, ROW_HEIGHT );
-				bottom = btn.bottom();
+			//the window has to be at its final size before the list is placed, or the list draws off centre
+			resize( LIST_WIDTH, height );
+
+			ScrollingListPane list = new ScrollingListPane();
+			add( list );
+			list.setRect( 0, top, LIST_WIDTH, height - top );
+
+			addWorld( list, -1 );
+
+			String lastMod = null;
+			for (int world = 0; world < WorldShuffle.worldCount(); world++) {
+				String mod = WorldShuffle.modName( world );
+				if (!mod.equals( lastMod )) {
+					list.addTitle( mod );
+					lastMod = mod;
+				}
+				addWorld( list, world );
 			}
 
-			resize( width, (int)bottom );
+			list.setRect( 0, top, LIST_WIDTH, height - top );
 		}
 
-		private RedButton worldButton( final int world ){
-			RedButton btn = new RedButton( worldLabel(world), 6 ) {
+		private void addWorld( ScrollingListPane list, final int world ){
+			ScrollingListPane.ListItem item = new ScrollingListPane.ListItem( null, worldLabel(world) ) {
 				@Override
-				protected void onClick() {
-					Dungeon.sandboxWorld = world;
-					WndWorlds.this.hide();
-					refresh();
+				public boolean onClick( float x, float y ) {
+					if (inside( x, y )) {
+						Dungeon.sandboxWorld = world;
+						WndWorlds.this.hide();
+						refresh();
+						return true;
+					}
+					return false;
 				}
 			};
-			if (world == Dungeon.sandboxWorld) btn.textColor( TITLE_COLOR );
-			add( btn );
-			return btn;
+			if (world == Dungeon.sandboxWorld) item.hardlight( TITLE_COLOR );
+			list.addItem( item );
 		}
 	}
 
