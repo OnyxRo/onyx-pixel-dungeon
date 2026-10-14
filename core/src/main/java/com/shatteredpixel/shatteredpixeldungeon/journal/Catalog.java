@@ -267,6 +267,18 @@ public enum Catalog {
 		//Combusted Pixel Dungeon's melee weapons that can also be thrown
 		THROWN_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.thrown.ThrowableDagger.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.thrown.ThrowableDirk.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.thrown.ThrowableHandAxe.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.thrown.ThrowableSpear.class);
 
+		//Matt Edition's unique blacksmith weapons, and its gun
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.blacksmith.ArrowSign.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.blacksmith.BattleAxeStormbringer.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.blacksmith.EmeraldRoundShield.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.blacksmith.GlovesPurge.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.blacksmith.KatanaDarkness.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.blacksmith.SickleBloodLetter.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.blacksmith.SpearAmethystPiercer.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.blacksmith.SwordMidas.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.blacksmith.WhipFirecracker.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.Glock.class);
+
 		//items ported from Devoted Pixel Dungeon
 		RINGS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.rings.EndothermicRing.class);
 		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMalaise.class);

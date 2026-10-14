@@ -374,6 +374,17 @@ public class ItemSpriteSheet {
 
 	public static final int WARPICK = MOD_ITEMS+0;
 	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;
+	public static final int GLOCK = xy(14, 13);
+	public static final int GLOCK_BULLET = xy(15, 13);
+	public static final int ARROW_SIGN = xy(16, 13);
+	public static final int STORMBRINGER_BATTLE_AXE = xy(2, 19);
+	public static final int EMERALD_ROUND_SHIELD = xy(3, 19);
+	public static final int PURGE_GLOVES = xy(4, 19);
+	public static final int DARKNESS_KATANA = xy(5, 19);
+	public static final int BLOODLETTER_SICKLE = xy(6, 19);
+	public static final int AMETHYST_SPEAR = xy(7, 19);
+	public static final int MIDAS_GREAT_SWORD = xy(8, 19);
+	public static final int FIRECRACKER_WHIP = xy(9, 19);
 	public static final int ROYAL_SEAL = MOD_ITEMS+2;
 	public static final int WAND_MALAISE = MOD_ITEMS+3;
 	public static final int RING_ENDOTHERMIC = MOD_ITEMS+4;
@@ -388,6 +399,17 @@ public class ItemSpriteSheet {
 	static{
 		assignItemRect(WARPICK, 15, 14);
 		assignItemRect(WOODEN_BOOMERANG, 12, 12);
+		assignItemRect(GLOCK, 16, 15);
+		assignItemRect(GLOCK_BULLET, 11, 11);
+		assignItemRect(ARROW_SIGN, 16, 16);
+		assignItemRect(STORMBRINGER_BATTLE_AXE, 16, 16);
+		assignItemRect(EMERALD_ROUND_SHIELD, 16, 16);
+		assignItemRect(PURGE_GLOVES, 12, 16);
+		assignItemRect(DARKNESS_KATANA, 15, 16);
+		assignItemRect(BLOODLETTER_SICKLE, 15, 15);
+		assignItemRect(AMETHYST_SPEAR, 16, 16);
+		assignItemRect(MIDAS_GREAT_SWORD, 16, 16);
+		assignItemRect(FIRECRACKER_WHIP, 14, 14);
 		assignItemRect(ROYAL_SEAL, 13, 13);
 		assignItemRect(WAND_MALAISE, 14, 14);
 		assignItemRect(RING_ENDOTHERMIC, 8, 11);
