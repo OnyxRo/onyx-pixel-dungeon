@@ -80,7 +80,7 @@ Gradle-free path used for releases (`scripts/`):
 
 - `scripts/compile.sh <ShatteredPD-v4.0.2-Java.jar> <outdir>` compiles with javac, taking libraries from the official Shattered jar.
 - `scripts/package-windows.sh <Java.jar> <Windows.zip> <outdir>` makes the full Windows zip, the small installer zip, the cross-platform jar, `OnyxPixelDungeon-game.jar` and `update.json`.
-- `scripts/gallery.sh <folder>` runs the screenshot tour (`Gallery.java`, switched on by `-Donyx.gallery`). The game plays itself through every ported world and the sandbox windows and saves a picture of each, in its own save folder. Use it to look at worlds and UI without Onyx clicking through them. Read the pictures back to check. All 49 ported worlds and the sandbox windows were checked this way on 2026-10-13.
+- `scripts/gallery.sh <folder>` runs the screenshot tour (`Gallery.java`, switched on by `-Donyx.gallery`). The game plays itself through every ported world and the sandbox windows and saves a picture of each, in its own save folder. Use it to look at worlds and UI without Onyx clicking through them. Read the pictures back to check. After the worlds it spawns every ported monster beside the hero, lets it act, pictures it and kills it. Add `-Donyx.gallery.only=mobs` to the java line to skip the worlds. All 49 ported worlds, the sandbox windows and Devoted's 29 monsters were checked this way on 2026-10-13 with no errors.
 - `scripts/test/WorldShuffleTest.java` builds every floor of N seeded dungeons headlessly, checks all 24 worlds appear and have strings, and saves and reloads each ported world. Run it after any world change.
 
 ## Releases and updates

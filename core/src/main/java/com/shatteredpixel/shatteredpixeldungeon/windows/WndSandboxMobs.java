@@ -121,7 +121,7 @@ public class WndSandboxMobs extends Window {
 		list.setRect( 0, top, WIDTH, height - top );
 	}
 
-	private static void spawn( Class<?> cls ) {
+	public static void spawn( Class<?> cls ) {
 		Mob mob = (Mob) Reflection.newInstance(cls);
 		if (mob == null) return;
 

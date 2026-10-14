@@ -25,6 +25,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.levels.WorldShuffle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
@@ -37,12 +39,14 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndSandboxMobs;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 
+import java.util.ArrayList;
+
 /**
  * A self-running screenshot tour, for checking every world without clicking through the game.
  *
  * Start the game with -Donyx.gallery=<folder>. It begins a sandbox run on its own, visits
- * every ported world in turn, saves a picture of each into the folder, then pictures the
- * sandbox windows and quits. Does nothing at all when the property is not set.
+ * every ported world in turn, saves a picture of each into the folder, then spawns and pictures
+ * every ported monster, then pictures the sandbox windows and quits. Does nothing at all when the property is not set.
  */
 public class Gallery {
 
@@ -52,9 +56,14 @@ public class Gallery {
 	private static final int[] DEPTHS = { 2, 7, 12, 17, 22 };
 
 	private static boolean started = false;
-	private static int world = WorldShuffle.HALLS + 1;
+	//-Donyx.gallery.only=mobs skips the worlds and goes straight to the monsters
+	private static int world = "mobs".equals(System.getProperty("onyx.gallery.only")) ? Integer.MAX_VALUE : WorldShuffle.HALLS + 1;
 	private static float time = 0;
 	private static boolean shot = false;
+
+	private static final ArrayList<Class<?>> MOBS = new ArrayList<>();
+	private static int mob = 0;
+	private static Mob mobSpawned = null;
 
 	private static int uiStep = 0;
 	private static Window uiWindow = null;
@@ -70,6 +79,13 @@ public class Gallery {
 
 		SPDSettings.intro(false);
 		Dungeon.deleteGame(1, true);
+
+		//every monster ported from another mod
+		for (Bestiary category : Bestiary.values()) {
+			for (Class<?> cls : category.entities()) {
+				if (cls.getName().contains(".altregion.")) MOBS.add(cls);
+			}
+		}
 
 		Dungeon.sandbox = true;
 		GamesInProgress.selectedClass = HeroClass.WARRIOR;
@@ -105,7 +121,35 @@ public class Gallery {
 			return;
 		}
 
-		//after the worlds, picture each sandbox window
+		//then spawn each ported monster beside the hero, let it act for a moment, picture it and kill it
+		if (mob < MOBS.size()) {
+			if (mobSpawned == null) {
+				if (time < 0.3f) return;
+				int before = Dungeon.level.mobs.size();
+				WndSandboxMobs.spawn( MOBS.get(mob) );
+				for (Mob m : Dungeon.level.mobs) {
+					if (m.getClass() == MOBS.get(mob) && Dungeon.level.adjacent(m.pos, Dungeon.hero.pos)) mobSpawned = m;
+				}
+				if (mobSpawned == null) {
+					System.out.println("[GALLERY] could not spawn " + MOBS.get(mob).getSimpleName() + " (" + before + " mobs on floor)");
+					mob++;
+				}
+				time = 0;
+				return;
+			}
+			//the hero has to spend turns for anything else to act
+			if (Dungeon.hero.ready && time < 1.6f) Dungeon.hero.rest( false );
+			if (time > 1.8f) {
+				capture( String.format("mob_%02d_%s", mob, MOBS.get(mob).getSimpleName()) );
+				if (mobSpawned.isAlive()) mobSpawned.die( null );
+				mobSpawned = null;
+				mob++;
+				time = 0;
+			}
+			return;
+		}
+
+		//after the monsters, picture each sandbox window
 		if (time < 0.6f) return;
 		if (uiWindow != null) {
 			capture( "window_" + uiStep + "_" + uiWindow.getClass().getSimpleName() );
