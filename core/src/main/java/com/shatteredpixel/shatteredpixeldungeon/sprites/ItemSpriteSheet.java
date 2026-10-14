@@ -374,9 +374,31 @@ public class ItemSpriteSheet {
 
 	public static final int WARPICK = MOD_ITEMS+0;
 	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;
+	public static final int ROYAL_SEAL = MOD_ITEMS+2;
+	public static final int WAND_MALAISE = MOD_ITEMS+3;
+	public static final int RING_ENDOTHERMIC = MOD_ITEMS+4;
+	public static final int ARTIFACT_THORNCLOAK = MOD_ITEMS+5;
+	public static final int ELIXIR_WILD = MOD_ITEMS+6;
+	public static final int MEAL = MOD_ITEMS+7;
+	public static final int WYVERNFRUIT = MOD_ITEMS+8;
+	public static final int BLOCK = MOD_ITEMS+9;
+	public static final int SPLINTER = MOD_ITEMS+10;
+	public static final int ESSENCE = MOD_ITEMS+11;
+	public static final int RUBY = MOD_ITEMS+12;
 	static{
 		assignItemRect(WARPICK, 15, 14);
 		assignItemRect(WOODEN_BOOMERANG, 12, 12);
+		assignItemRect(ROYAL_SEAL, 13, 13);
+		assignItemRect(WAND_MALAISE, 14, 14);
+		assignItemRect(RING_ENDOTHERMIC, 8, 11);
+		assignItemRect(ARTIFACT_THORNCLOAK, 16, 14);
+		assignItemRect(ELIXIR_WILD, 12, 14);
+		assignItemRect(MEAL, 16, 14);
+		assignItemRect(WYVERNFRUIT, 12, 13);
+		assignItemRect(BLOCK, 11, 12);
+		assignItemRect(SPLINTER, 6, 12);
+		assignItemRect(ESSENCE, 14, 13);
+		assignItemRect(RUBY, 11, 10);
 	}
 
 	private static final int ARMOR          =                               xy(1, 12);  //16 slots

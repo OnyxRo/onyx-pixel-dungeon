@@ -330,6 +330,9 @@ public class Dungeon {
 		Level level;
 		if (branch == 0 && sandbox && sandboxWorld != -1 && WorldShuffle.canForce(depth)) {
 			level = WorldShuffle.create(sandboxWorld);
+		} else if (branch == 0 && sandbox && WorldShuffle.modBossLevel(sandboxWorld, depth) != null) {
+			//a forced world from a mod with its own bosses brings that mod's boss floor too
+			level = WorldShuffle.modBossLevel(sandboxWorld, depth);
 		} else if (branch == 0 && WorldShuffle.shuffles(depth)) {
 			//every floor a new world, see WorldShuffle
 			level = WorldShuffle.create(WorldShuffle.worldFor(depth));

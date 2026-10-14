@@ -21,6 +21,11 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CoalElementalSprite;
+import com.shatteredpixel.shatteredpixeldungeon.levels.ForgeBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -616,4 +621,78 @@ public abstract class Elemental extends Mob {
 			return ShockElemental.class;
 		}
 	}
+
+	//from Devoted Pixel Dungeon
+    public static class CoalElemental extends FireElemental {
+
+
+        {
+            spriteClass = CoalElementalSprite.class;
+
+            HP = HT = 10;
+            defenseSkill = 17;
+
+            if (Dungeon.level instanceof ForgeBossLevel) {
+
+                maxLvl = -2;
+
+            }
+            else {
+                EXP = 9;
+                maxLvl = 17;
+
+                loot = Generator.Category.WAND;
+                lootChance = 0.03f; //initially, see lootChance()
+            }
+
+
+            properties.add( Property.FIERY );
+
+            harmfulBuffs.add( Frost.class );
+            harmfulBuffs.add( Chill.class );
+
+            rangedCooldown = Integer.MAX_VALUE;
+
+        }
+
+        private int pumpedUp;
+
+        @Override
+        public float lootChance() {
+            //each drop makes future drops 1/3 as likely
+            // so loot chance looks like: 1/33, 1/100, 1/300, 1/900, etc.
+            return super.lootChance() * (float)Math.pow(1/3f, Dungeon.LimitedDrops.SHAMAN_WAND.count);
+        }
+
+        @Override
+        public Item createLoot() {
+            Dungeon.LimitedDrops.SHAMAN_WAND.count++;
+            return super.createLoot();
+        }
+
+        ForgeBossLevel level;
+
+        @Override
+        protected boolean getCloser( int target ) {
+
+            if (Dungeon.level instanceof ForgeBossLevel)
+            {
+                level = (ForgeBossLevel)Dungeon.level;
+                Mob golem = level.boss;
+                target = golem.pos;
+            }
+            return super.getCloser( target );
+        }
+
+        @Override
+        public int attackSkill( Char target ) {
+            return 20;
+        }
+
+        @Override
+        public int drRoll() {
+            return Random.NormalIntRange(0, 5);
+        }
+    }
+
 }

@@ -62,6 +62,11 @@ public abstract class ShieldBuff extends Buff {
 		return shielding;
 	}
 	
+	//used by buffs ported from Devoted Pixel Dungeon
+	public void shielding(int i){
+		shielding = i;
+	}
+
 	public void setShield( int shield ) {
 		if (this.shielding <= shield) this.shielding = shield;
 		if (target != null) target.needsShieldUpdate = true;

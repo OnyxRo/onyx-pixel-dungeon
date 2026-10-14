@@ -42,7 +42,10 @@ public class PathFinder {
 	//performance-light shortcuts for some common pathfinder cases
 	//they are in array-access order for increased memory performance
 	public static int[] NEIGHBOURS4;
+	public static int[] NEIGHBOURS5;
 	public static int[] NEIGHBOURS8;
+	//the four neighbours, then the four cells two steps away, then the cell itself. Used by ported mods
+	public static int[] CROSS2;
 	public static int[] NEIGHBOURS9;
 
 	//similar to their equivalent neighbour arrays, but the order is clockwise.
@@ -68,6 +71,8 @@ public class PathFinder {
 
 		NEIGHBOURS4 = new int[]{-width, -1, +1, +width};
 		NEIGHBOURS8 = new int[]{-width-1, -width, -width+1, -1, +1, +width-1, +width, +width+1};
+		NEIGHBOURS5 = new int[]{-width, -1, 0, +1, +width};
+		CROSS2 = new int[]{-width, -1, +1, +width, -width*2, -2, +2, +width*2, 0};
 		NEIGHBOURS9 = new int[]{-width-1, -width, -width+1, -1, 0, +1, +width-1, +width, +width+1};
 
 		CIRCLE4 = new int[]{-width, +1, +width, -1};

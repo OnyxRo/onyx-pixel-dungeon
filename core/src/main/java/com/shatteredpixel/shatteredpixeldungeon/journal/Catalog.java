@@ -264,6 +264,15 @@ public enum Catalog {
 				LiquidMetal.class, ArcaneResin.class,
 				SealShard.class, BrokenStaff.class, CloakScrap.class, BowFragment.class, BrokenHilt.class, TornPage.class);
 
+		//items ported from Devoted Pixel Dungeon
+		RINGS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.rings.EndothermicRing.class);
+		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMalaise.class);
+		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfThorns.class);
+		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.Meal.class, com.shatteredpixel.shatteredpixeldungeon.items.Wyvernfruit.class);
+		BREWS_ELIXIRS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.RockBlock.class, com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfOvergrowth.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.RoyalSeal.class, com.shatteredpixel.shatteredpixeldungeon.items.quest.Ruby.class, com.shatteredpixel.shatteredpixeldungeon.items.quest.StaffSplinter.class, com.shatteredpixel.shatteredpixeldungeon.items.quest.EmberEssence.class);
+
+
 	}
 
 	public static ArrayList<Catalog> equipmentCatalogs = new ArrayList<>();

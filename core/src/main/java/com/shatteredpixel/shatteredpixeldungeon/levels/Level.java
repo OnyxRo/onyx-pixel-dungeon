@@ -165,6 +165,8 @@ public abstract class Level implements Bundlable {
 	public boolean[] secret;
 	public boolean[] solid;
 	public boolean[] avoid;
+	//dry ground, as Devoted Pixel Dungeon marks it. See dryTerrain
+	public boolean[] dry;
 	public boolean[] water;
 	public boolean[] pit;
 
@@ -344,6 +346,7 @@ public abstract class Level implements Bundlable {
 		secret		= new boolean[length];
 		solid		= new boolean[length];
 		avoid		= new boolean[length];
+		dry			= new boolean[length];
 		water		= new boolean[length];
 		pit			= new boolean[length];
 
@@ -529,6 +532,12 @@ public abstract class Level implements Bundlable {
 		return null;
 	}
 	
+	//terrain Devoted Pixel Dungeon treats as dry ground, which some of its monsters need to dig or charge
+	public static boolean dryTerrain( int terrain ){
+		return terrain == Terrain.EMPTY || terrain == Terrain.GRASS || terrain == Terrain.ENTRANCE
+				|| terrain == Terrain.EMBERS || terrain == Terrain.HIGH_GRASS;
+	}
+
 	abstract protected boolean build();
 	
 	private ArrayList<Class<?extends Mob>> mobsToSpawn = new ArrayList<>();
@@ -865,6 +874,7 @@ public abstract class Level implements Bundlable {
 			secret[i]       = (flags & Terrain.SECRET) != 0;
 			solid[i]        = (flags & Terrain.SOLID) != 0;
 			avoid[i]        = (flags & Terrain.AVOID) != 0;
+			dry[i]          = dryTerrain(map[i]);
 			water[i]        = (flags & Terrain.LIQUID) != 0;
 			pit[i]          = (flags & Terrain.PIT) != 0;
 		}
@@ -986,6 +996,7 @@ public abstract class Level implements Bundlable {
 		secret[cell]        = (flags & Terrain.SECRET) != 0;
 		solid[cell]         = (flags & Terrain.SOLID) != 0;
 		avoid[cell]         = (flags & Terrain.AVOID) != 0;
+		dry[cell]           = dryTerrain(map[cell]);
 		pit[cell]           = (flags & Terrain.PIT) != 0;
 		water[cell]         = terrain == Terrain.WATER;
 

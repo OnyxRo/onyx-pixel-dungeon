@@ -145,7 +145,9 @@ public class WndSandboxFloor extends Window {
 		btnWorld.text( worldLabel(Dungeon.sandboxWorld) );
 		btnWorld.textColor( Dungeon.sandboxWorld == -1 ? 0xFFFFFF : TITLE_COLOR );
 
-		if (Dungeon.sandboxWorld != -1 && !WorldShuffle.canForce(floor)) {
+		if (Dungeon.sandboxWorld != -1 && WorldShuffle.modBossLevel(Dungeon.sandboxWorld, floor) != null) {
+			note.text( Messages.get(WndSandbox.class, "note_boss", floor, WorldShuffle.modName(Dungeon.sandboxWorld)), WIDTH );
+		} else if (Dungeon.sandboxWorld != -1 && !WorldShuffle.canForce(floor)) {
 			note.text( Messages.get(WndSandbox.class, "note_fixed", floor), WIDTH );
 		} else {
 			note.text( Messages.get(WndSandbox.class, "note"), WIDTH );

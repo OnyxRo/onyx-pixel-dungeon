@@ -292,6 +292,22 @@ public class WorldShuffle {
 		return true;
 	}
 
+	/**
+	 * The boss floor that belongs with a world, for mods whose bosses are ported, or null.
+	 * Devoted has one boss for each of its five worlds, on the same floors as Shattered's.
+	 */
+	public static Level modBossLevel( int world, int depth ){
+		if (world < 0 || world >= LOGOS.length || !DEVOTED.equals(LOGOS[world])) return null;
+		switch (depth) {
+			case 5:  return new GardenBossLevel();
+			case 10: return new ColdhouseBossLevel();
+			case 15: return new ForgeBossLevel();
+			case 20: return new CitadelBossLevel();
+			case 25: return new VoidBossLevel();
+			default: return null;
+		}
+	}
+
 	/** Whether a sandbox run can force a world onto this floor. Boss floors and the last two floors keep their own levels. */
 	public static boolean canForce( int depth ){
 		return depth >= 1 && depth < 25 && depth % 5 != 0;

@@ -256,11 +256,47 @@ public enum Bestiary {
 				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.Sacrifice.class,
 				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.BedrockGolem.class);
 
+		REGIONAL.addEntities(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.TrollBrawler.YellowBrawler.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.TrollBrawler.PurpleBrawler.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.TrollBrawler.RedBrawler.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.Frogeat.BleedingFrogeat.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.Frogeat.PoisonFrogeat.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.Frogeat.ConfusingFrogeat.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.EldritchBrain.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.NeuronSentry.class);
+
 		BOSSES.addEntities(Goo.class,
 				Tengu.class,
 				Pylon.class, DM300.class,
 				DwarfKing.class,
 				YogDzewa.Larva.class, YogFist.BurningFist.class, YogFist.SoiledFist.class, YogFist.RottingFist.class, YogFist.RustedFist.class,YogFist.BrightFist.class, YogFist.DarkFist.class, YogDzewa.class);
+
+		//Devoted Pixel Dungeon's bosses, quest monsters and characters
+		BOSSES.addEntities(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.Emperor.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.RatBeast.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.BlastFurnace.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.FurnaceGolem.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.Thymor.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.Yuria.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.Wendar.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.VelEssence.Unearth.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.VelEssence.Snipe.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.VelEssence.Bombard.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.VelEssence.Ram.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.VelEssence.Restrain.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.VelTaleth.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.BlackHole.class);
+		QUEST.addEntities(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.HornedToad.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.EmperorButterfly.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.ElderThorn.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.CragWolf.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.LavaPiranha.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.QuakeWolf.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.TrollSpearman.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.Pyronaut.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.TrollKnight.class);
+		NEUTRAL.addEntities(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.SageCorpse.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.BountyHunter.class);
 
 		UNIVERSAL.addEntities(Wraith.class, Piranha.class, Mimic.class, GoldenMimic.class, EbonyMimic.class, Statue.class, GuardianTrap.Guardian.class, SentryRoom.Sentry.class);
 

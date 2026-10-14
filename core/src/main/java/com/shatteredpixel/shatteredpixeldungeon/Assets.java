@@ -32,6 +32,22 @@ public class Assets {
 	}
 
 	public static class Environment {
+		public static final String TILES_TRUE_VOID = "environment/devoted/tiles_truevoid.png"; //ported, devoted
+		public static final String GARDENS_BOSS = "environment/custom_tiles/devoted/gardens_boss.png"; //ported, devoted
+		public static final String WATER_GARDEN = "environment/devoted/water5.png"; //ported, devoted
+		public static final String TILES_GARDEN = "environment/devoted/tiles_garden.png"; //ported, devoted
+		public static final String COLDHOUSE_BOSS = "environment/custom_tiles/devoted/coldhouse_boss.png"; //ported, devoted
+		public static final String WATER_COLDHOUSE = "environment/devoted/water6.png"; //ported, devoted
+		public static final String TILES_COLDHOUSE = "environment/devoted/tiles_coldhouse.png"; //ported, devoted
+		public static final String VOID_SP = "environment/custom_tiles/devoted/void_special.png"; //ported, devoted
+		public static final String WATER_VOID = "environment/devoted/water9.png"; //ported, devoted
+		public static final String TILES_VOID = "environment/devoted/tiles_void.png"; //ported, devoted
+		public static final String CITADEL_BOSS = "environment/custom_tiles/devoted/citadel_boss.png"; //ported, devoted
+		public static final String WATER_CITADEL = "environment/devoted/water8.png"; //ported, devoted
+		public static final String TILES_CITADEL = "environment/devoted/tiles_citadel.png"; //ported, devoted
+		public static final String FORGE_BOSS = "environment/custom_tiles/devoted/forge_boss.png"; //ported, devoted
+		public static final String WATER_FORGE = "environment/devoted/water7.png"; //ported, devoted
+		public static final String TILES_FORGE = "environment/devoted/tiles_forge.png"; //ported, devoted
 		public static final String TERRAIN_FEATURES = "environment/terrain_features.png";
 		public static final String RAISED_TERRAIN = "environment/raised_terrain.png";
 
@@ -119,6 +135,16 @@ public class Assets {
 	}
 
 	public static class Music {
+		public static final String SHADOW_REALM = "music/devoted/10.1-LiturgiaEclipsis-Vel'Taleth.ogg"; //ported, devoted
+		public static final String GARDENS_BOSS = "music/devoted/02-PromisedParadise-GnollEmperor.ogg"; //ported, devoted
+		public static final String GARDENS = "music/devoted/01-TheSecretofSpring-TheGardens.ogg"; //ported, devoted
+		public static final String COLDHOUSE = "music/devoted/03-IridescentWaltz-Coldhouse.ogg"; //ported, devoted
+		public static final String COLDHOUSE_BOSS = "music/devoted/04-TheIcyBeast-RatMonstrosity.ogg"; //ported, devoted
+		public static final String VOID_BOSS = "music/devoted/10-InNomineNihilo-Vel'Taleth.ogg"; //ported, devoted
+		public static final String CITADEL = "music/devoted/07-TheAshenRite-DwarvenCitadel.ogg"; //ported, devoted
+		public static final String CITADEL_BOSS = "music/devoted/08-TheInfernalTribunal-DwarvenCourt.ogg"; //ported, devoted
+		public static final String FORGE = "music/devoted/05-MudAndIron-TrollMines.ogg"; //ported, devoted
+		public static final String FORGE_BOSS = "music/devoted/06-MechanismInTheDepths-FurnaceGolem.ogg"; //ported, devoted
 		public static final String THEME_1              = "music/theme_1.ogg";
 		public static final String THEME_2              = "music/theme_2.ogg";
 		public static final String THEME_FINALE         = "music/theme_finale.ogg";
@@ -158,6 +184,9 @@ public class Assets {
 	}
 
 	public static class Sounds {
+		public static final String EXPLOSION = "sounds/devoted/giant_explosion.mp3"; //ported, devoted
+		public static final String BLACKHOLE = "sounds/devoted/black-hole.mp3"; //ported, devoted
+		public static final String HOWL = "sounds/devoted/howl.mp3"; //ported, devoted
 		public static final String CLICK    = "sounds/click.mp3";
 		public static final String BADGE    = "sounds/badge.mp3";
 		public static final String GOLD     = "sounds/gold.mp3";
@@ -234,7 +263,7 @@ public class Assets {
 		public static final String WHAIL = "sounds/devoted_whail.mp3";
 
 		public static final String[] all = new String[]{
-				DIG, WHAIL,
+				DIG, WHAIL, EXPLOSION, BLACKHOLE, HOWL,
 				CLICK, BADGE, GOLD,
 
 				OPEN, UNLOCK, ITEM, DEWDROP, STEP, WATER, GRASS, TRAMPLE, STURDY,
@@ -272,6 +301,30 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String COALELEMENTAL = "sprites/devoted/coal_elemental.png"; //ported, devoted
+		public static final String VELTALETH = "sprites/devoted/Vel-Taleth.png"; //ported, devoted
+		public static final String VAULT = "sprites/devoted/vault.png"; //ported, devoted
+		public static final String TROLLSPEARMAN = "sprites/devoted/troll_spearman.png"; //ported, devoted
+		public static final String TROLL_KNIGHT = "sprites/devoted/troll_knight.png"; //ported, devoted
+		public static final String COURT = "sprites/devoted/council.png"; //ported, devoted
+		public static final String SAGE = "sprites/devoted/sagecorpse.png"; //ported, devoted
+		public static final String RATBEAST = "sprites/devoted/ratbeast.png"; //ported, devoted
+		public static final String QUAKE_WOLF = "sprites/devoted/QuakeWolf.png"; //ported, devoted
+		public static final String PYRONAUT = "sprites/devoted/pyronaut.png"; //ported, devoted
+		public static final String NEURON = "sprites/devoted/Neuron.png"; //ported, devoted
+		public static final String NEURON_SENTRY = "sprites/devoted/neuron_sentry.png"; //ported, devoted
+		public static final String LAVA_PIRANHA = "sprites/devoted/lava_piranha.png"; //ported, devoted
+		public static final String FURNACEGOLEM = "sprites/devoted/furnace_golem.png"; //ported, devoted
+		public static final String FROGEAT = "sprites/devoted/Frogeat.png"; //ported, devoted
+		public static final String ESSENCE = "sprites/devoted/Vel-Essence.png"; //ported, devoted
+		public static final String EMPEROR = "sprites/devoted/emperor.png"; //ported, devoted
+		public static final String EMPERORCRYSTAL = "sprites/devoted/emperorcrystal.png"; //ported, devoted
+		public static final String CRAG_WOLF = "sprites/devoted/CragWolf.png"; //ported, devoted
+		public static final String BRAWLER = "sprites/devoted/troll_brawler.png"; //ported, devoted
+		public static final String BRAIN = "sprites/devoted/eldritchbrain.png"; //ported, devoted
+		public static final String BOUNTYHUNTER = "sprites/devoted/BountyHunter.png"; //ported, devoted
+		public static final String BLASTFURNACE = "sprites/devoted/furnace.png"; //ported, devoted
+		public static final String BLACKHOLE = "sprites/devoted/BlackHole.png"; //ported, devoted
 		public static final String ITEMS        = "sprites/items.png";
 		public static final String ITEM_ICONS   = "sprites/item_icons.png";
 

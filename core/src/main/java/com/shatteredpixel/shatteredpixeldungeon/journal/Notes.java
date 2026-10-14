@@ -138,6 +138,10 @@ public class Notes {
 		WANDMAKER,
 		TROLL,
 		IMP,
+		//from Devoted Pixel Dungeon
+		SAGECORPSE,
+		BOUNTYHUNTER,
+		ELDRITCH_BRAIN,
 
 		DEMON_SPAWNER;
 	}
@@ -261,6 +265,9 @@ public class Notes {
 				case WANDMAKER:     return Messages.get(Wandmaker.class, "desc");
 				case TROLL:         return Messages.get(Blacksmith.class, "desc");
 				case IMP:           return Messages.get(Imp.class, "desc");
+				case SAGECORPSE:     return Messages.get(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.SageCorpse.class, "desc");
+				case BOUNTYHUNTER:   return Messages.get(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.BountyHunter.class, "desc");
+				case ELDRITCH_BRAIN: return Messages.get(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.EldritchBrain.class, "desc");
 
 				case DEMON_SPAWNER: return Messages.get(DemonSpawner.class, "desc");
 			}

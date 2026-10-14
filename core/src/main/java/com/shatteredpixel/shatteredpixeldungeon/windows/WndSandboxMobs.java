@@ -55,8 +55,16 @@ public class WndSandboxMobs extends Window {
 
 	//these reach into their own boss level's code, and crash the game on any other floor
 	private static final HashSet<String> UNSAFE = new HashSet<>(Arrays.asList(
-			"Tengu", "DM300", "Pylon", "DwarfKing"
+			"Tengu", "DM300", "Pylon", "DwarfKing",
+			//Devoted's bosses, which do the same with Devoted's boss levels
+			"BlastFurnace", "FurnaceGolem", "RatBeast", "Thymor", "VelEssence", "VelTaleth", "Wendar", "Yuria"
 	));
+
+	public static boolean safeToSpawn( Class<?> cls ){
+		if (UNSAFE.contains( cls.getSimpleName() )) return false;
+		//a boss's phases are often classes nested inside it
+		return cls.getEnclosingClass() == null || !UNSAFE.contains( cls.getEnclosingClass().getSimpleName() );
+	}
 
 	public WndSandboxMobs() {
 
@@ -83,7 +91,7 @@ public class WndSandboxMobs extends Window {
 			boolean titled = false;
 			for (final Class<?> cls : category.entities()) {
 				//traps and plants are in the bestiary too, but aren't monsters
-				if (!Mob.class.isAssignableFrom(cls) || UNSAFE.contains(cls.getSimpleName())) continue;
+				if (!Mob.class.isAssignableFrom(cls) || !safeToSpawn(cls)) continue;
 				//the vault quest's monsters need the vault level around them too
 				if (cls.getName().contains(".vault.") || cls.getSimpleName().startsWith("Vault")) continue;
 

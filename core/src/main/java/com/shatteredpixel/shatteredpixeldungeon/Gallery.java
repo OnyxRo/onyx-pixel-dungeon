@@ -57,13 +57,24 @@ public class Gallery {
 
 	private static boolean started = false;
 	//-Donyx.gallery.only=mobs skips the worlds and goes straight to the monsters
-	private static int world = "mobs".equals(System.getProperty("onyx.gallery.only")) ? Integer.MAX_VALUE : WorldShuffle.HALLS + 1;
+	private static int world = System.getProperty("onyx.gallery.only") != null ? Integer.MAX_VALUE : WorldShuffle.HALLS + 1;
 	private static float time = 0;
 	private static boolean shot = false;
 
 	private static final ArrayList<Class<?>> MOBS = new ArrayList<>();
 	private static int mob = 0;
 	private static Mob mobSpawned = null;
+
+	private static final int[] BOSS_DEPTHS = { 5, 10, 15, 20, 25 };
+	private static int boss = 0;
+
+	//the first world that has a mod boss floor to go with it
+	private static int bossWorld(){
+		for (int w = 0; w < WorldShuffle.worldCount(); w++) {
+			if (WorldShuffle.modBossLevel(w, BOSS_DEPTHS[0]) != null) return w;
+		}
+		return -1;
+	}
 
 	private static int uiStep = 0;
 	private static Window uiWindow = null;
@@ -83,7 +94,7 @@ public class Gallery {
 		//every monster ported from another mod
 		for (Bestiary category : Bestiary.values()) {
 			for (Class<?> cls : category.entities()) {
-				if (cls.getName().contains(".altregion.")) MOBS.add(cls);
+				if (cls.getName().contains(".altregion.") && WndSandboxMobs.safeToSpawn(cls)) MOBS.add(cls);
 			}
 		}
 
@@ -121,6 +132,9 @@ public class Gallery {
 			return;
 		}
 
+		//-Donyx.gallery.only=bosses skips the monsters too
+		if ("bosses".equals(System.getProperty("onyx.gallery.only"))) mob = MOBS.size();
+
 		//then spawn each ported monster beside the hero, let it act for a moment, picture it and kill it
 		if (mob < MOBS.size()) {
 			if (mobSpawned == null) {
@@ -149,7 +163,28 @@ public class Gallery {
 			return;
 		}
 
-		//after the monsters, picture each sandbox window
+		//then each boss floor of a mod whose bosses are ported
+		if (boss < BOSS_DEPTHS.length) {
+			boolean here = Dungeon.depth == BOSS_DEPTHS[boss] && !WorldShuffle.canForce(Dungeon.depth)
+					&& Dungeon.level.getClass() == WorldShuffle.modBossLevel(bossWorld(), BOSS_DEPTHS[boss]).getClass();
+			if (!here) {
+				Dungeon.sandboxWorld = bossWorld();
+				InterlevelScene.mode = InterlevelScene.Mode.SANDBOX;
+				InterlevelScene.returnDepth = BOSS_DEPTHS[boss];
+				time = 0;
+				Game.switchScene( InterlevelScene.class );
+				return;
+			}
+			if (Dungeon.hero.ready && time < 2.2f) Dungeon.hero.rest( false );
+			if (time > 2.5f) {
+				capture( String.format("boss_%02d_%s", BOSS_DEPTHS[boss], Dungeon.level.getClass().getSimpleName()) );
+				boss++;
+				time = 0;
+			}
+			return;
+		}
+
+		//after the bosses, picture each sandbox window
 		if (time < 0.6f) return;
 		if (uiWindow != null) {
 			capture( "window_" + uiStep + "_" + uiWindow.getClass().getSimpleName() );
