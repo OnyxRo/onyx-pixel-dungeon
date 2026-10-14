@@ -535,7 +535,8 @@ public abstract class Level implements Bundlable {
 	
 	public Mob createMob() {
 		if (mobsToSpawn == null || mobsToSpawn.isEmpty()) {
-			mobsToSpawn = MobSpawner.getMobRotation(Dungeon.depth);
+			//ported worlds can bring their own mod's monsters, see WorldShuffle
+			mobsToSpawn = WorldShuffle.mobRotation(this, Dungeon.depth);
 		}
 
 		Mob m = Reflection.newInstance(mobsToSpawn.remove(0));

@@ -82,6 +82,9 @@ public enum Rankings {
 
 	public void submit( boolean win, Object cause ) {
 
+		//sandbox runs are never ranked
+		if (Dungeon.sandbox) return;
+
 		load();
 		
 		Record rec = new Record();

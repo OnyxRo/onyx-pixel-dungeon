@@ -1133,7 +1133,7 @@ public abstract class Mob extends Char {
 	}
 	
 	protected Object loot = null;
-	protected float lootChance = 0;
+	public float lootChance = 0;
 	
 	@SuppressWarnings("unchecked")
 	public Item createLoot() {

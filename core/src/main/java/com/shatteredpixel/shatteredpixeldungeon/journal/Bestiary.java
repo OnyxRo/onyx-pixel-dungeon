@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.journal;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.PowerOfMany;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.SpiritHawk;
@@ -224,6 +225,37 @@ public enum Bestiary {
 				Ghoul.class, Elemental.FireElemental.class, Elemental.FrostElemental.class, Elemental.ShockElemental.class, Warlock.class, Monk.class, Golem.class,
 				RipperDemon.class, DemonSpawner.class, Succubus.class, Eye.class, Scorpio.class);
 
+		//Devoted Pixel Dungeon
+		REGIONAL.addEntities(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.Toad.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.Grub.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.Butterfly.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.Druid.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.ThornLasher.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.PoisonToad.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.RoyalGrub.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.ColdCorpse.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.MeatRack.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.Banshee.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.GlassKnight.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.Wererat.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.PrimeRib.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.Revenant.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.GraniteTroll.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.TrollRanger.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.Mole.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.RockGolem.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.GraniteElder.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.FlamingMole.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.Cultist.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.Giant.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.Leader.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.Trapper.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.Warden.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.Conjurer.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.Puppet.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.Sacrifice.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.BedrockGolem.class);
+
 		BOSSES.addEntities(Goo.class,
 				Tengu.class,
 				Pylon.class, DM300.class,
@@ -303,6 +335,7 @@ public enum Bestiary {
 	}
 
 	public static void setSeen(Class<?> cls){
+		if (Dungeon.sandbox) return;
 		if (classConversions.containsKey(cls)){
 			cls = classConversions.get(cls);
 		}
@@ -332,7 +365,7 @@ public enum Bestiary {
 	}
 
 	public static void countEncounters(Class<?> cls, int encounters){
-		if (skipCountingEncounters){
+		if (skipCountingEncounters || Dungeon.sandbox){
 			return;
 		}
 		if (classConversions.containsKey(cls)){

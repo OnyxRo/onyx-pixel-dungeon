@@ -64,7 +64,8 @@ public class SPDSettings extends GameSettings {
 	}
 	
 	public static boolean fullscreen() {
-		return getBoolean( KEY_FULLSCREEN, true );
+		//starts in a window, which can be resized. Fullscreen is still in the display settings
+		return getBoolean( KEY_FULLSCREEN, false );
 	}
 
 	public static void landscape( boolean value ){
@@ -457,8 +458,8 @@ public class SPDSettings extends GameSettings {
 	
 	public static Point windowResolution(){
 		return new Point(
-				getInt( KEY_WINDOW_WIDTH, 800, 720, Integer.MAX_VALUE ),
-				getInt( KEY_WINDOW_HEIGHT, 600, 400, Integer.MAX_VALUE )
+				getInt( KEY_WINDOW_WIDTH, 1280, 720, Integer.MAX_VALUE ),
+				getInt( KEY_WINDOW_HEIGHT, 720, 400, Integer.MAX_VALUE )
 		);
 	}
 	

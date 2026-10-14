@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.ShadowBox;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -79,7 +80,7 @@ public class InterlevelScene extends PixelScene {
 	private static float fadeTime;
 	
 	public enum Mode {
-		DESCEND, ASCEND, CONTINUE, RESURRECT, RETURN, FALL, RESET, NONE
+		DESCEND, ASCEND, CONTINUE, RESURRECT, RETURN, FALL, RESET, SANDBOX, NONE
 	}
 	public static Mode mode;
 
@@ -159,6 +160,7 @@ public class InterlevelScene extends PixelScene {
 				else                        loadingDepth = Dungeon.depth;
 				break;
 			case RETURN:
+			case SANDBOX:
 				loadingDepth = returnDepth;
 				break;
 		}
@@ -440,6 +442,9 @@ public class InterlevelScene extends PixelScene {
 								break;
 							case RESET:
 								reset();
+								break;
+							case SANDBOX:
+								sandboxJump();
 								break;
 						}
 						
@@ -812,6 +817,23 @@ public class InterlevelScene extends PixelScene {
 		Dungeon.switchLevel( level, level.entrance() );
 	}
 	
+	//a sandbox run skipping straight to a floor. The floor is always built fresh,
+	//so a newly forced world shows up even on a floor that was visited before
+	private void sandboxJump() throws IOException {
+
+		Mob.holdAllies( Dungeon.level );
+		Dungeon.saveAll();
+
+		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
+		if (lock != null) lock.detach();
+
+		Dungeon.depth = returnDepth;
+		Dungeon.branch = 0;
+
+		Level level = Dungeon.newLevel();
+		Dungeon.switchLevel( level, level.entrance() );
+	}
+
 	@Override
 	protected void onBackPressed() {
 		//Do nothing

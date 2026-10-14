@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Fireball;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.services.news.News;
@@ -43,10 +42,11 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TitleBackground;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndSettings;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndVictoryCongrats;
-import com.watabou.glwrap.Blending;
+import com.watabou.glwrap.Texture;
 import com.watabou.input.PointerEvent;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
@@ -65,13 +65,10 @@ import java.util.Date;
 public class TitleScene extends PixelScene {
 
 	private Image title;
-	private RenderedTextBlock titleName;
 	private RenderedTextBlock tagline;
-	private Fireball leftFB;
-	private Fireball rightFB;
-	private Image signs;
 
 	private StyledButton btnPlay;
+	private StyledButton btnSandbox;
 	private StyledButton btnSupport;
 	private StyledButton btnRankings;
 	private StyledButton btnJournal;
@@ -107,45 +104,18 @@ public class TitleScene extends PixelScene {
 		w -= insets.left + insets.right;
 		h -= insets.top + insets.bottom;
 
-		title = BannerSprites.get( landscape() ? BannerSprites.Type.TITLE_LAND : BannerSprites.Type.TITLE_PORT);
-		add( title );
+		//the title art is Onyx's own logo, scaled to fill the space above the buttons
+		title = new Image( Assets.Interfaces.ONYX_LOGO );
+		title.texture.filter( Texture.LINEAR, Texture.LINEAR );
 
-		float topRegion = Math.max(title.height - 6, h*0.45f);
+		float topRegion = Math.max( 80, h*0.47f );
+		title.scale.set( Math.min( (topRegion - 12) / title.height, (w - 8) / title.width ) );
 
 		title.x = insets.left + (w - title.width()) / 2f;
-		title.y = insets.top + 2 + (topRegion - title.height()) / 2f;
+		title.y = insets.top + 2;
 
 		align(title);
-
-		titleName = addTitleName(this, title, landscape());
-
-		if (landscape()){
-			leftFB = placeTorch(title.x + 30, title.y + 35);
-			rightFB = placeTorch(title.x + title.width - 30, title.y + 35);
-		} else {
-			leftFB = placeTorch(title.x + 16, title.y + 70);
-			rightFB = placeTorch(title.x + title.width - 16, title.y + 70);
-		}
-
-		signs = new Image(BannerSprites.get( landscape() ? BannerSprites.Type.TITLE_GLOW_LAND : BannerSprites.Type.TITLE_GLOW_PORT)){
-			private float time = 0;
-			@Override
-			public void update() {
-				super.update();
-				am = Math.max(0f, (float)Math.sin( time += Game.elapsed ));
-				am = Math.min(am, title.am);
-				if (time >= 1.5f*Math.PI) time = 0;
-			}
-			@Override
-			public void draw() {
-				Blending.setLightMode();
-				super.draw();
-				Blending.setNormalMode();
-			}
-		};
-		signs.x = title.x + (title.width() - signs.width())/2f;
-		signs.y = title.y;
-		add( signs );
+		add( title );
 
 		final Chrome.Type GREY_TR = Chrome.Type.GREY_BUTTON_TR;
 		
@@ -176,6 +146,24 @@ public class TitleScene extends PixelScene {
 		btnPlay.icon(Icons.get(Icons.ENTER));
 		add(btnPlay);
 
+		//sandbox runs are for playtesting, see Dungeon.sandbox
+		btnSandbox = new StyledButton(GREY_TR, Messages.get(this, "sandbox")){
+			@Override
+			protected void onClick() {
+				int slot = GamesInProgress.firstEmpty();
+				if (slot == -1){
+					ShatteredPixelDungeon.scene().add(new WndMessage(Messages.get(TitleScene.class, "sandbox_full")));
+					return;
+				}
+				Dungeon.sandbox = true;
+				GamesInProgress.selectedClass = null;
+				GamesInProgress.curSlot = slot;
+				ShatteredPixelDungeon.switchScene(HeroSelectScene.class);
+			}
+		};
+		btnSandbox.icon(Icons.get(Icons.STAIRS));
+		add(btnSandbox);
+
 		btnSupport = new SupportButton(GREY_TR, Messages.get(this, "support"));
 		add(btnSupport);
 
@@ -188,6 +176,7 @@ public class TitleScene extends PixelScene {
 		btnRankings.icon(Icons.get(Icons.RANKINGS));
 		add(btnRankings);
 		Dungeon.daily = Dungeon.dailyReplay = false;
+		Dungeon.sandbox = false;
 
 		btnJournal = new StyledButton(GREY_TR, Messages.get(this, "journal")){
 			@Override
@@ -218,9 +207,10 @@ public class TitleScene extends PixelScene {
 		btnAbout.icon(Icons.get(Icons.SHPX));
 		add(btnAbout);
 		
-		final int BTN_HEIGHT = 20;
-		int GAP = (int)(h - topRegion - (landscape() ? 3 : 4)*BTN_HEIGHT)/3;
-		GAP /= landscape() ? 3 : 5;
+		//slightly shorter than Shattered's 20, to make room for the sandbox row
+		final int BTN_HEIGHT = 17;
+		int GAP = (int)(h - topRegion - (landscape() ? 4 : 5)*BTN_HEIGHT)/3;
+		GAP /= landscape() ? 4 : 6;
 		GAP = Math.max(GAP, 2);
 
 		float buttonAreaWidth = landscape() ? PixelScene.MIN_WIDTH_L-6 : PixelScene.MIN_WIDTH_P-2;
@@ -235,6 +225,7 @@ public class TitleScene extends PixelScene {
 			btnSettings.setRect(btnRankings.left(), btnRankings.bottom() + GAP, btnRankings.width(), BTN_HEIGHT);
 			btnChanges.setRect(btnSettings.right()+2, btnSettings.top(), btnRankings.width(), BTN_HEIGHT);
 			btnAbout.setRect(btnChanges.right()+2, btnSettings.top(), btnRankings.width(), BTN_HEIGHT);
+			btnSandbox.setRect(btnPlay.left(), btnSettings.bottom() + GAP, btnAbout.right() - btnPlay.left(), BTN_HEIGHT);
 		} else {
 			btnPlay.setRect(btnAreaLeft, insets.top + topRegion+GAP, buttonAreaWidth, BTN_HEIGHT);
 			align(btnPlay);
@@ -245,11 +236,12 @@ public class TitleScene extends PixelScene {
 			btnChanges.setRect(btnNews.right()+2, btnNews.top(), btnNews.width(), BTN_HEIGHT);
 			btnSettings.setRect(btnNews.left(), btnNews.bottom()+GAP, btnRankings.width(), BTN_HEIGHT);
 			btnAbout.setRect(btnSettings.right()+2, btnSettings.top(), btnSettings.width(), BTN_HEIGHT);
+			btnSandbox.setRect(btnPlay.left(), btnSettings.bottom()+GAP, btnPlay.width(), BTN_HEIGHT);
 		}
 
 		tagline = PixelScene.renderTextBlock(Messages.get(this, "tagline"), 8);
 		tagline.hardlight(0xE8C66A);
-		float tagY = Math.min(title.y + title.height() + 2, btnPlay.top() - tagline.height() - 2);
+		float tagY = btnPlay.top() - tagline.height() - 2;
 		tagline.setPos(insets.left + (w - tagline.width()) / 2f, tagY);
 		align(tagline);
 		add(tagline);
@@ -333,13 +325,10 @@ public class TitleScene extends PixelScene {
 		float alpha = GameMath.gate(0f, uiAlpha, 1f);
 
 		title.am = alpha;
-		titleName.alpha(alpha);
 		tagline.alpha(alpha);
-		leftFB.am = alpha;
-		rightFB.am = alpha;
-		//signs.am = alpha; handles this itself
 
 		btnPlay.enable(alpha != 0);
+		btnSandbox.enable(alpha != 0);
 		btnSupport.enable(alpha != 0);
 		btnRankings.enable(alpha != 0);
 		btnJournal.enable(alpha != 0);
@@ -349,6 +338,7 @@ public class TitleScene extends PixelScene {
 		btnAbout.enable(alpha != 0);
 
 		btnPlay.alpha(alpha);
+		btnSandbox.alpha(alpha);
 		btnSupport.alpha(alpha);
 		btnRankings.alpha(alpha);
 		btnJournal.alpha(alpha);
@@ -364,16 +354,6 @@ public class TitleScene extends PixelScene {
 			btnExit.icon().alpha(alpha);
 		}
 
-	}
-
-	private Fireball placeTorch(float x, float y ) {
-		Fireball fb = new Fireball();
-		fb.x = x - fb.width()/2f;
-		fb.y = y - fb.height();
-
-		align(fb);
-		add( fb );
-		return fb;
 	}
 
 	private static class NewsButton extends StyledButton {

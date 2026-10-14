@@ -128,6 +128,44 @@ public class WorldShuffleTest {
 			}
 			if (s < 8) System.out.println(line);
 		}
+		//sandbox runs can force any world onto any regular floor, so build every combination
+		int forced = 0;
+		Dungeon.sandbox = true;
+		for (int s = 0; s < Math.min(seeds, 3); s++) {
+			long seed = 7000003L * (s + 1);
+			GamesInProgress.selectedClass = classes[s % classes.length];
+			Dungeon.seed = seed;
+			Dungeon.init();
+			for (int world = 0; world < WorldShuffle.worldCount(); world++) {
+				Dungeon.sandboxWorld = world;
+				if (WorldShuffle.menuName(world).isEmpty() || WorldShuffle.menuName(world).contains("!!!")) {
+					failures++;
+					System.out.println("FAIL: world " + world + " has no menu name");
+				}
+				for (int d = 1; d <= 26; d++) {
+					Dungeon.depth = d;
+					Dungeon.branch = 0;
+					try {
+						Level l = Dungeon.newLevel();
+						if (WorldShuffle.canForce(d) && WorldShuffle.worldOf(l) != world) {
+							throw new IllegalStateException("forced world was ignored");
+						}
+						if (!WorldShuffle.canForce(d) && !(Dungeon.bossLevel(d) || d == 26)) {
+							throw new IllegalStateException("a regular floor could not be forced");
+						}
+						forced++;
+					} catch (Throwable t) {
+						failures++;
+						System.out.println("FAIL sandbox seed " + seed + " world " + world + " depth " + d + ": " + t);
+						t.printStackTrace(System.out);
+					}
+				}
+			}
+		}
+		Dungeon.sandbox = false;
+		Dungeon.sandboxWorld = -1;
+		System.out.println("sandbox floors built with a forced world: " + forced);
+
 		System.out.println("ported worlds saved and reloaded: " + saved);
 		System.out.println("floors generated: " + floors + ", failures: " + failures);
 		System.out.println("shuffled-floor worlds (" + counts.size() + " of " + (WorldShuffle.worldCount() - 5) + " ported): " + new java.util.TreeMap<>(counts));

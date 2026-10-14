@@ -1626,6 +1626,10 @@ public class Hero extends Char {
 
 	@Override
 	public void damage( int dmg, Object src ) {
+		if (Dungeon.godMode()) {
+			return;
+		}
+
 		if (buff(TimekeepersHourglass.timeStasis.class) != null
 				|| buff(TimeStasis.class) != null) {
 			return;
@@ -2169,6 +2173,12 @@ public class Hero extends Char {
 
 	@Override
 	public void die( Object cause ) {
+
+		//catches anything that kills without dealing damage
+		if (Dungeon.godMode()) {
+			HP = HT;
+			return;
+		}
 		
 		curAction = null;
 

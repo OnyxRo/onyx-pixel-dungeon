@@ -62,7 +62,7 @@ public class Bones {
 		branch = Dungeon.branch;
 
 		//daily runs do not interact with remains
-		if (Dungeon.daily) {
+		if (Dungeon.daily || Dungeon.sandbox) {
 			depth = branch = -1;
 			return;
 		}
@@ -153,7 +153,7 @@ public class Bones {
 
 	public static ArrayList<Item> get() {
 		//daily runs do not interact with remains
-		if (Dungeon.daily){
+		if (Dungeon.daily || Dungeon.sandbox){
 			return null;
 		}
 

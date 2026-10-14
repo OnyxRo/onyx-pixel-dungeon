@@ -211,6 +211,25 @@ public class Dungeon {
 	public static boolean daily;
 	public static boolean dailyReplay;
 	public static String customSeedText = "";
+
+	//sandbox runs are for playtesting. They never earn badges, rankings or remains.
+	//set from the title screen before a run starts, then kept in the save
+	public static boolean sandbox;
+	//the world every newly built floor is forced into during a sandbox run, or -1 to shuffle as normal
+	public static int sandboxWorld = -1;
+	//god mode for sandbox runs. The hero takes no damage, cannot die and never gets hungry
+	public static boolean sandboxGod = true;
+
+	public static boolean godMode(){
+		return sandbox && sandboxGod;
+	}
+
+	//full sight for sandbox runs. The hero sees every part of the floor at once
+	public static boolean sandboxSight = true;
+
+	public static boolean seeAll(){
+		return sandbox && sandboxSight;
+	}
 	public static long seed;
 	public static long lastPlayed;
 
@@ -265,6 +284,10 @@ public class Dungeon {
 		branch = 0;
 		generatedLevels.clear();
 
+		sandboxWorld = -1;
+		sandboxGod = true;
+		sandboxSight = true;
+
 		gold = 0;
 		energy = 0;
 
@@ -301,7 +324,9 @@ public class Dungeon {
 		Actor.clear();
 		
 		Level level;
-		if (branch == 0 && WorldShuffle.shuffles(depth)) {
+		if (branch == 0 && sandbox && sandboxWorld != -1 && WorldShuffle.canForce(depth)) {
+			level = WorldShuffle.create(sandboxWorld);
+		} else if (branch == 0 && WorldShuffle.shuffles(depth)) {
 			//every floor a new world, see WorldShuffle
 			level = WorldShuffle.create(WorldShuffle.worldFor(depth));
 		} else if (branch == 0) {
@@ -608,6 +633,10 @@ public class Dungeon {
 	private static final String CUSTOM_SEED	= "custom_seed";
 	private static final String DAILY	    = "daily";
 	private static final String DAILY_REPLAY= "daily_replay";
+	private static final String SANDBOX     = "sandbox";
+	private static final String SANDBOX_WORLD = "sandbox_world";
+	private static final String SANDBOX_GOD = "sandbox_god";
+	private static final String SANDBOX_SIGHT = "sandbox_sight";
 	private static final String LAST_PLAYED = "last_played";
 	private static final String CHALLENGES	= "challenges";
 	private static final String MOBS_TO_CHAMPION	= "mobs_to_champion";
@@ -635,6 +664,10 @@ public class Dungeon {
 			bundle.put( CUSTOM_SEED, customSeedText );
 			bundle.put( DAILY, daily );
 			bundle.put( DAILY_REPLAY, dailyReplay );
+			bundle.put( SANDBOX, sandbox );
+			bundle.put( SANDBOX_WORLD, sandboxWorld );
+			bundle.put( SANDBOX_GOD, sandboxGod );
+			bundle.put( SANDBOX_SIGHT, sandboxSight );
 			bundle.put( LAST_PLAYED, lastPlayed = Game.realTime);
 			bundle.put( CHALLENGES, challenges );
 			bundle.put( MOBS_TO_CHAMPION, mobsToChampion );
@@ -735,6 +768,10 @@ public class Dungeon {
 		customSeedText = bundle.getString( CUSTOM_SEED );
 		daily = bundle.getBoolean( DAILY );
 		dailyReplay = bundle.getBoolean( DAILY_REPLAY );
+		sandbox = bundle.getBoolean( SANDBOX );
+		sandboxWorld = bundle.contains( SANDBOX_WORLD ) ? bundle.getInt( SANDBOX_WORLD ) : -1;
+		sandboxGod = !bundle.contains( SANDBOX_GOD ) || bundle.getBoolean( SANDBOX_GOD );
+		sandboxSight = !bundle.contains( SANDBOX_SIGHT ) || bundle.getBoolean( SANDBOX_SIGHT );
 
 		Actor.clear();
 		Actor.restoreNextID( bundle );
@@ -867,6 +904,7 @@ public class Dungeon {
 		info.customSeed = bundle.getString( CUSTOM_SEED );
 		info.daily = bundle.getBoolean( DAILY );
 		info.dailyReplay = bundle.getBoolean( DAILY_REPLAY );
+		info.sandbox = bundle.getBoolean( SANDBOX );
 		info.lastPlayed = bundle.getLong( LAST_PLAYED );
 
 		Hero.preview( info, bundle.getBundle( HERO ) );
@@ -916,6 +954,13 @@ public class Dungeon {
 		}
 		
 		level.updateFieldOfView(hero, level.heroFOV);
+
+		if (seeAll()) {
+			for (int i = 0; i < level.length(); i++) {
+				if (level.discoverable[i]) level.heroFOV[i] = true;
+			}
+			dist = Math.max( level.width(), level.height() );
+		}
 
 		int x = hero.pos % level.width();
 		int y = hero.pos / level.width();

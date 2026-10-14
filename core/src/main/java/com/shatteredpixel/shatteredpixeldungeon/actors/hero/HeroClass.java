@@ -330,6 +330,8 @@ public enum HeroClass {
 	public boolean isUnlocked(){
 		//always unlock on debug builds
 		if (DeviceCompat.isDebug()) return true;
+		//and in sandbox runs
+		if (Dungeon.sandbox) return true;
 
 		switch (this){
 			case WARRIOR: default:

@@ -24,6 +24,7 @@ A fork of Shattered Pixel Dungeon v4.0.2 called Onyx's Pixel Dungeon. Tagline "E
 - **Fixed floors.** Floor 1, boss floors (5, 10, 15, 20, 25), floor 26, and quest floors 4, 9, 14, 19 never shuffle, so the Ghost, Wandmaker, Blacksmith and Imp quests always appear.
 - **Seeded.** Rolls come from the dungeon seed. Appending to `WorldShuffle.WORLDS` is safe, reordering changes which world a seed rolls.
 - **Arrival message.** Entering a ported world logs "You enter X, a world from Y" (`WorldShuffle.announce`, called from `GameScene`).
+- **Mod logo.** While in a ported world, the source mod's app icon and short name show at the top right of the game screen (`GameScene.create`, `WorldShuffle.modLogo`). Icons are in `assets/interfaces/mods/`, taken from each mod's repo at 32x32. A new mod needs an icon there and an entry in `WorldShuffle.LOGOS`.
 - **Branding.** Title screen draws "ONYX'S" over the banner art (`TitleScene.addTitleName`, banner edited in `interfaces/banners.png`), with the tagline below. App name "Onyx's Pixel Dungeon", package id `com.onyxrothman.onyxpixeldungeon`, saves in `%APPDATA%\.onyxrothman`, separate from Shattered. Java packages are still `com.shatteredpixel...`, which is fine.
 - **Desktop only.** Android and iOS modules are off in `settings.gradle`. Update and news services point at debug stubs so the game never offers Shattered's updates.
 
@@ -40,7 +41,9 @@ All in `core/.../levels/worlds/`, art in `assets/environment/worlds/`, music in 
 
 Most world classes extend `WorldLevel`, which handles painter setup, traps, music and ambient visuals. Each world is its own class so saved games reload correctly. World name strings are in `messages/levels/levels.properties` under `levels.worlds.*`.
 
-Not ported yet. Monsters from any mod (every world uses Shattered's monsters for its depth). Pixel Spacebase (its art is for the pre-2017 tile layout at 4x scale and would need redrawing). Avoid porting mods built around other companies' franchises (Touhou, Arknights, Blue Archive, Girls' Frontline, JoJo).
+Monsters ported so far. Devoted's 29 regular monsters (`actors/mobs/altregion/`, sprites in `assets/sprites/devoted/`, strings at the end of `actors.properties`). Floors built in a Devoted world spawn them by depth through `WorldShuffle.mobRotation` and `DevotedSpawner`, copied from Devoted's MobSpawner. A few Devoted-only things were swapped for Shattered equivalents (buff icons, missile effects, magma tiles became embers, the Royal Grub drops a normal lit bomb). Devoted is based on Shattered 3.3.0, so its code ports with few changes. Mod sources for porting can be cloned with `git -c core.longpaths=true`.
+
+Not ported yet. Devoted's bosses, quest monsters and its two weapons. Monsters and weapons from Combusted (5 thrown weapons, no new monsters), Magic Ling (about 350 monster files, 74 weapons) and Transformation (59 monsters, 35 weapons). Every non-Devoted world still uses Shattered's monsters for its depth. Pixel Spacebase (its art is for the pre-2017 tile layout at 4x scale and would need redrawing). Avoid porting mods built around other companies' franchises (Touhou, Arknights, Blue Archive, Girls' Frontline, JoJo).
 
 ### Fixes made to Shattered code
 
@@ -106,6 +109,7 @@ When adding a mod, append its worlds to the end of `WorldShuffle.WORLDS`, add th
 He wants to playtest everything, so build these next.
 
 1. **Sandbox mode.** A separate start option, kept apart from normal runs (badges and rankings off). Everything unlocked. A god mode panel to skip to any floor, force a specific world or mod, toggle mods on and off in the shuffle, edit stats, and give any item.
+   Built so far. The Sandbox button on the title screen sets `Dungeon.sandbox`, which is saved with the run and turns off badges, rankings and remains and unlocks every hero and option. In a sandbox run the in-game menu has a Sandbox button that opens `WndSandbox`, which skips to any floor (`InterlevelScene.Mode.SANDBOX`, always builds the floor fresh) and forces a world for new floors (`Dungeon.sandboxWorld`, checked in `Dungeon.newLevel`). Boss floors and floors 25 and 26 ignore the forced world. `WorldShuffleTest` builds every world on every floor this way. God mode (`Dungeon.godMode()`, on by default, checked in `Hero.damage`, `Hero.die` and `Hunger`) stops damage, death and hunger. The panel also levels up, adds strength, heals, reveals the floor and opens `WndSandboxItems`, which gives any item from the journal catalog at a chosen upgrade level. Full sight (`Dungeon.seeAll()`, on by default, applied in `Dungeon.observe`) shows the whole floor. `WndSandboxMobs` spawns any bestiary monster next to the hero, leaving out Tengu, DM-300, its pylons and the Dwarf King, which crash outside their boss levels. A Sandbox button sits on the game screen left of the menu button (`GameScene.create`). Sandbox runs do not write to the journal catalog or bestiary. Still to do. Forcing by mod, toggling mods in the shuffle.
 2. **Mod intro.** Before each floor, the source mod's name and logo fade in. Most of these mods have no proper logo, so use their title text or app icon.
 3. **Compendium.** A quick in-game catalog, by mod, of what each one contributes (worlds, tilesets, and later monsters and items). Doesn't need to be perfect.
 4. **Later.** Port monsters, starting with whichever world he likes most.

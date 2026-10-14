@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
@@ -58,6 +59,8 @@ public class StartScene extends PixelScene {
 		
 		Badges.loadGlobal();
 		Journal.loadGlobal();
+
+		Dungeon.sandbox = false;
 		
 		uiCamera.visible = false;
 
@@ -218,6 +221,9 @@ public class StartScene extends PixelScene {
 					name.text(Messages.titleCase(info.subClass.title()));
 				} else {
 					name.text(Messages.titleCase(info.heroClass.title()));
+				}
+				if (info.sandbox){
+					name.text(Messages.get(StartScene.class, "sandbox", name.text()));
 				}
 				
 				if (hero == null){

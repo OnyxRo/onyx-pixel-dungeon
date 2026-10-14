@@ -114,6 +114,41 @@ public class WorldShuffle {
 			ANY_REGION, ANY_REGION, ANY_REGION, ANY_REGION, ANY_REGION, ANY_REGION
 	};
 
+	//the source mod's app icon for each world, in the same order as WORLDS. Null for Shattered's own
+	private static final String COMBUSTED      = "interfaces/mods/combusted.png";
+	private static final String DEVOTED        = "interfaces/mods/devoted.png";
+	private static final String MAGIC_LING     = "interfaces/mods/magicling.png";
+	private static final String TRANSFORMATION = "interfaces/mods/transformation.png";
+	private static final String[] LOGOS = {
+			null, null, null, null, null,
+			COMBUSTED, COMBUSTED, COMBUSTED,
+			DEVOTED, DEVOTED, DEVOTED, DEVOTED, DEVOTED,
+			MAGIC_LING, MAGIC_LING, MAGIC_LING, MAGIC_LING, MAGIC_LING,
+			TRANSFORMATION, TRANSFORMATION, TRANSFORMATION, TRANSFORMATION, TRANSFORMATION, TRANSFORMATION
+	};
+
+	/** The asset path of the icon of the mod a floor's world comes from, or null for Shattered's own worlds. */
+	public static String modLogo( Level level ){
+		int world = worldOf(level);
+		return world >= 0 && world < LOGOS.length ? LOGOS[world] : null;
+	}
+
+	/** The mod a ported world comes from, without the "Pixel Dungeon" part, like "Devoted". */
+	public static String modShortName( Level level ){
+		return Messages.get(level.getClass(), "mod").replace(" Pixel Dungeon", "");
+	}
+
+	/**
+	 * The monsters a floor spawns. A floor built in one of Devoted's worlds uses Devoted's own
+	 * monsters for that depth. Every other floor uses Shattered's.
+	 */
+	public static java.util.ArrayList<Class<? extends com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob>> mobRotation( Level level, int depth ){
+		if (Dungeon.branch == 0 && DEVOTED.equals(modLogo(level))) {
+			return com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.DevotedSpawner.getMobRotation(depth);
+		}
+		return com.shatteredpixel.shatteredpixeldungeon.actors.mobs.MobSpawner.getMobRotation(depth);
+	}
+
 	public static int regionOf( int world ){
 		return world >= 0 && world < REGIONS.length ? REGIONS[world] : ANY_REGION;
 	}
@@ -135,6 +170,21 @@ public class WorldShuffle {
 		//quest floors, since each region's quest is guaranteed to spawn by its 4th floor
 		if (depth == 4 || depth == 9 || depth == 14 || depth == 19) return false;
 		return true;
+	}
+
+	/** Whether a sandbox run can force a world onto this floor. Boss floors and the last two floors keep their own levels. */
+	public static boolean canForce( int depth ){
+		return depth >= 1 && depth < 25 && depth % 5 != 0;
+	}
+
+	/** A world's name for menus, like "Astral Library". */
+	public static String menuName( int world ){
+		if (world < 0 || world >= WORLDS.length) return "";
+		String name = world <= HALLS
+				? Messages.get(WorldShuffle.class, "home_" + world)
+				: Messages.get(WORLDS[world], "name");
+		if (name.startsWith("the ")) name = name.substring(4);
+		return name;
 	}
 
 	public static int worldFor( int depth ){

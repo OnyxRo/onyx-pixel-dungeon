@@ -66,6 +66,7 @@ public class Hunger extends Buff implements Hero.Doom {
 		if (Dungeon.level.locked
 				|| target.buff(WellFed.class) != null
 				|| SPDSettings.intro()
+				|| Dungeon.godMode()
 				|| target.buff(ScrollOfChallenge.ChallengeArena.class) != null){
 			spend(TICK);
 			return true;
@@ -164,6 +165,10 @@ public class Hunger extends Buff implements Hero.Doom {
 		}
 
 		BuffIndicator.refreshHero();
+	}
+
+	public boolean isHungry() {
+		return level >= HUNGRY;
 	}
 
 	public boolean isStarving() {

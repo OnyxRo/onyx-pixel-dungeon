@@ -1173,6 +1173,11 @@ public class Badges {
 		if (badge == null || (badge.type != BadgeType.JOURNAL && !Dungeon.customSeedText.isEmpty())) {
 			return;
 		}
+
+		//sandbox runs never earn badges
+		if (Dungeon.sandbox) {
+			return;
+		}
 		
 		if (isUnlocked( badge )) {
 			
@@ -1207,7 +1212,7 @@ public class Badges {
 	}
 	
 	public static void unlock( Badge badge ){
-		if (!isUnlocked(badge) && (badge.type == BadgeType.JOURNAL || Dungeon.customSeedText.isEmpty())){
+		if (!isUnlocked(badge) && !Dungeon.sandbox && (badge.type == BadgeType.JOURNAL || Dungeon.customSeedText.isEmpty())){
 			global.add( badge );
 			saveNeeded = true;
 		}

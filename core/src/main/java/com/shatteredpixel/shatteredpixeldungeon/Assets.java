@@ -77,6 +77,7 @@ public class Assets {
 		public static final String ARCS_FG  = "interfaces/arcs2.png";
 
 		public static final String BANNERS  = "interfaces/banners.png";
+		public static final String ONYX_LOGO = "interfaces/onyx_logo.png";
 		public static final String BADGES   = "interfaces/badges.png";
 		public static final String LOCKED   = "interfaces/locked_badge.png";
 
@@ -228,7 +229,12 @@ public class Assets {
 		public static final String SHEEP    = "sounds/sheep.mp3";
 		public static final String MINE    = "sounds/mine.mp3";
 
+		//Devoted Pixel Dungeon
+		public static final String DIG = "sounds/devoted_digging.mp3";
+		public static final String WHAIL = "sounds/devoted_whail.mp3";
+
 		public static final String[] all = new String[]{
+				DIG, WHAIL,
 				CLICK, BADGE, GOLD,
 
 				OPEN, UNLOCK, ITEM, DEWDROP, STEP, WATER, GRASS, TRAMPLE, STURDY,
@@ -280,6 +286,30 @@ public class Assets {
 		public static final String AMULET   = "sprites/amulet.png";
 
 		public static final String RAT      = "sprites/rat.png";
+		//Devoted Pixel Dungeon monsters
+		public static final String TOAD = "sprites/devoted/toad.png";
+		public static final String BUTTERFLY = "sprites/devoted/butterfly.png";
+		public static final String GRUB = "sprites/devoted/grub.png";
+		public static final String THORNLASHER = "sprites/devoted/thornlasher.png";
+		public static final String DRUID = "sprites/devoted/druid.png";
+		public static final String COLDCORPSE = "sprites/devoted/coldcorpse.png";
+		public static final String MEATRACK = "sprites/devoted/meatrack.png";
+		public static final String GLASS_KNIGHT = "sprites/devoted/glass_knight.png";
+		public static final String WERERAT = "sprites/devoted/wererat.png";
+		public static final String BANSHEE = "sprites/devoted/banshee.png";
+		public static final String GRANITETROLL = "sprites/devoted/granite_troll.png";
+		public static final String TROLLRANGER = "sprites/devoted/troll_ranger.png";
+		public static final String ROCKGOLEM = "sprites/devoted/rock_golem.png";
+		public static final String MOLE = "sprites/devoted/subterranian_mole.png";
+		public static final String CULTIST = "sprites/devoted/cultist.png";
+		public static final String LEADER = "sprites/devoted/leader.png";
+		public static final String TRAPPER = "sprites/devoted/trapper.png";
+		public static final String WARDEN = "sprites/devoted/alchemist.png";
+		public static final String GIANT = "sprites/devoted/giant.png";
+		public static final String PUPPET = "sprites/devoted/puppet.png";
+		public static final String BEDROCKGOLEM = "sprites/devoted/bedrock_golem.png";
+		public static final String SACRIFICE = "sprites/devoted/sacrifice.png";
+
 		public static final String BRUTE    = "sprites/brute.png";
 		public static final String SPINNER  = "sprites/spinner.png";
 		public static final String DM300    = "sprites/dm300.png";

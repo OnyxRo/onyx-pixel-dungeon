@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndSandbox;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
@@ -107,6 +108,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ResumeIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RightClickMenu;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StatusPane;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Tag;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TargetHealthIndicator;
@@ -468,6 +470,39 @@ public class GameScene extends PixelScene {
 		menu.setPos( menuBarMaxLeft, screentop);
 		add(menu);
 
+		float hudLeft = menu.left();
+		if (Dungeon.sandbox) {
+			StyledButton sandbox = new StyledButton( Chrome.Type.GREY_BUTTON_TR, Messages.get(WndSandbox.class, "title"), 7 ) {
+				@Override
+				protected void onClick() {
+					if (Dungeon.hero.isAlive()) GameScene.show( new WndSandbox() );
+				}
+			};
+			sandbox.textColor( Window.TITLE_COLOR );
+			sandbox.camera = uiCamera;
+			sandbox.setSize( sandbox.reqWidth() + 4, 14 );
+			sandbox.setPos( menu.left() - sandbox.width() - 1, screentop + 1 );
+			add(sandbox);
+			hudLeft = sandbox.left();
+		}
+
+		//every floor a new world: show the source mod's icon and name while in one of its worlds
+		String modLogo = Dungeon.branch == 0 ? WorldShuffle.modLogo(Dungeon.level) : null;
+		if (modLogo != null) {
+			Image logo = new Image( modLogo );
+			logo.camera = uiCamera;
+			logo.scale.set( 16f / logo.height );
+			logo.x = hudLeft - 17;
+			logo.y = screentop + 1;
+			add(logo);
+
+			RenderedTextBlock modName = PixelScene.renderTextBlock( WorldShuffle.modShortName(Dungeon.level), 6 );
+			modName.camera = uiCamera;
+			modName.setPos( logo.x - modName.width() - 2, logo.y + (16 - modName.height()) / 2f );
+			align(modName);
+			add(modName);
+		}
+
 		float extraRight = uiCamera.width - (menuBarMaxLeft + MenuPane.WIDTH);
 		if (extraRight > 0){
 			SkinnedBlock bar = new SkinnedBlock(extraRight, 20, TextureCache.createSolid(0x88000000));
@@ -664,6 +699,10 @@ public class GameScene extends PixelScene {
 
 			//every floor a new world: name ported worlds and the mod they come from
 			WorldShuffle.announce(Dungeon.level);
+
+			if (Dungeon.seeAll()) {
+				WndSandbox.revealFloor();
+			}
 
 			if (Dungeon.hero.hasTalent(Talent.ROGUES_FORESIGHT)
 					&& Dungeon.level instanceof RegularLevel && Dungeon.branch == 0){

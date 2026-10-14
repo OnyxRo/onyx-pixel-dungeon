@@ -73,6 +73,19 @@ public class WndGame extends Window {
 			curBtn.icon(Icons.get(Icons.CHALLENGE_COLOR));
 		}
 
+		// Sandbox panel
+		if (Dungeon.sandbox && Dungeon.hero != null && Dungeon.hero.isAlive()) {
+			addButton( curBtn = new RedButton( Messages.get(this, "sandbox") ) {
+				@Override
+				protected void onClick() {
+					hide();
+					GameScene.show( new WndSandbox() );
+				}
+			} );
+			curBtn.icon(Icons.get(Icons.STAIRS));
+			curBtn.textColor(Window.TITLE_COLOR);
+		}
+
 		// Restart
 		if (Dungeon.hero == null || !Dungeon.hero.isAlive()) {
 
