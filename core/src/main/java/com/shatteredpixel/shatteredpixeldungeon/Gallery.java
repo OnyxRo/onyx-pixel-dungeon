@@ -32,7 +32,9 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndCompendium;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndModInfo;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndSandbox;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndSongs;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndSandboxFloor;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndSandboxItems;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndSandboxMobs;
@@ -57,7 +59,9 @@ public class Gallery {
 
 	private static boolean started = false;
 	//-Donyx.gallery.only=mobs skips the worlds and goes straight to the monsters
-	private static int world = System.getProperty("onyx.gallery.only") != null ? Integer.MAX_VALUE : WorldShuffle.HALLS + 1;
+	//-Donyx.gallery.only=ui visits one world, then pictures the windows and tries Ctrl+N
+	private static int world = System.getProperty("onyx.gallery.only") == null ? WorldShuffle.HALLS + 1
+			: "ui".equals(System.getProperty("onyx.gallery.only")) ? WorldShuffle.worldCount() - 1 : Integer.MAX_VALUE;
 	private static float time = 0;
 	private static boolean shot = false;
 
@@ -136,6 +140,7 @@ public class Gallery {
 
 		//-Donyx.gallery.only=bosses skips the monsters too
 		if ("bosses".equals(System.getProperty("onyx.gallery.only"))) mob = MOBS.size();
+		if ("ui".equals(System.getProperty("onyx.gallery.only"))) { mob = MOBS.size(); boss = BOSS_DEPTHS.length; }
 
 		//then spawn each ported monster beside the hero, let it act for a moment, picture it and kill it
 		if (mob < MOBS.size()) {
@@ -202,6 +207,18 @@ public class Gallery {
 			case 2: uiWindow = new WndSandboxItems(); break;
 			case 3: uiWindow = new WndSandboxMobs(); break;
 			case 4: uiWindow = new WndCompendium(); break;
+			case 5: uiWindow = new WndSongs(); break;
+			case 6: uiWindow = new WndModInfo( WorldShuffle.create( WorldShuffle.worldCount() - 1 ) ); break;
+			case 7:
+				SandboxHotkeys.randomLevel();
+				uiStep++;
+				time = 0;
+				return;
+			case 8:
+				if (time < 4f) return;
+				capture( "hotkey_random_" + Dungeon.level.getClass().getSimpleName() );
+				uiStep++;
+				return;
 			default:
 				Gdx.app.exit();
 				return;

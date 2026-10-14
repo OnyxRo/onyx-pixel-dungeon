@@ -26,6 +26,10 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndSongs;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndModInfo;
+import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
+import com.shatteredpixel.shatteredpixeldungeon.SandboxHotkeys;
 import com.shatteredpixel.shatteredpixeldungeon.Gallery;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndSandbox;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
@@ -235,6 +239,7 @@ public class GameScene extends PixelScene {
 		}
 
 		Dungeon.level.playLevelMusic();
+		WndSongs.applyChoice();
 
 		SPDSettings.lastClass(Dungeon.hero.heroClass.ordinal());
 		
@@ -488,19 +493,25 @@ public class GameScene extends PixelScene {
 			hudLeft = sandbox.left();
 		}
 
-		//every floor a new world: show the source mod's icon and name while in one of its worlds
+		//every floor a new world: the source mod's icon and name sit at the top left while in one of its worlds.
+		//Clicking the icon says what that mod changed
 		String modLogo = Dungeon.branch == 0 ? WorldShuffle.modLogo(Dungeon.level) : null;
 		if (modLogo != null) {
 			Image logo = new Image( modLogo );
-			logo.camera = uiCamera;
 			logo.scale.set( 16f / logo.height );
-			logo.x = hudLeft - 17;
-			logo.y = screentop + 1;
-			add(logo);
+			IconButton modButton = new IconButton( logo ) {
+				@Override
+				protected void onClick() {
+					GameScene.show( new WndModInfo( Dungeon.level ) );
+				}
+			};
+			modButton.camera = uiCamera;
+			modButton.setRect( insets.left + 2, screentop + 1, 18, 18 );
+			add( modButton );
 
 			RenderedTextBlock modName = PixelScene.renderTextBlock( WorldShuffle.modShortName(Dungeon.level), 6 );
 			modName.camera = uiCamera;
-			modName.setPos( logo.x - modName.width() - 2, logo.y + (16 - modName.height()) / 2f );
+			modName.setPos( modButton.right() + 1, modButton.top() + (18 - modName.height()) / 2f );
 			align(modName);
 			add(modName);
 		}
@@ -924,6 +935,7 @@ public class GameScene extends PixelScene {
 		lastOffset = null;
 
 		Gallery.onGameFrame();
+		SandboxHotkeys.poll();
 
 		if (updateItemDisplays){
 			updateItemDisplays = false;

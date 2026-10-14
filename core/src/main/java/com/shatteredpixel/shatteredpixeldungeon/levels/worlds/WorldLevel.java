@@ -59,6 +59,9 @@ public abstract class WorldLevel extends RegularLevel implements ModWorld {
 
 	protected Ambience ambience(){ return Ambience.NONE; }
 
+	/** The world's own song, or null if it plays one of Shattered's sets. For the song list. */
+	public String musicTrack(){ return track(); }
+
 	@Override
 	protected Painter painter() {
 		return basePainter()

@@ -233,6 +233,12 @@ public class Dungeon {
 
 	//mods whose worlds are left out of the shuffle in a sandbox run, by mod name
 	public static HashSet<String> sandboxOffMods = new HashSet<>();
+
+	//mixed into every floor's seed in a sandbox run, so Ctrl+R can build the same floor again differently.
+	//Changing it also re-rolls which world an unforced floor gets
+	public static int sandboxSalt = 0;
+	//a world for the very next floor built and no other, used by Ctrl+N. -1 for none
+	public static int sandboxOnceWorld = -1;
 	public static long seed;
 	public static long lastPlayed;
 
@@ -291,6 +297,9 @@ public class Dungeon {
 		sandboxGod = true;
 		sandboxSight = true;
 		sandboxOffMods.clear();
+		sandboxSalt = 0;
+		sandboxOnceWorld = -1;
+		com.shatteredpixel.shatteredpixeldungeon.windows.WndSongs.chosen = null;
 
 		gold = 0;
 		energy = 0;
@@ -328,11 +337,14 @@ public class Dungeon {
 		Actor.clear();
 		
 		Level level;
-		if (branch == 0 && sandbox && sandboxWorld != -1 && WorldShuffle.canForce(depth)) {
-			level = WorldShuffle.create(sandboxWorld);
-		} else if (branch == 0 && sandbox && WorldShuffle.modBossLevel(sandboxWorld, depth) != null) {
+		//a world picked for this one floor wins over the forced world, and is used up by it
+		int forcedWorld = sandbox ? (sandboxOnceWorld != -1 ? sandboxOnceWorld : sandboxWorld) : -1;
+		sandboxOnceWorld = -1;
+		if (branch == 0 && sandbox && forcedWorld != -1 && WorldShuffle.canForce(depth)) {
+			level = WorldShuffle.create(forcedWorld);
+		} else if (branch == 0 && sandbox && WorldShuffle.modBossLevel(forcedWorld, depth) != null) {
 			//a forced world from a mod with its own bosses brings that mod's boss floor too
-			level = WorldShuffle.modBossLevel(sandboxWorld, depth);
+			level = WorldShuffle.modBossLevel(forcedWorld, depth);
 		} else if (branch == 0 && WorldShuffle.bossWorldFor(depth) != -1) {
 			//a region that led through a world from a mod with its own bosses ends in that mod's boss
 			level = WorldShuffle.modBossLevel(WorldShuffle.bossWorldFor(depth), depth);
@@ -466,7 +478,7 @@ public class Dungeon {
 			long result = Random.Long();
 
 		Random.popGenerator();
-		return result;
+		return sandbox ? result ^ (sandboxSalt * 0x9E3779B97F4A7C15L) : result;
 	}
 	
 	public static boolean shopOnLevel() {
@@ -648,6 +660,7 @@ public class Dungeon {
 	private static final String SANDBOX_GOD = "sandbox_god";
 	private static final String SANDBOX_SIGHT = "sandbox_sight";
 	private static final String SANDBOX_OFF_MODS = "sandbox_off_mods";
+	private static final String SANDBOX_SALT = "sandbox_salt";
 	private static final String LAST_PLAYED = "last_played";
 	private static final String CHALLENGES	= "challenges";
 	private static final String MOBS_TO_CHAMPION	= "mobs_to_champion";
@@ -680,6 +693,7 @@ public class Dungeon {
 			bundle.put( SANDBOX_GOD, sandboxGod );
 			bundle.put( SANDBOX_SIGHT, sandboxSight );
 			bundle.put( SANDBOX_OFF_MODS, sandboxOffMods.toArray(new String[0]) );
+			bundle.put( SANDBOX_SALT, sandboxSalt );
 			bundle.put( LAST_PLAYED, lastPlayed = Game.realTime);
 			bundle.put( CHALLENGES, challenges );
 			bundle.put( MOBS_TO_CHAMPION, mobsToChampion );
@@ -784,6 +798,8 @@ public class Dungeon {
 		sandboxWorld = bundle.contains( SANDBOX_WORLD ) ? bundle.getInt( SANDBOX_WORLD ) : -1;
 		sandboxGod = !bundle.contains( SANDBOX_GOD ) || bundle.getBoolean( SANDBOX_GOD );
 		sandboxSight = !bundle.contains( SANDBOX_SIGHT ) || bundle.getBoolean( SANDBOX_SIGHT );
+		sandboxSalt = bundle.contains( SANDBOX_SALT ) ? bundle.getInt( SANDBOX_SALT ) : 0;
+		sandboxOnceWorld = -1;
 		sandboxOffMods.clear();
 		if (bundle.contains( SANDBOX_OFF_MODS )) {
 			sandboxOffMods.addAll( java.util.Arrays.asList( bundle.getStringArray( SANDBOX_OFF_MODS ) ) );

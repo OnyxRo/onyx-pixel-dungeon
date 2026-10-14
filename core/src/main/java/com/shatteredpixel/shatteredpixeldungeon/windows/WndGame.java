@@ -96,6 +96,16 @@ public class WndGame extends Window {
 		} );
 		curBtn.icon(Icons.get(Icons.CATALOG));
 
+		// Every song, and a way to change the one that is playing
+		addButton( curBtn = new RedButton( Messages.get(this, "songs") ) {
+			@Override
+			protected void onClick() {
+				hide();
+				GameScene.show( new WndSongs() );
+			}
+		} );
+		curBtn.icon(Icons.get(Icons.AUDIO));
+
 		// Restart
 		if (Dungeon.hero == null || !Dungeon.hero.isAlive()) {
 
