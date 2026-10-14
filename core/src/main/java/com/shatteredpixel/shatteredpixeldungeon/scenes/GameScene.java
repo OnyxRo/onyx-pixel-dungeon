@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Gallery;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndSandbox;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
@@ -690,6 +691,8 @@ public class GameScene extends PixelScene {
 					}
 				}
 				
+			} else if (InterlevelScene.mode == InterlevelScene.Mode.SANDBOX) {
+				GLog.h(Messages.get(this, "skip"), Dungeon.depth);
 			} else if (InterlevelScene.mode == InterlevelScene.Mode.RESET) {
 				GLog.h(Messages.get(this, "warp"));
 			} else if (InterlevelScene.mode == InterlevelScene.Mode.RESURRECT) {
@@ -919,6 +922,8 @@ public class GameScene extends PixelScene {
 	@Override
 	public synchronized void update() {
 		lastOffset = null;
+
+		Gallery.onGameFrame();
 
 		if (updateItemDisplays){
 			updateItemDisplays = false;

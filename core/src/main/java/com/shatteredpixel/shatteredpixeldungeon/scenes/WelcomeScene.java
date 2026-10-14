@@ -63,6 +63,12 @@ public class WelcomeScene extends PixelScene {
 	public void create() {
 		super.create();
 
+		//the screenshot tour runs on a fresh save folder, and has nobody to click through the welcome
+		if (com.shatteredpixel.shatteredpixeldungeon.Gallery.active()) {
+			SPDSettings.intro(false);
+			SPDSettings.version(ShatteredPixelDungeon.versionCode);
+		}
+
 		final int previousVersion = SPDSettings.version();
 
 		if (!triedCleaningTemp && FileUtils.cleanTempFiles()){

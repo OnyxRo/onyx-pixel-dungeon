@@ -36,7 +36,7 @@ import com.watabou.noosa.Image;
  */
 public class WndCompendium extends Window {
 
-	private static final int WIDTH = 140;
+	private static final int WIDTH = 160;
 	private static final int GAP   = 2;
 
 	private static final String SHATTERED = "Shattered Pixel Dungeon";
@@ -71,7 +71,8 @@ public class WndCompendium extends Window {
 			for (int world = 0; world < WorldShuffle.worldCount(); world++) {
 				if (WorldShuffle.modName(world).equals(mod)) count++;
 			}
-			list.addTitle( Messages.get(this, "worlds", mod, count) );
+			//the short name, so the title fits on one line
+			list.addTitle( Messages.get(this, "worlds", mod.replace(" Pixel Dungeon", ""), count) );
 
 			for (int world = 0; world < WorldShuffle.worldCount(); world++) {
 				if (!WorldShuffle.modName(world).equals(mod)) continue;

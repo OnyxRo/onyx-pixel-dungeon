@@ -59,7 +59,7 @@ All in `core/.../levels/worlds/`, art in `assets/environment/worlds/`, music in 
 
 Missing tiles. Sheets from older Shattered bases lacked up to 60 tiles that newer Shattered added, which would draw as nothing. Every world sheet now has those cells filled from Shattered's own sheet for the same stage, so a few decorations in older-base worlds are in Shattered's style. Do the same for any new sheet.
 
-Things to know about the second wave. The world names and regions were chosen from each tile sheet's look and file name, not checked against each mod's `Dungeon.newLevel`, so correct them as Onyx playtests. None have been seen in the game yet, only built headlessly. Left out as unfinished or duplicate sheets. Magic Ling's morpheus, zero, zero spring, bubble and halloween, Transformation's winter surface, Matt Edition's snowless ice. Cursed PD's current repo uses a taller 256x384 tile layout that does not fit. Licenses and art credits for these mods have not been checked. Onyx said on 2026-10-13 that this is a personal project and licensing is not a concern for now, so check them before any public release.
+Things to know about the second wave. The world names and regions were chosen from each tile sheet's look and file name, not checked against each mod's `Dungeon.newLevel`, so correct them as Onyx playtests. All were looked at through the screenshot tour and render as proper floors. Left out as unfinished or duplicate sheets. Magic Ling's morpheus, zero, zero spring, bubble and halloween, Transformation's winter surface, Matt Edition's snowless ice. Cursed PD's current repo uses a taller 256x384 tile layout that does not fit. Licenses and art credits for these mods have not been checked. Onyx said on 2026-10-13 that this is a personal project and licensing is not a concern for now, so check them before any public release.
 
 Most world classes extend `WorldLevel`, which handles painter setup, traps, music and ambient visuals. Each world is its own class so saved games reload correctly. World name strings are in `messages/levels/levels.properties` under `levels.worlds.*`.
 
@@ -80,6 +80,7 @@ Gradle-free path used for releases (`scripts/`):
 
 - `scripts/compile.sh <ShatteredPD-v4.0.2-Java.jar> <outdir>` compiles with javac, taking libraries from the official Shattered jar.
 - `scripts/package-windows.sh <Java.jar> <Windows.zip> <outdir>` makes the full Windows zip, the small installer zip, the cross-platform jar, `OnyxPixelDungeon-game.jar` and `update.json`.
+- `scripts/gallery.sh <folder>` runs the screenshot tour (`Gallery.java`, switched on by `-Donyx.gallery`). The game plays itself through every ported world and the sandbox windows and saves a picture of each, in its own save folder. Use it to look at worlds and UI without Onyx clicking through them. Read the pictures back to check. All 49 ported worlds and the sandbox windows were checked this way on 2026-10-13.
 - `scripts/test/WorldShuffleTest.java` builds every floor of N seeded dungeons headlessly, checks all 24 worlds appear and have strings, and saves and reloads each ported world. Run it after any world change.
 
 ## Releases and updates
