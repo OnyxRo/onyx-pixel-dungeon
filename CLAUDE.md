@@ -18,7 +18,8 @@ His writing rules apply to anything written for him, including commit messages, 
 
 A fork of Shattered Pixel Dungeon v4.0.2 called Onyx's Pixel Dungeon. Tagline "Every floor a new world."
 
-- **World shuffle.** Most floors are built in a random world instead of their usual one. There are 24 worlds, Shattered's five plus 19 ported from four other GPLv3 mods. See `core/.../levels/WorldShuffle.java`.
+- **World shuffle.** Most floors are built in a world other than their usual one. There are 24 worlds, Shattered's five plus 19 ported from four other GPLv3 mods. See `core/.../levels/WorldShuffle.java`.
+- **Stage matching.** Onyx wants each floor to use a world made for that stage, not a deep world scaled down. Each world has a region in `WorldShuffle.REGIONS`, taken from where its mod used it, and a shuffled floor only picks from its own region's worlds. Transformation's tower styles are `ANY_REGION` and share one slot. Shattered's own five now only appear on their fixed floors. When porting monsters later, use each mod's monsters for that same stage.
 - **Depth sets danger.** The world sets the look (tileset, water, decoration painter, ambient effects, music). Monsters, loot and traps always follow the actual depth. Ported worlds always use their floor's usual trap list.
 - **Fixed floors.** Floor 1, boss floors (5, 10, 15, 20, 25), floor 26, and quest floors 4, 9, 14, 19 never shuffle, so the Ghost, Wandmaker, Blacksmith and Imp quests always appear.
 - **Seeded.** Rolls come from the dungeon seed. Appending to `WorldShuffle.WORLDS` is safe, reordering changes which world a seed rolls.
@@ -98,7 +99,7 @@ Onyx wants more mods in the rotation. This list comes from his "Every Pixel Dung
 
 **Skip.** Mods built on other companies' franchises, even when they score well, since their art shows those companies' characters. That includes Touhou PD and Reloaded, Gensokyo PD, Tomorrows RogueNights and Arknights PD, Blue Archive PD and Re Blue Archive PD, both Girls Frontline PDs, and Jojo's Bizarre Dungeon.
 
-When adding a mod, append its worlds to the end of `WorldShuffle.WORLDS`, add name and mod strings, credit it in the file header and README, and run `WorldShuffleTest`.
+When adding a mod, append its worlds to the end of `WorldShuffle.WORLDS`, add the stage each was made for to `WorldShuffle.REGIONS` (check the mod's own `Dungeon.newLevel`), add name and mod strings, credit it in the file header and README, and run `WorldShuffleTest`.
 
 ## Next planned work (Onyx's sandbox plan)
 

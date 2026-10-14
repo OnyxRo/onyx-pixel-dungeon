@@ -60,6 +60,7 @@ public class WorldShuffleTest {
 		Map<String, Integer> counts = new HashMap<>();
 		java.util.Set<String> arrivals = new java.util.HashSet<>();
 		int saved = 0;
+		java.util.Map<Integer, java.util.Set<String>> byRegion = new java.util.TreeMap<>();
 		int floors = 0, failures = 0;
 		HeroClass[] classes = {HeroClass.WARRIOR, HeroClass.MAGE, HeroClass.ROGUE, HeroClass.HUNTRESS, HeroClass.DUELIST, HeroClass.CLERIC};
 
@@ -85,6 +86,11 @@ public class WorldShuffleTest {
 						if (WorldShuffle.worldOf(l) < 0) {
 							throw new IllegalStateException("shuffled floor is not a known world");
 						}
+						int region = WorldShuffle.regionOf(WorldShuffle.worldOf(l));
+						if (region != WorldShuffle.homeWorld(d) && region != WorldShuffle.ANY_REGION) {
+							throw new IllegalStateException(world + " is not made for floor " + d);
+						}
+						byRegion.computeIfAbsent(WorldShuffle.homeWorld(d), k -> new java.util.TreeSet<>()).add(world);
 						if (WorldShuffle.isPortedWorld(l)) {
 							String arrive = Messages.get(WorldShuffle.class, "arrive",
 									Messages.get(l.getClass(), "name"), Messages.get(l.getClass(), "mod"));
@@ -124,8 +130,13 @@ public class WorldShuffleTest {
 		}
 		System.out.println("ported worlds saved and reloaded: " + saved);
 		System.out.println("floors generated: " + floors + ", failures: " + failures);
-		System.out.println("shuffled-floor worlds (" + counts.size() + " of " + (WorldShuffle.worldCount()) + "): " + new java.util.TreeMap<>(counts));
-		if (seeds >= 100 && counts.size() < WorldShuffle.worldCount()) {
+		System.out.println("shuffled-floor worlds (" + counts.size() + " of " + (WorldShuffle.worldCount() - 5) + " ported): " + new java.util.TreeMap<>(counts));
+		String[] regionNames = {"Sewers stage (2-3)", "Prison stage (6-8)", "Caves stage (11-13)", "City stage (16-18)", "Halls stage (21-24)"};
+		for (java.util.Map.Entry<Integer, java.util.Set<String>> e : byRegion.entrySet()) {
+			System.out.println("  " + regionNames[e.getKey()] + ": " + e.getValue());
+		}
+		//Shattered's own five only appear on their fixed floors now, so every ported world should show up
+		if (seeds >= 100 && counts.size() < WorldShuffle.worldCount() - 5) {
 			System.out.println("FAIL: some worlds never appeared");
 			failures++;
 		}

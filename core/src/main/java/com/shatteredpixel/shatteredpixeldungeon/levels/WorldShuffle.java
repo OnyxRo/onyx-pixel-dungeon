@@ -50,13 +50,16 @@ import com.watabou.utils.Reflection;
 /**
  * "Every floor a new world."
  *
- * Most regular floors are built in a randomly chosen world instead of the one their depth
- * normally uses. That can be one of Shattered's five (Sewers, Prison, Caves, Dwarven City,
- * Demon Halls) or a world ported from another Pixel Dungeon mod (see the levels.worlds
- * package). The world decides the look of the floor, meaning its tileset, layout style,
- * terrain decoration, ambient effects and music. Monsters, loot and trap danger still
- * follow the actual depth, so a Demon Halls floor at depth 2 looks like the Halls but plays
- * like depth 2.
+ * Most regular floors are built in a world other than the one their depth normally uses,
+ * picked from the worlds that were made for that stage of the dungeon. Each ported world
+ * keeps the region its own mod built it for, so a sewer-stage floor gets a sewer-stage
+ * world (like Devoted's Gardens), a prison-stage floor gets a prison-stage world (like
+ * Combusted's Necropolis), and so on. Transformation's tower styles weren't tied to a
+ * depth in their mod, so they can appear in any region, sharing one slot between them.
+ *
+ * The world decides the look of the floor, meaning its tileset, layout style, terrain
+ * decoration, ambient effects and music. Monsters, loot and trap danger follow the
+ * actual depth.
  *
  * Floors that stay in their home world:
  *  - depth 1 (the start, and the exit to the surface when you win)
@@ -67,7 +70,8 @@ import com.watabou.utils.Reflection;
  * The roll is seeded from the dungeon seed, so a given seed always produces the
  * same sequence of worlds.
  *
- * To add a world, write a level class for it and add the class to WORLDS.
+ * To add a world, write a level class for it, add the class to WORLDS and its region
+ * to REGIONS.
  */
 public class WorldShuffle {
 
@@ -92,6 +96,28 @@ public class WorldShuffle {
 			SkyAlchemyGreenhouseLevel.class, TowerCoreGearworksLevel.class, ChineseHallLevel.class
 	};
 
+	/** A world that fits any region, used for Transformation's tower styles. */
+	public static final int ANY_REGION = -1;
+
+	//the region each world was made for, in the same order as WORLDS
+	private static final int[] REGIONS = {
+			SEWERS, PRISON, CAVES, CITY, HALLS,
+			//Combusted: replaced the Caves, Prison and City in their mod
+			CAVES, PRISON, CITY,
+			//Devoted: replaced all five regions in their mod
+			SEWERS, PRISON, CAVES, CITY, HALLS,
+			//Magic Ling: Ancient City was a side area at floors 17 and 18, Dragon Cave one off
+			//floor 5, Pale Palace (their Church) replaced the City, Lost Tomb the Caves, and
+			//the Hollow was a deep holiday area past floor 26
+			CITY, SEWERS, CITY, CAVES, HALLS,
+			//Transformation: tower styles rotated freely in their mod
+			ANY_REGION, ANY_REGION, ANY_REGION, ANY_REGION, ANY_REGION, ANY_REGION
+	};
+
+	public static int regionOf( int world ){
+		return world >= 0 && world < REGIONS.length ? REGIONS[world] : ANY_REGION;
+	}
+
 	//mixed into the depth seed so world rolls don't correlate with other per-depth rolls
 	private static final long SALT = 0x0A1B2C3D4E5F6071L;
 
@@ -115,11 +141,28 @@ public class WorldShuffle {
 		if (!shuffles(depth)) return homeWorld(depth);
 
 		int home = homeWorld(depth);
+
+		//worlds made for this region, except the home world itself. Worlds that fit any
+		//region share one slot, so they don't crowd out the region's own worlds
+		java.util.ArrayList<Integer> regional = new java.util.ArrayList<>();
+		java.util.ArrayList<Integer> anywhere = new java.util.ArrayList<>();
+		for (int w = 0; w < WORLDS.length; w++){
+			if (w == home) continue;
+			if (REGIONS[w] == home) regional.add(w);
+			else if (REGIONS[w] == ANY_REGION) anywhere.add(w);
+		}
+
 		Random.pushGenerator( Dungeon.seedForDepth(depth, 0) ^ SALT );
-		//pick any world except the home one, so a shuffled floor always feels different
-		int roll = Random.Int(WORLDS.length - 1);
+		int slots = regional.size() + (anywhere.isEmpty() ? 0 : 1);
+		int world;
+		if (slots == 0) {
+			world = home;
+		} else {
+			int slot = Random.Int(slots);
+			world = slot < regional.size() ? regional.get(slot) : anywhere.get(Random.Int(anywhere.size()));
+		}
 		Random.popGenerator();
-		return roll >= home ? roll + 1 : roll;
+		return world;
 	}
 
 	public static RegularLevel create( int world ){

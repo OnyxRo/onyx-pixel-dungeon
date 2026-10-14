@@ -2,29 +2,29 @@
 
 **Every floor a new world.**
 
-Onyx's Pixel Dungeon is a fork of [Shattered Pixel Dungeon](https://github.com/00-Evan/shattered-pixel-dungeon) (v4.0.2) where most floors are built in a randomly chosen world instead of the one their depth normally uses. There are 24 worlds, Shattered's own five plus 19 ported from four other Pixel Dungeon mods. Floor 2 might be the Demon Halls, floor 7 a Dragon Cave, floor 12 an Astral Library.
+Onyx's Pixel Dungeon is a fork of [Shattered Pixel Dungeon](https://github.com/00-Evan/shattered-pixel-dungeon) (v4.0.2) where most floors are built in a randomly chosen world instead of the one their depth normally uses. There are 24 worlds, Shattered's own five plus 19 ported from four other Pixel Dungeon mods. Floor 2 might be the Gardens, floor 7 the Necropolis, floor 12 the Lost Tomb.
 
 ## How it works
 
-Shattered has five worlds (Sewers, Prison, Caves, Dwarven City and Demon Halls), normally five floors each. In this fork, each shuffled floor rolls any of the 24 worlds except its usual one. Arriving in a ported world logs its name and the mod it comes from.
+Shattered has five worlds (Sewers, Prison, Caves, Dwarven City and Demon Halls), normally five floors each. In this fork, each shuffled floor rolls a world that its mod made for that stage of the dungeon. A sewer-stage floor gets a sewer-stage world like Devoted's Gardens, a prison-stage floor gets one like Combusted's Necropolis, and so on. Transformation's tower styles weren't tied to a depth in their mod, so they can appear at any stage, sharing one slot so they don't crowd out the others. Arriving in a ported world logs its name and the mod it comes from.
 
 - **The rolled world sets the look of the floor.** That means its tileset, layout style, water and grass, terrain decoration, ambient effects and music.
-- **The actual depth sets the danger.** Monsters, loot and traps follow how deep you are, so a Demon Halls floor at depth 2 plays like depth 2. A deeper world rolled on a shallow floor, or any ported world, uses the traps the floor's usual world would have.
+- **The actual depth sets the danger.** Monsters, loot and traps follow how deep you are. Ported worlds use the traps the floor's usual world would have.
 - **Some floors stay in their home world.** Floor 1, every boss floor (5, 10, 15, 20, 25), the final floor, and floors 4, 9, 14 and 19 never shuffle. The last four are where the Ghost, Wandmaker, Blacksmith and Imp quests are guaranteed to appear, so every quest still happens.
 - **Rolls come from the dungeon seed**, so the same seed always gives the same worlds.
 
 ## Worlds from other mods
 
-| World | From | Notes |
-| --- | --- | --- |
-| Ice Caves, Necropolis, Spider Nest | [Combusted Pixel Dungeon](https://github.com/Inferno214221/Combusted-Pixel-Dungeon) | Reskins of Shattered's Caves, Prison and City, as in the original mod. |
-| The Gardens, the Coldhouse, the Forge, the Dwarven Citadel, the Ashen Void | [Devoted Pixel Dungeon](https://github.com/Arackulele/devoted-pixel-dungeon) | Own decoration painters. Four have their own music from the Devoted soundtrack by Cevin2006. |
-| Ancient Mystery City, Dragon Cave, Pale Palace, Lost Tomb, the Hollow | [Magic Ling Pixel Dungeon](https://github.com/LingASDJ/Magic_Ling_Pixel_Dungeon) | Own decoration painters where the mod had them. The Hollow's door mimics are left out. |
-| Astral Library, Frost Archive, Gothic Castle, Sky Alchemy Greenhouse, Tower Core Gearworks, Chinese Hall | [Transformation Pixel Dungeon](https://github.com/dongyusangyu/transformation-pixel-dungeon-master) | The mod's tower floors, with its tower decoration painter. |
+| World | From | Stage | Notes |
+| --- | --- | --- | --- |
+| Ice Caves, Necropolis, Spider Nest | [Combusted Pixel Dungeon](https://github.com/Inferno214221/Combusted-Pixel-Dungeon) | Caves, Prison, City | Reskins of Shattered's Caves, Prison and City, as in the original mod. |
+| The Gardens, the Coldhouse, the Forge, the Dwarven Citadel, the Ashen Void | [Devoted Pixel Dungeon](https://github.com/Arackulele/devoted-pixel-dungeon) | Sewers, Prison, Caves, City, Halls | Own decoration painters. Four have their own music from the Devoted soundtrack by Cevin2006. |
+| Ancient Mystery City, Dragon Cave, Pale Palace, Lost Tomb, the Hollow | [Magic Ling Pixel Dungeon](https://github.com/LingASDJ/Magic_Ling_Pixel_Dungeon) | City, Sewers, City, Caves, Halls | Own decoration painters where the mod had them. The Hollow's door mimics are left out. |
+| Astral Library, Frost Archive, Gothic Castle, Sky Alchemy Greenhouse, Tower Core Gearworks, Chinese Hall | [Transformation Pixel Dungeon](https://github.com/dongyusangyu/transformation-pixel-dungeon-master) | Any | The mod's tower floors, with its tower decoration painter. |
 
 Each ported world brings its tileset, water, decoration and, where credited, music. Monsters are not ported yet, so every world uses Shattered's monsters for its depth. Worlds without credited music of their own use the closest Shattered soundtrack. All four mods are GPLv3, and their authors are credited in each ported file.
 
-The ported worlds live in [`levels/worlds`](core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/levels/worlds) and their art in `assets/environment/worlds`. Adding another means writing a small level class and listing it in `WorldShuffle.WORLDS`.
+The ported worlds live in [`levels/worlds`](core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/levels/worlds) and their art in `assets/environment/worlds`. Adding another means writing a small level class, listing it in `WorldShuffle.WORLDS`, and giving it the stage its mod made it for in `WorldShuffle.REGIONS`.
 
 ## Code changes
 
