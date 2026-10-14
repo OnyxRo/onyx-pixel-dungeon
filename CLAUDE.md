@@ -62,6 +62,44 @@ Gradle-free path used for releases (`scripts/`):
 - Windows auto-update. `scripts/windows-installer/Play.ps1` (run by Play.bat and the installer's desktop shortcut) checks the latest release's `update.json`, downloads `OnyxPixelDungeon-game.jar` if the version differs, verifies its SHA-256 and swaps it in. If the release needs a different Shattered base, it tells the player to rerun the installer instead. Keep the asset names stable.
 - The game jar is loaded ahead of the official Shattered jars on the launcher classpath, so it only needs the game's classes and changed assets.
 
+## Mods to add next
+
+Onyx wants more mods in the rotation. This list comes from his "Every Pixel Dungeon" index artifact (https://claude.ai/code/artifact/c3216af8-d926-46fd-9c16-d68d9a6e958f), which catalogs sprites, items and tile sheets from 145 Pixel Dungeon mods. Its `data/index.json` lists every mod's repo and tile sheets, built from the community mod lists kept by Dominowood371 and zay448345045 on GitHub. None of these have had their licenses or art credits checked yet.
+
+**How to judge a mod.** Shattered 0.7 or later uses this game's 256x256 tile sheet layout, so its worlds port the way the current 19 did (tileset, water, painter, a small level class). Older mods use a different layout and their art would need redrawing. Check the repo's license and any in-game credits for art or music with separate terms. Only use music with a clear credit.
+
+**More worlds from mods already in the game.** Easiest, same code and licenses.
+
+- Magic Ling PD has unused tile sheets for gold, wild (desert), cold, zero spring, ghost, died and morpheus. Some may be unfinished, so look at them first.
+- Transformation PD has UES and two surface sheets (lush, winter).
+
+**Shattered 0.7 or later, likely straightforward.**
+
+| Mod | Base | What it adds | Repo |
+| --- | --- | --- | --- |
+| Shattered PD Matt Edition | 3.2.5 | Ice and snow, guild | https://github.com/mr-matthias1829/SPD-Matt-Edition |
+| Pixel Dungeon Reforged | 3.0.0 | Kobold caves and region variants | https://github.com/nathanlink169/pixel-dungeon-reforged |
+| Shittened Pixel Dungeon | 2.5.4 | Christmas caves | https://github.com/Haukii/shittened-pixel-dungeon |
+| Abyssalnite Pixel Dungeon | 0.8.2 | Region reskins, 36 enemies | https://github.com/MywaifuisTataraKogasa/Abyssalnite-Pixel-Dungeon |
+| Cursed Pixel Dungeon (Legacy) | 0.7.3b | Heaven, beach, temple, surface | https://github.com/Smujb/cursed-pixel-dungeon-lgc |
+| Tower Pixel Dungeon | Shattered (version unclear) | Goblin, mage, gates and mines areas. A tower defense mod, so its levels may not fit a normal floor | https://github.com/FixAkaTheFix/Tower-Pixel-Dungeon |
+
+**Older bases, check the tile format first and expect redrawing.**
+
+| Mod | Base | What it adds | Repo |
+| --- | --- | --- | --- |
+| Lovecraft Pixel Dungeon | 0.6.x | Overworld, eldritch theme | https://github.com/Sadsaltan/LovecraftPixelDungeon |
+| Dragonic Pixel Dungeon | 0.6.1b | Dragon lair | https://github.com/duyhoang5152/DragonicPixelDungeon |
+| SPecial Surprise Pixel Dungeon | 0.4.1 | Beach, forest and many more, 45 enemies | https://github.com/hmdzl001/SPS-PD |
+| Goblins Pixel Dungeon | 0.3.0 | Goblin theme | https://github.com/locastan/GoblinsPixelDungeonGradle |
+| Unleashed Pixel Dungeon | 0.3.0 | Region variants | https://github.com/FthrNature/unleashed-pixel-dungeon |
+| Deep Pixel Dungeon | 0.4.3c | Extra regions | https://github.com/Mochiee/deep-pixel-dungeon |
+| Pixel Spacebase | 0.4.3 | Sci-fi space station, art at 4x scale | https://github.com/codefitz/Pixel-Spacebase |
+
+**Skip.** Mods built on other companies' franchises, even when they score well, since their art shows those companies' characters. That includes Touhou PD and Reloaded, Gensokyo PD, Tomorrows RogueNights and Arknights PD, Blue Archive PD and Re Blue Archive PD, both Girls Frontline PDs, and Jojo's Bizarre Dungeon.
+
+When adding a mod, append its worlds to the end of `WorldShuffle.WORLDS`, add name and mod strings, credit it in the file header and README, and run `WorldShuffleTest`.
+
 ## Next planned work (Onyx's sandbox plan)
 
 He wants to playtest everything, so build these next.
