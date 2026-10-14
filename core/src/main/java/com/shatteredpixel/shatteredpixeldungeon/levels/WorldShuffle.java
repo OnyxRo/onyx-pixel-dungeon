@@ -313,6 +313,20 @@ public class WorldShuffle {
 		return world <= HALLS ? "Shattered Pixel Dungeon" : Messages.get(WORLDS[world], "mod");
 	}
 
+	/** The mods that worlds have been ported from, in the order they were added. */
+	public static java.util.ArrayList<String> mods(){
+		java.util.ArrayList<String> mods = new java.util.ArrayList<>();
+		for (int w = HALLS + 1; w < WORLDS.length; w++){
+			if (!mods.contains(modName(w))) mods.add(modName(w));
+		}
+		return mods;
+	}
+
+	/** The icon of the mod a world comes from, or null for Shattered's own. */
+	public static String modLogo( int world ){
+		return world >= 0 && world < LOGOS.length ? LOGOS[world] : null;
+	}
+
 	public static int worldFor( int depth ){
 		if (!shuffles(depth)) return homeWorld(depth);
 
@@ -322,10 +336,19 @@ public class WorldShuffle {
 		//region share one slot, so they don't crowd out the region's own worlds
 		java.util.ArrayList<Integer> regional = new java.util.ArrayList<>();
 		java.util.ArrayList<Integer> anywhere = new java.util.ArrayList<>();
+		//a sandbox run can switch mods off, which leaves their worlds out of the roll
+		boolean filtered = Dungeon.sandbox && !Dungeon.sandboxOffMods.isEmpty();
 		for (int w = 0; w < WORLDS.length; w++){
 			if (w == home) continue;
+			if (filtered && (w <= HALLS || Dungeon.sandboxOffMods.contains(modName(w)))) continue;
 			if (REGIONS[w] == home) regional.add(w);
 			else if (REGIONS[w] == ANY_REGION) anywhere.add(w);
+		}
+		//if the mods left on have nothing made for this stage, use any of their worlds
+		if (filtered && regional.isEmpty() && anywhere.isEmpty()) {
+			for (int w = HALLS + 1; w < WORLDS.length; w++){
+				if (!Dungeon.sandboxOffMods.contains(modName(w))) regional.add(w);
+			}
 		}
 
 		Random.pushGenerator( Dungeon.seedForDepth(depth, 0) ^ SALT );

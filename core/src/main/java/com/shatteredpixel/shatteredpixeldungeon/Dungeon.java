@@ -230,6 +230,9 @@ public class Dungeon {
 	public static boolean seeAll(){
 		return sandbox && sandboxSight;
 	}
+
+	//mods whose worlds are left out of the shuffle in a sandbox run, by mod name
+	public static HashSet<String> sandboxOffMods = new HashSet<>();
 	public static long seed;
 	public static long lastPlayed;
 
@@ -287,6 +290,7 @@ public class Dungeon {
 		sandboxWorld = -1;
 		sandboxGod = true;
 		sandboxSight = true;
+		sandboxOffMods.clear();
 
 		gold = 0;
 		energy = 0;
@@ -637,6 +641,7 @@ public class Dungeon {
 	private static final String SANDBOX_WORLD = "sandbox_world";
 	private static final String SANDBOX_GOD = "sandbox_god";
 	private static final String SANDBOX_SIGHT = "sandbox_sight";
+	private static final String SANDBOX_OFF_MODS = "sandbox_off_mods";
 	private static final String LAST_PLAYED = "last_played";
 	private static final String CHALLENGES	= "challenges";
 	private static final String MOBS_TO_CHAMPION	= "mobs_to_champion";
@@ -668,6 +673,7 @@ public class Dungeon {
 			bundle.put( SANDBOX_WORLD, sandboxWorld );
 			bundle.put( SANDBOX_GOD, sandboxGod );
 			bundle.put( SANDBOX_SIGHT, sandboxSight );
+			bundle.put( SANDBOX_OFF_MODS, sandboxOffMods.toArray(new String[0]) );
 			bundle.put( LAST_PLAYED, lastPlayed = Game.realTime);
 			bundle.put( CHALLENGES, challenges );
 			bundle.put( MOBS_TO_CHAMPION, mobsToChampion );
@@ -772,6 +778,10 @@ public class Dungeon {
 		sandboxWorld = bundle.contains( SANDBOX_WORLD ) ? bundle.getInt( SANDBOX_WORLD ) : -1;
 		sandboxGod = !bundle.contains( SANDBOX_GOD ) || bundle.getBoolean( SANDBOX_GOD );
 		sandboxSight = !bundle.contains( SANDBOX_SIGHT ) || bundle.getBoolean( SANDBOX_SIGHT );
+		sandboxOffMods.clear();
+		if (bundle.contains( SANDBOX_OFF_MODS )) {
+			sandboxOffMods.addAll( java.util.Arrays.asList( bundle.getStringArray( SANDBOX_OFF_MODS ) ) );
+		}
 
 		Actor.clear();
 		Actor.restoreNextID( bundle );

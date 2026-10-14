@@ -106,6 +106,14 @@ public class WndSandbox extends Window {
 			}
 		}, null );
 
+		addRow( new RedButton( Messages.get(WndCompendium.class, "title") ) {
+			@Override
+			protected void onClick() {
+				hide();
+				GameScene.show( new WndCompendium() );
+			}
+		}, null );
+
 		addRow( levelButton(1), levelButton(5) );
 		addRow( strengthButton(1), strengthButton(5) );
 

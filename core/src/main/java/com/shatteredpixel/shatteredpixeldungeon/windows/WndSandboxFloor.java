@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollingListPane;
@@ -51,6 +52,7 @@ public class WndSandboxFloor extends Window {
 
 	private RedButton[] floorBtns = new RedButton[FLOORS];
 	private RedButton btnWorld;
+	private RedButton btnMods;
 	private RenderedTextBlock note;
 	private RedButton btnGo;
 
@@ -101,6 +103,15 @@ public class WndSandboxFloor extends Window {
 		btnWorld.setRect( 0, worldLabel.bottom() + GAP, WIDTH, BTN_HEIGHT );
 		add( btnWorld );
 
+		btnMods = new RedButton( "", 8 ) {
+			@Override
+			protected void onClick() {
+				GameScene.show( new WndMods() );
+			}
+		};
+		btnMods.setRect( 0, btnWorld.bottom() + GAP, WIDTH, BTN_HEIGHT );
+		add( btnMods );
+
 		note = PixelScene.renderTextBlock( 6 );
 		add( note );
 
@@ -139,7 +150,15 @@ public class WndSandboxFloor extends Window {
 		} else {
 			note.text( Messages.get(WndSandbox.class, "note"), WIDTH );
 		}
-		note.setPos( 0, btnWorld.bottom() + 2*GAP );
+		int mods = WorldShuffle.mods().size();
+		int on = mods;
+		for (String mod : WorldShuffle.mods()) {
+			if (Dungeon.sandboxOffMods.contains( mod )) on--;
+		}
+		btnMods.text( Messages.get(WndSandbox.class, "mods_count", on, mods) );
+		btnMods.textColor( on == mods ? 0xFFFFFF : TITLE_COLOR );
+
+		note.setPos( 0, btnMods.bottom() + 2*GAP );
 
 		btnGo.text( Messages.get(WndSandbox.class, "go", floor) );
 		btnGo.setRect( 0, note.bottom() + 2*GAP, WIDTH, BTN_HEIGHT );
@@ -203,6 +222,76 @@ public class WndSandboxFloor extends Window {
 			};
 			if (world == Dungeon.sandboxWorld) item.hardlight( TITLE_COLOR );
 			list.addItem( item );
+		}
+	}
+
+	//switches each mod's worlds in or out of the shuffle for floors built from now on
+	private class WndMods extends Window {
+
+		private static final int LIST_WIDTH = 140;
+
+		public WndMods() {
+
+			super();
+
+			int height = (int)Math.min( 200, PixelScene.uiCamera.height - 40 );
+
+			RenderedTextBlock title = PixelScene.renderTextBlock( Messages.get(WndSandbox.class, "mods_title"), 12 );
+			title.hardlight( TITLE_COLOR );
+			title.setPos( (LIST_WIDTH - title.width()) / 2, 0 );
+			PixelScene.align(title);
+			add( title );
+
+			float top = title.bottom() + GAP;
+
+			//the window has to be at its final size before the list is placed, or the list draws off centre
+			resize( LIST_WIDTH, height );
+
+			ScrollingListPane list = new ScrollingListPane();
+			add( list );
+			list.setRect( 0, top, LIST_WIDTH, height - top );
+
+			list.addItem( new ScrollingListPane.ListItem( Icons.get(Icons.CHECKED), Messages.get(WndSandbox.class, "mods_all_on") ) {
+				@Override
+				public boolean onClick( float x, float y ) {
+					if (!inside( x, y )) return false;
+					Dungeon.sandboxOffMods.clear();
+					reopen();
+					return true;
+				}
+			} );
+			list.addItem( new ScrollingListPane.ListItem( Icons.get(Icons.UNCHECKED), Messages.get(WndSandbox.class, "mods_all_off") ) {
+				@Override
+				public boolean onClick( float x, float y ) {
+					if (!inside( x, y )) return false;
+					Dungeon.sandboxOffMods.addAll( WorldShuffle.mods() );
+					reopen();
+					return true;
+				}
+			} );
+
+			for (final String mod : WorldShuffle.mods()) {
+				final boolean on = !Dungeon.sandboxOffMods.contains( mod );
+				ScrollingListPane.ListItem item = new ScrollingListPane.ListItem( Icons.get(on ? Icons.CHECKED : Icons.UNCHECKED), mod ) {
+					@Override
+					public boolean onClick( float x, float y ) {
+						if (!inside( x, y )) return false;
+						if (on) Dungeon.sandboxOffMods.add( mod );
+						else    Dungeon.sandboxOffMods.remove( mod );
+						reopen();
+						return true;
+					}
+				};
+				list.addItem( item );
+			}
+
+			list.setRect( 0, top, LIST_WIDTH, height - top );
+		}
+
+		private void reopen() {
+			hide();
+			refresh();
+			GameScene.show( new WndMods() );
 		}
 	}
 

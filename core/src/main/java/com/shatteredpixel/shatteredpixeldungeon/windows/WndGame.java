@@ -86,6 +86,16 @@ public class WndGame extends Window {
 			curBtn.textColor(Window.TITLE_COLOR);
 		}
 
+		// Compendium of what each mod adds
+		addButton( curBtn = new RedButton( Messages.get(this, "compendium") ) {
+			@Override
+			protected void onClick() {
+				hide();
+				GameScene.show( new WndCompendium() );
+			}
+		} );
+		curBtn.icon(Icons.get(Icons.CATALOG));
+
 		// Restart
 		if (Dungeon.hero == null || !Dungeon.hero.isAlive()) {
 

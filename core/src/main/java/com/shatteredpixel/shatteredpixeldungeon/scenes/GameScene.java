@@ -108,6 +108,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ResumeIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RightClickMenu;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StatusPane;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ModIntro;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Tag;
@@ -699,6 +700,13 @@ public class GameScene extends PixelScene {
 
 			//every floor a new world: name ported worlds and the mod they come from
 			WorldShuffle.announce(Dungeon.level);
+
+			if (Dungeon.branch == 0 && WorldShuffle.modLogo(Dungeon.level) != null) {
+				ModIntro intro = new ModIntro( Dungeon.level );
+				intro.camera = uiCamera;
+				intro.setPos( (uiCamera.width - intro.width()) / 2f, uiCamera.height * 0.22f );
+				addToFront( intro );
+			}
 
 			if (Dungeon.seeAll()) {
 				WndSandbox.revealFloor();

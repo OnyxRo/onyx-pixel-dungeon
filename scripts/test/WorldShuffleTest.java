@@ -162,6 +162,26 @@ public class WorldShuffleTest {
 				}
 			}
 		}
+		//sandbox runs can switch mods off. With only one mod left on, every shuffled floor must use it
+		Dungeon.sandboxWorld = -1;
+		int modChecks = 0;
+		for (String only : WorldShuffle.mods()) {
+			Dungeon.sandboxOffMods.clear();
+			Dungeon.sandboxOffMods.addAll(WorldShuffle.mods());
+			Dungeon.sandboxOffMods.remove(only);
+			for (int d = 1; d <= 26; d++) {
+				if (!WorldShuffle.shuffles(d)) continue;
+				String got = WorldShuffle.modName(WorldShuffle.worldFor(d));
+				modChecks++;
+				if (!got.equals(only)) {
+					failures++;
+					System.out.println("FAIL: only " + only + " was on, but floor " + d + " rolled a world from " + got);
+				}
+			}
+		}
+		Dungeon.sandboxOffMods.clear();
+		System.out.println("mod toggle checks: " + modChecks);
+
 		Dungeon.sandbox = false;
 		Dungeon.sandboxWorld = -1;
 		System.out.println("sandbox floors built with a forced world: " + forced);
