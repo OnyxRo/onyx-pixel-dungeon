@@ -69,7 +69,7 @@ Devoted is now ported in full for monsters. All 54 of its monster classes are in
 
 Porting tools, kept in the session scratchpad and worth rebuilding if lost. A copier that compiles, copies each class the compiler cannot find from the mod when the name is unambiguous, adds missing `Assets` constants with their files under a per-mod subfolder, and repeats. A string copier that appends the English text for every new class from the mod's message files. Windows needs the long path prefix for files inside deep mod folders.
 
-Not ported yet. Monsters and weapons from Combusted (5 thrown weapons, no new monsters), Magic Ling (about 350 monster files, 74 weapons) and Transformation (59 monsters, 35 weapons). Every non-Devoted world still uses Shattered's monsters for its depth. Pixel Spacebase (its art is for the pre-2017 tile layout at 4x scale and would need redrawing). Avoid porting mods built around other companies' franchises (Touhou, Arknights, Blue Archive, Girls' Frontline, JoJo).
+Not ported yet. Combusted is done. It adds no monsters, and its four throwable melee weapons (`items/weapon/thrown/`) are in the journal catalog only, since Combusted itself never put them in its loot tables. They drop at the enemy's feet instead of sticking. Monsters and weapons from Magic Ling (about 350 monster files, 74 weapons) and Transformation (59 monsters, 35 weapons). Every non-Devoted world still uses Shattered's monsters for its depth. Pixel Spacebase (its art is for the pre-2017 tile layout at 4x scale and would need redrawing). Avoid porting mods built around other companies' franchises (Touhou, Arknights, Blue Archive, Girls' Frontline, JoJo).
 
 ### Fixes made to Shattered code
 

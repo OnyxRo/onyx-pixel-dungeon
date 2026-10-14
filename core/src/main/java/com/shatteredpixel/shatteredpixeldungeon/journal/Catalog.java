@@ -264,6 +264,9 @@ public enum Catalog {
 				LiquidMetal.class, ArcaneResin.class,
 				SealShard.class, BrokenStaff.class, CloakScrap.class, BowFragment.class, BrokenHilt.class, TornPage.class);
 
+		//Combusted Pixel Dungeon's melee weapons that can also be thrown
+		THROWN_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.thrown.ThrowableDagger.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.thrown.ThrowableDirk.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.thrown.ThrowableHandAxe.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.thrown.ThrowableSpear.class);
+
 		//items ported from Devoted Pixel Dungeon
 		RINGS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.rings.EndothermicRing.class);
 		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMalaise.class);
