@@ -80,6 +80,8 @@ Not ported yet. Combusted is done. It adds no monsters, and its four throwable m
 
 Normal path on a PC with internet: `./gradlew desktop:debug` to run, `./gradlew desktop:release` for a jar. This Gradle setup was edited (Android plugin and the `org.beryx.runtime` plugin removed, `application` plugin used) but never run in the original build environment, so fix it if it fails.
 
+Onyx's playable copy. `scripts\make-exe.ps1` builds the release jar, wraps it with jpackage into `Documents\OnyxPixelDungeon-app\OnyxPixelDungeon\OnyxPixelDungeon.exe` (about 200 MB, with its own Java) and puts an "Onyx's Pixel Dungeon" shortcut on his desktop. It shares the normal save folder. The app has to be closed before the script can replace it. Because the app runs from its own copy, the repo can be rebuilt while he plays.
+
 Gradle-free path used for releases (`scripts/`):
 
 - `scripts/compile.sh <ShatteredPD-v4.0.2-Java.jar> <outdir>` compiles with javac, taking libraries from the official Shattered jar.
