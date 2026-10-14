@@ -308,6 +308,48 @@ public class WorldShuffle {
 		}
 	}
 
+	/**
+	 * The world whose mod supplies this boss floor's boss, or -1 for Shattered's own boss.
+	 * If any shuffled floor of the region leading up to the boss was built in a world from a
+	 * mod with ported bosses, that mod's boss guards the region.
+	 */
+	public static int bossWorldFor( int depth ){
+		if (!Dungeon.bossLevel(depth)) return -1;
+		for (int d = depth - 4; d < depth; d++) {
+			if (!shuffles(d)) continue;
+			int world = worldFor(d);
+			if (modBossLevel(world, depth) != null) return world;
+		}
+		return -1;
+	}
+
+	/**
+	 * Shattered's bosses hand out the items a run needs to progress, the mask on floor 10 that
+	 * picks a subclass and the crown on floor 20 that picks an armor ability. Mods' bosses drop
+	 * their own things instead, so their boss floors call this when the boss falls.
+	 */
+	public static void dropProgressionItem( Level level ){
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero hero = Dungeon.hero;
+		if (hero == null || Dungeon.branch != 0) return;
+
+		com.shatteredpixel.shatteredpixeldungeon.items.Item item = null;
+		if (Dungeon.depth == 10 && hero.subClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.NONE) {
+			item = new com.shatteredpixel.shatteredpixeldungeon.items.TengusMask();
+		} else if (Dungeon.depth == 20 && hero.armorAbility == null) {
+			item = new com.shatteredpixel.shatteredpixeldungeon.items.KingsCrown();
+		}
+		if (item == null) return;
+
+		//only ever one, however many times the floor is unsealed
+		if (hero.belongings.getItem(item.getClass()) != null) return;
+		for (com.shatteredpixel.shatteredpixeldungeon.items.Heap heap : level.heaps.valueList()) {
+			for (com.shatteredpixel.shatteredpixeldungeon.items.Item i : heap.items) {
+				if (i.getClass() == item.getClass()) return;
+			}
+		}
+		level.drop( item, hero.pos ).sprite.drop();
+	}
+
 	/** Whether a sandbox run can force a world onto this floor. Boss floors and the last two floors keep their own levels. */
 	public static boolean canForce( int depth ){
 		return depth >= 1 && depth < 25 && depth % 5 != 0;

@@ -432,6 +432,7 @@ public class ColdhouseBossLevel extends Level {
 	@Override
 	public void unseal() {
 		super.unseal();
+		WorldShuffle.dropProgressionItem(this);
 		killed = true;
 
 		set( entrance(), Terrain.ENTRANCE );

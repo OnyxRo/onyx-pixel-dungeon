@@ -62,6 +62,7 @@ public class WorldShuffleTest {
 		int saved = 0;
 		java.util.Map<Integer, java.util.Set<String>> byRegion = new java.util.TreeMap<>();
 		int floors = 0, failures = 0;
+		int bossFloors = 0, modBossFloors = 0;
 		HeroClass[] classes = {HeroClass.WARRIOR, HeroClass.MAGE, HeroClass.ROGUE, HeroClass.HUNTRESS, HeroClass.DUELIST, HeroClass.CLERIC};
 
 		for (int s = 0; s < seeds; s++) {
@@ -76,6 +77,18 @@ public class WorldShuffleTest {
 				try {
 					Level l = Dungeon.newLevel();
 					floors++;
+					if (Dungeon.bossLevel(d)) {
+						bossFloors++;
+						//a mod's boss floor only belongs after a region that went through one of that mod's worlds
+						int bossWorld = WorldShuffle.bossWorldFor(d);
+						boolean modBoss = bossWorld != -1;
+						if (modBoss) {
+							modBossFloors++;
+							if (l.getClass() != WorldShuffle.modBossLevel(bossWorld, d).getClass()) {
+								throw new IllegalStateException("boss floor " + d + " should be the mod's boss level");
+							}
+						}
+					}
 					String w = l.getClass().getSimpleName().replace("Level", "");
 					if (WorldShuffle.shuffles(d)) {
 						String world = l.getClass().getSimpleName().replace("Level", "");
@@ -188,6 +201,7 @@ public class WorldShuffleTest {
 
 		System.out.println("ported worlds saved and reloaded: " + saved);
 		System.out.println("floors generated: " + floors + ", failures: " + failures);
+		System.out.println("boss floors: " + bossFloors + ", of which a mod's boss: " + modBossFloors);
 		System.out.println("shuffled-floor worlds (" + counts.size() + " of " + (WorldShuffle.worldCount() - 5) + " ported): " + new java.util.TreeMap<>(counts));
 		String[] regionNames = {"Sewers stage (2-3)", "Prison stage (6-8)", "Caves stage (11-13)", "City stage (16-18)", "Halls stage (21-24)"};
 		for (java.util.Map.Entry<Integer, java.util.Set<String>> e : byRegion.entrySet()) {
