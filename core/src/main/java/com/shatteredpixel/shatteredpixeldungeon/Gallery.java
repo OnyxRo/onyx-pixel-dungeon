@@ -79,8 +79,10 @@ public class Gallery {
 	private static int uiStep = 0;
 	private static Window uiWindow = null;
 
+	//only runs once the launcher has confirmed the tour has a save folder of its own.
+	//On 2026-10-13 a tour started from a jar used the player's real folder and wiped save slot 1
 	public static boolean active(){
-		return DIR != null;
+		return DIR != null && "true".equals(System.getProperty("onyx.gallery.isolated"));
 	}
 
 	/** Called when the title screen opens. Starts the tour's sandbox run. */
@@ -94,7 +96,7 @@ public class Gallery {
 		//every monster ported from another mod
 		for (Bestiary category : Bestiary.values()) {
 			for (Class<?> cls : category.entities()) {
-				if (cls.getName().contains(".altregion.") && WndSandboxMobs.safeToSpawn(cls)) MOBS.add(cls);
+				if (Bestiary.isPorted(cls) && WndSandboxMobs.safeToSpawn(cls)) MOBS.add(cls);
 			}
 		}
 

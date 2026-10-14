@@ -115,6 +115,18 @@ public class Belongings implements Iterable<Item> {
 		return lostInvent;
 	}
 
+	//a random equipped item, or null with nothing equipped. Used by thieves from Matt Edition
+	public Item randomEquipped() {
+		ArrayList<Item> equipped = new ArrayList<>();
+		if (weapon() != null)    equipped.add(weapon());
+		if (armor() != null)     equipped.add(armor());
+		if (artifact() != null)  equipped.add(artifact());
+		if (misc() != null)      equipped.add(misc());
+		if (ring() != null)      equipped.add(ring());
+		if (secondWep() != null) equipped.add(secondWep());
+		return equipped.isEmpty() ? null : Random.element(equipped);
+	}
+
 	public KindOfWeapon weapon(){
 		if (!lostInventory() || (weapon != null && weapon.keptThroughLostInventory())){
 			return weapon;

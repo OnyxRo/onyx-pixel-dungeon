@@ -184,6 +184,20 @@ public enum Bestiary {
 	TRAP,
 	PLANT;
 
+	/** Whether a monster was ported from another mod, going by where its class lives or its name. */
+	public static boolean isPorted( Class<?> cls ){
+		String name = cls.getName();
+		if (name.contains(".altregion.")) return true;
+		Class<?> top = cls.getEnclosingClass() == null ? cls : cls.getEnclosingClass();
+		return PORTED_NAMES.contains( top.getSimpleName() );
+	}
+
+	//ported monsters that sit in the main monster package
+	private static final java.util.HashSet<String> PORTED_NAMES = new java.util.HashSet<>(java.util.Arrays.asList(
+			"Burglar", "Snatcher", "FrozenSwarm", "DM100F", "IceSnake", "IceGolem", "DM151", "DM166",
+			"ElderGnoll", "GnollBaby", "GnollMyth", "Goopling", "SpiritNecromancer", "DarkKing"
+	));
+
 	//tracks whether an entity has been encountered
 	private final LinkedHashMap<Class<?>, Boolean> seen = new LinkedHashMap<>();
 	//tracks enemy kills, trap activations, plant tramples, or just sets to 1 for seen on allies
@@ -297,6 +311,22 @@ public enum Bestiary {
 				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.TrollKnight.class);
 		NEUTRAL.addEntities(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.SageCorpse.class,
 				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.BountyHunter.class);
+
+		//Shattered Pixel Dungeon Matt Edition
+		REGIONAL.addEntities(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Burglar.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Snatcher.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.FrozenSwarm.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM100F.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.IceSnake.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.IceGolem.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM151.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM166.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.ElderGnoll.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollBaby.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollMyth.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Goopling.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.SpiritNecromancer.class);
+		BOSSES.addEntities(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DarkKing.class);
 
 		UNIVERSAL.addEntities(Wraith.class, Piranha.class, Mimic.class, GoldenMimic.class, EbonyMimic.class, Statue.class, GuardianTrap.Guardian.class, SentryRoom.Sentry.class);
 

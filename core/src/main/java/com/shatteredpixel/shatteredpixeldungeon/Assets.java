@@ -301,6 +301,16 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String NECRO2 = "sprites/matt/necromancer2.png"; //ported, matt
+		public static final String ICESNAKE = "sprites/matt/icesnake.png"; //ported, matt
+		public static final String ICEGOLEM = "sprites/matt/ice_golem.png"; //ported, matt
+		public static final String FROZENSWARM = "sprites/matt/frozenswarm.png"; //ported, matt
+		public static final String GNOLL2 = "sprites/matt/gnoll2.png"; //ported, matt
+		public static final String DM166 = "sprites/matt/dm166.png"; //ported, matt
+		public static final String DM151 = "sprites/matt/dm151.png"; //ported, matt
+		public static final String DM100F = "sprites/matt/dm100f.png"; //ported, matt
+		public static final String DARKKING = "sprites/matt/king_dark.png"; //ported, matt
+		public static final String THIEF2 = "sprites/matt/thief2.png"; //ported, matt
 		public static final String COALELEMENTAL = "sprites/devoted/coal_elemental.png"; //ported, devoted
 		public static final String VELTALETH = "sprites/devoted/Vel-Taleth.png"; //ported, devoted
 		public static final String VAULT = "sprites/devoted/vault.png"; //ported, devoted

@@ -147,7 +147,7 @@ public class Ghoul extends Mob {
 		return super.act();
 	}
 
-	private boolean beingLifeLinked = false;
+	protected boolean beingLifeLinked = false;
 
 	@Override
 	public void die(Object cause) {

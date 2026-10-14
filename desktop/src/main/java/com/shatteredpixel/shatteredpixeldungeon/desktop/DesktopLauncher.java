@@ -64,7 +64,13 @@ public class DesktopLauncher {
 		}
 		
 		final String title;
-		if (DesktopLauncher.class.getPackage().getSpecificationTitle() == null){
+		if (System.getProperty("onyx.gallery") != null) {
+			//the screenshot tour deletes and overwrites save slot 1, so it must never share the
+			//player's save folder. The title decides the save folder, so the tour gets its own,
+			//whatever title a jar's manifest carries
+			title = "Onyx Gallery";
+			System.setProperty("onyx.gallery.isolated", "true");
+		} else if (DesktopLauncher.class.getPackage().getSpecificationTitle() == null){
 			title = System.getProperty("Specification-Title");
 		} else {
 			title = DesktopLauncher.class.getPackage().getSpecificationTitle();

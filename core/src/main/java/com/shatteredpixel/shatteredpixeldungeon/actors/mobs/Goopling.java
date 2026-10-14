@@ -1,0 +1,111 @@
+/*
+ *  Pixel Dungeon
+ *  Copyright (C) 2012-2015 Oleg Dolya
+ *
+ *  Shattered Pixel Dungeon
+ *  Copyright (C) 2014-2026 Evan Debenham
+ *
+ *  Matt Edition
+ *  Copyright (C) 2025-2026 Dum Matt
+ *
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ */
+
+package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
+
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.GooplingSprite;
+import com.watabou.utils.Random;
+
+public class Goopling extends Mob {
+	
+	{
+		spriteClass = GooplingSprite.class;
+		
+		HP = HT = 5; //Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 9 : 7; //12
+		defenseSkill = 5;
+
+        properties.add(Property.ACIDIC);
+
+        // since they can be spawned infinitely as long as goo is alive,
+        // we don't want a source of infinite xp or loot.
+		EXP = 0;
+		maxLvl = 1;
+
+        WANDERING = new Goopling.Wandering();
+        state = WANDERING; // start wandering/awake
+	}
+	
+	@Override
+	public int damageRoll() {
+        if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES)){
+            return Random.NormalIntRange( 2, 6 );
+        }
+        return Random.NormalIntRange( 2, 4 );
+	}
+	
+	@Override
+	public int attackSkill( Char target ) {
+		return 12;
+	}
+
+    @Override
+    public int attackProc( Char enemy, int damage ) {
+        if (Random.Int( 20 ) == 0) {
+            Buff.affect( enemy, Ooze.class ).set( Ooze.DURATION *0.66f );
+            enemy.sprite.burst( 0x000000, 5 );
+        }
+
+        return super.attackProc( enemy, damage );
+    }
+	
+	@Override
+	public void damage(int dmg, Object src) {
+        int DMGRDC = 2;
+
+		float scaleFactor = AscensionChallenge.statModifier(this);
+		int scaledDmg = Math.round(dmg/scaleFactor);
+
+        if (scaledDmg >= DMGRDC+1){
+            scaledDmg = DMGRDC + (int)(Math.sqrt((DMGRDC*2)*(scaledDmg - DMGRDC) + 1) - 1)/2;
+        }
+
+        /*
+		if (scaledDmg >= 5){
+			//takes 5/6/7/8/9/10 dmg at 5/7/10/14/19/25 incoming dmg
+			scaledDmg = 4 + (int)(Math.sqrt(8*(scaledDmg - 4) + 1) - 1)/2;
+		}
+
+         */
+		dmg = (int)(scaledDmg*AscensionChallenge.statModifier(this));
+		super.damage(dmg, src);
+	}
+
+    public class Wandering extends Mob.Wandering {
+
+        // effectively: go to a random tile
+        // this... doesn't matter much, but ensures gooplings spawn awake
+        // if they spot the hero, they will simply ignore this
+        @Override
+        protected int randomDestination() {
+            return super.randomDestination();
+        }
+    }
+}

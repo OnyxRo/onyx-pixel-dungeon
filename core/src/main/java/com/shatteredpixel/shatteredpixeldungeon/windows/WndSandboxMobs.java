@@ -57,7 +57,9 @@ public class WndSandboxMobs extends Window {
 	private static final HashSet<String> UNSAFE = new HashSet<>(Arrays.asList(
 			"Tengu", "DM300", "Pylon", "DwarfKing",
 			//Devoted's bosses, which do the same with Devoted's boss levels
-			"BlastFurnace", "FurnaceGolem", "RatBeast", "Thymor", "VelEssence", "VelTaleth", "Wendar", "Yuria"
+			"BlastFurnace", "FurnaceGolem", "RatBeast", "Thymor", "VelEssence", "VelTaleth", "Wendar", "Yuria",
+			//Matt Edition's unused boss, built for the Dwarf King's throne room
+			"DarkKing"
 	));
 
 	public static boolean safeToSpawn( Class<?> cls ){

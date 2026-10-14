@@ -266,6 +266,9 @@ public class WorldShuffle {
 		if (Dungeon.branch == 0 && DEVOTED.equals(modLogo(level))) {
 			return com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.DevotedSpawner.getMobRotation(depth);
 		}
+		if (Dungeon.branch == 0 && MATT.equals(modLogo(level))) {
+			return com.shatteredpixel.shatteredpixeldungeon.actors.mobs.MattSpawner.getMobRotation(level);
+		}
 		return com.shatteredpixel.shatteredpixeldungeon.actors.mobs.MobSpawner.getMobRotation(depth);
 	}
 

@@ -1,0 +1,158 @@
+/*
+ *  Pixel Dungeon
+ *  Copyright (C) 2012-2015 Oleg Dolya
+ *
+ *  Shattered Pixel Dungeon
+ *  Copyright (C) 2014-2026 Evan Debenham
+ *
+ *  Matt Edition
+ *  Copyright (C) 2025-2026 Dum Matt
+ *
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ */
+
+package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
+
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.DM166Sprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.utils.Callback;
+import com.watabou.utils.Random;
+
+public class DM166 extends DM100 {
+
+    //TODO: maybe consider scrapping this enemy
+
+    protected static float TIME_TO_ZAP	= (float) (1f/3.7); //0.75f
+
+    {
+        spriteClass = DM166Sprite.class;
+
+        baseSpeed = 1f;
+
+        HP = HT = 50;
+        defenseSkill = 20;
+
+        EXP = 10;
+        maxLvl = 24;
+
+        properties.add(Property.ELECTRIC);
+        properties.add(Property.INORGANIC);
+    }
+    @Override
+    protected boolean getCloser(int target) {
+        int dist = Dungeon.level.distance(pos, target);
+
+        // Too close? (adjacent or 1 tile apart) move away
+        if (dist <= 1) {
+            return getFurther(target);
+        }
+
+        // Perfect range (exactly 2 tiles) stop moving
+        if (dist == 2) {
+            return false;
+        }
+
+        // Too far (3+ tiles) move closer
+        return super.getCloser(target);
+    }
+
+    @Override
+    protected boolean canAttack(Char enemy) {
+        // Only allow zap attacks when not adjacent and in line of sight
+        if (Dungeon.level.adjacent(pos, enemy.pos)) {
+            return false; // Never attack when adjacent
+        }
+
+        Ballistica attack = new Ballistica(pos, enemy.pos, Ballistica.MAGIC_BOLT);
+        return attack.collisionPos == enemy.pos;
+    }
+
+    @Override
+    protected boolean doAttack(Char enemy) {
+        // If adjacent, just move away instead of attacking
+        if (Dungeon.level.adjacent(pos, enemy.pos)) {
+            if (getFurther(enemy.pos)) {
+                spend(1 / speed());
+                return true;
+            } else {
+                // If can't move away, just wait
+                spend(TICK);
+                return true;
+            }
+        }
+
+        // Otherwise use zap attack
+        spend(TIME_TO_ZAP);
+        Invisibility.dispel(this);
+
+        if (hit(this, enemy, true)) {
+            int dmg = damageRoll();
+            dmg = Math.round(dmg * AscensionChallenge.statModifier(this));
+            enemy.damage(dmg, new LightningBolt());
+
+            if (enemy.sprite.visible) {
+                enemy.sprite.centerEmitter().burst(SparkParticle.FACTORY, 3);
+                enemy.sprite.flash();
+            }
+
+            if (enemy == Dungeon.hero) {
+                PixelScene.shake(2, 0.3f);
+                if (!enemy.isAlive()) {
+                    Badges.validateDeathFromEnemyMagic();
+                    Dungeon.fail(this);
+                    GLog.n(Messages.get(this, "zap_kill"));
+                }
+            }
+        } else {
+            enemy.sprite.showStatus(CharSprite.NEUTRAL, enemy.defenseVerb());
+        }
+
+        if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
+            sprite.zap(enemy.pos);
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public int damageRoll() {
+        return Random.NormalIntRange( 4, 8 );
+    }
+
+    @Override
+    public int attackSkill( Char target ) {
+        return 36;
+    } //11
+
+    @Override
+    public int drRoll() {
+        return super.drRoll() + Random.NormalIntRange(2, 7);
+    }
+
+    //used so resistances can differentiate between melee and magical attacks
+    public static class LightningBolt{}
+
+}
