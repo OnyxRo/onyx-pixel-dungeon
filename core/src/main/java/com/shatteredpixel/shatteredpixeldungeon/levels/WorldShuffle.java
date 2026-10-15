@@ -314,6 +314,9 @@ public class WorldShuffle {
 
 	/** Every boss floor a world's mod can give at this depth, for mods that have more than one version of a fight. */
 	public static Level[] modBossVariants( int world, int depth ){
+		if (world >= 0 && world < LOGOS.length && REFORGED.equals(LOGOS[world])) {
+			return depth == 5 ? new Level[]{ new SewerBossUsurperLevel(), new SewerBossGooLevel() } : new Level[0];
+		}
 		if (world >= 0 && world < LOGOS.length && CURSED.equals(LOGOS[world])) {
 			//Cursed PD's own versions of the five boss floors, with its own harder bosses
 			switch (depth) {
@@ -345,7 +348,14 @@ public class WorldShuffle {
 	public static Level modBossLevel( int world, int depth ){
 		if (world >= 0 && world < LOGOS.length && REFORGED.equals(LOGOS[world])) {
 			//Reforged only has the one boss floor, the Rat Usurper in place of Goo
-			return depth == 5 ? new SewerBossUsurperLevel() : null;
+			//normal runs keep the Usurper they have played. A sandbox run, or the boss test, may get Reforged's Goo fight too.
+			Level[] reforgedBosses = modBossVariants( world, depth );
+			if (reforgedBosses.length == 0) return null;
+			if (Dungeon.sandbox || forcedVariant >= 0) {
+				int pick = forcedVariant >= 0 ? forcedVariant : (int)((Math.abs( Dungeon.seed ) / 7 + depth) & 1);
+				return reforgedBosses[pick % reforgedBosses.length];
+			}
+			return reforgedBosses[0];
 		}
 		if (world >= 0 && world < LOGOS.length && (ABYSSALNITE.equals(LOGOS[world]) || CURSED.equals(LOGOS[world]))) {
 			//Abyssalnite has two fights for each boss floor, its own harder ones and the older sealed arena style.

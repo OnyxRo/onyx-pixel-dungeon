@@ -427,7 +427,23 @@ public class Ring extends KindofMisc {
 		return bonus;
 	}
 
+	//Reforged's Ringbox wears several rings at a reduced strength, it needs these two
+	public Class<? extends RingBuff> getBuffClass(){
+		return buffClass;
+	}
+
+	public RingBuff makeBuff(){
+		return buff();
+	}
+
 	public class RingBuff extends Buff {
+
+		//another ring to read the level from, set by the Ringbox so its rings count at a scaled level
+		protected Ring ringSource = null;
+
+		public void setRingSource( Ring source ){
+			this.ringSource = source;
+		}
 
 		@Override
 		public boolean attachTo( Char target ) {
@@ -448,10 +464,12 @@ public class Ring extends KindofMisc {
 		}
 
 		public int level(){
+			if (ringSource != null) return ringSource.soloBonus();
 			return Ring.this.soloBonus();
 		}
 
 		public int buffedLvl(){
+			if (ringSource != null) return ringSource.soloBuffedBonus();
 			return Ring.this.soloBuffedBonus();
 		}
 

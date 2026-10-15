@@ -26,7 +26,9 @@ try {
     if (Test-Path $app) { Remove-Item -Recurse -Force $app }
     New-Item -ItemType Directory -Force $dest | Out-Null
 
-    $jpackage = Join-Path $env:JAVA_HOME 'bin\jpackage.exe'
+    # JAVA_HOME is not always set when git runs this from a hook, so fall back to jpackage on the path
+    if ($env:JAVA_HOME) { $jpackage = Join-Path $env:JAVA_HOME 'bin\jpackage.exe' }
+    else { $jpackage = (Get-Command jpackage -ErrorAction Stop).Source }
     & $jpackage --type app-image --name $name --input $stage --main-jar $jar.Name `
         --icon desktop\src\main\assets\icons\windows.ico --dest $dest `
         --java-options '-XX:+IgnoreUnrecognizedVMOptions'

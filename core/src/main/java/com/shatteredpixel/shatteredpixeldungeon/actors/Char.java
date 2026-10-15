@@ -1151,6 +1151,17 @@ public abstract class Char extends Actor {
 		return defense != null && defense.proc( this, attacker, damage );
 	}
 
+	//shims for Pixel Dungeon Reforged, whose items call these. The damage types only label the hit here.
+	public int GetMaxHP(){
+		return HT;
+	}
+
+	public int Damage( int dmg, Object src, java.util.EnumSet<com.shatteredpixel.shatteredpixeldungeon.combat.DamageType> types ){
+		int before = HP;
+		damage( dmg, src );
+		return before - HP;
+	}
+
 	//shims for Cursed PD
 	public boolean isEnemy() {
 		return alignment == Alignment.ENEMY;

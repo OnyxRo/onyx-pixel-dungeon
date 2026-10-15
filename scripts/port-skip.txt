@@ -20,5 +20,24 @@ AttackContext
 AttackResult
 CombatResolver
 CombatModifier
-DamageType
 BundleableProperty
+
+# Reforged's Artificer class, its Gun and the talent trackers hook into its combat resolver and its hero talents
+Gun
+EffectiveShotTracker
+EffectiveShotCooldown
+HeavyBlowTracker
+LungeTracker
+
+# Reforged's unlockable run modifiers (challenge cup, unlock rooms, pressure plate gates) are their own meta-progression
+ChallengeCup
+WndChallengeUnlock
+PressurePlateTrap
+ModifierUnlockRoom
+BarrierModifierUnlockRoom
+LevitationModifierUnlockRoom
+PressurePlateModifierUnlockRoom
+SummoningModifierUnlockRoom
+# Reforged's Scroll of Decay is a 13th regular scroll, it needs a new scroll rune and changes identification in every run
+ScrollOfDecay
+ScrollOfGrowth

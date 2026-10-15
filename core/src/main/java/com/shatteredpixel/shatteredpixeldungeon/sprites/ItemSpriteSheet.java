@@ -374,6 +374,15 @@ public class ItemSpriteSheet {
 
 	public static final int WARPICK = MOD_ITEMS+0;
 	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;
+	public static final int ARMOR_ARTIFICER = xy(3, 38);
+	public static final int ARTIFACT_RINGBOX = xy(4, 38);
+	public static final int CRACKED_GUN = xy(5, 38);
+	public static final int ELIXIR_CLAWS = xy(6, 38);
+	public static final int GUN = xy(7, 38);
+	public static final int LUCKY_DICE = xy(8, 38);
+	public static final int STONE_BLIGHT = xy(9, 38);
+	public static final int WANDERERS_MAP = xy(10, 38);
+	public static final int WAND_DISPLACEMENT = xy(11, 38);
 	public static final int HEROICLEAP = xy(15, 37);
 	public static final int SMOKEBOMB = xy(16, 37);
 	public static final int SPECTRALBLADES = xy(1, 38);
@@ -488,6 +497,15 @@ public class ItemSpriteSheet {
 	static{
 		assignItemRect(WARPICK, 15, 14);
 		assignItemRect(WOODEN_BOOMERANG, 12, 12);
+		assignItemRect(ARMOR_ARTIFICER, 14, 13);
+		assignItemRect(ARTIFACT_RINGBOX, 16, 13);
+		assignItemRect(CRACKED_GUN, 13, 13);
+		assignItemRect(ELIXIR_CLAWS, 12, 14);
+		assignItemRect(GUN, 12, 14);
+		assignItemRect(LUCKY_DICE, 16, 16);
+		assignItemRect(STONE_BLIGHT, 14, 12);
+		assignItemRect(WANDERERS_MAP, 16, 16);
+		assignItemRect(WAND_DISPLACEMENT, 14, 14);
 		assignItemRect(HEROICLEAP, 14, 16);
 		assignItemRect(SMOKEBOMB, 14, 16);
 		assignItemRect(SPECTRALBLADES, 14, 16);

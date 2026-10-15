@@ -420,6 +420,17 @@ public enum Catalog {
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasurebags.QualityBag.class);
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasurebags.TenguTreasureBag.class);
 
+		//items ported from reforged
+		ARMOR.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.ArtificerArmor.class);
+		BREWS_ELIXIRS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfArcaneClaws.class);
+		TRINKETS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.trinkets.LuckyDice.class);
+		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Ringbox.class);
+		SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollKillAll.class);
+		SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollTeleportToStaircase.class);
+		STONES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfBlight.class);
+		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfDisplacement.class);
+		TRINKETS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.trinkets.WanderersMap.class);
+
 
 	}
 
