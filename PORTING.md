@@ -29,3 +29,6 @@ Update this at the end of every task. Details live in CLAUDE.md.
 ## Open feature requests
 - Two modes on the start screen. "Single mod" locks every floor to one chosen mod's worlds, monsters and items. "Shuffle" is the current floor-by-floor mix.
 - Already built, no action needed. Mod logo top left with summary panel (WndModInfo). Ctrl+R and Ctrl+N (SandboxHotkeys, sandbox runs only).
+
+## Cloud routine
+- TASKS.md is the queue, ROUTINE.md holds the routine prompt and helper setup, scripts/cloud-setup.sh prepares the cloud environment. Not yet tested in a cloud run.
