@@ -359,6 +359,31 @@ public enum Catalog {
 		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RelicMeleeWeapons.RelicEnchantments.Voltage.class);
 		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RelicMeleeWeapons.ThonothsAxe.class);
 
+		//items ported from cursed
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.AmuletSectorWater.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.Soul.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.allies.EarthenDragon.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.allies.FireDragon.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.allies.PoisonDragon.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.allies.VampiricDragon.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.allies.WaterDragon.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.bags.FoodHolder.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.bags.PowerHolder.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.instruments.Harp.class);
+		POTIONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.MegaExperiencePotion.class);
+		POTIONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.MegaStrengthPotion.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.powers.Blink.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.powers.BubbleShield.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.powers.Energize.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.powers.Greed.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.powers.MoltenEarth.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.powers.PoisonBurst.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.powers.RaiseDead.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.powers.Telekinesis.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.powers.WaterPump.class);
+		RINGS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfLuck.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.Resetter.class);
+
 
 	}
 

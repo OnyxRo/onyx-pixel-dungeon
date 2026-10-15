@@ -49,6 +49,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.GreaterHaste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HeroDisguise;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HoldFast;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MpRegen;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invulnerability;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Levitation;
@@ -236,6 +237,25 @@ public class Hero extends Char {
 	
 	public Belongings belongings;
 	
+	//Cursed PD mana, spent by its Power items and refilled by MpRegen
+	public int magicSkill = 5;
+	public int MAX_MP = 10;
+	public int MP = 10;
+
+	public void increaseMagicSkill( int amount ){
+		magicSkill += amount;
+		MAX_MP = 5 + magicSkill;
+	}
+
+	public void loseMP( int amount, Object src ){
+		MP -= amount;
+		if (MP < 0) {
+			int damage = -MP * (HT / 20);
+			MP = 0;
+			damage( damage, src );
+		}
+	}
+
 	public int STR;
 	
 	public float awareness;
@@ -303,6 +323,9 @@ public class Hero extends Char {
 	private static final String ATTACK		= "attackSkill";
 	private static final String DEFENSE		= "defenseSkill";
 	private static final String STRENGTH	= "STR";
+	private static final String MANA = "MP";
+	private static final String MANA_MAX = "MAX_MP";
+	private static final String MAGIC_SKILL = "magicSkill";
 	private static final String LEVEL		= "lvl";
 	private static final String EXPERIENCE	= "exp";
 	private static final String HTBOOST     = "htboost";
@@ -321,6 +344,9 @@ public class Hero extends Char {
 		bundle.put( DEFENSE, defenseSkill );
 		
 		bundle.put( STRENGTH, STR );
+		bundle.put( MANA, MP );
+		bundle.put( MANA_MAX, MAX_MP );
+		bundle.put( MAGIC_SKILL, magicSkill );
 		
 		bundle.put( LEVEL, lvl );
 		bundle.put( EXPERIENCE, exp );
@@ -351,6 +377,13 @@ public class Hero extends Char {
 		STR = bundle.getInt( STRENGTH );
 
 		belongings.restoreFromBundle( bundle );
+
+		if (bundle.contains( MANA_MAX )) {
+			MP = bundle.getInt( MANA );
+			MAX_MP = bundle.getInt( MANA_MAX );
+			magicSkill = bundle.getInt( MAGIC_SKILL );
+		}
+		if (buff( MpRegen.class ) == null) Buff.affect( this, MpRegen.class );
 	}
 	
 	public static void preview( GamesInProgress.Info info, Bundle bundle ) {
@@ -460,6 +493,7 @@ public class Hero extends Char {
 		}
 		Buff.affect( this, Regeneration.class );
 		Buff.affect( this, Hunger.class );
+		Buff.affect( this, MpRegen.class );
 	}
 	
 	public int tier() {
@@ -948,7 +982,7 @@ public class Hero extends Char {
 		ready = false;
 	}
 	
-	private void ready() {
+	public void ready() {
 		if (sprite.looping()) sprite.idle();
 		curAction = null;
 		damageInterrupt = true;

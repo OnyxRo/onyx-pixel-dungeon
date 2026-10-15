@@ -1716,6 +1716,30 @@ public abstract class Mob extends Char {
 	
 	private static ArrayList<Mob> heldAllies = new ArrayList<>();
 
+	//shims for Cursed PD, which spawns mobs straight from its items
+	public static <T extends Mob> T spawnAt( Class<T> type, int pos ){
+		if (pos < 0 || !Dungeon.level.passable[pos] || Actor.findChar( pos ) != null) return null;
+		T m = Reflection.newInstance( type );
+		if (m == null) return null;
+		m.pos = pos;
+		GameScene.add( m );
+		return m;
+	}
+
+	//up to four of the mob on the open cells around pos
+	public static void spawnAround4( Class<? extends Mob> type, int pos ){
+		int made = 0;
+		for (int n : PathFinder.NEIGHBOURS8) {
+			if (made >= 4) break;
+			if (spawnAt( type, pos + n ) != null) made++;
+		}
+	}
+
+	public void followHero(){
+		alignment = Alignment.ALLY;
+		state = WANDERING;
+	}
+
 	public static void holdAllies( Level level ){
 		holdAllies(level, Dungeon.hero.pos);
 	}
