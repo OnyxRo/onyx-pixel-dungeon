@@ -443,6 +443,9 @@ public enum Catalog {
 		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.augments.IcyCoreWeapon.class);
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.ThrowingChains.class);
 
+		//items ported from mattedition
+		EXOTIC_POTIONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfVitality.class);
+
 
 	}
 

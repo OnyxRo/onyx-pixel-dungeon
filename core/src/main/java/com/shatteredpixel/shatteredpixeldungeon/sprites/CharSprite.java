@@ -139,8 +139,29 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	public void play(Animation anim) {
 		//Shouldn't interrupt the dying animation
 		if (curAnim == null || curAnim != die) {
+			applyAnimSpeed(anim);
 			super.play(anim);
 		}
+	}
+
+	private java.util.HashMap<Animation, Float> baseDelays = new java.util.HashMap<>();
+
+	//Matt Edition's animation speed setting. Monsters attack, zap and operate animations play faster, the hero
+	//and NPCs never do. The delay each animation was built with is kept so the setting can change at any time.
+	private void applyAnimSpeed( Animation anim ){
+		if (anim == null) return;
+		Float base = baseDelays.get(anim);
+		if (base == null) {
+			base = anim.delay;
+			baseDelays.put(anim, base);
+		}
+		float speed = 1f;
+		if ((anim == attack || anim == zap || anim == operate)
+				&& ch instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob
+				&& !(ch instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC)) {
+			speed = com.shatteredpixel.shatteredpixeldungeon.SPDSettings.animSpeed();
+		}
+		anim.delay = base / speed;
 	}
 	
 	//intended to be used for placing a character in the game world

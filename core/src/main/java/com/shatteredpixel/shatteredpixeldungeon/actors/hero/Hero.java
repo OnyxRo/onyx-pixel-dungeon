@@ -268,7 +268,8 @@ public class Hero extends Char {
 	public int exp = 0;
 	
 	public int HTBoost = 0;
-	
+	public int vitalityBonus = 0; //Matt Edition's Potion of Vitality, extra max HP on top of level and HTBoost
+
 	private ArrayList<Mob> visibleEnemies;
 
 	//This list is maintained so that some logic checks can be skipped
@@ -296,7 +297,9 @@ public class Hero extends Char {
 		if (buff(ElixirOfMight.HTBoost.class) != null){
 			HT += buff(ElixirOfMight.HTBoost.class).boost();
 		}
-		
+
+		HT += vitalityBonus;
+
 		if (boostHP){
 			HP += Math.max(HT - curHT, 0);
 		}
@@ -360,6 +363,7 @@ public class Hero extends Char {
 		bundle.put( EXPERIENCE, exp );
 		
 		bundle.put( HTBOOST, HTBoost );
+		bundle.put( "vitality_bonus", vitalityBonus );
 
 		belongings.storeInBundle( bundle );
 	}
@@ -371,6 +375,7 @@ public class Hero extends Char {
 		exp = bundle.getInt( EXPERIENCE );
 
 		HTBoost = bundle.getInt(HTBOOST);
+		vitalityBonus = bundle.getInt("vitality_bonus");
 
 		super.restoreFromBundle( bundle );
 

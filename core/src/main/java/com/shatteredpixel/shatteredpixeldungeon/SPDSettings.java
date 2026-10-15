@@ -118,6 +118,22 @@ public class SPDSettings extends GameSettings {
 	public static int screenShake() {
 		return getInt( KEY_SCREEN_SHAKE, 2, 0, 4 );
 	}
+
+	//Matt Edition's animation speed. Slider position 1 to 7 is 1x to 4x in half steps.
+	//It speeds up the attack, zap and operate animations of monsters, never the hero's.
+	public static final String KEY_ANIM_SPEED = "anim_speed";
+
+	public static void animSpeed( int slider ){
+		put( KEY_ANIM_SPEED, slider );
+	}
+
+	public static int animSpeedSlider() {
+		return getInt( KEY_ANIM_SPEED, 1, 1, 7 );
+	}
+
+	public static float animSpeed() {
+		return 1f + (animSpeedSlider() - 1) * 0.5f;
+	}
 	
 	//Interface
 

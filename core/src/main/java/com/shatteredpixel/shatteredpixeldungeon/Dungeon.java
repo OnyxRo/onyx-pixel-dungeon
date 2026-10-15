@@ -215,6 +215,7 @@ public class Dungeon {
 
 	//Experienced PD boosters, set by its respawn and fire boosting spells
 	public static float respawnBoost = 1f;
+	public static int vitalityPotionsUsed = 0; //Matt Edition's Potion of Vitality, each one used gives less
 	public static int additionalMobs = 0;
 	public static float fireDamage = 1f;
 
@@ -336,6 +337,7 @@ public class Dungeon {
 		energy = 0;
 
 		respawnBoost = 1f;
+		vitalityPotionsUsed = 0;
 		additionalMobs = 0;
 		fireDamage = 1f;
 
@@ -760,6 +762,7 @@ public class Dungeon {
 
 			bundle.put( GOLD, gold );
 			bundle.put( "respawnboost", respawnBoost );
+			bundle.put( "vitalitypotions", vitalityPotionsUsed );
 			bundle.put( "additionalmobs", additionalMobs );
 			bundle.put( "firedamage", fireDamage );
 			bundle.put( ENERGY, energy );
@@ -961,6 +964,7 @@ public class Dungeon {
 
 		gold = bundle.getInt( GOLD );
 		respawnBoost = bundle.contains( "respawnboost" ) ? bundle.getFloat( "respawnboost" ) : 1f;
+		vitalityPotionsUsed = bundle.contains( "vitalitypotions" ) ? bundle.getInt( "vitalitypotions" ) : 0;
 		additionalMobs = bundle.getInt( "additionalmobs" );
 		fireDamage = bundle.contains( "firedamage" ) ? bundle.getFloat( "firedamage" ) : 1f;
 		energy = bundle.getInt( ENERGY );
