@@ -302,6 +302,7 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String HOOKS = "sprites/experienced/hooks.png"; //ported, experienced
 		public static final String WATERLARVA = "sprites/cursed/snowslug.png"; //ported, cursed
 		public static final String WATERELEMENTAL = "sprites/cursed/waterelemental.png"; //ported, cursed
 		public static final String WATERCHALLENGEGOO = "sprites/cursed/waterchallengegoo.png"; //ported, cursed

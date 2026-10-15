@@ -374,6 +374,21 @@ public class ItemSpriteSheet {
 
 	public static final int WARPICK = MOD_ITEMS+0;
 	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;
+	public static final int ARMOR_RAT_KING = xy(2, 33);
+	public static final int CHEESE = xy(3, 33);
+	public static final int CHEESE_CHUNK = xy(4, 33);
+	public static final int IDENTIFY_BOMB = xy(5, 33);
+	public static final int KING_BLADE = xy(6, 33);
+	public static final int NEW_TENGU_BOMB = xy(7, 33);
+	public static final int RUSTY_SHIELD = xy(8, 33);
+	public static final int SHOCK_BOMB = xy(9, 33);
+	public static final int STONE_DISARM = xy(10, 33);
+	public static final int SUPER_PICKAXE = xy(11, 33);
+	public static final int VAMPIRISM = xy(12, 33);
+	public static final int WAND_AVALANCHE = xy(13, 33);
+	public static final int WAND_UNSTABLE = xy(14, 33);
+	public static final int FLUTE = xy(16, 19);
+	public static final int SLEEP_DART = xy(1, 33);
 	public static final int CREATIVE_GLOVES = xy(10, 19);
 	public static final int FIRINGWHIP = xy(11, 19);
 	public static final int GREEDSTAFF = xy(12, 19);
@@ -405,6 +420,21 @@ public class ItemSpriteSheet {
 	static{
 		assignItemRect(WARPICK, 15, 14);
 		assignItemRect(WOODEN_BOOMERANG, 12, 12);
+		assignItemRect(ARMOR_RAT_KING, 12, 6);
+		assignItemRect(CHEESE, 16, 12);
+		assignItemRect(CHEESE_CHUNK, 10, 8);
+		assignItemRect(IDENTIFY_BOMB, 14, 16);
+		assignItemRect(KING_BLADE, 15, 15);
+		assignItemRect(NEW_TENGU_BOMB, 9, 15);
+		assignItemRect(RUSTY_SHIELD, 12, 14);
+		assignItemRect(SHOCK_BOMB, 10, 13);
+		assignItemRect(STONE_DISARM, 14, 12);
+		assignItemRect(SUPER_PICKAXE, 14, 14);
+		assignItemRect(VAMPIRISM, 8, 16);
+		assignItemRect(WAND_AVALANCHE, 14, 14);
+		assignItemRect(WAND_UNSTABLE, 14, 14);
+		assignItemRect(FLUTE, 14, 14);
+		assignItemRect(SLEEP_DART, 15, 13);
 		assignItemRect(CREATIVE_GLOVES, 12, 16);
 		assignItemRect(FIRINGWHIP, 14, 14);
 		assignItemRect(GREEDSTAFF, 16, 16);

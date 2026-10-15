@@ -13,7 +13,7 @@ ROOT = sys.argv[1].rstrip('/') + '/'
 MOD = sys.argv[2].rstrip('/') + '/'
 NAMES = sys.argv[3:]
 PK = 'core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/'
-MOD_ROWS = [12, 18]   # zero-based rows 13 and 19
+MOD_ROWS = [12, 18, 32, 33, 34, 35]   # zero-based rows 13, 19, 33 to 36 (sheet grown to 576 px high)
 
 def LP(p):
     p = os.path.abspath(p)
