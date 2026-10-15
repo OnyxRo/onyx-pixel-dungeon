@@ -75,6 +75,20 @@ public class ModRoster {
 		add( "abyssalnite", PhantomSpirit.class, 1, 1, 99 );
 		add( "abyssalnite", WaterFlower.class, 1, 1, 99 );
 		add( "abyssalnite", WindSwarm.class, 1, 1, 99 );
+		add( "cursed", AdultFireElemental.class, 1, 1, 99 );
+		add( "cursed", AirElemental.class, 1, 1, 99 );
+		add( "cursed", EarthenGuardian.class, 1, 1, 99 );
+		add( "cursed", FossilSkeleton.class, 1, 1, 99 );
+		add( "cursed", GnollBattlemage.class, 1, 1, 99 );
+		add( "cursed", Kupua.class, 1, 1, 99 );
+		add( "cursed", MageCrab.class, 1, 1, 99 );
+		add( "cursed", Minion.class, 1, 1, 99 );
+		add( "cursed", NonBossGoo.class, 1, 1, 99 );
+		add( "cursed", Shielded.class, 1, 1, 99 );
+		add( "cursed", Shinobi.class, 1, 1, 99 );
+		add( "cursed", SonicBat.class, 1, 1, 99 );
+		add( "cursed", WaterElemental.class, 1, 1, 99 );
+		add( "cursed", WaterLarvae.class, 1, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

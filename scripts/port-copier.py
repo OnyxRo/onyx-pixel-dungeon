@@ -16,7 +16,10 @@ TAG = sys.argv[3]
 ROUNDS = int(sys.argv[4]) if len(sys.argv) > 4 else 12
 PK = 'core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/'
 B = ROOT + PK
-MB = MOD + PK
+import importlib.util
+_spec = importlib.util.spec_from_file_location('renames', os.path.join(os.path.dirname(os.path.abspath(__file__)), 'renames.py'))
+renames = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(renames)
+MB = MOD + renames.mod_package_dir(MOD)
 MASSETS = MOD + 'core/src/main/assets/'
 ASSETS = ROOT + 'core/src/main/assets/'
 
@@ -47,15 +50,21 @@ mod_assets_src = rd(MB + 'Assets.java') if os.path.exists(MB + 'Assets.java') el
 
 def add_asset(const, section):
     """section is the nested class in Assets, like Sprites or Sounds."""
+    body = ''
     ms = re.search(r'public static class ' + section + r'\s*\{', mod_assets_src)
-    if not ms: return False
-    nxt = mod_assets_src.find('public static class', ms.end())
-    body = mod_assets_src[ms.end(): nxt if nxt != -1 else len(mod_assets_src)]
+    if ms:
+        nxt = mod_assets_src.find('public static class', ms.end())
+        body = mod_assets_src[ms.end(): nxt if nxt != -1 else len(mod_assets_src)]
     m = re.search(r'public static final (?:String|Object)\s+' + re.escape(const) + r'\s*=\s*"([^"]+)"', body)
+    if not m:
+        # Shattered before 0.8 kept every name flat in Assets, sounds as SND_NAME
+        flat = ('SND_' + const) if section == 'Sounds' else const
+        m = re.search(r'public static final String\s+' + re.escape(flat) + r'\s*=\s*"([^"]+)"', mod_assets_src)
     if not m: return False
     path = m.group(1)
     if not os.path.exists(LP(MASSETS + path)): return False
     d, f = os.path.split(path)
+    if not d: d = 'sounds' if section == 'Sounds' else 'sprites'
     newpath = d + '/' + TAG + '/' + f if '/' + TAG not in d else path
     os.makedirs(os.path.dirname(ASSETS + newpath), exist_ok=True)
     shutil.copy(LP(MASSETS + path), ASSETS + newpath)
@@ -105,6 +114,7 @@ for rnd in range(ROUNDS):
         if glob.glob(B + '**/' + name + '.java', recursive=True): continue
         os.makedirs(os.path.dirname(B + rel), exist_ok=True)
         shutil.copy(LP(cands[0]), B + rel)
+        wr(B + rel, renames.apply(rd(B + rel))[0])
         copied_total.append(rel)
         changed = True
     n = out.count(': error: ')
@@ -126,3 +136,23 @@ for b in re.split(r'(?=^\S.*?: error: )', out, flags=re.M):
     line = first + ' || ' + (sym.group(1).strip() if sym else '') + ' || ' + (loc.group(1).strip() if loc else '')
     if line not in seen:
         seen.add(line); print('  ' + line[:230])
+
+# the full compiler output stays in a file, and a short summary is printed for the port tools to show
+io.open(ROOT + 'build/compile-errors.log', 'w', encoding='utf-8').write(out)
+groups = {}
+for m in re.finditer(r'^(\S.*?\.java):(\d+): error: (.*)$', out, flags=re.M):
+    f = os.path.basename(m.group(1))
+    msg = m.group(3).strip()
+    if msg == 'cannot find symbol':
+        tail = out[m.end():m.end() + 300]
+        sym = re.search(r'symbol:\s+(.*)', tail)
+        msg += ' ' + (sym.group(1).strip() if sym else '')
+    msg = re.sub(r'\(.*', '', msg)[:70]
+    groups.setdefault(msg, {}).setdefault(f, 0)
+    groups[msg][f] += 1
+print('ERRORS BY TYPE:')
+ranked = sorted(groups.items(), key=lambda kv: -sum(kv[1].values()))
+for msg, files in ranked[:12]:
+    names = ', '.join(sorted(files)[:3]) + (' and %d more' % (len(files) - 3) if len(files) > 3 else '')
+    print('  %dx %s (%s)' % (sum(files.values()), msg, names))
+if len(ranked) > 12: print('  and %d more kinds, see build/compile-errors.log' % (len(ranked) - 12))

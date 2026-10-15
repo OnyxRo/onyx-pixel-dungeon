@@ -58,6 +58,13 @@ Then update TASKS.md and PORTING.md, commit. Do not do anything else to check a 
 7. Update TASKS.md (check it off, or leave it unchecked and list what is left under it, adding new tasks for leftovers) and PORTING.md. Add the mod's monsters to the "Done per mod" line.
 8. Commit, one commit per finished mod or feature.
 
+## The rename table and the error summary
+
+- `scripts/renames.py` is the one table of fixes for old code (renamed methods, `Assets.SND_X` to `Assets.Sounds.X`, flat `Assets.KUPUA` to `Assets.Sprites.KUPUA`, a mod's own package name to ours, long damage to int, `Dungeon.cycle`, helpers like `TargetedCell.colored`). `port-mob.py`, `port-item.py` and `port-copier.py` run it over every file they copy. Add a row when you fix the same compile error twice. The rows come from errors met so far, they were not mined from Shattered's history.
+- Mods whose code lives under another package (Cursed PD is `cursedpixeldungeon`, Rat King 2 is `zrp200.rkpd2`) are found automatically (`renames.mod_package_dir`) and the package name is rewritten. Text kept under `resources/<package>/messages` is found by `port-strings.py`.
+- After a failed compile the tools print "ERRORS BY TYPE", at most 14 lines, one per kind with its files. The full compiler output is in `build/compile-errors.log`.
+- A ported file that fails to compile is cheaper to fix in place than to delete and port again. Run `python -I scripts/port-copier.py . ~/mod-sources/<key> <key> 6` after each round of hand fixes, it compiles and prints the summary.
+
 ## Known drift from older Shattered bases
 
 Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.py` automatically.

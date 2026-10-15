@@ -50,44 +50,20 @@ def run(cmd, env=None):
         e = dict(os.environ); e.update(env or {})
         return subprocess.run(cmd, cwd=ROOT, stdout=f, stderr=subprocess.STDOUT, env=e).returncode
 
-# (what it fixes, regex, replacement). Run over every file this run copied. Add a rule when a port hits the same error twice.
-ITEM_RULES = [
-    ('Dungeon.cycle arithmetic is Experienced only, use 0', r'\(?\s*Dungeon\.cycle\s*\*\s*\d+L?\s*\)?', '0'),
-    ('Dungeon.cycle is Experienced only, use 0', r'Dungeon\.cycle', '0'),
-    ('Dungeon.Float, Int and ranges moved to Random', r'Dungeon\.(Float|Int|IntRange|NormalIntRange)\(', r'Random.\1('),
-    ('NormalLongRange became NormalIntRange', r'(?:Dungeon|Random)\.NormalLongRange\(', 'Random.NormalIntRange('),
-    ('Random.LongRange became IntRange', r'(?:Dungeon|Random)\.LongRange\(', 'Random.IntRange('),
-    ('internalTier does not exist here', r'internalTier\s*=\s*tier\s*=', 'tier ='),
-    ('durabilityPerUse takes the level', r'public float durabilityPerUse\(\s*\)\s*\{', 'public float durabilityPerUse( int level ) {'),
-    ('abilityChargeUse is final, override baseChargeUse', r'public\s+float\s+abilityChargeUse\(\s*Hero hero,\s*Char target\s*\)\s*\{\s*return\s*\((.*?)\);', r'protected int baseChargeUse(Hero hero, Char target) {\n\t\treturn (int)(\1);'),
-    ('attackDelay became public', r'protected(\s+float\s+attackDelay\s*\()', r'public\1'),
-    ('Mob.add(Buff) returns boolean', r'public\s+void\s+add\(\s*Buff\s+buff\s*\)\s*\{\s*\}', 'public boolean add( Buff buff ) { return false; }'),
-    ('throwChar gained a cause argument', r'(WandOfBlastWave\.throwChar\([^;]*?,\s*(?:true|false),\s*(?:true|false))\)', r'\1, this)'),
-    ('TargetedCell(pos, color) is TargetedCell.colored here', r'new TargetedCell\(', 'TargetedCell.colored('),
-    ('Buff.prolong on a deferred damage buff is extend', r'(\bdmg\.)prolong\(', r'\1extend('),
-]
-
-def convert_long(s):
-    """Mods built for huge numbers (Experienced) use long for damage. This game uses int."""
-    if not re.search(r'\blong\s+(?:min|max|damageRoll|proc|value|STRReq|defenseFactor)\b|long\s+damage\b', s):
-        return s
-    s = re.sub(r'\blong\b', 'int', s)
-    s = re.sub(r'\bLong\b', 'Integer', s)
-    return re.sub(r'(\d)L\b', r'\1', s)
+import importlib.util
+_spec = importlib.util.spec_from_file_location('renames', os.path.join(os.path.dirname(os.path.abspath(__file__)), 'renames.py'))
+renames = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(renames)
 
 def fix_file(path):
     s = rd(path)
-    t = convert_long(s)
-    for why, pat, rep in ITEM_RULES:
-        t = re.sub(pat, rep, t)
-    if 'Random.' in t and 'import com.watabou.utils.Random;' not in t:
-        t = re.sub(r'(package [\w.]+;\r?\n)', r'\1\nimport com.watabou.utils.Random;', t, count=1)
+    t, fired = renames.apply(s)
     if t != s:
         wr(path, t); return True
     return False
 
+MPK = renames.mod_package_dir(MOD)
 mod_files = {}
-for f in glob.glob(LP(MOD) + '/' + PK + '**/*.java', recursive=True):
+for f in glob.glob(LP(MOD) + '/' + MPK + '**/*.java', recursive=True):
     mod_files.setdefault(os.path.basename(f)[:-5], []).append(f)
 
 copied, problems = [], []
@@ -95,12 +71,13 @@ for n in names:
     c = mod_files.get(n, [])
     if len(c) != 1:
         problems.append('%s: %s' % (n, 'not found in the mod' if not c else 'name is not unique in the mod')); continue
-    rel = os.path.relpath(c[0], LP(MOD) + '/' + PK).replace(os.sep, '/')
+    rel = os.path.relpath(c[0], LP(MOD) + '/' + MPK).replace(os.sep, '/')
     dest = ROOT + '/' + PK + rel
     if os.path.exists(dest):
         problems.append(n + ': already in the game at ' + rel); continue
     os.makedirs(os.path.dirname(dest), exist_ok=True)
     shutil.copy(c[0], dest)
+    wr(dest, renames.apply(rd(dest))[0])
     copied.append(rel)
 print('copied', len(copied), 'classes from', MODNAME)
 
@@ -185,7 +162,10 @@ if lines:
 print('added to the journal catalog:', len(regd))
 
 print('compile errors left:', len(rem_lines))
-for l in rem_lines[:15]: print('   ', l[:200])
+_log = rd(LOG)
+_sum = _log[_log.rfind('ERRORS BY TYPE:'):].splitlines()[1:] if 'ERRORS BY TYPE:' in _log else []
+for l in [x for x in _sum if x.startswith('  ')][:14]: print('  ', l.strip()[:160])
+if rem_lines: print('   full errors in build/compile-errors.log')
 if skipped: print('not copied, mod only systems:', skipped.group(1), '(code that uses them has to be edited out by hand)')
 for p in problems: print('could not port:', p)
 if '--no-check' not in opts and not rem_lines:

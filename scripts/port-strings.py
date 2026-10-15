@@ -31,6 +31,10 @@ for f in sorted(set(files)):
 total = 0
 for bundle, keys in prefixes.items():
     src = MOD + MSG + bundle + '/' + bundle + '.properties'
+    if not os.path.exists(LP(src)):
+        # older mods keep text under resources/<package path>/messages
+        hits = glob.glob(LP(MOD + 'core/src/main/resources') + '/**/messages/' + bundle + '/' + bundle + '.properties', recursive=True)
+        if hits: src = hits[0]
     dst = ROOT + MSG + bundle + '/' + bundle + '.properties'
     if not os.path.exists(LP(src)) or not os.path.exists(dst): continue
     s = rd(dst); nl = '\r\n' if '\r\n' in s else '\n'

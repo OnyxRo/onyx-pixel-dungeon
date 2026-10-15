@@ -45,14 +45,9 @@ def run(cmd):
         f.write('\n$ ' + ' '.join(cmd) + '\n'); f.flush()
         return subprocess.run(cmd, cwd=ROOT, stdout=f, stderr=subprocess.STDOUT).returncode
 
-# Fixes for code from older Shattered bases. Each is (what it fixes, regex, replacement). They run over every
-# file this run copied. Add a rule whenever a port hits the same compile error twice, see the port-mod skill.
-RULES = [
-    ('attackDelay became public', r'protected(\s+float\s+attackDelay\s*\()', r'public\1'),
-    ('Mob.add(Buff) returns boolean, empty override', r'public\s+void\s+add\(\s*Buff\s+buff\s*\)\s*\{\s*\}', 'public boolean add( Buff buff ) { return false; }'),
-    ('buff icon the mod added, use Terror icon', r'BuffIndicator\.DreadPlague', 'BuffIndicator.TERROR'),
-    ('throwChar gained a cause argument', r'(WandOfBlastWave\.throwChar\([^;]*?,\s*(?:true|false),\s*(?:true|false))\)', r'\1, this)'),
-]
+import importlib.util
+_spec = importlib.util.spec_from_file_location('renames', os.path.join(os.path.dirname(os.path.abspath(__file__)), 'renames.py'))
+renames = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(renames)
 
 def apply_rules(rel_files):
     applied = {}
@@ -60,17 +55,14 @@ def apply_rules(rel_files):
         path = ROOT + '/' + PK + rel
         if not os.path.exists(path): continue
         s = rd(path)
-        t = s
-        for why, pat, rep in RULES:
-            t2 = re.sub(pat, rep, t)
-            if t2 != t:
-                applied[why] = applied.get(why, 0) + 1
-                t = t2
+        t, fired = renames.apply(s)
+        for why in fired: applied[why] = applied.get(why, 0) + 1
         if t != s: wr(path, t)
     return applied
 
+MPK = renames.mod_package_dir(MOD)
 mod_files = {}
-for f in glob.glob(LP(MOD) + '/' + PK + '**/*.java', recursive=True):
+for f in glob.glob(LP(MOD) + '/' + MPK + '**/*.java', recursive=True):
     mod_files.setdefault(os.path.basename(f)[:-5], []).append(f)
 
 copied = []
@@ -78,12 +70,13 @@ def copy_class(name):
     cands = mod_files.get(name, [])
     if len(cands) != 1:
         return None
-    rel = os.path.relpath(cands[0], LP(MOD) + '/' + PK).replace(os.sep, '/')
+    rel = os.path.relpath(cands[0], LP(MOD) + '/' + MPK).replace(os.sep, '/')
     dest = ROOT + '/' + PK + rel
     if os.path.exists(dest):
         return rel
     os.makedirs(os.path.dirname(dest), exist_ok=True)
     shutil.copy(cands[0], dest)
+    wr(dest, renames.apply(rd(dest))[0])
     copied.append(rel)
     return rel
 
@@ -127,7 +120,7 @@ if placeholders:
 
 # fix known drift in everything that is new
 new_files = subprocess.run(['git', 'status', '--short', '--untracked-files=all'], cwd=ROOT, capture_output=True, text=True).stdout
-new_rel = [l[3:].strip()[len(PK):] for l in new_files.split('\n') if l.strip().endswith('.java') and l[3:].strip().startswith(PK)]
+new_rel = [l[3:].strip()[len(PK):] for l in new_files.split('\n') if l.startswith('??') and l.strip().endswith('.java') and l[3:].strip().startswith(PK)]
 for why, n in apply_rules(new_rel).items(): print('fixed', n, 'x', why)
 if new_rel:
     # compile again now the rules ran, so the errors reported below are the ones that remain
@@ -155,7 +148,10 @@ if added:
 print('added to ModRoster:', len(added))
 
 print('compile errors left:', len(rem_lines))
-for l in rem_lines[:15]: print('   ', l[:200])
+_log = rd(LOG)
+_sum = _log[_log.rfind('ERRORS BY TYPE:'):].splitlines()[1:] if 'ERRORS BY TYPE:' in _log else []
+for l in [x for x in _sum if x.startswith('  ')][:14]: print('  ', l.strip()[:160])
+if rem_lines: print('   full errors in build/compile-errors.log')
 if problems:
     print('could not port:')
     for p in problems: print('   ', p)

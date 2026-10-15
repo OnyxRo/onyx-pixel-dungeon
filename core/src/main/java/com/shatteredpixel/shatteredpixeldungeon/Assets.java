@@ -302,6 +302,15 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String WATERLARVA = "sprites/cursed/snowslug.png"; //ported, cursed
+		public static final String WATERELEMENTAL = "sprites/cursed/waterelemental.png"; //ported, cursed
+		public static final String WATERCHALLENGEGOO = "sprites/cursed/waterchallengegoo.png"; //ported, cursed
+		public static final String SONICBAT = "sprites/cursed/sonic_bat.png"; //ported, cursed
+		public static final String SHINOBI = "sprites/cursed/assassin.png"; //ported, cursed
+		public static final String MAGECRAB = "sprites/cursed/Magic_Crab.png"; //ported, cursed
+		public static final String KUPUA = "sprites/cursed/kupua.png"; //ported, cursed
+		public static final String FOSSILSKELETON = "sprites/cursed/fossil_skeleton.png"; //ported, cursed
+		public static final String ADULTELEMENTAL = "sprites/cursed/elemental_adult.png"; //ported, cursed
 		public static final String NECRO2 = "sprites/matt/necromancer2.png"; //ported, matt
 		public static final String ICESNAKE = "sprites/matt/icesnake.png"; //ported, matt
 		public static final String KOBOLD = "sprites/reforged/kobold.png"; //ported, reforged

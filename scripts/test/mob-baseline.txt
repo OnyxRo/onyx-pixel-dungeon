@@ -21,3 +21,6 @@ ElderGnoll crashed when it died
 FlameDemon crashed during its own turns
 FiringSnapper crashed when it hit a rat
 StarlightSmasher crashed when it hit a rat
+NonBossGoo crashed during its own turns
+GnollBattlemage crashed during its own turns
+WaterElemental crashed during its own turns
