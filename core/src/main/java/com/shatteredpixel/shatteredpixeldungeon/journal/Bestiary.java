@@ -196,7 +196,7 @@ public enum Bestiary {
 	//ported monsters that sit in the main monster package
 	private static final java.util.HashSet<String> PORTED_NAMES = new java.util.HashSet<>(java.util.Arrays.asList(
 			"Burglar", "Snatcher", "FrozenSwarm", "DM100F", "IceSnake", "IceGolem", "DM151", "DM166",
-			"ElderGnoll", "GnollBaby", "GnollMyth", "Goopling", "SpiritNecromancer", "DarkKing"
+			"ElderGnoll", "GnollBaby", "GnollMyth", "Goopling", "SpiritNecromancer", "DarkKing", "RatUsurper"
 	));
 
 	//tracks whether an entity has been encountered

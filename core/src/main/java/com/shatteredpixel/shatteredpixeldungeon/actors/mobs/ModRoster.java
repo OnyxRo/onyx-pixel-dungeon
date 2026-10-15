@@ -65,6 +65,7 @@ public class ModRoster {
 		add( "reforged", Ballista.class, 1, 8, 99 );
 		add( "reforged", Fiend.class, 1, 14, 99 );
 		add( "reforged", QuickFiringBallista.class, 1, 14, 99 );
+		add( "reforged", DemonGoo.class, 1, 23, 99 );
 		add( "abyssalnite", ChronosSkull.class, 1, 1, 99 );
 		add( "abyssalnite", FakeWraith.class, 1, 1, 99 );
 		add( "abyssalnite", FlameDemon.class, 1, 1, 99 );

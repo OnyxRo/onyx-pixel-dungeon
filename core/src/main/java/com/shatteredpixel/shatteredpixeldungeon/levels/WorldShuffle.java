@@ -314,6 +314,10 @@ public class WorldShuffle {
 	 * Devoted has one boss for each of its five worlds, on the same floors as Shattered's.
 	 */
 	public static Level modBossLevel( int world, int depth ){
+		if (world >= 0 && world < LOGOS.length && REFORGED.equals(LOGOS[world])) {
+			//Reforged only has the one boss floor, the Rat Usurper in place of Goo
+			return depth == 5 ? new SewerBossUsurperLevel() : null;
+		}
 		if (world < 0 || world >= LOGOS.length || !DEVOTED.equals(LOGOS[world])) return null;
 		switch (depth) {
 			case 5:  return new GardenBossLevel();

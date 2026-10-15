@@ -319,6 +319,8 @@ public class Assets {
 		public static final String BALLISTA = "sprites/reforged/ballista.png"; //ported, reforged
 		public static final String FIEND = "sprites/reforged/fiend.png"; //ported, reforged
 		public static final String UNHOLY_PRIEST = "sprites/reforged/unholy_priest.png"; //ported, reforged
+		public static final String RAT_USURPER = "sprites/reforged/rat_usurper.png"; //ported, reforged
+		public static final String DEMON_GOO = "sprites/reforged/demon_goo.png"; //ported, reforged
 		public static final String ICEGOLEM = "sprites/matt/ice_golem.png"; //ported, matt
 		public static final String FROZENSWARM = "sprites/matt/frozenswarm.png"; //ported, matt
 		public static final String GNOLL2 = "sprites/matt/gnoll2.png"; //ported, matt

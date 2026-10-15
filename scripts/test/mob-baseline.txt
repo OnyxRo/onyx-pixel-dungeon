@@ -24,3 +24,4 @@ StarlightSmasher crashed when it hit a rat
 NonBossGoo crashed during its own turns
 GnollBattlemage crashed during its own turns
 WaterElemental crashed during its own turns
+DemonGoo crashed during its own turns

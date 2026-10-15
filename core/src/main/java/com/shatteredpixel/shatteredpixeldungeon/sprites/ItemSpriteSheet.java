@@ -374,6 +374,7 @@ public class ItemSpriteSheet {
 
 	public static final int WARPICK = MOD_ITEMS+0;
 	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;
+	public static final int CLAW = xy(15, 33);
 	public static final int ARMOR_RAT_KING = xy(2, 33);
 	public static final int CHEESE = xy(3, 33);
 	public static final int CHEESE_CHUNK = xy(4, 33);
@@ -420,6 +421,7 @@ public class ItemSpriteSheet {
 	static{
 		assignItemRect(WARPICK, 15, 14);
 		assignItemRect(WOODEN_BOOMERANG, 12, 12);
+		assignItemRect(CLAW, 12, 10);
 		assignItemRect(ARMOR_RAT_KING, 12, 6);
 		assignItemRect(CHEESE, 16, 12);
 		assignItemRect(CHEESE_CHUNK, 10, 8);

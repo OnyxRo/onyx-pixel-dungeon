@@ -316,6 +316,9 @@ public enum Catalog {
 		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfUnstable.class);
 		ARMOR.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.RatKingArmor.class);
 
+		//items ported from reforged
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.quest.RatClaw.class);
+
 
 	}
 
