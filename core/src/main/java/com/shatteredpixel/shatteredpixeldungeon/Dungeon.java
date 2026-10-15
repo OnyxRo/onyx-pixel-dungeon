@@ -299,7 +299,7 @@ public class Dungeon {
 		sandboxOffMods.clear();
 		sandboxSalt = 0;
 		sandboxOnceWorld = -1;
-		com.shatteredpixel.shatteredpixeldungeon.windows.WndSongs.chosen = null;
+		com.shatteredpixel.shatteredpixeldungeon.windows.WndSongs.clearChoice();
 
 		gold = 0;
 		energy = 0;

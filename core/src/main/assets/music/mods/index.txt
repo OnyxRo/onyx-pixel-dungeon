@@ -1,0 +1,299 @@
+music/mods/pixel-dungeon/theme_76efb0.mp3	Pixel Dungeon	Theme
+music/mods/3oidburg-pixel-dungeon/theme_b574ed.ogg	3oiDburg Pixel Dungeon	Theme
+music/mods/abyssalnite-pixel-dungeon/bgm1_6fa6d4.ogg	Abyssalnite Pixel Dungeon	Bgm1
+music/mods/abyssalnite-pixel-dungeon/bgm2_555f60.ogg	Abyssalnite Pixel Dungeon	Bgm2
+music/mods/abyssalnite-pixel-dungeon/bgm3_486407.ogg	Abyssalnite Pixel Dungeon	Bgm3
+music/mods/abyssalnite-pixel-dungeon/bgm4_e33e3a.ogg	Abyssalnite Pixel Dungeon	Bgm4
+music/mods/abyssalnite-pixel-dungeon/bgm5_3eaa50.ogg	Abyssalnite Pixel Dungeon	Bgm5
+music/mods/abyssalnite-pixel-dungeon/bgm6_8e3c09.ogg	Abyssalnite Pixel Dungeon	Bgm6
+music/mods/abyssalnite-pixel-dungeon/boss1_6e10ca.ogg	Abyssalnite Pixel Dungeon	Boss1
+music/mods/abyssalnite-pixel-dungeon/boss2_80f8b0.ogg	Abyssalnite Pixel Dungeon	Boss2
+music/mods/abyssalnite-pixel-dungeon/boss3_1a1efd.ogg	Abyssalnite Pixel Dungeon	Boss3
+music/mods/abyssalnite-pixel-dungeon/boss4_ace9e1.ogg	Abyssalnite Pixel Dungeon	Boss4
+music/mods/abyssalnite-pixel-dungeon/boss5_dfafa9.ogg	Abyssalnite Pixel Dungeon	Boss5
+music/mods/abyssalnite-pixel-dungeon/game_278e1c.ogg	Abyssalnite Pixel Dungeon	Game
+music/mods/abyssalnite-pixel-dungeon/surface_c1f49b.ogg	Abyssalnite Pixel Dungeon	Surface
+music/mods/abyssalnite-pixel-dungeon/theme_c9fd0e.ogg	Abyssalnite Pixel Dungeon	Theme
+music/mods/added-pixel-dungeon/surface_e5b6e5.ogg	Added Pixel Dungeon	Surface
+music/mods/added-pixel-dungeon/theme_81c76c.ogg	Added Pixel Dungeon	Theme
+music/mods/arranged-pixel-dungeon/old_surface_5a8f60.ogg	ARranged Pixel Dungeon	Old surface
+music/mods/buttered-pixel-dungeon/theme_b7ccd4.mp3	Buttered Pixel Dungeon	Theme
+music/mods/classic-dungeon/theme_8d3b65.mp3	Classic Dungeon	Theme
+music/mods/cursed-pixel-dungeon/city_theme_01ae0f.mp3	Cursed Pixel Dungeon	City theme
+music/mods/cursed-pixel-dungeon/prisons_theme_943c08.mp3	Cursed Pixel Dungeon	Prisons theme
+music/mods/cursed-pixel-dungeon/title_theme_5a5cf0.mp3	Cursed Pixel Dungeon	Title theme
+music/mods/deranged-pixel-dungeon/abyss_1_29c127.ogg	DERanged Pixel Dungeon	Abyss 1
+music/mods/deranged-pixel-dungeon/abyss_2_2f311e.ogg	DERanged Pixel Dungeon	Abyss 2
+music/mods/deranged-pixel-dungeon/abyss_3_091c2c.ogg	DERanged Pixel Dungeon	Abyss 3
+music/mods/deranged-pixel-dungeon/abyss_4_3114a6.ogg	DERanged Pixel Dungeon	Abyss 4
+music/mods/deranged-pixel-dungeon/abyss_5_6ec674.ogg	DERanged Pixel Dungeon	Abyss 5
+music/mods/easier-sprouted-pixel-dungeon/game_c2c712.ogg	Easier Sprouted Pixel Dungeon	Game
+music/mods/experienced-pixel-dungeon/arena_8aee1b.ogg	Experienced Pixel Dungeon	Arena
+music/mods/experienced-pixel-dungeon/black_mimic_beb6f3.ogg	Experienced Pixel Dungeon	Black mimic
+music/mods/experienced-pixel-dungeon/black_mimic_arena_3a8bf4.ogg	Experienced Pixel Dungeon	Black mimic arena
+music/mods/experienced-pixel-dungeon/black_mimic_finale_985387.ogg	Experienced Pixel Dungeon	Black mimic finale
+music/mods/fushigi-no-pixel-dungeon/theme_427571.ogg	Fushigi no Pixel Dungeon	Theme
+music/mods/girls-frontline-pixel-dungeon/theme_d52f01.ogg	Girls Frontline Pixel Dungeon	Theme
+music/mods/girls-frontline-pixel-dungeon-reborn/Cradle_of_Fear_6e8dc5.ogg	Girls-Frontline Pixel Dungeon Reborn	Cradle of Fear
+music/mods/girls-frontline-pixel-dungeon-reborn/Cury_0ae55f.ogg	Girls-Frontline Pixel Dungeon Reborn	Cury
+music/mods/girls-frontline-pixel-dungeon-reborn/Event_summer_combat_bd12f5.ogg	Girls-Frontline Pixel Dungeon Reborn	Event summer combat
+music/mods/girls-frontline-pixel-dungeon-reborn/Horizon_1ae664.ogg	Girls-Frontline Pixel Dungeon Reborn	Horizon
+music/mods/girls-frontline-pixel-dungeon-reborn/M_halloween19_host_986268.ogg	Girls-Frontline Pixel Dungeon Reborn	M halloween19 host
+music/mods/girls-frontline-pixel-dungeon-reborn/M_halloween19_made_in_heaven_272cb0.ogg	Girls-Frontline Pixel Dungeon Reborn	M halloween19 made in heaven
+music/mods/girls-frontline-pixel-dungeon-reborn/Machines_AreTalking_c3ea4a.ogg	Girls-Frontline Pixel Dungeon Reborn	Machines Are Talking
+music/mods/girls-frontline-pixel-dungeon-reborn/Made_in_Heaven_3ffaad.ogg	Girls-Frontline Pixel Dungeon Reborn	Made in Heaven
+music/mods/girls-frontline-pixel-dungeon-reborn/MakeSense_ad303d.ogg	Girls-Frontline Pixel Dungeon Reborn	Make Sense
+music/mods/girls-frontline-pixel-dungeon-reborn/MindHack_5ff6b3.ogg	Girls-Frontline Pixel Dungeon Reborn	Mind Hack
+music/mods/girls-frontline-pixel-dungeon-reborn/SafetyFirst_a_2debc4.ogg	Girls-Frontline Pixel Dungeon Reborn	Safety First a
+music/mods/girls-frontline-pixel-dungeon-reborn/SafetyFirst_b_003fa2.ogg	Girls-Frontline Pixel Dungeon Reborn	Safety First b
+music/mods/girls-frontline-pixel-dungeon-reborn/SeeYouAgain_721562.ogg	Girls-Frontline Pixel Dungeon Reborn	See You Again
+music/mods/girls-frontline-pixel-dungeon-reborn/Tactical_Operation_c539cf.ogg	Girls-Frontline Pixel Dungeon Reborn	Tactical Operation
+music/mods/girls-frontline-pixel-dungeon-reborn/Vacance_1ae22c.ogg	Girls-Frontline Pixel Dungeon Reborn	Vacance
+music/mods/girls-frontline-pixel-dungeon-reborn/What_amIfightingfor_bd2b5c.ogg	Girls-Frontline Pixel Dungeon Reborn	What am Ifightingfor
+music/mods/hollow-dungeon/surface_99a253.ogg	Hollow Dungeon	Surface
+music/mods/hollow-dungeon/theme_d4fb17.ogg	Hollow Dungeon	Theme
+music/mods/jojo-s-bizarre-dungeon/theme_0ff595.ogg	Jojo's Bizarre Dungeon	Theme
+music/mods/lovecraft-pixel-dungeon/JoJoBloodyStream_0de77a.ogg	Lovecraft Pixel Dungeon	Jo Jo Bloody Stream
+music/mods/lovecraft-pixel-dungeon/JoJoDiamond1_e4ebeb.ogg	Lovecraft Pixel Dungeon	Jo Jo Diamond1
+music/mods/lovecraft-pixel-dungeon/JoJoDiamond2_fb8ca4.ogg	Lovecraft Pixel Dungeon	Jo Jo Diamond2
+music/mods/lovecraft-pixel-dungeon/JoJoDiamond3_805dfc.ogg	Lovecraft Pixel Dungeon	Jo Jo Diamond3
+music/mods/lovecraft-pixel-dungeon/JoJoEndOfTheWorld_c15221.ogg	Lovecraft Pixel Dungeon	Jo Jo End Of The World
+music/mods/lovecraft-pixel-dungeon/JoJoPhantomBlood_7eb61a.ogg	Lovecraft Pixel Dungeon	Jo Jo Phantom Blood
+music/mods/lovecraft-pixel-dungeon/JoJoStandProud_5f1b51.ogg	Lovecraft Pixel Dungeon	Jo Jo Stand Proud
+music/mods/magic-ling-pixel-dungeon/Ice_Fire_faf2ca.ogg	Magic Ling Pixel Dungeon	Ice&Fire
+music/mods/magic-ling-pixel-dungeon/Level1_a88fd5.ogg	Magic Ling Pixel Dungeon	Level1
+music/mods/magic-ling-pixel-dungeon/Level1_FireCave_f1f428.ogg	Magic Ling Pixel Dungeon	Level1 Fire Cave
+music/mods/magic-ling-pixel-dungeon/Level2_7d6ac3.ogg	Magic Ling Pixel Dungeon	Level2
+music/mods/magic-ling-pixel-dungeon/Level3_7a06e0.ogg	Magic Ling Pixel Dungeon	Level3
+music/mods/magic-ling-pixel-dungeon/Level4_759fab.ogg	Magic Ling Pixel Dungeon	Level4
+music/mods/magic-ling-pixel-dungeon/Level5_fa863b.ogg	Magic Ling Pixel Dungeon	Level5
+music/mods/magic-ling-pixel-dungeon/Level_Ancity_153867.ogg	Magic Ling Pixel Dungeon	Level Ancity
+music/mods/magic-ling-pixel-dungeon/Sand_a21960.ogg	Magic Ling Pixel Dungeon	Sand
+music/mods/magic-ling-pixel-dungeon/Boss_Saka_d3b20d.ogg	Magic Ling Pixel Dungeon	Boss Saka (Boss)
+music/mods/magic-ling-pixel-dungeon/Boss_dragon_5664b8.ogg	Magic Ling Pixel Dungeon	Boss dragon (Boss)
+music/mods/magic-ling-pixel-dungeon/Boss1_1607f4.ogg	Magic Ling Pixel Dungeon	Boss1 (Boss)
+music/mods/magic-ling-pixel-dungeon/Boss2_cace73.ogg	Magic Ling Pixel Dungeon	Boss2 (Boss)
+music/mods/magic-ling-pixel-dungeon/Boss2_branch_4d613a.ogg	Magic Ling Pixel Dungeon	Boss2 branch (Boss)
+music/mods/magic-ling-pixel-dungeon/Boss3_662bed.ogg	Magic Ling Pixel Dungeon	Boss3 (Boss)
+music/mods/magic-ling-pixel-dungeon/Diamd_Boss_9b2df6.ogg	Magic Ling Pixel Dungeon	Diamd Boss (Boss)
+music/mods/magic-ling-pixel-dungeon/dogboss_d7695a.ogg	Magic Ling Pixel Dungeon	Dogboss (Boss)
+music/mods/magic-ling-pixel-dungeon/dwgboss_caa020.ogg	Magic Ling Pixel Dungeon	Dwgboss (Boss)
+music/mods/magic-ling-pixel-dungeon/yogend_297539.ogg	Magic Ling Pixel Dungeon	Yogend (Boss)
+music/mods/magic-ling-pixel-dungeon/Mischief_Managed_Easy_75f460.ogg	Magic Ling Pixel Dungeon	Mischief Managed Easy (Hollow)
+music/mods/magic-ling-pixel-dungeon/Mischief_Managed_22c1ec.ogg	Magic Ling Pixel Dungeon	Mischief Managed (Hollow)
+music/mods/magic-ling-pixel-dungeon/morpheus_84e629.ogg	Magic Ling Pixel Dungeon	Morpheus (Hollow)
+music/mods/magic-ling-pixel-dungeon/movebox_f0cd0f.ogg	Magic Ling Pixel Dungeon	Movebox (Hollow)
+music/mods/magic-ling-pixel-dungeon/pacman_10yearold_mix_7839db.ogg	Magic Ling Pixel Dungeon	Pacman 10yearold mix (Hollow)
+music/mods/magic-ling-pixel-dungeon/seach_98fcd9.ogg	Magic Ling Pixel Dungeon	Seach (Hollow)
+music/mods/magic-ling-pixel-dungeon/nbpl_e14c16.ogg	Magic Ling Pixel Dungeon	Nbpl
+music/mods/magic-ling-pixel-dungeon/peach_328e2d.ogg	Magic Ling Pixel Dungeon	Peach
+music/mods/magic-ling-pixel-dungeon/galaxy_040731.ogg	Magic Ling Pixel Dungeon	Galaxy (Rgjt)
+music/mods/magic-ling-pixel-dungeon/god_f86c13.ogg	Magic Ling Pixel Dungeon	God (Rgjt)
+music/mods/magic-ling-pixel-dungeon/star_b4e0d9.ogg	Magic Ling Pixel Dungeon	Star (Rgjt)
+music/mods/magic-ling-pixel-dungeon/surface_3aa8b0.ogg	Magic Ling Pixel Dungeon	Surface
+music/mods/magic-ling-pixel-dungeon/theme_dd9f86.ogg	Magic Ling Pixel Dungeon	Theme
+music/mods/magic-ling-pixel-dungeon/theme_sky_4644b1.ogg	Magic Ling Pixel Dungeon	Theme sky
+music/mods/magic-ling-pixel-dungeon/road_d88bbe.mp3	Magic Ling Pixel Dungeon	Road (Tomb)
+music/mods/magic-ling-pixel-dungeon/royal_9a9f2d.ogg	Magic Ling Pixel Dungeon	Royal (Tomb)
+music/mods/magic-ling-pixel-dungeon/tomb2_dc5ff6.mp3	Magic Ling Pixel Dungeon	Tomb2 (Tomb)
+music/mods/magic-ling-pixel-dungeon/tomb_cache_6aeb6d.mp3	Magic Ling Pixel Dungeon	Tomb cache (Tomb)
+music/mods/magic-ling-pixel-dungeon/town_e8ed5f.ogg	Magic Ling Pixel Dungeon	Town
+music/mods/magic-ling-pixel-dungeon/weightless_8f2545.ogg	Magic Ling Pixel Dungeon	Weightless
+music/mods/magic-ling-pixel-dungeon/years_b135bc.ogg	Magic Ling Pixel Dungeon	Years
+music/mods/palantir/theme_e49d56.mp3	Palantir	Theme (Out)
+music/mods/pioneer-pixel-dungeon/theme_b23135.mp3	Pioneer Pixel Dungeon	Theme (Debug)
+music/mods/sandbox-pixel-dungeon/vanilla_game_22d279.mp3	Sandbox Pixel Dungeon	Vanilla game
+music/mods/satori-s-pixel-dungeon/theme_of_satori_938d48.ogg	Satori's Pixel Dungeon	Theme of satori
+music/mods/shattered-pixel-dungeon-matt-edition/icecaves_451697.ogg	Shattered Pixel Dungeon – Matt Edition	Icecaves
+music/mods/shattered-pixel-dungeon-matt-edition/icecaves_calm_7a0f4f.ogg	Shattered Pixel Dungeon – Matt Edition	Icecaves calm
+music/mods/shittened-pixel-dungeon/TEMP_EPIC_BOSS_3a8edf.ogg	Shittened Pixel Dungeon	TEMP EPIC BOSS
+music/mods/shittened-pixel-dungeon/beach_boss_9c6463.ogg	Shittened Pixel Dungeon	Beach boss
+music/mods/shittened-pixel-dungeon/beach_day_652f17.ogg	Shittened Pixel Dungeon	Beach day
+music/mods/shittened-pixel-dungeon/caves_ascend_d0ace3.ogg	Shittened Pixel Dungeon	Caves ascend
+music/mods/shittened-pixel-dungeon/caves_ascend_1_b7519e.ogg	Shittened Pixel Dungeon	Caves ascend 1
+music/mods/shittened-pixel-dungeon/caves_ascend_2_4d6fd4.ogg	Shittened Pixel Dungeon	Caves ascend 2
+music/mods/shittened-pixel-dungeon/caves_boss_1_562c70.ogg	Shittened Pixel Dungeon	Caves boss 1
+music/mods/shittened-pixel-dungeon/caves_boss_2_3614e5.ogg	Shittened Pixel Dungeon	Caves boss 2
+music/mods/shittened-pixel-dungeon/caves_boss_3_109d9a.ogg	Shittened Pixel Dungeon	Caves boss 3
+music/mods/shittened-pixel-dungeon/caves_christmas_1_55f848.ogg	Shittened Pixel Dungeon	Caves christmas 1
+music/mods/shittened-pixel-dungeon/caves_christmas_2_c09f09.ogg	Shittened Pixel Dungeon	Caves christmas 2
+music/mods/shittened-pixel-dungeon/caves_christmas_boss_0114d7.ogg	Shittened Pixel Dungeon	Caves christmas boss
+music/mods/shittened-pixel-dungeon/choose_0ee21d.ogg	Shittened Pixel Dungeon	Choose
+music/mods/shittened-pixel-dungeon/city_ascend_1_0e11a6.ogg	Shittened Pixel Dungeon	City ascend 1
+music/mods/shittened-pixel-dungeon/city_ascend_2_eee9e5.ogg	Shittened Pixel Dungeon	City ascend 2
+music/mods/shittened-pixel-dungeon/farewell_cc0759.ogg	Shittened Pixel Dungeon	Farewell
+music/mods/shittened-pixel-dungeon/halls_1_1_75b3f3.ogg	Shittened Pixel Dungeon	Halls 1 1
+music/mods/shittened-pixel-dungeon/halls_ascend_a49aca.ogg	Shittened Pixel Dungeon	Halls ascend
+music/mods/shittened-pixel-dungeon/halls_boss_gold_955443.ogg	Shittened Pixel Dungeon	Halls boss gold
+music/mods/shittened-pixel-dungeon/halls_boss_silver_2e4ffa.ogg	Shittened Pixel Dungeon	Halls boss silver
+music/mods/shittened-pixel-dungeon/halls_boss_stone_d0994a.ogg	Shittened Pixel Dungeon	Halls boss stone
+music/mods/shittened-pixel-dungeon/halls_boss_stone_old_654395.ogg	Shittened Pixel Dungeon	Halls boss stone old
+music/mods/shittened-pixel-dungeon/halls_death_184ffa.ogg	Shittened Pixel Dungeon	Halls death
+music/mods/shittened-pixel-dungeon/halls_pink_1_f39d11.ogg	Shittened Pixel Dungeon	Halls pink 1
+music/mods/shittened-pixel-dungeon/halls_pink_2_22e0a5.ogg	Shittened Pixel Dungeon	Halls pink 2
+music/mods/shittened-pixel-dungeon/halls_pink_3_a16103.ogg	Shittened Pixel Dungeon	Halls pink 3
+music/mods/shittened-pixel-dungeon/halls_silver_1_211b10.ogg	Shittened Pixel Dungeon	Halls silver 1
+music/mods/shittened-pixel-dungeon/halls_silver_2_7f8f55.ogg	Shittened Pixel Dungeon	Halls silver 2
+music/mods/shittened-pixel-dungeon/halls_silver_3_64dc05.ogg	Shittened Pixel Dungeon	Halls silver 3
+music/mods/shittened-pixel-dungeon/halls_silver_4_3792df.ogg	Shittened Pixel Dungeon	Halls silver 4
+music/mods/shittened-pixel-dungeon/halls_silver_5_5ab922.ogg	Shittened Pixel Dungeon	Halls silver 5
+music/mods/shittened-pixel-dungeon/halls_stone_1_528139.ogg	Shittened Pixel Dungeon	Halls stone 1
+music/mods/shittened-pixel-dungeon/halls_stone_2_a5cb00.ogg	Shittened Pixel Dungeon	Halls stone 2
+music/mods/shittened-pixel-dungeon/halls_stone_3_58e232.ogg	Shittened Pixel Dungeon	Halls stone 3
+music/mods/shittened-pixel-dungeon/king_angry_ca2ce4.ogg	Shittened Pixel Dungeon	King angry
+music/mods/shittened-pixel-dungeon/king_death_04af28.ogg	Shittened Pixel Dungeon	King death
+music/mods/shittened-pixel-dungeon/king_victory_39f1c2.ogg	Shittened Pixel Dungeon	King victory
+music/mods/shittened-pixel-dungeon/adventure_8663a4.ogg	Shittened Pixel Dungeon	Adventure (Player)
+music/mods/shittened-pixel-dungeon/afwfsw_64fecf.ogg	Shittened Pixel Dungeon	Afwfsw (Player)
+music/mods/shittened-pixel-dungeon/canto_twingo_dfd067.ogg	Shittened Pixel Dungeon	Canto twingo (Player)
+music/mods/shittened-pixel-dungeon/capy_ab5d84.ogg	Shittened Pixel Dungeon	Capy (Player)
+music/mods/shittened-pixel-dungeon/caves_boss_1_118870.ogg	Shittened Pixel Dungeon	Caves boss 1 (Player)
+music/mods/shittened-pixel-dungeon/caves_boss_3_86a887.ogg	Shittened Pixel Dungeon	Caves boss 3 (Player)
+music/mods/shittened-pixel-dungeon/chair_d7089c.ogg	Shittened Pixel Dungeon	Chair (Player)
+music/mods/shittened-pixel-dungeon/dance_stars_c9592a.ogg	Shittened Pixel Dungeon	Dance stars (Player)
+music/mods/shittened-pixel-dungeon/destination_bed4a1.ogg	Shittened Pixel Dungeon	Destination (Player)
+music/mods/shittened-pixel-dungeon/echoes_d74e00.ogg	Shittened Pixel Dungeon	Echoes (Player)
+music/mods/shittened-pixel-dungeon/fantasy_tale_26073d.ogg	Shittened Pixel Dungeon	Fantasy tale (Player)
+music/mods/shittened-pixel-dungeon/flow_cf0cd0.ogg	Shittened Pixel Dungeon	Flow (Player)
+music/mods/shittened-pixel-dungeon/fuji_387976.ogg	Shittened Pixel Dungeon	Fuji (Player)
+music/mods/shittened-pixel-dungeon/high_tide_063d17.ogg	Shittened Pixel Dungeon	High tide (Player)
+music/mods/shittened-pixel-dungeon/hog_epic_86f9b0.ogg	Shittened Pixel Dungeon	Hog epic (Player)
+music/mods/shittened-pixel-dungeon/hog_phonk_749586.ogg	Shittened Pixel Dungeon	Hog phonk (Player)
+music/mods/shittened-pixel-dungeon/missa_twingo_178612.ogg	Shittened Pixel Dungeon	Missa twingo (Player)
+music/mods/shittened-pixel-dungeon/mokkitie_3d776c.ogg	Shittened Pixel Dungeon	Mokkitie (Player)
+music/mods/shittened-pixel-dungeon/my_table_f356fc.ogg	Shittened Pixel Dungeon	My table (Player)
+music/mods/shittened-pixel-dungeon/on_the_streets_4ebe41.ogg	Shittened Pixel Dungeon	On the streets (Player)
+music/mods/shittened-pixel-dungeon/pipikuku_8cc55e.ogg	Shittened Pixel Dungeon	Pipikuku (Player)
+music/mods/shittened-pixel-dungeon/rat_noises_0a0dab.ogg	Shittened Pixel Dungeon	Rat noises (Player)
+music/mods/shittened-pixel-dungeon/ratratrat_655a3e.ogg	Shittened Pixel Dungeon	Ratratrat (Player)
+music/mods/shittened-pixel-dungeon/rattyrat_8cd226.ogg	Shittened Pixel Dungeon	Rattyrat (Player)
+music/mods/shittened-pixel-dungeon/reawakening_0acf2a.ogg	Shittened Pixel Dungeon	Reawakening (Player)
+music/mods/shittened-pixel-dungeon/remix_city_finale_1638bd.ogg	Shittened Pixel Dungeon	Remix city finale (Player)
+music/mods/shittened-pixel-dungeon/remix_prison_boss_62eb4c.ogg	Shittened Pixel Dungeon	Remix prison boss (Player)
+music/mods/shittened-pixel-dungeon/remix_sewer_68cea9.ogg	Shittened Pixel Dungeon	Remix sewer (Player)
+music/mods/shittened-pixel-dungeon/remix_sewer_boss_6924ca.ogg	Shittened Pixel Dungeon	Remix sewer boss (Player)
+music/mods/shittened-pixel-dungeon/ride_the_hog_d6f643.ogg	Shittened Pixel Dungeon	Ride the hog (Player)
+music/mods/shittened-pixel-dungeon/sailing_dream_104235.ogg	Shittened Pixel Dungeon	Sailing dream (Player)
+music/mods/shittened-pixel-dungeon/shart_day_7bb8a3.ogg	Shittened Pixel Dungeon	Shart day (Player)
+music/mods/shittened-pixel-dungeon/stool_gone_e69c36.ogg	Shittened Pixel Dungeon	Stool gone (Player)
+music/mods/shittened-pixel-dungeon/stormy_rock_f4d774.ogg	Shittened Pixel Dungeon	Stormy rock (Player)
+music/mods/shittened-pixel-dungeon/sunset_fcd1d0.ogg	Shittened Pixel Dungeon	Sunset (Player)
+music/mods/shittened-pixel-dungeon/twigigigi_e9ac82.ogg	Shittened Pixel Dungeon	Twigigigi (Player)
+music/mods/shittened-pixel-dungeon/twingo_tango_b87f44.ogg	Shittened Pixel Dungeon	Twingo tango (Player)
+music/mods/shittened-pixel-dungeon/twingo_turbo_4b0e77.ogg	Shittened Pixel Dungeon	Twingo turbo (Player)
+music/mods/shittened-pixel-dungeon/uoauoa_109aa3.ogg	Shittened Pixel Dungeon	Uoauoa (Player)
+music/mods/shittened-pixel-dungeon/westerness_bfc8f3.ogg	Shittened Pixel Dungeon	Westerness (Player)
+music/mods/shittened-pixel-dungeon/wooooooh_c4fa08.ogg	Shittened Pixel Dungeon	Wooooooh (Player)
+music/mods/shittened-pixel-dungeon/wowowowo_ab83df.ogg	Shittened Pixel Dungeon	Wowowowo (Player)
+music/mods/shittened-pixel-dungeon/ysiluokkalaiset_05dd83.ogg	Shittened Pixel Dungeon	Ysiluokkalaiset (Player)
+music/mods/shittened-pixel-dungeon/prison_ascend_1_b77554.ogg	Shittened Pixel Dungeon	Prison ascend 1
+music/mods/shittened-pixel-dungeon/prison_ascend_2_c4664e.ogg	Shittened Pixel Dungeon	Prison ascend 2
+music/mods/shittened-pixel-dungeon/prison_death_3a5252.ogg	Shittened Pixel Dungeon	Prison death
+music/mods/shittened-pixel-dungeon/sewer_ascend_e1c3d2.ogg	Shittened Pixel Dungeon	Sewer ascend
+music/mods/shittened-pixel-dungeon/sewer_ascend_1_bb4d23.ogg	Shittened Pixel Dungeon	Sewer ascend 1
+music/mods/shittened-pixel-dungeon/sewer_ascend_2_12fb0c.ogg	Shittened Pixel Dungeon	Sewer ascend 2
+music/mods/shittened-pixel-dungeon/store_ac0736.ogg	Shittened Pixel Dungeon	Store
+music/mods/shittened-pixel-dungeon/surface_day_8c651b.ogg	Shittened Pixel Dungeon	Surface day
+music/mods/shittened-pixel-dungeon/surface_night_37cca0.ogg	Shittened Pixel Dungeon	Surface night
+music/mods/shittened-pixel-dungeon/theme_3_814651.ogg	Shittened Pixel Dungeon	Theme 3
+music/mods/shittened-pixel-dungeon/theme_xmas_f130d1.ogg	Shittened Pixel Dungeon	Theme xmas
+music/mods/shittened-pixel-dungeon/win_7f2012.ogg	Shittened Pixel Dungeon	Win
+music/mods/slay-the-dungeon/exterior_e3f4b8.mp3	Slay the Dungeon	Exterior
+music/mods/slay-the-dungeon/fanfare_d64969.mp3	Slay the Dungeon	Fanfare
+music/mods/slay-the-dungeon/game_02b9ff.mp3	Slay the Dungeon	Game
+music/mods/slay-the-dungeon/goblins_6a406f.mp3	Slay the Dungeon	Goblins
+music/mods/slay-the-dungeon/baby_dragon_914c04.mp3	Slay the Dungeon	Baby dragon (Lvl1)
+music/mods/slay-the-dungeon/certain_2eb5dd.mp3	Slay the Dungeon	Certain (Lvl1)
+music/mods/slay-the-dungeon/horned_frog_7c8d21.mp3	Slay the Dungeon	Horned frog (Lvl1)
+music/mods/slay-the-dungeon/mystery_toy_c86cf0.mp3	Slay the Dungeon	Mystery toy (Lvl1)
+music/mods/slay-the-dungeon/remains_4e8e8b.mp3	Slay the Dungeon	Remains (Lvl1)
+music/mods/speedrun-pixel-dungeon/speed_acd467.ogg	Speedrun Pixel Dungeon	Speed
+music/mods/tomorrows-roguenights/boss_1f717c.ogg	Tomorrows RogueNights	Boss
+music/mods/tomorrows-roguenights/boss2_7572b7.ogg	Tomorrows RogueNights	Boss2
+music/mods/tomorrows-roguenights/boss3_4bdbf0.ogg	Tomorrows RogueNights	Boss3
+music/mods/tomorrows-roguenights/boss4_99ba46.ogg	Tomorrows RogueNights	Boss4
+music/mods/tomorrows-roguenights/boss5_08ea7d.ogg	Tomorrows RogueNights	Boss5
+music/mods/tomorrows-roguenights/boss_iberia1_a22652.ogg	Tomorrows RogueNights	Boss iberia1
+music/mods/tomorrows-roguenights/boss_iberia2_f0d9f5.ogg	Tomorrows RogueNights	Boss iberia2
+music/mods/tomorrows-roguenights/boss_kalt_7f9a8d.ogg	Tomorrows RogueNights	Boss kalt
+music/mods/tomorrows-roguenights/boss_sargon1_a4c36e.ogg	Tomorrows RogueNights	Boss sargon1
+music/mods/tomorrows-roguenights/boss_sargon2_c79839.ogg	Tomorrows RogueNights	Boss sargon2
+music/mods/tomorrows-roguenights/boss_siesta1_685283.ogg	Tomorrows RogueNights	Boss siesta1
+music/mods/tomorrows-roguenights/boss_siesta2_2492f5.ogg	Tomorrows RogueNights	Boss siesta2
+music/mods/tomorrows-roguenights/game_edcdb6.ogg	Tomorrows RogueNights	Game
+music/mods/tomorrows-roguenights/game2_a6abd7.ogg	Tomorrows RogueNights	Game2
+music/mods/tomorrows-roguenights/game3_14fda5.ogg	Tomorrows RogueNights	Game3
+music/mods/tomorrows-roguenights/game4_e8a4dd.ogg	Tomorrows RogueNights	Game4
+music/mods/tomorrows-roguenights/game5_69a053.ogg	Tomorrows RogueNights	Game5
+music/mods/tomorrows-roguenights/game_iberia1_f4248b.ogg	Tomorrows RogueNights	Game iberia1
+music/mods/tomorrows-roguenights/game_iberia2_2fe232.ogg	Tomorrows RogueNights	Game iberia2
+music/mods/tomorrows-roguenights/game_sargon1_ec6015.ogg	Tomorrows RogueNights	Game sargon1
+music/mods/tomorrows-roguenights/game_sargon2_c2036c.ogg	Tomorrows RogueNights	Game sargon2
+music/mods/tomorrows-roguenights/game_siesta1_a82a32.ogg	Tomorrows RogueNights	Game siesta1
+music/mods/tomorrows-roguenights/game_siesta2_b9807a.ogg	Tomorrows RogueNights	Game siesta2
+music/mods/tomorrows-roguenights/mudrock_39d7be.ogg	Tomorrows RogueNights	Mudrock
+music/mods/tomorrows-roguenights/rhodos_5b2c37.ogg	Tomorrows RogueNights	Rhodos
+music/mods/tomorrows-roguenights/surface_dbc4d5.ogg	Tomorrows RogueNights	Surface
+music/mods/tomorrows-roguenights/theme_147898.ogg	Tomorrows RogueNights	Theme
+music/mods/too-cruel-pixel-dungeon/pyrojoke_be535b.ogg	Too Cruel Pixel Dungeon	Pyrojoke
+music/mods/touhou-pixel-dungeon/bambooforest_16d160.ogg	Touhou Pixel Dungeon	Bambooforest
+music/mods/touhou-pixel-dungeon/bosshecatia_72ade4.ogg	Touhou Pixel Dungeon	Bosshecatia
+music/mods/touhou-pixel-dungeon/bosskasen_379940.ogg	Touhou Pixel Dungeon	Bosskasen
+music/mods/touhou-pixel-dungeon/bosskomachi_3dcd55.ogg	Touhou Pixel Dungeon	Bosskomachi
+music/mods/touhou-pixel-dungeon/bosskosuzu_062ff4.ogg	Touhou Pixel Dungeon	Bosskosuzu
+music/mods/touhou-pixel-dungeon/bossmarisa_89063c.ogg	Touhou Pixel Dungeon	Bossmarisa
+music/mods/touhou-pixel-dungeon/bossremilia_847e7a.ogg	Touhou Pixel Dungeon	Bossremilia
+music/mods/touhou-pixel-dungeon/bossseija_9c6711.ogg	Touhou Pixel Dungeon	Bossseija
+music/mods/touhou-pixel-dungeon/bosstenshi_1ca5e4.ogg	Touhou Pixel Dungeon	Bosstenshi
+music/mods/touhou-pixel-dungeon/ending_c076ec.ogg	Touhou Pixel Dungeon	Ending
+music/mods/touhou-pixel-dungeon/forestofmagic_09002f.ogg	Touhou Pixel Dungeon	Forestofmagic
+music/mods/touhou-pixel-dungeon/gardenofthesun_0d9dc9.ogg	Touhou Pixel Dungeon	Gardenofthesun
+music/mods/touhou-pixel-dungeon/hakugyokurou_c0db81.ogg	Touhou Pixel Dungeon	Hakugyokurou
+music/mods/touhou-pixel-dungeon/hakureishrine_1a668d.ogg	Touhou Pixel Dungeon	Hakureishrine
+music/mods/touhou-pixel-dungeon/heaven_e24200.ogg	Touhou Pixel Dungeon	Heaven
+music/mods/touhou-pixel-dungeon/hell_7ef486.ogg	Touhou Pixel Dungeon	Hell
+music/mods/touhou-pixel-dungeon/humanvillage_f45624.ogg	Touhou Pixel Dungeon	Humanvillage
+music/mods/touhou-pixel-dungeon/landofthebackdoor_47f3d8.ogg	Touhou Pixel Dungeon	Landofthebackdoor
+music/mods/touhou-pixel-dungeon/lunarcapital_d52de8.ogg	Touhou Pixel Dungeon	Lunarcapital
+music/mods/touhou-pixel-dungeon/mistylake_1e4137.ogg	Touhou Pixel Dungeon	Mistylake
+music/mods/touhou-pixel-dungeon/moriyashrine_f40d46.ogg	Touhou Pixel Dungeon	Moriyashrine
+music/mods/touhou-pixel-dungeon/myourentemple_99f557.ogg	Touhou Pixel Dungeon	Myourentemple
+music/mods/touhou-pixel-dungeon/opening_0d5ab9.ogg	Touhou Pixel Dungeon	Opening
+music/mods/touhou-pixel-dungeon/primatespiritgarden_fb5305.ogg	Touhou Pixel Dungeon	Primatespiritgarden
+music/mods/touhou-pixel-dungeon/rainbowdragoncave_5e53da.ogg	Touhou Pixel Dungeon	Rainbowdragoncave
+music/mods/touhou-pixel-dungeon/sanzuriver_63369a.ogg	Touhou Pixel Dungeon	Sanzuriver
+music/mods/touhou-pixel-dungeon/scarletdevilmansion_1f815b.ogg	Touhou Pixel Dungeon	Scarletdevilmansion
+music/mods/touhou-pixel-dungeon/shiningneedlecastle_2aab3e.ogg	Touhou Pixel Dungeon	Shiningneedlecastle
+music/mods/touhou-pixel-dungeon/yokaimountain_4a1767.ogg	Touhou Pixel Dungeon	Yokaimountain
+music/mods/tower-pixel-dungeon/boss_trial_c5cbe7.ogg	Tower Pixel Dungeon	Boss trial
+music/mods/tower-pixel-dungeon/city_boss_spedup_d37628.ogg	Tower Pixel Dungeon	City boss spedup
+music/mods/tower-pixel-dungeon/descent_259e85.ogg	Tower Pixel Dungeon	Descent
+music/mods/tower-pixel-dungeon/gnoll_grotto_15a88e.ogg	Tower Pixel Dungeon	Gnoll grotto
+music/mods/tower-pixel-dungeon/goblin_grotto_577809.ogg	Tower Pixel Dungeon	Goblin grotto
+music/mods/tower-pixel-dungeon/metropolis_track_c2eef9.ogg	Tower Pixel Dungeon	Metropolis track
+music/mods/tower-pixel-dungeon/rat_puncher_92643b.ogg	Tower Pixel Dungeon	Rat puncher
+music/mods/tower-pixel-dungeon/track_boss_loop_a68aab.ogg	Tower Pixel Dungeon	Track boss loop
+music/mods/transformation-pixel-dungeon/Oh_Boss_d6e392.ogg	Transformation Pixel Dungeon	Oh Boss
+music/mods/transformation-pixel-dungeon/UES_05b43c.ogg	Transformation Pixel Dungeon	UES
+music/mods/transformation-pixel-dungeon/chuboss_ca0540.ogg	Transformation Pixel Dungeon	Chuboss
+music/mods/transformation-pixel-dungeon/combat_area_bef435.ogg	Transformation Pixel Dungeon	Combat area
+music/mods/transformation-pixel-dungeon/death_knight_boss_5ef1f0.ogg	Transformation Pixel Dungeon	Death knight boss
+music/mods/transformation-pixel-dungeon/pestilence_boss_5a9d5b.ogg	Transformation Pixel Dungeon	Pestilence boss
+music/mods/transformation-pixel-dungeon/surface_town_54f3f5.mp3	Transformation Pixel Dungeon	Surface town
+music/mods/transformation-pixel-dungeon/surface_town_3fe7f1.ogg	Transformation Pixel Dungeon	Surface town 2
+music/mods/transformation-pixel-dungeon/tower_bb01a6.ogg	Transformation Pixel Dungeon	Tower
+music/mods/transformation-pixel-dungeon/tower2_740e0b.ogg	Transformation Pixel Dungeon	Tower2
+music/mods/transformation-pixel-dungeon/tower3_1b6989.ogg	Transformation Pixel Dungeon	Tower3
+music/mods/transformation-pixel-dungeon/tower_busy_9caa10.ogg	Transformation Pixel Dungeon	Tower busy
+music/mods/unist-pixel-dungeon/Theme_c2786a.ogg	UNIST Pixel Dungeon	Theme (UPD)
+music/mods/xun-s-pixel-dungeon/game_72b649.mp3	Xun's Pixel Dungeon	Game
+music/mods/xun-s-pixel-dungeon/surface_e5356e.mp3	Xun's Pixel Dungeon	Surface
+music/mods/xun-s-pixel-dungeon/theme_old_6c5cbe.mp3	Xun's Pixel Dungeon	Theme old
+music/mods/yellow-banana-pork-dumpling/track_chapter_1_aa16d5.ogg	Yellow Banana Pork Dumpling	Track chapter 1
+music/mods/yellow-banana-pork-dumpling/track_chapter_2_8f2b95.ogg	Yellow Banana Pork Dumpling	Track chapter 2
+music/mods/yellow-banana-pork-dumpling/track_chapter_3_3c5cb8.ogg	Yellow Banana Pork Dumpling	Track chapter 3
+music/mods/yellow-banana-pork-dumpling/track_chapter_4_406d4f.ogg	Yellow Banana Pork Dumpling	Track chapter 4
+music/mods/yellow-banana-pork-dumpling/track_chapter_5_2f9d58.ogg	Yellow Banana Pork Dumpling	Track chapter 5
+music/mods/yellow-banana-pork-dumpling/track_final_loop_f63ac4.ogg	Yellow Banana Pork Dumpling	Track final loop
+music/mods/yellow-banana-pork-dumpling/track_surface_64cb6a.ogg	Yellow Banana Pork Dumpling	Track surface
+music/mods/yellow-banana-pork-dumpling/track_theme_88cfef.ogg	Yellow Banana Pork Dumpling	Track theme

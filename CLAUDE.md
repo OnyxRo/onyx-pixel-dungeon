@@ -73,7 +73,7 @@ What the ten newer mods add beyond this game, counted by new class files on 2026
 
 Porting tools, kept in the session scratchpad and worth rebuilding if lost. A copier that compiles, copies each class the compiler cannot find from the mod when the name is unambiguous, adds missing `Assets` constants with their files under a per-mod subfolder, and repeats. A string copier that appends the English text for every new class from the mod's message files. Windows needs the long path prefix for files inside deep mod folders.
 
-Not ported yet. Combusted is done. It adds no monsters, and its four throwable melee weapons (`items/weapon/thrown/`) are in the journal catalog only, since Combusted itself never put them in its loot tables. They drop at the enemy's feet instead of sticking. Monsters and weapons from Magic Ling (about 350 monster files, 74 weapons) and Transformation (59 monsters, 35 weapons). Every non-Devoted world still uses Shattered's monsters for its depth. Pixel Spacebase (its art is for the pre-2017 tile layout at 4x scale and would need redrawing). Avoid porting mods built around other companies' franchises (Touhou, Arknights, Blue Archive, Girls' Frontline, JoJo).
+Not ported yet. Combusted is done. It adds no monsters, and its four throwable melee weapons (`items/weapon/thrown/`) are in the journal catalog only, since Combusted itself never put them in its loot tables. They drop at the enemy's feet instead of sticking. Monsters and weapons from Magic Ling (about 350 monster files, 74 weapons) and Transformation (59 monsters, 35 weapons). Every non-Devoted world still uses Shattered's monsters for its depth. Pixel Spacebase (its art is for the pre-2017 tile layout at 4x scale and would need redrawing).
 
 ### Fixes made to Shattered code
 
@@ -104,7 +104,7 @@ Gradle-free path used for releases (`scripts/`):
 
 Onyx wants more mods in the rotation. This list comes from his "Every Pixel Dungeon" index artifact (https://claude.ai/code/artifact/c3216af8-d926-46fd-9c16-d68d9a6e958f), which catalogs sprites, items and tile sheets from 145 Pixel Dungeon mods. Its `data/index.json` lists every mod's repo and tile sheets, built from the community mod lists kept by Dominowood371 and zay448345045 on GitHub. None of these have had their licenses or art credits checked yet.
 
-**How to judge a mod.** Shattered 0.7 or later uses this game's 256x256 tile sheet layout, so its worlds port the way the current 19 did (tileset, water, painter, a small level class). Older mods use a different layout and their art would need redrawing. Check the repo's license and any in-game credits for art or music with separate terms. Only use music with a clear credit.
+**How to judge a mod.** Shattered 0.7 or later uses this game's 256x256 tile sheet layout, so its worlds port the way the current 19 did (tileset, water, painter, a small level class). Older mods use a different layout and their art would need redrawing. Check the repo's license and any in-game credits for art or music with separate terms. Music from every mod is imported, including franchise mods, by `scripts/fetch-mod-music.py` and `scripts/import-mod-music.py` (the song files are git-ignored, rerun the scripts to get them).
 
 **More worlds from mods already in the game.** Easiest, same code and licenses.
 
@@ -133,8 +133,6 @@ Onyx wants more mods in the rotation. This list comes from his "Every Pixel Dung
 | Unleashed Pixel Dungeon | 0.3.0 | Region variants | https://github.com/FthrNature/unleashed-pixel-dungeon |
 | Deep Pixel Dungeon | 0.4.3c | Extra regions | https://github.com/Mochiee/deep-pixel-dungeon |
 | Pixel Spacebase | 0.4.3 | Sci-fi space station, art at 4x scale | https://github.com/codefitz/Pixel-Spacebase |
-
-**Skip.** Mods built on other companies' franchises, even when they score well, since their art shows those companies' characters. That includes Touhou PD and Reloaded, Gensokyo PD, Tomorrows RogueNights and Arknights PD, Blue Archive PD and Re Blue Archive PD, both Girls Frontline PDs, and Jojo's Bizarre Dungeon.
 
 When adding a mod, append its worlds to the end of `WorldShuffle.WORLDS`, add the stage each was made for to `WorldShuffle.REGIONS` (check the mod's own `Dungeon.newLevel`), add name and mod strings, credit it in the file header and README, and run `WorldShuffleTest`.
 

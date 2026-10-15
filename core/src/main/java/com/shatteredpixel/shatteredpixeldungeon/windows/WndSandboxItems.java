@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollingListPane;
@@ -51,6 +52,8 @@ public class WndSandboxItems extends Window {
 	private static int upgrade = 0;
 
 	private RenderedTextBlock upgradeText;
+
+	private static String query = "";
 
 	public WndSandboxItems() {
 
@@ -92,6 +95,27 @@ public class WndSandboxItems extends Window {
 
 		top += BTN_SIZE + GAP;
 
+		RedButton search = new RedButton( query.isEmpty() ? Messages.get(WndSandbox.class, "search")
+				: Messages.get(WndSandbox.class, "search_for", query), 7 ) {
+			@Override
+			protected void onClick() {
+				GameScene.show( new WndTextInput( Messages.get(WndSandbox.class, "search"), null, query, 30, false,
+						Messages.get(WndSandbox.class, "search_go"), Messages.get(WndSandbox.class, "cancel") ) {
+					@Override
+					public void onSelect( boolean positive, String text ) {
+						if (positive) {
+							query = text.trim();
+							hide();
+							GameScene.show( new WndSandboxItems() );
+						}
+					}
+				} );
+			}
+		};
+		search.setRect( 0, top, WIDTH, 16 );
+		add( search );
+		top += 16 + GAP;
+
 		//the window has to be at its final size before the list is placed, or the list draws off centre
 		resize( WIDTH, height );
 
@@ -107,13 +131,14 @@ public class WndSandboxItems extends Window {
 				Item sample = (Item) Reflection.newInstance(cls);
 				if (sample == null) continue;
 
+				String name = Messages.get(cls, "name");
+				if (name.equals(Messages.NO_TEXT_FOUND)) name = sample.name();
+				if (!query.isEmpty() && !name.toLowerCase().contains( query.toLowerCase() )) continue;
+
 				if (!titled) {
 					list.addTitle( Messages.titleCase(catalog.title()) );
 					titled = true;
 				}
-
-				String name = Messages.get(cls, "name");
-				if (name.equals(Messages.NO_TEXT_FOUND)) name = sample.name();
 
 				list.addItem( new ScrollingListPane.ListItem( new ItemSprite(sample), Messages.titleCase(name) ) {
 					@Override

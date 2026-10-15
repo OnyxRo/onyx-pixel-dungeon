@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollingListPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
@@ -68,6 +69,8 @@ public class WndSandboxMobs extends Window {
 		return cls.getEnclosingClass() == null || !UNSAFE.contains( cls.getEnclosingClass().getSimpleName() );
 	}
 
+	private static String query = "";
+
 	public WndSandboxMobs() {
 
 		super();
@@ -81,6 +84,27 @@ public class WndSandboxMobs extends Window {
 		add( title );
 
 		float top = title.bottom() + GAP;
+
+		RedButton search = new RedButton( query.isEmpty() ? Messages.get(WndSandbox.class, "search")
+				: Messages.get(WndSandbox.class, "search_for", query), 7 ) {
+			@Override
+			protected void onClick() {
+				GameScene.show( new WndTextInput( Messages.get(WndSandbox.class, "search"), null, query, 30, false,
+						Messages.get(WndSandbox.class, "search_go"), Messages.get(WndSandbox.class, "cancel") ) {
+					@Override
+					public void onSelect( boolean positive, String text ) {
+						if (positive) {
+							query = text.trim();
+							hide();
+							GameScene.show( new WndSandboxMobs() );
+						}
+					}
+				} );
+			}
+		};
+		search.setRect( 0, top, WIDTH, 16 );
+		add( search );
+		top += 16 + GAP;
 
 		//the window has to be at its final size before the list is placed, or the list draws off centre
 		resize( WIDTH, height );
@@ -109,6 +133,8 @@ public class WndSandboxMobs extends Window {
 					//a few entries need extra setup before they can be drawn, leave those out
 					continue;
 				}
+
+				if (!query.isEmpty() && !name.toLowerCase().contains( query.toLowerCase() )) continue;
 
 				if (!titled) {
 					list.addTitle( Messages.titleCase(category.title()) );

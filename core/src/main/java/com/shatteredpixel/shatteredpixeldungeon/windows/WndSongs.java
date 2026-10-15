@@ -24,16 +24,21 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 import com.badlogic.gdx.Gdx;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SongPlayer;
+import com.shatteredpixel.shatteredpixeldungeon.SongPlayer.Song;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.WorldShuffle;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.WorldLevel;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollingListPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Music;
 
 import java.lang.reflect.Field;
@@ -43,24 +48,39 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 
 /**
- * A compendium of every song in the game, grouped by the mod it came from.
+ * A compendium of every song in the game and from every mod, grouped by mod.
  * Clicking a song plays it and keeps it playing, floor after floor, until another song
- * is picked or the floor's own music is chosen again.
+ * is picked or the floor's own music is chosen again. The mark on the right of a song
+ * likes it. Liked only narrows the list, and shuffle plays random songs one after another,
+ * from all songs or from liked ones. Search narrows the list by name.
  */
 public class WndSongs extends Window {
 
 	private static final int WIDTH = 150;
 	private static final int GAP   = 2;
+	private static final int BTN_H = 16;
 
 	private static final String SHATTERED = "Shattered Pixel Dungeon";
 	private static final String DEVOTED   = "Devoted Pixel Dungeon";
 
-	/** The song picked from the list, or null while each floor plays its own music. */
+	private static boolean likedOnly = false;
+	private static String query = "";
+
+	/** Set while a song or shuffle was picked from the list, null while floors play their own music. */
 	public static String chosen = null;
 
 	/** Called whenever a floor starts its music, so a picked song carries on. */
 	public static void applyChoice(){
-		if (chosen != null) Music.INSTANCE.play( chosen, true );
+		if (SongPlayer.current == null) return;
+		//shuffle keeps its own song going
+		if (SongPlayer.shuffle != SongPlayer.Shuffle.OFF) return;
+		Music.INSTANCE.play( SongPlayer.current, true );
+	}
+
+	/** Back to each floor's own music. */
+	public static void clearChoice(){
+		SongPlayer.clear();
+		chosen = null;
 	}
 
 	public WndSongs() {
@@ -76,6 +96,72 @@ public class WndSongs extends Window {
 		add( title );
 
 		float top = title.bottom() + GAP;
+		float half = WIDTH / 2f - 1;
+
+		RedButton liked = new RedButton( Messages.get(this, likedOnly ? "liked_only_on" : "liked_only_off"), 7 ) {
+			@Override
+			protected void onClick() {
+				likedOnly = !likedOnly;
+				reopen();
+			}
+		};
+		liked.setRect( 0, top, half, BTN_H );
+		add( liked );
+
+		RedButton search = new RedButton( query.isEmpty() ? Messages.get(this, "search")
+				: Messages.get(this, "search_for", query), 7 ) {
+			@Override
+			protected void onClick() {
+				GameScene.show( new WndTextInput( Messages.get(WndSongs.class, "search"), null, query, 30, false,
+						Messages.get(WndSongs.class, "search_go"), Messages.get(WndSongs.class, "cancel") ) {
+					@Override
+					public void onSelect( boolean positive, String text ) {
+						if (positive) {
+							query = text.trim();
+							reopen();
+						}
+					}
+				} );
+			}
+		};
+		search.setRect( half + 2, top, half, BTN_H );
+		add( search );
+		top += BTN_H + GAP;
+
+		final LinkedHashMap<String, ArrayList<Song>> groups = songs();
+
+		RedButton shuffleAll = new RedButton( Messages.get(this, "shuffle_all"), 7 ) {
+			@Override
+			protected void onClick() {
+				ArrayList<Song> pool = new ArrayList<>();
+				for (ArrayList<Song> g : groups.values()) pool.addAll( g );
+				chosen = "shuffle";
+				SongPlayer.startShuffle( SongPlayer.Shuffle.ALL, pool );
+				GLog.p( Messages.get(WndSongs.class, "shuffle_msg") );
+			}
+		};
+		shuffleAll.setRect( 0, top, half, BTN_H );
+		add( shuffleAll );
+
+		RedButton shuffleLiked = new RedButton( Messages.get(this, "shuffle_liked"), 7 ) {
+			@Override
+			protected void onClick() {
+				ArrayList<Song> pool = new ArrayList<>();
+				for (ArrayList<Song> g : groups.values()) {
+					for (Song s : g) if (SongPlayer.isLiked( s.path )) pool.add( s );
+				}
+				if (pool.isEmpty()) {
+					GLog.w( Messages.get(WndSongs.class, "no_liked") );
+					return;
+				}
+				chosen = "shuffle";
+				SongPlayer.startShuffle( SongPlayer.Shuffle.LIKED, pool );
+				GLog.p( Messages.get(WndSongs.class, "shuffle_msg") );
+			}
+		};
+		shuffleLiked.setRect( half + 2, top, half, BTN_H );
+		add( shuffleLiked );
+		top += BTN_H + GAP;
 
 		//the window has to be at its final size before the list is placed, or the list draws off centre
 		resize( WIDTH, height );
@@ -88,38 +174,88 @@ public class WndSongs extends Window {
 			@Override
 			public boolean onClick( float x, float y ) {
 				if (!inside( x, y )) return false;
-				chosen = null;
+				clearChoice();
 				if (Dungeon.level != null) Dungeon.level.playLevelMusic();
 				GLog.i( Messages.get(WndSongs.class, "floor_music_msg") );
 				return true;
 			}
 		} );
 
-		for (java.util.Map.Entry<String, ArrayList<String[]>> group : songs().entrySet()) {
-			list.addTitle( group.getKey().replace(" Pixel Dungeon", "") );
-			for (final String[] song : group.getValue()) {
-				ScrollingListPane.ListItem item = new ScrollingListPane.ListItem( Icons.get(Icons.AUDIO), song[1] ) {
-					@Override
-					public boolean onClick( float x, float y ) {
-						if (!inside( x, y )) return false;
-						chosen = song[0];
-						Music.INSTANCE.play( song[0], true );
-						GLog.p( Messages.get(WndSongs.class, "playing", song[1]) );
-						return true;
-					}
-				};
-				if (song[0].equals( chosen )) item.hardlight( TITLE_COLOR );
-				list.addItem( item );
+		String q = query.toLowerCase();
+		boolean any = false;
+		for (java.util.Map.Entry<String, ArrayList<Song>> group : groups.entrySet()) {
+			String mod = group.getKey().replace(" Pixel Dungeon", "");
+			boolean titled = false;
+			for (final Song song : group.getValue()) {
+				if (likedOnly && !SongPlayer.isLiked( song.path )) continue;
+				if (!q.isEmpty() && !song.name.toLowerCase().contains( q ) && !mod.toLowerCase().contains( q )) continue;
+				if (!titled) {
+					list.addTitle( mod );
+					titled = true;
+				}
+				any = true;
+				list.addItem( new SongItem( song ) );
 			}
+		}
+		if (!any) {
+			list.addItem( new ScrollingListPane.ListItem( null, Messages.get(this, "none") ) );
 		}
 
 		list.setRect( 0, top, WIDTH, height - top );
 	}
 
-	//song path and display name, grouped by mod
-	private static LinkedHashMap<String, ArrayList<String[]>> songs() {
-		LinkedHashMap<String, ArrayList<String[]>> groups = new LinkedHashMap<>();
-		groups.put( SHATTERED, new ArrayList<String[]>() );
+	private void reopen(){
+		hide();
+		GameScene.show( new WndSongs() );
+	}
+
+	/** A song in the list. The right edge likes or unlikes it, the rest plays it. */
+	private static class SongItem extends ScrollingListPane.ListItem {
+
+		private final Song song;
+		private Image heart;
+
+		SongItem( Song song ) {
+			super( Icons.get(Icons.AUDIO), song.name );
+			this.song = song;
+			if (song.path.equals( SongPlayer.current )) hardlight( TITLE_COLOR );
+			heart = Icons.get( SongPlayer.isLiked( song.path ) ? Icons.CHECKED : Icons.UNCHECKED );
+			add( heart );
+		}
+
+		@Override
+		protected void layout() {
+			super.layout();
+			if (heart == null) return;
+			label.maxWidth( (int)(width - 16 - 1 - 14) );
+			heart.x = x + width - heart.width() - 2;
+			heart.y = y + 1 + (height() - 1 - heart.height()) / 2f;
+			PixelScene.align( heart );
+		}
+
+		@Override
+		public boolean onClick( float x, float y ) {
+			if (!inside( x, y )) return false;
+			if (x > this.x + width - 16) {
+				SongPlayer.toggleLiked( song.path );
+				remove( heart );
+				heart.destroy();
+				heart = Icons.get( SongPlayer.isLiked( song.path ) ? Icons.CHECKED : Icons.UNCHECKED );
+				add( heart );
+				layout();
+				return true;
+			}
+			chosen = song.path;
+			SongPlayer.play( song.path );
+			GLog.p( Messages.get(WndSongs.class, "playing", song.name) );
+			return true;
+		}
+	}
+
+	//every song, grouped by the mod it came from
+	private static LinkedHashMap<String, ArrayList<Song>> songs() {
+		LinkedHashMap<String, ArrayList<Song>> groups = new LinkedHashMap<>();
+		groups.put( SHATTERED, new ArrayList<Song>() );
 		HashSet<String> seen = new HashSet<>();
 
 		for (Field f : Assets.Music.class.getFields()) {
@@ -129,8 +265,8 @@ public class WndSongs extends Window {
 				if (path == null || !path.startsWith("music/") || !seen.add( path )) continue;
 				if (!Gdx.files.internal( path ).exists()) continue;
 				String mod = path.contains("devoted") ? DEVOTED : SHATTERED;
-				if (!groups.containsKey( mod )) groups.put( mod, new ArrayList<String[]>() );
-				groups.get( mod ).add( new String[]{ path, pretty( path ) } );
+				if (!groups.containsKey( mod )) groups.put( mod, new ArrayList<Song>() );
+				groups.get( mod ).add( new Song( path, mod, pretty( path ) ) );
 			} catch (IllegalAccessException e) {
 				//a field we cannot read has no song in it
 			}
@@ -143,8 +279,16 @@ public class WndSongs extends Window {
 			String path = ((WorldLevel) level).musicTrack();
 			if (path == null || !seen.add( path ) || !Gdx.files.internal( path ).exists()) continue;
 			String mod = WorldShuffle.modName( world );
-			if (!groups.containsKey( mod )) groups.put( mod, new ArrayList<String[]>() );
-			groups.get( mod ).add( new String[]{ path, Messages.get(WndSongs.class, "theme", Messages.titleCase(WorldShuffle.menuName(world))) } );
+			if (!groups.containsKey( mod )) groups.put( mod, new ArrayList<Song>() );
+			groups.get( mod ).add( new Song( path, mod,
+					Messages.get(WndSongs.class, "theme", Messages.titleCase(WorldShuffle.menuName(world))) ) );
+		}
+
+		//every other song found in the mods' own repositories
+		for (Song s : SongPlayer.modSongs()) {
+			if (!seen.add( s.path )) continue;
+			if (!groups.containsKey( s.mod )) groups.put( s.mod, new ArrayList<Song>() );
+			groups.get( s.mod ).add( s );
 		}
 
 		return groups;

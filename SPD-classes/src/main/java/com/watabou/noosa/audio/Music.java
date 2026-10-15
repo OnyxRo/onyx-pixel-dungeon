@@ -83,6 +83,31 @@ public enum Music {
 		play(assetName, null);
 	}
 
+	/** Plays one track a single time and calls onDone when it finishes by itself. */
+	public synchronized void playOnce( String assetName, final Runnable onDone ) {
+		reset();
+
+		lastPlayed = assetName;
+		trackList = null;
+		this.looping = false;
+		this.shuffle = false;
+
+		if (!enabled || assetName == null) {
+			return;
+		}
+
+		final String started = assetName;
+		play( assetName, new com.badlogic.gdx.audio.Music.OnCompletionListener() {
+			@Override
+			public void onCompletion( com.badlogic.gdx.audio.Music music ) {
+				synchronized (Music.this) {
+					if (music != player || !started.equals( lastPlayed ) || fadeTotal != -1f) return;
+				}
+				if (onDone != null) onDone.run();
+			}
+		} );
+	}
+
 	public synchronized void playTracks( String[] tracks, float[] chances, boolean shuffle){
 
 		if (tracks == null || tracks.length == 0 || tracks.length != chances.length){
