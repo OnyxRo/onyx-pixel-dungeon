@@ -170,6 +170,23 @@ public class WorldShuffleTest {
 		Dungeon.sandboxOffMods.clear();
 		System.out.println("mod toggle checks: " + modChecks);
 
+		//Experienced's arena branch, reached with a ticket
+		try {
+			Dungeon.depth = 28;
+			Dungeon.branch = Dungeon.BRANCH_ARENA;
+			Level arena = Dungeon.newLevel();
+			if (!(arena instanceof com.shatteredpixel.shatteredpixeldungeon.levels.ArenaLevel)) {
+				failures++;
+				System.out.println("FAIL: arena branch built " + arena.getClass().getSimpleName());
+			}
+		} catch (Throwable t) {
+			failures++;
+			System.out.println("FAIL arena level: " + t);
+			t.printStackTrace(System.out);
+		}
+		Dungeon.branch = 0;
+		System.out.println("arena level checked");
+
 		Dungeon.sandbox = false;
 		Dungeon.sandboxWorld = -1;
 		System.out.println("sandbox floors built with a forced world: " + forced);

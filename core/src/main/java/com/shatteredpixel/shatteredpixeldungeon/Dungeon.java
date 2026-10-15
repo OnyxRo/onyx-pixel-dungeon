@@ -58,6 +58,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CavesLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.ArenaLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.DeadEndLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.HallsBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.HallsLevel;
@@ -202,6 +203,9 @@ public class Dungeon {
 	//determines path the hero is on. Current uses:
 	// 0 is the default path
 	// 1 is for quest sub-floors
+	public static final int BRANCH_NORMAL = 0;
+	public static final int BRANCH_ARENA  = 2; //Experienced PD's arena, reached with a ticket
+
 	public static int branch;
 
 	//keeps track of what levels the game should try to load instead of creating fresh
@@ -448,6 +452,8 @@ public class Dungeon {
 				default:
 					level = new DeadEndLevel();
 			}
+		} else if (branch == BRANCH_ARENA) {
+			level = depth == 28 ? new ArenaLevel() : new DeadEndLevel();
 		} else {
 			level = new DeadEndLevel();
 		}
@@ -531,7 +537,8 @@ public class Dungeon {
 	}
 
 	public static boolean interfloorTeleportAllowed(){
-		if (Dungeon.level.locked
+		if (Dungeon.branch == BRANCH_ARENA
+				|| Dungeon.level.locked
 				|| Dungeon.level instanceof MiningLevel || Dungeon.level instanceof VaultLevel
 				|| (Dungeon.hero != null && Dungeon.hero.belongings.getItem(Amulet.class) != null)){
 			return false;

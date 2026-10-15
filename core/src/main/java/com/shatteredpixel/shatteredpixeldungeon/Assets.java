@@ -32,6 +32,8 @@ public class Assets {
 	}
 
 	public static class Environment {
+		public static final String WATER_ARENA = "environment/experienced/water10.png"; //ported, experienced
+		public static final String TILES_ARENA = "environment/experienced/tiles_arena.png"; //ported, experienced
 		public static final String PRISON_EXIT_NEW = "environment/custom_tiles/abyssalnite/prison_exit_new.png"; //ported, abyssalnite
 		public static final String TILES_TRUE_VOID = "environment/devoted/tiles_truevoid.png"; //ported, devoted
 		public static final String GARDENS_BOSS = "environment/custom_tiles/devoted/gardens_boss.png"; //ported, devoted
@@ -136,6 +138,7 @@ public class Assets {
 	}
 
 	public static class Music {
+		public static final String ARENA = "music/experienced/arena.ogg"; //ported, experienced
 		public static final String SHADOW_REALM = "music/devoted/10.1-LiturgiaEclipsis-Vel'Taleth.ogg"; //ported, devoted
 		public static final String GARDENS_BOSS = "music/devoted/02-PromisedParadise-GnollEmperor.ogg"; //ported, devoted
 		public static final String GARDENS = "music/devoted/01-TheSecretofSpring-TheGardens.ogg"; //ported, devoted
