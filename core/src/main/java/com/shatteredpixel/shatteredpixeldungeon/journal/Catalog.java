@@ -431,6 +431,9 @@ public enum Catalog {
 		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfDisplacement.class);
 		TRINKETS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.trinkets.WanderersMap.class);
 
+		//items ported from ratking
+		TIPPED_DARTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.DreamDart.class);
+
 
 	}
 
