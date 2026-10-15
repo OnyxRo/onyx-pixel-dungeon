@@ -65,7 +65,8 @@ public class WndModInfo extends WndTitledMessage {
 			}
 		}
 
-		return desc + "\n\n" + Messages.get(WndModInfo.class, "worlds", String.join(", ", names));
+		return desc + "\n\n" + Messages.get(WndModInfo.class, "worlds", String.join(", ", names))
+				+ "\n\n" + Messages.get(WndModInfo.class, "source");
 	}
 
 }

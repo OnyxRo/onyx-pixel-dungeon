@@ -32,3 +32,5 @@ Update this at the end of every task. Details live in CLAUDE.md.
 
 ## Cloud routine
 - TASKS.md is the queue, ROUTINE.md holds the routine prompt and helper setup, scripts/cloud-setup.sh prepares the cloud environment. Not yet tested in a cloud run.
+- 2026-10-14. Sandbox mod panel now has an "Only X" row under each mod. WorldShuffleTest checks every ported monster has a name string. Mod logo was already top left, and WndModInfo now ends with a credit line for the summary source.
+- Hotkeys decision. Ctrl+R and Ctrl+N stay sandbox only. In normal runs a reroll would break seeded fairness and let players dodge bad floors.

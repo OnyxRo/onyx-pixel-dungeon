@@ -285,6 +285,17 @@ public class WndSandboxFloor extends Window {
 					}
 				};
 				list.addItem( item );
+
+				list.addItem( new ScrollingListPane.ListItem( Icons.get(Icons.CHECKED), Messages.get(WndSandbox.class, "mods_only", mod) ) {
+					@Override
+					public boolean onClick( float x, float y ) {
+						if (!inside( x, y )) return false;
+						Dungeon.sandboxOffMods.addAll( WorldShuffle.mods() );
+						Dungeon.sandboxOffMods.remove( mod );
+						reopen();
+						return true;
+					}
+				} );
 			}
 
 			list.setRect( 0, top, LIST_WIDTH, height - top );

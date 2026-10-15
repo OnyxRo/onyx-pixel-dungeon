@@ -212,6 +212,19 @@ public class WorldShuffleTest {
 			System.out.println("FAIL: some worlds never appeared");
 			failures++;
 		}
+		//every ported monster needs a name string
+		int namedMobs = 0;
+		for (com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary cat : com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary.values()) {
+			for (Class<?> cls : cat.entities()) {
+				if (!com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary.isPorted(cls)) continue;
+				namedMobs++;
+				if (Messages.get(cls, "name").contains("!!!")) {
+					System.out.println("FAIL: no name string for " + cls.getName());
+					failures++;
+				}
+			}
+		}
+		System.out.println("ported monsters with name strings checked: " + namedMobs);
 		System.exit(failures == 0 ? 0 : 1);
 	}
 
