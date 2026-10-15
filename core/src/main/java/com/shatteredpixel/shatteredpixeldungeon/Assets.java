@@ -312,6 +312,7 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String PILLAR = "sprites/abyssalnite/pillar.png"; //ported, abyssalnite
 		public static final String EXP_GEN = "sprites/experienced/expgen.png"; //ported, experienced
 		public static final String BBAT = "sprites/experienced/bbat.png"; //ported, experienced
 		public static final String PETDRAGON_EXTRA = "sprites/cursed/dragon1.png"; //ported, cursed

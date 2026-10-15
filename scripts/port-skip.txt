@@ -6,7 +6,6 @@
 # class upgrade systems that Shattered 4 removed
 ArmorKit
 TomeOfMastery
-WndChooseWay
 
 # Cursed PD, its settings screen, grinding levels and challenge levels
 CPDSettings
@@ -16,4 +15,3 @@ RenderedTextMultiline
 WaterChallengeLevel
 
 # Abyssalnite, needs its Tengu boss, parked until the boss levels are ported
-MysteryHeart

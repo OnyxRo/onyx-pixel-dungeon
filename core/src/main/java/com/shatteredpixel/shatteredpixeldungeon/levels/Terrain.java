@@ -56,6 +56,11 @@ public class Terrain {
 	public static final int BOOKSHELF		= 27;
 	public static final int ALCHEMY			= 28;
 
+	//Abyssalnite's boss arenas use these two. A rune marks where the ritual hearts go, and the old sign tile
+	//(removed from Shattered) marks special arena floor. Both are walkable floor that looks like special floor here.
+	public static final int SP_RUNE         = 40;
+	public static final int SIGN            = 41;
+
 	public static final int CUSTOM_DECO_EMPTY = 32; //regular empty tile that can't be overridden, used for custom visuals mainly
 	//solid environment decorations
 	public static final int CUSTOM_DECO	    = 23; //invisible decoration that will also be a custom visual, re-uses the old terrain ID for signs
@@ -100,6 +105,8 @@ public class Terrain {
 		flags[WALL_DECO]	= flags[WALL];
 		flags[BARRICADE]	= FLAMABLE | SOLID | LOS_BLOCKING;
 		flags[EMPTY_SP]		= flags[EMPTY];
+		flags[SP_RUNE]		= flags[EMPTY];
+		flags[SIGN]			= PASSABLE | FLAMABLE;
 		flags[HIGH_GRASS]	= PASSABLE | LOS_BLOCKING | FLAMABLE;
 		flags[FURROWED_GRASS]= flags[HIGH_GRASS];
 

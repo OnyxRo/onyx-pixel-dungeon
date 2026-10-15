@@ -309,6 +309,24 @@ public class WorldShuffle {
 		return true;
 	}
 
+	/** Set by the boss fight test to build one particular variant, -1 lets the seed decide. */
+	public static int forcedVariant = -1;
+
+	/** Every boss floor a world's mod can give at this depth, for mods that have more than one version of a fight. */
+	public static Level[] modBossVariants( int world, int depth ){
+		if (world >= 0 && world < LOGOS.length && ABYSSALNITE.equals(LOGOS[world])) {
+			switch (depth) {
+				case 10: return new Level[]{ new OldPrisonBossLevel(), new NewPrisonBossLevel() };
+				case 15: return new Level[]{ new OldCavesBossLevel(), new NewCavesBossLevel() };
+				case 20: return new Level[]{ new OldCityBossLevel(), new NewCityBossLevel() };
+				case 25: return new Level[]{ new OldHallsBossLevel(), new NewHallsBossLevel(), new FinalLevel() };
+				default: return new Level[0];
+			}
+		}
+		Level single = world >= 0 && world < LOGOS.length ? modBossLevel( world, depth ) : null;
+		return single == null ? new Level[0] : new Level[]{ single };
+	}
+
 	/**
 	 * The boss floor that belongs with a world, for mods whose bosses are ported, or null.
 	 * Devoted has one boss for each of its five worlds, on the same floors as Shattered's.
@@ -319,14 +337,13 @@ public class WorldShuffle {
 			return depth == 5 ? new SewerBossUsurperLevel() : null;
 		}
 		if (world >= 0 && world < LOGOS.length && ABYSSALNITE.equals(LOGOS[world])) {
-			//Abyssalnite's older boss fights, built for the legacy sealed arena style
-			switch (depth) {
-				case 10: return new OldPrisonBossLevel();
-				case 15: return new OldCavesBossLevel();
-				case 20: return new OldCityBossLevel();
-				case 25: return new OldHallsBossLevel();
-				default: return null;
-			}
+			//Abyssalnite has two fights for each boss floor, its own harder ones and the older sealed arena style.
+			//Which one a floor gets is decided by the dungeon seed, the same every time the floor is built.
+			Level[] both = modBossVariants( world, depth );
+			if (both.length == 0) return null;
+			int pick = forcedVariant >= 0 ? forcedVariant : (int)((Math.abs( Dungeon.seed ) / 7 + depth) & 1);
+			//a third variant is the final arena, only built when asked for by name (the boss test), never by the seed
+			return both[forcedVariant >= 0 ? pick % both.length : pick % Math.min(both.length, 2)];
 		}
 		if (world < 0 || world >= LOGOS.length || !DEVOTED.equals(LOGOS[world])) return null;
 		switch (depth) {

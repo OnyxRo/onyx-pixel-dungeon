@@ -1456,6 +1456,7 @@ public abstract class Char extends Actor {
 										Electricity.class, ShockingDart.class, Elemental.ShockElemental.class )),
 				new HashSet<Class>()),
 		LARGE,
+		KISEKI, //Abyssalnite's septium pillar fight marks the monsters that belong to it
 		IMMOVABLE ( new HashSet<Class>(),
 				new HashSet<Class>( Arrays.asList(Vertigo.class) )),
 		//A character that is functionally an interactable object or piece of scenery

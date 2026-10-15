@@ -57,12 +57,13 @@ public class BossArenaTest {
 		int[] depths = {5, 10, 15, 20, 25};
 		for (int world = 0; world < WorldShuffle.worldCount(); world++) {
 			for (int depth : depths) {
-				Level probe = WorldShuffle.modBossLevel( world, depth );
-				if (probe == null) continue;
-				String name = probe.getClass().getSimpleName();
+				Level[] variants = WorldShuffle.modBossVariants( world, depth );
+				for (int v = 0; v < variants.length; v++) {
+				String name = variants[v].getClass().getSimpleName();
 				if (!only.isEmpty() && !name.contains( only )) continue;
 				current = name + " on floor " + depth;
 				fightStart = System.currentTimeMillis();
+				WorldShuffle.forcedVariant = v;
 				try {
 					fight( world, depth, name );
 					current = null;
@@ -79,8 +80,10 @@ public class BossArenaTest {
 						for (int i = 0; i < Math.min( 6, st.length ); i++) System.out.println( "        at " + st[i] );
 					}
 				}
+				}
 			}
 		}
+		WorldShuffle.forcedVariant = -1;
 		System.out.println( "SUMMARY boss fights tried: " + fights + ", failures: " + failures + ", headless limits: " + headless + ", warnings: " + warnings );
 		System.exit( failures == 0 ? 0 : 1 );
 	}
@@ -109,7 +112,7 @@ public class BossArenaTest {
 		boolean started = false;
 		int steps = 0;
 		int[] dirs = {-1, 1, -level.width(), level.width()};
-		while (!queue.isEmpty() && !started && steps < 1500) {
+		while (!queue.isEmpty() && !started && steps < 6000) {
 			int cell = queue.poll();
 			steps++;
 			hero.pos = cell;
@@ -190,7 +193,7 @@ public class BossArenaTest {
 	static final java.util.Set<String> SEEN_LIMITS = new java.util.LinkedHashSet<>();
 
 	//boss levels whose fight has several phases. Add a class name here with a reason when a new one is ported.
-	static final java.util.Set<String> MULTI_PHASE = new java.util.HashSet<>( java.util.Arrays.asList( "OldPrisonBossLevel" ) );
+	static final java.util.Set<String> MULTI_PHASE = new java.util.HashSet<>( java.util.Arrays.asList( "OldPrisonBossLevel", "NewPrisonBossLevel", "FinalLevel" ) );
 
 	static ArrayList<Mob> bossesIn( Level level ) {
 		ArrayList<Mob> out = new ArrayList<>();

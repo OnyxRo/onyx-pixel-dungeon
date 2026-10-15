@@ -78,6 +78,12 @@ public class ShopRoom extends SpecialRoom {
 		return Math.max(7, (int)(Math.sqrt(spacesNeeded())+3));
 	}
 
+	//how many items the shop will stock, used by Abyssalnite's imp shop to size its room
+	public int itemCount(){
+		if (itemsToSpawn == null) itemsToSpawn = generateItems();
+		return itemsToSpawn.size();
+	}
+
 	public int spacesNeeded(){
 		if (itemsToSpawn == null) itemsToSpawn = generateItems();
 

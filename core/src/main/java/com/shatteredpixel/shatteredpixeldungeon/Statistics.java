@@ -76,8 +76,14 @@ public class Statistics {
 	public static boolean amuletObtained = false;
 	public static boolean gameWon = false;
 	public static boolean ascended = false;
+
+	//Abyssalnite's septium pillar fight, how many pillars are down and which are awake
+	public static int killcount = 0;
+	public static boolean FirstActive = false, SecondActive = false, ThirdActive = false, FourthActive = false;
 	
 	public static void reset() {
+		killcount = 0;
+		FirstActive = SecondActive = ThirdActive = FourthActive = false;
 		
 		goldCollected	= 0;
 		deepestFloor	= 0;
@@ -167,6 +173,11 @@ public class Statistics {
 	private static final String ASCENDED		= "ascended";
 	
 	public static void storeInBundle( Bundle bundle ) {
+		bundle.put( "septiumkills", killcount );
+		bundle.put( "septiumfirst", FirstActive );
+		bundle.put( "septiumsecond", SecondActive );
+		bundle.put( "septiumthird", ThirdActive );
+		bundle.put( "septiumfourth", FourthActive );
 		bundle.put( GOLD,		goldCollected );
 		bundle.put( DEEPEST,	deepestFloor );
 		bundle.put( HIGHEST,	highestAscent );
@@ -214,6 +225,11 @@ public class Statistics {
 	}
 	
 	public static void restoreFromBundle( Bundle bundle ) {
+		killcount = bundle.getInt( "septiumkills" );
+		FirstActive = bundle.getBoolean( "septiumfirst" );
+		SecondActive = bundle.getBoolean( "septiumsecond" );
+		ThirdActive = bundle.getBoolean( "septiumthird" );
+		FourthActive = bundle.getBoolean( "septiumfourth" );
 		goldCollected	= bundle.getInt( GOLD );
 		deepestFloor	= bundle.getInt( DEEPEST );
 		highestAscent   = bundle.getInt( HIGHEST );
