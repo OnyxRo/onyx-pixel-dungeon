@@ -228,6 +228,7 @@ public class Assets {
 		public static final String CHALLENGE= "sounds/challenge.mp3";
 		public static final String CURSED   = "sounds/cursed.mp3";
 		public static final String TRAP     = "sounds/trap.mp3";
+		public static final String BALLISTA_RELOAD = "sounds/ballista_reload.mp3"; //ported, reforged
 		public static final String EVOKE    = "sounds/evoke.mp3";
 		public static final String TOMB     = "sounds/tomb.mp3";
 		public static final String ALERT    = "sounds/alert.mp3";
@@ -274,7 +275,7 @@ public class Assets {
 				DESCEND, EAT, READ, LULLABY, DRINK, SHATTER, ZAP, LIGHTNING, LEVELUP, DEATH,
 				CHALLENGE, CURSED, TRAP, EVOKE, TOMB, ALERT, MELD, BOSS, BLAST, PLANT, RAY, BEACON,
 				TELEPORT, CHARMS, MASTERY, PUFF, ROCKS, BURNING, FALLING, GHOST, SECRET, BONES,
-				BEE, DEGRADE, MIMIC, DEBUFF, CHARGEUP, GAS, CHAINS, SCAN, SHEEP, MINE
+				BEE, DEGRADE, MIMIC, DEBUFF, CHARGEUP, GAS, CHAINS, SCAN, SHEEP, MINE, BALLISTA_RELOAD
 		};
 	}
 
@@ -303,6 +304,11 @@ public class Assets {
 	public static class Sprites {
 		public static final String NECRO2 = "sprites/matt/necromancer2.png"; //ported, matt
 		public static final String ICESNAKE = "sprites/matt/icesnake.png"; //ported, matt
+		public static final String KOBOLD = "sprites/reforged/kobold.png"; //ported, reforged
+		public static final String SPITTER = "sprites/reforged/spitter.png"; //ported, reforged
+		public static final String BALLISTA = "sprites/reforged/ballista.png"; //ported, reforged
+		public static final String FIEND = "sprites/reforged/fiend.png"; //ported, reforged
+		public static final String UNHOLY_PRIEST = "sprites/reforged/unholy_priest.png"; //ported, reforged
 		public static final String ICEGOLEM = "sprites/matt/ice_golem.png"; //ported, matt
 		public static final String FROZENSWARM = "sprites/matt/frozenswarm.png"; //ported, matt
 		public static final String GNOLL2 = "sprites/matt/gnoll2.png"; //ported, matt

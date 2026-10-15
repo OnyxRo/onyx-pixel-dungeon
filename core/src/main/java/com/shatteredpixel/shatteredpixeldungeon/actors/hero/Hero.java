@@ -812,9 +812,18 @@ public class Hero extends Char {
 		}
 	}
 
+	private void checkLeech( float time ) {
+		for (com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon weapon : belongings.getAllItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon.class)) {
+			if (weapon.isEquipped(this) && weapon.enchantment instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Leech) {
+				((com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Leech) weapon.enchantment).triggerDamage(this, time);
+			}
+		}
+	}
+
 	@Override
 	public void spend( float time ) {
 		super.spend(time);
+		checkLeech( time );
 	}
 
 	@Override

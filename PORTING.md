@@ -8,7 +8,8 @@ Update this at the end of every task. Details live in CLAUDE.md.
 - Matt Edition: 2 worlds, 13 monsters plus Dark King, 9 blacksmith weapons, Glock (catalog only).
 - Magic Ling PD: 13 worlds. No monsters or weapons yet.
 - Transformation PD: 8 worlds. No monsters or weapons yet.
-- Reforged, Shittened, Summoning, Re-ARranged, Experienced, Cursed Legacy, Ryuse, Abyssalnite, Rat King 2: worlds only (see CLAUDE.md table).
+- Reforged PD: 1 world, 6 monsters (Kobold, Spitter, Ballista, QuickFiringBallista, Fiend, UnholyPriest), Leech curse, Cursed and Miasma buffs, MiasmaGas. Monsters spawn in the Kobold Caves through ReforgedSpawner. Left out, its three bosses (Wyrm, Demon Goo, Rat Usurper), Half Ripper and Construct Hero NPCs, and its combat system (stats were rebuilt on Shattered's damage). Its Gun equals the Glock.
+- Shittened, Summoning, Re-ARranged, Experienced, Cursed Legacy, Ryuse, Abyssalnite, Rat King 2: worlds only (see CLAUDE.md table).
 - Mod songs: fetched and imported by scripts/fetch-mod-music.py and scripts/import-mod-music.py. Files are git-ignored, rerun the scripts. Browsable in WndSongs.
 
 ## Left to do
@@ -36,3 +37,4 @@ Update this at the end of every task. Details live in CLAUDE.md.
 - Hotkeys decision. Ctrl+R and Ctrl+N stay sandbox only. In normal runs a reroll would break seeded fairness and let players dodge bad floors.
 - Single mod mode built 2026-10-14. Game Options pane on the hero select screen has a Game Mode button (Shuffle or one mod), saved in `Dungeon.singleMod`, used by `WorldShuffle.worldFor`. Worlds and monsters follow the mod (monsters only where that mod has ported ones). Items are not restricted yet, loot tables are still Shattered's. Fixed floors still use Shattered's home worlds. WorldShuffleTest covers it. Not seen on screen.
 - 2026-10-14. README rewritten to match the game (54 worlds, monsters, sandbox, single mod mode). Tried to start the Reforged monster port, cloned the repo to ~/mod-sources/reforged, but the auto mode check denied reading it again. Onyx needs to add a Bash permission rule that allows it.
+- 2026-10-14. Reforged monsters ported by hand, since its Constants.mobs stats and combat package do not fit Shattered's Mob. Cursed adds -10% accuracy, -30% evasion, +10% damage taken (Char.hit, Char.damage), Bless removes it. Miasma halves Healing. WorldShuffleTest passes on 150 seeds, 80 ported monsters have names. The auto mode check denied mod source reads at random, retrying worked.

@@ -11,7 +11,8 @@ The cloud routine does the first unchecked task and checks it off. Smallest firs
 - [ ] Port Rat King PD 2 monsters and weapons (2 monsters, 1 weapon). Find the repo on GitHub and clone it into the mod sources folder.
 - [ ] Port Experienced PD monsters and weapons (5 monsters, 9 weapons).
 - [ ] Port Ryuse's PD monsters and weapons (8 monsters, 5 weapons).
-- [ ] Port Pixel Dungeon Reforged monsters and weapons (11 monsters, 2 weapons). Started 2026-10-14, blocked. The auto mode check denied even a read-only comparison of the cloned Reforged source, so nothing was ported.
+- [x] Port Pixel Dungeon Reforged monsters and weapons. Done 2026-10-14 for six regular monsters (kobold, spitter, ballista, quick firing ballista, fiend, unholy priest) and the Leech curse. Its Gun is the same weapon as Matt Edition's Glock, already in the catalog.
+- [ ] Reforged leftovers. Wyrm, Demon Goo and Rat Usurper (bosses with their own sewer boss levels, Demon Goo and the Usurper need `SewerBossGooLevel` and `SewerBossUsurperLevel`), and the Half Ripper and Construct Hero NPCs. Reforged's combat system was not ported, so monsters use Shattered's damage, and Kobold's Dread-near-Wyrm behaviour was left out.
 - [ ] Port Abyssalnite PD monsters and weapons (18 monsters, 4 weapons).
 - [ ] Port Cursed PD (Legacy) monsters and weapons (23 monsters, 17 weapons).
 - [ ] Batched. Port Summoning PD Reincarnated monsters and weapons (33 monsters, 12 weapons), about 15 per run.

@@ -536,7 +536,8 @@ abstract public class Weapon extends KindOfWeapon {
 
 		public static final Class<?>[] curses = new Class<?>[]{
 				Annoying.class, Displacing.class, Dazzling.class, Explosive.class, Friendly.class,
-				Polarized.class, Pressurized.class, Sacrificial.class, Wayward.class, Wondrous.class
+				Polarized.class, Pressurized.class, Sacrificial.class, Wayward.class, Wondrous.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Leech.class
 		};
 			
 		public abstract int proc( Weapon weapon, Char attacker, Char defender, int damage );

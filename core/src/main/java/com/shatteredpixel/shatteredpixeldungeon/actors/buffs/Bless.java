@@ -33,6 +33,15 @@ public class Bless extends FlavourBuff {
 	}
 
 	@Override
+	public boolean attachTo( com.shatteredpixel.shatteredpixeldungeon.actors.Char target ) {
+		if (super.attachTo( target )) {
+			detach( target, Cursed.class );
+			return true;
+		}
+		return false;
+	}
+
+	@Override
 	public int icon() {
 		return BuffIndicator.BLESS;
 	}
