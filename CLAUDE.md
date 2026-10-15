@@ -21,6 +21,7 @@ His writing rules apply to anything written for him, including commit messages, 
 - Never relaunch the game unless Onyx asks. This replaces the older auto-open memory.
 - Keep command output short. Send long output to a file and grep it.
 - Commit after each finished mod or feature.
+- Keep TASKS.md up to date as you go. Check a task off the moment it is finished, note partial progress under batched tasks, and add any new work Onyx asks for to the list.
 - Remind Onyx to type /clear after every response.
 
 ## What the game is

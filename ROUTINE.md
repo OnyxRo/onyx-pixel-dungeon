@@ -12,7 +12,7 @@ You are working on Onyx's Pixel Dungeon, a Shattered Pixel Dungeon fork. This is
 3. Mod sources are in ~/mod-sources (or $MOD_SOURCES) and the official Shattered jar is in ~/vendor. If a source is missing, clone it with git -c core.longpaths=true clone --depth 1.
 4. Make sure the project compiles with scripts/compile.sh ~/vendor/ShatteredPD-v4.0.2-Java.jar /tmp/build. Run scripts/test/WorldShuffleTest.java as the release workflow does when you changed worlds. Keep command output short and send long output to a file.
 5. If the task is finished and compiles, change its checkbox in TASKS.md to [x]. If it is only partly done, leave it unchecked and write what is left under it.
-6. Update PORTING.md to match what you did.
+6. Update PORTING.md to match what you did. Keep TASKS.md current as you go, and add any follow-up work you discover as new unchecked tasks.
 7. Create a branch named routine/<short-task-name> from sandbox-and-mod-content, commit, push, and open a pull request into sandbox-and-mod-content. The description must say what was done, what failed or was left out, and which tasks remain in TASKS.md.
 8. If TASKS.md has no unchecked tasks, open a pull request or issue titled "Task queue is empty" and stop.
 
