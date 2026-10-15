@@ -25,6 +25,8 @@ His writing rules apply to anything written for him, including commit messages, 
 - Commit after each finished mod or feature.
 - Keep TASKS.md up to date as you go. Check a task off the moment it is finished, note partial progress under batched tasks, and add any new work Onyx asks for to the list.
 - Remind Onyx to type /clear after every response.
+- Never read, write or delete anything in %APPDATA%\.onyxrothman (Onyx's real saves) or anywhere else outside this repo. The only exceptions are the `Onyx Gallery` test save folder used by the screenshot tour, the mod sources folder `~/mod-sources` (read only, for porting), this session's scratchpad folder, and the normal Gradle and Java caches that builds use.
+- Never force-push and never delete branches, local or remote.
 
 ## What the game is
 
