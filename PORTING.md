@@ -32,3 +32,4 @@ Update this at the end of every task. Details live in CLAUDE.md.
 
 ## Cloud routine
 - TASKS.md is the queue, ROUTINE.md holds the routine prompt and helper setup, scripts/cloud-setup.sh prepares the cloud environment. Not yet tested in a cloud run.
+- README.md updated on 2026-10-14 to match the current game (54 worlds, ported monsters, sandbox, desktop app).

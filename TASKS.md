@@ -2,7 +2,7 @@
 
 The cloud routine does the first unchecked task and checks it off. Smallest first. Details for each item are in PORTING.md and CLAUDE.md. Tasks marked "batched" stay unchecked until finished. Each run does one batch and notes progress in PORTING.md.
 
-- [ ] Update README.md to match the current game (54 worlds from 14 mods, ported monsters and weapons, sandbox, desktop app). Keep its existing structure.
+- [x] Update README.md to match the current game (54 worlds from 14 mods, ported monsters and weapons, sandbox, desktop app). Keep its existing structure.
 - [ ] Sandbox. Add a one-click "Only this mod" button per mod in the Floors and worlds panel, which turns every other mod off in `Dungeon.sandboxOffMods`.
 - [ ] Add a check to `WorldShuffleTest` that every ported monster in `Bestiary.isPorted` has a name string. Fix any that are missing.
 - [ ] Hotkeys. Ctrl+R regenerates the current floor with a newly rolled world, which may come from a different mod. Ctrl+N jumps to a random new floor. Both work in sandbox runs. Decide whether they should work in normal runs and note the choice in PORTING.md.
