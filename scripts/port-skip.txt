@@ -13,3 +13,12 @@ WndItem
 RenderedTextMultiline
 
 # Abyssalnite, needs its Tengu boss, parked until the boss levels are ported
+
+# Reforged's combat package and stat table. Its classes are written against these, so port them by hand on Shattered's damage
+Constants
+AttackContext
+AttackResult
+CombatResolver
+CombatModifier
+DamageType
+BundleableProperty

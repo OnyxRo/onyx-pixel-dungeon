@@ -62,6 +62,8 @@ public class ModRoster {
 		add( "experienced", OOFThief.class, 1, 5, 99 );
 		//Pixel Dungeon Reforged. Kobolds are most of the crowd, the heavy ones only turn up deeper
 		add( "reforged", Kobold.class, 4, 1, 99 );
+		//the Wyrm is a mining quest boss that carves tunnels, it never spawns by itself (weight 0) but can be called up in the sandbox
+		add( "reforged", Wyrm.class, 0, 1, 99 );
 		add( "reforged", Spitter.class, 2, 1, 99 );
 		add( "reforged", UnholyPriest.class, 2, 1, 99 );
 		add( "reforged", Ballista.class, 1, 8, 99 );

@@ -59,6 +59,7 @@ FAIL=0
 run() { # name, class, args...
   local name="$1"; shift
   say "== $name"
+  SEG_START=$(( $(wc -l < "$LOG") + 1 ))
   ( cd "$ASSETS" && java -Dsrc.root="$(W "$ROOT")" -Dmob.baseline="$(W "$ROOT/scripts/test/mob-baseline.txt")" -cp "$TCP" "$@" ) >> "$LOG" 2>&1
   local rc=$?
   [ $rc -ne 0 ] && FAIL=1
@@ -67,7 +68,7 @@ run() { # name, class, args...
 
 if [ $QUICK -eq 0 ]; then
   run "WorldShuffleTest ($SEEDS seeds)" WorldShuffleTest "$SEEDS"; rc=$?
-  grep -E "^(FAIL|floors generated|ported monsters)" "$LOG" | tail -6 | sed 's/^/  /'
+  tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|floors generated|ported monsters)" | tail -6 | sed 's/^/  /'
   [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
 fi
 
@@ -75,13 +76,13 @@ fi
 if [ $QUICK -eq 0 ]; then
   #BOSS_ONLY=Void scripts/check.sh --new runs only the boss levels whose class name contains Void
   run "BossArenaTest" BossArenaTest ${BOSS_ONLY:-}; rc=$?
-  grep -E "^(FAIL|WARN|HEADLESS|SUMMARY boss)" "$LOG" | sed 's/^/  /' | tail -30
+  tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|WARN|HEADLESS|SUMMARY boss)" | sed 's/^/  /' | tail -30
   [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
 fi
 
 # git-aware list of changed monster classes for --new is resolved inside MobArenaTest
 run "MobArenaTest ${MOBS[*]}" MobArenaTest "${MOBS[@]}"; rc=$?
-grep -E "^(FAIL|WARN|SUMMARY)" "$LOG" | sed 's/^/  /' | tail -40
+tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|WARN|SUMMARY)" | sed 's/^/  /' | tail -40
 [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
 
 #items: --new checks changed ones, otherwise every catalog item (slow, mostly Shattered's own), so a full run uses --new too
@@ -89,7 +90,7 @@ if [ "${MOBS[0]}" = "--all" ]; then ITEMS=(--all); elif [ "${MOBS[0]}" = "--new"
 #ITEMS_ALL=1 scripts/check.sh runs every catalog item, use it once before a pull request
 if [ -n "${ITEMS_ALL:-}" ]; then ITEMS=(--all); fi
 run "ItemArenaTest ${ITEMS[*]}" ItemArenaTest "${ITEMS[@]}"; rc=$?
-grep -E "^(FAIL|WARN|SUMMARY items)" "$LOG" | grep -v "monsters" | sed 's/^/  /' | tail -20
+tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|WARN|SUMMARY items)" | grep -v "monsters" | sed 's/^/  /' | tail -20
 [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
 
 say "== full log: build/check.log"
