@@ -119,6 +119,11 @@ public class ExitRoom extends StandardRoom {
 	}
 
 	public static StandardRoom createExit(){
-		return Reflection.newInstance(rooms.get(Random.chances(chances[Dungeon.depth])));
+		return createExit(Dungeon.depth);
+	}
+
+	//Matt Edition. Branch floors can pick their rooms from another depth's pool
+	public static StandardRoom createExit(int depth){
+		return Reflection.newInstance(rooms.get(Random.chances(chances[depth])));
 	}
 }

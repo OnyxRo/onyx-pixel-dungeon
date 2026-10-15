@@ -46,6 +46,11 @@ public class LevelTransition extends Rect implements Bundlable {
 
 	public int centerCell;
 
+	//Matt Edition. Named transitions pair one specific exit with one specific entrance on another floor.
+	//Both stay null for every ordinary transition.
+	public String transitionId;
+	public String targetTransitionId;
+
 	//for bundling
 	public LevelTransition(){
 		super();
@@ -59,6 +64,13 @@ public class LevelTransition extends Rect implements Bundlable {
 		this.destDepth = destDepth;
 		this.destBranch = destBranch;
 		this.destType = destType;
+	}
+
+	public LevelTransition(Level level, int cell, Type type, int destDepth, int destBranch, Type destType,
+						   String transitionId, String targetTransitionId){
+		this(level, cell, type, destDepth, destBranch, destType);
+		this.transitionId = transitionId;
+		this.targetTransitionId = targetTransitionId;
 	}
 
 	//gives default values for common transition types
@@ -123,6 +135,8 @@ public class LevelTransition extends Rect implements Bundlable {
 	public static final String DEST_DEPTH = "dest_depth";
 	public static final String DEST_BRANCH = "dest_branch";
 	public static final String DEST_TYPE = "dest_type";
+	public static final String TRANSITION_ID = "transition_id";
+	public static final String TARGET_TRANSITION_ID = "target_transition_id";
 
 	@Override
 	public void storeInBundle(Bundle bundle) {
@@ -137,6 +151,9 @@ public class LevelTransition extends Rect implements Bundlable {
 		bundle.put(DEST_DEPTH, destDepth);
 		bundle.put(DEST_BRANCH, destBranch);
 		bundle.put(DEST_TYPE, destType);
+
+		if (transitionId != null)       bundle.put(TRANSITION_ID, transitionId);
+		if (targetTransitionId != null) bundle.put(TARGET_TRANSITION_ID, targetTransitionId);
 	}
 
 	@Override
@@ -152,5 +169,8 @@ public class LevelTransition extends Rect implements Bundlable {
 		destDepth = bundle.getInt(DEST_DEPTH);
 		destBranch = bundle.getInt(DEST_BRANCH);
 		if (bundle.contains(DEST_TYPE)) destType = bundle.getEnum(DEST_TYPE, Type.class);
+
+		transitionId       = bundle.contains(TRANSITION_ID)        ? bundle.getString(TRANSITION_ID)        : null;
+		targetTransitionId = bundle.contains(TARGET_TRANSITION_ID) ? bundle.getString(TARGET_TRANSITION_ID) : null;
 	}
 }

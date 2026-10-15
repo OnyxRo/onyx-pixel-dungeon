@@ -350,6 +350,7 @@ public class Dungeon {
 		Wandmaker.Quest.reset();
 		Blacksmith.Quest.reset();
 		Imp.Quest.reset();
+		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.FriendlyThief.Quest.reset();
 
 		hero = new Hero();
 		hero.live();
@@ -463,7 +464,16 @@ public class Dungeon {
 		} else if (branch == BRANCH_BLACK) {
 			level = depth == 27 ? new BlackMimicLevel() : new DeadEndLevel();
 		} else if (branch == BRANCH_ARENA) {
-			level = depth == 28 ? new ArenaLevel() : new DeadEndLevel();
+			//branch 2 also holds Matt Edition's Thieves Guild (floors 8 and 9) and Ice Caves (floors 14 to 18)
+			if (depth == 28) {
+				level = new ArenaLevel();
+			} else if (depth == 8 || depth == 9) {
+				level = new com.shatteredpixel.shatteredpixeldungeon.levels.ThievesGuildLevel();
+			} else if (depth >= 14 && depth <= 18) {
+				level = new com.shatteredpixel.shatteredpixeldungeon.levels.MattIceCavesLevel();
+			} else {
+				level = new DeadEndLevel();
+			}
 		} else {
 			level = new DeadEndLevel();
 		}
@@ -548,6 +558,7 @@ public class Dungeon {
 
 	public static boolean interfloorTeleportAllowed(){
 		if (Dungeon.branch == BRANCH_ARENA || Dungeon.branch == BRANCH_BLACK
+				|| Dungeon.level instanceof com.shatteredpixel.shatteredpixeldungeon.levels.ThievesGuildLevel
 				|| Dungeon.level.locked
 				|| Dungeon.level instanceof MiningLevel || Dungeon.level instanceof VaultLevel
 				|| (Dungeon.hero != null && Dungeon.hero.belongings.getItem(Amulet.class) != null)){
@@ -777,6 +788,7 @@ public class Dungeon {
 			Wandmaker	.Quest.storeInBundle( quests );
 			Blacksmith	.Quest.storeInBundle( quests );
 			Imp			.Quest.storeInBundle( quests );
+			com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.FriendlyThief.Quest.storeInBundle( quests );
 			bundle.put( QUESTS, quests );
 			
 			SpecialRoom.storeRoomsInBundle( bundle );
@@ -894,11 +906,13 @@ public class Dungeon {
 				Wandmaker.Quest.restoreFromBundle( quests );
 				Blacksmith.Quest.restoreFromBundle( quests );
 				Imp.Quest.restoreFromBundle( quests );
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.FriendlyThief.Quest.restoreFromBundle( quests );
 			} else {
 				Ghost.Quest.reset();
 				Wandmaker.Quest.reset();
 				Blacksmith.Quest.reset();
 				Imp.Quest.reset();
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.FriendlyThief.Quest.reset();
 			}
 			
 			SpecialRoom.restoreRoomsFromBundle(bundle);

@@ -199,6 +199,13 @@ public abstract class Level implements Bundlable {
 	public int color1 = 0x004400;
 	public int color2 = 0x88CC44;
 
+	//Matt Edition. Branch floors turn these off to control what they spawn. Branch 0 floors leave them on.
+	public boolean canSpawnItems = true;
+	public boolean canSpawnGurItems = true;
+	public boolean canSpawnFood = true;
+	public boolean canFeeling = true;
+	public int splashRegionOverride = -1; //loading screen region, -1 means from the depth
+
 	private static final String VERSION     = "version";
 	private static final String WIDTH       = "width";
 	private static final String HEIGHT      = "height";
@@ -225,7 +232,7 @@ public abstract class Level implements Bundlable {
 		//TODO maybe just make this part of RegularLevel?
 		if (!Dungeon.bossLevel() && Dungeon.branch == 0) {
 
-			addItemToSpawn(Generator.random(Generator.Category.FOOD));
+			if (canSpawnFood) addItemToSpawn(Generator.random(Generator.Category.FOOD));
 
 			if (Dungeon.posNeeded()) {
 				Dungeon.LimitedDrops.STRENGTH_POTIONS.count++;
@@ -616,21 +623,43 @@ public abstract class Level implements Bundlable {
 	}
 
 	public LevelTransition getTransition(LevelTransition.Type type){
+		return getTransition(type, null);
+	}
+
+	//Matt Edition. With no target id, plain (unnamed) transitions are preferred and named ones are a fallback.
+	//With a target id, the transition with that id is returned, preferring one of the right type.
+	public LevelTransition getTransition(LevelTransition.Type type, String targetId){
 		if (transitions.isEmpty()){
 			return null;
 		}
-		for (LevelTransition transition : transitions){
-			//if we don't specify a type, prefer to return any entrance
-			if (type == null &&
-					(transition.type == LevelTransition.Type.REGULAR_ENTRANCE
-							|| transition.type == LevelTransition.Type.BRANCH_ENTRANCE
-							|| transition.type == LevelTransition.Type.SURFACE)){
-				return transition;
-			} else if (transition.type == type){
+		if (targetId == null) {
+			for (int pass = 0; pass < 2; pass++) {
+				for (LevelTransition transition : transitions) {
+					if (pass == 0 && transition.transitionId != null) continue;
+					//if we don't specify a type, prefer to return any entrance
+					if (type == null &&
+							(transition.type == LevelTransition.Type.REGULAR_ENTRANCE
+									|| transition.type == LevelTransition.Type.BRANCH_ENTRANCE
+									|| transition.type == LevelTransition.Type.SURFACE)) {
+						return transition;
+					} else if (transition.type == type) {
+						return transition;
+					}
+				}
+			}
+			return type != null ? getTransition(null, null) : transitions.get(0);
+		}
+		for (LevelTransition transition : transitions) {
+			if (transition.type == type && targetId.equals(transition.transitionId)) {
 				return transition;
 			}
 		}
-		return type != null ? getTransition(null) : transitions.get(0);
+		for (LevelTransition transition : transitions) {
+			if (targetId.equals(transition.transitionId)) {
+				return transition;
+			}
+		}
+		throw new RuntimeException("No transition with id '" + targetId + "' on depth " + Dungeon.depth + " branch " + Dungeon.branch);
 	}
 
 	public LevelTransition getTransition(int cell){

@@ -95,6 +95,15 @@ import java.util.Iterator;
 public abstract class RegularLevel extends Level {
 	
 	protected ArrayList<Room> rooms;
+
+	//Matt Edition item count overrides for branch floors, see createItems. -1 means the normal roll.
+	protected int setItemsToSpawn = -1;
+	protected int setScrollPotionCount = 0;
+	protected int setWeaponArmorCount = 0;
+	protected int setMissileCount = 0;
+	protected int setWandCount = 0;
+	protected int setRingCount = 0;
+	protected int setArtifactCount = 0;
 	
 	protected Builder builder;
 	
@@ -124,7 +133,12 @@ public abstract class RegularLevel extends Level {
 	protected ArrayList<Room> initRooms() {
 		ArrayList<Room> initRooms = new ArrayList<>();
 		initRooms.add ( roomEntrance = EntranceRoom.createEntrance());
-		initRooms.add( roomExit = ExitRoom.createExit());
+		if (Dungeon.depth == 14 && Dungeon.branch == 0) {
+			//Matt Edition. The exit of floor 14 leads down into its Ice Caves branch as well as to floor 15
+			initRooms.add( roomExit = new com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Custom.IceCavesEntrance());
+		} else {
+			initRooms.add( roomExit = ExitRoom.createExit());
+		}
 
 		//force max standard rooms and multiple by 1.5x for large levels
 		int standards = standardRooms(feeling == Feeling.LARGE);
@@ -375,17 +389,45 @@ public abstract class RegularLevel extends Level {
 	
 	@Override
 	protected void createItems() {
-		
-		// drops 3/4/5 items 60%/30%/10% of the time
-		int nItems = 3 + Random.chances(new float[]{6, 3, 1});
 
-		if (feeling == Feeling.LARGE){
-			nItems += 2;
+		if (!canSpawnItems) return;
+
+		//Matt Edition. A branch floor can set an exact item count, and how many of those are of one kind.
+		//Left at -1 it is Shattered's normal roll. Slots that no category claims are fully random items.
+		int nItems;
+		ArrayList<Generator.Category> slots = new ArrayList<>();
+		if (setItemsToSpawn >= 0) {
+			nItems = setItemsToSpawn;
+			int remaining = nItems;
+			int n = Math.min(setScrollPotionCount, remaining);
+			for (int i = 0; i < n; i++) slots.add(i % 2 == 0 ? Generator.Category.SCROLL : Generator.Category.POTION);
+			remaining -= n;
+			n = Math.min(setWeaponArmorCount, remaining);
+			for (int i = 0; i < n; i++) slots.add(i % 2 == 0 ? Generator.Category.WEAPON : Generator.Category.ARMOR);
+			remaining -= n;
+			n = Math.min(setMissileCount, remaining);
+			for (int i = 0; i < n; i++) slots.add(Generator.Category.MISSILE);
+			remaining -= n;
+			n = Math.min(setWandCount, remaining);
+			for (int i = 0; i < n; i++) slots.add(Generator.Category.WAND);
+			remaining -= n;
+			n = Math.min(setRingCount, remaining);
+			for (int i = 0; i < n; i++) slots.add(Generator.Category.RING);
+			remaining -= n;
+			n = Math.min(setArtifactCount, remaining);
+			for (int i = 0; i < n; i++) slots.add(Generator.Category.ARTIFACT);
+		} else {
+			// drops 3/4/5 items 60%/30%/10% of the time
+			nItems = 3 + Random.chances(new float[]{6, 3, 1});
+
+			if (feeling == Feeling.LARGE){
+				nItems += 2;
+			}
 		}
-		
+
 		for (int i=0; i < nItems; i++) {
 
-			Item toDrop = Generator.random();
+			Item toDrop = i < slots.size() ? Generator.random(slots.get(i)) : Generator.random();
 			if (toDrop == null) continue;
 
 			int cell = randomDropCell();

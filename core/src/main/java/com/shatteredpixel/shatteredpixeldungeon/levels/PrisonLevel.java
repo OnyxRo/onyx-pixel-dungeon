@@ -82,7 +82,9 @@ public class PrisonLevel extends RegularLevel {
 
 	@Override
 	protected ArrayList<Room> initRooms() {
-		return Wandmaker.Quest.spawnRoom(super.initRooms());
+		//the Friendly Thief room comes from Matt Edition
+		return com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.FriendlyThief.Quest.spawnRoom(
+				Wandmaker.Quest.spawnRoom(super.initRooms()));
 	}
 
 	@Override
@@ -144,6 +146,11 @@ public class PrisonLevel extends RegularLevel {
 		super.occupyCell(ch);
 		if (ch == Dungeon.hero) {
 			updateWandmakerQuestMusic();
+
+			if (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.FriendlyThief.Quest.accessed()
+					&& ch.pos == com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.FriendlyThief.Quest.getEntranceCell()) {
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.FriendlyThief.Quest.cleanupTransition();
+			}
 		}
 	}
 

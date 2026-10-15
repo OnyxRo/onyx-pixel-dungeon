@@ -32,6 +32,8 @@ public class Assets {
 	}
 
 	public static class Environment {
+		public static final String TILES_ICE2 = "environment/mattedition/tiles_ice_snow.png"; //ported, mattedition
+		public static final String TILES_THIEF_GUILD = "environment/matt/tiles_guild.png"; //ported, matt
 		public static final String PRISON_EXIT_OLD = "environment/custom_tiles/abyssalnite/prison_exit_old.png"; //ported, abyssalnite
 		public static final String WATER_ARENA = "environment/experienced/water10.png"; //ported, experienced
 		public static final String TILES_ARENA = "environment/experienced/tiles_arena.png"; //ported, experienced
@@ -139,6 +141,8 @@ public class Assets {
 	}
 
 	public static class Music {
+		public static final String ICE_CAVES = "music/mattedition/icecaves_calm.ogg"; //ported, mattedition
+		public static final String ICE_CAVES_TENSE = "music/mattedition/icecaves.ogg"; //ported, mattedition
 		public static final String BLACK_MIMIC_ARENA = "music/experienced/black_mimic_arena.ogg"; //ported, experienced
 		public static final String BLACK_MIMIC_BOSS = "music/experienced/black_mimic.ogg"; //ported, experienced
 		public static final String BLACK_MIMIC_BOSS_FINALE = "music/experienced/black_mimic_finale.ogg"; //ported, experienced

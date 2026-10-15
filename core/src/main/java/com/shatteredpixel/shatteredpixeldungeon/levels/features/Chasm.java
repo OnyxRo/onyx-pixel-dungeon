@@ -107,7 +107,21 @@ public class Chasm implements Hero.Doom {
 		if (Dungeon.hero.isAlive()) {
 			Dungeon.hero.interrupt();
 			InterlevelScene.mode = InterlevelScene.Mode.FALL;
-			if (Dungeon.level instanceof RegularLevel &&
+			InterlevelScene.fallUsesTransition = false;
+			if (Dungeon.depth == 14 && (Dungeon.branch == 0 || Dungeon.branch == 2)) {
+				//Matt Edition. A fall from floor 14 drops into the Ice Caves, and a fall inside them goes back up to
+				//floor 14, so nobody skips the caves or lands on the deep exit puzzle floor
+				boolean fromMain = Dungeon.branch == 0;
+				InterlevelScene.curTransition = new LevelTransition(
+						Dungeon.level,
+						pos,
+						fromMain ? LevelTransition.Type.BRANCH_EXIT : LevelTransition.Type.BRANCH_ENTRANCE,
+						14,
+						fromMain ? 2 : 0,
+						fromMain ? LevelTransition.Type.BRANCH_ENTRANCE : LevelTransition.Type.BRANCH_EXIT );
+				InterlevelScene.fallUsesTransition = true;
+				InterlevelScene.fallIntoPit = false;
+			} else if (Dungeon.level instanceof RegularLevel &&
 						((RegularLevel)Dungeon.level).room( pos ) instanceof WeakFloorRoom){
 				InterlevelScene.fallIntoPit = true;
 				Notes.remove(Notes.Landmark.DISTANT_WELL);

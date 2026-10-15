@@ -182,7 +182,12 @@ public class EntranceRoom extends StandardRoom {
 	}
 
 	public static StandardRoom createEntrance(){
-		return Reflection.newInstance(rooms.get(Random.chances(chances[Dungeon.depth])));
+		return createEntrance(Dungeon.depth);
+	}
+
+	//Matt Edition. Branch floors can pick their rooms from another depth's pool
+	public static StandardRoom createEntrance(int depth){
+		return Reflection.newInstance(rooms.get(Random.chances(chances[depth])));
 	}
 
 }

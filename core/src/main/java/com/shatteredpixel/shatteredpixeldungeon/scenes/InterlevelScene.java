@@ -90,6 +90,8 @@ public class InterlevelScene extends PixelScene {
 	public static int returnPos;
 
 	public static boolean fallIntoPit;
+	//set by Chasm.heroFall when a fall should follow curTransition (Matt Edition's Ice Caves on floor 14)
+	public static boolean fallUsesTransition = false;
 	
 	private enum Phase {
 		FADE_IN, STATIC, FADE_OUT
@@ -166,7 +168,9 @@ public class InterlevelScene extends PixelScene {
 		}
 
 		//flush the texture cache whenever moving between regions, helps reduce memory load
-		int region = (int)Math.ceil(loadingDepth / 5f);
+		int region = (Dungeon.level != null && Dungeon.level.splashRegionOverride != -1)
+				? Dungeon.level.splashRegionOverride
+				: (int)Math.ceil(loadingDepth / 5f);
 		if (region != lastRegion){
 			TextureCache.clear();
 			TitleBackground.reset();
@@ -670,7 +674,7 @@ public class InterlevelScene extends PixelScene {
 				level = Dungeon.newLevel();
 			}
 
-			LevelTransition destTransition = level.getTransition(curTransition.destType);
+			LevelTransition destTransition = level.getTransition(curTransition.destType, curTransition.targetTransitionId);
 			curTransition = null;
 			Dungeon.switchLevel( level, destTransition.cell() );
 		}
@@ -686,7 +690,15 @@ public class InterlevelScene extends PixelScene {
 		Dungeon.saveAll();
 
 		Level level;
-		Dungeon.depth++;
+		if (fallUsesTransition && curTransition != null) {
+			//Matt Edition. Falling on floor 14 drops into the Ice Caves instead of the next floor down
+			Dungeon.depth  = curTransition.destDepth;
+			Dungeon.branch = curTransition.destBranch;
+		} else {
+			Dungeon.depth++;
+		}
+		fallUsesTransition = false;
+		curTransition = null;
 		if (Dungeon.levelHasBeenGenerated(Dungeon.depth, Dungeon.branch)) {
 			level = Dungeon.loadLevel( GamesInProgress.curSlot );
 		} else {
@@ -714,11 +726,21 @@ public class InterlevelScene extends PixelScene {
 			level = Dungeon.newLevel();
 		}
 
-		LevelTransition destTransition = level.getTransition(curTransition.destType);
+		LevelTransition destTransition = level.getTransition(curTransition.destType, curTransition.targetTransitionId);
+		int heroPos = destTransition.cell();
+
+		//Matt Edition. Coming back up to a locked exit puts the hero below the door, not on it
+		if (level.map[destTransition.centerCell] == Terrain.LOCKED_EXIT) {
+			int belowDoor = destTransition.centerCell + level.width();
+			if (belowDoor < level.length() && level.passable[belowDoor]) {
+				heroPos = belowDoor;
+			}
+		}
+
 		curTransition = null;
-		Dungeon.switchLevel( level, destTransition.cell() );
+		Dungeon.switchLevel( level, heroPos );
 	}
-	
+
 	private void returnTo() throws IOException {
 		Mob.holdAllies( Dungeon.level );
 		Dungeon.saveAll();
