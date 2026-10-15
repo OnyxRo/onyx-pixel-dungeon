@@ -16,3 +16,14 @@ Ported about 90 items, weapons and levels, two branches (arena, black mimic) and
 - Still open. Checking each ported class by eye is not possible headless, `arena.sh` only covers monsters. Items rely on `ItemArenaTest` alone.
 - The full `scripts/check.sh` only tested items changed since the last commit, so a pull request check on a committed batch tested nothing. Fix, a full run now tests every catalog item (477, about 30 seconds). Six known failures from Devoted and Shattered's darts were added to the baseline.
 - I broke my own new test with a backslash in a heredoc edit, minutes after writing the rule against it. Fix, none needed beyond the rule, but patterns in new code should avoid backslashes entirely, for example `[.]` instead of an escaped dot.
+
+## 2026-10-15, Abyssalnite legacy bosses and a boss fight test
+
+Ported OldTengu, OldDM300, King and Yog with their four sealed arena levels. Boss levels from Abyssalnite are only reachable in the sandbox until Onyx has played them (`WorldShuffle.bossPlaytested`).
+
+- Boss levels were the first thing that could trap a run, so they got a real test. `scripts/test/BossArenaTest.java` walks the hero into every mod boss arena, kills each boss and checks the floor unseals and that floors 10 and 20 give the mask or crown. It runs in every full `check.sh`, `BOSS_ONLY=Name` runs one level. It has a 60 second watchdog that prints where a hang is.
+- The test found a real bug in the first minutes, not a test artifact. Sandbox full sight makes every cell visible, so any "put the boss where the hero cannot see" loop never ends and freezes the game. Fix, a rule in `renames.py` that makes those loops ignore sight when full sight is on.
+- Headless limits (null emitter, scene, sprite) hid the interesting part of every boss death. Fix, `GameScene.emitter()` returns a loose emitter without a scene, `Char.die`, `GameScene.bossSlain` and `dropProgressionItem` skip the sprite when there is none. A death that still stops at a limit is a WARN, not a pass, and not a failure.
+- A walk from entrance to exit is not a valid check for boss floors, Shattered's own arenas fail it. Do not add it back.
+- Legacy levels set `entrance` and `exit` directly and swap maps. `Level.create` now turns those into transitions and `Level.changeMap` exists, so old style levels port with few edits. A Skeleton Key becomes a Worn Key, which opens locked exits in 4.0.2.
+- Trial copies that turn out wrong (Reforged's combat package came along with the Wyrm) were removed by hand from `git status`. Commit before a trial, then undo by deleting what `git status --short` lists as new.

@@ -8,6 +8,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.WorldShuffle;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -26,6 +27,26 @@ import java.util.Map;
  *   java -cp <classes>:<libs.jar>:<test classes> WorldShuffleTest [seeds]
  */
 public class WorldShuffleTest {
+
+	static int bossProblems = 0;
+
+	/**
+	 * A boss floor that has no way in or out traps the player for good, so this is checked for every boss level
+	 * of every world. The entrance and exit must exist and they must be different cells.
+	 * Returns 1 for a floor checked.
+	 */
+	static int checkBossLevel( Level l, int depth ) {
+		String name = l.getClass().getSimpleName() + " on floor " + depth;
+		int entrance = l.entrance();
+		int exit = l.exit();
+		if (entrance <= 0 || entrance >= l.length()) { bossProblems++; System.out.println("FAIL: " + name + " has no entrance"); return 1; }
+		if (depth < 26 && (exit <= 0 || exit >= l.length())) { bossProblems++; System.out.println("FAIL: " + name + " has no exit"); return 1; }
+		if (depth >= 26) return 1;
+		//a walk from entrance to exit is not a valid test, Shattered's own boss arenas stay walled until the fight.
+		//Abyssalnite's old prison fight only creates its exit when the map changes at the end, see changeMap
+		if (entrance == exit && !name.startsWith("OldPrisonBossLevel")) { bossProblems++; System.out.println("FAIL: " + name + " has the entrance on the exit"); }
+		return 1;
+	}
 
 	public static void main(String[] args) throws Exception {
 		int seeds = args.length > 0 ? Integer.parseInt(args[0]) : 40;
@@ -118,6 +139,7 @@ public class WorldShuffleTest {
 		}
 		//sandbox runs can force any world onto any regular floor, so build every combination
 		int forced = 0;
+		int bossChecks = 0;
 		Dungeon.sandbox = true;
 		for (int s = 0; s < Math.min(seeds, 3); s++) {
 			long seed = 7000003L * (s + 1);
@@ -141,6 +163,7 @@ public class WorldShuffleTest {
 						if (!WorldShuffle.canForce(d) && !(Dungeon.bossLevel(d) || d == 26)) {
 							throw new IllegalStateException("a regular floor could not be forced");
 						}
+						if (Dungeon.bossLevel(d)) bossChecks += checkBossLevel(l, d);
 						forced++;
 					} catch (Throwable t) {
 						failures++;
@@ -204,6 +227,8 @@ public class WorldShuffleTest {
 		Dungeon.sandbox = false;
 		Dungeon.sandboxWorld = -1;
 		System.out.println("sandbox floors built with a forced world: " + forced);
+		System.out.println("boss floors structurally checked: " + bossChecks);
+		failures += bossProblems;
 
 		System.out.println("ported worlds saved and reloaded: " + saved);
 		System.out.println("floors generated: " + floors + ", failures: " + failures);

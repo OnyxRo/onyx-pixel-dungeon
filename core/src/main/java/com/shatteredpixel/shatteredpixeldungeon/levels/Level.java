@@ -316,6 +316,13 @@ public abstract class Level implements Bundlable {
 			customWalls = new ArrayList<>();
 			
 		} while (!build());
+
+		//levels written for older Shattered, ported from mods, set the entrance and exit cells directly.
+		//Give them transitions so stairs, sealing and key locks work the way they do in current levels.
+		if (transitions.isEmpty() && (entrance > 0 || exit > 0)) {
+			if (entrance > 0) transitions.add( new LevelTransition( this, entrance, LevelTransition.Type.REGULAR_ENTRANCE ) );
+			if (exit > 0) transitions.add( new LevelTransition( this, exit, LevelTransition.Type.REGULAR_EXIT ) );
+		}
 		
 		buildFlagMaps();
 		cleanWalls();
@@ -326,6 +333,41 @@ public abstract class Level implements Bundlable {
 		Random.popGenerator();
 	}
 	
+	//Abyssalnite's boss levels swap the whole map in the middle of a fight, for example Tengu's maze and arena.
+	//The entrance and exit are found again in the new map and given new transitions.
+	public void changeMap( int[] newMap ){
+		this.map = newMap.clone();
+		buildFlagMaps();
+		cleanWalls();
+
+		for (Heap heap : heaps.valueList()){
+			heap.destroy();
+		}
+
+		transitions = new ArrayList<>();
+		entrance = exit = 0;
+		for (int i = 0; i < length(); i++) {
+			if (map[i] == Terrain.ENTRANCE) {
+				entrance = i;
+				transitions.add( new LevelTransition( this, i, LevelTransition.Type.REGULAR_ENTRANCE ) );
+			} else if (map[i] == Terrain.EXIT) {
+				exit = i;
+				transitions.add( new LevelTransition( this, i, LevelTransition.Type.REGULAR_EXIT ) );
+			}
+		}
+
+		BArray.setFalse( visited );
+		BArray.setFalse( mapped );
+
+		for (Blob blob : blobs.values()) {
+			blob.fullyClear();
+		}
+		addVisuals();
+
+		GameScene.resetMap();
+		Dungeon.observe();
+	}
+
 	public void setSize(int w, int h){
 		
 		width = w;

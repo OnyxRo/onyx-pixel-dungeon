@@ -42,6 +42,9 @@ RENAMES = [
     # Experienced's own members and wrappers
     ('Experienced perk checks, the perk system is not ported', r'[^\n]*\bhero\.perks\.contains\([^\n]*;[ \t]*\r?\n', ''),
     ('Experienced perks import', r'import [\w.]*\.Perks;[ \t]*\r?\n', ''),
+    ('Bones.get returns a list now, take the first item', r'Item\s+(\w+)\s*=\s*Bones\.get\(\)\s*;', r'java.util.ArrayList<Item> \1List = Bones.get(); Item \1 = (\1List == null || \1List.isEmpty()) ? null : \1List.get(0);'),
+    ('Char.move gained a travelling argument', r'public void move\(\s*int step\s*\)\s*\{(\s*)super\.move\(\s*step\s*\);', r'public void move( int step, boolean travelling ) {\1super.move( step, travelling );'),
+    ('boss placement out of sight never ends when sandbox full sight is on', r'(?<![\w.(])heroFOV\[(\w+\.pos)\]', r'(heroFOV[\1] && !Dungeon.seeAll())'),
     ('escalatingDepth is Experienced only, use depth', r'Dungeon\.escalatingDepth\(\)', 'Dungeon.depth'),
     ('doPickUp lost its time argument', r'doPickUp\(\s*(Hero\s+\w+|\w+)\s*,\s*(int\s+\w+|[\w.]+)\s*,\s*(?:float\s+\w+|[\w.]+)\s*\)', r'doPickUp(\1, \2)'),
     ('Dungeon.cycle arithmetic is Experienced only, use 0', r'\(?\s*Dungeon\.cycle\s*\*\s*\d+L?\s*\)?', '0'),

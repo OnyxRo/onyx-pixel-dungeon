@@ -1347,7 +1347,8 @@ public class GameScene extends PixelScene {
 			emitter.revive();
 			return emitter;
 		} else {
-			return null;
+			//no scene, as in the headless tests. A loose emitter is harmless and saves callers a null check.
+			return new Emitter();
 		}
 	}
 
@@ -1692,6 +1693,7 @@ public class GameScene extends PixelScene {
 	}
 	
 	public static void bossSlain() {
+		if (scene == null) return; //headless tests
 		if (Dungeon.hero.isAlive()) {
 			Banner bossSlain = new Banner( BannerSprites.get( BannerSprites.Type.BOSS_SLAIN ) );
 			bossSlain.show( 0xFFFFFF, 0.3f, 5f );

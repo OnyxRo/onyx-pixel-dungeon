@@ -32,6 +32,7 @@ public class Assets {
 	}
 
 	public static class Environment {
+		public static final String PRISON_EXIT_OLD = "environment/custom_tiles/abyssalnite/prison_exit_old.png"; //ported, abyssalnite
 		public static final String WATER_ARENA = "environment/experienced/water10.png"; //ported, experienced
 		public static final String TILES_ARENA = "environment/experienced/tiles_arena.png"; //ported, experienced
 		public static final String PRISON_EXIT_NEW = "environment/custom_tiles/abyssalnite/prison_exit_new.png"; //ported, abyssalnite

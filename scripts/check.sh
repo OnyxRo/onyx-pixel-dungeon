@@ -71,6 +71,14 @@ if [ $QUICK -eq 0 ]; then
   [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
 fi
 
+# mod boss fights, walked through headless. Skipped in --quick runs.
+if [ $QUICK -eq 0 ]; then
+  #BOSS_ONLY=Void scripts/check.sh --new runs only the boss levels whose class name contains Void
+  run "BossArenaTest" BossArenaTest ${BOSS_ONLY:-}; rc=$?
+  grep -E "^(FAIL|WARN|HEADLESS|SUMMARY boss)" "$LOG" | sed 's/^/  /' | tail -30
+  [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
+fi
+
 # git-aware list of changed monster classes for --new is resolved inside MobArenaTest
 run "MobArenaTest ${MOBS[*]}" MobArenaTest "${MOBS[@]}"; rc=$?
 grep -E "^(FAIL|WARN|SUMMARY)" "$LOG" | sed 's/^/  /' | tail -40

@@ -318,6 +318,16 @@ public class WorldShuffle {
 			//Reforged only has the one boss floor, the Rat Usurper in place of Goo
 			return depth == 5 ? new SewerBossUsurperLevel() : null;
 		}
+		if (world >= 0 && world < LOGOS.length && ABYSSALNITE.equals(LOGOS[world])) {
+			//Abyssalnite's older boss fights, built for the legacy sealed arena style
+			switch (depth) {
+				case 10: return new OldPrisonBossLevel();
+				case 15: return new OldCavesBossLevel();
+				case 20: return new OldCityBossLevel();
+				case 25: return new OldHallsBossLevel();
+				default: return null;
+			}
+		}
 		if (world < 0 || world >= LOGOS.length || !DEVOTED.equals(LOGOS[world])) return null;
 		switch (depth) {
 			case 5:  return new GardenBossLevel();
@@ -330,6 +340,16 @@ public class WorldShuffle {
 	}
 
 	/**
+	 * Boss floors from mods that Onyx has played through. A newly ported boss level is only reachable in the
+	 * sandbox (forced world, or the mod switched on alone with the floor skipped to) until it is added here,
+	 * since a broken boss level could trap a normal run.
+	 */
+	private static boolean bossPlaytested( int world ){
+		String logo = LOGOS[world];
+		return DEVOTED.equals(logo) || REFORGED.equals(logo);
+	}
+
+	/**
 	 * The world whose mod supplies this boss floor's boss, or -1 for Shattered's own boss.
 	 * If any shuffled floor of the region leading up to the boss was built in a world from a
 	 * mod with ported bosses, that mod's boss guards the region.
@@ -339,7 +359,7 @@ public class WorldShuffle {
 		for (int d = depth - 4; d < depth; d++) {
 			if (!shuffles(d)) continue;
 			int world = worldFor(d);
-			if (modBossLevel(world, depth) != null) return world;
+			if (modBossLevel(world, depth) != null && bossPlaytested(world)) return world;
 		}
 		return -1;
 	}
@@ -368,7 +388,8 @@ public class WorldShuffle {
 				if (i.getClass() == item.getClass()) return;
 			}
 		}
-		level.drop( item, hero.pos ).sprite.drop();
+		com.shatteredpixel.shatteredpixeldungeon.items.Heap dropped = level.drop( item, hero.pos );
+		if (dropped.sprite != null) dropped.sprite.drop(); //no sprite in the headless tests
 	}
 
 	/** Whether a sandbox run can force a world onto this floor. Boss floors and the last two floors keep their own levels. */
