@@ -178,6 +178,7 @@ public class TitleScene extends PixelScene {
 		add(btnRankings);
 		Dungeon.daily = Dungeon.dailyReplay = false;
 		Dungeon.sandbox = false;
+		Dungeon.singleMod = "";
 
 		btnJournal = new StyledButton(GREY_TR, Messages.get(this, "journal")){
 			@Override

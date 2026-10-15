@@ -215,6 +215,10 @@ public class Dungeon {
 	//sandbox runs are for playtesting. They never earn badges, rankings or remains.
 	//set from the title screen before a run starts, then kept in the save
 	public static boolean sandbox;
+
+	//Single mod mode. The name of the one mod every shuffled floor is built from, or "" for the normal Shuffle mode.
+	//Set on the hero select screen, so init() leaves it alone
+	public static String singleMod = "";
 	//the world every newly built floor is forced into during a sandbox run, or -1 to shuffle as normal
 	public static int sandboxWorld = -1;
 	//god mode for sandbox runs. The hero takes no damage, cannot die and never gets hungry
@@ -661,6 +665,7 @@ public class Dungeon {
 	private static final String SANDBOX_SIGHT = "sandbox_sight";
 	private static final String SANDBOX_OFF_MODS = "sandbox_off_mods";
 	private static final String SANDBOX_SALT = "sandbox_salt";
+	private static final String SINGLE_MOD = "single_mod";
 	private static final String LAST_PLAYED = "last_played";
 	private static final String CHALLENGES	= "challenges";
 	private static final String MOBS_TO_CHAMPION	= "mobs_to_champion";
@@ -694,6 +699,7 @@ public class Dungeon {
 			bundle.put( SANDBOX_SIGHT, sandboxSight );
 			bundle.put( SANDBOX_OFF_MODS, sandboxOffMods.toArray(new String[0]) );
 			bundle.put( SANDBOX_SALT, sandboxSalt );
+			bundle.put( SINGLE_MOD, singleMod );
 			bundle.put( LAST_PLAYED, lastPlayed = Game.realTime);
 			bundle.put( CHALLENGES, challenges );
 			bundle.put( MOBS_TO_CHAMPION, mobsToChampion );
@@ -800,6 +806,7 @@ public class Dungeon {
 		sandboxSight = !bundle.contains( SANDBOX_SIGHT ) || bundle.getBoolean( SANDBOX_SIGHT );
 		sandboxSalt = bundle.contains( SANDBOX_SALT ) ? bundle.getInt( SANDBOX_SALT ) : 0;
 		sandboxOnceWorld = -1;
+		singleMod = bundle.contains( SINGLE_MOD ) ? bundle.getString( SINGLE_MOD ) : "";
 		sandboxOffMods.clear();
 		if (bundle.contains( SANDBOX_OFF_MODS )) {
 			sandboxOffMods.addAll( java.util.Arrays.asList( bundle.getStringArray( SANDBOX_OFF_MODS ) ) );

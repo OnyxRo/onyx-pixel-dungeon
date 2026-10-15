@@ -212,6 +212,22 @@ public class WorldShuffleTest {
 			System.out.println("FAIL: some worlds never appeared");
 			failures++;
 		}
+		//Single mod mode, every shuffled floor must come from the chosen mod
+		int singleChecks = 0;
+		for (String mod : WorldShuffle.mods()) {
+			Dungeon.singleMod = mod;
+			for (int d = 1; d <= 26; d++) {
+				if (!WorldShuffle.shuffles(d)) continue;
+				int w = WorldShuffle.worldFor(d);
+				singleChecks++;
+				if (!WorldShuffle.modName(w).equals(mod)) {
+					System.out.println("FAIL: single mod " + mod + " gave " + WorldShuffle.modName(w) + " on floor " + d);
+					failures++;
+				}
+			}
+		}
+		Dungeon.singleMod = "";
+		System.out.println("single mod checks: " + singleChecks);
 		//every ported monster needs a name string
 		int namedMobs = 0;
 		for (com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary cat : com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary.values()) {

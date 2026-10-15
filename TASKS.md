@@ -7,7 +7,7 @@ The cloud routine does the first unchecked task and checks it off. Smallest firs
 - [x] Add a check to `WorldShuffleTest` that every ported monster in `Bestiary.isPorted` has a name string. Fix any that are missing.
 - [x] Hotkeys. Ctrl+R regenerates the current floor with a newly rolled world, which may come from a different mod. Ctrl+N jumps to a random new floor. Both work in sandbox runs. Decide whether they should work in normal runs and note the choice in PORTING.md.
 - [x] Move the mod logo from the top right to the top left. Clicking it opens a panel summarizing what that mod changes, based on the mod creator's own description (README, store page or changelog). Write each summary in plain words, and credit the source.
-- [ ] Start screen modes. Add "Single mod" (locks every floor to one chosen mod's worlds, monsters and items) beside the current "Shuffle" mode.
+- [x] Start screen modes. Add "Single mod" (locks every floor to one chosen mod's worlds, monsters and items) beside the current "Shuffle" mode.
 - [ ] Port Rat King PD 2 monsters and weapons (2 monsters, 1 weapon). Find the repo on GitHub and clone it into the mod sources folder.
 - [ ] Port Experienced PD monsters and weapons (5 monsters, 9 weapons).
 - [ ] Port Ryuse's PD monsters and weapons (8 monsters, 5 weapons).

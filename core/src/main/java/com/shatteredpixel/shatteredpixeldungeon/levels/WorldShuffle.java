@@ -388,6 +388,12 @@ public class WorldShuffle {
 		return world >= 0 && world < LOGOS.length ? LOGOS[world] : null;
 	}
 
+	/** Whether a world's mod is left out of the roll, by Single mod mode or by the sandbox mod toggles. */
+	private static boolean modOff( int w ){
+		if (!Dungeon.singleMod.isEmpty()) return !Dungeon.singleMod.equals(modName(w));
+		return Dungeon.sandboxOffMods.contains(modName(w));
+	}
+
 	public static int worldFor( int depth ){
 		if (!shuffles(depth)) return homeWorld(depth);
 
@@ -398,17 +404,18 @@ public class WorldShuffle {
 		java.util.ArrayList<Integer> regional = new java.util.ArrayList<>();
 		java.util.ArrayList<Integer> anywhere = new java.util.ArrayList<>();
 		//a sandbox run can switch mods off, which leaves their worlds out of the roll
-		boolean filtered = Dungeon.sandbox && !Dungeon.sandboxOffMods.isEmpty();
+		boolean single = !Dungeon.singleMod.isEmpty();
+		boolean filtered = single || (Dungeon.sandbox && !Dungeon.sandboxOffMods.isEmpty());
 		for (int w = 0; w < WORLDS.length; w++){
 			if (w == home) continue;
-			if (filtered && (w <= HALLS || Dungeon.sandboxOffMods.contains(modName(w)))) continue;
+			if (filtered && (w <= HALLS || modOff(w))) continue;
 			if (REGIONS[w] == home) regional.add(w);
 			else if (REGIONS[w] == ANY_REGION) anywhere.add(w);
 		}
 		//if the mods left on have nothing made for this stage, use any of their worlds
 		if (filtered && regional.isEmpty() && anywhere.isEmpty()) {
 			for (int w = HALLS + 1; w < WORLDS.length; w++){
-				if (!Dungeon.sandboxOffMods.contains(modName(w))) regional.add(w);
+				if (!modOff(w)) regional.add(w);
 			}
 		}
 
