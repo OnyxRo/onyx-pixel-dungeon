@@ -53,6 +53,7 @@ public class WndSandboxFloor extends Window {
 	private RedButton[] floorBtns = new RedButton[FLOORS];
 	private RedButton btnWorld;
 	private RedButton btnMods;
+	private RedButton btnSpecial;
 	private RenderedTextBlock note;
 	private RedButton btnGo;
 
@@ -112,6 +113,15 @@ public class WndSandboxFloor extends Window {
 		btnMods.setRect( 0, btnWorld.bottom() + GAP, WIDTH, BTN_HEIGHT );
 		add( btnMods );
 
+		btnSpecial = new RedButton( Messages.get(WndSandbox.class, "special"), 8 ) {
+			@Override
+			protected void onClick() {
+				GameScene.show( new WndSpecialFloors() );
+			}
+		};
+		btnSpecial.setRect( 0, btnMods.bottom() + GAP, WIDTH, BTN_HEIGHT );
+		add( btnSpecial );
+
 		note = PixelScene.renderTextBlock( 6 );
 		add( note );
 
@@ -160,7 +170,7 @@ public class WndSandboxFloor extends Window {
 		btnMods.text( Messages.get(WndSandbox.class, "mods_count", on, mods) );
 		btnMods.textColor( on == mods ? 0xFFFFFF : TITLE_COLOR );
 
-		note.setPos( 0, btnMods.bottom() + 2*GAP );
+		note.setPos( 0, btnSpecial.bottom() + 2*GAP );
 
 		btnGo.text( Messages.get(WndSandbox.class, "go", floor) );
 		btnGo.setRect( 0, note.bottom() + 2*GAP, WIDTH, BTN_HEIGHT );

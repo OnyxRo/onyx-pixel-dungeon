@@ -193,6 +193,28 @@ public class WorldShuffleTest {
 		Dungeon.sandboxOffMods.clear();
 		System.out.println("mod toggle checks: " + modChecks);
 
+		//every special floor must build and have a way in
+		int specials = 0;
+		for (com.shatteredpixel.shatteredpixeldungeon.levels.SpecialFloors.Entry e : com.shatteredpixel.shatteredpixeldungeon.levels.SpecialFloors.LIST) {
+			try {
+				Dungeon.depth = 12;
+				Dungeon.branch = 0;
+				Dungeon.sandboxSpecial = e.make;
+				Level special = Dungeon.newLevel();
+				if (special.entrance() <= 0 && special.transitions.isEmpty()) {
+					failures++;
+					System.out.println("FAIL: special floor '" + e.label + "' has no entrance");
+				}
+				specials++;
+			} catch (Throwable t) {
+				failures++;
+				System.out.println("FAIL: special floor '" + e.label + "' did not build: " + t);
+				t.printStackTrace(System.out);
+			}
+		}
+		Dungeon.sandboxSpecial = null;
+		System.out.println("special floors built: " + specials);
+
 		//Experienced's arena branch, reached with a ticket
 		try {
 			Dungeon.depth = 28;

@@ -42,6 +42,23 @@ RENAMES = [
     # Experienced's own members and wrappers
     ('Experienced perk checks, the perk system is not ported', r'[^\n]*\bhero\.perks\.contains\([^\n]*;[ \t]*\r?\n', ''),
     ('Experienced perks import', r'import [\w.]*\.Perks;[ \t]*\r?\n', ''),
+    ('any other class in the mod package (Bones, Chrome and so on)', r'com\.(?!shatteredpixel\.shatteredpixeldungeon\b)\w+\.\w*pixeldungeon\w*\.(?=[A-Z])', PKG + '.'),
+    ('old Level.press(cell, ch) is occupyCell(ch) now', r'public void press\(\s*int cell\s*,\s*Char (\w+)\s*\)\s*\{(\s*)super\.press\(\s*cell\s*,\s*\1\s*\);', r'public void occupyCell( Char \1 ) {\2super.occupyCell( \1 );\2int cell = \1.pos;'),
+    ('standardRooms takes forceMax', r'protected int standardRooms\(\s*\)', 'protected int standardRooms( boolean forceMax )'),
+    ('specialRooms takes forceMax', r'protected int specialRooms\(\s*\)', 'protected int specialRooms( boolean forceMax )'),
+    ('randomRespawnCell takes the character', r'public int randomRespawnCell\(\s*\)', 'public int randomRespawnCell( Char ch )'),
+    ('NPC.interact takes the character', r'public boolean interact\(\s*\)\s*\{', 'public boolean interact( Char c ) {'),
+    ('Item.price is value', r'public int price\(\s*\)', 'public int value()'),
+    ('Level.nMobs is mobLimit', r'public int nMobs\(\s*\)', 'public int mobLimit()'),
+    ('Level.respawnTime is respawnCooldown', r'\brespawnTime\(\s*\)', 'respawnCooldown()'),
+    ('Level.press(cell, ch) is occupyCell(ch)', r'\blevel\.press\(\s*[^,()]+\s*,\s*([^,()]+?)(?:\s*,\s*(?:true|false))?\s*\)', r'level.occupyCell( \1 )'),
+    ('Dungeon.scaleWithDepth is the plain depth here', r'Dungeon\.scaleWithDepth\(\)', 'Dungeon.depth'),
+    ('Hero.givenName is name', r'\.givenName\(\)', '.name()'),
+    ('randomRespawnCell takes the character, call', r'(?<!int )randomRespawnCell\(\s*\)', 'randomRespawnCell( null )'),
+    ('setHauntedIfCursed has no chance argument', r'setHauntedIfCursed\(\s*[\d.]+f?\s*\)', 'setHauntedIfCursed()'),
+    ('old weapon tier 6 category', r'Generator\.Category\.WEP_T6', 'Generator.Category.WEAPON'),
+    ('old multiline text class', r'RenderedTextMultiline', 'RenderedTextBlock'),
+    ('old renderMultiline is renderTextBlock', r'PixelScene\.renderMultiline\(', 'PixelScene.renderTextBlock('),
     ('Bones.get returns a list now, take the first item', r'Item\s+(\w+)\s*=\s*Bones\.get\(\)\s*;', r'java.util.ArrayList<Item> \1List = Bones.get(); Item \1 = (\1List == null || \1List.isEmpty()) ? null : \1List.get(0);'),
     ('Char.move gained a travelling argument', r'public void move\(\s*int step\s*\)\s*\{(\s*)super\.move\(\s*step\s*\);', r'public void move( int step, boolean travelling ) {\1super.move( step, travelling );'),
     ('boss placement out of sight never ends when sandbox full sight is on', r'(?<![\w.(])heroFOV\[(\w+\.pos)\]', r'(heroFOV[\1] && !Dungeon.seeAll())'),
@@ -74,6 +91,10 @@ def apply(s):
     for why, pat, rep in RENAMES:
         t2 = re.sub(pat, rep, t)
         if t2 != t: fired.append(why); t = t2
+    # a rule above can add a Char parameter to a file that never imported Char
+    if re.search(r'\bChar\b', t) and not re.search(r'import [\w.]*\.Char;', t) and 'package ' + PKG + '.actors;' not in t:
+        t = re.sub(r'(package [\w.]+;\r?\n)', r'\1\nimport ' + PKG + '.actors.Char;', t, count=1)
+        fired.append('added the Char import')
     if 'Random.' in t and 'import com.watabou.utils.Random;' not in t:
         t = re.sub(r'(package [\w.]+;\r?\n)', r'\1\nimport com.watabou.utils.Random;', t, count=1)
         fired.append('added the Random import')

@@ -312,6 +312,22 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String DARK_MAGE = "sprites/cursed/dark_wizard.png"; //ported, cursed
+		public static final String SEWERGOLEM = "sprites/cursed/hell_guardian.png"; //ported, cursed
+		public static final String TILES_BOSS = "sprites/cursed/tiles_boss.png"; //ported, cursed
+		public static final String TILES_SURFACE = "sprites/cursed/tiles_surface.png"; //ported, cursed
+		public static final String WATER_HEAVEN = "sprites/cursed/water_heaven.png"; //ported, cursed
+		public static final String TILES_HEAVEN = "sprites/cursed/tile_heaven.png"; //ported, cursed
+		public static final String WATER_CITY = "sprites/cursed/water3.png"; //ported, cursed
+		public static final String TILES_CITY = "sprites/cursed/tiles_city.png"; //ported, cursed
+		public static final String WATER_CAVES = "sprites/cursed/water2.png"; //ported, cursed
+		public static final String TILES_EARTH = "sprites/cursed/tiles_dolyahaven_new.png"; //ported, cursed
+		public static final String WATER_HALLS = "sprites/cursed/water4.png"; //ported, cursed
+		public static final String TILES_HALLS = "sprites/cursed/tiles_halls.png"; //ported, cursed
+		public static final String TILES_AIR = "sprites/cursed/tiles_temple.png"; //ported, cursed
+		public static final String TILES_PRISON = "sprites/cursed/tiles_prison.png"; //ported, cursed
+		public static final String WATER_PRISON = "sprites/cursed/water1.png"; //ported, cursed
+		public static final String LITTOWER = "sprites/cursed/littower.png"; //ported, cursed
 		public static final String PILLAR = "sprites/abyssalnite/pillar.png"; //ported, abyssalnite
 		public static final String EXP_GEN = "sprites/experienced/expgen.png"; //ported, experienced
 		public static final String BBAT = "sprites/experienced/bbat.png"; //ported, experienced

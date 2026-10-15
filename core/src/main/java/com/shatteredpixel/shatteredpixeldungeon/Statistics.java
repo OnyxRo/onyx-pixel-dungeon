@@ -79,10 +79,12 @@ public class Statistics {
 
 	//Abyssalnite's septium pillar fight, how many pillars are down and which are awake
 	public static int killcount = 0;
+	public static int rituals = 0; //Cursed PD, how many sacrifices have been made to Hau Tul
 	public static boolean FirstActive = false, SecondActive = false, ThirdActive = false, FourthActive = false;
 	
 	public static void reset() {
 		killcount = 0;
+		rituals = 0;
 		FirstActive = SecondActive = ThirdActive = FourthActive = false;
 		
 		goldCollected	= 0;
@@ -174,6 +176,7 @@ public class Statistics {
 	
 	public static void storeInBundle( Bundle bundle ) {
 		bundle.put( "septiumkills", killcount );
+		bundle.put( "rituals", rituals );
 		bundle.put( "septiumfirst", FirstActive );
 		bundle.put( "septiumsecond", SecondActive );
 		bundle.put( "septiumthird", ThirdActive );
@@ -226,6 +229,7 @@ public class Statistics {
 	
 	public static void restoreFromBundle( Bundle bundle ) {
 		killcount = bundle.getInt( "septiumkills" );
+		rituals = bundle.getInt( "rituals" );
 		FirstActive = bundle.getBoolean( "septiumfirst" );
 		SecondActive = bundle.getBoolean( "septiumsecond" );
 		ThirdActive = bundle.getBoolean( "septiumthird" );

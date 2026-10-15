@@ -9,9 +9,7 @@ TomeOfMastery
 
 # Cursed PD, its settings screen, grinding levels and challenge levels
 CPDSettings
-LuckyBadge
 WndItem
 RenderedTextMultiline
-WaterChallengeLevel
 
 # Abyssalnite, needs its Tengu boss, parked until the boss levels are ported

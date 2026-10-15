@@ -252,6 +252,9 @@ public class Dungeon {
 		return sandbox && sandboxGod;
 	}
 
+	//a level from a mod that is not part of a normal run, built in place of the next floor. See SpecialFloors.
+	public static java.util.function.Supplier<Level> sandboxSpecial = null;
+
 	//full sight for sandbox runs. The hero sees every part of the floor at once
 	public static boolean sandboxSight = true;
 
@@ -373,7 +376,10 @@ public class Dungeon {
 		//a world picked for this one floor wins over the forced world, and is used up by it
 		int forcedWorld = sandbox ? (sandboxOnceWorld != -1 ? sandboxOnceWorld : sandboxWorld) : -1;
 		sandboxOnceWorld = -1;
-		if (branch == 0 && sandbox && forcedWorld != -1 && WorldShuffle.canForce(depth)) {
+		if (sandbox && sandboxSpecial != null) {
+			level = sandboxSpecial.get();
+			sandboxSpecial = null;
+		} else if (branch == 0 && sandbox && forcedWorld != -1 && WorldShuffle.canForce(depth)) {
 			level = WorldShuffle.create(forcedWorld);
 		} else if (branch == 0 && sandbox && WorldShuffle.modBossLevel(forcedWorld, depth) != null) {
 			//a forced world from a mod with its own bosses brings that mod's boss floor too

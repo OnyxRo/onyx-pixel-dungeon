@@ -374,6 +374,10 @@ public class ItemSpriteSheet {
 
 	public static final int WARPICK = MOD_ITEMS+0;
 	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;
+	public static final int HEROICLEAP = xy(15, 37);
+	public static final int SMOKEBOMB = xy(16, 37);
+	public static final int SPECTRALBLADES = xy(1, 38);
+	public static final int SURPRISE = xy(2, 38);
 	public static final int ALCHEMY_BAG = xy(8, 36);
 	public static final int AVARITIA_HOOK = xy(9, 36);
 	public static final int BASIC_HOOK = xy(10, 36);
@@ -484,6 +488,10 @@ public class ItemSpriteSheet {
 	static{
 		assignItemRect(WARPICK, 15, 14);
 		assignItemRect(WOODEN_BOOMERANG, 12, 12);
+		assignItemRect(HEROICLEAP, 14, 16);
+		assignItemRect(SMOKEBOMB, 14, 16);
+		assignItemRect(SPECTRALBLADES, 14, 16);
+		assignItemRect(SURPRISE, 14, 16);
 		assignItemRect(ALCHEMY_BAG, 14, 15);
 		assignItemRect(AVARITIA_HOOK, 14, 13);
 		assignItemRect(BASIC_HOOK, 14, 13);

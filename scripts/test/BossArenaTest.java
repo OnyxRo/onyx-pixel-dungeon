@@ -84,6 +84,24 @@ public class BossArenaTest {
 			}
 		}
 		WorldShuffle.forcedVariant = -1;
+
+		//the special floors with a boss, built the way the sandbox builds them
+		for (com.shatteredpixel.shatteredpixeldungeon.levels.SpecialFloors.Entry e : com.shatteredpixel.shatteredpixeldungeon.levels.SpecialFloors.LIST) {
+			if (!e.label.toLowerCase().contains( "boss" ) && !e.label.toLowerCase().contains( "final" )) continue;
+			if (!only.isEmpty() && !e.label.contains( only )) continue;
+			current = e.label;
+			fightStart = System.currentTimeMillis();
+			try {
+				Dungeon.sandboxSpecial = e.make;
+				fight( -1, 15, e.label );
+			} catch (Throwable t) {
+				failures++;
+				System.out.println( "FAIL: special floor '" + e.label + "' crashed: " + t );
+				StackTraceElement[] st = t.getStackTrace();
+				for (int i = 0; i < Math.min( 6, st.length ); i++) System.out.println( "        at " + st[i] );
+			}
+			current = null;
+		}
 		System.out.println( "SUMMARY boss fights tried: " + fights + ", failures: " + failures + ", headless limits: " + headless + ", warnings: " + warnings );
 		System.exit( failures == 0 ? 0 : 1 );
 	}
@@ -146,7 +164,7 @@ public class BossArenaTest {
 		}
 		//dying bosses may hand the unseal to a later turn, give the level a few of its own
 		if (level.locked && !bosses.isEmpty()) {
-			if (MULTI_PHASE.contains( name )) {
+			if (MULTI_PHASE.contains( name ) || MULTI_PHASE.contains( level.getClass().getSimpleName() )) {
 				//the boss changes the map and comes back several times, one kill in a headless run is not the end of the fight
 				warnings++;
 				System.out.println( "WARN: " + name + " on floor " + depth + " is a multi-phase fight, kill the boss in every phase in the sandbox to check the unseal." );
