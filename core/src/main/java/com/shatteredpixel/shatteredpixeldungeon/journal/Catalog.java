@@ -287,6 +287,15 @@ public enum Catalog {
 		BREWS_ELIXIRS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.RockBlock.class, com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfOvergrowth.class);
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.RoyalSeal.class, com.shatteredpixel.shatteredpixeldungeon.items.quest.Ruby.class, com.shatteredpixel.shatteredpixeldungeon.items.quest.StaffSplinter.class, com.shatteredpixel.shatteredpixeldungeon.items.quest.EmberEssence.class);
 
+		//items ported from experienced
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.blacksmith.FantasmalStabber.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.blacksmith.FiringSnapper.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.blacksmith.GleamingStaff.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.blacksmith.RegrowingSlasher.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.blacksmith.StarlightSmasher.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.CreativeGloves.class);
+		THROWN_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Clayball.class);
+
 
 	}
 

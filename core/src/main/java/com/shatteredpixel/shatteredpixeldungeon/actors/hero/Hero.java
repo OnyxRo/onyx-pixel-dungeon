@@ -227,6 +227,10 @@ public class Hero extends Char {
 
 	//reference to the enemy the hero is currently in the process of attacking
 	private Char attackTarget;
+
+	public Char enemy(){
+		return attackTarget;
+	}
 	
 	public boolean resting = false;
 	

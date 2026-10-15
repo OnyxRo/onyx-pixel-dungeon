@@ -55,7 +55,7 @@ def classes(base):
 ours = classes(OURS); theirs = classes(THEIRS)
 our_names = collections.defaultdict(list)
 for rel in ours: our_names[os.path.basename(rel)[:-5]].append(rel)
-new = {rel: f for rel, f in theirs.items() if rel not in ours}
+new = {rel: f for rel, f in theirs.items() if rel not in ours and not our_names.get(os.path.basename(rel)[:-5])}  # a class we already have under the same name, even in another folder, is not new
 by_name = collections.defaultdict(list)
 for rel in theirs: by_name[os.path.basename(rel)[:-5]].append(rel)
 

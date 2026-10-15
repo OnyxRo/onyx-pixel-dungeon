@@ -39,6 +39,13 @@ public class TargetedCell extends Image implements Bundlable {
 
 	public static SparseArray<TargetedCell> cells = new SparseArray<>();
 
+	public static TargetedCell colored( int pos, int color ){
+		TargetedCell c = new TargetedCell();
+		c.reset( pos, 0 );
+		c.hardlight( color );
+		return c;
+	}
+
 	public void reset( int pos, float time ){
 		copy(Icons.get(Icons.TARGET));
 		origin.set( width/2f );

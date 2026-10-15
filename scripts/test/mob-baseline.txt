@@ -19,3 +19,5 @@ ElderGnoll crashed while trading blows
 ElderGnoll crashed during its own turns
 ElderGnoll crashed when it died
 FlameDemon crashed during its own turns
+FiringSnapper crashed when it hit a rat
+StarlightSmasher crashed when it hit a rat

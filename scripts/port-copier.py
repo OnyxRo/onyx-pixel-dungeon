@@ -70,6 +70,9 @@ def add_asset(const, section):
     return True
 
 copied_total = []
+skipped = []
+# PORT_SKIP is a comma list of class names, set by port-item.py. Perks and the treasure bags are always skipped.
+SKIP = set(filter(None, os.environ.get('PORT_SKIP', '').split(','))) | {'Perks', 'TreasureBag', 'GambleBag'}
 for rnd in range(ROUNDS):
     out = compile_errors()
     blocks = re.split(r'(?=^\S.*?: error: )', out, flags=re.M)
@@ -92,6 +95,10 @@ for rnd in range(ROUNDS):
     for name in sorted(want):
         cands = mod_index.get(name, [])
         if len(cands) != 1: continue
+        # classes that drag in the mod's own systems are never copied by hand free, they are reported instead
+        if name in SKIP:
+            if name not in skipped: skipped.append(name)
+            continue
         rel = os.path.relpath(cands[0], MB).replace(os.sep, '/')
         if os.path.exists(B + rel): continue
         # never shadow a class the project already has somewhere else
@@ -107,6 +114,7 @@ for rnd in range(ROUNDS):
 io.open(ROOT + '../porter_last.txt', 'w', encoding='utf-8').write(out) if False else None
 print('COPIED:')
 for c in copied_total: print('  ' + c)
+if skipped: print('SKIPPED (mod only systems): ' + ', '.join(skipped))
 print('REMAINING:')
 seen = set()
 for b in re.split(r'(?=^\S.*?: error: )', out, flags=re.M):

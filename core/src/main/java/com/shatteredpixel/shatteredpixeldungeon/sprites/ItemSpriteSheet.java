@@ -374,6 +374,12 @@ public class ItemSpriteSheet {
 
 	public static final int WARPICK = MOD_ITEMS+0;
 	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;
+	public static final int CREATIVE_GLOVES = xy(10, 19);
+	public static final int FIRINGWHIP = xy(11, 19);
+	public static final int GREEDSTAFF = xy(12, 19);
+	public static final int GROWTHSWORD = xy(13, 19);
+	public static final int PHANTDAGGER = xy(14, 19);
+	public static final int STARHAMMER = xy(15, 19);
 	public static final int GLOCK = xy(14, 13);
 	public static final int GLOCK_BULLET = xy(15, 13);
 	public static final int ARROW_SIGN = xy(16, 13);
@@ -399,6 +405,12 @@ public class ItemSpriteSheet {
 	static{
 		assignItemRect(WARPICK, 15, 14);
 		assignItemRect(WOODEN_BOOMERANG, 12, 12);
+		assignItemRect(CREATIVE_GLOVES, 12, 16);
+		assignItemRect(FIRINGWHIP, 14, 14);
+		assignItemRect(GREEDSTAFF, 16, 16);
+		assignItemRect(GROWTHSWORD, 15, 16);
+		assignItemRect(PHANTDAGGER, 12, 12);
+		assignItemRect(STARHAMMER, 16, 16);
 		assignItemRect(GLOCK, 16, 15);
 		assignItemRect(GLOCK_BULLET, 11, 11);
 		assignItemRect(ARROW_SIGN, 16, 16);

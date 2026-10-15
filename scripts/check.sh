@@ -76,5 +76,11 @@ run "MobArenaTest ${MOBS[*]}" MobArenaTest "${MOBS[@]}"; rc=$?
 grep -E "^(FAIL|WARN|SUMMARY)" "$LOG" | sed 's/^/  /' | tail -40
 [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
 
+#items: --new checks changed ones, otherwise every catalog item (slow, mostly Shattered's own), so a full run uses --new too
+if [ "${MOBS[0]}" = "--all" ] || [ "${MOBS[0]}" = "--new" ]; then ITEMS=(--new); else ITEMS=("${MOBS[@]}"); fi
+run "ItemArenaTest ${ITEMS[*]}" ItemArenaTest "${ITEMS[@]}"; rc=$?
+grep -E "^(FAIL|WARN|SUMMARY items)" "$LOG" | grep -v "monsters" | sed 's/^/  /' | tail -20
+[ $rc -eq 0 ] && say "  passed" || say "  FAILED"
+
 say "== full log: build/check.log"
 exit $FAIL
