@@ -993,6 +993,13 @@ public class Hero extends Char {
 		ready = false;
 	}
 	
+	//Cursed PD's guard action. Resting this turn lets the hero counter the next blows. See the Defense buff.
+	public void defend() {
+		spendAndNext( TIME_TO_REST );
+		Buff.affect( this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Defense.class ).setDefensivePower( this );
+		com.watabou.noosa.Camera.main.shake( 1f, 0.2f );
+	}
+
 	public void ready() {
 		if (sprite.looping()) sprite.idle();
 		curAction = null;
@@ -1643,6 +1650,9 @@ public class Hero extends Char {
 	
 	@Override
 	public int defenseProc( Char enemy, int damage ) {
+
+		//Cursed PD's guard turns a blow aside, see Defense
+		if (guardProc( enemy, damage )) return 0;
 		
 		if (damage > 0 && subClass == HeroSubClass.BERSERKER){
 			Berserk berserk = Buff.affect(this, Berserk.class);

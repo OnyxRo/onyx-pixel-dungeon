@@ -39,6 +39,10 @@ public class PotionOfMindVision extends Potion {
 	@Override
 	public void apply( Hero hero ) {
 		identify();
+		if (hero.buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LuckyBadgeBuff.class ) != null) {
+			GLog.i( Messages.get(this, "blocked") );
+			return;
+		}
 		Buff.prolong( hero, MindVision.class, MindVision.DURATION );
 		SpellSprite.show(hero, SpellSprite.VISION, 1, 0.77f, 0.9f);
 		Dungeon.observe();

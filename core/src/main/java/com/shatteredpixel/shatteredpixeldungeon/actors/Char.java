@@ -513,6 +513,7 @@ public abstract class Char extends Actor {
 			enemy.damage( effectiveDamage, this );
 
 			if (buff(FireImbue.class) != null)  buff(FireImbue.class).proc(enemy);
+			if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EarthImbue.class) != null) buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EarthImbue.class).proc(enemy);
 			if (buff(FrostImbue.class) != null) buff(FrostImbue.class).proc(enemy);
 
 			if (enemy.isAlive() && enemy.alignment != alignment && prep != null && prep.canKO(enemy)){
@@ -1144,6 +1145,12 @@ public abstract class Char extends Actor {
 	//and thread coordination implications
 	public boolean deathMarked = false;
 	
+	//Cursed PD's guard action, see the Defense buff. Resting turns the hero's weapon into a counter attack.
+	public boolean guardProc( Char attacker, int damage ){
+		com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Defense defense = buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Defense.class );
+		return defense != null && defense.proc( this, attacker, damage );
+	}
+
 	//shims for Cursed PD
 	public boolean isEnemy() {
 		return alignment == Alignment.ENEMY;

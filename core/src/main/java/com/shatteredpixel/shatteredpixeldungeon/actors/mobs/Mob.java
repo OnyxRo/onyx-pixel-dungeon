@@ -1094,6 +1094,14 @@ public abstract class Mob extends Char {
 	}
 	
 	public void rollToDropLoot(){
+		//Cursed PD's lucky badge, extra loot from every kill while its buff lasts
+		com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LuckyBadgeBuff luckyBuff = Dungeon.hero == null ? null : Dungeon.hero.buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LuckyBadgeBuff.class );
+		if (luckyBuff != null) {
+			for (int i = 0; i < luckyBuff.lootPerMob(); i++) {
+				Item lucky = com.shatteredpixel.shatteredpixeldungeon.items.powers.LuckyBadge.tryForBonusDrop( Dungeon.hero );
+				if (lucky != null) Dungeon.level.drop( lucky, Dungeon.hero.pos ).sprite.drop();
+			}
+		}
 		//Experienced PD, the Fate Lock's grinding mode drops extra loot, and arena monsters drop gold
 		if (Dungeon.hero != null && Dungeon.hero.grinding) {
 			if (Random.Float() < 0.33f) {
