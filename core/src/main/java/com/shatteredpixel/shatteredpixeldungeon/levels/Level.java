@@ -774,7 +774,7 @@ public abstract class Level implements Bundlable {
 		} else {
 			cooldown = TIME_TO_RESPAWN;
 		}
-		return cooldown / DimensionalSundial.spawnMultiplierAtCurrentTime();
+		return cooldown * Dungeon.respawnBoost / DimensionalSundial.spawnMultiplierAtCurrentTime();
 	}
 
 	public boolean spawnMob(int disLimit){

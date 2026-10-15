@@ -52,6 +52,8 @@ public abstract class ExoticScroll extends Scroll {
 		exoToReg.put(ScrollOfAffection.class, ScrollOfLullaby.class);
 		exoToReg.put(ScrollOfConfusion.class, ScrollOfRage.class);
 		exoToReg.put(ScrollOfPolymorph.class, ScrollOfTransmutation.class);
+		exoToReg.put(ScrollOfDetermination.class, ScrollOfRage.class);
+		exoToReg.put(ScrollOfMidas.class, ScrollOfTransmutation.class);
 		regToExo.put(ScrollOfUpgrade.class, ScrollOfEnchantment.class);
 		exoToReg.put(ScrollOfEnchantment.class, ScrollOfUpgrade.class);
 

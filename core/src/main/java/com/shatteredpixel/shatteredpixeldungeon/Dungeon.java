@@ -197,6 +197,11 @@ public class Dungeon {
 	//keeps track of what levels the game should try to load instead of creating fresh
 	public static ArrayList<Integer> generatedLevels = new ArrayList<>();
 
+	//Experienced PD boosters, set by its respawn and fire boosting spells
+	public static float respawnBoost = 1f;
+	public static int additionalMobs = 0;
+	public static float fireDamage = 1f;
+
 	public static int gold;
 	public static int energy;
 	
@@ -307,6 +312,10 @@ public class Dungeon {
 
 		gold = 0;
 		energy = 0;
+
+		respawnBoost = 1f;
+		additionalMobs = 0;
+		fireDamage = 1f;
 
 		droppedItems = new SparseArray<>();
 
@@ -708,6 +717,9 @@ public class Dungeon {
 			bundle.put( BRANCH, branch );
 
 			bundle.put( GOLD, gold );
+			bundle.put( "respawnboost", respawnBoost );
+			bundle.put( "additionalmobs", additionalMobs );
+			bundle.put( "firedamage", fireDamage );
 			bundle.put( ENERGY, energy );
 
 			for (int d : droppedItems.keyArray()) {
@@ -896,6 +908,9 @@ public class Dungeon {
 		branch = bundle.getInt( BRANCH );
 
 		gold = bundle.getInt( GOLD );
+		respawnBoost = bundle.contains( "respawnboost" ) ? bundle.getFloat( "respawnboost" ) : 1f;
+		additionalMobs = bundle.getInt( "additionalmobs" );
+		fireDamage = bundle.contains( "firedamage" ) ? bundle.getFloat( "firedamage" ) : 1f;
 		energy = bundle.getInt( ENERGY );
 
 		Statistics.restoreFromBundle( bundle );

@@ -374,6 +374,8 @@ public class ItemSpriteSheet {
 
 	public static final int WARPICK = MOD_ITEMS+0;
 	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;
+	public static final int FIREBOOSTER = xy(6, 36);
+	public static final int RESPAWN = xy(7, 36);
 	public static final int AMULET_WATER = xy(3, 35);
 	public static final int BLINK = xy(4, 35);
 	public static final int BROWNDRAGONCRYSTAL = xy(5, 35);
@@ -459,6 +461,8 @@ public class ItemSpriteSheet {
 	static{
 		assignItemRect(WARPICK, 15, 14);
 		assignItemRect(WOODEN_BOOMERANG, 12, 12);
+		assignItemRect(FIREBOOSTER, 10, 15);
+		assignItemRect(RESPAWN, 11, 11);
 		assignItemRect(AMULET_WATER, 16, 15);
 		assignItemRect(BLINK, 14, 16);
 		assignItemRect(BROWNDRAGONCRYSTAL, 15, 16);

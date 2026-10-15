@@ -384,6 +384,18 @@ public enum Catalog {
 		RINGS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfLuck.class);
 		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.Resetter.class);
 
+		//items ported from experienced
+		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.Cheese.class);
+		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.CheeseChunk.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.quest.TenguBomb.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.quest.TenguShuriken.class);
+		EXOTIC_SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfDetermination.class);
+		EXOTIC_SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfMidas.class);
+		EXOTIC_POTIONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfOverload.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.FireBooster.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.RespawnBooster.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.keys.KeyToTruth.class);
+
 
 	}
 

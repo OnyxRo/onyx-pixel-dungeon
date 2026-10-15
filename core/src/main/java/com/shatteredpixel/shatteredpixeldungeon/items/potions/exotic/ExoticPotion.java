@@ -53,6 +53,7 @@ public class ExoticPotion extends Potion {
 		//Abyssalnite's alternate exotics. Only the reverse lookup, so they exist and can be given but are not brewed
 		exoToReg.put(PotionOfAdrenalineSurge.class, PotionOfStrength.class);
 		exoToReg.put(PotionOfHolyFuror.class, PotionOfExperience.class);
+		exoToReg.put(PotionOfOverload.class, PotionOfExperience.class);
 		regToExo.put(PotionOfStrength.class, PotionOfMastery.class);
 		exoToReg.put(PotionOfMastery.class, PotionOfStrength.class);
 
