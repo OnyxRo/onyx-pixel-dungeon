@@ -59,6 +59,8 @@ public class StatusPane extends Component {
 
 	private Image shieldHP;
 	private Image hp;
+	//Cursed PD's mana, a thin bar under health that only shows for a hero who uses powers
+	private com.watabou.noosa.ColorBlock mpBar;
 	private Image Dot; //a visual darkening over HP and shield that shows total incoming DOT
 	private BitmapText hpText;
 	private Button heroInfoOnBar;
@@ -142,6 +144,10 @@ public class StatusPane extends Component {
 		else        hp = new Image(asset, 0, 40, 50, 4);
 		add( hp );
 
+		mpBar = new com.watabou.noosa.ColorBlock( 1, 2, 0xFF4A7BFF );
+		mpBar.visible = false;
+		add( mpBar );
+
 		if (large)  Dot = new Image(asset, 0, 103, 128, 9);
 		else        Dot = new Image(asset, 0, 40, 50, 4);
 		Dot.hardlight(0, 0, 0);
@@ -213,6 +219,8 @@ public class StatusPane extends Component {
 
 			hp.x = shieldHP.x = Dot.x = x + 30;
 			hp.y = shieldHP.y = Dot.y = y + 19;
+			mpBar.x = hp.x;
+			mpBar.y = hp.y + 9.5f;
 
 			hpText.x = hp.x + (128 - hpText.width())/2f;
 			hpText.y = hp.y + 1;
@@ -257,6 +265,8 @@ public class StatusPane extends Component {
 
 			hp.x = shieldHP.x = Dot.x = hpleft;
 			hp.y = shieldHP.y = Dot.y = y + 2;
+			mpBar.x = hp.x;
+			mpBar.y = hp.y + 4.5f;
 
 			hpText.scale.set(PixelScene.align(0.5f));
 			hpText.x = hp.x + 1;
@@ -325,6 +335,13 @@ public class StatusPane extends Component {
 			shieldPercent /= excess;
 			DOTPercent    /= excess;
 		}
+
+		//mana shows once the hero has a power item or has spent some
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero mpHero = Dungeon.hero;
+		boolean usesMana = mpHero.MAX_MP > 0 && (mpHero.MP < mpHero.MAX_MP
+				|| mpHero.belongings.getItem( com.shatteredpixel.shatteredpixeldungeon.items.powers.Power.class ) != null);
+		mpBar.visible = usesMana;
+		if (usesMana) mpBar.size( Math.max( 0f, hp.width * Math.min( 1f, mpHero.MP / (float)mpHero.MAX_MP ) ), 2 );
 
 		hp.scale.x = healthPercent;
 		shieldHP.scale.x = healthPercent + shieldPercent;

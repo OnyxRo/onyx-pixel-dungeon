@@ -61,5 +61,5 @@ See the port-mod skill for the list of shims and what they do. In short, Cursed 
 
 ## Open questions for Onyx
 - Play the Abyssalnite and Cursed boss floors in the sandbox and say which are safe for normal runs.
-- Cursed PD mana has no bar on the screen. Powers work, but the number is only in item text. Say if a bar is wanted.
+- Cursed PD mana bar was built into `StatusPane` but not seen on screen. Check it, and say if it should sit somewhere else.
 - Reforged Construct Hero and Half Ripper were not ported, see the Reforged line above.
