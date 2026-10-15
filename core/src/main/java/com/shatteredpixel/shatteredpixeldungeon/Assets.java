@@ -138,6 +138,9 @@ public class Assets {
 	}
 
 	public static class Music {
+		public static final String BLACK_MIMIC_ARENA = "music/experienced/black_mimic_arena.ogg"; //ported, experienced
+		public static final String BLACK_MIMIC_BOSS = "music/experienced/black_mimic.ogg"; //ported, experienced
+		public static final String BLACK_MIMIC_BOSS_FINALE = "music/experienced/black_mimic_finale.ogg"; //ported, experienced
 		public static final String ARENA = "music/experienced/arena.ogg"; //ported, experienced
 		public static final String SHADOW_REALM = "music/devoted/10.1-LiturgiaEclipsis-Vel'Taleth.ogg"; //ported, devoted
 		public static final String GARDENS_BOSS = "music/devoted/02-PromisedParadise-GnollEmperor.ogg"; //ported, devoted

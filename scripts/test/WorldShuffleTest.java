@@ -184,8 +184,22 @@ public class WorldShuffleTest {
 			System.out.println("FAIL arena level: " + t);
 			t.printStackTrace(System.out);
 		}
+		//and the black mimic branch
+		try {
+			Dungeon.depth = 27;
+			Dungeon.branch = Dungeon.BRANCH_BLACK;
+			Level black = Dungeon.newLevel();
+			if (!(black instanceof com.shatteredpixel.shatteredpixeldungeon.levels.BlackMimicLevel)) {
+				failures++;
+				System.out.println("FAIL: black branch built " + black.getClass().getSimpleName());
+			}
+		} catch (Throwable t) {
+			failures++;
+			System.out.println("FAIL black mimic level: " + t);
+			t.printStackTrace(System.out);
+		}
 		Dungeon.branch = 0;
-		System.out.println("arena level checked");
+		System.out.println("arena and black mimic levels checked");
 
 		Dungeon.sandbox = false;
 		Dungeon.sandboxWorld = -1;

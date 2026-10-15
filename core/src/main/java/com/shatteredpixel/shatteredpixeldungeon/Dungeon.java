@@ -59,6 +59,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.CavesLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.ArenaLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.BlackMimicLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.DeadEndLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.HallsBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.HallsLevel;
@@ -205,6 +206,7 @@ public class Dungeon {
 	// 1 is for quest sub-floors
 	public static final int BRANCH_NORMAL = 0;
 	public static final int BRANCH_ARENA  = 2; //Experienced PD's arena, reached with a ticket
+	public static final int BRANCH_BLACK  = 3; //Experienced PD's black mimic, reached with the black psyche chest
 
 	public static int branch;
 
@@ -452,6 +454,8 @@ public class Dungeon {
 				default:
 					level = new DeadEndLevel();
 			}
+		} else if (branch == BRANCH_BLACK) {
+			level = depth == 27 ? new BlackMimicLevel() : new DeadEndLevel();
 		} else if (branch == BRANCH_ARENA) {
 			level = depth == 28 ? new ArenaLevel() : new DeadEndLevel();
 		} else {
@@ -537,7 +541,7 @@ public class Dungeon {
 	}
 
 	public static boolean interfloorTeleportAllowed(){
-		if (Dungeon.branch == BRANCH_ARENA
+		if (Dungeon.branch == BRANCH_ARENA || Dungeon.branch == BRANCH_BLACK
 				|| Dungeon.level.locked
 				|| Dungeon.level instanceof MiningLevel || Dungeon.level instanceof VaultLevel
 				|| (Dungeon.hero != null && Dungeon.hero.belongings.getItem(Amulet.class) != null)){
