@@ -1,22 +1,23 @@
 # Daniel's task queue
 
-Only Daniel's cloud routine works on this list. Onyx's own sessions never touch these tasks and never edit this file. The routine does one batch per run, from the first task that is not done, not claimed and not blocked.
+Only Daniel's cloud routine works on the tasks marked cloud. Onyx's own sessions work on the tasks marked live and never edit the cloud ones. The routine does one batch per run, from the first cloud task that is not done, not claimed and not blocked.
 
 Markers. `[ ]` open, `[x]` finished, `[!]` stuck (the reason is written under it, and the routine skips it). A task with partial progress stays `[ ]` and says what is left under it. Details on the tools are in the `port-mod` skill and PORTING.md.
 
 Batch sizes. About 15 monsters or 25 weapons or items per run, fewer if a batch is hard. Never take two tasks in one run.
 
-## Large batched ports
+Every run starts with triage. Run `python -I scripts/mod-report.py ~/mod-sources/<key> --all`, port the easy batch it prints, then the shim tier, and leave the hard tier alone.
 
-- [ ] Batched. Port Summoning PD Reincarnated monsters and weapons (33 monsters, 12 weapons), about 15 per run.
-- [ ] Batched. Port Shittened PD monsters and weapons (41 monsters, 6 weapons), about 15 per run.
-- [ ] Batched. Port Re-ARranged PD monsters and weapons (14 monsters, 97 weapons), about 25 weapons per run.
+## Cloud tasks, mechanical batches
 
-## Finish the partly done mods
+- [ ] Cloud. Batched. Port Summoning PD Reincarnated monsters and weapons (33 monsters, 12 weapons), about 15 per run.
+- [ ] Cloud. Batched. Port Shittened PD monsters and weapons (41 monsters, 6 weapons), about 15 per run.
+- [ ] Cloud. Batched. Port Re-ARranged PD monsters and weapons (14 monsters, 97 weapons), about 25 weapons per run.
+- [ ] Cloud. Small leftovers. Abyssalnite's EarthImbue buff, WaterOfTransmutation blob and TestItem, and Cursed PD's buffs Defense, EarthImbue and Resurrection, and blob SpawnerGas. Check that each one is used by something first.
 
-These four were each ported only in part, about 10 to 25 pieces each. Onyx wants every one of them completed. Port everything that is left, including pieces that were skipped earlier because they tangle with the mod's own systems. For those, port the small piece of the system they need, or swap in Shattered's equivalent and say so in PORTING.md. Mark a single piece `[!]` only when it truly cannot work, and give the reason.
+## Live session tasks, judgment calls (the routine skips these)
 
-- [ ] Finish Experienced PD. Left out earlier and now wanted, Cheese and CheeseChunk, TenguBomb, TenguShuriken, ScrollOfDetermination and ScrollOfMidas (they need RageShield and its perks), PotionOfOverload (needs an exotic potion mapping), the Hook npc, the fishing rods, loot bags, chests, boosters, and the Bbat and ExpGenerator npcs. Also its two monsters, BlackMimic and OOFThief, which need members Experienced added to Dungeon (cycle, escalatingDepth, oofedItems) and its Perks system. Repo is TrashboxBobylev/Experienced-Pixel-Dungeon-Redone, already in scripts/mods.txt. Done so far, seven weapons and 14 items.
-- [ ] Finish Pixel Dungeon Reforged. Left, the Wyrm (a mining quest monster that needs Reforged's combat system), and the Half Ripper and Construct Hero NPCs. Port the parts of Reforged's combat system the Wyrm needs, and keep the Kobold's Dread-near-Wyrm behaviour once the Wyrm exists. Done so far, six regular monsters, Demon Goo, the Rat Usurper with `SewerBossUsurperLevel`, the Leech curse and Rat Claw.
-- [ ] Finish Abyssalnite PD. Left, its 26 items, real descriptions for the nine monsters that have placeholder text (write them in plain words from how each one behaves), and the eight bosses. The bosses are old and new copies of Shattered's Tengu, DM-300, Dwarf King and Yog (the mod keeps legacy versions for floors 21 to 27), plus Cthulhu and the Septium Pillar, which have no sprite. Port the legacy variants as boss levels the way Devoted's were done. For Cthulhu and the Septium Pillar, reuse an existing sprite and say so, or mark them `[!]`. Done so far, ten monsters and four weapons.
-- [ ] Finish Cursed PD (Legacy). Left, the bosses King, SewerGolem, Yog, the test boss and Gullin, 24 weapons and 48 items. Replace the placeholder text on the nine monsters that have it. Skip NewbornElemental, Shattered already has it. Done so far, 14 monsters plus the EvilGas blob and DeferredDeath buff.
+- [x] Live. Experienced PD. Finished 2026-10-15. All items, bags, rods, boosters, exotic items, NPCs (Hook, Bbat, Exp Generator), the OOF Thief, the arena branch with its ticket, the black mimic branch with its chest, and the Fate Lock with grinding mode. Left out on purpose, its cycle system (Dungeon.cycle is replaced by 0), Perks, and the quest resets and escalating damage of the Fate Lock.
+- [ ] Live. Pixel Dungeon Reforged. Left, the Wyrm (a mining quest monster that needs Reforged's combat system), and the Half Ripper and Construct Hero NPCs.
+- [ ] Live. Abyssalnite PD. Left, the eight bosses and their levels (old and new copies of Tengu, DM-300, Dwarf King and Yog, plus Cthulhu and the Septium Pillar), and Mystery Heart which needs the new Tengu fight. 19 items and 4 weapons are done, and descriptions for the nine placeholder monsters are written.
+- [ ] Live. Cursed PD (Legacy). Left, the bosses King, SewerGolem, Yog, Tengu2, the test boss and Gullin, its challenge levels, grinding level and amulet level, the NPCs Hau_tul and Wandmaker_2, and the Lucky Badge. 20 weapons, the relic enchantments, the dragon crystal allies, 12 power spells with a mana pool, bags and instruments are done.
