@@ -14,6 +14,15 @@ His writing rules apply to anything written for him, including commit messages, 
 - No small eyebrow or kicker labels above headings.
 - Never use the interpunct character.
 
+## Working rules
+
+- Read PORTING.md at the start of every session and update it at the end of every task.
+- Only run the screenshot tour once per finished mod, only on that mod's new content, and only with the separate save folder.
+- Never relaunch the game unless Onyx asks. This replaces the older auto-open memory.
+- Keep command output short. Send long output to a file and grep it.
+- Commit after each finished mod or feature.
+- Remind Onyx to type /clear after every response.
+
 ## What the game is
 
 A fork of Shattered Pixel Dungeon v4.0.2 called Onyx's Pixel Dungeon. Tagline "Every floor a new world."
