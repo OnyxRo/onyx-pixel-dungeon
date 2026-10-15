@@ -12,5 +12,6 @@ abyssalnite|https://github.com/MywaifuisTataraKogasa/Abyssalnite-Pixel-Dungeon|A
 cursed|https://github.com/Smujb/cursed-pixel-dungeon-lgc|Cursed PD Legacy, worlds only|0.7.3b
 experienced|https://github.com/TrashboxBobylev/Experienced-Pixel-Dungeon-Redone|Experienced PD, worlds only|2.x
 tower|https://github.com/FixAkaTheFix/Tower-Pixel-Dungeon|Tower PD, not started|
+ratking|https://github.com/Zrp200/rkpd2|Rat King PD 2, worlds only|
 # Repos not known yet, find them with gh search repos "<name> pixel dungeon" and add a line above.
 #   Ryuse's PD, Summoning PD Reincarnated, Re-ARranged PD, Rat King PD 2
