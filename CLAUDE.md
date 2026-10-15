@@ -20,7 +20,7 @@ His writing rules apply to anything written for him, including commit messages, 
 - To check a port, use `scripts/check.sh --new` (headless, seconds) and then `scripts/arena.sh` once (one picture of everything new, 16 seconds). Do not use the full screenshot tour for monsters, it spawns each ported monster one at a time and takes ten minutes. The tour (`scripts/gallery.sh`) is for worlds and windows only, with the separate save folder.
 - For any task that starts with "Port", invoke the `port-mod` skill (`.claude/skills/port-mod/SKILL.md`) first. It has the tools, the order of work and the mistakes to avoid. Rewrite it when you learn something that would have saved time.
 - Write files that contain backslashes with the Write or Edit tools, not shell heredocs. Run Python as `python -I`.
-- Never relaunch the game unless Onyx asks. This replaces the older auto-open memory.
+- Always open the game when you finish a task, so Onyx can see the result. Do it once at the end, never once per monster or per check (checks stay headless, see above).
 - Keep command output short. Send long output to a file and grep it.
 - Commit after each finished mod or feature.
 - Keep TASKS.md up to date as you go. Check a task off the moment it is finished, note partial progress under batched tasks, and add any new work Onyx asks for to the list.

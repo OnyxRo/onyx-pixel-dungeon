@@ -84,6 +84,8 @@ if consts:
     a = '	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;\n'
     assert a in s
     s = s.replace(a, a + consts, 1)
+    # TX_HEIGHT must equal the sheet height or every picture is stretched
+    s = re.sub(r'(int TX_HEIGHT = )\d+;', lambda m: m.group(1) + '%d;' % dst.height, s, count=1)
     a = '		assignItemRect(WOODEN_BOOMERANG, 12, 12);\n'
     assert a in s
     s = s.replace(a, a + rects, 1)
