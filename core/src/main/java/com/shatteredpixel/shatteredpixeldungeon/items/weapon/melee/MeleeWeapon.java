@@ -246,6 +246,9 @@ public class MeleeWeapon extends Weapon {
 
 	public int tier;
 
+	//shim for Cursed PD, its weapons scale their top damage by this
+	public float damageMultiplier = 1f;
+
 	@Override
 	public int min(int lvl) {
 		return  tier +  //base
@@ -254,8 +257,9 @@ public class MeleeWeapon extends Weapon {
 
 	@Override
 	public int max(int lvl) {
-		return  5*(tier+1) +    //base
+		int base = 5*(tier+1) +    //base
 				lvl*(tier+1);   //level scaling
+		return damageMultiplier == 1f ? base : Math.max(1, Math.round(base*damageMultiplier));
 	}
 
 	public int STRReq(int lvl){

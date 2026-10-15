@@ -38,7 +38,9 @@ def value(name, depth=0):
     assert re.fullmatch(r'[\d\s+\-*()]+', expr), (name, expr)
     return int(eval(expr))
 
-src = Image.open(LP(MOD + 'core/src/main/assets/sprites/items.png')).convert('RGBA')
+sheet_path = LP(MOD + 'core/src/main/assets/sprites/items.png')
+if not os.path.exists(sheet_path): sheet_path = LP(MOD + 'core/src/main/assets/items.png')   # pre 0.8 mods keep it flat
+src = Image.open(sheet_path).convert('RGBA')
 dstp = ROOT + 'core/src/main/assets/sprites/items.png'
 dst = Image.open(dstp).convert('RGBA')
 p = ROOT + PK + 'sprites/ItemSpriteSheet.java'

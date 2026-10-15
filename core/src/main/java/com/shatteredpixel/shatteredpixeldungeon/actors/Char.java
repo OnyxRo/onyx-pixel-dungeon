@@ -1144,6 +1144,23 @@ public abstract class Char extends Actor {
 	//and thread coordination implications
 	public boolean deathMarked = false;
 	
+	//shims for Cursed PD
+	public boolean isEnemy() {
+		return alignment == Alignment.ENEMY;
+	}
+
+	public int missingHP() {
+		return HT - HP;
+	}
+
+	public float HPPercent() {
+		return HT <= 0 ? 0f : HP / (float)HT;
+	}
+
+	public float missingHPPercent() {
+		return 1f - HPPercent();
+	}
+
 	public boolean isAlive() {
 		return HP > 0 || deathMarked;
 	}

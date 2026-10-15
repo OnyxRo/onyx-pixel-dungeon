@@ -25,3 +25,8 @@ NonBossGoo crashed during its own turns
 GnollBattlemage crashed during its own turns
 WaterElemental crashed during its own turns
 DemonGoo crashed during its own turns
+MaracarsBlades crashed when it hit a rat
+RaRothsNunchucks crashed when it hit a rat
+ThonothsAxe crashed when it hit a rat
+Precise crashed when it hit a rat
+Shielding crashed when it hit a rat

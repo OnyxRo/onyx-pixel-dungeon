@@ -47,6 +47,7 @@ RENAMES = [
     ('Random.LongRange became IntRange', r'(?:Dungeon|Random)\.LongRange\(', 'Random.IntRange('),
     # helpers this game added for mod code
     ('TargetedCell(pos, color) is TargetedCell.colored here', r'new TargetedCell\(', 'TargetedCell.colored('),
+    ('enchantment proc takes a Weapon', r'public\s+int\s+proc\(\s*Item\s+(\w+)\s*,\s*Char\s+(\w+)\s*,\s*Char\s+(\w+)\s*,\s*int', r'public int proc( Weapon \1, Char \2, Char \3, int'),
     ('prolong on a deferred damage buff is extend', r'(\bdmg\.)prolong\(', r'\1extend('),
 ]
 

@@ -374,6 +374,16 @@ public class ItemSpriteSheet {
 
 	public static final int WARPICK = MOD_ITEMS+0;
 	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;
+	public static final int CHAINSAW_HAND = xy(9, 34);
+	public static final int INSCRIBED_KINFE = xy(10, 34);
+	public static final int LORSIONSGREATAXE = xy(11, 34);
+	public static final int LOTURGOS_CRYSTAL = xy(12, 34);
+	public static final int MARACARS_BLADES = xy(13, 34);
+	public static final int NAHUSSWORD = xy(14, 34);
+	public static final int NEPTUNES_TRIDENT = xy(15, 34);
+	public static final int RA_ROTHS_NUNCHUCKS = xy(16, 34);
+	public static final int THONOTHS_AXE = xy(1, 35);
+	public static final int ADORNEDDRAGONCRYSTAL = xy(2, 35);
 	public static final int ABYSSALBOTTLE = xy(16, 33);
 	public static final int ABYSSALCURE = xy(1, 34);
 	public static final int ABYSSALFRUIT = xy(2, 34);
@@ -430,6 +440,16 @@ public class ItemSpriteSheet {
 	static{
 		assignItemRect(WARPICK, 15, 14);
 		assignItemRect(WOODEN_BOOMERANG, 12, 12);
+		assignItemRect(CHAINSAW_HAND, 13, 13);
+		assignItemRect(INSCRIBED_KINFE, 13, 15);
+		assignItemRect(LORSIONSGREATAXE, 15, 16);
+		assignItemRect(LOTURGOS_CRYSTAL, 10, 15);
+		assignItemRect(MARACARS_BLADES, 16, 15);
+		assignItemRect(NAHUSSWORD, 14, 16);
+		assignItemRect(NEPTUNES_TRIDENT, 16, 15);
+		assignItemRect(RA_ROTHS_NUNCHUCKS, 16, 16);
+		assignItemRect(THONOTHS_AXE, 16, 16);
+		assignItemRect(ADORNEDDRAGONCRYSTAL, 15, 15);
 		assignItemRect(ABYSSALBOTTLE, 10, 13);
 		assignItemRect(ABYSSALCURE, 9, 13);
 		assignItemRect(ABYSSALFRUIT, 10, 12);
