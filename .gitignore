@@ -21,3 +21,6 @@ local.properties
 
 # Songs fetched from mod repositories by scripts/fetch-mod-music.py and import-mod-music.py (hundreds of MB)
 core/src/main/assets/music/mods/*/
+
+__pycache__/
+*.pyc
