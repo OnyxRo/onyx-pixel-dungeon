@@ -70,6 +70,10 @@ if [ $QUICK -eq 0 ]; then
   run "WorldShuffleTest ($SEEDS seeds)" WorldShuffleTest "$SEEDS"; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|floors generated|ported monsters)" | tail -6 | sed 's/^/  /'
   [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
+  #Experienced PD's perks, the parts that need no window
+  run "PerksTest" PerksTest; rc=$?
+  tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY perks)" | tail -8 | sed 's/^/  /'
+  [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
   #side branches (Thieves Guild, Ice Caves), every transition must lead somewhere and back
   run "BranchLevelTest" BranchLevelTest 12; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY branch)" | tail -8 | sed 's/^/  /'

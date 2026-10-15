@@ -242,8 +242,10 @@ public class ShopRoom extends SpecialRoom {
 			w = (MeleeWeapon) Generator.random(Generator.wepTiers[2]);
 			m = (MissileWeapon) Generator.random(Generator.misTiers[2]);
 			itemsToSpawn.add( new MailArmor().identify(false) );
+			//Matt Edition's shop also sells its Glock here
+			itemsToSpawn.add( new com.shatteredpixel.shatteredpixeldungeon.items.weapon.Glock() );
 			break;
-			
+
 		case 16:
 			w = (MeleeWeapon) Generator.random(Generator.wepTiers[3]);
 			m = (MissileWeapon) Generator.random(Generator.misTiers[3]);

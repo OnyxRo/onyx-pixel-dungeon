@@ -56,6 +56,7 @@ public class IdealBag extends TreasureBag {
     protected ArrayList<Item> items() {
         ArrayList<Item> items = new ArrayList<>();
         int amount = Random.Int(0, 15)*10;
+        if (Dungeon.hero.perks.contains(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Perks.Perk.MORE_BAG)) amount *= 1.5f; //Experienced PD perk
         for(int i = 0; i < amount; i++) {
             if (Random.Float(1) <= 0.045f){
                 Item gift = null;

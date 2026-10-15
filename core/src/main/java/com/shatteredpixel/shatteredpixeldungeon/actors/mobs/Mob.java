@@ -999,6 +999,12 @@ public abstract class Mob extends Char {
 					Dungeon.hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(exp), FloatingText.EXPERIENCE);
 				}
 				Dungeon.hero.earnExp(exp, getClass());
+				if (Dungeon.hero.perks.contains(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Perks.Perk.ADDITIONAL_MONEY)){
+					//Experienced PD's Bounty Hunter perk, 20% of a normal gold drop on top of the loot
+					com.shatteredpixel.shatteredpixeldungeon.items.Gold bounty = (com.shatteredpixel.shatteredpixeldungeon.items.Gold) new com.shatteredpixel.shatteredpixeldungeon.items.Gold().random();
+					bounty.quantity(Math.max(1, Math.round(bounty.quantity() * 0.2f)));
+					Dungeon.level.drop(bounty, pos).sprite.drop();
+				}
 				//in the vault level we manually progress ring IDing. 5 enemies defeated to an ID
 				if (exp == 0 && Dungeon.level instanceof VaultLevel){
 					Item ring = Dungeon.hero.belongings.ring();

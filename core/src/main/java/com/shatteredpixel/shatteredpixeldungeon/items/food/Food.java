@@ -133,6 +133,27 @@ public class Food extends Item {
 		}
 
 		Buff.affect(hero, Hunger.class).satisfy(foodVal);
+
+		//Experienced PD's Mystical Meal and Magnetic Meal perks
+		if (hero.perks.contains(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Perks.Perk.MYSTICAL_MEAL)){
+			Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge.class).set(6f);
+		}
+		if (hero.perks.contains(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Perks.Perk.COLLECT_EVERYTHING)
+				&& this instanceof com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation){
+			for (com.shatteredpixel.shatteredpixeldungeon.items.Heap h : Dungeon.level.heaps.valueList()){
+				if (h.type == com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type.HEAP) {
+					com.shatteredpixel.shatteredpixeldungeon.items.Item item = h.peek();
+					if (item.doPickUp(hero, h.pos)) {
+						h.pickUp();
+						hero.spend(-com.shatteredpixel.shatteredpixeldungeon.items.Item.TIME_TO_PICK_UP); //eating already takes a turn
+						GLog.i( Messages.capitalize(Messages.get(hero, "you_now_have", item.name())) );
+					} else {
+						GLog.w( Messages.capitalize(Messages.get(hero, "you_cant_have", item.name())) );
+						h.sprite.drop();
+					}
+				}
+			}
+		}
 	}
 	
 	@Override

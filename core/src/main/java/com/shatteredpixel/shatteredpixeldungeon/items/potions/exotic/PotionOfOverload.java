@@ -37,7 +37,9 @@ public class PotionOfOverload extends ExoticPotion {
 	public void apply( Hero hero ) {
 		identify();
 
-		Buff.prolong(hero, Overload.class, 200f);
+		//Experienced PD's Lots of Experience perk doubles how long it lasts
+		float duration = hero.perks.contains(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Perks.Perk.POTIONS) ? 400f : 200f;
+		Buff.prolong(hero, Overload.class, duration);
 
 		new Flare( 6, 32 ).color(0xFFFF00, true).show( curUser.sprite, 4f );
 	}

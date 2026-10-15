@@ -49,6 +49,7 @@ public class QualityBag extends TreasureBag {
     protected ArrayList<Item> items() {
         ArrayList<Item> items = new ArrayList<>();
         int amount = 1;
+        if (Dungeon.hero.perks.contains(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Perks.Perk.MORE_BAG) && Random.Int(2) == 0) amount = 2; //Experienced PD perk
         for (int i = 0; i < amount; i++) {
             Weapon wep = Generator.randomWeapon(Dungeon.depth + 1);
             wep.cursed = false;

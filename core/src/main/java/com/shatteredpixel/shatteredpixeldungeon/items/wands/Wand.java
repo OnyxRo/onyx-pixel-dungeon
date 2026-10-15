@@ -844,8 +844,13 @@ public abstract class Wand extends Item {
 			int missingCharges = maxCharges - curCharges;
 			missingCharges = Math.max(0, missingCharges);
 
+			//Experienced PD's Recharge Proficiency perk takes a quarter off the scaling part of the delay
+			float scalingAddition = SCALING_CHARGE_ADDITION;
+			if (Dungeon.hero != null && Dungeon.hero.perks.contains(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Perks.Perk.WAND_PRO)) {
+				scalingAddition *= 0.75f;
+			}
 			float turnsToCharge = (float) (BASE_CHARGE_DELAY
-					+ (SCALING_CHARGE_ADDITION * Math.pow(scalingFactor, missingCharges)));
+					+ (scalingAddition * Math.pow(scalingFactor, missingCharges)));
 
 			if (Regeneration.regenOn())
 				partialCharge += (1f/turnsToCharge) * RingOfEnergy.wandChargeMultiplier(target);

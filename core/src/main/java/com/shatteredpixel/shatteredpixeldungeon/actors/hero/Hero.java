@@ -269,6 +269,7 @@ public class Hero extends Char {
 	
 	public int HTBoost = 0;
 	public int vitalityBonus = 0; //Matt Edition's Potion of Vitality, extra max HP on top of level and HTBoost
+	public ArrayList<Perks.Perk> perks = new ArrayList<>(); //Experienced PD's perks
 
 	private ArrayList<Mob> visibleEnemies;
 
@@ -364,6 +365,7 @@ public class Hero extends Char {
 		
 		bundle.put( HTBOOST, HTBoost );
 		bundle.put( "vitality_bonus", vitalityBonus );
+		Perks.storeInBundle( bundle, perks );
 
 		belongings.storeInBundle( bundle );
 	}
@@ -376,6 +378,7 @@ public class Hero extends Char {
 
 		HTBoost = bundle.getInt(HTBOOST);
 		vitalityBonus = bundle.getInt("vitality_bonus");
+		Perks.restoreFromBundle( bundle, perks );
 
 		super.restoreFromBundle( bundle );
 
@@ -662,6 +665,12 @@ public class Hero extends Char {
 			}
 		}
 
+		if (perks.contains(Perks.Perk.PROTEIN_INFUSION) && buff(Hunger.class) != null){
+			//Experienced PD. Up to 1.5x evasion depending on how well fed the hero is
+			float hunger = buff(Hunger.class).hunger();
+			evasion *= 1f + 0.5f*((Hunger.STARVING - hunger)/Hunger.STARVING);
+		}
+
 		return Math.max(1, Math.round(evasion));
 	}
 
@@ -715,6 +724,9 @@ public class Hero extends Char {
 
 		if (buff(HoldFast.class) != null){
 			dr += buff(HoldFast.class).armorBonus();
+		}
+		if (buff(Perks.PerkHoldFast.class) != null){
+			dr += buff(Perks.PerkHoldFast.class).armorBonus();
 		}
 		
 		return dr;
@@ -782,6 +794,12 @@ public class Hero extends Char {
 			speed *= momentum.speedMultiplier();
 		} else {
 			((HeroSprite)sprite).sprint( 1f );
+		}
+
+		if (perks.contains(Perks.Perk.PROTEIN_INFUSION) && buff(Hunger.class) != null){
+			//Experienced PD. Up to 2x speed depending on how well fed the hero is
+			float hunger = buff(Hunger.class).hunger();
+			speed *= 1f + 1f*((Hunger.STARVING - hunger)/Hunger.STARVING);
 		}
 
 		NaturesPower.naturesPowerTracker natStrength = buff(NaturesPower.naturesPowerTracker.class);
@@ -1575,6 +1593,9 @@ public class Hero extends Char {
 	
 	public void rest( boolean fullRest ) {
 		spendAndNextConstant( TIME_TO_REST );
+		if (perks.contains(Perks.Perk.HOLD_FAST)){
+			Buff.affect(this, Perks.PerkHoldFast.class).pos = pos;
+		}
 		if (hasTalent(Talent.HOLD_FAST)){
 			if (heroClass != HeroClass.WARRIOR || buff(BrokenSeal.WarriorShield.class) != null) {
 				Buff.affect(this, HoldFast.class).pos = pos;
@@ -1603,6 +1624,7 @@ public class Hero extends Char {
 		}
 
 		damage = Talent.onAttackProc( this, enemy, damage );
+		damage = Perks.onAttackProc( this, enemy, damage );
 
 		if (wep != null) {
 			damage = wep.proc( this, enemy, damage );
@@ -1718,6 +1740,11 @@ public class Hero extends Char {
 		if (this.buff(Drowsy.class) != null){
 			Buff.detach(this, Drowsy.class);
 			GLog.w( Messages.get(this, "pain_resist") );
+		}
+
+		//Experienced PD's Steel Skin. A hit that would kill from full health is halved
+		if (perks.contains(Perks.Perk.NO_ONESHOTS) && dmg >= HT && HP == HT){
+			dmg /= 2;
 		}
 
 		//temporarily assign to a float to avoid rounding a bunch
@@ -2169,6 +2196,7 @@ public class Hero extends Char {
 				updateHT( true );
 				attackSkill++;
 				defenseSkill++;
+				Perks.earnPerk(this);
 
 			} else {
 				Buff.prolong(this, Bless.class, Bless.DURATION);
@@ -2730,6 +2758,30 @@ public class Hero extends Char {
 
 		if (foresight){
 			GameScene.updateFog(pos, Foresight.DISTANCE+1);
+		}
+
+		//Experienced PD's Ratforcements. Searching on purpose calls a friendly rat
+		if (perks.contains(Perks.Perk.RAT_SUMMONS) && intentional){
+			ArrayList<Integer> spawnPoints = new ArrayList<>();
+
+			for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
+				int p = pos + PathFinder.NEIGHBOURS8[i];
+				if (Actor.findChar( p ) == null && Dungeon.level.passable[p]) {
+					spawnPoints.add( p );
+				}
+			}
+
+			if (!spawnPoints.isEmpty()) {
+				int index = Random.index( spawnPoints );
+
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Rat rat = new com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Rat();
+				rat.alignment = Char.Alignment.ALLY;
+				rat.state = rat.HUNTING;
+				Buff.affect(rat, AscensionChallenge.AscensionBuffBlocker.class);
+				GameScene.add( rat );
+				com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation.appear( rat, spawnPoints.get( index ) );
+				Buff.affect(rat, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline.class, 25f);
+			}
 		}
 
 		if (talisman != null){

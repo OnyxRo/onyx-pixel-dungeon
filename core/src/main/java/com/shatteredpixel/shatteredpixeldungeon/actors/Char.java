@@ -76,6 +76,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Perks;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -1063,6 +1064,10 @@ public abstract class Char extends Actor {
 			if (src instanceof Corruption)                              icon = FloatingText.CORRUPTION;
 			if (src instanceof AscensionChallenge)                      icon = FloatingText.AMULET;
 
+			//Experienced PD's Iron Reflection perk, below half health a physical or magic hit sends out a blast
+			boolean ironWill = this instanceof Hero && ((Hero) this).perks.contains(Perks.Perk.IRON_WILL) && HP <= HT/2
+					&& (icon == FloatingText.PHYS_DMG || icon == FloatingText.PHYS_DMG_NO_BLOCK || icon == FloatingText.MAGIC_DMG);
+
 			if ((icon == FloatingText.PHYS_DMG || icon == FloatingText.PHYS_DMG_NO_BLOCK) && hitMissIcon != -1){
 				if (icon == FloatingText.PHYS_DMG_NO_BLOCK) hitMissIcon += 18; //extra row
 				icon = hitMissIcon;
@@ -1070,6 +1075,8 @@ public abstract class Char extends Actor {
 			hitMissIcon = -1;
 
 			sprite.showStatusWithIcon(CharSprite.NEGATIVE, Integer.toString(dmg + shielded), icon);
+
+			if (ironWill) Perks.ironWillBlast((Hero) this, dmg, src);
 		}
 
 		if (HP < 0) HP = 0;

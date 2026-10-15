@@ -119,9 +119,14 @@ public class Honeypot extends Item {
 			Bee bee = new Bee();
 			bee.spawn( Dungeon.scalingDepth() );
 			bee.setPotInfo( pos, owner );
+			if (Dungeon.hero.perks.contains(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Perks.Perk.FRIENDLY_BEES)){
+				//Experienced PD's Friendly Bees perk
+				bee.alignment = Char.Alignment.ALLY;
+				bee.setPotInfo(-1, null);
+			}
 			bee.HP = bee.HT;
 			bee.pos = newPos;
-			
+
 			GameScene.add( bee );
 			if (newPos != pos) Actor.add( new Pushing( bee, pos, newPos ) );
 

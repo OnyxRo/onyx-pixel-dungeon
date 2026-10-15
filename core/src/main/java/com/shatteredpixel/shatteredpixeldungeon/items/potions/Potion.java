@@ -297,6 +297,11 @@ public class Potion extends Item {
 		
 		hero.sprite.operate( hero.pos );
 
+		//Experienced PD's Restored Nature perk
+		if (this instanceof PotionOfHealing && hero.perks.contains(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Perks.Perk.GRASS_HEALING)) {
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.Perks.growNature(hero);
+		}
+
 		if (!anonymous) {
 			Catalog.countUse(getClass());
 			if (Random.Float() < talentChance) {

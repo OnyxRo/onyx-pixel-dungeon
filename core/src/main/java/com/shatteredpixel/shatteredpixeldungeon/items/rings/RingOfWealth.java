@@ -155,6 +155,13 @@ public class RingOfWealth extends Ring {
 				do {
 					i = genConsumableDrop(bonus - 1);
 				} while (Challenges.isItemBlocked(i));
+				//Experienced PD's Fishing Proficiency perk, fishing loot is sometimes doubled
+				if (target instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Hook
+						&& Dungeon.hero != null
+						&& Dungeon.hero.perks.contains(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Perks.Perk.FISHING_PRO)
+						&& Random.Int(4) == 0) {
+					i.quantity(i.quantity()*2);
+				}
 				drops.add(i);
 				dropsToEquip.countDown(1);
 			}

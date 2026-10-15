@@ -161,8 +161,25 @@ public class WndHero extends WndTabbed {
 			else
 				title.label((hero.name() + "\n" + Messages.get(this, "title", hero.lvl, hero.className())).toUpperCase(Locale.ENGLISH));
 			title.color(Window.TITLE_COLOR);
-			title.setRect( 0, 0, WIDTH-16, 0 );
+			title.setRect( 0, 0, WIDTH-32, 0 );
 			add(title);
+
+			//Experienced PD's perks, a list of the ones earned so far
+			IconButton perkInfo = new IconButton(Icons.get(Icons.TALENT)){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					hide();
+					GameScene.show(new WndPerks(hero.perks, false));
+				}
+
+				@Override
+				protected String hoverText() {
+					return Messages.get(WndHero.class, "perks");
+				}
+			};
+			perkInfo.setRect(title.right(), 0, 16, 16);
+			add(perkInfo);
 
 			IconButton infoButton = new IconButton(Icons.get(Icons.INFO)){
 				@Override
@@ -181,7 +198,7 @@ public class WndHero extends WndTabbed {
 				}
 
 			};
-			infoButton.setRect(title.right(), 0, 16, 16);
+			infoButton.setRect(title.right() + 16, 0, 16, 16);
 			add(infoButton);
 
 			pos = title.bottom() + 2*GAP;
