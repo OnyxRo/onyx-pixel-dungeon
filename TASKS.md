@@ -2,7 +2,7 @@
 
 The cloud routine does the first unchecked task and checks it off. Smallest first. Details for each item are in PORTING.md and CLAUDE.md. Tasks marked "batched" stay unchecked until finished. Each run does one batch and notes progress in PORTING.md.
 
-- [ ] Update README.md to match the current game (54 worlds from 14 mods, ported monsters and weapons, sandbox, desktop app). Keep its existing structure.
+- [x] Update README.md to match the current game (54 worlds from 14 mods, ported monsters and weapons, sandbox, desktop app). Keep its existing structure.
 - [x] Sandbox. Add a one-click "Only this mod" button per mod in the Floors and worlds panel, which turns every other mod off in `Dungeon.sandboxOffMods`.
 - [x] Add a check to `WorldShuffleTest` that every ported monster in `Bestiary.isPorted` has a name string. Fix any that are missing.
 - [x] Hotkeys. Ctrl+R regenerates the current floor with a newly rolled world, which may come from a different mod. Ctrl+N jumps to a random new floor. Both work in sandbox runs. Decide whether they should work in normal runs and note the choice in PORTING.md.
@@ -11,7 +11,7 @@ The cloud routine does the first unchecked task and checks it off. Smallest firs
 - [ ] Port Rat King PD 2 monsters and weapons (2 monsters, 1 weapon). Find the repo on GitHub and clone it into the mod sources folder.
 - [ ] Port Experienced PD monsters and weapons (5 monsters, 9 weapons).
 - [ ] Port Ryuse's PD monsters and weapons (8 monsters, 5 weapons).
-- [ ] Port Pixel Dungeon Reforged monsters and weapons (11 monsters, 2 weapons).
+- [ ] Port Pixel Dungeon Reforged monsters and weapons (11 monsters, 2 weapons). Started 2026-10-14, blocked. The auto mode check denied even a read-only comparison of the cloned Reforged source, so nothing was ported.
 - [ ] Port Abyssalnite PD monsters and weapons (18 monsters, 4 weapons).
 - [ ] Port Cursed PD (Legacy) monsters and weapons (23 monsters, 17 weapons).
 - [ ] Batched. Port Summoning PD Reincarnated monsters and weapons (33 monsters, 12 weapons), about 15 per run.

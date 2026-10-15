@@ -2,7 +2,7 @@
 
 **Every floor a new world.**
 
-Onyx's Pixel Dungeon is a fork of [Shattered Pixel Dungeon](https://github.com/00-Evan/shattered-pixel-dungeon) (v4.0.2) where most floors are built in a randomly chosen world instead of the one their depth normally uses. There are 24 worlds, Shattered's own five plus 19 ported from four other Pixel Dungeon mods. Floor 2 might be the Gardens, floor 7 the Necropolis, floor 12 the Lost Tomb.
+Onyx's Pixel Dungeon is a fork of [Shattered Pixel Dungeon](https://github.com/00-Evan/shattered-pixel-dungeon) (v4.0.2) where most floors are built in a randomly chosen world instead of the one their depth normally uses. There are 54 worlds, Shattered's own five plus 49 ported from 14 other Pixel Dungeon mods. Floor 2 might be the Gardens, floor 7 the Necropolis, floor 12 the Lost Tomb. Devoted's and Matt Edition's monsters are ported too, and a sandbox mode lets you visit anything. It is a desktop game, built for Windows.
 
 ## How it works
 
@@ -22,7 +22,39 @@ Shattered has five worlds (Sewers, Prison, Caves, Dwarven City and Demon Halls),
 | Ancient Mystery City, Dragon Cave, Pale Palace, Lost Tomb, the Hollow | [Magic Ling Pixel Dungeon](https://github.com/LingASDJ/Magic_Ling_Pixel_Dungeon) | City, Sewers, City, Caves, Halls | Own decoration painters where the mod had them. The Hollow's door mimics are left out. |
 | Astral Library, Frost Archive, Gothic Castle, Sky Alchemy Greenhouse, Tower Core Gearworks, Chinese Hall | [Transformation Pixel Dungeon](https://github.com/dongyusangyu/transformation-pixel-dungeon-master) | Any | The mod's tower floors, with its tower decoration painter. |
 
-Each ported world brings its tileset, water, decoration and, where credited, music. Monsters are not ported yet, so every world uses Shattered's monsters for its depth. Worlds without credited music of their own use the closest Shattered soundtrack. All four mods are GPLv3, and their authors are credited in each ported file.
+A second wave of 30 worlds was made from the tile sheets of ten more mods. Each is a small level class that uses the Shattered painter, ambience and music for its stage, and the mod's own water sheet where it had one.
+
+| From | Worlds |
+| --- | --- |
+| Shattered PD Matt Edition | Guild Hall, Snowfield |
+| Pixel Dungeon Reforged | Kobold Caves |
+| Shittened PD | Christmas Caves |
+| Summoning PD Reincarnated | Abyss |
+| Re-ARranged PD | Labs, Ancient Temple |
+| Experienced PD | Arena |
+| Cursed PD (Legacy) | Beach, Surface, Jungle Temple, Dolya Haven |
+| Ryuse's PD | Polluted Sewers |
+| Abyssalnite PD | Abyssal Sewers, Prison, Caves, City, Halls |
+| Rat King PD 2 | Rat King's Sewers |
+| Transformation PD | UES, Lush Surface |
+| Magic Ling PD | Golden City, Desert Wilds, Cold Lands, Dead Lands, Ghost Manor, Frozen Vault, Overgrown Garden, Tengu's Hideout |
+| Devoted PD | True Void |
+
+Each ported world brings its tileset, water, decoration and, where credited, music. Worlds without credited music of their own use the closest Shattered soundtrack. While you are in a ported world, the source mod's icon shows at the top left, and clicking it opens a short summary of the mod. The mods are GPLv3 or similar, and their authors are credited in each ported file. Licenses and art credits for the newer mods still need a proper check before any public release.
+
+## Monsters and items
+
+- **Devoted PD** is ported in full for monsters. All 54 monsters, its five boss levels, two weapons and eleven other items are in. Its boss can replace the usual one on a boss floor.
+- **Shattered PD Matt Edition** has 13 monsters plus the Dark King, nine unique blacksmith weapons and a gun. Guild Hall and Snowfield floors spawn them.
+- **Combusted PD** adds four throwable melee weapons.
+- Weapons and items that are not in the loot tables are in the journal catalog, so the sandbox can give them to you.
+- Every other world uses Shattered's monsters for its depth. More mods' monsters are on the way.
+
+## Sandbox and game modes
+
+- **Sandbox** is a separate start option on the title screen. Badges and rankings are off and everything is unlocked. A panel lets you skip to any floor, force a world, turn mods on and off in the shuffle, level up, heal, reveal the floor, spawn any ported monster and give any item. God mode and full sight are on by default. Ctrl+R rebuilds the floor and Ctrl+N jumps to a random floor.
+- **Single mod mode** is a Game Mode button on the hero select screen. It locks every shuffled floor to one chosen mod's worlds, and to its monsters where that mod has ported ones.
+- **Song list and compendium** show every song by mod and a catalog of what each mod adds.
 
 The ported worlds live in [`levels/worlds`](core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/levels/worlds) and their art in `assets/environment/worlds`. Adding another means writing a small level class, listing it in `WorldShuffle.WORLDS`, and giving it the stage its mod made it for in `WorldShuffle.REGIONS`.
 
@@ -74,7 +106,7 @@ To check the worlds, compile with `scripts/compile.sh` and run `scripts/test/Wor
 
 ## Next steps
 
-- **Monsters.** Porting each mod's enemies is the next layer, and the most work, since many depend on mechanics unique to their mod.
+- **Monsters and weapons.** Porting the other mods' enemies and weapons is the next layer, and the most work, since many depend on mechanics unique to their mod.
 - **Pixel Spacebase.** Its art is drawn for Pixel Dungeon's pre-2017 tile layout at four times the resolution, so it would need redrawing to fit, not just porting.
 - **More worlds.** Forks built on Shattered 1.0 or later share this game's tile format and are the easiest to add. Check each one's credits for art with separate terms first.
 
@@ -82,7 +114,7 @@ To check the worlds, compile with `scripts/compile.sh` and run `scripts/test/Wor
 
 Onyx's Pixel Dungeon is by Onyx Rothman.
 
-Worlds ported from Combusted Pixel Dungeon (Inferno214221), Devoted Pixel Dungeon (Arackulele and contributors, soundtrack by Cevin2006), Magic Ling Pixel Dungeon (LingASDJ and contributors) and Transformation Pixel Dungeon (dongyusangyu), all under the GPLv3.
+Content ported from Combusted Pixel Dungeon (Inferno214221), Devoted Pixel Dungeon (Arackulele and contributors, soundtrack by Cevin2006), Magic Ling Pixel Dungeon (LingASDJ and contributors), Transformation Pixel Dungeon (dongyusangyu), Shattered PD Matt Edition (mr-matthias1829), Pixel Dungeon Reforged (nathanlink169), Shittened Pixel Dungeon (Haukii), Abyssalnite Pixel Dungeon (MywaifuisTataraKogasa), Cursed Pixel Dungeon Legacy (Smujb), Summoning PD Reincarnated, Re-ARranged PD, Experienced PD, Ryuse's PD and Rat King PD 2.
 
 Built on [Shattered Pixel Dungeon](https://shatteredpixel.com/shatteredpd/) by Evan Debenham, which is based on [Pixel Dungeon](https://github.com/00-Evan/pixel-dungeon-gradle) by Oleg Dolya (Watabou). If you enjoy this, consider [supporting Shattered's developer on Patreon](https://www.patreon.com/ShatteredPixel). Please send bug reports about this fork here, not to Shattered.
 
