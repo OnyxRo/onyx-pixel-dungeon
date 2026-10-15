@@ -102,6 +102,8 @@ Normal path on a PC with internet: `./gradlew desktop:debug` to run, `./gradlew 
 
 Onyx's playable copy. `scripts\make-exe.ps1` builds the release jar, wraps it with jpackage into `Documents\OnyxPixelDungeon-app\OnyxPixelDungeon\OnyxPixelDungeon.exe` (about 200 MB, with its own Java) and puts an "Onyx's Pixel Dungeon" shortcut on his desktop. It shares the normal save folder. The app has to be closed before the script can replace it. Because the app runs from its own copy, the repo can be rebuilt while he plays.
 
+Desktop copy updates by itself. A git hook (`scripts/hooks/post-commit` and `post-merge`, switched on with `git config core.hooksPath scripts/hooks`, already set in this clone) runs `scripts/auto-update-desktop.ps1` in the background after any commit or merge that changed game code. It runs `make-exe.ps1`, so the desktop shortcut always points at the newest build. It never starts the game. If the game is open it skips and tries again at the next commit. Progress and errors are in `build/auto-update.log`. A failed build leaves the old app alone. Run `powershell -ExecutionPolicy Bypass -File scripts\auto-update-desktop.ps1 -Force` to update by hand. A fresh clone needs `git config core.hooksPath scripts/hooks` once. Builds made on the cloud routine cannot reach the desktop, merge and pull on this machine to get them.
+
 Gradle-free path used for releases (`scripts/`):
 
 - `scripts/compile.sh <ShatteredPD-v4.0.2-Java.jar> <outdir>` compiles with javac, taking libraries from the official Shattered jar.
