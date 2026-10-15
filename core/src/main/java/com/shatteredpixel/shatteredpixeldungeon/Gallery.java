@@ -31,6 +31,11 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.WorldShuffle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Perks;
+import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndHero;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndPerks;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndSettings;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndCompendium;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndModInfo;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndSandbox;
@@ -56,6 +61,10 @@ public class Gallery {
 
 	//a shuffled floor from each region, in region order
 	private static final int[] DEPTHS = { 2, 7, 12, 17, 22 };
+
+	//floor and branch pairs for -Donyx.gallery.only=branches
+	private static final int[][] BRANCH_FLOORS = { {14, 2}, {15, 2}, {16, 2}, {17, 2}, {18, 2}, {8, 2}, {9, 2} };
+	private static int branchStep = 0;
 
 	private static boolean started = false;
 	//-Donyx.gallery.only=mobs skips the worlds and goes straight to the monsters
@@ -150,6 +159,33 @@ public class Gallery {
 		if ("bosses".equals(System.getProperty("onyx.gallery.only"))) mob = MOBS.size();
 		if ("ui".equals(System.getProperty("onyx.gallery.only"))) { mob = MOBS.size(); boss = BOSS_DEPTHS.length; }
 
+		//-Donyx.gallery.only=branches pictures Matt Edition's branch floors (Ice Caves 14 to 18, Thieves Guild 8 and 9)
+		if ("branches".equals(System.getProperty("onyx.gallery.only"))) {
+			mob = MOBS.size();
+			boss = BOSS_DEPTHS.length;
+			if (branchStep >= BRANCH_FLOORS.length) {
+				Gdx.app.exit();
+				return;
+			}
+			int d = BRANCH_FLOORS[branchStep][0], b = BRANCH_FLOORS[branchStep][1];
+			if (Dungeon.depth != d || Dungeon.branch != b) {
+				if (time < 0.8f) return;
+				InterlevelScene.curTransition = new LevelTransition(
+						Dungeon.level, Dungeon.hero.pos, LevelTransition.Type.BRANCH_EXIT, d, b, null );
+				InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
+				time = 0;
+				Game.switchScene( InterlevelScene.class );
+				return;
+			}
+			if (Dungeon.hero.ready && time < 2.0f) Dungeon.hero.rest( false );
+			if (time > 2.4f) {
+				capture( String.format( "branch_%02d_%d_%s", d, b, Dungeon.level.getClass().getSimpleName() ) );
+				branchStep++;
+				time = 0;
+			}
+			return;
+		}
+
 		//the arena puts every chosen monster beside the hero at once, lets them act, takes one picture and quits
 		if (ARENA) {
 			if (!arenaSpawned) {
@@ -220,6 +256,8 @@ public class Gallery {
 
 		//after the bosses, picture each sandbox window
 		if (time < 0.6f) return;
+		//Cursed PD's mana bar only shows once some mana is spent, so spend some for the pictures
+		if (uiStep == 0 && uiWindow == null && Dungeon.hero.MAX_MP > 4) Dungeon.hero.MP = 4;
 		if (uiWindow != null) {
 			capture( "window_" + uiStep + "_" + uiWindow.getClass().getSimpleName() );
 			uiWindow.hide();
@@ -236,12 +274,22 @@ public class Gallery {
 			case 4: uiWindow = new WndCompendium(); break;
 			case 5: uiWindow = new WndSongs(); break;
 			case 6: uiWindow = new WndModInfo( WorldShuffle.create( WorldShuffle.worldCount() - 1 ) ); break;
-			case 7:
+			case 7: uiWindow = new WndHero(); break;
+			case 8:
+				//a few perks so the list has something in it
+				Dungeon.hero.perks.clear();
+				Dungeon.hero.perks.add( Perks.Perk.IRON_WILL );
+				Dungeon.hero.perks.add( Perks.Perk.HOLD_FAST );
+				Dungeon.hero.perks.add( Perks.Perk.FRIENDLY_BEES );
+				uiWindow = new WndPerks( Dungeon.hero.perks, false );
+				break;
+			case 9: uiWindow = new WndSettings(); break;
+			case 10:
 				SandboxHotkeys.randomLevel();
 				uiStep++;
 				time = 0;
 				return;
-			case 8:
+			case 11:
 				if (time < 4f) return;
 				capture( "hotkey_random_" + Dungeon.level.getClass().getSimpleName() );
 				uiStep++;

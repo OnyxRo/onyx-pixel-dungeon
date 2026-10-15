@@ -66,6 +66,11 @@ run() { # name, class, args...
   return $rc
 }
 
+#every sprite asks only for frames its picture has, a bad one crashes the game when the monster is made
+say "== sprite frames"
+python -I scripts/check-sprites.py 2>&1 | grep -E "^(.*\.java:|SUMMARY)" | sed 's/^/  /' | tail -12
+[ "${PIPESTATUS[0]}" -eq 0 ] && say "  passed" || { say "  FAILED"; FAIL=1; }
+
 if [ $QUICK -eq 0 ]; then
   run "WorldShuffleTest ($SEEDS seeds)" WorldShuffleTest "$SEEDS"; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|floors generated|ported monsters)" | tail -6 | sed 's/^/  /'

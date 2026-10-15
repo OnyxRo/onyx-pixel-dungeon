@@ -40,8 +40,8 @@ RENAMES = [
     ('durabilityPerUse takes the level', r'public float durabilityPerUse\(\s*\)\s*\{', 'public float durabilityPerUse( int level ) {'),
     ('internalTier does not exist here', r'internalTier\s*=\s*tier\s*=', 'tier ='),
     # Experienced's own members and wrappers
-    ('Experienced perk checks, the perk system is not ported', r'[^\n]*\bhero\.perks\.contains\([^\n]*;[ \t]*\r?\n', ''),
-    ('Experienced perks import', r'import [\w.]*\.Perks;[ \t]*\r?\n', ''),
+    #Experienced's perk checks used to be stripped here. The perk system is ported now (actors/hero/Perks), so they stay.
+    ('Matt Edition createAnimation(name, fps, looped) is a plain Animation here', r'\bcreateAnimation\(\s*"\w+"\s*,\s*(\d+)\s*,\s*(true|false)(?:\s*,\s*(?:true|false))*\s*\)', r'new Animation(\1, \2)'),
     ('any other class in the mod package (Bones, Chrome and so on)', r'com\.(?!shatteredpixel\.shatteredpixeldungeon\b)\w+\.\w*pixeldungeon\w*\.(?=[A-Z])', PKG + '.'),
     ('old Level.press(cell, ch) is occupyCell(ch) now', r'public void press\(\s*int cell\s*,\s*Char (\w+)\s*\)\s*\{(\s*)super\.press\(\s*cell\s*,\s*\1\s*\);', r'public void occupyCell( Char \1 ) {\2super.occupyCell( \1 );\2int cell = \1.pos;'),
     ('standardRooms takes forceMax', r'protected int standardRooms\(\s*\)', 'protected int standardRooms( boolean forceMax )'),
