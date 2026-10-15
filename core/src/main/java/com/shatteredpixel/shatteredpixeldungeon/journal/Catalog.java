@@ -396,6 +396,25 @@ public enum Catalog {
 		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.RespawnBooster.class);
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.keys.KeyToTruth.class);
 
+		//items ported from experienced
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.bags.CheeseCheest.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.fishingrods.AvaritiaFishingRod.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.fishingrods.BasicFishingRod.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.fishingrods.ChaosFishingRod.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.fishingrods.GoldenFishingRod.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.fishingrods.NeutroniumFishingRod.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.fishingrods.SpiritualFishingRod.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasurebags.AlchemyBag.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasurebags.BiggerGambleBag.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasurebags.BurntBag.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasurebags.DKTreasureBag.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasurebags.DM300TreasureBag.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasurebags.GambleBag.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasurebags.GooTreasureBag.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasurebags.IdealBag.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasurebags.QualityBag.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasurebags.TenguTreasureBag.class);
+
 
 	}
 

@@ -36,7 +36,8 @@ PK = 'core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/'
 os.makedirs(ROOT + '/build', exist_ok=True)
 LOG = ROOT + '/build/port-item.log'
 open(LOG, 'w').close()
-SKIP = ','.join(['Perks', 'TreasureBag', 'GambleBag'] + (opts['--skip'].split(',') if '--skip' in opts else []))
+# --keep-bags copies TreasureBag and GambleBag too, for mods whose bags only touch the perk system through lines renames.py removes
+SKIP = ','.join((['Perks'] if '--keep-bags' in opts else ['Perks', 'TreasureBag', 'GambleBag']) + (opts['--skip'].split(',') if '--skip' in opts else []))
 
 def LP(p):
     p = os.path.abspath(p)

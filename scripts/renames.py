@@ -40,6 +40,10 @@ RENAMES = [
     ('durabilityPerUse takes the level', r'public float durabilityPerUse\(\s*\)\s*\{', 'public float durabilityPerUse( int level ) {'),
     ('internalTier does not exist here', r'internalTier\s*=\s*tier\s*=', 'tier ='),
     # Experienced's own members and wrappers
+    ('Experienced perk checks, the perk system is not ported', r'[^\n]*\bhero\.perks\.contains\([^\n]*;[ \t]*\r?\n', ''),
+    ('Experienced perks import', r'import [\w.]*\.Perks;[ \t]*\r?\n', ''),
+    ('escalatingDepth is Experienced only, use depth', r'Dungeon\.escalatingDepth\(\)', 'Dungeon.depth'),
+    ('doPickUp lost its time argument', r'doPickUp\(\s*(Hero\s+\w+|\w+)\s*,\s*(int\s+\w+|[\w.]+)\s*,\s*(?:float\s+\w+|[\w.]+)\s*\)', r'doPickUp(\1, \2)'),
     ('Dungeon.cycle arithmetic is Experienced only, use 0', r'\(?\s*Dungeon\.cycle\s*\*\s*\d+L?\s*\)?', '0'),
     ('Dungeon.cycle is Experienced only, use 0', r'Dungeon\.cycle', '0'),
     ('Dungeon.Float, Int and ranges moved to Random', r'Dungeon\.(Float|Int|IntRange|NormalIntRange)\(', r'Random.\1('),

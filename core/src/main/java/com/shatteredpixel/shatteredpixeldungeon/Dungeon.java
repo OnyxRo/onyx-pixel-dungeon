@@ -143,7 +143,14 @@ public class Dungeon {
 		LORE_PRISON,
 		LORE_CAVES,
 		LORE_CITY,
-		LORE_HALLS;
+		LORE_HALLS,
+
+		//Experienced PD's bags and the items its bosses hand out
+		CHEESY_CHEEST,
+		ARMOR_KIT,
+		DK_DROPS,
+		DM_DROPS,
+		TOME_OF_MASTERY;
 
 		public int count = 0;
 
