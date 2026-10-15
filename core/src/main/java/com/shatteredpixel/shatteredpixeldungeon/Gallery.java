@@ -113,6 +113,13 @@ public class Gallery {
 		SPDSettings.intro(false);
 		Dungeon.deleteGame(1, true);
 
+		//no sound in the automatic tours (only this run, the saved setting is not touched). The final arena mode
+		//is for playing, so it keeps the player's own setting
+		if (!"final".equals(System.getProperty("onyx.gallery.only"))) {
+			com.watabou.noosa.audio.Music.INSTANCE.enable( false );
+			com.watabou.noosa.audio.Sample.INSTANCE.enable( false );
+		}
+
 		//every monster ported from another mod
 		for (Bestiary category : Bestiary.values()) {
 			for (Class<?> cls : category.entities()) {
