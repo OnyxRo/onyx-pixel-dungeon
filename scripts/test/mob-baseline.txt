@@ -30,3 +30,5 @@ RaRothsNunchucks crashed when it hit a rat
 ThonothsAxe crashed when it hit a rat
 Precise crashed when it hit a rat
 Shielding crashed when it hit a rat
+OOFThief crashed while trading blows
+OOFThief crashed during its own turns

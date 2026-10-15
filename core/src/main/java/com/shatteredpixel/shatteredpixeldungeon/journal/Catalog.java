@@ -387,6 +387,7 @@ public enum Catalog {
 		//items ported from experienced
 		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.Cheese.class);
 		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.CheeseChunk.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.ExpGenerator.class);
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.quest.TenguBomb.class);
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.quest.TenguShuriken.class);
 		EXOTIC_SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfDetermination.class);

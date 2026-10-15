@@ -58,6 +58,8 @@ public class ModRoster {
 	}
 
 	static {
+		//Experienced Pixel Dungeon, the thief that takes an item and runs
+		add( "experienced", OOFThief.class, 1, 5, 99 );
 		//Pixel Dungeon Reforged. Kobolds are most of the crowd, the heavy ones only turn up deeper
 		add( "reforged", Kobold.class, 4, 1, 99 );
 		add( "reforged", Spitter.class, 2, 1, 99 );

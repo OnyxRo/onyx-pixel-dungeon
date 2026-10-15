@@ -150,7 +150,10 @@ public class Dungeon {
 		ARMOR_KIT,
 		DK_DROPS,
 		DM_DROPS,
-		TOME_OF_MASTERY;
+		TOME_OF_MASTERY,
+
+		//Experienced PD
+		OOF_DROP;
 
 		public int count = 0;
 
@@ -213,6 +216,9 @@ public class Dungeon {
 	public static int energy;
 	
 	public static HashSet<Integer> chapters;
+
+	//what the Experienced PD oof thief has taken from the hero
+	public static ArrayList<Item> oofedItems = new ArrayList<>();
 
 	public static SparseArray<ArrayList<Item>> droppedItems;
 
@@ -325,6 +331,7 @@ public class Dungeon {
 		fireDamage = 1f;
 
 		droppedItems = new SparseArray<>();
+		oofedItems = new ArrayList<>();
 
 		LimitedDrops.reset();
 		
@@ -733,6 +740,8 @@ public class Dungeon {
 				bundle.put(Messages.format(DROPPED, d), droppedItems.get(d));
 			}
 
+			bundle.put( "oofeditems", oofedItems );
+
 			quickslot.storePlaceholders( bundle );
 
 			Bundle limDrops = new Bundle();
@@ -881,6 +890,11 @@ public class Dungeon {
 			generatedLevels.clear();
 			for (int i : bundle.getIntArray(GENERATED_LEVELS)){
 				generatedLevels.add(i);
+			}
+
+			oofedItems = new ArrayList<>();
+			if (bundle.contains( "oofeditems" )) {
+				for (Bundlable b : bundle.getCollection( "oofeditems" )) oofedItems.add( (Item)b );
 			}
 
 			droppedItems = new SparseArray<>();
