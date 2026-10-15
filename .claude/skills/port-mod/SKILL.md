@@ -140,3 +140,10 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **Seeing windows.** `JAVA_TOOL_OPTIONS=-Donyx.gallery.only=ui scripts/gallery.sh <folder>` takes about 40 seconds and pictures the sandbox windows, the hero window, the perks window and the display settings. Add a case to `Gallery.java` for any new window, then read the pictures with the image reader. Check `build/gallery-ui.log` for exceptions, a window that fails to build shows up there.
 - **Shims added in this round** (do not write them again). `LevelTransition.transitionId`, `Level.getTransition(type, id)`, `Level.canSpawnItems`, `canSpawnFood`, `canSpawnGurItems`, `canFeeling`, `splashRegionOverride`, `RegularLevel.setItemsToSpawn` and the per kind counts, depth overrides on `StandardRoom.createRoom`, `EntranceRoom.createEntrance`, `ExitRoom.createExit`, `Weapon.special` and `Armor.special` (Matt's special augments), `Enchantment.removableByUpgrade` and `Glyph.removableByUpgrade`, `Hero.vitalityBonus`, `Dungeon.vitalityPotionsUsed`, `SPDSettings.animSpeed`.
 - **Left out on purpose, so a report that lists them is not a mistake.** Matt's Seven Sins mode, armor magic levels (Scroll of Magic Upgrade, Scroll of Pure Magic, Magic Infuse), Experienced's cycle system and Efficient Bartering perk, Armor Kit and Tome of Mastery. `port-skip.txt` lists the ones a tool would otherwise copy.
+
+## Crash hunting and testing efficiently (2026-10-15)
+
+- Headless tests (`check.sh`) cannot see sprite, effect, font or scene crashes. Real window bots can. Read the Working faster section in CLAUDE.md for the modes, and use them before writing any new harness.
+- A bot that kills bosses with `die()` finds crashes in death handlers (the shared Pylon cast to a Caves boss level). Damage bosses in phases first, then kill. Check every shared mob class for casts of `Dungeon.level` to one boss level class when a mod adds its own boss level.
+- Special floors and mod levels built on depth 25 or above need clamps wherever a table is indexed by depth (`SecretRoom.secretsForFloor`, room pools).
+- Do not compile or run gradle while a tour is running.
