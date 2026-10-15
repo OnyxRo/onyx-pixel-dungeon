@@ -193,7 +193,7 @@ public abstract class StandardRoom extends Room {
 
 	//Matt Edition. Branch floors can pick their rooms from another depth's pool
 	public static StandardRoom createRoom(int depth){
-		return Reflection.newInstance(rooms.get(Random.chances(chances[depth])));
+		return Reflection.newInstance(rooms.get(Random.chances(chances[Math.min(depth, chances.length - 1)])));
 	}
 	
 }

@@ -213,7 +213,12 @@ public class Pylon extends Mob {
 	@Override
 	public void die(Object cause) {
 		super.die(cause);
-		((CavesBossLevel)Dungeon.level).eliminatePylon();
+		//Abyssalnite's new DM-300 fight has its own arena, which also counts pylons
+		if (Dungeon.level instanceof com.shatteredpixel.shatteredpixeldungeon.levels.NewCavesBossLevel) {
+			((com.shatteredpixel.shatteredpixeldungeon.levels.NewCavesBossLevel)Dungeon.level).eliminatePylon();
+		} else if (Dungeon.level instanceof CavesBossLevel) {
+			((CavesBossLevel)Dungeon.level).eliminatePylon();
+		}
 	}
 
 	private static final String ALIGNMENT = "alignment";

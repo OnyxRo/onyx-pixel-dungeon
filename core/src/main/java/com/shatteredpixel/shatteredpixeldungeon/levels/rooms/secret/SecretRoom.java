@@ -66,7 +66,8 @@ public abstract class SecretRoom extends SpecialRoom {
 	public static int secretsForFloor(int depth){
 		if (depth == 1) return 0;
 		
-		int region = depth/5;
+		//a ported special floor can be built on a boss floor (depth 25 and up), which has no region of its own
+		int region = Math.min(depth/5, regionSecretsThisRun.length - 1);
 		int floor = depth%5;
 		
 		int floorsLeft = 5 - floor;

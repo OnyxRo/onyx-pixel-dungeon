@@ -65,6 +65,7 @@ public class Gallery {
 	//floor and branch pairs for -Donyx.gallery.only=branches
 	private static final int[][] BRANCH_FLOORS = { {14, 2}, {15, 2}, {16, 2}, {17, 2}, {18, 2}, {8, 2}, {9, 2} };
 	private static int branchStep = 0;
+	private static boolean stayDone = false;
 
 	private static boolean started = false;
 	//-Donyx.gallery.only=mobs skips the worlds and goes straight to the monsters
@@ -121,12 +122,16 @@ public class Gallery {
 			}
 		}
 
-		Dungeon.sandbox = true;
+		//the full run bot plays a normal run, not a sandbox one
+		Dungeon.sandbox = !"fullrun".equals(System.getProperty("onyx.gallery.only"));
 		GamesInProgress.selectedClass = HeroClass.WARRIOR;
 		GamesInProgress.curSlot = 1;
 		Dungeon.hero = null;
 		Dungeon.daily = Dungeon.dailyReplay = false;
 		Dungeon.initSeed();
+		if (System.getProperty("onyx.gallery.seed") != null) {
+			Dungeon.seed = Long.parseLong( System.getProperty("onyx.gallery.seed") );
+		}
 		InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
 		Game.switchScene( InterlevelScene.class );
 	}
@@ -136,6 +141,32 @@ public class Gallery {
 		if (!active() || !started) return;
 
 		time += Game.elapsed;
+
+		//-Donyx.gallery.only=fullrun -Donyx.gallery.seed=12345 plays a normal run with an unkillable hero. It goes down
+		//to floor 26 one floor at a time, killing everything on each floor the way a win would, picks up the Amulet,
+		//then climbs back to floor 1. [FULL] lines show where it got stuck, exceptions show in the log.
+		if ("fullrun".equals(System.getProperty("onyx.gallery.only"))) {
+			fullRun();
+			return;
+		}
+
+		//-Donyx.gallery.only=allbosses visits every boss floor of every world and every special floor, lets the fight
+		//run for a few seconds with an unkillable hero, pictures it, and prints [ALLB] lines so the log shows which
+		//floor an exception came from. Needs the real window, the headless boss test cannot see sprite or effect crashes.
+		if ("allbosses".equals(System.getProperty("onyx.gallery.only"))) {
+			allBosses();
+			return;
+		}
+
+		//-Donyx.gallery.only=final opens Abyssalnite's final arena (Cthulhu) once and leaves the window open to play
+		if ("final".equals(System.getProperty("onyx.gallery.only"))) {
+			if (!stayDone && time > 1.5f && Dungeon.hero != null && Dungeon.hero.ready) {
+				stayDone = true;
+				com.shatteredpixel.shatteredpixeldungeon.levels.SpecialFloors.travel(
+						com.shatteredpixel.shatteredpixeldungeon.levels.FinalLevel::new );
+			}
+			return;
+		}
 
 		if (world < WorldShuffle.worldCount()) {
 			//the first floor of the run is only a starting point, go straight to the first world
@@ -300,6 +331,248 @@ public class Gallery {
 		}
 		GameScene.show( uiWindow );
 		time = 0;
+	}
+
+	//one entry per floor to visit. kind 0 is a boss floor (world, depth, variant), kind 1 a special floor, kind 2 a plain depth
+	private static final ArrayList<int[]> TARGETS = new ArrayList<>();
+	private static int target = -1;
+	private static int targetStage = 0;
+	private static int killRound = 0;
+	private static boolean earlyShot = false;
+	private static int targetOffset = 0;
+	private static boolean exitTried = false;
+	private static com.shatteredpixel.shatteredpixeldungeon.levels.Level levelBefore = null;
+
+	private static int fullDepth = -1;
+	private static int fullBranch = -1;
+	private static float fullTime = 0;
+	private static int fullKills = 0;
+	private static boolean fullClimbing = false;
+	private static boolean fullSentExit = false;
+	private static int fullStuckCount = 0;
+
+	private static void fullRun(){
+		if (Dungeon.hero == null) return;
+		Dungeon.hero.HT = Math.max( Dungeon.hero.HT, 9999 );
+		Dungeon.hero.HP = Dungeon.hero.HT;
+
+		//a new floor arrived
+		if (Dungeon.depth != fullDepth || Dungeon.branch != fullBranch) {
+			fullDepth = Dungeon.depth;
+			fullBranch = Dungeon.branch;
+			fullTime = 0;
+			fullKills = 0;
+			fullSentExit = false;
+			fullStuckCount = 0;
+			System.out.println( "[FULL] arrived floor " + Dungeon.depth + " branch " + Dungeon.branch + " "
+					+ Dungeon.level.getClass().getSimpleName() + (fullClimbing ? " (climbing)" : "") );
+			return;
+		}
+		fullTime += Game.elapsed;
+		if (!Dungeon.hero.ready) return;
+		if (fullTime < 0.7f) return;
+
+		//the first time on the way up, pick up the Amulet on floor 26
+		if (!fullClimbing && Dungeon.depth == 26 && fullKills >= 3) {
+			try {
+				com.shatteredpixel.shatteredpixeldungeon.items.Amulet amulet = new com.shatteredpixel.shatteredpixeldungeon.items.Amulet();
+				//the real pickup opens the Amulet scene, which this bot cannot click. This is what choosing to stay does.
+				amulet.collect( Dungeon.hero.belongings.backpack );
+				Statistics.amuletObtained = true;
+				System.out.println( "[FULL] picked up the Amulet, amuletObtained " + Statistics.amuletObtained );
+			} catch (Throwable e) {
+				System.out.println( "[FULL] FAIL picking up the Amulet " + e );
+				e.printStackTrace( System.out );
+			}
+			fullClimbing = true;
+			fullDepth = -1; //so the next frame treats it as a fresh floor for the climb
+			return;
+		}
+
+		//kill everything in rounds, later fight phases and summoned monsters die too
+		if (fullKills < 3 && fullTime > 0.7f + fullKills * 1.4f) {
+			fullKills++;
+			for (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob m : new ArrayList<>( Dungeon.level.mobs )) {
+				if (m.isAlive() && m.alignment != com.shatteredpixel.shatteredpixeldungeon.actors.Char.Alignment.ALLY) {
+					try {
+						m.die( Dungeon.hero );
+					} catch (Throwable e) {
+						System.out.println( "[FULL] FAIL killing " + m.getClass().getSimpleName() + " on floor " + Dungeon.depth + " " + e );
+						e.printStackTrace( System.out );
+					}
+				}
+			}
+			return;
+		}
+		if (fullKills < 3) return;
+
+		if (Dungeon.level.locked) {
+			if (fullTime > 8f) {
+				System.out.println( "[FULL] STUCK floor " + Dungeon.depth + " is still sealed after the kills, unsealing it" );
+				try { Dungeon.level.unseal(); } catch (Throwable e) { System.out.println( "[FULL] unseal threw " + e ); }
+			}
+			return;
+		}
+
+		if (!fullSentExit) {
+			LevelTransition pick = null;
+			LevelTransition.Type want = fullClimbing ? LevelTransition.Type.REGULAR_ENTRANCE : LevelTransition.Type.REGULAR_EXIT;
+			for (LevelTransition t : Dungeon.level.transitions) {
+				if (t.type != want) continue;
+				if (pick == null) pick = t;
+				boolean main = t.destBranch == 0 && t.destDepth == (fullClimbing ? Dungeon.depth - 1 : Dungeon.depth + 1);
+				if (main) { pick = t; break; }
+			}
+			if (pick == null && !fullClimbing) {
+				System.out.println( "[FULL] STUCK floor " + Dungeon.depth + " has no way down" );
+				Gdx.app.exit();
+				return;
+			}
+			if (pick == null) {
+				System.out.println( "[FULL] no way up from floor " + Dungeon.depth + " branch " + Dungeon.branch );
+				Gdx.app.exit();
+				return;
+			}
+			if (fullClimbing && Dungeon.depth == 1 && Dungeon.branch == 0) {
+				System.out.println( "[FULL] climbed all the way to floor 1, run complete" );
+				Gdx.app.exit();
+				return;
+			}
+			//on the way up, the floor below the amulet floor asks if you want to ascend. Choosing yes starts the ascension challenge.
+			if (fullClimbing && Dungeon.hero.buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge.class ) == null
+					&& Dungeon.depth <= 25 && Dungeon.depth >= 24) {
+				com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect( Dungeon.hero,
+						com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge.class );
+				System.out.println( "[FULL] chose to ascend on floor " + Dungeon.depth );
+			}
+			fullSentExit = true;
+			fullTime = 0;
+			try {
+				boolean went = Dungeon.level.activateTransition( Dungeon.hero, pick );
+				System.out.println( "[FULL] leaving floor " + Dungeon.depth + " went " + went );
+			} catch (Throwable e) {
+				System.out.println( "[FULL] FAIL leaving floor " + Dungeon.depth + " " + e );
+				e.printStackTrace( System.out );
+				Gdx.app.exit();
+			}
+			return;
+		}
+
+		//sent the exit but the floor did not change
+		if (fullTime > 20f) {
+			System.out.println( "[FULL] STUCK on floor " + Dungeon.depth + ", the exit did not move us in 20 seconds" );
+			Gdx.app.exit();
+		}
+	}
+
+	private static void allBosses(){
+		if (TARGETS.isEmpty()) {
+			int[] depths = { 5, 10, 15, 20, 25 };
+			for (int w = 0; w < WorldShuffle.worldCount(); w++) {
+				for (int d : depths) {
+					int n = WorldShuffle.modBossVariants( w, d ).length;
+					for (int v = 0; v < n; v++) TARGETS.add( new int[]{ 0, w, d, v } );
+				}
+			}
+			for (int i = 0; i < com.shatteredpixel.shatteredpixeldungeon.levels.SpecialFloors.LIST.size(); i++) TARGETS.add( new int[]{ 1, i, 0, 0 } );
+			for (int d : new int[]{ 5, 10, 15, 20, 25, 26 }) TARGETS.add( new int[]{ 2, 0, d, 0 } );
+			int from = Integer.getInteger( "onyx.gallery.from", 0 ), count = Integer.getInteger( "onyx.gallery.count", Integer.MAX_VALUE );
+			ArrayList<int[]> part = new ArrayList<>( TARGETS.subList( Math.min( from, TARGETS.size() ), (int)Math.min( (long)TARGETS.size(), (long)from + count ) ) );
+			TARGETS.clear();
+			TARGETS.addAll( part );
+			targetOffset = from;
+			System.out.println( "[ALLB] " + TARGETS.size() + " floors to visit, starting at " + from );
+		}
+		//an unkillable hero, so the fight can run
+		if (Dungeon.hero != null) {
+			Dungeon.hero.HT = Math.max( Dungeon.hero.HT, 9999 );
+			Dungeon.hero.HP = Dungeon.hero.HT;
+		}
+		if (target >= TARGETS.size()) {
+			System.out.println( "[ALLB] all done" );
+			Gdx.app.exit();
+			return;
+		}
+		if (target < 0) {
+			if (time < 1.5f || Dungeon.hero == null || !Dungeon.hero.ready) return;
+			target = 0;
+			targetStage = 0;
+		}
+		int[] t = TARGETS.get( target );
+		if (targetStage == 0) {
+			String name;
+			if (t[0] == 0) {
+				name = "boss world " + t[1] + " depth " + t[2] + " variant " + t[3];
+				WorldShuffle.forcedVariant = t[3];
+				Dungeon.sandboxWorld = t[1];
+				Dungeon.sandboxSpecial = null;
+				InterlevelScene.mode = InterlevelScene.Mode.SANDBOX;
+				InterlevelScene.returnDepth = t[2];
+			} else if (t[0] == 1) {
+				name = "special " + com.shatteredpixel.shatteredpixeldungeon.levels.SpecialFloors.LIST.get( t[1] ).label;
+				WorldShuffle.forcedVariant = -1;
+				Dungeon.sandboxSpecial = com.shatteredpixel.shatteredpixeldungeon.levels.SpecialFloors.LIST.get( t[1] ).make;
+				InterlevelScene.mode = InterlevelScene.Mode.SANDBOX;
+				InterlevelScene.returnDepth = 12;
+			} else {
+				name = "plain depth " + t[2];
+				WorldShuffle.forcedVariant = -1;
+				Dungeon.sandboxWorld = -1;
+				Dungeon.sandboxSpecial = null;
+				InterlevelScene.mode = InterlevelScene.Mode.SANDBOX;
+				InterlevelScene.returnDepth = t[2];
+			}
+			System.out.println( "[ALLB] start " + (target + targetOffset) + " " + name );
+			levelBefore = Dungeon.level;
+			com.shatteredpixel.shatteredpixeldungeon.levels.Level.beforeTransition();
+			time = 0;
+			targetStage = 1;
+			Game.switchScene( InterlevelScene.class );
+			return;
+		}
+		if (Dungeon.level == levelBefore || Dungeon.hero == null) return;
+		if (targetStage == 1) {
+			System.out.println( "[ALLB] arrived " + target + " " + Dungeon.level.getClass().getSimpleName() + " on floor " + Dungeon.depth );
+			targetStage = 2;
+			time = 0;
+		}
+		if (Dungeon.hero.ready && time < 5f) Dungeon.hero.rest( false );
+		//a picture of the floor itself, before the kills and the exit
+		if (time > 2.5f && !earlyShot) {
+			earlyShot = true;
+			capture( String.format( "early_%03d_%s", target + targetOffset, Dungeon.level.getClass().getSimpleName() ) );
+		}
+		//after the fight has run, kill every monster the way a win would, three rounds so later phases are killed too,
+		//then try to leave by the exit
+		if (time > 5f && killRound < 3 && time > 5f + killRound * 1.5f) {
+			killRound++;
+			System.out.println( "[ALLB] killing round " + killRound );
+			for (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob m : new ArrayList<>( Dungeon.level.mobs )) {
+				if (m.isAlive()) { try { if (killRound < 3 && m.properties().contains( com.shatteredpixel.shatteredpixeldungeon.actors.Char.Property.BOSS )) m.damage( Math.max( 1, m.HT * 4 / 10 ), Dungeon.hero ); else m.die( Dungeon.hero ); } catch (Throwable e) { System.out.println( "[ALLB] FAIL killing " + m.getClass().getSimpleName() + " on " + Dungeon.level.getClass().getSimpleName() + " " + e ); e.printStackTrace( System.out ); } }
+			}
+		}
+		if (time > 10f && !exitTried) {
+			exitTried = true;
+			try {
+				LevelTransition ex = Dungeon.level.getTransition( LevelTransition.Type.REGULAR_EXIT );
+				if (ex != null) {
+					boolean went = Dungeon.level.activateTransition( Dungeon.hero, ex );
+					System.out.println( "[ALLB] used the exit, went " + went );
+				}
+			} catch (Throwable e) {
+				System.out.println( "[ALLB] exit lookup failed " + e );
+			}
+		}
+		if (time > 14f) {
+			capture( String.format( "allb_%03d_%s", target, Dungeon.level.getClass().getSimpleName() ) );
+			killRound = 0;
+			exitTried = false;
+			earlyShot = false;
+			System.out.println( "[ALLB] ok " + target );
+			target++;
+			targetStage = 0;
+			time = 0;
+		}
 	}
 
 	private static void jump(){

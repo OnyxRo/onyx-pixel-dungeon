@@ -306,7 +306,7 @@ public class NewCavesBossLevel extends Level {
 		}
 		GameScene.updateMap();
 
-		customArenaVisuals.updateState();
+		if (customArenaVisuals != null) customArenaVisuals.updateState();
 
 		Dungeon.observe();
 
@@ -342,7 +342,7 @@ public class NewCavesBossLevel extends Level {
 	}
 
 	public void eliminatePylon(){
-		customArenaVisuals.updateState();
+		if (customArenaVisuals != null) customArenaVisuals.updateState();
 		int pylonsRemaining = 0;
 		for (Mob m : mobs){
 			if (m instanceof NewDM300){
@@ -353,7 +353,7 @@ public class NewCavesBossLevel extends Level {
 			}
 		}
 		if (pylonsRemaining > 2) {
-			blobs.get(PylonEnergy.class).fullyClear();
+			if (blobs.get(PylonEnergy.class) != null) blobs.get(PylonEnergy.class).fullyClear();
 		}
 	}
 
