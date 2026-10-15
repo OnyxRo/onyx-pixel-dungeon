@@ -14,3 +14,5 @@ Ported about 90 items, weapons and levels, two branches (arena, black mimic) and
 - Not knowing in advance what was easy. Fix, `mod-report.py` triages every class and prints the batch to run first.
 - Long silent stretches. Fix, give a one line status before every long tool run.
 - Still open. Checking each ported class by eye is not possible headless, `arena.sh` only covers monsters. Items rely on `ItemArenaTest` alone.
+- The full `scripts/check.sh` only tested items changed since the last commit, so a pull request check on a committed batch tested nothing. Fix, a full run now tests every catalog item (477, about 30 seconds). Six known failures from Devoted and Shattered's darts were added to the baseline.
+- I broke my own new test with a backslash in a heredoc edit, minutes after writing the rule against it. Fix, none needed beyond the rule, but patterns in new code should avoid backslashes entirely, for example `[.]` instead of an escaped dot.

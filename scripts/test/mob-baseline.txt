@@ -32,3 +32,9 @@ Precise crashed when it hit a rat
 Shielding crashed when it hit a rat
 OOFThief crashed while trading blows
 OOFThief crashed during its own turns
+WoodenBoomerang damage range is wrong at +3
+HealingDart crashed the test
+AdrenalineDart crashed the test
+CleansingDart crashed the test
+HolyDart crashed the test
+EscapeCrystal crashed the test

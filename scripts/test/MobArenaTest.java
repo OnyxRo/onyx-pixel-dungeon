@@ -181,7 +181,7 @@ public class MobArenaTest {
 		}
 		//a null emitter, sprite or field of view is the headless run's limit, not a bug in the port. Counted apart, shown once.
 		//Run with -Dstrict=true to make these failures again.
-		if (t instanceof NullPointerException && !Boolean.getBoolean( "strict" ) && String.valueOf( t.getMessage() ).matches( "(?is).*(emitter|sprite|fieldOfView|Camera|\.parent\b).*" )) {
+		if (t instanceof NullPointerException && !Boolean.getBoolean( "strict" ) && String.valueOf( t.getMessage() ).matches( "(?is).*(emitter|sprite|fieldOfView|Camera|[.]parent).*" )) {
 			headless++;
 			System.out.println( "HEADLESS (not counted): " + cls.getSimpleName() + " " + what );
 			return;
