@@ -82,6 +82,10 @@ copied_total = []
 skipped = []
 # PORT_SKIP is a comma list of class names, set by port-item.py. Perks and the treasure bags are always skipped.
 SKIP = set(filter(None, os.environ.get('PORT_SKIP', '').split(','))) | {'Perks', 'TreasureBag', 'GambleBag'}
+# scripts/port-skip.txt lists classes that were dropped on purpose and must not be copied back in
+_skipfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'port-skip.txt')
+if os.path.exists(_skipfile):
+    SKIP |= {l.strip() for l in open(_skipfile, encoding='utf-8') if l.strip() and not l.lstrip().startswith('#')}
 for rnd in range(ROUNDS):
     out = compile_errors()
     blocks = re.split(r'(?=^\S.*?: error: )', out, flags=re.M)

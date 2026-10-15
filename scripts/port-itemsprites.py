@@ -13,7 +13,10 @@ ROOT = sys.argv[1].rstrip('/') + '/'
 MOD = sys.argv[2].rstrip('/') + '/'
 NAMES = sys.argv[3:]
 PK = 'core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/'
-MOD_ROWS = [12, 18, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43]   # zero-based rows 13, 19, 33 to 44 (sheet grown to 704 px high)
+# rows 13 and 19 (zero based 12 and 18) and every row from 33 down are kept for other mods' items.
+# The sheet grows by itself when they run out, see free_cell.
+def mod_rows(height):
+    return [12, 18] + list(range(32, height // 16))
 
 def LP(p):
     p = os.path.abspath(p)
@@ -49,10 +52,16 @@ nl = '\r\n' if '\r\n' in s else '\n'
 s = s.replace('\r\n', '\n')
 
 def free_cell():
-    for r in MOD_ROWS:
-        for c in range(16):
-            if dst.crop((c * 16, r * 16, c * 16 + 16, r * 16 + 16)).getbbox() is None: return c, r
-    raise SystemExit('no free cells left for mod items, add another row to MOD_ROWS')
+    global dst
+    while True:
+        for r in mod_rows(dst.height):
+            for c in range(16):
+                if dst.crop((c * 16, r * 16, c * 16 + 16, r * 16 + 16)).getbbox() is None: return c, r
+        # nothing free, add eight rows (128 px) at the bottom and look again
+        grown = Image.new('RGBA', (dst.width, dst.height + 128), (0, 0, 0, 0))
+        grown.paste(dst, (0, 0))
+        dst = grown
+        print('item sheet grown to', dst.height, 'px high')
 
 consts = ''; rects = ''
 for name in NAMES:

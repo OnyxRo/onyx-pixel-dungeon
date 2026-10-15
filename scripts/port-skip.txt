@@ -1,0 +1,19 @@
+# Classes port-copier.py must never copy back in, one simple class name per line.
+# Each one was dropped on purpose because it drags in a system this game does not have.
+# Add a line here the first time you delete a copied class that keeps coming back.
+# port-item.py and port-mob.py use this list too, through port-copier.py.
+
+# class upgrade systems that Shattered 4 removed
+ArmorKit
+TomeOfMastery
+WndChooseWay
+
+# Cursed PD, its settings screen, grinding levels and challenge levels
+CPDSettings
+LuckyBadge
+WndItem
+RenderedTextMultiline
+WaterChallengeLevel
+
+# Abyssalnite, needs its Tengu boss, parked until the boss levels are ported
+MysteryHeart

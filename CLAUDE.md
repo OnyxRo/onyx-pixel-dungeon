@@ -165,3 +165,8 @@ He wants to playtest everything, so build these next.
 4. **Later.** Port monsters, starting with whichever world he likes most.
 
 Also, his promo banner art says "50+ MODS". The game currently has content from four mods, so suggest an accurate label like "24 WORLDS" if it comes up.
+
+## Improving the process
+
+- Edit code with `scripts/edit.py` (a plain text spec, see its header), not shell heredocs or sed. Backslashes in heredocs got mangled repeatedly.
+- At the end of every task, follow the improvement loop in `.claude/skills/port-mod/SKILL.md`. Turn anything that cost time into a tool change, and add a short dated entry to `RETRO.md`. This applies to Daniel's cloud runs as well.

@@ -95,3 +95,24 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 ## Definition of done
 
 `scripts/check.sh` passes (full run, not `--quick`), the arena picture looks right, TASKS.md and PORTING.md are current, and one commit holds it. If the full check has a failure you did not cause, say so.
+
+## Faster editing, triage and shims (added after the four-mod completion run)
+
+- **Edit with `scripts/edit.py`, never heredocs or sed.** Write a plain text spec with the Write tool (`@@ file`, then `<<<<` old `====` new `>>>>`), run `python -I scripts/edit.py spec.txt`. It keeps each file's line endings, stops if an old text is missing or appears twice, and needs no backslash escaping. Use `--dry` to test. The shell mangled backslashes (`\1` became a control character) four times in one session, each cost several round trips.
+- **Triage before porting.** `mod-report.py --all` now tiers every class, not only monsters. Items and weapons come out as easy, shim or hard, plus a ready `port-item.py` command for the easy batch. Port easy first, in one command. Then write the shim (next point), then the shim tier. Leave hard (bosses, levels) for a live session.
+- **One compat shim per mod, written on purpose.** When several errors name the same missing core member (`Dungeon.fireDamage`, `Hero.MP`, `Mob.spawnAt`), add it once to the core class as a small additive field or method with a comment naming the mod, then port again. Do not patch each copied class. Shims already in core, so do not write them again
+  - Cursed PD, `Hero.MP`, `MAX_MP`, `magicSkill`, `loseMP`, `increaseMagicSkill` with the `MpRegen` buff, `MeleeWeapon.damageMultiplier`, `Char.isEnemy`, `HPPercent`, `missingHP`, `Mob.spawnAt`, `spawnAround4`, `followHero`, `Hero.ready` made public.
+  - Abyssalnite, `Food.clean` and `cureinfc`, reverse lookups only in `ExoticPotion.exoToReg` and `ExoticScroll.exoToReg` for exotic items that have no brewing recipe.
+  - Experienced PD, `Dungeon.respawnBoost`, `additionalMobs`, `fireDamage`, `oofedItems`, `LimitedDrops` entries, `Hero.grinding` and `totalExp`, branches `BRANCH_ARENA` and `BRANCH_BLACK` in `Dungeon.newLevel`, `MimicSprite.Black`.
+- **Exotic potions and scrolls need an `exoToReg` entry** or `ItemArenaTest` reports "no public constructor". Add the reverse lookup only.
+- **`port-skip.txt` is the never copy list.** If `port-copier.py` keeps bringing back a class you deleted, add its name to `scripts/port-skip.txt`. `mod-report.py` marks those classes as skip.
+- **The item sheet grows by itself** (`port-itemsprites.py` adds eight rows when full). No manual step.
+- **Headless crashes** from a null emitter, sprite or field of view print as `HEADLESS (not counted)` in `MobArenaTest` and no longer fail the run. Use `-Dstrict=true` to see them as failures. Check that the monster really behaves in `arena.sh` when one shows up.
+- **Dead code left by renames.** `Dungeon.cycle` becomes `0`, so Experienced code shows `0 > 0` branches. They compile and do nothing. Leave them, a rewrite is not worth the time.
+
+## The improvement loop (do this every task, it is part of the task)
+
+1. While working, keep a running note of every step that cost more than a couple of minutes or went wrong twice.
+2. Before committing, turn each into a tool change (a rule in `renames.py`, a line in `port-skip.txt`, a check, a script option) or a skill paragraph. A note alone does not count.
+3. Add a dated entry to `RETRO.md` saying what cost time and which change removes it. Keep it to a few lines.
+4. Rule of thumb for the next run. If the same fix was done by hand twice, the third time it goes into a tool first.

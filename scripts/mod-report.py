@@ -210,11 +210,55 @@ out('')
 if len(mob_rows) > TOP and 'all' not in opts:
     out('Showing ' + str(TOP) + ' of ' + str(len(mob_rows)) + ', pass --all for the rest.')
     out('')
+# Triage for everything that is not a monster. Same idea as the monster tiers.
+#   easy   no mod only members, no levels, small closure. Port these first, in one port-item.py command.
+#   shim   needs core members the mod added, or window code. Write one compat shim for the mod, then port these.
+#   hard   is a boss, a level, or drags in a level. Port by hand, in a live session.
+def other_notes(rel):
+    src = rd(theirs[rel])
+    notes = []
+    added = mod_added_members(rel)
+    if added: notes.append('needs ' + ', '.join(added[:4]))
+    if 'Property.BOSS' in src: notes.append('is a boss')
+    if re.search(r'\bPerks\b|\.perks\b', src): notes.append('uses perks')
+    for d in closure(rel):
+        if kind(d) == 'levels': notes.append('drags in level ' + os.path.basename(d)[:-5]); break
+    for d in closure(rel):
+        if kind(d) in ('hero', 'windows and ui'):
+            notes.append('drags in ' + os.path.basename(d)[:-5]); break
+    return notes
+
+_skipfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'port-skip.txt')
+SKIPPED = {l.strip() for l in open(_skipfile, encoding='utf-8') if l.strip() and not l.lstrip().startswith('#')} if os.path.exists(_skipfile) else set()
+
+def other_tier(rel, notes):
+    if os.path.basename(rel)[:-5] in SKIPPED:
+        notes.append('listed in port-skip.txt, dropped on purpose')
+        return 'skip'
+    if any(n.startswith('drags in level') or n == 'is a boss' for n in notes) or kind(rel) == 'levels': return 'hard'
+    if notes: return 'shim'
+    return 'easy'
+
+other_rows = []
 for k in ('weapons', 'items', 'buffs', 'blobs', 'levels', 'npcs'):
-    names = [os.path.basename(r)[:-5] for r in sorted(new) if kind(r) == k]
-    if names:
-        out('**' + k + '** (' + str(len(names)) + ') ' + ', '.join(names[:60]) + (' ...' if len(names) > 60 else ''))
-        out('')
+    for r in sorted(new):
+        if kind(r) != k: continue
+        if not re.search(r'\bclass\s+\w+', rd(theirs[r])): continue
+        n = other_notes(r)
+        other_rows.append((k, os.path.basename(r)[:-5], other_tier(r, n), n))
+out('Everything else, ' + str(len(other_rows)) + ' classes. Easy ' + str(sum(1 for x in other_rows if x[2] == 'easy')) + ', shim ' + str(sum(1 for x in other_rows if x[2] == 'shim')) + ', hard ' + str(sum(1 for x in other_rows if x[2] == 'hard')))
+out('')
+out('| Kind | Class | Tier | Notes |')
+out('| --- | --- | --- | --- |')
+for row in sorted(other_rows, key=lambda x: (order[{'easy': 'easy', 'shim': 'medium', 'hard': 'hard', 'skip': 'hard'}[x[2]]], x[0], x[1])):
+    out('| %s | %s | %s | %s |' % (row[0], row[1], row[2], '; '.join(row[3])))
+out('')
+easy_items = [x[1] for x in other_rows if x[2] == 'easy' and x[0] in ('weapons', 'items')]
+if easy_items:
+    out('Batch to run first')
+    out('')
+    out('    python -I scripts/port-item.py ' + os.path.basename(MOD.rstrip('/\\')) + ' ' + ' '.join(easy_items))
+    out('')
 text = '\n'.join(lines)
 os.makedirs(ROOT + '/build', exist_ok=True)
 path = ROOT + '/build/mod-report-' + os.path.basename(MOD.rstrip('/\\')) + '.md'
@@ -225,4 +269,5 @@ print('monsters:', len(mob_rows), ' easy', tiers['easy'], 'medium', tiers['mediu
       ' stats in a table' if stat_table else '')
 for r in sorted(mob_rows, key=lambda r: (order[tier(r)], r['closure']))[:12]:
     print('  %-7s %-24s closure %-3d %s' % (tier(r), r['name'], r['closure'], '; '.join(r['notes'])))
+print('everything else:', len(other_rows), ' easy', sum(1 for x in other_rows if x[2] == 'easy'), 'shim', sum(1 for x in other_rows if x[2] == 'shim'), 'hard', sum(1 for x in other_rows if x[2] == 'hard'))
 print('full report:', os.path.relpath(path, ROOT))
