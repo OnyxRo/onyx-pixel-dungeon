@@ -1094,6 +1094,32 @@ public abstract class Mob extends Char {
 	}
 	
 	public void rollToDropLoot(){
+		//Experienced PD, the Fate Lock's grinding mode drops extra loot, and arena monsters drop gold
+		if (Dungeon.hero != null && Dungeon.hero.grinding) {
+			if (Random.Float() < 0.33f) {
+				Dungeon.level.drop(Generator.random(), pos).sprite.drop();
+				if (Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless.class) != null) {
+					Dungeon.level.drop(Generator.random(), pos).sprite.drop();
+				}
+			}
+			if (Dungeon.hero.heroClass == HeroClass.MAGE && Random.Float() < 0.33f) {
+				Dungeon.level.drop(Generator.random(Generator.Category.SCROLL), pos).sprite.drop();
+			}
+			if (Dungeon.hero.heroClass == HeroClass.ROGUE && Random.Float() < 0.10f) {
+				Dungeon.level.drop(new com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb(), pos).sprite.drop();
+			}
+			if (Dungeon.hero.heroClass == HeroClass.HUNTRESS && Random.Float() < 0.08f) {
+				int quantity = Random.IntRange(1, 3);
+				Dungeon.hero.sprite.showStatus( 0x44CCFF, "%+d", quantity );
+				Dungeon.energy += quantity;
+			}
+		}
+		if (buff(com.shatteredpixel.shatteredpixeldungeon.levels.ArenaLevel.ArenaBuff.class) != null) {
+			Item gold = new com.shatteredpixel.shatteredpixeldungeon.items.Gold().random();
+			gold.quantity(Math.round(gold.quantity()*0.65f));
+			gold.doPickUp(Dungeon.hero);
+		}
+
 		if (Dungeon.hero.lvl > maxLvl + 2) return;
 
 		MasterThievesArmband.StolenTracker stolen = buff(MasterThievesArmband.StolenTracker.class);

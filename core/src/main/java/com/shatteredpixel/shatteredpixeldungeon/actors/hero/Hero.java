@@ -256,6 +256,10 @@ public class Hero extends Char {
 		}
 	}
 
+	//Experienced PD, the Fate Lock's grinding mode turns experience into scrolls of upgrade
+	public boolean grinding = false;
+	public int totalExp = 0;
+
 	public int STR;
 	
 	public float awareness;
@@ -323,6 +327,8 @@ public class Hero extends Char {
 	private static final String ATTACK		= "attackSkill";
 	private static final String DEFENSE		= "defenseSkill";
 	private static final String STRENGTH	= "STR";
+	private static final String GRINDING = "grinding";
+	private static final String TOTAL_EXPERIENCE = "totalExp";
 	private static final String MANA = "MP";
 	private static final String MANA_MAX = "MAX_MP";
 	private static final String MAGIC_SKILL = "magicSkill";
@@ -345,6 +351,8 @@ public class Hero extends Char {
 		
 		bundle.put( STRENGTH, STR );
 		bundle.put( MANA, MP );
+		bundle.put( GRINDING, grinding );
+		bundle.put( TOTAL_EXPERIENCE, totalExp );
 		bundle.put( MANA_MAX, MAX_MP );
 		bundle.put( MAGIC_SKILL, magicSkill );
 		
@@ -377,6 +385,9 @@ public class Hero extends Char {
 		STR = bundle.getInt( STRENGTH );
 
 		belongings.restoreFromBundle( bundle );
+
+		grinding = bundle.getBoolean( GRINDING );
+		totalExp = bundle.getInt( TOTAL_EXPERIENCE );
 
 		if (bundle.contains( MANA_MAX )) {
 			MP = bundle.getInt( MANA );
@@ -2064,8 +2075,25 @@ public class Hero extends Char {
 		//xp granted by ascension challenge is only for on-exp gain effects
 		if (source != AscensionChallenge.class) {
 			this.exp += exp;
+			this.totalExp += exp;
 		}
 		float percent = exp/(float)maxExp();
+
+		int neededExp = com.shatteredpixel.shatteredpixeldungeon.items.PsycheChest.neededExp();
+		if (grinding && totalExp >= neededExp){
+			int souCount = 0;
+			while (totalExp >= neededExp) {
+				totalExp -= neededExp;
+				souCount++;
+			}
+			com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade sou = new com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade();
+			sou.quantity(souCount);
+			if (!sou.collect()){
+				Dungeon.level.drop(sou, pos);
+			} else {
+				GLog.p( Messages.get(this, "you_now_have", sou.name()) );
+			}
+		}
 
 		EtherealChains.chainsRecharge chains = buff(EtherealChains.chainsRecharge.class);
 		if (chains != null) chains.gainExp(percent);
