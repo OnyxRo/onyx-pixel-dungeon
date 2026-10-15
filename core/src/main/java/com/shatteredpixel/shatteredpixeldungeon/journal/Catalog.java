@@ -319,6 +319,26 @@ public enum Catalog {
 		//items ported from reforged
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.quest.RatClaw.class);
 
+		//items ported from abyssalnite
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.DewVial.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.MerchantsBeacon.class);
+		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.AbyssalBottle.class);
+		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.AbyssalCure.class);
+		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.AbyssalFruit.class);
+		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.Pudding.class);
+		POTIONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.AlchemicalCatalyst.class);
+		EXOTIC_POTIONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfAdrenalineSurge.class);
+		EXOTIC_POTIONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfHolyFuror.class);
+		EXOTIC_SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfAffection.class);
+		EXOTIC_SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfConfusion.class);
+		EXOTIC_SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPetrification.class);
+		EXOTIC_SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPolymorph.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.AquaBlast.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.ArcaneCatalyst.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.FeatherFall.class);
+		STONES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAffection.class);
+		STONES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDeepenedSleep.class);
+
 
 	}
 

@@ -49,6 +49,9 @@ public class Food extends Item {
 	public static final String AC_EAT	= "EAT";
 	
 	public float energy = Hunger.HUNGRY;
+
+	//Abyssalnite, how much abyssal infection eating this removes
+	public float clean = 0f;
 	
 	{
 		stackable = true;
@@ -77,6 +80,7 @@ public class Food extends Item {
 			Catalog.countUse(getClass());
 			
 			satisfy(hero);
+			cureinfc(hero);
 			GLog.i( Messages.get(this, "eat_msg") );
 			
 			hero.sprite.operate( hero.pos );
@@ -111,6 +115,11 @@ public class Food extends Item {
 		}
 	}
 	
+	protected void cureinfc( Hero hero ){
+		com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AbyssalInfection inf = hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AbyssalInfection.class);
+		if (inf != null && clean > 0) inf.cureinfc( clean );
+	}
+
 	protected void satisfy( Hero hero ){
 		float foodVal = energy;
 		if (Dungeon.isChallenged(Challenges.NO_FOOD)){

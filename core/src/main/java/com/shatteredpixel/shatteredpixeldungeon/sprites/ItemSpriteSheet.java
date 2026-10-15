@@ -374,6 +374,15 @@ public class ItemSpriteSheet {
 
 	public static final int WARPICK = MOD_ITEMS+0;
 	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;
+	public static final int ABYSSALBOTTLE = xy(16, 33);
+	public static final int ABYSSALCURE = xy(1, 34);
+	public static final int ABYSSALFRUIT = xy(2, 34);
+	public static final int AQUA_BLAST = xy(3, 34);
+	public static final int FEATHER_FALL = xy(4, 34);
+	public static final int POTION_CATALYST = xy(5, 34);
+	public static final int PUDDING = xy(6, 34);
+	public static final int SCROLL_CATALYST = xy(7, 34);
+	public static final int STONE_AFFECTION = xy(8, 34);
 	public static final int CLAW = xy(15, 33);
 	public static final int ARMOR_RAT_KING = xy(2, 33);
 	public static final int CHEESE = xy(3, 33);
@@ -421,6 +430,15 @@ public class ItemSpriteSheet {
 	static{
 		assignItemRect(WARPICK, 15, 14);
 		assignItemRect(WOODEN_BOOMERANG, 12, 12);
+		assignItemRect(ABYSSALBOTTLE, 10, 13);
+		assignItemRect(ABYSSALCURE, 9, 13);
+		assignItemRect(ABYSSALFRUIT, 10, 12);
+		assignItemRect(AQUA_BLAST, 11, 16);
+		assignItemRect(FEATHER_FALL, 14, 12);
+		assignItemRect(POTION_CATALYST, 11, 15);
+		assignItemRect(PUDDING, 16, 13);
+		assignItemRect(SCROLL_CATALYST, 11, 13);
+		assignItemRect(STONE_AFFECTION, 14, 12);
 		assignItemRect(CLAW, 12, 10);
 		assignItemRect(ARMOR_RAT_KING, 12, 6);
 		assignItemRect(CHEESE, 16, 12);

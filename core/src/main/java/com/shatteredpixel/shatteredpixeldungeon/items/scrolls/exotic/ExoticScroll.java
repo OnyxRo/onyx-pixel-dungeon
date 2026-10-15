@@ -47,6 +47,11 @@ public abstract class ExoticScroll extends Scroll {
 	public static final LinkedHashMap<Class<?extends Scroll>, Class<?extends ExoticScroll>> regToExo = new LinkedHashMap<>();
 	public static final LinkedHashMap<Class<?extends ExoticScroll>, Class<?extends Scroll>> exoToReg = new LinkedHashMap<>();
 	static{
+		//Abyssalnite's alternate exotics. Only the reverse lookup, so they exist and can be given but are not brewed
+		exoToReg.put(ScrollOfPetrification.class, ScrollOfTerror.class);
+		exoToReg.put(ScrollOfAffection.class, ScrollOfLullaby.class);
+		exoToReg.put(ScrollOfConfusion.class, ScrollOfRage.class);
+		exoToReg.put(ScrollOfPolymorph.class, ScrollOfTransmutation.class);
 		regToExo.put(ScrollOfUpgrade.class, ScrollOfEnchantment.class);
 		exoToReg.put(ScrollOfEnchantment.class, ScrollOfUpgrade.class);
 

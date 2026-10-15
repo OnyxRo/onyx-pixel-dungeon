@@ -32,6 +32,7 @@ public class Assets {
 	}
 
 	public static class Environment {
+		public static final String PRISON_EXIT_NEW = "environment/custom_tiles/abyssalnite/prison_exit_new.png"; //ported, abyssalnite
 		public static final String TILES_TRUE_VOID = "environment/devoted/tiles_truevoid.png"; //ported, devoted
 		public static final String GARDENS_BOSS = "environment/custom_tiles/devoted/gardens_boss.png"; //ported, devoted
 		public static final String WATER_GARDEN = "environment/devoted/water5.png"; //ported, devoted
@@ -184,6 +185,8 @@ public class Assets {
 	}
 
 	public static class Sounds {
+		public static final String PUDDING = "sounds/abyssalnite/pudding.mp3"; //ported, abyssalnite
+		public static final String CURE = "sounds/abyssalnite/cureinfuse.mp3"; //ported, abyssalnite
 		public static final String EXPLOSION = "sounds/devoted/giant_explosion.mp3"; //ported, devoted
 		public static final String BLACKHOLE = "sounds/devoted/black-hole.mp3"; //ported, devoted
 		public static final String HOWL = "sounds/devoted/howl.mp3"; //ported, devoted

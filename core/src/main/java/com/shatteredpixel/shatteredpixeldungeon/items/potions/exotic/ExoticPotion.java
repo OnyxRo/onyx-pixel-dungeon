@@ -50,6 +50,9 @@ public class ExoticPotion extends Potion {
 	public static final LinkedHashMap<Class<?extends Potion>, Class<?extends ExoticPotion>> regToExo = new LinkedHashMap<>();
 	public static final LinkedHashMap<Class<?extends ExoticPotion>, Class<?extends Potion>> exoToReg = new LinkedHashMap<>();
 	static{
+		//Abyssalnite's alternate exotics. Only the reverse lookup, so they exist and can be given but are not brewed
+		exoToReg.put(PotionOfAdrenalineSurge.class, PotionOfStrength.class);
+		exoToReg.put(PotionOfHolyFuror.class, PotionOfExperience.class);
 		regToExo.put(PotionOfStrength.class, PotionOfMastery.class);
 		exoToReg.put(PotionOfMastery.class, PotionOfStrength.class);
 
