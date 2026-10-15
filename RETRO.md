@@ -27,3 +27,13 @@ Ported OldTengu, OldDM300, King and Yog with their four sealed arena levels. Bos
 - A walk from entrance to exit is not a valid check for boss floors, Shattered's own arenas fail it. Do not add it back.
 - Legacy levels set `entrance` and `exit` directly and swap maps. `Level.create` now turns those into transitions and `Level.changeMap` exists, so old style levels port with few edits. A Skeleton Key becomes a Worn Key, which opens locked exits in 4.0.2.
 - Trial copies that turn out wrong (Reforged's combat package came along with the Wyrm) were removed by hand from `git status`. Commit before a trial, then undo by deleting what `git status --short` lists as new.
+
+## 2026-10-15, Cursed PD bosses and floors, Reforged Wyrm, special floors
+
+- Mods reuse Shattered's class names for their own versions (CavesBossLevel, King, Yog, HeroicLeap), and every tool skipped them silently, so a whole set of content never appeared in any report. Fix, `scripts/port-prefix.py` copies them as `<Prefix>Name`, with references and text, and its first use ported 16 classes.
+- Old style levels cost the most in one place. Fix, shims in `Level` (legacy entrance and exit, `changeMap`) and ten rename rules, so each later old style level needs only a few hand edits.
+- Content that is not a normal floor (hub, challenge floors, final arena) had nowhere to live. Fix, `SpecialFloors` and a sandbox list, so any future mod can add such floors with one line.
+- `check.sh` printed one test's WARN lines under the next test. Fix, each test's output is read from its own part of the log.
+- A false "no errors" came from reading an old log after an edit step failed inside a `&&` chain. Fix, noted in the skill, run steps separately when the next step reads a log.
+- `edit.py` stops on a whitespace difference in blank lines. Fix, it now tolerates trailing whitespace when the block is unique. Still best to use short anchors.
+- Reforged's Construct Hero depends on a hero talent tree and its Half Ripper on quest hooks. A port tool cannot tell this from a class list. Open improvement, make `mod-report.py` flag classes that mention `Talent.<MOD_ONLY>` or a mod only Quest.
