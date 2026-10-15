@@ -122,6 +122,9 @@ abstract public class Weapon extends KindOfWeapon {
 	
 	public Augment augment = Augment.NONE;
 
+	//Matt Edition special augment (Icy Core), kept next to Shattered's speed and damage augment
+	public com.shatteredpixel.shatteredpixeldungeon.items.weapon.augments.WeaponAugment special = null;
+
 	protected int usesToID(){
 		return 20;
 	}
@@ -135,6 +138,10 @@ abstract public class Weapon extends KindOfWeapon {
 	
 	@Override
 	public int proc( Char attacker, Char defender, int damage ) {
+
+		if (special != null && attacker.buff(MagicImmune.class) == null) {
+			damage = special.proc(this, attacker, defender, damage);
+		}
 
 		if (attacker.buff(MagicImmune.class) == null) {
 			Enchantment trinityEnchant = null;
@@ -222,6 +229,7 @@ abstract public class Weapon extends KindOfWeapon {
 	private static final String CURSE_INFUSION_BONUS = "curse_infusion_bonus";
 	private static final String MASTERY_POTION_BONUS = "mastery_potion_bonus";
 	private static final String AUGMENT	        = "augment";
+	private static final String SPECIAL	        = "special_augment";
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -233,6 +241,7 @@ abstract public class Weapon extends KindOfWeapon {
 		bundle.put( CURSE_INFUSION_BONUS, curseInfusionBonus );
 		bundle.put( MASTERY_POTION_BONUS, masteryPotionBonus );
 		bundle.put( AUGMENT, augment );
+		bundle.put( SPECIAL, special );
 	}
 	
 	@Override
@@ -246,6 +255,19 @@ abstract public class Weapon extends KindOfWeapon {
 		masteryPotionBonus = bundle.getBoolean( MASTERY_POTION_BONUS );
 
 		augment = bundle.getEnum(AUGMENT, Augment.class);
+		special = (com.shatteredpixel.shatteredpixeldungeon.items.weapon.augments.WeaponAugment) bundle.get( SPECIAL );
+	}
+
+	public Weapon applyAugment( com.shatteredpixel.shatteredpixeldungeon.items.weapon.augments.WeaponAugment special ){
+		if (this.special != null){
+			GLog.i(Messages.get(Weapon.class, "removed_augment", this.name(), this.special.name()));
+		}
+		this.special = special;
+		updateQuickslot();
+		if (special != null) {
+			GLog.p(Messages.get(Weapon.class, "got_augment", this.name(), special.name()));
+		}
+		return this;
 	}
 	
 	@Override
@@ -509,6 +531,7 @@ abstract public class Weapon extends KindOfWeapon {
 				&& (Dungeon.hero.subClass != HeroSubClass.PALADIN || enchantment == null)){
 			return HOLY;
 		} else {
+			if (enchantment == null && special != null) return special.glowing();
 			return enchantment != null && (cursedKnown || !enchantment.curse()) ? enchantment.glowing() : null;
 		}
 	}

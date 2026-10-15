@@ -112,6 +112,9 @@ public class Armor extends EquipableItem {
 	}
 	
 	public Augment augment = Augment.NONE;
+
+	//Matt Edition special augment (Icy Core), kept next to Shattered's evasion and defense augment
+	public com.shatteredpixel.shatteredpixeldungeon.items.armor.augments.ArmorAugment special = null;
 	
 	public Glyph glyph;
 	public boolean glyphHardened = false;
@@ -138,6 +141,7 @@ public class Armor extends EquipableItem {
 	private static final String MASTERY_POTION_BONUS = "mastery_potion_bonus";
 	private static final String SEAL            = "seal";
 	private static final String AUGMENT			= "augment";
+	private static final String SPECIAL			= "special_augment";
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -150,6 +154,7 @@ public class Armor extends EquipableItem {
 		bundle.put( MASTERY_POTION_BONUS, masteryPotionBonus );
 		bundle.put( SEAL, seal);
 		bundle.put( AUGMENT, augment);
+		bundle.put( SPECIAL, special);
 	}
 
 	@Override
@@ -164,6 +169,19 @@ public class Armor extends EquipableItem {
 		seal = (BrokenSeal)bundle.get(SEAL);
 		
 		augment = bundle.getEnum(AUGMENT, Augment.class);
+		special = (com.shatteredpixel.shatteredpixeldungeon.items.armor.augments.ArmorAugment) bundle.get( SPECIAL );
+	}
+
+	public Armor applyAugment( com.shatteredpixel.shatteredpixeldungeon.items.armor.augments.ArmorAugment special ){
+		if (this.special != null){
+			GLog.i(Messages.get(Armor.class, "removed_augment", this.name(), this.special.name()));
+		}
+		this.special = special;
+		updateQuickslot();
+		if (special != null) {
+			GLog.p(Messages.get(Armor.class, "got_augment", this.name(), special.name()));
+		}
+		return this;
 	}
 
 	@Override
@@ -497,6 +515,10 @@ public class Armor extends EquipableItem {
 	
 	public int proc( Char attacker, Char defender, int damage ) {
 
+		if (special != null && defender.buff(MagicImmune.class) == null) {
+			damage = special.proc(this, attacker, defender, damage);
+		}
+
 		if (defender.buff(MagicImmune.class) == null) {
 			Glyph trinityGlyph = null;
 			//only when it's the hero or a char that uses the hero's armor
@@ -785,6 +807,7 @@ public class Armor extends EquipableItem {
 				&& (Dungeon.hero.subClass != HeroSubClass.PALADIN || glyph == null)){
 			return HOLY;
 		} else {
+			if (glyph == null && special != null) return special.glowing();
 			return glyph != null && (cursedKnown || !glyph.curse()) ? glyph.glowing() : null;
 		}
 	}

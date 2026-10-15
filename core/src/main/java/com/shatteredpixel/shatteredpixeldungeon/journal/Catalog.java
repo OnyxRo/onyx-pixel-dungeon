@@ -434,6 +434,15 @@ public enum Catalog {
 		//items ported from ratking
 		TIPPED_DARTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.DreamDart.class);
 
+		//items ported from mattedition
+		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfElements.class);
+		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfExplosion.class);
+		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFireball.class);
+		STONES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.stones.IcyCore.class);
+		ARMOR.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.augments.IcyCoreArmor.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.augments.IcyCoreWeapon.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.ThrowingChains.class);
+
 
 	}
 

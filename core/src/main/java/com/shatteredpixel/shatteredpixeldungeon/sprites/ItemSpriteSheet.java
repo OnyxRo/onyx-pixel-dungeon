@@ -374,6 +374,11 @@ public class ItemSpriteSheet {
 
 	public static final int WARPICK = MOD_ITEMS+0;
 	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;
+	public static final int CHAINS = xy(12, 38);
+	public static final int ICYCORE = xy(13, 38);
+	public static final int WAND_EXPLOSION = xy(14, 38);
+	public static final int WAND_OF_ELEMENTS = xy(15, 38);
+	public static final int WAND_OF_FIREBALL = xy(16, 38);
 	public static final int ARMOR_ARTIFICER = xy(3, 38);
 	public static final int ARTIFACT_RINGBOX = xy(4, 38);
 	public static final int CRACKED_GUN = xy(5, 38);
@@ -497,6 +502,11 @@ public class ItemSpriteSheet {
 	static{
 		assignItemRect(WARPICK, 15, 14);
 		assignItemRect(WOODEN_BOOMERANG, 12, 12);
+		assignItemRect(CHAINS, 15, 16);
+		assignItemRect(ICYCORE, 11, 14);
+		assignItemRect(WAND_EXPLOSION, 14, 14);
+		assignItemRect(WAND_OF_ELEMENTS, 15, 15);
+		assignItemRect(WAND_OF_FIREBALL, 14, 14);
 		assignItemRect(ARMOR_ARTIFICER, 14, 13);
 		assignItemRect(ARTIFACT_RINGBOX, 16, 13);
 		assignItemRect(CRACKED_GUN, 13, 13);

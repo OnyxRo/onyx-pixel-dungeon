@@ -41,3 +41,6 @@ SummoningModifierUnlockRoom
 # Reforged's Scroll of Decay is a 13th regular scroll, it needs a new scroll rune and changes identification in every run
 ScrollOfDecay
 ScrollOfGrowth
+MagicInfuse
+ScrollOfMagicUpgrade
+ScrollOfPureMagic
