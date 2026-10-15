@@ -44,3 +44,4 @@ ScrollOfGrowth
 MagicInfuse
 ScrollOfMagicUpgrade
 ScrollOfPureMagic
+NewbornElemental
