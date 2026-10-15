@@ -488,7 +488,7 @@ public class Armor extends EquipableItem {
 
 			//chance to remove curse is a static 33%
 			} else if (hasCurseGlyph()){
-				if (Random.Int(3) == 0) inscribe(null);
+				if (glyph.removableByUpgrade() && Random.Int(3) == 0) inscribe(null);
 
 			//otherwise chance to lose glyph is 10/20/40/80/100% when upgrading from +4/5/6/7/8
 			} else {
@@ -505,7 +505,9 @@ public class Armor extends EquipableItem {
 			}
 		}
 		
-		cursed = false;
+		if (!(hasCurseGlyph() && !glyph.removableByUpgrade())) {
+			cursed = false;
+		}
 
 		if (seal != null && seal.level() == 0)
 			seal.upgrade();
@@ -832,7 +834,8 @@ public class Armor extends EquipableItem {
 
 		public static final Class<?>[] curses = new Class<?>[]{
 				AntiEntropy.class, Corrosion.class, Displacement.class, Metabolism.class,
-				Multiplicity.class, Stench.class, Overgrowth.class, Bulk.class
+				Multiplicity.class, Stench.class, Overgrowth.class, Bulk.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Binding.class
 		};
 		
 		public abstract int proc( Armor armor, Char attacker, Char defender, int damage );
@@ -870,6 +873,11 @@ public class Armor extends EquipableItem {
 
 		public boolean curse() {
 			return false;
+		}
+
+		//Matt Edition. A curse that returns false here survives upgrades
+		public boolean removableByUpgrade() {
+			return true;
 		}
 		
 		@Override

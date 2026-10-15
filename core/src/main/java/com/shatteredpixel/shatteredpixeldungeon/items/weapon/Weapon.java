@@ -411,7 +411,7 @@ abstract public class Weapon extends KindOfWeapon {
 
 			//chance to remove curse is a static 33%
 			} else if (hasCurseEnchant()) {
-				if (Random.Int(3) == 0) enchant(null);
+				if (enchantment.removableByUpgrade() && Random.Int(3) == 0) enchant(null);
 
 			//otherwise chance to lose enchant is 10/20/40/80/100% when upgrading from +4/5/6/7/8
 			} else if (level() >= 4 && Random.Float(10) < Math.pow(2, level()-4)){
@@ -424,7 +424,9 @@ abstract public class Weapon extends KindOfWeapon {
 			}
 		}
 		
-		cursed = false;
+		if (!(hasCurseEnchant() && !enchantment.removableByUpgrade())) {
+			cursed = false;
+		}
 
 		return super.upgrade();
 	}
@@ -560,7 +562,8 @@ abstract public class Weapon extends KindOfWeapon {
 		public static final Class<?>[] curses = new Class<?>[]{
 				Annoying.class, Displacing.class, Dazzling.class, Explosive.class, Friendly.class,
 				Polarized.class, Pressurized.class, Sacrificial.class, Wayward.class, Wondrous.class,
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Leech.class
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Leech.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Binding.class
 		};
 			
 		public abstract int proc( Weapon weapon, Char attacker, Char defender, int damage );
@@ -628,7 +631,12 @@ abstract public class Weapon extends KindOfWeapon {
 		@Override
 		public void storeInBundle( Bundle bundle ) {
 		}
-		
+
+		//Matt Edition. A curse that returns false here survives upgrades
+		public boolean removableByUpgrade() {
+			return true;
+		}
+
 		public abstract ItemSprite.Glowing glowing();
 		
 		@SuppressWarnings("unchecked")
