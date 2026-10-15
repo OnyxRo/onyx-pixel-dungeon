@@ -17,7 +17,9 @@ His writing rules apply to anything written for him, including commit messages, 
 ## Working rules
 
 - Read PORTING.md at the start of every session and update it at the end of every task.
-- Only run the screenshot tour once per finished mod, only on that mod's new content, and only with the separate save folder.
+- To check a port, use `scripts/check.sh --new` (headless, seconds) and then `scripts/arena.sh` once (one picture of everything new, 16 seconds). Do not use the full screenshot tour for monsters, it spawns each ported monster one at a time and takes ten minutes. The tour (`scripts/gallery.sh`) is for worlds and windows only, with the separate save folder.
+- For any task that starts with "Port", invoke the `port-mod` skill (`.claude/skills/port-mod/SKILL.md`) first. It has the tools, the order of work and the mistakes to avoid. Rewrite it when you learn something that would have saved time.
+- Write files that contain backslashes with the Write or Edit tools, not shell heredocs. Run Python as `python -I`.
 - Never relaunch the game unless Onyx asks. This replaces the older auto-open memory.
 - Keep command output short. Send long output to a file and grep it.
 - Commit after each finished mod or feature.
@@ -102,6 +104,7 @@ Gradle-free path used for releases (`scripts/`):
 - `scripts/package-windows.sh <Java.jar> <Windows.zip> <outdir>` makes the full Windows zip, the small installer zip, the cross-platform jar, `OnyxPixelDungeon-game.jar` and `update.json`.
 - **The screenshot tour deletes and overwrites save slot 1 of whatever save folder it runs in.** On 2026-10-13 a tour started straight from the release jar used Onyx's real save folder, because the jar's manifest title overrode the title passed on the command line, and it wiped his slot 1. `DesktopLauncher` now forces the tour into the `Onyx Gallery` folder and `Gallery.active()` refuses to run without that. Do not weaken either check.
 - `scripts/gallery.sh <folder>` runs the screenshot tour (`Gallery.java`, switched on by `-Donyx.gallery`). The game plays itself through every ported world and the sandbox windows and saves a picture of each, in its own save folder. Use it to look at worlds and UI without Onyx clicking through them. Read the pictures back to check. After the worlds it spawns every ported monster beside the hero, lets it act, pictures it and kills it. Add `-Donyx.gallery.only=mobs` to the java line to skip the worlds. All 49 ported worlds, the sandbox windows and Devoted's 29 monsters were checked this way on 2026-10-13 with no errors.
+- **Porting and testing tools (2026-10-14).** `scripts/check.sh` compiles and runs `WorldShuffleTest` plus `MobArenaTest`, the headless testing ground (`scripts/test/`, with `TestBoot` for the window stubs and `mob-baseline.txt` for known harness limits). `scripts/arena.sh` shows chosen monsters together in one picture. `scripts/mod-report.py` plans a port, `scripts/port-mob.py` ports a batch of monsters in one command, `scripts/get-mod.sh` clones from `scripts/mods.txt`, `scripts/reforged-stats.py` helps with table based stats. `ModRoster` is the single place a ported monster is registered, one line makes it spawn, show in the bestiary and sandbox list and get tested. Full details in the `port-mod` skill.
 - `scripts/test/WorldShuffleTest.java` builds every floor of N seeded dungeons headlessly, checks all 24 worlds appear and have strings, and saves and reloads each ported world. Run it after any world change.
 
 ## Releases and updates

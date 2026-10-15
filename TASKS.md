@@ -9,11 +9,11 @@ The cloud routine does the first unchecked task and checks it off. Smallest firs
 - [x] Move the mod logo from the top right to the top left. Clicking it opens a panel summarizing what that mod changes, based on the mod creator's own description (README, store page or changelog). Write each summary in plain words, and credit the source.
 - [x] Start screen modes. Add "Single mod" (locks every floor to one chosen mod's worlds, monsters and items) beside the current "Shuffle" mode.
 - [ ] Port Rat King PD 2 monsters and weapons (2 monsters, 1 weapon). Find the repo on GitHub and clone it into the mod sources folder.
-- [ ] Port Experienced PD monsters and weapons (5 monsters, 9 weapons).
+- [ ] Port Experienced PD weapons (8 weapons, 3 npcs). Its two monsters, BlackMimic and OOFThief, were checked on 2026-10-14 and cannot be ported cleanly, they need members Experienced added to Dungeon (cycle, escalatingDepth, oofedItems) and its Perks system. Repo is TrashboxBobylev/Experienced-Pixel-Dungeon-Redone, already in scripts/mods.txt.
 - [ ] Port Ryuse's PD monsters and weapons (8 monsters, 5 weapons).
 - [x] Port Pixel Dungeon Reforged monsters and weapons. Done 2026-10-14 for six regular monsters (kobold, spitter, ballista, quick firing ballista, fiend, unholy priest) and the Leech curse. Its Gun is the same weapon as Matt Edition's Glock, already in the catalog.
 - [ ] Reforged leftovers. Wyrm, Demon Goo and Rat Usurper (bosses with their own sewer boss levels, Demon Goo and the Usurper need `SewerBossGooLevel` and `SewerBossUsurperLevel`), and the Half Ripper and Construct Hero NPCs. Reforged's combat system was not ported, so monsters use Shattered's damage, and Kobold's Dread-near-Wyrm behaviour was left out.
-- [ ] Port Abyssalnite PD monsters and weapons (18 monsters, 4 weapons).
+- [ ] Port Abyssalnite PD. Done 2026-10-14 for ten monsters (ChronosSkull, FakeWraith, FlameDemon, GroundSpore, GroundStatue, HeavenDoor, Lavastone, PhantomSpirit, WaterFlower, WindSwarm), nine of them with placeholder text since the mod never wrote any. Left. Eight monsters the mod report marks hard (King, OldDM300, NewDM300 and other bosses that need their own levels), the 4 weapons, and proper descriptions for the placeholders when Onyx asks.
 - [ ] Port Cursed PD (Legacy) monsters and weapons (23 monsters, 17 weapons).
 - [ ] Batched. Port Summoning PD Reincarnated monsters and weapons (33 monsters, 12 weapons), about 15 per run.
 - [ ] Batched. Port Shittened PD monsters and weapons (41 monsters, 6 weapons), about 15 per run.
@@ -21,3 +21,4 @@ The cloud routine does the first unchecked task and checks it off. Smallest firs
 - [ ] Batched. Port Transformation PD monsters (59) and weapons (35). First run only adapts its damage system and ports a few monsters as a test, then about 15 per run.
 - [ ] Stop and wait for Onyx. Before Magic Ling, open an issue asking whether to port all of it or a curated set, with a short list of its most distinctive monsters.
 - [ ] Batched. Port Magic Ling PD monsters (about 350 files) and weapons (74), about 30 monsters per run.
+- [ ] Infrastructure. Build `scripts/port-weapon.py` the way `port-mob.py` works (copy the weapon and its item sprite, close dependencies, copy strings, add to the journal catalog and the loot tables, headless check), and add weapon checks to `MobArenaTest` (stats roll, enchantments, save and reload). Re-ARranged alone has 97 weapons, so this pays off quickly.

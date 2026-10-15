@@ -60,13 +60,19 @@ public class Gallery {
 	private static boolean started = false;
 	//-Donyx.gallery.only=mobs skips the worlds and goes straight to the monsters
 	//-Donyx.gallery.only=ui visits one world, then pictures the windows and tries Ctrl+N
+	//-Donyx.gallery.only=arena -Donyx.gallery.mobs=Kobold,Spitter puts those monsters on one floor
+	//together, pictures them once and quits (scripts/arena.sh). Without .mobs it uses every ported monster
 	private static int world = System.getProperty("onyx.gallery.only") == null ? WorldShuffle.HALLS + 1
 			: "ui".equals(System.getProperty("onyx.gallery.only")) ? WorldShuffle.worldCount() - 1 : Integer.MAX_VALUE;
+	private static final boolean ARENA = "arena".equals(System.getProperty("onyx.gallery.only"));
+	private static final java.util.List<String> ARENA_NAMES = System.getProperty("onyx.gallery.mobs") == null
+			? new ArrayList<String>() : java.util.Arrays.asList(System.getProperty("onyx.gallery.mobs").split(","));
 	private static float time = 0;
 	private static boolean shot = false;
 
 	private static final ArrayList<Class<?>> MOBS = new ArrayList<>();
 	private static int mob = 0;
+	private static boolean arenaSpawned = false;
 	private static Mob mobSpawned = null;
 
 	private static final int[] BOSS_DEPTHS = { 5, 10, 15, 20, 25 };
@@ -100,7 +106,9 @@ public class Gallery {
 		//every monster ported from another mod
 		for (Bestiary category : Bestiary.values()) {
 			for (Class<?> cls : category.entities()) {
-				if (Bestiary.isPorted(cls) && WndSandboxMobs.safeToSpawn(cls)) MOBS.add(cls);
+				if (ARENA && !ARENA_NAMES.isEmpty()) {
+					if (ARENA_NAMES.contains(cls.getSimpleName()) && !MOBS.contains(cls)) MOBS.add(cls);
+				} else if (Bestiary.isPorted(cls) && WndSandboxMobs.safeToSpawn(cls)) MOBS.add(cls);
 			}
 		}
 
@@ -141,6 +149,25 @@ public class Gallery {
 		//-Donyx.gallery.only=bosses skips the monsters too
 		if ("bosses".equals(System.getProperty("onyx.gallery.only"))) mob = MOBS.size();
 		if ("ui".equals(System.getProperty("onyx.gallery.only"))) { mob = MOBS.size(); boss = BOSS_DEPTHS.length; }
+
+		//the arena puts every chosen monster beside the hero at once, lets them act, takes one picture and quits
+		if (ARENA) {
+			if (!arenaSpawned) {
+				if (time < 0.3f) return;
+				for (Class<?> cls : MOBS) WndSandboxMobs.spawnNear( cls, 3 );
+				System.out.println("[GALLERY] arena has " + Dungeon.level.mobs.size() + " monsters");
+				arenaSpawned = true;
+				Camera.main.zoom( 3 );
+				time = 0;
+				return;
+			}
+			if (Dungeon.hero.ready && time < 3.5f) Dungeon.hero.rest( false );
+			if (time > 4f) {
+				capture( "arena" );
+				Gdx.app.exit();
+			}
+			return;
+		}
 
 		//then spawn each ported monster beside the hero, let it act for a moment, picture it and kill it
 		if (mob < MOBS.size()) {

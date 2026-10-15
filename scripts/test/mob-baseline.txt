@@ -1,0 +1,21 @@
+# Problems known before the test existed, mostly things a headless run cannot do (sprites, emitters, teleporting).
+# One 'Class what' per line. Regenerate with scripts/check.sh --write-baseline, but only after checking new entries by eye.
+PoisonToad crashed while trading blows
+RoyalGrub crashed while trading blows
+Revenant crashed while trading blows
+GraniteTroll crashed while trading blows
+GraniteTroll crashed during its own turns
+GraniteElder crashed while trading blows
+GraniteElder crashed during its own turns
+Leader crashed during its own turns
+Warden crashed during its own turns
+Conjurer crashed during its own turns
+RedBrawler uses Red, which casts its character to TrollBrawler.YellowBrawler or TrollBrawler.PurpleBrawler and would crash
+BleedingFrogeat crashed when it died
+PoisonFrogeat crashed when it died
+ConfusingFrogeat crashed when it died
+NeuronSentry crashed during its own turns
+ElderGnoll crashed while trading blows
+ElderGnoll crashed during its own turns
+ElderGnoll crashed when it died
+FlameDemon crashed during its own turns

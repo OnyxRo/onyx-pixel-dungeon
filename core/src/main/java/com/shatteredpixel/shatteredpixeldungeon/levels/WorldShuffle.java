@@ -266,13 +266,24 @@ public class WorldShuffle {
 		if (Dungeon.branch == 0 && DEVOTED.equals(modLogo(level))) {
 			return com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.DevotedSpawner.getMobRotation(depth);
 		}
-		if (Dungeon.branch == 0 && REFORGED.equals(modLogo(level))) {
-			return com.shatteredpixel.shatteredpixeldungeon.actors.mobs.ReforgedSpawner.getMobRotation(depth);
-		}
 		if (Dungeon.branch == 0 && MATT.equals(modLogo(level))) {
 			return com.shatteredpixel.shatteredpixeldungeon.actors.mobs.MattSpawner.getMobRotation(level);
 		}
+		//any other mod with monsters on the roster
+		String key = modKey(level);
+		if (Dungeon.branch == 0 && key != null && com.shatteredpixel.shatteredpixeldungeon.actors.mobs.ModRoster.hasMod(key)) {
+			java.util.ArrayList<Class<? extends com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob>> mobs =
+					com.shatteredpixel.shatteredpixeldungeon.actors.mobs.ModRoster.rotation(key, depth);
+			if (!mobs.isEmpty()) return mobs;
+		}
 		return com.shatteredpixel.shatteredpixeldungeon.actors.mobs.MobSpawner.getMobRotation(depth);
+	}
+
+	/** The mod a world comes from as a short key like "reforged", or null for Shattered's own worlds. */
+	public static String modKey( Level level ){
+		String logo = modLogo(level);
+		if (logo == null) return null;
+		return logo.substring(logo.lastIndexOf('/') + 1).replace(".png", "");
 	}
 
 	public static int regionOf( int world ){

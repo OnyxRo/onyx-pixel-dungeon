@@ -189,14 +189,14 @@ public enum Bestiary {
 		String name = cls.getName();
 		if (name.contains(".altregion.")) return true;
 		Class<?> top = cls.getEnclosingClass() == null ? cls : cls.getEnclosingClass();
-		return PORTED_NAMES.contains( top.getSimpleName() );
+		return PORTED_NAMES.contains( top.getSimpleName() )
+				|| com.shatteredpixel.shatteredpixeldungeon.actors.mobs.ModRoster.contains( top );
 	}
 
 	//ported monsters that sit in the main monster package
 	private static final java.util.HashSet<String> PORTED_NAMES = new java.util.HashSet<>(java.util.Arrays.asList(
 			"Burglar", "Snatcher", "FrozenSwarm", "DM100F", "IceSnake", "IceGolem", "DM151", "DM166",
-			"ElderGnoll", "GnollBaby", "GnollMyth", "Goopling", "SpiritNecromancer", "DarkKing",
-			"Kobold", "Spitter", "Ballista", "QuickFiringBallista", "Fiend", "UnholyPriest"
+			"ElderGnoll", "GnollBaby", "GnollMyth", "Goopling", "SpiritNecromancer", "DarkKing"
 	));
 
 	//tracks whether an entity has been encountered
@@ -327,13 +327,8 @@ public enum Bestiary {
 				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollMyth.class,
 				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Goopling.class,
 				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.SpiritNecromancer.class);
-		//Pixel Dungeon Reforged
-		REGIONAL.addEntities(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Kobold.class,
-				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Spitter.class,
-				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Ballista.class,
-				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.QuickFiringBallista.class,
-				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Fiend.class,
-				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.UnholyPriest.class);
+		//every other mod, registered in ModRoster
+		REGIONAL.addEntities(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.ModRoster.mobs().toArray(new Class<?>[0]));
 		BOSSES.addEntities(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DarkKing.class);
 
 		UNIVERSAL.addEntities(Wraith.class, Piranha.class, Mimic.class, GoldenMimic.class, EbonyMimic.class, Statue.class, GuardianTrap.Guardian.class, SentryRoom.Sentry.class);

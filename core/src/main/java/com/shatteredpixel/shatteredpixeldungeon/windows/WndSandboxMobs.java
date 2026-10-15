@@ -157,6 +157,30 @@ public class WndSandboxMobs extends Window {
 		list.setRect( 0, top, WIDTH, height - top );
 	}
 
+	/** Spawns a monster on any open cell within a few steps of the hero, for putting many on one floor. */
+	public static void spawnNear( Class<?> cls, int radius ) {
+		Mob mob = (Mob) Reflection.newInstance(cls);
+		if (mob == null) return;
+		boolean large = Char.hasProp(mob, Char.Property.LARGE);
+		ArrayList<Integer> candidates = new ArrayList<>();
+		int w = Dungeon.level.width();
+		for (int dx = -radius; dx <= radius; dx++) {
+			for (int dy = -radius; dy <= radius; dy++) {
+				if (dx == 0 && dy == 0) continue;
+				int cell = Dungeon.hero.pos + dx + dy * w;
+				if (cell >= 0 && cell < Dungeon.level.length() && Actor.findChar( cell ) == null
+						&& Dungeon.level.passable[cell] && (!large || Dungeon.level.openSpace[cell])) {
+					candidates.add( cell );
+				}
+			}
+		}
+		if (candidates.isEmpty()) return;
+		if (mob.state != mob.PASSIVE) mob.state = mob.WANDERING;
+		mob.pos = Random.element( candidates );
+		GameScene.add( mob, 1f );
+		Dungeon.level.occupyCell( mob );
+	}
+
 	public static void spawn( Class<?> cls ) {
 		Mob mob = (Mob) Reflection.newInstance(cls);
 		if (mob == null) return;

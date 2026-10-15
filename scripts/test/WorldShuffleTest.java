@@ -30,32 +30,7 @@ public class WorldShuffleTest {
 	public static void main(String[] args) throws Exception {
 		int seeds = args.length > 0 ? Integer.parseInt(args[0]) : 40;
 
-		File dir = java.nio.file.Files.createTempDirectory("onyxpd-test").toFile();
-		File prefs = new File(dir, "settings.xml");
-		com.badlogic.gdx.utils.GdxNativesLoader.load();
-		Gdx.files = new Lwjgl3Files();
-		Gdx.app = (Application) Proxy.newProxyInstance(Application.class.getClassLoader(),
-				new Class[]{Application.class}, (proxy, m, a) -> {
-			switch (m.getName()) {
-				case "getPreferences":
-					return new Lwjgl3Preferences(new Lwjgl3FileHandle(prefs, Files.FileType.Absolute));
-				case "getType": return Application.ApplicationType.Desktop;
-				case "getVersion": return 0;
-				case "log": case "error": case "debug":
-					System.out.println("[gdx " + a[0] + "] " + a[1]);
-					return null;
-			}
-			Class<?> r = m.getReturnType();
-			if (r == boolean.class) return false;
-			if (r == int.class || r == long.class) return r == int.class ? (Object) 0 : (Object) 0L;
-			return null;
-		});
-		com.shatteredpixel.shatteredpixeldungeon.SPDSettings.set(
-				new Lwjgl3Preferences(new Lwjgl3FileHandle(prefs, Files.FileType.Absolute)));
-		com.watabou.utils.FileUtils.setDefaultFileProperties(Files.FileType.Absolute, dir.getAbsolutePath() + "/");
-		Game.version = "test";
-		Game.versionCode = 9999;
-		Messages.setup(Languages.ENGLISH);
+		TestBoot.boot();
 
 		Map<String, Integer> counts = new HashMap<>();
 		java.util.Set<String> arrivals = new java.util.HashSet<>();

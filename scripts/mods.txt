@@ -1,0 +1,16 @@
+# key | repo | what it is | base Shattered version
+# Clone one with scripts/get-mod.sh <key>. It lands in ~/mod-sources/<key> (or $MOD_SOURCES).
+# The key is also what ModRoster and WorldShuffle.modKey use, when the mod's icon is interfaces/mods/<key>.png.
+devoted|https://github.com/Arackulele/devoted-pixel-dungeon|Devoted PD, ported in full|3.3.0
+combusted|https://github.com/Inferno214221/Combusted-Pixel-Dungeon|Combusted PD, ported in full|
+magicling|https://github.com/LingASDJ/Magic_Ling_Pixel_Dungeon|Magic Ling PD, worlds only|
+transformation|https://github.com/dongyusangyu/transformation-pixel-dungeon-master|Transformation PD, worlds only|
+mattedition|https://github.com/mr-matthias1829/SPD-Matt-Edition|Matt Edition, monsters ported|3.2.5
+reforged|https://github.com/nathanlink169/pixel-dungeon-reforged|Reforged, six monsters ported, stats in a table|3.0.0
+shittened|https://github.com/Haukii/shittened-pixel-dungeon|Shittened PD, worlds only|2.5.4
+abyssalnite|https://github.com/MywaifuisTataraKogasa/Abyssalnite-Pixel-Dungeon|Abyssalnite PD, worlds only|0.8.2
+cursed|https://github.com/Smujb/cursed-pixel-dungeon-lgc|Cursed PD Legacy, worlds only|0.7.3b
+experienced|https://github.com/TrashboxBobylev/Experienced-Pixel-Dungeon-Redone|Experienced PD, worlds only|2.x
+tower|https://github.com/FixAkaTheFix/Tower-Pixel-Dungeon|Tower PD, not started|
+# Repos not known yet, find them with gh search repos "<name> pixel dungeon" and add a line above.
+#   Ryuse's PD, Summoning PD Reincarnated, Re-ARranged PD, Rat King PD 2

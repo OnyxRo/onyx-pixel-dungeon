@@ -10,7 +10,7 @@ errors that are left for fixing by hand.
 """
 import sys, os, re, io, subprocess, shutil, glob
 
-ROOT = sys.argv[1].rstrip('/') + '/'
+ROOT = os.path.abspath(sys.argv[1]).replace(chr(92), '/').rstrip('/') + '/'
 MOD = sys.argv[2].rstrip('/') + '/'
 TAG = sys.argv[3]
 ROUNDS = int(sys.argv[4]) if len(sys.argv) > 4 else 12
@@ -35,7 +35,13 @@ for f in glob.glob(MB + '**/*.java', recursive=True):
 def compile_errors():
     r = subprocess.run([ROOT + 'gradlew.bat', 'core:compileJava', '--console=plain', '-q'], cwd=ROOT,
                        capture_output=True, text=True, errors='replace')
-    return (r.stdout or '') + (r.stderr or '')
+    out = (r.stdout or '') + (r.stderr or '')
+    if r.returncode != 0 and ': error: ' not in out:
+        # gradle itself failed, so zero errors would be a lie
+        print('gradle failed to compile and gave no javac errors, output follows')
+        print(out[:1500])
+        sys.exit(2)
+    return out
 
 mod_assets_src = rd(MB + 'Assets.java') if os.path.exists(MB + 'Assets.java') else ''
 
