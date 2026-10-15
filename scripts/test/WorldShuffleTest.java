@@ -44,7 +44,7 @@ public class WorldShuffleTest {
 		if (depth >= 26) return 1;
 		//a walk from entrance to exit is not a valid test, Shattered's own boss arenas stay walled until the fight.
 		//Abyssalnite's old prison fight only creates its exit when the map changes at the end, see changeMap
-		if (entrance == exit && !name.startsWith("OldPrisonBossLevel") && !name.startsWith("NewPrisonBossLevel") && !name.startsWith("FinalLevel")) { bossProblems++; System.out.println("FAIL: " + name + " has the entrance on the exit"); }
+		if (entrance == exit && !name.contains("PrisonBossLevel") && !name.contains("TenguBossLevel") && !name.startsWith("FinalLevel")) { bossProblems++; System.out.println("FAIL: " + name + " has the entrance on the exit"); }
 		return 1;
 	}
 

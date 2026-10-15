@@ -1742,6 +1742,11 @@ public abstract class Mob extends Char {
 	
 	private static ArrayList<Mob> heldAllies = new ArrayList<>();
 
+	//Cursed PD scales a monster's stats by this, there is nothing to scale by here
+	public float multiplier(){
+		return 1f;
+	}
+
 	//shims for Cursed PD, which spawns mobs straight from its items
 	public static <T extends Mob> T spawnAt( Class<T> type, int pos ){
 		if (pos < 0 || !Dungeon.level.passable[pos] || Actor.findChar( pos ) != null) return null;

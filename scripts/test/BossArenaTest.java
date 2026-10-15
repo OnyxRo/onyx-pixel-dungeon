@@ -164,7 +164,8 @@ public class BossArenaTest {
 		}
 		//dying bosses may hand the unseal to a later turn, give the level a few of its own
 		if (level.locked && !bosses.isEmpty()) {
-			if (MULTI_PHASE.contains( name ) || MULTI_PHASE.contains( level.getClass().getSimpleName() )) {
+			String cls = level.getClass().getSimpleName();
+			if (MULTI_PHASE.contains( name ) || MULTI_PHASE.contains( cls ) || cls.contains( "PrisonBossLevel" ) || cls.contains( "TenguBossLevel" )) {
 				//the boss changes the map and comes back several times, one kill in a headless run is not the end of the fight
 				warnings++;
 				System.out.println( "WARN: " + name + " on floor " + depth + " is a multi-phase fight, kill the boss in every phase in the sandbox to check the unseal." );

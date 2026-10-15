@@ -60,7 +60,12 @@ RENAMES = [
     ('old multiline text class', r'RenderedTextMultiline', 'RenderedTextBlock'),
     ('old renderMultiline is renderTextBlock', r'PixelScene\.renderMultiline\(', 'PixelScene.renderTextBlock('),
     ('Bones.get returns a list now, take the first item', r'Item\s+(\w+)\s*=\s*Bones\.get\(\)\s*;', r'java.util.ArrayList<Item> \1List = Bones.get(); Item \1 = (\1List == null || \1List.isEmpty()) ? null : \1List.get(0);'),
-    ('Char.move gained a travelling argument', r'public void move\(\s*int step\s*\)\s*\{(\s*)super\.move\(\s*step\s*\);', r'public void move( int step, boolean travelling ) {\1super.move( step, travelling );'),
+    ('Char.move gained a travelling argument, override', r'public void move\(\s*int step\s*\)', 'public void move( int step, boolean travelling )'),
+    ('Char.move gained a travelling argument, super call', r'super\.move\(\s*step\s*\)', 'super.move( step, travelling )'),
+    ('Char.attack gained multipliers, override', r'public boolean attack\(\s*Char (enemy|target|defender|victim)\s*\)', r'public boolean attack( Char \1, float dmgMulti, float dmgBonus, float accMulti )'),
+    ('Char.attack gained multipliers, super call', r'super\.attack\(\s*(enemy|target|defender|victim)\s*\)', r'super.attack( \1, dmgMulti, dmgBonus, accMulti )'),
+    ('kill message uses name()', r'Messages\.get\(Char\.class,\s*"kill",\s*name\)', 'Messages.get(Char.class, "kill", name())'),
+    ('GooSprite.pumpUp takes a warning distance', r'\(\(GooSprite\)sprite\)\.pumpUp\(\)', '((GooSprite)sprite).pumpUp( 2 )'),
     ('boss placement out of sight never ends when sandbox full sight is on', r'(?<![\w.(])heroFOV\[(\w+\.pos)\]', r'(heroFOV[\1] && !Dungeon.seeAll())'),
     ('escalatingDepth is Experienced only, use depth', r'Dungeon\.escalatingDepth\(\)', 'Dungeon.depth'),
     ('doPickUp lost its time argument', r'doPickUp\(\s*(Hero\s+\w+|\w+)\s*,\s*(int\s+\w+|[\w.]+)\s*,\s*(?:float\s+\w+|[\w.]+)\s*\)', r'doPickUp(\1, \2)'),
@@ -91,6 +96,10 @@ def apply(s):
     for why, pat, rep in RENAMES:
         t2 = re.sub(pat, rep, t)
         if t2 != t: fired.append(why); t = t2
+    # the old Skeleton Key that boss levels dropped is the Worn Key now
+    if 'items.keys.SkeletonKey' in t:
+        t = re.sub(r'\bSkeletonKey\b', 'WornKey', t)
+        fired.append('old SkeletonKey is WornKey')
     # a rule above can add a Char parameter to a file that never imported Char
     if re.search(r'\bChar\b', t) and not re.search(r'import [\w.]*\.Char;', t) and 'package ' + PKG + '.actors;' not in t:
         t = re.sub(r'(package [\w.]+;\r?\n)', r'\1\nimport ' + PKG + '.actors.Char;', t, count=1)

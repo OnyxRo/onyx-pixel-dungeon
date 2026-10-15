@@ -312,6 +312,10 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String ROTTING = "sprites/cursed/rotting_fist.png"; //ported, cursed
+		public static final String BURNING = "sprites/cursed/burning_fist.png"; //ported, cursed
+		public static final String PRISON_EXIT = "custom_tiles/cursed/prison_exit.png"; //ported, cursed
+		public static final String TILES_CAVES = "sprites/cursed/tiles_caves.png"; //ported, cursed
 		public static final String DARK_MAGE = "sprites/cursed/dark_wizard.png"; //ported, cursed
 		public static final String SEWERGOLEM = "sprites/cursed/hell_guardian.png"; //ported, cursed
 		public static final String TILES_BOSS = "sprites/cursed/tiles_boss.png"; //ported, cursed

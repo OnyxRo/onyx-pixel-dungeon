@@ -314,6 +314,17 @@ public class WorldShuffle {
 
 	/** Every boss floor a world's mod can give at this depth, for mods that have more than one version of a fight. */
 	public static Level[] modBossVariants( int world, int depth ){
+		if (world >= 0 && world < LOGOS.length && CURSED.equals(LOGOS[world])) {
+			//Cursed PD's own versions of the five boss floors, with its own harder bosses
+			switch (depth) {
+				case 5:  return new Level[]{ new CursedSewerBossLevel() };
+				case 10: return new Level[]{ new CursedPrisonBossLevel(), new CursedTenguBossLevel() };
+				case 15: return new Level[]{ new CursedCavesBossLevel() };
+				case 20: return new Level[]{ new CursedCityBossLevel() };
+				case 25: return new Level[]{ new CursedHallsBossLevel() };
+				default: return new Level[0];
+			}
+		}
 		if (world >= 0 && world < LOGOS.length && ABYSSALNITE.equals(LOGOS[world])) {
 			switch (depth) {
 				case 10: return new Level[]{ new OldPrisonBossLevel(), new NewPrisonBossLevel() };
@@ -336,7 +347,7 @@ public class WorldShuffle {
 			//Reforged only has the one boss floor, the Rat Usurper in place of Goo
 			return depth == 5 ? new SewerBossUsurperLevel() : null;
 		}
-		if (world >= 0 && world < LOGOS.length && ABYSSALNITE.equals(LOGOS[world])) {
+		if (world >= 0 && world < LOGOS.length && (ABYSSALNITE.equals(LOGOS[world]) || CURSED.equals(LOGOS[world]))) {
 			//Abyssalnite has two fights for each boss floor, its own harder ones and the older sealed arena style.
 			//Which one a floor gets is decided by the dungeon seed, the same every time the floor is built.
 			Level[] both = modBossVariants( world, depth );
@@ -363,7 +374,7 @@ public class WorldShuffle {
 	 */
 	private static boolean bossPlaytested( int world ){
 		String logo = LOGOS[world];
-		return DEVOTED.equals(logo) || REFORGED.equals(logo);
+		return DEVOTED.equals(logo) || REFORGED.equals(logo); //Abyssalnite's and Cursed's boss floors wait for Onyx to play them
 	}
 
 	/**
