@@ -94,6 +94,9 @@ public class Hunger extends Buff implements Hero.Doom {
 				hungerDelay /= SaltCube.hungerGainMultiplier();
 
 				float newLevel = level + (1f/hungerDelay);
+				//Shittened PD's Acceleration and Lavage make the stomach run
+				if (target.buff(Acceleration.class) != null) newLevel += 4f / hungerDelay;
+				if (target.buff(Lavage.class) != null) newLevel += 20f / hungerDelay;
 				if (newLevel >= STARVING) {
 
 					GLog.n( Messages.get(this, "onstarving") );

@@ -135,6 +135,14 @@ abstract public class Weapon extends KindOfWeapon {
 	public boolean enchantHardened = false;
 	public boolean curseInfusionBonus = false;
 	public boolean masteryPotionBonus = false;
+
+	//Shittened PD's prefixes. Most melee weapons find a prefix that nudges their damage, accuracy and speed.
+	public com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix prefix = Random.Float() > 0.4f && this instanceof MeleeWeapon
+			? com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix.all[Random.Int(0, com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix.all.length - 1)] : com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix.NONE;
+
+	{
+		extraIcon = prefix != null && prefix != com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix.NONE ? prefix.icon() : -1;
+	}
 	
 	@Override
 	public int proc( Char attacker, Char defender, int damage ) {
@@ -230,6 +238,7 @@ abstract public class Weapon extends KindOfWeapon {
 	private static final String MASTERY_POTION_BONUS = "mastery_potion_bonus";
 	private static final String AUGMENT	        = "augment";
 	private static final String SPECIAL	        = "special_augment";
+	private static final String PREFIX	        = "prefix";
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -242,6 +251,7 @@ abstract public class Weapon extends KindOfWeapon {
 		bundle.put( MASTERY_POTION_BONUS, masteryPotionBonus );
 		bundle.put( AUGMENT, augment );
 		bundle.put( SPECIAL, special );
+		bundle.put( PREFIX, prefix );
 	}
 	
 	@Override
@@ -256,6 +266,8 @@ abstract public class Weapon extends KindOfWeapon {
 
 		augment = bundle.getEnum(AUGMENT, Augment.class);
 		special = (com.shatteredpixel.shatteredpixeldungeon.items.weapon.augments.WeaponAugment) bundle.get( SPECIAL );
+		prefix = bundle.contains( PREFIX ) ? bundle.getEnum( PREFIX, com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix.class ) : com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix.NONE;
+		extraIcon = prefix != com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix.NONE ? prefix.icon() : -1;
 	}
 
 	public Weapon applyAugment( com.shatteredpixel.shatteredpixeldungeon.items.weapon.augments.WeaponAugment special ){
@@ -316,7 +328,7 @@ abstract public class Weapon extends KindOfWeapon {
 			encumbrance = STRReq() - ((Hero)owner).STR();
 		}
 
-		float ACC = this.ACC;
+		float ACC = this.ACC + prefix.acc();
 
 		if (owner.buff(Wayward.WaywardBuff.class) != null && enchantment instanceof Wayward){
 			ACC /= 5;
@@ -344,6 +356,10 @@ abstract public class Weapon extends KindOfWeapon {
 
 	protected float speedMultiplier(Char owner ){
 		float multi = RingOfFuror.attackSpeedMultiplier(owner);
+		//from Shittened PD
+		if ( owner.buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Acceleration.class ) != null) multi *= com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Acceleration.multiplier(owner);
+		if ( owner.buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Furor.class ) != null) multi *= 2f;
+		multi *= 1 + prefix.speed();
 
 		if (owner.buff(Scimitar.SwordDance.class) != null){
 			multi += 0.6f;
@@ -354,7 +370,7 @@ abstract public class Weapon extends KindOfWeapon {
 
 	@Override
 	public int reachFactor(Char owner) {
-		int reach = RCH;
+		int reach = RCH + (prefix == com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix.LONG ? 1 : 0);
 		if (owner instanceof Hero && RingOfForce.fightingUnarmed((Hero) owner)){
 			reach = 1; //brawlers stance benefits from enchantments, but not innate reach
 			if (!RingOfForce.unarmedGetsWeaponEnchantment((Hero) owner)){
@@ -433,6 +449,11 @@ abstract public class Weapon extends KindOfWeapon {
 	
 	@Override
 	public String name() {
+		String prefixName = prefix != com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix.NONE && isIdentified() ? Messages.capitalize(prefix.toString().toLowerCase()) + " " : "";
+		return prefixName + enchantedName();
+	}
+
+	private String enchantedName() {
 		if (isEquipped(Dungeon.hero) && !hasCurseEnchant() && Dungeon.hero.buff(HolyWeapon.HolyWepBuff.class) != null
 			&& (Dungeon.hero.subClass != HeroSubClass.PALADIN || enchantment == null)){
 				return Messages.get(HolyWeapon.class, "ench_name", super.name());
@@ -442,6 +463,45 @@ abstract public class Weapon extends KindOfWeapon {
 		}
 	}
 	
+	//Shittened PD, what the prefix does, shown in the weapon's description
+	public String getStatChanges() {
+
+		String stats = "";
+
+		if (prefix == com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix.NONE || !isIdentified()) {
+			return stats;
+		}
+
+		float minDmg = prefix.min();
+		float maxDmg = prefix.max();
+		float acc = prefix.acc();
+		float speed = prefix.speed();
+
+		stats += "\n\n" + Messages.capitalize(prefix.toString().toLowerCase()) + ":\n";
+
+		if (minDmg != 0) stats += (minDmg > 0 ? "+" : "") + Math.round(minDmg * 100) + "% Minimum damage\n";
+		if (maxDmg != 0) stats += (maxDmg > 0 ? "+" : "") + Math.round(maxDmg * 100) + "% Maximum damage\n";
+		if (acc != 0) stats += (acc > 0 ? "+" : "") + Math.round(acc * 100) + "% Accuracy\n";
+		if (speed != 0) stats += (speed > 0 ? "+" : "") + Math.round(speed * 100) + "% Speed\n";
+		if ((prefix == com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix.STEADFAST || prefix == com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix.PROTECTIVE) && this instanceof MeleeWeapon) {
+			stats += "+0-" + ((MeleeWeapon) this).tier  + " Armor\n";
+		}
+		if (prefix == com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix.VENOMOUS && this instanceof MeleeWeapon) {
+			stats += "+5% Poison chance\n";
+		}
+		if (prefix == com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix.LONG && this instanceof MeleeWeapon) {
+			stats += "+1 Range\n";
+		}
+
+		return stats;
+	}
+
+	public void reforge(com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix prefix) {
+		this.prefix = prefix;
+		this.extraIcon = prefix.icon();
+		updateQuickslot();
+	}
+
 	@Override
 	public Item random() {
 		//+0: 75% (3/4)

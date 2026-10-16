@@ -251,15 +251,21 @@ public class MeleeWeapon extends Weapon {
 
 	@Override
 	public int min(int lvl) {
-		return  tier +  //base
-				lvl;    //level scaling
+		//Shittened PD's prefix changes the low end
+		return (int) Math.floor((tier + lvl) * (1f + prefix.min()));
 	}
 
 	@Override
 	public int max(int lvl) {
 		int base = 5*(tier+1) +    //base
 				lvl*(tier+1);   //level scaling
-		return damageMultiplier == 1f ? base : Math.max(1, Math.round(base*damageMultiplier));
+		int result = damageMultiplier == 1f ? base : Math.max(1, Math.round(base*damageMultiplier));
+		return trueMax(result);
+	}
+
+	//Shittened PD, every weapon's top damage goes through this so the prefix can change it
+	public int trueMax(int baseDmg) {
+		return (int) Math.ceil(baseDmg * (1f + prefix.max()));
 	}
 
 	public int STRReq(int lvl){
@@ -297,6 +303,9 @@ public class MeleeWeapon extends Weapon {
 	@Override
 	public int damageRoll(Char owner) {
 		int damage = augment.damageFactor(super.damageRoll( owner ));
+		if (prefix == com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix.MUSICAL) {
+			com.watabou.noosa.audio.Sample.INSTANCE.play(Assets.Sounds.NOTE, 1.4f, Math.round(com.watabou.utils.Random.Float(0.6f,1.4f) * 10) / 10f);
+		}
 
 		if (owner instanceof Hero) {
 			int exStr = ((Hero)owner).STR() - STRReq();

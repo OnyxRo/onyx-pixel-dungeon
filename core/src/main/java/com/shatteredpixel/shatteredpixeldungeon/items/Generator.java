@@ -244,6 +244,9 @@ public class Generator {
 		ARTIFACT( 0, 1, Artifact.class),
 		
 		FOOD	( 0, 0, Food.class ),
+		//from Shittened PD. The new foods are not in normal drops, only in loot bags and the like.
+		FOOD_NEW( 0, 0, Food.class ),
+		EXOTIC	( 0, 0, com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion.class ),
 		
 		POTION	( 8, 8, Potion.class ),
 		SEED	( 1, 1, Plant.Seed.class ),
@@ -544,6 +547,63 @@ public class Generator {
 					MysteryMeat.class };
 			FOOD.defaultProbs = new float[]{ 4, 1, 0 };
 			FOOD.probs = FOOD.defaultProbs.clone();
+
+			FOOD_NEW.classes = new Class<?>[]{
+					com.shatteredpixel.shatteredpixeldungeon.items.food.RatatouilleFood.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.CoffeeBean.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.DeepfriedRat.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.Egg.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.FriedEgg.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.Milk.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.Omelet.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.Cheese.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.Flour.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.Pancakes.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.PancakesWithCheese.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.Tomato.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.Wheat.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.Bread.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.Oil.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.Potato.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.Hashbrowns.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.CompleteBreakfast.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.Bruschetta.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.Pizza.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.Spaghetti.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.Coffee.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.TripleShotEspresso.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.StirFry.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.Fish.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.BakedFish.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.CrispyBass.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.BerryBalls.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.Sashimi.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.Meatballs.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.Sugar.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.CookedWarrior.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.Cookies.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.IceCream.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.DanishPastry.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.CakeBase.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.BerryCake.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.ChocolateCake.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.BasedCake.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.CheeseSlice.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.SmallMeat.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledSmallMeat.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.StewedSmallMeat.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.SmallFrozenCarpaccio.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.GoldenMeat.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.WaxBar.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.Nuts.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.Piethon.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.TidePod.class
+			};
+			FOOD_NEW.probs = new float[]{ 0.2f, 0.1f, 0.2f, 0.4f, 0.3f, 0.4f, 0.3f, 0.3f, 0.4f, 0.2f, 0.05f, 0.4f, 0.5f, 0.3f, 0.4f, 0.5f, 0.2f, 0.1f, 0.15f, 0.15f, 0.2f, 0.2f, 0.1f, 0.2f, 0.4f, 0.25f, 0.2f, 0.2f, 0.3f, 0.15f, 0.4f, 0.05f, 0.2f, 0.2f, 0.2f, 0.1f, 0.06f, 0.04f, 0.02f, 0.3f, 0.7f, 0.5f, 0.5f, 0.4f, 0.01f, 0.06f, 0.1f, 0.1f, 0.05f };
+
+			EXOTIC.classes = com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion.exoToReg.keySet().toArray(new Class<?>[0]);
+			EXOTIC.probs = new float[EXOTIC.classes.length];
+			java.util.Arrays.fill(EXOTIC.probs, 1f);
 			
 			RING.classes = new Class<?>[]{
 					RingOfAccuracy.class,

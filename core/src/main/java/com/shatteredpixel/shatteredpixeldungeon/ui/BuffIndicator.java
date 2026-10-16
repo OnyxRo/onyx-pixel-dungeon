@@ -142,6 +142,22 @@ public class BuffIndicator extends Component {
 	public static final int WOE         = 88;
 	public static final int SHRINK      = 89;
 	public static final int GROW        = 90;
+	//from Shittened PD
+	public static final int NUTS        = 91;
+	public static final int DIABETES    = 92;
+	public static final int CAFFEINERUSH= 93;
+	public static final int TICKBITE    = 94;
+	public static final int ACCELERATION= 95;
+	public static final int KETCHUP     = 96;
+	public static final int KETCHUPFLOOD= 97;
+	public static final int OILED       = 98;
+	public static final int LAVAGE      = 99;
+	public static final int CANCELLED   = 100;
+	public static final int GOBLINMODE  = 101;
+	public static final int MILDYSAT    = 102;
+	public static final int MEDIUMSAT   = 103;
+	public static final int FULLYSAT    = 104;
+	public static final int OVERSAT     = 105;
 
 	public static final int SIZE_SMALL  = 7;
 	public static final int SIZE_LARGE  = 16;

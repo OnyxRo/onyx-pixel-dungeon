@@ -141,6 +141,47 @@ public class Assets {
 	}
 
 	public static class Music {
+		public static final String TWINGO_TANGO = "music/player/shittened/twingo_tango.ogg"; //ported, shittened
+		public static final String TWINGO_TURBO = "music/player/shittened/twingo_turbo.ogg"; //ported, shittened
+		public static final String TWIGIGIGI = "music/player/shittened/twigigigi.ogg"; //ported, shittened
+		public static final String CANTO_TWINGO = "music/player/shittened/canto_twingo.ogg"; //ported, shittened
+		public static final String ON_THE_STREETS = "music/player/shittened/on_the_streets.ogg"; //ported, shittened
+		public static final String WESTERNESS = "music/player/shittened/westerness.ogg"; //ported, shittened
+		public static final String ADVENTURE = "music/player/shittened/adventure.ogg"; //ported, shittened
+		public static final String SUNSET = "music/player/shittened/sunset.ogg"; //ported, shittened
+		public static final String HIGH_TIDE = "music/player/shittened/high_tide.ogg"; //ported, shittened
+		public static final String SAILING_DREAM = "music/player/shittened/sailing_dream.ogg"; //ported, shittened
+		public static final String STORMY_ROCK = "music/player/shittened/stormy_rock.ogg"; //ported, shittened
+		public static final String REMIX_CITY_FINALE = "music/player/shittened/remix_city_finale.ogg"; //ported, shittened
+		public static final String REMIX_PRISON_BOSS = "music/player/shittened/remix_prison_boss.ogg"; //ported, shittened
+		public static final String REMIX_SEWER_BOSS = "music/player/shittened/remix_sewer_boss.ogg"; //ported, shittened
+		public static final String REMIX_SEWER = "music/player/shittened/remix_sewer.ogg"; //ported, shittened
+		public static final String THEME_3 = "music/shittened/theme_3.ogg"; //ported, shittened
+		public static final String RAT_NOISES = "music/player/shittened/rat_noises.ogg"; //ported, shittened
+		public static final String RATTYRAT = "music/player/shittened/rattyrat.ogg"; //ported, shittened
+		public static final String RATRATRAT = "music/player/shittened/ratratrat.ogg"; //ported, shittened
+		public static final String DANCE_STARS = "music/player/shittened/dance_stars.ogg"; //ported, shittened
+		public static final String WOOOOOOH = "music/player/shittened/wooooooh.ogg"; //ported, shittened
+		public static final String SHART_DAY = "music/player/shittened/shart_day.ogg"; //ported, shittened
+		public static final String ECHOES = "music/player/shittened/echoes.ogg"; //ported, shittened
+		public static final String UOAUOA = "music/player/shittened/uoauoa.ogg"; //ported, shittened
+		public static final String PIPIKUKU = "music/player/shittened/pipikuku.ogg"; //ported, shittened
+		public static final String WOWOWOWO = "music/player/shittened/wowowowo.ogg"; //ported, shittened
+		public static final String AFWFSW = "music/player/shittened/afwfsw.ogg"; //ported, shittened
+		public static final String RIDE_THE_HOG = "music/player/shittened/ride_the_hog.ogg"; //ported, shittened
+		public static final String HOG_PHONK = "music/player/shittened/hog_phonk.ogg"; //ported, shittened
+		public static final String HOG_EPIC = "music/player/shittened/hog_epic.ogg"; //ported, shittened
+		public static final String MOKKITIE = "music/player/shittened/mokkitie.ogg"; //ported, shittened
+		public static final String MISSA_TWINGO = "music/player/shittened/missa_twingo.ogg"; //ported, shittened
+		public static final String YSILUOKKALAISET = "music/player/shittened/ysiluokkalaiset.ogg"; //ported, shittened
+		public static final String STOOL_GONE = "music/player/shittened/stool_gone.ogg"; //ported, shittened
+		public static final String MY_TABLE = "music/player/shittened/my_table.ogg"; //ported, shittened
+		public static final String CHAIR = "music/player/shittened/chair.ogg"; //ported, shittened
+		public static final String FLOW = "music/player/shittened/flow.ogg"; //ported, shittened
+		public static final String REAWAKENING = "music/player/shittened/reawakening.ogg"; //ported, shittened
+		public static final String FUJI = "music/player/shittened/fuji.ogg"; //ported, shittened
+		public static final String DESTINATION = "music/player/shittened/destination.ogg"; //ported, shittened
+		public static final String TALE = "music/player/shittened/fantasy_tale.ogg"; //ported, shittened
 		public static final String ICE_CAVES = "music/mattedition/icecaves_calm.ogg"; //ported, mattedition
 		public static final String ICE_CAVES_TENSE = "music/mattedition/icecaves.ogg"; //ported, mattedition
 		public static final String BLACK_MIMIC_ARENA = "music/experienced/black_mimic_arena.ogg"; //ported, experienced
@@ -196,6 +237,19 @@ public class Assets {
 	}
 
 	public static class Sounds {
+		public static final String NOTE = "sounds/shittened/note.mp3"; //ported, shittened
+		public static final String HIT_GLANCE = "sounds/shittened/hit_glance.mp3"; //ported, shittened
+		public static final String HIT_PILE = "sounds/shittened/hit_pile.mp3"; //ported, shittened
+		public static final String STICK_SNAP = "sounds/equipment/shittened/stick_snap.mp3"; //ported, shittened
+		public static final String UPGRAGE_ARMOR = "sounds/equipment/shittened/upgrade_armor.mp3"; //ported, shittened
+		public static final String SPLASH = "sounds/movement/shittened/splash.mp3"; //ported, shittened
+		public static final String SPRAY = "sounds/shittened/spray.mp3"; //ported, shittened
+		public static final String VINEBOOM = "sounds/shittened/vineboom.mp3"; //ported, shittened
+		public static final String FLOUR = "sounds/food/shittened/flour.mp3"; //ported, shittened
+		public static final String EGG_CRACK_2 = "sounds/food/shittened/egg_crack_2.mp3"; //ported, shittened
+		public static final String EGG_CRACK = "sounds/food/shittened/egg_crack.mp3"; //ported, shittened
+		public static final String CD_EJECT = "sounds/shittened/cd_eject.mp3"; //ported, shittened
+		public static final String CD_INSERT = "sounds/shittened/cd_insert.mp3"; //ported, shittened
 		public static final String PUDDING = "sounds/abyssalnite/pudding.mp3"; //ported, abyssalnite
 		public static final String CURE = "sounds/abyssalnite/cureinfuse.mp3"; //ported, abyssalnite
 		public static final String EXPLOSION = "sounds/devoted/giant_explosion.mp3"; //ported, devoted
@@ -268,6 +322,7 @@ public class Assets {
 		public static final String DEBUFF   = "sounds/debuff.mp3";
 		public static final String CHARGEUP = "sounds/chargeup.mp3";
 		public static final String GAS      = "sounds/gas.mp3";
+		public static final String TURD     = "sounds/turd.mp3"; //ported, shittened
 		public static final String CHAINS   = "sounds/chains.mp3";
 		public static final String SCAN     = "sounds/scan.mp3";
 		public static final String SHEEP    = "sounds/sheep.mp3";
@@ -289,7 +344,7 @@ public class Assets {
 				DESCEND, EAT, READ, LULLABY, DRINK, SHATTER, ZAP, LIGHTNING, LEVELUP, DEATH,
 				CHALLENGE, CURSED, TRAP, EVOKE, TOMB, ALERT, MELD, BOSS, BLAST, PLANT, RAY, BEACON,
 				TELEPORT, CHARMS, MASTERY, PUFF, ROCKS, BURNING, FALLING, GHOST, SECRET, BONES,
-				BEE, DEGRADE, MIMIC, DEBUFF, CHARGEUP, GAS, CHAINS, SCAN, SHEEP, MINE, BALLISTA_RELOAD
+				BEE, DEGRADE, MIMIC, DEBUFF, CHARGEUP, GAS, TURD, CHAINS, SCAN, SHEEP, MINE, BALLISTA_RELOAD
 		};
 	}
 
@@ -318,6 +373,8 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String KETCHUPSPLAT = "sprites/shittened/ketchupsplat.png"; //ported, shittened
+		public static final String GOBLIN = "sprites/shittened/goblin.png"; //ported, shittened
 		public static final String WRETCH = "sprites/devoted/wretch.png"; //ported, devoted
 		public static final String WISP = "sprites/devoted/wisp.png"; //ported, devoted
 		public static final String WASP = "sprites/devoted/wasp.png"; //ported, devoted
@@ -405,6 +462,7 @@ public class Assets {
 		public static final String BLACKHOLE = "sprites/devoted/BlackHole.png"; //ported, devoted
 		public static final String ITEMS        = "sprites/items.png";
 		public static final String ITEM_ICONS   = "sprites/item_icons.png";
+		public static final String PREFIX_ICONS = "sprites/prefix_icons.png"; //ported, shittened
 
 		public static final String WARRIOR  = "sprites/warrior.png";
 		public static final String MAGE     = "sprites/mage.png";

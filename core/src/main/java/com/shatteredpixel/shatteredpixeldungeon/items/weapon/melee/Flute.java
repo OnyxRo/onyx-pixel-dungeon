@@ -44,8 +44,8 @@ public class Flute extends MeleeWeapon {
 
     @Override
     public int max(int lvl) {
-        return  (int)(1f*(tier+1)) +    //
-                lvl*tier;               //+1 per level, down from +2
+        return trueMax((int)(1f*(tier+1)) +    //
+                lvl*tier);               //+1 per level, down from +2
     }
 
     @Override

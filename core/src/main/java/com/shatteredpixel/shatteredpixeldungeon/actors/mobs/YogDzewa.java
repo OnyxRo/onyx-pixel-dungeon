@@ -654,6 +654,9 @@ public class YogDzewa extends Mob {
 			properties.add(Property.BOSS_MINION);
 		}
 
+		//Shittened PD's shits are Yog's larvae that can be made to fight for the hero
+		public boolean ally = false;
+
 		@Override
 		public int attackSkill( Char target ) {
 			return 30;
@@ -661,12 +664,33 @@ public class YogDzewa extends Mob {
 
 		@Override
 		public int damageRoll() {
-			return Random.NormalIntRange( 15, 25 );
+			if (Dungeon.depth == 25) {
+				return Random.NormalIntRange( 15, 25 );
+			} else {
+				return Random.NormalIntRange( 1 ,Dungeon.depth + 3);
+			}
 		}
 
 		@Override
 		public int drRoll() {
 			return super.drRoll() + Random.NormalIntRange(0, 4);
+		}
+
+		private static final String ALLY = "ALLY";
+
+		@Override
+		public void storeInBundle(com.watabou.utils.Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(ALLY, ally);
+		}
+
+		@Override
+		public void restoreFromBundle(com.watabou.utils.Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			ally = bundle.getBoolean(ALLY);
+			if (ally) {
+				alignment = Alignment.ALLY;
+			}
 		}
 
 	}

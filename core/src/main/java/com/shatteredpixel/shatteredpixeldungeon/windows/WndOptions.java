@@ -54,6 +54,10 @@ public class WndOptions extends Window {
 		layoutBody(pos, message, options);
 	}
 	
+	public WndOptions(Image icon, String title, String message, java.util.List<String> options) {
+		this(icon, title, message, options.toArray(new String[0]));
+	}
+
 	public WndOptions( String title, String message, String... options ) {
 		super();
 

@@ -53,7 +53,30 @@ public enum Music {
 	private HashMap<String, com.badlogic.gdx.audio.Music> trackPlayers = new HashMap<>();
 	boolean shuffle = false;
 	
+	//Shittened PD's music player artifact keeps level music from taking over
+	public static boolean musicPlayerActive;
+	private boolean musicPlayerCall = false;
+
+	public synchronized void play( String assetName, boolean looping, boolean musicPlayer ) {
+		musicPlayerCall = musicPlayer;
+		try {
+			play( assetName, looping );
+		} finally {
+			musicPlayerCall = false;
+		}
+	}
+
+	public synchronized void playTracks( String[] tracks, float[] chances, boolean shuffle, boolean musicPlayer ) {
+		musicPlayerCall = musicPlayer;
+		try {
+			playTracks( tracks, chances, shuffle );
+		} finally {
+			musicPlayerCall = false;
+		}
+	}
+
 	public synchronized void play( String assetName, boolean looping ) {
+		if (musicPlayerActive && !musicPlayerCall) return;
 
 		//iOS cannot play ogg, so we use an mp3 alternative instead
 		if (assetName != null && DeviceCompat.isiOS()){
@@ -109,6 +132,7 @@ public enum Music {
 	}
 
 	public synchronized void playTracks( String[] tracks, float[] chances, boolean shuffle){
+		if (musicPlayerActive && !musicPlayerCall) return;
 
 		if (tracks == null || tracks.length == 0 || tracks.length != chances.length){
 			stop();

@@ -41,6 +41,14 @@ public abstract class EquipableItem extends Item {
 	public static final String AC_EQUIP		= "EQUIP";
 	public static final String AC_UNEQUIP	= "UNEQUIP";
 
+	//from Shittened PD, what kind of thing this is, for equip sounds
+	public enum Type {
+		SWORD, AXE, DAGGER,
+		CLOTH, LEATHER, CHAIN, SCALE, STEEL,
+		TRINKET, WOOD, PAPER,
+	}
+	public Type type;
+
 	{
 		bones = true;
 	}

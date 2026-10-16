@@ -72,6 +72,11 @@ public class Speck extends Image {
 	public static final int BLIZZARD    = 119;
 	public static final int YELLOW_LIGHT= 120;
 	public static final int BLUE_LIGHT  = 121;
+	//from Shittened PD
+	public static final int KETCHUP     = 302;
+	public static final int KETCHUPSTORM= 303;
+	public static final int FUELGAS     = 304;
+	public static final int TOMATO      = 307;
 	
 	private static final int SIZE = 7;
 	
@@ -128,6 +133,7 @@ public class Speck extends Image {
 			frame( film.get( STAR ) );
 			break;
 		case RATTLE:
+		case TOMATO:
 			frame( film.get( BONE ) );
 			break;
 		case JET:
@@ -141,6 +147,9 @@ public class Speck extends Image {
 		case SMOKE:
 		case BLIZZARD:
 		case INFERNO:
+		case FUELGAS:
+		case KETCHUP:
+		case KETCHUPSTORM:
 			frame( film.get( STEAM ) );
 			break;
 		case CALM:
@@ -259,6 +268,13 @@ public class Speck extends Image {
 			lifespan = 0.9f;
 			break;
 			
+		case TOMATO:
+			hardlight( 0xe21818 );
+			lifespan = Random.Float( 0.2f, 0.4f );
+			angle = Random.Float( 360 );
+			angularSpeed = 70;
+			break;
+
 		case BONE:
 			lifespan = 0.2f;
 			speed.polar( Random.Float( 2 * 3.1415926f ), 24 / lifespan );
@@ -393,6 +409,26 @@ public class Speck extends Image {
 			lifespan = Random.Float( 1f, 1.5f );
 			break;
 
+		case FUELGAS:
+			hardlight( 0x483026 );
+			angularSpeed = 30;
+			angle = Random.Float( 360 );
+			lifespan = Random.Float( 0.7f, 2.5f );
+			break;
+
+		case KETCHUP:
+			hardlight( 0xe21818 );
+			angle = Random.Float( 360 );
+			lifespan = Random.Float( 4f, 7f );
+			break;
+
+		case KETCHUPSTORM:
+			hardlight( 0xe21818 );
+			angularSpeed = Random.Float( 30, 110 );
+			angle = Random.Float( 360 );
+			lifespan = Random.Float( 0.8f, 3f );
+			break;
+
 		case DUST:
 			hardlight( 0xFFFF66 );
 			angle = Random.Float( 360 );
@@ -471,6 +507,7 @@ public class Speck extends Image {
 				
 			case BONE:
 			case RATTLE:
+			case TOMATO:
 				am = p < 0.9f ? 1 : (1 - p) * 10;
 				break;
 				
@@ -509,6 +546,9 @@ public class Speck extends Image {
 			case BLIZZARD:
 			case INFERNO:
 			case DUST:
+			case KETCHUP:
+			case KETCHUPSTORM:
+			case FUELGAS:
 				am = (float)Math.sqrt( (p < 0.5f ? p : 1 - p) * 0.5f );
 				scale.set( 1 + p );
 				break;

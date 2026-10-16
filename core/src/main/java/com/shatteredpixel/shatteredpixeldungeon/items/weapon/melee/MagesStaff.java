@@ -84,12 +84,13 @@ public class MagesStaff extends MeleeWeapon {
 
 	public MagesStaff() {
 		wand = null;
+		prefix = com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix.NONE; //Shittened PD
 	}
 
 	@Override
 	public int max(int lvl) {
-		return  Math.round(3f*(tier+1)) +   //6 base damage, down from 10
-				lvl*(tier+1);               //scaling unaffected
+		return trueMax(Math.round(3f*(tier+1)) +   //6 base damage, down from 10
+				lvl*(tier+1));               //scaling unaffected
 	}
 
 	public MagesStaff(Wand wand){

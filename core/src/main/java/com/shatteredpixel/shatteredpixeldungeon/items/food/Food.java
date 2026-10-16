@@ -50,6 +50,16 @@ public class Food extends Item {
 	
 	public float energy = Hunger.HUNGRY;
 
+	//from Shittened PD, what is in the food, shown in its description window
+	public float carbs = 30f;
+	public float fats = 18f;
+	public float proteins = 10f;
+	public float salt = 1.2f;
+
+	public boolean drink = false;
+
+	public String eatSound;
+
 	//Abyssalnite, how much abyssal infection eating this removes
 	public float clean = 0f;
 	
@@ -104,7 +114,22 @@ public class Food extends Item {
 	}
 
 	protected void eatSFX(){
-		Sample.INSTANCE.play( Assets.Sounds.EAT );
+		if (eatSound != null) {
+			Sample.INSTANCE.play(eatSound);
+		} else if (drink) {
+			Sample.INSTANCE.play( Assets.Sounds.DRINK );
+		} else {
+			Sample.INSTANCE.play( Assets.Sounds.EAT );
+		}
+	}
+
+	public String nutritionalInfo() {
+		return "NUTRITIONAL FACTS\nper portion\n\n" +
+				"Energy:              " + energy + " kcal (" + (int) (energy * 4.184) + " kj)" + "\n" +
+				"Fats:                 " + fats + "g\n" +
+				"Carbohydrates:  " + carbs + "g\n" +
+				"Proteins:            " + proteins + "g\n" +
+				"Salt:                   " + salt + "g";
 	}
 
 	protected float eatingTime(){

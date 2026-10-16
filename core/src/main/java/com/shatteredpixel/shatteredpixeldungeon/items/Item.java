@@ -77,6 +77,7 @@ public class Item implements Bundlable {
 	//TODO should these be private and accessed through methods?
 	public int image = 0;
 	public int icon = -1; //used as an identifier for items with randomized images
+	public int extraIcon = -1; //Shittened PD, a second small icon for the weapon prefix
 	
 	public boolean stackable = false;
 	protected int quantity = 1;

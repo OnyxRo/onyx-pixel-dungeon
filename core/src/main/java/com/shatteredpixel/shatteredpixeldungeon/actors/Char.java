@@ -527,6 +527,14 @@ public abstract class Char extends Actor {
 			if (buff(FireImbue.class) != null)  buff(FireImbue.class).proc(enemy);
 			if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EarthImbue.class) != null) buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EarthImbue.class).proc(enemy);
 			if (buff(FrostImbue.class) != null) buff(FrostImbue.class).proc(enemy);
+			if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.KetchupImbue.class) != null) buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.KetchupImbue.class).proc(enemy);
+			//Shittened PD, a venomous weapon sometimes poisons
+			if (this instanceof Hero && Dungeon.hero.belongings.weapon() instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon) {
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon weapon = (com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon) Dungeon.hero.belongings.weapon();
+				if (weapon.prefix == com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix.VENOMOUS && Random.Float() < 0.05f) {
+					Buff.affect(enemy, Poison.class).set(Math.round(1f + Math.min(weapon.level() / 2f, 3f) + Dungeon.scalingDepth() / 7f));
+				}
+			}
 
 			if (enemy.isAlive() && enemy.alignment != alignment && prep != null && prep.canKO(enemy)){
 				enemy.HP = 0;
@@ -661,6 +669,9 @@ public abstract class Char extends Actor {
 		if (attacker.buff(Bless.class) != null) acuRoll *= 1.25f;
 		if (attacker.buff(  Hex.class) != null) acuRoll *= 0.8f;
 		if (attacker.buff( Daze.class) != null) acuRoll *= 0.5f;
+		//from Shittened PD
+		if (attacker.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Gotted.class) != null) acuRoll *= 0.9f;
+		if (attacker.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ketchup.class) != null) acuRoll *= 1.5f;
 		if (attacker.buff(Cursed.class) != null) acuRoll *= 0.9f;
 		for (ChampionEnemy buff : attacker.buffs(ChampionEnemy.class)){
 			acuRoll *= buff.evasionAndAccuracyFactor();
@@ -678,6 +689,7 @@ public abstract class Char extends Actor {
 		if (defender.buff(Bless.class) != null) defRoll *= 1.25f;
 		if (defender.buff(  Hex.class) != null) defRoll *= 0.8f;
 		if (defender.buff( Daze.class) != null) defRoll *= 0.5f;
+		if (defender.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Gotted.class) != null) defRoll *= 1.1f;
 		if (defender.buff(Cursed.class) != null) defRoll *= 0.7f;
 		for (ChampionEnemy buff : defender.buffs(ChampionEnemy.class)){
 			defRoll *= buff.evasionAndAccuracyFactor();
@@ -790,6 +802,11 @@ public abstract class Char extends Actor {
 		if ( buff( Adrenaline.class ) != null) speed *= 2f;
 		if ( buff( Haste.class ) != null) speed *= 3f;
 		if ( buff( Dread.class ) != null) speed *= 2f;
+		//from Shittened PD
+		if ( buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CaffeineRush.class ) != null) speed *= 1.25f;
+		if ( buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Acceleration.class ) != null) speed *= com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Acceleration.multiplier(this);
+		if ( buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ketchup.class ) != null) speed *= properties.contains(Property.BOSS) ? 0.25f : 0.75f;
+		if ( buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Furor.class ) != null) speed *= 0.25f;
 
 		speed *= Swiftness.speedBoost(this, glyphLevel(Swiftness.class));
 		speed *= Flow.speedBoost(this, glyphLevel(Flow.class));
@@ -1144,10 +1161,29 @@ public abstract class Char extends Actor {
 		}
 	}
 	
+	//Shittened PD, anything that dies while the Ketchup storm is on it leaves a splat that fights for a while
+	private void Ketchupify() {
+		int splatDmg = 3;
+		//Roll a random damage for splat's damage roll with quadruple advantage.
+		for (int i = 0; i <= 3; i++) {
+			int dmgroll = damageRoll();
+			if (dmgroll > splatDmg) splatDmg = dmgroll;
+		}
+
+		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.KetchupSplat splat = new com.shatteredpixel.shatteredpixeldungeon.actors.mobs.KetchupSplat(HT, splatDmg);
+		splat.state = splat.WANDERING;
+		splat.pos = pos;
+		GameScene.add(splat);
+	}
+
 	public void die( Object src ) {
 		//something else is forcing death, so remove death mark to prevent conflicts
 		if (buff(DeathMark.DeathMarkTracker.class) != null){
 			buff(DeathMark.DeathMarkTracker.class).detachOnDeath();
+		}
+		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.KetchupStormed.class) != null
+				&& !(this instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.KetchupSplat)) {
+			Ketchupify();
 		}
 		destroy();
 		if (src != Chasm.class && sprite != null) {
@@ -1501,7 +1537,9 @@ public abstract class Char extends Actor {
 		//A character that acts in an unchanging manner. immune to AI state debuffs or stuns/slows
 		STATIC( new HashSet<Class>(),
 				new HashSet<Class>( Arrays.asList(AllyBuff.class, Dread.class, Terror.class, Amok.class, Charm.class, Sleep.class,
-									Paralysis.class, Frost.class, Chill.class, Slow.class, Speed.class) ));
+									Paralysis.class, Frost.class, Chill.class, Slow.class, Speed.class) )),
+		//Shittened PD, a character that is simply irritating
+		ANNOYING;
 
 		private HashSet<Class> resistances;
 		private HashSet<Class> immunities;

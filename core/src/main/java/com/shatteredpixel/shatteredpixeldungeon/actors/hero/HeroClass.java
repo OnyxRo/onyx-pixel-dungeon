@@ -154,6 +154,11 @@ public enum HeroClass {
 				break;
 		}
 
+		//Shittened PD's prefixes never land on a hero's starting weapon
+		if (hero.belongings.weapon instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon) {
+			((com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon) hero.belongings.weapon).reforge(com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix.NONE);
+		}
+
 		if (SPDSettings.quickslotWaterskin()) {
 			for (int s = 0; s < QuickSlot.SIZE; s++) {
 				if (Dungeon.quickslot.getItem(s) == null) {

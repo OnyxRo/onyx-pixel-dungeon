@@ -97,7 +97,12 @@ public class WndInfoItem extends Window {
 		IconTitle titlebar = new IconTitle( item );
 		titlebar.color( color );
 		
-		RenderedTextBlock txtInfo = PixelScene.renderTextBlock( item.info(), 6 );
+		RenderedTextBlock txtInfo;
+		if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.food.Food) {
+			txtInfo = PixelScene.renderTextBlock( item.info() + "\n\n" + ((com.shatteredpixel.shatteredpixeldungeon.items.food.Food) item).nutritionalInfo(), 6 );
+		} else {
+			txtInfo = PixelScene.renderTextBlock( item.info(), 6 );
+		}
 		
 		layoutFields(titlebar, txtInfo);
 	}

@@ -790,6 +790,7 @@ public abstract class Mob extends Char {
 	public float attackDelay() {
 		float delay = 1f;
 		if ( buff(Adrenaline.class) != null) delay /= 1.5f;
+		if ( buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Acceleration.class ) != null) delay /= com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Acceleration.multiplier(this);
 		return delay;
 	}
 	
@@ -833,7 +834,9 @@ public abstract class Mob extends Char {
 		if ( !surprisedBy(enemy)
 				&& paralysed == 0
 				&& !(alignment == Alignment.ALLY && enemy == Dungeon.hero)) {
-			return this.defenseSkill;
+			int defense = this.defenseSkill;
+			if ( buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ketchup.class ) != null) defense *= 0.8f;
+			return defense;
 		} else {
 			return 0;
 		}

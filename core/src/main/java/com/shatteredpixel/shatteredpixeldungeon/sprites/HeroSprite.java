@@ -54,6 +54,7 @@ public class HeroSprite extends CharSprite {
 		
 		texture( Dungeon.hero.heroClass.spritesheet() );
 		updateArmor();
+		updateHair( Dungeon.hero.hairColor().ID() );
 		
 		link( Dungeon.hero );
 
@@ -61,6 +62,20 @@ public class HeroSprite extends CharSprite {
 			idle();
 		else
 			die();
+	}
+
+	//tint for each hair color ID, in the order of Shittened's HairColor
+	private static final int[] HAIR_TINTS = {
+			-1, 0xFF8800, 0xFFE000, 0x40C040, 0x40C0FF, 0x20C0A8, 0x9040D0, 0xFF70B0,
+			0xC09060, 0x303030, 0x909090, 0xF0F0F0, 0x8B5A2B, 0xC02020, 0x5A3A1A
+	};
+
+	public void updateHair( int hairID ) {
+		if (hairID <= 0 || hairID >= HAIR_TINTS.length) {
+			resetColor();
+		} else {
+			tint( HAIR_TINTS[hairID], 0.3f );
+		}
 	}
 
 	public void disguise(HeroClass cls){

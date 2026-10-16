@@ -129,6 +129,11 @@ public class Armor extends EquipableItem {
 	private float usesLeftToID = USES_TO_ID;
 	private float availableUsesToID = USES_TO_ID/2f;
 	
+	//Shittened PD's armors name a picture ID as well. Ours is drawn from the tier.
+	public Armor( int tier, int ID ) {
+		this( tier );
+	}
+
 	public Armor( int tier ) {
 		this.tier = tier;
 	}

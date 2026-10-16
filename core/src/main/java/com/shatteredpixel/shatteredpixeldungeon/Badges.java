@@ -1024,6 +1024,12 @@ public class Badges {
 		}
 	}
 
+	//Shittened PD has badges for these. They are not drawn here, so the hooks are kept and do nothing.
+	public static void validateTurd() {}
+	public static void validatePatRat() {}
+	public static void validateRatatouille() {}
+	public static void validateDeathWithKetchup() {}
+
 	public static void validateArtificerUnlock(){
 		if (!isUnlocked(Badge.UNLOCK_ARTIFICER)){
 			displayBadge( Badge.UNLOCK_ARTIFICER );

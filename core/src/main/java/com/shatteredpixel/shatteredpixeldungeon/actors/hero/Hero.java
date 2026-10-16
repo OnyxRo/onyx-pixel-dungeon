@@ -280,6 +280,11 @@ public class Hero extends Char {
 		constructRespawnTimer = 50;
 		doesConstructExist = false;
 	}
+	//Shittened PD's spray paint. Shittened redraws the hero's hair, this game tints the sprite a little instead.
+	private com.shatteredpixel.shatteredpixeldungeon.mechanics.HairColor hairColor = com.shatteredpixel.shatteredpixeldungeon.mechanics.HairColor.DEFAULT;
+	public com.shatteredpixel.shatteredpixeldungeon.mechanics.HairColor hairColor() { return hairColor; }
+	public void hairColor(com.shatteredpixel.shatteredpixeldungeon.mechanics.HairColor color) { hairColor = color; }
+
 	public float bountyhunterbuff = 0; //Devoted PD's bounty hunter, 3 max HP for each upgrade turned into hardening
 	public int vitalityBonus = 0; //Matt Edition's Potion of Vitality, extra max HP on top of level and HTBoost
 	public ArrayList<Perks.Perk> perks = new ArrayList<>(); //Experienced PD's perks
@@ -380,6 +385,7 @@ public class Hero extends Char {
 		bundle.put( HTBOOST, HTBoost );
 		bundle.put( "vitality_bonus", vitalityBonus );
 		bundle.put( "bountyhunterbuff", bountyhunterbuff );
+		bundle.put( "hair_color", hairColor );
 		if (lastEaten != null) bundle.put( "last_eaten", lastEaten );
 		bundle.put( "construct_respawn_timer", constructRespawnTimer );
 		bundle.put( "pattern_recognition_potions", PatternRecognitionPotions.toArray( new Class[0] ) );
@@ -397,6 +403,7 @@ public class Hero extends Char {
 		HTBoost = bundle.getInt(HTBOOST);
 		vitalityBonus = bundle.getInt("vitality_bonus");
 		bountyhunterbuff = bundle.getFloat("bountyhunterbuff");
+		hairColor = bundle.contains("hair_color") ? bundle.getEnum( "hair_color", com.shatteredpixel.shatteredpixeldungeon.mechanics.HairColor.class ) : com.shatteredpixel.shatteredpixeldungeon.mechanics.HairColor.DEFAULT;
 		lastEaten = bundle.contains("last_eaten") ? (Item) bundle.get("last_eaten") : null;
 		constructRespawnTimer = bundle.getInt( "construct_respawn_timer" );
 		PatternRecognitionPotions.clear();
@@ -596,6 +603,10 @@ public class Hero extends Char {
 		
 		float accuracy = 1;
 		accuracy *= RingOfAccuracy.accuracyMultiplier( this );
+		//Shittened PD, being well fed makes the hero a little better at everything
+		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Satisfied.class) != null) {
+			accuracy *= 1f + buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Satisfied.class).statBoost();
+		}
 		
 		//precise assault and liquid agility
 		if (!(wep instanceof MissileWeapon)) {
@@ -671,6 +682,9 @@ public class Hero extends Char {
 		float evasion = defenseSkill;
 
 		evasion *= RingOfEvasion.evasionMultiplier( this );
+		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Satisfied.class) != null) evasion *= 1f + buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Satisfied.class).statBoost();
+		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Acceleration.class) != null) evasion *= (1.0f + (com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Acceleration.multiplier(this) - 1.0f) / 2f); //Halved for evasion
+		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ketchup.class) != null) evasion *= 0.8f;
 
 		if (buff(Talent.LiquidAgilEVATracker.class) != null){
 			if (pointsInTalent(Talent.LIQUID_AGILITY) == 1){
@@ -754,6 +768,15 @@ public class Hero extends Char {
 			if (wepDr > 0) dr += wepDr;
 		}
 
+		//Shittened PD's steadfast and protective weapons add a little armor
+		if (belongings.weapon() instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon) {
+			com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon mw = (com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon) belongings.weapon();
+			if (mw.prefix == com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix.STEADFAST
+					|| mw.prefix == com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix.PROTECTIVE) {
+				dr += Random.NormalIntRange( 0 , mw.tier );
+			}
+		}
+
 		//Reforged's Armorer, a little extra armor, a lot more when badly hurt
 		if (subClass == HeroSubClass.ARMORER && belongings.armor() != null) {
 			dr += 2;
@@ -824,6 +847,9 @@ public class Hero extends Char {
 		float speed = super.speed();
 
 		speed *= RingOfHaste.speedMultiplier(this);
+		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Overstuffed.class) != null) {
+			speed *= 0.8f;
+		}
 
 		//Reforged's Adrenaline talent for the Reflection ability
 		speed *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.artificer.Reflection.speedMultiplier(this);
@@ -906,13 +932,16 @@ public class Hero extends Char {
 
 		if (!RingOfForce.fightingUnarmed(this)) {
 			
-			return delay * belongings.attackingWeapon().delayFactor( this );
+			float armed = delay * belongings.attackingWeapon().delayFactor( this );
+			if ( buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Furor.class ) != null) armed /= 4f;
+			return armed;
 			
 		} else {
 			//Normally putting furor speed on unarmed attacks would be unnecessary
 			//But there's going to be that one guy who gets a furor+force ring combo
 			//This is for that one guy, you shall get your fists of fury!
 			float speed = RingOfFuror.attackSpeedMultiplier(this);
+			if ( buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Furor.class ) != null) speed *= 4f;
 
 			//ditto for furor + sword dance!
 			if (buff(Scimitar.SwordDance.class) != null){
@@ -2611,9 +2640,37 @@ public class Hero extends Char {
 		}
 	}
 
+	//Shittened PD, the hero may take a shit, and the larva that comes out is not happy about it
+	public void defecate(float larvaParalysisLength) {
+		Sample.INSTANCE.play( Assets.Sounds.TURD, Random.Float(1f,3f) );
+		Sample.INSTANCE.play( Assets.Sounds.GAS, 5f );
+		Statistics.shitsTaken++;
+		Badges.validateTurd();
+		GLog.newLine();
+		GLog.w( Messages.get(this, "dump") );
+
+		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogDzewa.Larva larva = new com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogDzewa.Larva();
+		larva.pos = Dungeon.hero.pos;
+		larva.HP = larva.HT = Dungeon.depth * 2;
+		Buff.affect(larva, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis.class, larvaParalysisLength);
+		GameScene.add(larva);
+	}
+
 	@Override
 	public void move(int step, boolean travelling) {
 		boolean wasHighGrass = Dungeon.level.map[step] == Terrain.HIGH_GRASS;
+
+		//HERO MAY TAKE A SHIT (most of the time only when something was drunk or eaten that disagrees with them)
+		if (Random.Int(0,1500) == 4 && Dungeon.depth > 0 && Dungeon.branch == 0 && Dungeon.level != null && !Dungeon.level.locked){
+			defecate(3f);
+		}
+		if (Random.Int(300) == 69 && buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CaffeineRush.class) != null) {
+			defecate(3f);
+			GLog.w("Damn... That coffee is really acting up.");
+		}
+		if (Random.Int(300) == 69 && buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Lavage.class) != null) {
+			defecate(3f);
+		}
 
 		super.move( step, travelling);
 		
