@@ -119,15 +119,15 @@ public class ModRoster {
 		add( "shittened", Table.class, 0, 1, 99 );
 		add( "shittened", Boombox.class, 0, 1, 99 );
 		add( "shittened", Cobra.class, 1, 2, 10 );
-		add( "shittened", GlitchRat.class, 0, 1, 99 );
-		add( "shittened", HeroRat.class, 0, 1, 99 );
+		add( "shittened", GlitchRat.class, 1, 11, 99 );
+		add( "shittened", HeroRat.class, 1, 1, 10 );
 		add( "shittened", RGBCrab.class, 1, 4, 14 );
 		add( "shittened", DM249.class, 1, 11, 99 );
 		add( "shittened", BabyGoblin.class, 0, 1, 99 );
 		add( "shittened", Goblin.class, 0, 1, 99 );
 		add( "shittened", MindGoblin.class, 0, 1, 99 );
 		add( "shittened", Glassbox.class, 1, 1, 99 );
-		add( "shittened", Ratatouille.class, 0, 1, 99 );
+		add( "shittened", Ratatouille.class, 1, 1, 10 );
 		add( "shittened", Adventurer.class, 0, 1, 99 );
 		add( "shittened", Twingo.class, 0, 1, 99 );
 		add( "shittened", Evan.class, 0, 1, 99 );

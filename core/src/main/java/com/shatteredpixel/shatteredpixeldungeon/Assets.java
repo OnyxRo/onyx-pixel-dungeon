@@ -498,6 +498,8 @@ public class Assets {
 		public static final String ARTIFICER = "sprites/artificer.png"; //ported, reforged
 		public static final String SHIT_BAT = "sprites/shittened/bat.png"; //ported, shittened, the mod drew extra frames on this sheet
 		public static final String SHIT_GOO = "sprites/shittened/goo.png"; //ported, shittened, the mod drew extra frames on this sheet
+		public static final String SHIT_DM200 = "sprites/shittened/dm200.png"; //ported, shittened, the mod drew extra frames on this sheet
+		public static final String SHIT_PIRANHA = "sprites/shittened/piranha.png"; //ported, shittened, the mod drew extra frames on this sheet
 		public static final String SHIT_SNAKE = "sprites/shittened/snake.png"; //ported, shittened, the mod drew extra frames on this sheet
 		public static final String SHIT_EYE = "sprites/shittened/eye.png"; //ported, shittened, the mod drew extra frames on this sheet
 		public static final String SHIT_DM100 = "sprites/shittened/dm100.png"; //ported, shittened, the mod drew extra frames on this sheet

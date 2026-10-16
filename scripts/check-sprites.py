@@ -40,8 +40,11 @@ def png_size(path):
         return None
     return struct.unpack('>II', head[16:24])
 
-def number(tok):
+def number(tok, local=None):
     tok = tok.strip()
+    # simple local numbers like  int c = 63;  and  final int offset = 17;  are filled in
+    if local and tok:
+        tok = re.sub(r'[A-Za-z_]\w*', lambda m: str(local[m.group(0)]) if m.group(0) in local else m.group(0), tok)
     if not tok or re.search(r'[A-Za-z_]', tok):
         return None
     if not re.fullmatch(r'[\d\s+\-]+', tok):
@@ -62,6 +65,7 @@ for fn in sorted(os.listdir(os.path.join(PK, 'sprites'))):
     if len(refs) != 1:
         continue
     group, name = list(refs)[0]
+    local = {k: int(v) for k, v in re.findall(r'\bint\s+(\w+)\s*=\s*(\d+)\s*;', src)}
     rel = consts.get((group, name))
     if not rel:
         continue
@@ -79,7 +83,7 @@ for fn in sorted(os.listdir(os.path.join(PK, 'sprites'))):
         for call in re.finditer(r'(\w+)\.frames\(\s*' + re.escape(var) + r'\s*,([^;]*?)\)\s*;', src, re.S):
             checked += 1
             for tok in call.group(2).split(','):
-                v = number(tok)
+                v = number(tok, local)
                 if v is not None and (v < 0 or v >= total):
                     print('%s: %s.frames uses frame %d but %s (%dx%d) only has %d frames of %dx%d (0 to %d)'
                           % (fn, call.group(1), v, rel, size[0], size[1], total, w, h, total - 1))

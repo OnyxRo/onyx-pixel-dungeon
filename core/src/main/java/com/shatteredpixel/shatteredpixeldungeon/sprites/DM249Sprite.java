@@ -40,7 +40,7 @@ public class DM249Sprite extends MobSprite {
 	public DM249Sprite() {
 		super();
 
-		texture( Assets.Sprites.DM200 );
+		texture( Assets.Sprites.SHIT_DM200 );
 
 		TextureFilm frames = new TextureFilm( texture, 21, 18 );
 
