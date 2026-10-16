@@ -53,11 +53,16 @@ public class Whip extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
+		WhipAbility(hero, target, 1, 0, this);
+	}
+
+	//from Transformation PD, so the other whips share the ability and can change its damage
+	public static void WhipAbility(Hero hero, Integer target, float dmgMulti, int dmgBoost, MeleeWeapon wep) {
 
 		ArrayList<Char> targets = new ArrayList<>();
 		Char closest = null;
 
-		hero.belongings.abilityWeapon = this;
+		hero.belongings.abilityWeapon = wep;
 		for (Char ch : Actor.chars()){
 			if (ch.alignment == Char.Alignment.ENEMY
 					&& !hero.isCharmedBy(ch)
@@ -72,26 +77,27 @@ public class Whip extends MeleeWeapon {
 		hero.belongings.abilityWeapon = null;
 
 		if (targets.isEmpty()) {
-			GLog.w(Messages.get(this, "ability_no_target"));
+			GLog.w(Messages.get(wep, "ability_no_target"));
 			return;
 		}
 
-		throwSound();
+		wep.throwSound();
 		Char finalClosest = closest;
 		hero.sprite.attack(hero.pos, new Callback() {
 			@Override
 			public void call() {
-				beforeAbilityUsed(hero, finalClosest);
+				wep.beforeAbilityUsed(hero, finalClosest);
 				for (Char ch : targets) {
+					hero.chooseEnemy(ch);
 					//ability does no extra damage
-					hero.attack(ch, 1, 0, Char.INFINITE_ACCURACY);
+					hero.attack(ch, dmgMulti, dmgBoost, Char.INFINITE_ACCURACY);
 					if (!ch.isAlive()){
 						onAbilityKill(hero, ch);
 					}
 				}
 				Invisibility.dispel();
 				hero.spendAndNext(hero.attackDelay());
-				afterAbilityUsed(hero);
+				wep.afterAbilityUsed(hero);
 			}
 		});
 	}

@@ -374,6 +374,17 @@ public class ItemSpriteSheet {
 
 	public static final int WARPICK = MOD_ITEMS+0;
 	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;
+	public static final int BLOWPIPE = xy(4, 47);
+	public static final int BRACER = xy(5, 47);
+	public static final int LUCKYCOIN = xy(6, 47);
+	public static final int LWHIP = xy(7, 47);
+	public static final int SLIMEBALL = xy(8, 47);
+	public static final int SPEARCONQUEROR = xy(9, 47);
+	public static final int STEEL_WHIP = xy(10, 47);
+	public static final int TAMARU = xy(11, 47);
+	public static final int TATTEKI = xy(12, 47);
+	public static final int WAKIZASHI = xy(13, 47);
+	public static final int WALK_STICK = xy(14, 47);
 	public static final int HELMET_HOLDER = xy(3, 47);
 	public static final int HELMET_CRUSADER = xy(3, 46);
 	public static final int HELMET_BARBARIAN = xy(4, 46);
@@ -633,6 +644,17 @@ public class ItemSpriteSheet {
 	static{
 		assignItemRect(WARPICK, 15, 14);
 		assignItemRect(WOODEN_BOOMERANG, 12, 12);
+		assignItemRect(BLOWPIPE, 15, 15);
+		assignItemRect(BRACER, 11, 13);
+		assignItemRect(LUCKYCOIN, 13, 13);
+		assignItemRect(LWHIP, 14, 14);
+		assignItemRect(SLIMEBALL, 11, 13);
+		assignItemRect(SPEARCONQUEROR, 15, 15);
+		assignItemRect(STEEL_WHIP, 14, 14);
+		assignItemRect(TAMARU, 8, 8);
+		assignItemRect(TATTEKI, 14, 16);
+		assignItemRect(WAKIZASHI, 12, 16);
+		assignItemRect(WALK_STICK, 14, 16);
 		assignItemRect(HELMET_HOLDER, 13, 14);
 		assignItemRect(HELMET_CRUSADER, 15, 16);
 		assignItemRect(HELMET_BARBARIAN, 16, 16);

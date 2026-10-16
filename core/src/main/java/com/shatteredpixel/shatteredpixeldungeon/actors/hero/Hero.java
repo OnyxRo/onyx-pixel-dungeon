@@ -232,6 +232,15 @@ public class Hero extends Char {
 	public Char enemy(){
 		return attackTarget;
 	}
+
+	//from Transformation PD, a weapon ability picks the enemy before it attacks
+	public void chooseEnemy( Char c ){
+		attackTarget = c;
+	}
+
+	public boolean isResolvingAttackAction(){
+		return false;
+	}
 	
 	public boolean resting = false;
 	

@@ -156,3 +156,12 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **A new equipment slot** needs `Belongings` (field, accessor, bundle, clear, iterator, randomEquipped, uncurse), `WndBag` (the slot and the `equipped` count), and one static helper class that the rest of the game calls, so each hook is a single line. Generator needs a `Category` and its `classes` and `defaultProbs`. Put the items in the Catalog so the sandbox lists them.
 - **Check where a copied file sits against its package line.** `port-item.py` made a `tier1` folder for a class whose package line said `melee`, and its strings were keyed to the wrong package. Move the file, then fix the strings.
 - **If `check.sh` says 'Argument list too long'** the classpath outgrew one command line. It now uses argument files, do the same in any new script that builds a classpath from Gradle's cache.
+
+## Added after Transformation PD (2026-10-16)
+
+- **Compile with `scripts/check.sh --quick`, not the copier.** The copier goes through Gradle several times and takes over ten minutes. `check.sh --quick` compiles in 35 seconds, its errors are in `build/check.log`. Use the copier once for the copy, then fix by hand with check.sh.
+- **Damage tags.** Transformation passes `DamageTag...` through every hit. `renames.py` rewrites its overrides of `damage`, `attackProc`, `defenseProc` and `attack` to this game's signatures, and `Char` has shims for calls. A mod with a different combat API needs the same kind of rules, write them first.
+- **The copier pulls hard dependencies in.** After a copy, read `git status --short` and delete the ones you did not choose (Obscura came with Wild Dread, hero replicas with Twisted Mirror). Use `rm -f "${S:?}/${f:?}.java"`, a bare variable path is blocked by the safety check. Remove their roster and catalog lines too.
+- **Monsters in a subpackage** (`actors/mobs/tmobs`) need an import in `ModRoster`.
+- **Fixed stat mods.** Transformation's monsters have 100 to 250 HP at any depth, so register them deep (floor 11 and below).
+- **Shims added for Transformation**, do not write again. See PORTING.md under Transformation PD.

@@ -393,6 +393,7 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String EX_ITEMS = "sprites/transformati/ex_items.png"; //ported, transformati
 		public static final String WILD_DREAD = "sprites/transformation/wild_dread.png"; //ported, transformation
 		public static final String TAPIR_CROCODILE = "sprites/transformation/tapir_crocodile.png"; //ported, transformation
 		public static final String SOUL_COLLECTOR = "sprites/transformation/soul_collector.png"; //ported, transformation

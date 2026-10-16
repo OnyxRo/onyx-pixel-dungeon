@@ -628,6 +628,25 @@ abstract public class Weapon extends KindOfWeapon {
 			
 		public abstract int proc( Weapon weapon, Char attacker, Char defender, int damage );
 
+		//from Transformation PD, a weapon ability can force one enchantment to proc
+		private static final ThreadLocal<Enchantment> forcedProc = new ThreadLocal<>();
+
+		protected boolean procChance( float chance ){
+			return isForcedProc() || Random.Float() < chance;
+		}
+
+		protected boolean isForcedProc(){
+			return this == forcedProc.get();
+		}
+
+		public static void forceProc( Enchantment enchantment ){
+			forcedProc.set( enchantment );
+		}
+
+		public static void clearForcedProc( Enchantment enchantment ){
+			if (forcedProc.get() == enchantment) forcedProc.remove();
+		}
+
 		protected float procChanceMultiplier( Char attacker ){
 			return genericProcChanceMultiplier( attacker );
 		}

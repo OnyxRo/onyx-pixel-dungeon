@@ -167,6 +167,81 @@ public class MeleeWeapon extends Weapon {
 		//do nothing by default
 	}
 
+	public boolean canUseWeaponAbilityAction( Hero hero ){
+		return hero != null;
+	}
+
+	//from Transformation PD, the weapon traits some of its weapons name
+	public enum WeaponTrait {
+		DAGGER,
+		BLOCKING,
+		ONE_SWORD_BLADE,
+		FLAIL
+	}
+
+	//from Transformation PD, the item window lists what each upgrade adds to an ability
+	public enum UpgradeAbilityStatType {
+		LEGACY(null),
+		DAMAGE("ability_damage"),
+		AMBUSH_DAMAGE("ability_ambush_damage"),
+		ATTACK_RANGE("feature_attack_range"),
+		DURATION("ability_duration"),
+		MIRROR_HEALTH("ability_mirror_health"),
+		KNOCKBACK_DISTANCE("ability_knockback_distance"),
+		EFFECT_RANGE("ability_effect_range"),
+		BONUS_MAGIC_DAMAGE("ability_bonus_magic_damage"),
+		EXTRA_ATTACK_RANGE("ability_extra_range"),
+		COUNTER_DAMAGE("ability_counter_damage"),
+		THROW_DAMAGE("feature_throw_damage"),
+		BLADE_SHADOW_DAMAGE("feature_blade_shadow_damage"),
+		PROC_CHANCE("feature_proc_chance"),
+		DRAW_DAMAGE("feature_draw_damage"),
+		DRAW_RANGE("feature_draw_range"),
+		SOUL_TEAR_CHANCE("feature_soul_tear_chance"),
+		RELEASE_DURATION("feature_release_duration");
+
+		private final String messageKey;
+
+		UpgradeAbilityStatType(String messageKey) {
+			this.messageKey = messageKey;
+		}
+
+		public String messageKey() {
+			return messageKey;
+		}
+	}
+
+	public static class UpgradeAbilityStat {
+		public final UpgradeAbilityStatType type;
+		public final String value;
+
+		public UpgradeAbilityStat(UpgradeAbilityStatType type, String value) {
+			this.type = type;
+			this.value = value;
+		}
+	}
+
+	protected UpgradeAbilityStat abilityStat(UpgradeAbilityStatType type, String value) {
+		return new UpgradeAbilityStat(type, value);
+	}
+
+	public ArrayList<UpgradeAbilityStat> upgradeAbilityStats(int level) {
+		ArrayList<UpgradeAbilityStat> result = new ArrayList<>();
+		String value = upgradeAbilityStat(level);
+		if (value != null) {
+			result.add(new UpgradeAbilityStat(UpgradeAbilityStatType.LEGACY, value));
+		}
+		return result;
+	}
+
+	public Integer upgradeBlockingStat(int level) {
+		return null;
+	}
+
+	public ArrayList<UpgradeAbilityStat> upgradeFeatureStats(int level) {
+		return new ArrayList<>();
+	}
+
 	protected void beforeAbilityUsed(Hero hero, Char target){
 		hero.belongings.abilityWeapon = this;
 		Charger charger = Buff.affect(hero, Charger.class);
