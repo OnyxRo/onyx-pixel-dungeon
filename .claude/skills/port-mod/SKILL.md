@@ -165,3 +165,10 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **Monsters in a subpackage** (`actors/mobs/tmobs`) need an import in `ModRoster`.
 - **Fixed stat mods.** Transformation's monsters have 100 to 250 HP at any depth, so register them deep (floor 11 and below).
 - **Shims added for Transformation**, do not write again. See PORTING.md under Transformation PD.
+
+## Added after Transformation run 3 (2026-10-16)
+
+- **A mod system tied to its hero class** (Reason, the Friar) can be ported without the class. Gate the effects on the buff being present instead of on the subclass, stand in existing icons (`BuffIndicator`, `HeroIcon`, `SpellSprite`), turn floating text icons into plain `showStatus`, drop the talent hooks, and list every cut in PORTING.md. Do not add talent entries that no class can ever pick.
+- **Bookkeeping a mod adds to `Item.upgrade`** (Extraction's `upgradeScrollUses`) stays additive. Only the scroll and the infusion write it, it is saved only when above 0, and a test (`ExtractionTest`) compares plain upgrades before and after.
+- **Check `git worktree list` before starting** when a brief names a worktree. `git worktree add ../<name> -b <branch> <base>` makes it. A commit runs the post-commit hook, which starts the desktop update, so use `git -c core.hooksPath=/dev/null commit` when the brief says to leave the desktop app alone.
+- **Python helpers must open mod source with `encoding='utf-8'`**, several Transformation files hold Chinese text.

@@ -160,6 +160,12 @@ abstract public class MissileWeapon extends Weapon {
 		return this;
 	}
 	
+	// thrown weapons share their upgrade scroll uses across the whole set, kept on the tracker
+	@Override
+	public void recordUpgradeScrollUse() {
+		UpgradedSetTracker.recordUpgradeScrollUse(Dungeon.hero, this);
+	}
+
 	@Override
 	public Item upgrade() {
 		if (!bundleRestoring) {
@@ -821,6 +827,38 @@ abstract public class MissileWeapon extends Weapon {
 
 		public HashMap<Long, Integer> levelThresholds = new HashMap<>();
 		public HashMap<Long, Class<? extends Enchantment>> appliedEnchants = new HashMap<>();
+		// Transformation PD's Scroll of Extraction, uses per set, only written by scrolls of upgrade
+		public HashMap<Long, Integer> upgradeScrollCredits = new HashMap<>();
+
+		public static int availableUpgradeScrollUses(Hero h, MissileWeapon w){
+			UpgradedSetTracker t = h == null || w == null ? null : h.buff(UpgradedSetTracker.class);
+			if (w == null) return 0;
+			Integer credits = t == null ? null : t.upgradeScrollCredits.get(w.setID);
+			return credits == null ? 0 : Math.max(0, credits);
+		}
+
+		//empties the set's uses and returns how many there were
+		public static int consumeUpgradeScrollUses(Hero h, MissileWeapon w){
+			int credits = availableUpgradeScrollUses(h, w);
+			UpgradedSetTracker t = h == null ? null : h.buff(UpgradedSetTracker.class);
+			if (t != null) t.upgradeScrollCredits.remove(w.setID);
+			w.upgradeScrollUses = 0;
+			return credits;
+		}
+
+		public static void recordUpgradeScrollUse(Hero h, MissileWeapon w){
+			if (h == null || w == null) return;
+			UpgradedSetTracker t = Buff.affect(h, UpgradedSetTracker.class);
+			int credits = availableUpgradeScrollUses(h, w) + 1;
+			t.upgradeScrollCredits.put(w.setID, credits);
+			w.upgradeScrollUses = credits;
+		}
+
+		//lowers the level a set counts as, so stacks of the set that were degraded alongside stay valid
+		public static void setCanonicalLevel(Hero h, MissileWeapon w, int level){
+			if (h == null || w == null) return;
+			Buff.affect(h, UpgradedSetTracker.class).levelThresholds.put(w.setID, level);
+		}
 
 		public static boolean pickupValid(Hero h, MissileWeapon w){
 			if (h.buff(UpgradedSetTracker.class) != null){
@@ -848,12 +886,27 @@ abstract public class MissileWeapon extends Weapon {
 		public static final String SET_IDS = "set_ids";
 		public static final String SET_LEVELS = "set_levels";
 
+		private static final String CREDIT_SET_IDS = "credit_set_ids";
+		private static final String CREDIT_USES = "credit_uses";
+
 		public static final String SET_IDS_ENCHANTS = "set_ids_enchants";
 		public static final String SET_ENCHANTS = "set_enchants";
 
 		@Override
 		public void storeInBundle(Bundle bundle) {
 			super.storeInBundle(bundle);
+			if (!upgradeScrollCredits.isEmpty()) {
+				long[] creditIDs = new long[upgradeScrollCredits.size()];
+				int[] credits = new int[upgradeScrollCredits.size()];
+				int n = 0;
+				for (Long ID : upgradeScrollCredits.keySet()){
+					creditIDs[n] = ID;
+					credits[n] = upgradeScrollCredits.get(ID);
+					n++;
+				}
+				bundle.put(CREDIT_SET_IDS, creditIDs);
+				bundle.put(CREDIT_USES, credits);
+			}
 			long[] IDs = new long[levelThresholds.size()];
 			int[] levels = new int[levelThresholds.size()];
 			int i = 0;
@@ -880,6 +933,14 @@ abstract public class MissileWeapon extends Weapon {
 		@Override
 		public void restoreFromBundle(Bundle bundle) {
 			super.restoreFromBundle(bundle);
+			upgradeScrollCredits.clear();
+			if (bundle.contains(CREDIT_SET_IDS)){
+				long[] creditIDs = bundle.getLongArray(CREDIT_SET_IDS);
+				int[] credits = bundle.getIntArray(CREDIT_USES);
+				for (int i = 0; i < creditIDs.length; i++){
+					upgradeScrollCredits.put(creditIDs[i], credits[i]);
+				}
+			}
 			long[] IDs = bundle.getLongArray(SET_IDS);
 			int[] levels = bundle.getIntArray(SET_LEVELS);
 			levelThresholds.clear();

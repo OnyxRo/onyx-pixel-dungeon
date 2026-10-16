@@ -623,6 +623,13 @@ public enum Catalog {
 		TRINKETS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MagicFeather.class);
 		TRINKETS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.trinkets.SpearShield.class);
 
+		//items ported from transformation
+		SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfExtraction.class);
+
+		//items ported from transformation
+		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.Tincture.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RitualDagger.class);
+
 
 	}
 
