@@ -136,6 +136,12 @@ public abstract class Mob extends Char {
 	public Char enemy;
 	protected int enemyID = -1; //used for save/restore
 	protected boolean enemySeen;
+
+	//Tower PD shims. Marks a monster that attacks from range, and which targets it would rather skip
+	//(the preference is kept for the ported monsters and does not change target choice here).
+	public boolean ranged = false;
+	public enum TargetingPreference { NONE, NOT_AMULET, NOT_WALLS, NOT_HERO }
+	public TargetingPreference targetingPreference = TargetingPreference.NONE;
 	protected boolean alerted = false;
 
 	protected static final float TIME_TO_WAKE_UP = 1f;

@@ -1558,6 +1558,11 @@ public abstract class Char extends Actor {
 		return props;
 	}
 
+	//Tower PD shim, a short floating text over the character
+	public void speak( String text, int color ){
+		if (sprite != null) sprite.showStatus( color, text );
+	}
+
 	public enum Property{
 		BOSS ( new HashSet<Class>( Arrays.asList(Grim.class, GrimTrap.class, ScrollOfRetribution.class, ScrollOfPsionicBlast.class)),
 				new HashSet<Class>( Arrays.asList(AllyBuff.class, Dread.class) )),

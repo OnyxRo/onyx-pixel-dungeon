@@ -395,6 +395,19 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String TIMELESS_SOUL = "sprites/tower/timeless_soul.png"; //ported, tower
+		public static final String GOBLINSHAMAN = "sprites/tower/goblinshaman.png"; //ported, tower
+		public static final String SLUGGER = "sprites/tower/slugger.png"; //ported, tower
+		public static final String LICTERIALASHER = "sprites/tower/licterialasher.png"; //ported, tower
+		public static final String GOBLINSAND = "sprites/tower/goblinsand.png"; //ported, tower
+		public static final String GOBLINNINJA = "sprites/tower/goblinninja.png"; //ported, tower
+		public static final String GOBLINGIANT = "sprites/tower/goblingiant.png"; //ported, tower
+		public static final String GOBLINFAT = "sprites/tower/goblinfat.png"; //ported, tower
+		public static final String TOWERCAMPRATSHIELD = "sprites/towers/campratshield.png"; //ported, tower
+		public static final String TOWERCAMPRATMAGE = "sprites/towers/campratmage.png"; //ported, tower
+		public static final String TOWERCAMPRATKNIFE = "sprites/towers/campratknife.png"; //ported, tower
+		public static final String TOWERCAMPRATFLAG = "sprites/towers/campratflag.png"; //ported, tower
+		public static final String TOWERCAMPRATARCHER = "sprites/towers/campratarcher.png"; //ported, tower
 		public static final String EX_ITEMS = "sprites/transformati/ex_items.png"; //ported, transformati
 		public static final String WILD_DREAD = "sprites/transformation/wild_dread.png"; //ported, transformation
 		public static final String TAPIR_CROCODILE = "sprites/transformation/tapir_crocodile.png"; //ported, transformation

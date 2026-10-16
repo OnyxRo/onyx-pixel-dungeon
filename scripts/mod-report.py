@@ -203,11 +203,11 @@ out('')
 out('| Monster | Lines | Closure | Tier | Sprite | Name string | Notes |')
 out('| --- | --- | --- | --- | --- | --- | --- |')
 order = {'easy': 0, 'medium': 1, 'hard': 2}
-for r in sorted(mob_rows, key=lambda r: (order[tier(r)], r['closure'], r['name']))[:TOP if 'all' not in opts else None]:
+for r in sorted(mob_rows, key=lambda r: (order[tier(r)], r['closure'], r['name']))[:TOP if '--all' not in opts else None]:
     out('| %s | %d | %d | %s | %s | %s | %s |' % (r['name'], r['loc'], r['closure'], tier(r),
         (r['sprite'] or '?') + ('' if r['has_sprite'] else ' (missing)'), 'yes' if r['has_name'] else 'no', '; '.join(r['notes'])))
 out('')
-if len(mob_rows) > TOP and 'all' not in opts:
+if len(mob_rows) > TOP and '--all' not in opts:
     out('Showing ' + str(TOP) + ' of ' + str(len(mob_rows)) + ', pass --all for the rest.')
     out('')
 # Triage for everything that is not a monster. Same idea as the monster tiers.

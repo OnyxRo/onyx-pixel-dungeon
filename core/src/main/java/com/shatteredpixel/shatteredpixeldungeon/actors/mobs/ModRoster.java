@@ -18,6 +18,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.tmobs.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.towers.*;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -154,6 +155,29 @@ public class ModRoster {
 		add( "transformation", TapirCrocodile.class, 1, 21, 25 );
 		add( "transformation", TransformMimic.class, 0, 1, 99 );
 		add( "transformation", TwistedMirror.class, 0, 1, 99 );
+		add( "tower", GnollBlind.class, 1, 1, 99 );
+		add( "tower", GnollThrower.class, 1, 1, 99 );
+		add( "tower", GnollTwilight.class, 1, 1, 99 );
+		add( "tower", GoblinFat.class, 1, 1, 99 );
+		add( "tower", GoblinGiant.class, 1, 1, 99 );
+		add( "tower", GoblinNinja.class, 1, 1, 99 );
+		add( "tower", GoblinSand.class, 1, 1, 99 );
+		add( "tower", HermitCrabNoShell.class, 1, 1, 99 );
+		add( "tower", LicteriaLasher.class, 1, 1, 99 );
+		add( "tower", MagiCrab.class, 1, 1, 99 );
+		add( "tower", Slugger.class, 1, 1, 99 );
+		add( "tower", SkeletonArmored.class, 1, 1, 99 );
+		add( "tower", SkeletonArmoredShielded.class, 1, 1, 99 );
+		add( "tower", TimelessSpirit.class, 1, 1, 99 );
+		add( "tower", CampRatLeader.class, 1, 1, 99 );
+		add( "tower", CampRatArcher.class, 1, 1, 99 );
+		add( "tower", CampRatKnife.class, 1, 1, 99 );
+		add( "tower", CampRatMage.class, 1, 1, 99 );
+		add( "tower", CampRatShield.class, 1, 1, 99 );
+		add( "tower", ChiefRat.class, 1, 1, 99 );
+		add( "tower", GoblinShaman.ShamanStrength.class, 1, 1, 99 );
+		add( "tower", GoblinShaman.ShamanShield.class, 1, 1, 99 );
+		add( "tower", GoblinShaman.ShamanRegen.class, 1, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */
