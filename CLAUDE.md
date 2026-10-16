@@ -27,6 +27,8 @@ His writing rules apply to anything written for him, including commit messages, 
 - Remind Onyx to type /clear after every response.
 - Never read, write or delete anything in %APPDATA%\.onyxrothman (Onyx's real saves) or anywhere else outside this repo. The only exceptions are the `Onyx Gallery` test save folder used by the screenshot tour, the mod sources folder `~/mod-sources` (read only, for porting), this session's scratchpad folder, and the normal Gradle and Java caches that builds use.
 - Never force-push and never delete branches, local or remote.
+- Never replace, rename or edit anything in `Documents\OnyxPixelDungeon-app` by hand, and never swap in a jar built from another mod's repo. Ports go into this repo's source, never into the installed app. On 2026-10-15 another session swapped Ryuse's 26 MB jar over the 779 MB game jar (it was restored from the backup, nothing was lost).
+- When a task finishes and game code changed, commit it and make sure the desktop app is updated. The post-commit hook does this by itself. Check `build/auto-update.log` for "desktop app updated", and if it did not run, run `powershell -ExecutionPolicy Bypass -File scripts\auto-update-desktop.ps1 -Force`. Tell Onyx whether the update happened.
 
 ## What the game is
 
