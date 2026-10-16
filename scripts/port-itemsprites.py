@@ -43,6 +43,7 @@ def value(name, depth=0):
 
 sheet_path = LP(MOD + 'core/src/main/assets/sprites/items.png')
 if not os.path.exists(sheet_path): sheet_path = LP(MOD + 'core/src/main/assets/items.png')   # pre 0.8 mods keep it flat
+if not os.path.exists(sheet_path): sheet_path = LP(MOD + 'core/src/main/assets/ui/items.png')   # 0.5 and 0.6 mods keep it under ui
 src = Image.open(sheet_path).convert('RGBA')
 dstp = ROOT + 'core/src/main/assets/sprites/items.png'
 dst = Image.open(dstp).convert('RGBA')

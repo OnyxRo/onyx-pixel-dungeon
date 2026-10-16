@@ -21,7 +21,7 @@ Update this at the end of every task. Details live in CLAUDE.md.
 ## Left to do
 - Monsters and weapons from Magic Ling (about 350 monster files, 74 weapons) and Transformation (59, 35).
 - Monsters, weapons and items for the other ten mods (counts in CLAUDE.md).
-- Mods not started: Tower PD, Lovecraft, Dragonic, SPS, Goblins, Unleashed, Deep, Pixel Spacebase.
+- Mods not started: Tower PD, Dragonic, SPS, Goblins, Unleashed, Deep, Pixel Spacebase.
 - Sandbox: forcing a single mod by one click (toggling the rest off works today).
 
 ## Known issues
@@ -83,3 +83,24 @@ See the port-mod skill for the list of shims and what they do. Added on 2026-10-
 - 2026-10-15 night. Shittened PD ported in full, in a live session. Order of work, `port-item.py` on all easy items and the six weapons (102 classes), shims for what they needed (buff icons ids 91 to 105, three specks, `Food` nutrition fields, `Armor(int, int)`, `EquipableItem.type`, `Music` shim, `WndOptions` list constructor, `Timer` and `IntMap` imports, `Statistics.shitsTaken`, Badges hooks that do nothing), then the weapon prefix system (`Prefix`, `Weapon`, `MeleeWeapon.trueMax` wrapped around 32 weapon classes by a script, `ItemSlot` extra icon, `ItemSpriteSheet.Prefix`, `prefix_icons.png`), then 34 monsters through `port-mob.py`, then the plants (their picture cells in `terrain_features.png` were already used by other mods, so they got free cells), the three potions, the scroll and the seeds (deck weight 0 so no change to normal drops), the exotic mappings, the shop and Tokmanni, the rooms, the slot machine, and the last five monsters (Adventurer, Twingo, Evan, Tokmanni, GreenGoo). Fixed on the way, `renames.py` no longer rewrites `com.badlogic` and `com.watabou` imports, `check-sprites.py` now fills in simple local numbers like `int c = 63;` (it missed the Goldfish sprite before), the Shittened sprites that need more frames than our shared sheets have use the mod's own sheet. `check.sh` is clean (606 items, 121 monsters, 22 known headless problems) and 45 Shittened monsters were pictured in the arena. A full bot run from floor 1 to 26 and back was started after the last change, see below if it finished.
 
 - 2026-10-15 bug test. Entering the Void trap floor from the sandbox crashed, because its entrance was cell 1 on the map edge and the field of view scan went out of bounds. The entrance is now the middle of the open area, and `DevotedLeftoversTest` checks it and observes from there. The Zealot (Conjurer, Devotee) and Artificer (Constructor, Armorer) each played a full bot run, floor 1 to 26 and back, with no exceptions. Pictures were not looked at.
+
+## Lovecraft PD (2026-10-16, repo Sadsaltan/LovecraftPixelDungeon, key `lovecraft`)
+
+Ported in full in one run. The mod is on a very old base (the 0.5 and 0.6 era, assets under `tiles/`, `mobs/`, `ui/items.png`), so most of the work was drift.
+
+Done.
+- 6 worlds (55 in total now). Overworld (an unused sheet in the mod, set in the Sewers stage) and the Eldritch Sewers, Prison, Caves, City and Halls (`worlds/OverworldLevel`, `Eldritch*Level`). Tile sheets filled from Shattered's for the missing cells, the mod's own water sheets, the mod's JoJo songs one per region (`music/lovecraft`, Diamond 2 for the Overworld). Icon, logo, WndModInfo text and strings added.
+- 18 monsters and 3 NPCs. Kind Spirit, Grey Rat, Murderer, Red Scorpion, Bandit Lord, 13 living plants (one per plant), Elder Thing, Gardner, Pepe. Floors in its worlds use `LovecraftSpawner` (Shattered's rotation with the mod's swaps, grey rats for some rats on floors 1 to 3, murderers for the thief on 7 and 9, red scorpions on 23 and 24). The roster lines are weight 0 on purpose, they feed the bestiary, sandbox and tests only. The Bandit Lord was never spawned by the mod itself, sandbox only.
+- Living plants (`plants/LivingPlants`). In a Lovecraft world half of the plants that trigger wake up as their living plant instead of doing their effect, as in the mod. The hook is one line in `Plant.trigger`.
+- Dreamfoil and Steamweed plants and seeds (plant pictures in cells 44 and 45 of `terrain_features.png`, Dreamfoil brews to Purity, Steamweed to the new Potion of Steam), Potion of Might and Potion of Steam (two new potion labels, lilac and olive, with pictures made by hue shifting).
+- 13 weapons and 6 guns, thrown weapons, 13 enchantments and curses, 8 glyphs and the Clumsy curse (all in the `Armor.Glyph` and `Weapon.Enchantment` lists), Tnt and Tnt Bundle, Scissors, Tincture Bottle and the whole herb system (14 herbs, 14 plant items), Wand of Venom, Venom Gas, Spores, Steam, Storm and Sunlight blobs, four keys (catalog only), Elder Sign and Yellow Sign. `items/LovecraftLoot` adds one of the mod's items to half the floors of a Lovecraft world, so the mod's weapons and tools turn up there and nowhere else.
+- Elder Sign room, Yellow Sign room and the Gardener's garden (`levels/rooms`). The mod put them on floors 4, 14 and 1, which never shuffle, so `WorldLevel.initRooms` adds them now and then to any floor of a Lovecraft world.
+- Sanity and knowledge shim in the core (`Hero.MHP`, `MHT`, `reduceMentalHealth`, `increaseMentalHealth`, `knowl`, `gainKnowl`, `loseKnowl`, `Mob.horrorlvl`). Horror monsters strip mental health when they attack, at 0 the hero stumbles and hurts themself, a purple bar under the health bar shows while it is below full. Knowledge is a plain counter.
+
+Left out, and why.
+- The mod's gating of scrolls and wands on knowledge, the insanity choice windows, the Cthulhu intro and badge scenes, WndAlchemy, WndGrimoire and the language and prefs windows (they rewrite core screens).
+- Scroll of Magical Infusion, Weightstone (both need the removed `imbue` system), the Boomerang and Chakram (old equip and throw items, this game has boomerangs already), Dividing, Heavy Crossbow, Teleport glyph is in but its catalog line only, Seed Pouch, Food Bag and Wand Holster (this game has Velvet Pouch, Food Holder and Magical Holster), Newborn Elemental (Shattered has its own), Mental Strength buff (nothing in the mod uses it), Pepe's study room, the Kind Spirit's spawn from opening remains.
+- The four keys have no doors that use them, catalog only.
+- Not seen on screen yet. The sanity bar, the three new rooms, living plants waking up, guns firing, the herb and tincture windows. The arena picture showed the new monsters and living plants fine.
+
+Tool changes made. `port-itemsprites.py` reads `ui/items.png` for 0.5 and 0.6 mods. `port-skip.txt` has the mod launcher and the scenes it drags in.

@@ -165,3 +165,11 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **Monsters in a subpackage** (`actors/mobs/tmobs`) need an import in `ModRoster`.
 - **Fixed stat mods.** Transformation's monsters have 100 to 250 HP at any depth, so register them deep (floor 11 and below).
 - **Shims added for Transformation**, do not write again. See PORTING.md under Transformation PD.
+
+## Added after Lovecraft PD (2026-10-16)
+
+- **Very old mods** (0.5 and 0.6 era) keep tiles under `tiles/`, mobs under `mobs/` and the item sheet at `ui/items.png`. `port-itemsprites.py` finds all three now. Their mobs extend classes from other packages, so check each copied mob for missing imports of Rat, Thief, Scorpio.
+- **Core systems a mod rewrote** (Lovecraft sanity and knowledge) get a small shim on Hero and Mob, not a port of their windows. Say what was left out in PORTING.md.
+- **Monster spawning for a mod with few monsters** needs its own spawner (see LovecraftSpawner), because a mod with roster entries replaces the whole rotation otherwise. Give the roster lines weight 0.
+- **New potions need potion labels.** `Potion.colors` holds 17 now. Make two more by hue shifting an existing sprite pair (regular and exotic, 16 cells apart) with PIL.
+- **Floors that never shuffle** (1, 4, 9, 14, 19, 5k) cannot hold a mod room, add it from `WorldLevel.initRooms` to any floor of that mod instead.

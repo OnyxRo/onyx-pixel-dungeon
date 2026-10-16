@@ -35,6 +35,7 @@ A second wave of 30 worlds was made from the tile sheets of ten more mods. Each 
 | Cursed PD (Legacy) | Beach, Surface, Jungle Temple, Dolya Haven |
 | Ryuse's PD | Polluted Sewers |
 | Abyssalnite PD | Abyssal Sewers, Prison, Caves, City, Halls |
+| Lovecraft PD | Overworld, Eldritch Sewers, Prison, Caves, City, Halls |
 | Rat King PD 2 | Rat King's Sewers |
 | Transformation PD | UES, Lush Surface |
 | Magic Ling PD | Golden City, Desert Wilds, Cold Lands, Dead Lands, Ghost Manor, Frozen Vault, Overgrown Garden, Tengu's Hideout |
@@ -114,7 +115,7 @@ To check the worlds, compile with `scripts/compile.sh` and run `scripts/test/Wor
 
 Onyx's Pixel Dungeon is by Onyx Rothman.
 
-Content ported from Combusted Pixel Dungeon (Inferno214221), Devoted Pixel Dungeon (Arackulele and contributors, soundtrack by Cevin2006), Magic Ling Pixel Dungeon (LingASDJ and contributors), Transformation Pixel Dungeon (dongyusangyu), Shattered PD Matt Edition (mr-matthias1829), Pixel Dungeon Reforged (nathanlink169), Shittened Pixel Dungeon (Haukii), Abyssalnite Pixel Dungeon (MywaifuisTataraKogasa), Cursed Pixel Dungeon Legacy (Smujb), Summoning PD Reincarnated, Re-ARranged PD, Experienced PD, Ryuse's PD and Rat King PD 2.
+Content ported from Combusted Pixel Dungeon (Inferno214221), Devoted Pixel Dungeon (Arackulele and contributors, soundtrack by Cevin2006), Magic Ling Pixel Dungeon (LingASDJ and contributors), Transformation Pixel Dungeon (dongyusangyu), Shattered PD Matt Edition (mr-matthias1829), Pixel Dungeon Reforged (nathanlink169), Shittened Pixel Dungeon (Haukii), Abyssalnite Pixel Dungeon (MywaifuisTataraKogasa), Cursed Pixel Dungeon Legacy (Smujb), Summoning PD Reincarnated, Re-ARranged PD, Experienced PD, Ryuse's PD, Rat King PD 2 and Lovecraft PD (Sadsaltan).
 
 Built on [Shattered Pixel Dungeon](https://shatteredpixel.com/shatteredpd/) by Evan Debenham, which is based on [Pixel Dungeon](https://github.com/00-Evan/pixel-dungeon-gradle) by Oleg Dolya (Watabou). If you enjoy this, consider [supporting Shattered's developer on Patreon](https://www.patreon.com/ShatteredPixel). Please send bug reports about this fork here, not to Shattered.
 

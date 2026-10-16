@@ -106,6 +106,9 @@ public class Potion extends Item {
 			put("russet",ItemSpriteSheet.POTION_RUSSET);
 			put("maroon",ItemSpriteSheet.POTION_MAROON);
 			put("sepia",ItemSpriteSheet.POTION_SEPIA);
+			//from Lovecraft PD, two more labels for its two extra potions
+			put("lilac",ItemSpriteSheet.POTION_LILAC);
+			put("olive",ItemSpriteSheet.POTION_OLIVE);
 		}
 	};
 
@@ -114,7 +117,7 @@ public class Potion extends Item {
 		mustThrowPots.add(PotionOfToxicGas.class);
 		mustThrowPots.add(PotionOfLiquidFlame.class);
 		mustThrowPots.add(PotionOfParalyticGas.class);
-		mustThrowPots.add(PotionOfFrost.class);
+		mustThrowPots.add(PotionOfFrost.class); mustThrowPots.add(PotionOfSteam.class);
 		
 		//exotic
 		mustThrowPots.add(PotionOfCorrosiveGas.class);
@@ -507,6 +510,9 @@ public class Potion extends Item {
 			types.put(com.shatteredpixel.shatteredpixeldungeon.plants.CoffeeBush.Seed.class, PotionOfAcceleration.class);
 			types.put(com.shatteredpixel.shatteredpixeldungeon.plants.TomatoPlant.Seed.class, PotionOfKetchup.class);
 			types.put(com.shatteredpixel.shatteredpixeldungeon.plants.PotatoPlant.Seed.class, PotionOfFuel.class);
+			//Lovecraft PD
+			types.put(com.shatteredpixel.shatteredpixeldungeon.plants.Dreamfoil.Seed.class, PotionOfPurity.class);
+			types.put(com.shatteredpixel.shatteredpixeldungeon.plants.Steamweed.Seed.class, PotionOfSteam.class);
 		}
 		
 		@Override

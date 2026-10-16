@@ -24,3 +24,5 @@ The cloud routine does the first unchecked task and checks it off. Smallest firs
 - [x] Matt Edition leftovers. Done 2026-10-15 except the Seven Sins mode and armor magic levels (see PORTING.md). Ported the wands, Throwing Chains, Icy Core, Binding curses, Potion of Vitality, the animation speed setting, the Friendly Thief quest with the Thieves Guild branch and the Ice Caves branch.
 - [x] Experienced PD Perks. Done 2026-10-15, 17 of 18 perks. The cycle system stays out.
 - [x] Fix the item pictures (`TX_HEIGHT`) and the OOF Thief sprite. Done 2026-10-15, with `scripts/check-sprites.py` so it cannot come back unseen.
+- [x] Port Lovecraft PD in full (2026-10-16). 6 worlds, 18 monsters, 3 NPCs, about 90 items, the herb system, three rooms. What was left out is in PORTING.md.
+- [ ] Sandbox. Play a Lovecraft world (force Overworld or an Eldritch world). Check the sanity bar (a horror monster hitting you), a plant waking up as a living plant, firing a gun with the SHOOT action, cutting a plant with the Scissors and brewing a herb with the Tincture Bottle, and the elder sign room (drop the sign on the floor sign).

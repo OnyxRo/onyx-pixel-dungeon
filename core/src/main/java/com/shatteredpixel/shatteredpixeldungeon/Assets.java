@@ -395,6 +395,12 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String PEPE = "npcs/lovecraft/pepe.png"; //ported, lovecraft
+		public static final String GARDNER = "npcs/lovecraft/gardner.png"; //ported, lovecraft
+		public static final String ELDERTHING = "mobs/lovecraft/elderthing.png"; //ported, lovecraft
+		public static final String HELP_GRADNER = "helppictures/lovecraft/gardnerhelp.png"; //ported, lovecraft
+		public static final String LIVINGPLANTS = "mobs/lovecraft/livingplants.png"; //ported, lovecraft
+		public static final String SPIRIT = "mobs/lovecraft/kindspirit.png"; //ported, lovecraft
 		public static final String EX_ITEMS = "sprites/transformati/ex_items.png"; //ported, transformati
 		public static final String WILD_DREAD = "sprites/transformation/wild_dread.png"; //ported, transformation
 		public static final String TAPIR_CROCODILE = "sprites/transformation/tapir_crocodile.png"; //ported, transformation

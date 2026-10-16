@@ -74,7 +74,8 @@ public abstract class Plant implements Bundlable {
 		}
 
 		wither();
-		activate( ch );
+		//Lovecraft PD, a plant may wake up as a monster instead
+		if (!LivingPlants.awaken( this )) activate( ch );
 		Bestiary.setSeen(getClass());
 		Bestiary.countEncounter(getClass());
 	}

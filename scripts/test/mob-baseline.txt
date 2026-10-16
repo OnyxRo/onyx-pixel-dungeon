@@ -53,3 +53,8 @@ Ghost crashed during its own turns
 MirrorImage crashed the test
 RuneSpinner crashed during its own turns
 SoulCollector crashed during its own turns
+KindSpirit crashed during its own turns
+ElderThing crashed during its own turns
+Pepe crashed during its own turns
+Deflection crashed when it was hit by a rat
+BlindingDart crashed the test

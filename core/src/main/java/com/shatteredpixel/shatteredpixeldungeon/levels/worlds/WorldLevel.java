@@ -86,6 +86,29 @@ public abstract class WorldLevel extends RegularLevel implements ModWorld {
 	}
 
 	@Override
+	protected java.util.ArrayList<com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room> initRooms() {
+		java.util.ArrayList<com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room> rooms = super.initRooms();
+		//Lovecraft PD. Its floors 1, 4 and 14 had a garden, an elder sign room and a yellow sign room, those
+		//floors never shuffle here, so they turn up now and then on any floor of a Lovecraft world instead
+		if ("lovecraft".equals( WorldShuffle.modKey( this ) )) {
+			if (com.watabou.utils.Random.Int( 6 ) == 0) rooms.add( new com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.GardenerRoom() );
+			if (com.watabou.utils.Random.Int( 5 ) == 0) rooms.add( new com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ElderSignRoom() );
+			if (com.shatteredpixel.shatteredpixeldungeon.Dungeon.depth >= 11 && com.watabou.utils.Random.Int( 5 ) == 0) rooms.add( new com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.YellowSignRoom() );
+		}
+		return rooms;
+	}
+
+	@Override
+	protected void createItems() {
+		super.createItems();
+		//Lovecraft PD floors lie about with the mod's own weapons, guns and tools
+		if ("lovecraft".equals( WorldShuffle.modKey( this ) )) {
+			com.shatteredpixel.shatteredpixeldungeon.items.Item extra = com.shatteredpixel.shatteredpixeldungeon.items.LovecraftLoot.forFloor();
+			if (extra != null) drop( extra, randomDropCell() );
+		}
+	}
+
+	@Override
 	public Group addVisuals() {
 		super.addVisuals();
 		switch (ambience()){

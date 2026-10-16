@@ -66,6 +66,12 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.AbyssalCavesLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.AbyssalCityLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.AbyssalHallsLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.RatKingSewersLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.OverworldLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.EldritchSewersLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.EldritchPrisonLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.EldritchCavesLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.EldritchCityLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.EldritchHallsLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.NecropolisLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.PalePalaceLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.SkyAlchemyGreenhouseLevel;
@@ -150,7 +156,9 @@ public class WorldShuffle {
 			//Abyssalnite Pixel Dungeon
 			AbyssalSewersLevel.class, AbyssalPrisonLevel.class, AbyssalCavesLevel.class, AbyssalCityLevel.class, AbyssalHallsLevel.class,
 			//Rat King Pixel Dungeon 2
-			RatKingSewersLevel.class
+			RatKingSewersLevel.class,
+			//Lovecraft Pixel Dungeon
+			OverworldLevel.class, EldritchSewersLevel.class, EldritchPrisonLevel.class, EldritchCavesLevel.class, EldritchCityLevel.class, EldritchHallsLevel.class
 	};
 
 	/** A world that fits any region, used for Transformation's tower styles. */
@@ -195,7 +203,9 @@ public class WorldShuffle {
 			//Abyssalnite Pixel Dungeon
 			SEWERS, PRISON, CAVES, CITY, HALLS,
 			//Rat King Pixel Dungeon 2
-			SEWERS
+			SEWERS,
+			//Lovecraft Pixel Dungeon
+			SEWERS, SEWERS, PRISON, CAVES, CITY, HALLS
 	};
 
 	//the source mod's app icon for each world, in the same order as WORLDS. Null for Shattered's own
@@ -212,6 +222,7 @@ public class WorldShuffle {
 	private static final String RYUSE = "interfaces/mods/ryuse.png";
 	private static final String ABYSSALNITE = "interfaces/mods/abyssalnite.png";
 	private static final String RKPD2 = "interfaces/mods/rkpd2.png";
+	private static final String LOVECRAFT = "interfaces/mods/lovecraft.png";
 	private static final String CURSED = "interfaces/mods/cursed.png";
 	private static final String[] LOGOS = {
 			null, null, null, null, null,
@@ -244,7 +255,9 @@ public class WorldShuffle {
 			//Abyssalnite Pixel Dungeon
 			ABYSSALNITE, ABYSSALNITE, ABYSSALNITE, ABYSSALNITE, ABYSSALNITE,
 			//Rat King Pixel Dungeon 2
-			RKPD2
+			RKPD2,
+			//Lovecraft Pixel Dungeon
+			LOVECRAFT, LOVECRAFT, LOVECRAFT, LOVECRAFT, LOVECRAFT, LOVECRAFT
 	};
 
 	/** The asset path of the icon of the mod a floor's world comes from, or null for Shattered's own worlds. */
@@ -268,6 +281,9 @@ public class WorldShuffle {
 		}
 		if (Dungeon.branch == 0 && MATT.equals(modLogo(level))) {
 			return com.shatteredpixel.shatteredpixeldungeon.actors.mobs.MattSpawner.getMobRotation(level);
+		}
+		if (Dungeon.branch == 0 && LOVECRAFT.equals(modLogo(level))) {
+			return com.shatteredpixel.shatteredpixeldungeon.actors.mobs.LovecraftSpawner.getMobRotation(depth);
 		}
 		//any other mod with monsters on the roster
 		String key = modKey(level);

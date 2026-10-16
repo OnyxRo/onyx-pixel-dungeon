@@ -632,6 +632,92 @@ public enum Catalog {
 		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.Tatteki.class);
 		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.tier6.AuxiliaryCore.class);
 
+		//items ported from lovecraft
+		ENCHANTMENTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Blowback.class);
+		ENCHANTMENTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Cowardice.class);
+		ENCHANTMENTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Menacing.class);
+		ENCHANTMENTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Exploding.class);
+		ENCHANTMENTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Friendship.class);
+		ENCHANTMENTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Glowing.class);
+		ENCHANTMENTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Holy.class);
+		ENCHANTMENTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Hunting.class);
+		ENCHANTMENTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Midas.class);
+		ENCHANTMENTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Sting.class);
+		ENCHANTMENTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Stunning.class);
+		ENCHANTMENTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.TimeFreezing.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.guns.FastFirePistol.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.guns.Harpoon.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.guns.Luger.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.guns.Pistol.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.guns.Rifle.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.guns.Shotgun.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Axe.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Halberd.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.HeroicShortsword.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.KnifeGlove.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knuckles.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Kusarigama.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scythe.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.SpikedGreatsword.class);
+		THROWN_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.CurareDart.class);
+		THROWN_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.GiantShuriken.class);
+		THROWN_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.PrimitiveSpear.class);
+		THROWN_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Tamahawk.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.Tnt.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.TntBundle.class);
+		GLYPHS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Clumsy.class);
+		GLYPHS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Chaotic.class);
+		GLYPHS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Cloning.class);
+		GLYPHS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Deflection.class);
+		GLYPHS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Explosion.class);
+		GLYPHS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.FreezeTime.class);
+		GLYPHS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Stealth.class);
+		GLYPHS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Weight.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.keys.LeadKey.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.keys.PlatinKey.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.keys.TitaniumKey.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.keys.WoodenKey.class);
+		POTIONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.quest.ElderSign.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.quest.YellowSign.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.tools.Scissors.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.tools.Tincturebottle.class);
+		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfVenom.class);
+
+		//items ported from lovecraft
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.guns.Bow.class);
+		GLYPHS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Teleport.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.herbs.BlandfruitHerb.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.herbs.BlindweedHerb.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.herbs.DewcatcherHerb.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.herbs.DreamfoilHerb.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.herbs.EarthrootHerb.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.herbs.FadeleafHerb.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.herbs.FirebloomHerb.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.herbs.IcecapHerb.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.herbs.RotberryHerb.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.herbs.SeedpodHerb.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.herbs.SorrowmossHerb.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.herbs.StarflowerHerb.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.herbs.SteamweedHerb.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.herbs.StormvineHerb.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.herbs.SungrassHerb.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.itemplants.BlandfruitItem.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.itemplants.BlindweedItem.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.itemplants.DewcatcherItem.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.itemplants.DreamfoilItem.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.itemplants.EarthrootItem.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.itemplants.FadeleafItem.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.itemplants.FirebloomItem.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.itemplants.IcecapItem.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.itemplants.RotberryItem.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.itemplants.SeedpodItem.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.itemplants.SorrowmossItem.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.itemplants.StarflowerItem.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.itemplants.SteamWeedItem.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.itemplants.StormvineItem.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.itemplants.SungrassItem.class);
+
 
 	}
 

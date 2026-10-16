@@ -794,7 +794,14 @@ public abstract class Mob extends Char {
 		return delay;
 	}
 	
+	//Lovecraft PD, how much seeing this monster attack costs the hero in mental health
+	public int horrorlvl = 0;
+
 	protected boolean doAttack( Char enemy ) {
+
+		if (horrorlvl > 0 && enemy instanceof Hero && Random.Int( 3 ) == 0) {
+			((Hero) enemy).reduceMentalHealth( horrorlvl );
+		}
 		
 		if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
 			sprite.attack( enemy.pos );

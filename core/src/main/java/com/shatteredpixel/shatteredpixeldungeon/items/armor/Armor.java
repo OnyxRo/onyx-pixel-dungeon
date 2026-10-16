@@ -835,14 +835,25 @@ public class Armor extends EquipableItem {
 	public static abstract class Glyph implements Bundlable {
 		
 		public static final Class<?>[] common = new Class<?>[]{
-				Obfuscation.class, Swiftness.class, Viscosity.class, Potential.class };
+				Obfuscation.class, Swiftness.class, Viscosity.class, Potential.class,
+				//Lovecraft PD
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Deflection.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Stealth.class };
 
 		public static final Class<?>[] uncommon = new Class<?>[]{
 				Brimstone.class, Stone.class, Entanglement.class,
-				Repulsion.class, Camouflage.class, Flow.class };
+				Repulsion.class, Camouflage.class, Flow.class,
+				//Lovecraft PD
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Cloning.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Explosion.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Weight.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Chaotic.class };
 
 		public static final Class<?>[] rare = new Class<?>[]{
-				Affection.class, AntiMagic.class, Thorns.class };
+				Affection.class, AntiMagic.class, Thorns.class,
+				//Lovecraft PD
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.FreezeTime.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Teleport.class };
 
 		public static final float[] typeChances = new float[]{
 				50, //12.5% each
@@ -853,7 +864,9 @@ public class Armor extends EquipableItem {
 		public static final Class<?>[] curses = new Class<?>[]{
 				AntiEntropy.class, Corrosion.class, Displacement.class, Metabolism.class,
 				Multiplicity.class, Stench.class, Overgrowth.class, Bulk.class,
-				com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Binding.class
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Binding.class,
+				//Lovecraft PD
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Clumsy.class
 		};
 		
 		public abstract int proc( Armor armor, Char attacker, Char defender, int damage );

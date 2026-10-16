@@ -139,6 +139,11 @@ public class ScrollOfTeleportation extends Scroll {
 		}
 	}
 	
+	//Lovecraft PD, its name for teleporting the hero
+	public static boolean teleportHero( Hero hero ){
+		return teleportChar( hero );
+	}
+
 	public static boolean teleportPreferringUnseen( Hero hero ){
 
 		//in locked levels, we must do a pathfind check, so just default to non-regular level logic
