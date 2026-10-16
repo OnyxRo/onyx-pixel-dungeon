@@ -26,7 +26,7 @@ public class MaskOfClown extends Helmet {
 
 	//now and then a hit goes through armor as if it was not there
 	@Override
-	public int procGivenDamage(Hero hero, Char enemy, int dmg, boolean ranged) {
+	public int procGivenDamage(Char hero, Char enemy, int dmg, boolean ranged) {
 		if (!cursed && Random.Float() < 0.1f) {
 			dmg += enemy.drRoll();
 		}

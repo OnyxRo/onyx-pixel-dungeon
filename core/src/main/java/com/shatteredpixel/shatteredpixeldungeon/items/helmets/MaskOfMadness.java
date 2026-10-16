@@ -46,13 +46,13 @@ public class MaskOfMadness extends Helmet {
 	}
 
 	@Override
-	public int procGivenDamage(Hero hero, Char enemy, int dmg, boolean ranged) {
+	public int procGivenDamage(Char hero, Char enemy, int dmg, boolean ranged) {
 		float ratio = 2.1f - 1.5f / ((float) Math.exp(level() / 3f) + 0.5f);
 		return (int) (dmg * ratio);
 	}
 
 	@Override
-	public float procTakenDamage(Hero hero, float dmg, Object src) {
+	public float procTakenDamage(Char hero, float dmg, Object src) {
 		float ratio = 1.8f - 1.5f / ((float) Math.exp(level() / 3f) + 1f) + 0.05f * level();
 		return super.procTakenDamage(hero, dmg * ratio, src);
 	}

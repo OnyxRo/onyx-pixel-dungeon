@@ -160,12 +160,12 @@ public class Helmet extends EquipableItem {
 	//==== effects, each helmet overrides what it needs. Cursed ones usually do the opposite ====
 
 	//damage the hero deals, ranged is true for thrown weapons
-	public int procGivenDamage(Hero hero, Char enemy, int dmg, boolean ranged) {
+	public int procGivenDamage(Char hero, Char enemy, int dmg, boolean ranged) {
 		return dmg;
 	}
 
 	//damage the hero takes, src is whatever caused it
-	public float procTakenDamage(Hero hero, float dmg, Object src) {
+	public float procTakenDamage(Char hero, float dmg, Object src) {
 		if (inscription != null) dmg = inscription.procTakenDamage(this, dmg, src);
 		return dmg;
 	}
@@ -264,7 +264,7 @@ public class Helmet extends EquipableItem {
 	}
 
 	//attacks from a distance, and from spell casters, are told apart here
-	public static boolean isRanged(Hero hero, Object src) {
+	public static boolean isRanged(Char hero, Object src) {
 		return src instanceof Char && !Dungeon.level.adjacent(hero.pos, ((Char) src).pos);
 	}
 

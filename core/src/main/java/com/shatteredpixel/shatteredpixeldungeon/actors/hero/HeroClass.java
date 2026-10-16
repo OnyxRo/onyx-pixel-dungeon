@@ -97,6 +97,9 @@ public enum HeroClass {
 	//from Ryuse's PD
 	SUMMONER( HeroSubClass.EIDOLON, HeroSubClass.ATTRACTOR );
 
+	//the Summoner has two pictures, one is chosen each time the game starts
+	private static final String SUMMONER_SPLASH = Math.random() < 0.5 ? Assets.Splashes.SUMMONER : Assets.Splashes.SORCERESS;
+
 	private HeroSubClass[] subClasses;
 
 	HeroClass( HeroSubClass...subClasses ) {
@@ -428,7 +431,7 @@ public enum HeroClass {
 			case ARTIFICER:
 				return Assets.Splashes.ARTIFICER;
 			case SUMMONER:
-				return Assets.Splashes.SUMMONER;
+				return SUMMONER_SPLASH;
 		}
 	}
 	

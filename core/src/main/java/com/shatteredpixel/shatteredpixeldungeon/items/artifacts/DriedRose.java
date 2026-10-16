@@ -104,6 +104,9 @@ public class DriedRose extends Artifact {
 	
 	private MeleeWeapon weapon = null;
 	private Armor armor = null;
+	//Ryuse's PD, the Summoner's ghost can wear a helmet and a ring too
+	private com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet helmet = null;
+	private com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring ring = null;
 
 	public int droppedPetals = 0;
 
@@ -255,6 +258,7 @@ public class DriedRose extends Artifact {
 	
 	public int ghostStrength(){
 		int str = 13 + level()/2;
+		if (ring instanceof com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfMight) str += 1 + ring.level();
 		if (summoner()) str += 2;
 		if (eidolon()) str += 2;
 		return str;
@@ -400,6 +404,8 @@ public class DriedRose extends Artifact {
 		bundle.put( TALKEDTO, talkedTo );
 		bundle.put( FIRSTSUMMON, firstSummon );
 		bundle.put( GHOSTID, ghostID );
+		if (helmet != null) bundle.put( "ghost_helmet", helmet );
+		if (ring != null)   bundle.put( "ghost_ring", ring );
 		bundle.put( PETALS, droppedPetals );
 		bundle.put( "ghost_exp", exp );
 		bundle.put( "ghost_lvl", lvl );
@@ -415,6 +421,8 @@ public class DriedRose extends Artifact {
 		talkedTo = bundle.getBoolean( TALKEDTO );
 		firstSummon = bundle.getBoolean( FIRSTSUMMON );
 		ghostID = bundle.getInt( GHOSTID );
+		if (bundle.contains("ghost_helmet")) helmet = (com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet) bundle.get( "ghost_helmet" );
+		if (bundle.contains("ghost_ring"))   ring = (com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring) bundle.get( "ghost_ring" );
 		droppedPetals = bundle.getInt( PETALS );
 		exp = bundle.getInt( "ghost_exp" );
 		lvl = bundle.contains( "ghost_lvl" ) ? bundle.getInt( "ghost_lvl" ) : 1;
@@ -686,6 +694,13 @@ public class DriedRose extends Artifact {
 			if (!isAlive()) {
 				return true;
 			}
+
+			//a regeneration headdress heals the ghost now and then
+			if (rose != null && rose.helmet instanceof com.shatteredpixel.shatteredpixeldungeon.items.helmets.HeaddressRegeneration
+					&& HP < HT && Random.Int(8) == 0) {
+				HP++;
+				if (sprite != null) sprite.emitter().burst( com.shatteredpixel.shatteredpixeldungeon.effects.Speck.factory( com.shatteredpixel.shatteredpixeldungeon.effects.Speck.HEALING ), 1 );
+			}
 			return super.act();
 		}
 
@@ -704,6 +719,10 @@ public class DriedRose extends Artifact {
 			if (summoner() && rose != null){
 				acc += rose.lvl;
 				acc *= 1.5f;
+				if (rose.ring instanceof com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy){
+					acc *= Math.pow(1.3, rose.ring.soloBuffedBonus());
+				}
+				if (rose.helmet != null) acc *= rose.helmet.accuracyMultiplier();
 			}
 			if (eidolon()){
 				acc *= 1.5f;
@@ -717,6 +736,9 @@ public class DriedRose extends Artifact {
 			float delay = super.attackDelay();
 			if (weapon() != null){
 				delay *= weapon().delayFactor(this);
+			}
+			if (rose != null && rose.ring instanceof com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror){
+				delay /= Math.pow(1.09051, rose.ring.soloBuffedBonus());
 			}
 			return delay;
 		}
@@ -752,6 +774,10 @@ public class DriedRose extends Artifact {
 		public int attackProc(Char enemy, int damage) {
 			damage = super.attackProc(enemy, damage);
 
+			if (rose != null && rose.helmet != null) {
+				damage = Math.max(0, rose.helmet.procGivenDamage(this, enemy, damage, Dungeon.level.distance(pos, enemy.pos) > 1));
+			}
+
 			if (weapon() != null) {
 				damage = weapon().proc(this, enemy, damage);
 				if (!enemy.isAlive() && enemy == Dungeon.hero) {
@@ -773,6 +799,17 @@ public class DriedRose extends Artifact {
 		
 		@Override
 		public void damage(int dmg, Object src) {
+			//the Summoner's ring and helmet soften what the ghost takes
+			if (rose != null && !(src instanceof NoRoseDamage)) {
+				float d = dmg;
+				if (rose.ring instanceof com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfTenacity) {
+					d *= Math.pow(0.85, rose.ring.soloBuffedBonus() * ((float)(HT - HP) / HT));
+				}
+				if (rose.helmet != null) {
+					d = rose.helmet.procTakenDamage(this, d, src);
+				}
+				dmg = Math.max(0, Math.round(d));
+			}
 			super.damage( dmg, src );
 			
 			//for the rose status indicator
@@ -782,6 +819,10 @@ public class DriedRose extends Artifact {
 		@Override
 		public float speed() {
 			float speed = super.speed();
+
+			if (rose != null && rose.ring instanceof com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfHaste){
+				speed *= Math.pow(1.15, rose.ring.soloBuffedBonus());
+			}
 
 			//moves 2 tiles at a time when returning to the hero
 			if (state == WANDERING
@@ -799,6 +840,9 @@ public class DriedRose extends Artifact {
 
 			if (summoner() && rose != null){
 				defense += rose.lvl;
+				if (rose.ring instanceof com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEvasion){
+					defense *= Math.pow(1.125, rose.ring.soloBuffedBonus());
+				}
 			}
 
 			if (defense != 0 && armor() != null ){
@@ -872,6 +916,11 @@ public class DriedRose extends Artifact {
 			} else {
 
 				int depth = (Dungeon.depth - 1) / 5;
+				if (Dungeon.level instanceof com.shatteredpixel.shatteredpixeldungeon.levels.worlds.PollutedSewersLevel) {
+					yell(Messages.get(this, "dialogue_polluted_sewers_" + (Dungeon.depth % 5 == 1 ? Random.IntRange(1, 3) : Random.IntRange(1, 6))));
+					if (ShatteredPixelDungeon.scene() instanceof GameScene) Sample.INSTANCE.play( Assets.Sounds.GHOST );
+					return;
+				}
 
 				//only some lines are said on the first floor of a depth
 				int variant = Dungeon.depth % 5 == 1 ? Random.IntRange(1, 3) : Random.IntRange(1, 6);
@@ -1129,6 +1178,155 @@ public class DriedRose extends Artifact {
 			add( btnArmor );
 			
 			resize(WIDTH, (int)(btnArmor.bottom() + GAP));
+
+			if (summoner()) {
+				//second row, a helmet and a ring
+				ItemButton btnHelmet = new ItemButton(){
+					@Override
+					protected void onClick() {
+						if (rose.helmet != null){
+							item(new WndBag.Placeholder(ItemSpriteSheet.HELMET_HOLDER));
+							if (!rose.helmet.doPickUp(Dungeon.hero)){
+								Dungeon.level.drop( rose.helmet, Dungeon.hero.pos);
+							}
+							rose.helmet = null;
+						} else {
+							GameScene.selectItem(new WndBag.ItemSelector() {
+								@Override
+								public String textPrompt() {
+									return Messages.get(WndGhostHero.class, "helmet_prompt");
+								}
+
+								@Override
+								public Class<?extends Bag> preferredBag(){
+									return Belongings.Backpack.class;
+								}
+
+								@Override
+								public boolean itemSelectable(Item item) {
+									return item instanceof com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet;
+								}
+
+								@Override
+								public void onSelect(Item item) {
+									if (!(item instanceof com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet)) {
+										//do nothing, should only happen when window is cancelled
+									} else if (item.unique) {
+										GLog.w( Messages.get(WndGhostHero.class, "cant_unique"));
+										hide();
+									} else if (item.cursed || !item.cursedKnown) {
+										GLog.w(Messages.get(WndGhostHero.class, "cant_cursed"));
+										hide();
+									} else {
+										if (item.isEquipped(Dungeon.hero)){
+											((com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet) item).doUnequip(Dungeon.hero, false, false);
+										} else {
+											item.detach(Dungeon.hero.belongings.backpack);
+										}
+										rose.helmet = (com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet) item;
+										item(rose.helmet);
+									}
+								}
+							});
+						}
+					}
+
+					@Override
+					protected boolean onLongClick() {
+						if (item() != null && item().name() != null){
+							GameScene.show(new WndInfoItem(item()));
+							return true;
+						}
+						return false;
+					}
+				};
+				btnHelmet.setRect( btnWeapon.left(), btnWeapon.bottom() + GAP, BTN_SIZE, BTN_SIZE );
+				if (rose.helmet != null) {
+					btnHelmet.item(rose.helmet);
+				} else {
+					btnHelmet.item(new WndBag.Placeholder(ItemSpriteSheet.HELMET_HOLDER));
+				}
+				add( btnHelmet );
+
+				ItemButton btnRing = new ItemButton(){
+					@Override
+					protected void onClick() {
+						if (rose.ring != null){
+							item(new WndBag.Placeholder(ItemSpriteSheet.RING_HOLDER));
+							if (!rose.ring.doPickUp(Dungeon.hero)){
+								Dungeon.level.drop( rose.ring, Dungeon.hero.pos);
+							}
+							rose.ring = null;
+						} else {
+							GameScene.selectItem(new WndBag.ItemSelector() {
+								@Override
+								public String textPrompt() {
+									return Messages.get(WndGhostHero.class, "ring_prompt");
+								}
+
+								@Override
+								public Class<?extends Bag> preferredBag(){
+									return Belongings.Backpack.class;
+								}
+
+								@Override
+								public boolean itemSelectable(Item item) {
+									return item instanceof com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
+								}
+
+								@Override
+								public void onSelect(Item item) {
+									Class<?>[] banned = {
+											RingOfEnergy.class,
+											com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting.class,
+											com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth.class,
+											com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements.class,
+											com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce.class,
+									};
+									if (!(item instanceof com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring)) {
+										//do nothing, should only happen when window is cancelled
+									} else if (item.unique) {
+										GLog.w( Messages.get(WndGhostHero.class, "cant_unique"));
+										hide();
+									} else if (item.cursed || !item.cursedKnown) {
+										GLog.w(Messages.get(WndGhostHero.class, "cant_cursed"));
+										hide();
+									} else if (java.util.Arrays.asList(banned).contains(item.getClass())) {
+										GLog.w( Messages.get(WndGhostHero.class, "cant_ring"));
+										hide();
+									} else {
+										if (item.isEquipped(Dungeon.hero)){
+											((com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring) item).doUnequip(Dungeon.hero, false, false);
+										} else {
+											item.detach(Dungeon.hero.belongings.backpack);
+										}
+										rose.ring = (com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring) item;
+										item(rose.ring);
+									}
+								}
+							});
+						}
+					}
+
+					@Override
+					protected boolean onLongClick() {
+						if (item() != null && item().name() != null){
+							GameScene.show(new WndInfoItem(item()));
+							return true;
+						}
+						return false;
+					}
+				};
+				btnRing.setRect( btnArmor.left(), btnHelmet.top(), BTN_SIZE, BTN_SIZE );
+				if (rose.ring != null) {
+					btnRing.item(rose.ring);
+				} else {
+					btnRing.item(new WndBag.Placeholder(ItemSpriteSheet.RING_HOLDER));
+				}
+				add( btnRing );
+
+				resize(WIDTH, (int)(btnRing.bottom() + GAP));
+			}
 		}
 	
 	}

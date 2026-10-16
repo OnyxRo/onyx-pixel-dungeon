@@ -13,6 +13,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.helmets;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.watabou.utils.Random;
@@ -24,7 +25,7 @@ public class LittlePail extends Helmet {
 	}
 
 	@Override
-	public float procTakenDamage(Hero hero, float dmg, Object src) {
+	public float procTakenDamage(Char hero, float dmg, Object src) {
 		if (!cursed) {
 			dmg = Math.max(0, dmg - Random.NormalIntRange(0, 3));
 		}

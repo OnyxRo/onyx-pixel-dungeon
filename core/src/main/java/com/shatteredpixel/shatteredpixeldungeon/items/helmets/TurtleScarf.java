@@ -13,6 +13,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.helmets;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 
@@ -23,7 +24,7 @@ public class TurtleScarf extends Helmet {
 	}
 
 	@Override
-	public float procTakenDamage(Hero hero, float dmg, Object src) {
+	public float procTakenDamage(Char hero, float dmg, Object src) {
 		if (Helmet.isMagic(src)) {
 			dmg *= cursed ? 1.25f : 0.8f;
 		}

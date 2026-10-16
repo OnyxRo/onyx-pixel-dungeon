@@ -13,6 +13,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.helmets;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 
@@ -23,7 +24,7 @@ public class GuardHelmet extends Helmet {
 	}
 
 	@Override
-	public float procTakenDamage(Hero hero, float dmg, Object src) {
+	public float procTakenDamage(Char hero, float dmg, Object src) {
 		return super.procTakenDamage(hero, dmg * (cursed ? 1.06f : 0.94f), src);
 	}
 }

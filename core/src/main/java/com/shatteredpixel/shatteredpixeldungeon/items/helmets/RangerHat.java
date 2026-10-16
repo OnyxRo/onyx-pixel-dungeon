@@ -24,7 +24,7 @@ public class RangerHat extends Helmet {
 	}
 
 	@Override
-	public int procGivenDamage(Hero hero, Char enemy, int dmg, boolean ranged) {
+	public int procGivenDamage(Char hero, Char enemy, int dmg, boolean ranged) {
 		if (ranged) {
 			int v = Math.max(dmg / 5, 2);
 			dmg += cursed ? -v : v;

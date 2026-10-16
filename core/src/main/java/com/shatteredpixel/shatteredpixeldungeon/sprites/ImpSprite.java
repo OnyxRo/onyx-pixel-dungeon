@@ -30,7 +30,10 @@ public class ImpSprite extends MobSprite {
 	public ImpSprite() {
 		super();
 		
-		texture( Assets.Sprites.IMP );
+		//Ryuse's PD, the Summoner meets a demon instead
+		texture( com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero != null
+				&& com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero.heroClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.SUMMONER
+				? Assets.Sprites.DEMON : Assets.Sprites.IMP );
 		
 		TextureFilm frames = new TextureFilm( texture, 12, 14 );
 		

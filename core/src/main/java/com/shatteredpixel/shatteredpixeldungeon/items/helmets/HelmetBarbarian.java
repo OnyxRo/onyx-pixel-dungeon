@@ -25,7 +25,7 @@ public class HelmetBarbarian extends Helmet {
 
 	//a hurt hero hits harder
 	@Override
-	public int procGivenDamage(Hero hero, Char enemy, int dmg, boolean ranged) {
+	public int procGivenDamage(Char hero, Char enemy, int dmg, boolean ranged) {
 		if (!cursed && hero.HP < hero.HT / 2) {
 			dmg = dmg * 5 / 4;
 		}
