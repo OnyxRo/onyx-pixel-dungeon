@@ -51,3 +51,5 @@ Evan has no desc string
 GreenGoo crashed during its own turns
 Ghost crashed during its own turns
 MirrorImage crashed the test
+RuneSpinner crashed during its own turns
+SoulCollector crashed during its own turns

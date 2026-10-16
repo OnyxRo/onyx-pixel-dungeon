@@ -36,6 +36,10 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 // There is a decent amount of logic that ties into this, which is why it has its own abstract class
 public abstract class AllyBuff extends Buff {
 
+	//from Transformation PD, a mob with this gives no rewards when converted
+	public interface NoConversionRewards {
+	}
+
 	{
 		revivePersists = true;
 	}

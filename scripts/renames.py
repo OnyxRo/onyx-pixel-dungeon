@@ -78,6 +78,16 @@ RENAMES = [
     ('TargetedCell(pos, color) is TargetedCell.colored here', r'new TargetedCell\(', 'TargetedCell.colored('),
     ('enchantment proc takes a Weapon', r'public\s+int\s+proc\(\s*Item\s+(\w+)\s*,\s*Char\s+(\w+)\s*,\s*Char\s+(\w+)\s*,\s*int', r'public int proc( Weapon \1, Char \2, Char \3, int'),
     ('prolong on a deferred damage buff is extend', r'(\bdmg\.)prolong\(', r'\1extend('),
+    # Transformation PD passes damage tags through every hit, this game has none, so the tags become an empty local
+    ('Transformation damage override with tags', r'(public|protected)(\s+)void(\s+)damage\(\s*int\s+(\w+)\s*,\s*Object\s+(\w+)\s*,\s*DamageTag\.\.\.\s*(\w+)\s*\)\s*\{', r'\1\2void\3damage( int \4, Object \5 ) {\n\t\tDamageTag[] \6 = new DamageTag[0];'),
+    ('Transformation super.damage with tags', r'super\.damage\(\s*([^,;]+?)\s*,\s*([^,;]+?)\s*,[^;]*\)\s*;', r'super.damage( \1, \2 );'),
+    ('Transformation attackProc/defenseProc override with tags', r'(public|protected)(\s+)int(\s+)(attackProc|defenseProc)\(\s*Char\s+(\w+)\s*,\s*int\s+(\w+)\s*,\s*DamageTag\.\.\.\s*(\w+)\s*\)\s*\{', r'\1\2int\3\4( Char \5, int \6 ) {\n\t\tDamageTag[] \7 = new DamageTag[0];'),
+    ('Transformation super.attackProc/defenseProc with tags', r'super\.(attackProc|defenseProc)\(\s*(\w+)\s*,\s*(\w+)\s*,[^;]*\)', r'super.\1( \2, \3 )'),
+    ('Transformation attack override with tags', r'(public|protected)(\s+)boolean(\s+)attack\(\s*Char\s+(\w+)\s*,\s*float\s+(\w+)\s*,\s*float\s+(\w+)\s*,\s*float\s+(\w+)\s*,\s*DamageTag\.\.\.\s*(\w+)\s*\)\s*\{', r'\1\2boolean\3attack( Char \4, float \5, float \6, float \7 ) {\n\t\tDamageTag[] \8 = new DamageTag[0];'),
+    ('Transformation super.attack with tags', r'super\.attack\(\s*(\w+)\s*,\s*(\w+)\s*,\s*(\w+)\s*,\s*(\w+)\s*,[^;]*\)', r'super.attack( \1, \2, \3, \4 )'),
+    ('Transformation hero talents do not exist here', r'\bhero\.pointsNegative\(Talent\.LAND_SWIMMING\)\s*(<\s*2|==\s*0)', 'true'),
+    ('Transformation hero talent FISHING_TIME', r'\bhero\.(?:hasTalent|pointsInTalent)\(Talent\.FISHING_TIME\)(?:\s*==\s*2)?', 'false'),
+    ('Transformation Talent.onRangedAttackHit hook', r'\bTalent\.onRangedAttackHit\([^;]*\);', '//Transformation talent hook, none here'),
 ]
 
 def convert_long(s):

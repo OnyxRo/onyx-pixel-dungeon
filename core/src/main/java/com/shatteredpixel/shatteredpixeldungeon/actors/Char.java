@@ -206,6 +206,27 @@ public abstract class Char extends Actor {
 	{
 		Heal(newhealth - HP);
 	}
+
+	//from Transformation PD, healing returns what was gained, the tags on damage are dropped
+	public int heal( int h ){
+		int before = HP;
+		Heal( h );
+		return HP - before;
+	}
+
+	public int heal( int h, boolean visual ){
+		return heal( h );
+	}
+
+	public void damage( int dmg, Object src, DamageTag... tags ){
+		damage( dmg, src );
+	}
+
+	public static boolean hit( Char attacker, Char defender, DamageTag... tags ){
+		boolean magic = false;
+		for (DamageTag t : tags) if (t == DamageTag.MAGICAL) magic = true;
+		return hit( attacker, defender, magic );
+	}
 	
 	@Override
 	protected boolean act() {
@@ -529,6 +550,7 @@ public abstract class Char extends Actor {
 			}
 
 			enemy.damage( effectiveDamage, this );
+			onAttackResolved( enemy, true, effectiveDamage );
 
 			if (buff(FireImbue.class) != null)  buff(FireImbue.class).proc(enemy);
 			if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EarthImbue.class) != null) buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EarthImbue.class).proc(enemy);
@@ -1182,7 +1204,29 @@ public abstract class Char extends Actor {
 		GameScene.add(splat);
 	}
 
+	//from Transformation PD, a hook after a hit lands, and listeners told when anything dies
+	protected void onAttackResolved( Char target, boolean hit, int damageDealt, DamageTag... damageTags ) {
+	}
+
+	protected final DamageTag[] effectiveDamageTags( DamageTag... damageTags ) {
+		return damageTags;
+	}
+
+	public interface DeathListener {
+		void onCharDied( Char deceased );
+	}
+
+	private void notifyDeathListeners() {
+		if (Actor.findById( id() ) != this) return;
+		for (Char character : Actor.chars().toArray( new Char[0] )) {
+			if (character != this && character instanceof DeathListener) {
+				((DeathListener) character).onCharDied( this );
+			}
+		}
+	}
+
 	public void die( Object src ) {
+		notifyDeathListeners();
 		//something else is forcing death, so remove death mark to prevent conflicts
 		if (buff(DeathMark.DeathMarkTracker.class) != null){
 			buff(DeathMark.DeathMarkTracker.class).detachOnDeath();
@@ -1546,7 +1590,9 @@ public abstract class Char extends Actor {
 									Paralysis.class, Frost.class, Chill.class, Slow.class, Speed.class) )),
 		//Shittened PD, a character that is simply irritating
 		ANNOYING,
-		HUMAN;
+		HUMAN,
+		//Transformation PD, marsh slime and kin
+		DARKSLIME;
 
 		private HashSet<Class> resistances;
 		private HashSet<Class> immunities;

@@ -1083,6 +1083,17 @@ public abstract class Mob extends Char {
 		}
 	}
 
+	//from Transformation PD, the mod's own subclasses call this with their own base chance
+	protected float adjustedLootChance( float baseChance ){
+		float lootChance = baseChance;
+
+		float dropBonus = RingOfWealth.dropChanceMultiplier( Dungeon.hero );
+
+		dropBonus += ShardOfOblivion.lootChanceMultiplier()-1f;
+
+		return lootChance * dropBonus;
+	}
+
 	public float lootChance(){
 		float lootChance = this.lootChance;
 
@@ -1144,9 +1155,10 @@ public abstract class Mob extends Char {
 		MasterThievesArmband.StolenTracker stolen = buff(MasterThievesArmband.StolenTracker.class);
 		if (stolen == null || !stolen.itemWasStolen()) {
 			if (Random.Float() < lootChance()) {
-				Item loot = createLoot();
-				if (loot != null) {
-					Dungeon.level.drop(loot, pos).sprite.drop();
+				for (Item loot : createLootDrops()) {
+					if (loot != null) {
+						Dungeon.level.drop(loot, pos).sprite.drop();
+					}
 				}
 			}
 		}
@@ -1178,6 +1190,18 @@ public abstract class Mob extends Char {
 	}
 	
 	protected Object loot = null;
+	//from Transformation PD, a mob that drops more than one item overrides this
+	protected ArrayList<Item> createLootDrops() {
+		ArrayList<Item> drops = new ArrayList<>(1);
+		Item item = createLoot();
+		if (item != null) drops.add(item);
+		return drops;
+	}
+
+	public boolean isVisibleEnemyForHero() {
+		return true;
+	}
+
 	public float lootChance = 0;
 	
 	@SuppressWarnings("unchecked")

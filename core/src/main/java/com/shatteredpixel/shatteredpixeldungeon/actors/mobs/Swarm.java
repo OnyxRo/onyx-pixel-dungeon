@@ -87,7 +87,21 @@ public class Swarm extends Mob {
 	@Override
 	public int defenseProc( Char enemy, int damage ) {
 
-		if (HP >= damage + 2) {
+		tryToSplit( damage );
+		return super.defenseProc(enemy, damage);
+	}
+
+	//from Transformation PD, so its swarms can change when they split
+	protected boolean canSplit( int damage ) {
+		return HP >= damage + 2;
+	}
+
+	protected Swarm createSplit() {
+		return new Swarm();
+	}
+
+	protected void tryToSplit( int damage ) {
+		if (canSplit( damage )) {
 			ArrayList<Integer> candidates = new ArrayList<>();
 			
 			int[] neighbours = {pos + 1, pos - 1, pos + Dungeon.level.width(), pos - Dungeon.level.width()};
@@ -115,8 +129,6 @@ public class Swarm extends Mob {
 				HP -= clone.HP;
 			}
 		}
-		
-		return super.defenseProc(enemy, damage);
 	}
 	
 	@Override
@@ -125,7 +137,8 @@ public class Swarm extends Mob {
 	}
 	
 	private Swarm split() {
-		Swarm clone = new Swarm();
+		Swarm clone = createSplit();
+		clone.alignment = alignment;
 		clone.generation = generation + 1;
 		clone.EXP = 0;
 		if (buff( Burning.class ) != null) {

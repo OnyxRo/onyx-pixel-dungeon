@@ -97,6 +97,11 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected Animation die;
 	
 	protected Callback animCallback;
+
+	//from Transformation PD
+	protected boolean visualEffectsVisible() {
+		return true;
+	}
 	
 	protected PosTweener motion;
 	

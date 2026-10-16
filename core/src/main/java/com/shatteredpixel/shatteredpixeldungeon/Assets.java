@@ -393,6 +393,22 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String WILD_DREAD = "sprites/transformation/wild_dread.png"; //ported, transformation
+		public static final String TAPIR_CROCODILE = "sprites/transformation/tapir_crocodile.png"; //ported, transformation
+		public static final String SOUL_COLLECTOR = "sprites/transformation/soul_collector.png"; //ported, transformation
+		public static final String RUNE_SPINNER = "sprites/transformation/rune_spinner.png"; //ported, transformation
+		public static final String ROAST_LAMB_WARLOCK = "sprites/transformation/roast_lamb_warlock.png"; //ported, transformation
+		public static final String POWERFUL_WRAITH = "sprites/transformation/powerful_wraith.png"; //ported, transformation
+		public static final String OBSCURA = "sprites/transformation/obscura.png"; //ported, transformation
+		public static final String MIMIC_CROCODILE = "sprites/transformation/mimic_crocodile.png"; //ported, transformation
+		public static final String MECHANICAL_FIST = "sprites/transformation/mechanical_fist.png"; //ported, transformation
+		public static final String MARSH_SLIME = "sprites/transformation/marsh_slime.png"; //ported, transformation
+		public static final String HEAVY_CRABIFICATION = "sprites/transformation/heavy_crabification.png"; //ported, transformation
+		public static final String EARTHLY_SERPENT = "sprites/transformation/earthly_serpent.png"; //ported, transformation
+		public static final String CORROSIVE_SWARM = "sprites/transformation/corrosive_swarm.png"; //ported, transformation
+		public static final String CHAIN_SHADOW_THIEF = "sprites/transformation/chain_shadow_thief.png"; //ported, transformation
+		public static final String CAMOUFLAGE_GNOLL = "sprites/transformation/camouflage_gnoll.png"; //ported, transformation
+		public static final String LANDPIRANHA = "sprites/transformation/landpiranha.png"; //ported, transformation
 		public static final String SLOTMACHINE = "sprites/shittened/slotmachine.png"; //ported, shittened
 		public static final String TWINGO = "sprites/shittened/twingo.png"; //ported, shittened
 		public static final String ADVENTURER = "sprites/shittened/adventurer.png"; //ported, shittened

@@ -17,6 +17,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.tmobs.*;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -135,6 +136,22 @@ public class ModRoster {
 		add( "shittened", GreenGoo.class, 0, 1, 99 );
 		add( "ryuse", PollutedCrab.class, 2, 2, 9 );
 		add( "ryuse", PollutedRat.class, 3, 1, 9 );
+		//Transformation PD. Its monsters have fixed stats of 100 to 250 HP, so they only turn up deep. The piranhas and the wraith come from other monsters or water
+		add( "transformation", CamouflageGnoll.class, 1, 11, 20 );
+		add( "transformation", ChainShadowThief.class, 1, 11, 20 );
+		add( "transformation", CorrosiveSwarm.class, 1, 16, 25 );
+		add( "transformation", HeavyCrabification.class, 1, 16, 25 );
+		add( "transformation", LandPiranha.class, 0, 1, 99 );
+		add( "transformation", MarshSlime.class, 1, 16, 25 );
+		add( "transformation", MechanicalFist.class, 1, 21, 25 );
+		add( "transformation", MimicCrocodile.class, 1, 11, 20 );
+		add( "transformation", PowerfulWraith.class, 0, 11, 20 );
+		add( "transformation", EarthlySerpent.class, 1, 21, 25 );
+		add( "transformation", RuneSpinner.class, 1, 16, 25 );
+		add( "transformation", PhantomLandPiranha.class, 0, 1, 99 );
+		add( "transformation", RoastLambWarlock.class, 1, 16, 25 );
+		add( "transformation", SoulCollector.class, 1, 16, 25 );
+		add( "transformation", TapirCrocodile.class, 1, 21, 25 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

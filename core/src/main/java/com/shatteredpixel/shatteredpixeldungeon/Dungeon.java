@@ -163,7 +163,10 @@ public class Dungeon {
 		TOME_OF_MASTERY,
 
 		//Experienced PD
-		OOF_DROP;
+		OOF_DROP,
+
+		//Transformation PD, the roast lamb warlock's wands
+		ROAST_LAMB_WAND;
 
 		public int count = 0;
 
