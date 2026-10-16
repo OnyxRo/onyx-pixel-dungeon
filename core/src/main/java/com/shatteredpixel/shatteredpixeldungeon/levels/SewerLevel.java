@@ -72,6 +72,16 @@ public class SewerLevel extends RegularLevel {
 			Assets.Music.SEWERS_1, Assets.Music.SEWERS_3, Assets.Music.SEWERS_3};
 	public static final float[] SEWER_TRACK_CHANCES = new float[]{1f, 1f, 0.5f, 0.25f, 1f, 0.5f};
 
+	@Override
+	protected java.util.ArrayList<com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room> initRooms() {
+		java.util.ArrayList<com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room> rooms = super.initRooms();
+		//Shittened PD, now and then a nest of capybaras
+		if (Random.Int(9) == 0 ) {
+			rooms.add(new com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.CapybaraNestRoom());
+		}
+		return rooms;
+	}
+
 	public void playLevelMusic(){
 		if (Ghost.Quest.active() || Statistics.amuletObtained){
 			if (Statistics.amuletObtained && Dungeon.depth == 1){

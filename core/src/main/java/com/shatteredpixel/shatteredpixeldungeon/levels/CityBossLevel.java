@@ -344,6 +344,25 @@ public class CityBossLevel extends Level {
 			boss.sprite.parent.add( new AlphaTweener( boss.sprite, 1, 0.1f ) );
 		}
 
+		//Shittened PD, a slot machine in one corner of the arena
+		{
+			com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.SlotMachine slotMachine = new com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.SlotMachine();
+			int[] corners = new int[]{
+					pointToCell(new Point(arena.left + 2, arena.top + 2)),
+					pointToCell(new Point(arena.right - 2, arena.top + 2)),
+					pointToCell(new Point(arena.left + 2, arena.bottom - 2)),
+					pointToCell(new Point(arena.right - 2, arena.bottom - 2))};
+			int start = Random.Int(4);
+			for (int k = 0; k < 4; k++) {
+				int c = corners[(start + k) % 4];
+				if (passable[c] && Actor.findChar(c) == null && c != boss.pos) {
+					slotMachine.pos = c;
+					GameScene.add(slotMachine);
+					break;
+				}
+			}
+		}
+
 		set( bottomDoor, Terrain.LOCKED_DOOR );
 		GameScene.updateMap( bottomDoor );
 		Dungeon.observe();

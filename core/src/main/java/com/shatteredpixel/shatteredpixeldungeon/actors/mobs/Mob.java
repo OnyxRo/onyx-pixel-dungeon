@@ -1249,6 +1249,12 @@ public abstract class Mob extends Char {
 		GLog.n( "%s: \"%s\" ", Messages.titleCase(name()), str );
 	}
 
+	//from Shittened PD
+	public void talk( String str ) {
+		GLog.newLine();
+		GLog.i( "%s: \"%s\" ", Messages.titleCase(name()), str );
+	}
+
 	//some mobs have an associated landmark entry, which is added when the hero sees them
 	//mobs may also remove this landmark in some cases, such as when a quest is complete or they die
 	public Notes.Landmark landmark(){

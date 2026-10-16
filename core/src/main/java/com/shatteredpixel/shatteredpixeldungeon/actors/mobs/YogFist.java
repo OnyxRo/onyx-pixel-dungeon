@@ -414,6 +414,27 @@ public abstract class YogFist extends Mob {
 				HP = Math.min(HT, HP + HT/50);
 			}
 
+			//Shittened PD, the rotting fist sometimes shouts and capybaras come running
+			if (Random.Int(0,20) == 5) {
+				com.watabou.noosa.audio.Sample.INSTANCE.play( com.shatteredpixel.shatteredpixeldungeon.Assets.Sounds.VINEBOOM );
+				int rand = Random.Int(0,6);
+				for (int i = 0; i < rand; i++) {
+					int spawnPos = -1;
+					for (int e : com.watabou.utils.PathFinder.NEIGHBOURS8){
+						if (Actor.findChar(pos+e) == null && Dungeon.level.passable[pos+e]){
+							if (spawnPos == -1 || Dungeon.level.trueDistance(Dungeon.hero.pos, spawnPos) > Dungeon.level.trueDistance(Dungeon.hero.pos, pos+e)){
+								spawnPos = pos + e;
+							}
+						}
+					}
+					if (spawnPos == -1) continue;
+					Capybara capybara = new Capybara();
+					capybara.pos = spawnPos;
+					Buff.affect(capybara, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok.class, 5f);
+					GameScene.add(capybara);
+				}
+			}
+
 			return super.act();
 		}
 

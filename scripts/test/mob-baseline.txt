@@ -46,3 +46,6 @@ CaveBat crashed while trading blows
 CaveBat crashed during its own turns
 Boombox crashed while trading blows
 Boombox crashed during its own turns
+Adventurer crashed during its own turns
+Evan has no desc string
+GreenGoo crashed during its own turns

@@ -91,6 +91,29 @@ public class Shopkeeper extends NPC {
 	
 	@Override
 	public void damage( int dmg, Object src ) {
+		//Shittened PD, hurting the shopkeeper on floor 11 brings Mr Tokmanni
+		if (Dungeon.depth == 11 && src == Dungeon.hero && !(Dungeon.level.mobs.stream().anyMatch(m -> m instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tokmanni))) {
+			com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tokmanni mrTokmanni = new com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tokmanni();
+			mrTokmanni.pos = -1;
+			if (Dungeon.level.passable[pos] && Dungeon.level.findMob(pos) == null && Actor.findChar(pos) == null) {
+				mrTokmanni.pos = pos;
+			} else {
+				for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
+					int p = pos + PathFinder.NEIGHBOURS8[i];
+					if (Dungeon.level.passable[p] && Actor.findChar(p) == null) {
+						mrTokmanni.pos = p;
+						break;
+					}
+				}
+			}
+			if (mrTokmanni.pos != -1) {
+				mrTokmanni.state = mrTokmanni.HUNTING;
+				GameScene.add(mrTokmanni);
+				mrTokmanni.beckon(Dungeon.hero.pos);
+				yell("You there! How dare you attack Mr Tokmanni himself!");
+				com.watabou.noosa.audio.Sample.INSTANCE.play(com.shatteredpixel.shatteredpixeldungeon.Assets.Sounds.CHALLENGE);
+			}
+		}
 		processHarm();
 	}
 	
@@ -183,6 +206,13 @@ public class Shopkeeper extends NPC {
 					CellEmitter.get(heap.pos).burst(ElmoParticle.FACTORY, 4);
 				}
 				if (heap.size() == 1) {
+					//Shittened PD, an emptied shop on floor 11 may leave a bucket behind
+					if (com.watabou.utils.Random.Float() > 0.5f && Dungeon.depth == 11) {
+						com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bucket bucket = new com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bucket();
+						bucket.pos = heap.pos;
+						bucket.state = bucket.WANDERING;
+						GameScene.add(bucket);
+					}
 					heap.destroy();
 				} else {
 					heap.items.remove(heap.size()-1);

@@ -1028,6 +1028,7 @@ public class Badges {
 	public static void validateTurd() {}
 	public static void validatePatRat() {}
 	public static void validateRatatouille() {}
+	public static void validateJackpot() {}
 	public static void validateDeathWithKetchup() {}
 
 	public static void validateArtificerUnlock(){

@@ -208,7 +208,15 @@ public class Piranha extends Mob {
 		if (Random.Float() < altChance){
 			return new PhantomPiranha();
 		} else {
-			return new Piranha();
+			//Shittened PD's water monsters
+			float rand = Random.Float();
+			if (rand < 0.1f && Dungeon.depth > 15) {
+				return new Goldfish();
+			} else if (rand < 0.3f) {
+				return new Perch();
+			} else {
+				return new Piranha();
+			}
 		}
 	}
 }

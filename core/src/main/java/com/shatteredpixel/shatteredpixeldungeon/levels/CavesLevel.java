@@ -81,9 +81,25 @@ public class CavesLevel extends RegularLevel {
 	public void playLevelMusic() {
 		if (Statistics.amuletObtained){
 			Music.INSTANCE.play(Assets.Music.CAVES_TENSE, true);
+		} else if (boomboxDestroyed()) {
+			//Shittened PD, once the boombox is broken the caves go quiet
+			Music.INSTANCE.stop();
+			Music.INSTANCE.clearQueue();
 		} else {
 			Music.INSTANCE.playTracks(CAVES_TRACK_LIST, CAVES_TRACK_CHANCES, false);
 		}
+	}
+
+	boolean boomboxDestroyed() {
+		boolean found = false;
+		for (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob mob : this.mobs) {
+			if (mob instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Boombox) {
+				found = true;
+				if (mob.alignment == com.shatteredpixel.shatteredpixeldungeon.actors.Char.Alignment.NEUTRAL) return false;
+			}
+		}
+		//a level with no boombox keeps its music
+		return found;
 	}
 
 	@Override

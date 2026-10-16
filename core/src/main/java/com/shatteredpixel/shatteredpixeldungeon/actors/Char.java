@@ -1539,7 +1539,8 @@ public abstract class Char extends Actor {
 				new HashSet<Class>( Arrays.asList(AllyBuff.class, Dread.class, Terror.class, Amok.class, Charm.class, Sleep.class,
 									Paralysis.class, Frost.class, Chill.class, Slow.class, Speed.class) )),
 		//Shittened PD, a character that is simply irritating
-		ANNOYING;
+		ANNOYING,
+		HUMAN;
 
 		private HashSet<Class> resistances;
 		private HashSet<Class> immunities;

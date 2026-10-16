@@ -32,6 +32,7 @@ public class Assets {
 	}
 
 	public static class Environment {
+		public static final String CAPYNEST_SP = "environment/custom_tiles/shittened/capybaranest.png"; //ported, shittened
 		public static final String TILES_ICE2 = "environment/mattedition/tiles_ice_snow.png"; //ported, mattedition
 		public static final String TILES_THIEF_GUILD = "environment/matt/tiles_guild.png"; //ported, matt
 		public static final String PRISON_EXIT_OLD = "environment/custom_tiles/abyssalnite/prison_exit_old.png"; //ported, abyssalnite
@@ -237,6 +238,13 @@ public class Assets {
 	}
 
 	public static class Sounds {
+		public static final String WIN_SMALL = "sounds/shittened/win_small.mp3"; //ported, shittened
+		public static final String WIN_MEDIUM = "sounds/shittened/win_medium.mp3"; //ported, shittened
+		public static final String WIN_LARGE = "sounds/shittened/win_large.mp3"; //ported, shittened
+		public static final String SLOT_TICK = "sounds/shittened/slot_tick.mp3"; //ported, shittened
+		public static final String HORN = "sounds/shittened/horn.mp3"; //ported, shittened
+		public static final String DEATH_11 = "sounds/shittened/death_11.mp3"; //ported, shittened
+		public static final String STAIRS_1 = "sounds/movement/shittened/stairs_1.mp3"; //ported, shittened
 		public static final String HARVEST = "sounds/shittened/harvest.mp3"; //ported, shittened
 		public static final String GUN = "sounds/shittened/gun.mp3"; //ported, shittened
 		public static final String BAT = "sounds/shittened/bat.mp3"; //ported, shittened
@@ -378,6 +386,11 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String SLOTMACHINE = "sprites/shittened/slotmachine.png"; //ported, shittened
+		public static final String TWINGO = "sprites/shittened/twingo.png"; //ported, shittened
+		public static final String ADVENTURER = "sprites/shittened/adventurer.png"; //ported, shittened
+		public static final String TOKMANNI = "sprites/shittened/tokmanni.png"; //ported, shittened
+		public static final String EVAN = "sprites/shittened/evan.png"; //ported, shittened
 		public static final String RAVEN = "sprites/shittened/raven.png"; //ported, shittened
 		public static final String GLASSBOX = "sprites/shittened/glass_box.png"; //ported, shittened
 		public static final String FURNITURE = "sprites/shittened/furniture.png"; //ported, shittened
@@ -484,6 +497,7 @@ public class Assets {
 		public static final String ZEALOT   = "sprites/zealot.png"; //ported, devoted
 		public static final String ARTIFICER = "sprites/artificer.png"; //ported, reforged
 		public static final String SHIT_BAT = "sprites/shittened/bat.png"; //ported, shittened, the mod drew extra frames on this sheet
+		public static final String SHIT_GOO = "sprites/shittened/goo.png"; //ported, shittened, the mod drew extra frames on this sheet
 		public static final String SHIT_SNAKE = "sprites/shittened/snake.png"; //ported, shittened, the mod drew extra frames on this sheet
 		public static final String SHIT_EYE = "sprites/shittened/eye.png"; //ported, shittened, the mod drew extra frames on this sheet
 		public static final String SHIT_DM100 = "sprites/shittened/dm100.png"; //ported, shittened, the mod drew extra frames on this sheet
