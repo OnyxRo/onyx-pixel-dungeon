@@ -595,7 +595,11 @@ public class Hero extends Char {
 	
 	@Override
 	public boolean attack(Char enemy, float dmgMulti, float dmgBonus, float accMulti) {
+		KindOfWeapon tfWep = belongings.attackingWeapon();
+		com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon tfMelee = tfWep instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon ? (com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon) tfWep : null;
+		if (tfMelee != null) tfMelee.beforeHeroAttack(this, enemy);
 		boolean result = super.attack(enemy, dmgMulti, dmgBonus, accMulti);
+		if (tfMelee != null) { tfMelee.afterHeroAttack(this, enemy, result); tfMelee.afterHeroAttackDelayResolved(this); }
 		if (!(belongings.attackingWeapon() instanceof MissileWeapon)){
 			if (buff(Talent.PreciseAssaultTracker.class) != null){
 				buff(Talent.PreciseAssaultTracker.class).detach();
@@ -905,6 +909,8 @@ public class Hero extends Char {
 		if (RingOfForce.fightingUnarmed(this))  return true;
 		if (STR() < ((Weapon)w).STRReq())       return false;
 		if (w instanceof Flail)                 return false;
+		if (w instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon
+				&& ((com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon) w).forcesSurpriseAttack(this, null)) return true;
 
 		return super.canSurpriseAttack();
 	}
@@ -2691,7 +2697,11 @@ public class Hero extends Char {
 			defecate(3f);
 		}
 
+		int tfFrom = pos;
 		super.move( step, travelling);
+		if (belongings.weapon() instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon) {
+			((com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon) belongings.weapon()).onHeroStep(this, tfFrom, step);
+		}
 		
 		if (!flying && travelling) {
 			if (Dungeon.level.water[pos]) {

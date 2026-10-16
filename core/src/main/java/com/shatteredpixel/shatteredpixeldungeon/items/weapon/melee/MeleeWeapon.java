@@ -171,6 +171,14 @@ public class MeleeWeapon extends Weapon {
 		return hero != null;
 	}
 
+	//from Transformation PD, hooks its tier 6 weapons use. Hero calls them around attacks and steps
+	public boolean hasTrait(WeaponTrait trait, Char owner) { return false; }
+	public void beforeHeroAttack(Hero hero, Char target) {}
+	public void afterHeroAttack(Hero hero, Char target, boolean hit) {}
+	public void afterHeroAttackDelayResolved(Hero hero) {}
+	public void onHeroStep(Hero hero, int from, int to) {}
+	public boolean forcesSurpriseAttack(Hero hero, Char target) { return false; }
+
 	//from Transformation PD, the weapon traits some of its weapons name
 	public enum WeaponTrait {
 		DAGGER,

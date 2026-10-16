@@ -579,6 +579,50 @@ public enum Catalog {
 		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Wakizashi.class);
 		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WalkStick.class);
 
+		//items ported from transformation
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.tier6.PalermoSword.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.tier6.SakuraBlossomBlade.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.tier6.TwoHandedGreatsword.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.tier6.VenomousSickle.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.ElfWine.class);
+		ARMOR.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.DM400Armor.class);
+		ARMOR.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.FreemanArmor.class);
+		ARMOR.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.FriarArmor.class);
+		ARMOR.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.NinjaArmor.class);
+		ARMOR.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.PrincessArmor.class);
+		GLYPHS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Leaden.class);
+		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.PrecognitiveEye.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.remains.BottledEnergy.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.remains.BrokenPackage.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.remains.BrokenTool.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.remains.MatchaPudding.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.remains.MetalFragment.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.remains.RoyalJewelry.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasures.AlMughiraPyxis.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasures.BlacasEwer.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasures.BookOfKells.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasures.CholaNataraja.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasures.DjenneTerracottaFigure.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasures.DojigiriYasutsuna.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasures.EthiopianProcessionalCross.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasures.GoryeoMaebyeong.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasures.GreatKhanPaiza.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasures.GreatZimbabweBird.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasures.HarbavilleTriptych.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasures.ImperialCrown.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasures.IncaGoldenLlama.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasures.JavaneseGoldCup.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasures.LewisChessQueen.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasures.MuiscaGoldenRaft.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasures.PakalJadeMask.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasures.RuWareBowl.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasures.SuttonHooHelmet.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.treasures.TurquoiseSerpent.class);
+		TRINKETS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.trinkets.BronzeWatch.class);
+		TRINKETS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.trinkets.GoldIngot.class);
+		TRINKETS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MagicFeather.class);
+		TRINKETS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.trinkets.SpearShield.class);
+
 
 	}
 
