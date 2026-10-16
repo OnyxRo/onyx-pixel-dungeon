@@ -640,6 +640,8 @@ public enum Catalog {
 		RINGS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfLife.class);
 		SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion.class);
 		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfVenom.class);
+		ARMOR.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.VikingArmor.class);
+		ARMOR.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.DragonKnightArmor.class);
 
 
 	}

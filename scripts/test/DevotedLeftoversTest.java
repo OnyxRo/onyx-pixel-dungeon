@@ -299,6 +299,60 @@ public class DevotedLeftoversTest {
 			t.printStackTrace( System.out );
 		}
 
+		//Dragonic's Viking and Dragon Knight, their kits, talents, subclasses, abilities and effects
+		try {
+			for ( HeroClass cls : new HeroClass[]{ HeroClass.VIKING, HeroClass.DRAGONKNIGHT } ) {
+				GamesInProgress.selectedClass = cls;
+				Dungeon.seed = 777003L;
+				Dungeon.init();
+				com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero h = Dungeon.hero;
+				check( h.heroClass == cls, "hero is a " + cls );
+				check( h.belongings.weapon != null, cls + " starts with a weapon" );
+				check( h.talents.get(0).size() == 4, cls + " tier 1 talents " + h.talents.get(0).size() );
+				check( h.talents.get(1).size() == 5, cls + " tier 2 talents " + h.talents.get(1).size() );
+				check( h.talents.get(2).size() == 2, cls + " tier 3 talents " + h.talents.get(2).size() );
+				check( cls.subClasses().length == 2, cls + " has two subclasses" );
+				for ( com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass sub : cls.subClasses() ) {
+					h.subClass = sub;
+					com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.initSubclassTalents( h );
+					check( h.talents.get(2).size() >= 5, sub + " adds three talents, tier 3 has " + h.talents.get(2).size() );
+					check( !sub.title().startsWith( "!!!" ) && !sub.desc().startsWith( "!!!" ), sub + " text" );
+					check( !sub.shortDesc().startsWith( "!!!" ), sub + " short text" );
+				}
+				h.subClass = com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.NONE;
+				com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility[] abils = cls.armorAbilities();
+				check( abils.length == 3, cls + " has three armor abilities" );
+				for ( com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility a : abils ) {
+					check( a.talents().length >= 3, a.getClass().getSimpleName() + " has talents" );
+					check( !com.shatteredpixel.shatteredpixeldungeon.messages.Messages.get( a, "name" ).startsWith( "!!!" ), a.getClass().getSimpleName() + " has a name" );
+				}
+				check( !cls.title().startsWith( "!!!" ) && !cls.desc().startsWith( "!!!" ) && !cls.shortDesc().startsWith( "!!!" ), cls + " class text" );
+				check( !cls.unlockMsg().contains( "!!!" ), cls + " unlock text" );
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor ca = com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor.upgrade( h, new com.shatteredpixel.shatteredpixeldungeon.items.armor.LeatherArmor() );
+				check( ca != null && !ca.name().startsWith( "!!!" ), cls + " class armor and its name" );
+				check( cls.masteryBadge() != null, cls + " has a mastery badge" );
+				check( !com.shatteredpixel.shatteredpixeldungeon.messages.Messages.get( com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper.class, "talk_prison_" + cls.name() ).startsWith( "!!!" ), cls + " shopkeeper line" );
+
+				if (cls == HeroClass.DRAGONKNIGHT) {
+					check( h.buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sear.class ) != null, "Dragon Knight has Sear" );
+					check( h.isImmune( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning.class ), "Dragon Knight is immune to burning" );
+				} else {
+					//Fortify makes attacks faster and the skin harder
+					float before = h.attackDelay();
+					com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect( h, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Fortify.class, 10f );
+					check( h.attackDelay() < before, "Fortify speeds up attacks" );
+					com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.detach( h, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Fortify.class );
+					h.subClass = com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.ICEBREAKER;
+					check( h.isImmune( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost.class ), "Icebreaker is immune to frost" );
+					h.subClass = com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.NONE;
+				}
+			}
+		} catch (Throwable t) {
+			failures++;
+			System.out.println( "FAIL: Dragonic heroes threw " + t );
+			t.printStackTrace( System.out );
+		}
+
 		System.out.println( "SUMMARY devoted leftovers checks: " + checks + ", failures: " + failures );
 		if (failures > 0) System.exit( 1 );
 	}

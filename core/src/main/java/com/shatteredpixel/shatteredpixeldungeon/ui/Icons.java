@@ -485,6 +485,10 @@ public enum Icons {
 				return new ItemSprite(ItemSpriteSheet.GUN);
 			case SUMMONER:
 				return new ItemSprite(ItemSpriteSheet.ARTIFACT_ROSE1);
+			case VIKING:
+				return new ItemSprite(ItemSpriteSheet.VIKING_MACE);
+			case DRAGONKNIGHT:
+				return new ItemSprite(ItemSpriteSheet.DRAGON_DAGGER);
 			default:
 				return null;
 		}

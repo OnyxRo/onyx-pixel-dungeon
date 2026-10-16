@@ -161,6 +161,7 @@ public class ModRoster {
 		add( "dragonic", StatueArmor.class, 0, 1, 99 );
 		add( "dragonic", FlamingSkull.class, 1, 22, 24 );
 		add( "dragonic", Slug.class, 0, 1, 99 );
+		add( "dragonic", Dragon.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

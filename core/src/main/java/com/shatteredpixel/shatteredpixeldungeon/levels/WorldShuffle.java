@@ -287,6 +287,12 @@ public class WorldShuffle {
 		return com.shatteredpixel.shatteredpixeldungeon.actors.mobs.MobSpawner.getMobRotation(depth);
 	}
 
+	/** The short key of the mod a world number comes from, like "dragonic", or null for Shattered's own worlds. */
+	public static String keyOfWorld( int world ){
+		String logo = world >= 0 && world < LOGOS.length ? LOGOS[world] : null;
+		return logo == null ? null : logo.substring(logo.lastIndexOf('/') + 1).replace(".png", "");
+	}
+
 	/** The mod a world comes from as a short key like "reforged", or null for Shattered's own worlds. */
 	public static String modKey( Level level ){
 		String logo = modLogo(level);
@@ -373,6 +379,10 @@ public class WorldShuffle {
 			int pick = forcedVariant >= 0 ? forcedVariant : (int)((Math.abs( Dungeon.seed ) / 7 + depth) & 1);
 			//a third variant is the final arena, only built when asked for by name (the boss test), never by the seed
 			return both[forcedVariant >= 0 ? pick % both.length : pick % Math.min(both.length, 2)];
+		}
+		if (world >= 0 && world < LOGOS.length && DRAGONIC.equals(LOGOS[world])) {
+			//Dragonic's Dragon guards the floor 25 gate in place of Yog, it was the last floor of its own game
+			return depth == 25 ? new DragonBossLevel() : null;
 		}
 		if (world < 0 || world >= LOGOS.length || !DEVOTED.equals(LOGOS[world])) return null;
 		switch (depth) {
@@ -547,11 +557,22 @@ public class WorldShuffle {
 	}
 
 	public static Class<?>[] trapClasses( RegularLevel level ){
-		return trapSource(level).trapClasses();
+		Class<?>[] classes = trapSource(level).trapClasses();
+		//Dragonic PD's lair adds its venom gas trap to the usual list
+		if (level instanceof DragonLairLevel) {
+			classes = java.util.Arrays.copyOf( classes, classes.length + 1 );
+			classes[classes.length - 1] = com.shatteredpixel.shatteredpixeldungeon.levels.traps.VenomTrap.class;
+		}
+		return classes;
 	}
 
 	public static float[] trapChances( RegularLevel level ){
-		return trapSource(level).trapChances();
+		float[] chances = trapSource(level).trapChances();
+		if (level instanceof DragonLairLevel) {
+			chances = java.util.Arrays.copyOf( chances, chances.length + 1 );
+			chances[chances.length - 1] = 4f;
+		}
+		return chances;
 	}
 
 	/** The floor's world name, like "The Astral Library", or null for Shattered's own worlds. */

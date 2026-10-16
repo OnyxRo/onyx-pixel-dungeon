@@ -127,6 +127,12 @@ abstract public class ClassArmor extends Armor {
 			case SUMMONER:
 				classArmor = new SummonerArmor();
 				break;
+			case VIKING:
+				classArmor = new VikingArmor();
+				break;
+			case DRAGONKNIGHT:
+				classArmor = new DragonKnightArmor();
+				break;
 		}
 		
 		classArmor.level(armor.trueLevel());

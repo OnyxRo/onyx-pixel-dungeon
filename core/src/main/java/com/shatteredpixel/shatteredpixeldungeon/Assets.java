@@ -395,6 +395,7 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String TILES_LAIR = "sprites/dragonic/tiles_lair.png"; //ported, dragonic
 		public static final String STATUE_ARMOR = "sprites/dragonic/statuearmor.png"; //ported, dragonic
 		public static final String SMALLDRAKE = "sprites/dragonic/drake.png"; //ported, dragonic
 		public static final String SLUG = "sprites/dragonic/snowslug.png"; //ported, dragonic
@@ -531,6 +532,8 @@ public class Assets {
 		public static final String ZEALOT   = "sprites/zealot.png"; //ported, devoted
 		public static final String ARTIFICER = "sprites/artificer.png"; //ported, reforged
 		public static final String SUMMONER = "sprites/summoner.png"; //ported, ryuse
+		public static final String VIKING = "sprites/viking.png"; //ported, dragonic
+		public static final String DRAGONKNIGHT = "sprites/dragonknight.png"; //ported, dragonic
 		public static final String DEMON = "sprites/demon.png"; //ported, ryuse, the Imp the Summoner sees
 		public static final String SHIT_BAT = "sprites/shittened/bat.png"; //ported, shittened, the mod drew extra frames on this sheet
 		public static final String SHIT_GOO = "sprites/shittened/goo.png"; //ported, shittened, the mod drew extra frames on this sheet

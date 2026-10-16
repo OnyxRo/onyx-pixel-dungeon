@@ -21,6 +21,12 @@ opts = {a.split('=')[0]: (a.split('=')[1] if '=' in a else True) for a in sys.ar
 if not args:
     print(__doc__); sys.exit(1)
 MOD = os.path.abspath(args[0])
+#a repo with a wrapper folder around the game (Dragonic keeps it in shattered-pixel-dungeon-master) is entered automatically
+if os.path.isdir(MOD) and not os.path.isdir(os.path.join(MOD, "core")):
+    for _d in sorted(os.listdir(MOD)):
+        if os.path.isdir(os.path.join(MOD, _d, "core")):
+            MOD = os.path.join(MOD, _d)
+            break
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 TOP = int(opts.get('--top', 40))
 

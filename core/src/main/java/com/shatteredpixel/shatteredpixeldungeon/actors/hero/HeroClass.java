@@ -95,7 +95,10 @@ public enum HeroClass {
 	//from Pixel Dungeon Reforged
 	ARTIFICER( HeroSubClass.CONSTRUCTOR, HeroSubClass.ARMORER ),
 	//from Ryuse's PD
-	SUMMONER( HeroSubClass.EIDOLON, HeroSubClass.ATTRACTOR );
+	SUMMONER( HeroSubClass.EIDOLON, HeroSubClass.ATTRACTOR ),
+	//from Dragonic PD
+	VIKING( HeroSubClass.DRUID, HeroSubClass.ICEBREAKER ),
+	DRAGONKNIGHT( HeroSubClass.DEVORANDUM, HeroSubClass.MESSOREM );
 
 	//the Summoner has two pictures, one is chosen each time the game starts
 	private static final String SUMMONER_SPLASH = Math.random() < 0.5 ? Assets.Splashes.SUMMONER : Assets.Splashes.SORCERESS;
@@ -161,6 +164,14 @@ public enum HeroClass {
 			case SUMMONER:
 				initSummoner( hero );
 				break;
+
+			case VIKING:
+				initViking( hero );
+				break;
+
+			case DRAGONKNIGHT:
+				initDragonKnight( hero );
+				break;
 		}
 
 		//Shittened PD's prefixes never land on a hero's starting weapon
@@ -199,6 +210,10 @@ public enum HeroClass {
 				return Badges.Badge.MASTERY_ARTIFICER;
 			case SUMMONER:
 				return Badges.Badge.MASTERY_SUMMONER;
+			case VIKING:
+				return Badges.Badge.MASTERY_VIKING;
+			case DRAGONKNIGHT:
+				return Badges.Badge.MASTERY_DRAGONKNIGHT;
 		}
 		return null;
 	}
@@ -290,6 +305,33 @@ public enum HeroClass {
 
 		new PotionOfPurity().identify();
 		new ScrollOfRemoveCurse().identify();
+	}
+
+	private static void initViking( Hero hero ) {
+		//Dragonic PD. A viking mace, stones and a mind vision potion. Its own start was a debug kit of 25 scrolls and potions, this is a normal start.
+		(hero.belongings.weapon = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.VikingMace()).identify();
+		hero.belongings.weapon.activate(hero);
+
+		ThrowingStone stones = new ThrowingStone();
+		stones.quantity(8).identify().collect();
+		Dungeon.quickslot.setSlot(0, stones);
+
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision().identify();
+		new com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping().identify();
+	}
+
+	private static void initDragonKnight( Hero hero ) {
+		//Dragonic PD. A dragon dagger, and the breath that sears raw meat (see Sear). Its own start was a debug kit.
+		(hero.belongings.weapon = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.DragonDagger()).identify();
+		com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect( hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sear.class );
+		hero.belongings.weapon.activate(hero);
+
+		ThrowingStone stones = new ThrowingStone();
+		stones.quantity(6).identify().collect();
+		Dungeon.quickslot.setSlot(0, stones);
+
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame().identify();
+		new com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror().identify();
 	}
 
 	private static void initSummoner( Hero hero ) {
@@ -386,6 +428,13 @@ public enum HeroClass {
 						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.artificer.Reflection()};
 			case SUMMONER:
 				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.summoner.PhaseShift()};
+			case VIKING:
+				//Dragonic had one ability, Hammerfall. Two of the Warrior's join it so the crown still gives a choice
+				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.viking.Hammerfall(),
+						new Endure(), new HeroicLeap()};
+			case DRAGONKNIGHT:
+				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.dragonknight.DeafeningRoar(),
+						new Shockwave(), new HeroicLeap()};
 		}
 	}
 
@@ -409,6 +458,10 @@ public enum HeroClass {
 				return Assets.Sprites.ARTIFICER;
 			case SUMMONER:
 				return Assets.Sprites.SUMMONER;
+			case VIKING:
+				return Assets.Sprites.VIKING;
+			case DRAGONKNIGHT:
+				return Assets.Sprites.DRAGONKNIGHT;
 		}
 	}
 
@@ -432,6 +485,11 @@ public enum HeroClass {
 				return Assets.Splashes.ARTIFICER;
 			case SUMMONER:
 				return SUMMONER_SPLASH;
+			//Dragonic had no splash art, these borrow the Warrior's and the Duelist's
+			case VIKING:
+				return Assets.Splashes.WARRIOR;
+			case DRAGONKNIGHT:
+				return Assets.Splashes.DUELIST;
 		}
 	}
 	
@@ -460,6 +518,10 @@ public enum HeroClass {
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_ARTIFICER);
 			case SUMMONER:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_SUMMONER);
+			case VIKING:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_VIKING);
+			case DRAGONKNIGHT:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_DRAGONKNIGHT);
 		}
 	}
 	

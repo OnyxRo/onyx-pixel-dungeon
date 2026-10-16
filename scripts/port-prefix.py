@@ -25,6 +25,12 @@ import renames
 mod_arg, PREFIX, wanted = args[0], args[1], args[2:]
 MODS = os.environ.get('MOD_SOURCES', os.path.expanduser('~/mod-sources'))
 MOD = mod_arg if os.path.isdir(mod_arg) else os.path.join(MODS, mod_arg)
+#a repo with a wrapper folder around the game (Dragonic keeps it in shattered-pixel-dungeon-master) is entered automatically
+if os.path.isdir(MOD) and not os.path.isdir(os.path.join(MOD, "core")):
+    for _d in sorted(os.listdir(MOD)):
+        if os.path.isdir(os.path.join(MOD, _d, "core")):
+            MOD = os.path.join(MOD, _d)
+            break
 if not os.path.isdir(MOD):
     raise SystemExit('no mod folder at ' + MOD + ', try scripts/get-mod.sh ' + mod_arg)
 MOD = MOD.replace(chr(92), '/').rstrip('/') + '/'

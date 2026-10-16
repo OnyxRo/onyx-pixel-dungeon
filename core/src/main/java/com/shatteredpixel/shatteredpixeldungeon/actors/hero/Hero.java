@@ -555,6 +555,8 @@ public class Hero extends Char {
 		Buff.affect( this, Regeneration.class );
 		Buff.affect( this, Hunger.class );
 		Buff.affect( this, MpRegen.class );
+		//Dragonic PD, the Dragon Knight sears raw meat
+		if (heroClass == HeroClass.DRAGONKNIGHT) Buff.affect( this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sear.class );
 	}
 	
 	public int tier() {
@@ -771,6 +773,8 @@ public class Hero extends Char {
 	@Override
 	public int drRoll() {
 		int dr = super.drRoll();
+		//Dragonic PD, Fortify hardens the skin
+		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Fortify.class) != null) dr += Random.NormalIntRange(1, 2 + Dungeon.depth / 4);
 
 		if (belongings.armor() != null) {
 			int armDr = Random.NormalIntRange( belongings.armor().DRMin(), belongings.armor().DRMax());
@@ -950,6 +954,8 @@ public class Hero extends Char {
 		}
 
 		float delay = 1f;
+		//Dragonic PD, Fortify also speeds up attacks
+		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Fortify.class) != null) delay *= 0.75f;
 
 		if (!RingOfForce.fightingUnarmed(this)) {
 			
@@ -1807,6 +1813,7 @@ public class Hero extends Char {
 		}
 
 		damage = Talent.onAttackProc( this, enemy, damage );
+		damage = dragonicOnAttackProc( enemy, damage );
 		damage = Perks.onAttackProc( this, enemy, damage );
 		damage = com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.onAttackProc( this, enemy, damage );
 
@@ -2859,8 +2866,49 @@ public class Hero extends Char {
 		}
 	}
 
+	//Dragonic PD, the Viking hits undead and demons harder, and its and the Dragon Knight's subclasses add effects to a hit
+	private int dragonicOnAttackProc( Char enemy, int damage ){
+		if (heroClass == HeroClass.VIKING
+				&& (enemy.properties().contains(Char.Property.DEMONIC) || enemy.properties().contains(Char.Property.UNDEAD))
+				&& !enemy.properties().contains(Char.Property.BOSS) && !enemy.properties().contains(Char.Property.MINIBOSS)){
+			if (enemy.sprite != null) enemy.sprite.emitter().burst(com.shatteredpixel.shatteredpixeldungeon.effects.Speck.factory(com.shatteredpixel.shatteredpixeldungeon.effects.Speck.LIGHT), 6);
+			damage = Math.round(damage * 1.15f);
+		}
+		switch (subClass){
+			case MESSOREM:
+				if (Random.Int(5) == 0 && enemy.isAlive()){
+					Buff.affect(enemy, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding.class).set(Math.max(1, damage / 4));
+				}
+				break;
+			case DRUID:
+				if (Random.Int(100) < 8 && enemy instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob
+						&& !enemy.properties().contains(Char.Property.BOSS) && !enemy.properties().contains(Char.Property.MINIBOSS)
+						&& enemy.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption.class) == null
+						&& !enemy.isImmune(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption.class)){
+					com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption.corruptionHeal(enemy);
+					com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff.affectAndLoot((com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob)enemy, this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption.class);
+				}
+				break;
+			case ICEBREAKER:
+				if (Random.Int(5) == 0 && enemy.isAlive()){
+					Buff.prolong(enemy, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill.class, Random.Float(4f, 6f));
+				}
+				break;
+			default:
+		}
+		return damage;
+	}
+
 	@Override
 	public boolean isImmune(Class effect) {
+		//Dragonic PD, an Icebreaker does not feel the cold and a Dragon Knight does not burn
+		if (subClass == HeroSubClass.ICEBREAKER && (effect == com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost.class
+				|| effect == com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill.class)){
+			return true;
+		}
+		if (heroClass == HeroClass.DRAGONKNIGHT && effect == com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning.class){
+			return true;
+		}
 		//Ryuse's PD, an Attractor cannot be charmed
 		if (subClass == HeroSubClass.ATTRACTOR && effect == com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm.class){
 			return true;

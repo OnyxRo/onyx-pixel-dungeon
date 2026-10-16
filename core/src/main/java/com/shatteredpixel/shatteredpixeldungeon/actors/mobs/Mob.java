@@ -1032,6 +1032,12 @@ public abstract class Mob extends Char {
 	@Override
 	public void die( Object cause ) {
 
+		//Dragonic PD, a Devorandum eats a little of what it kills
+		if (cause == Dungeon.hero && Dungeon.hero.subClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.DEVORANDUM
+				&& alignment == Alignment.ENEMY && Random.Int(100) < 40 && Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger.class) != null){
+			Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger.class).satisfy(Math.min(HT / 10, HT / 2) * 0.5f);
+			Dungeon.hero.sprite.emitter().burst( com.shatteredpixel.shatteredpixeldungeon.effects.Speck.factory(com.shatteredpixel.shatteredpixeldungeon.effects.Speck.HEALING), 1 );
+		}
 		//Dragonic PD, the Ring of Life gives back some health when the hero kills something
 		if (cause == Dungeon.hero && alignment == Alignment.ENEMY && Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfLife.Life.class) != null
 				&& Random.Int(10) < 7){
