@@ -273,6 +273,7 @@ public class AscensionChallenge extends Buff {
 					}
 				}
 				Dungeon.level.spawnMob(12);
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper.Quest.spawnCorruptedRipper(Dungeon.level);
 
 			}
 		}

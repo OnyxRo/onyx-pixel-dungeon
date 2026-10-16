@@ -53,6 +53,8 @@ public class SpecialFloors {
 	static {
 		add( "Abyssalnite PD", "Final arena, septium pillars and Cthulhu", FinalLevel::new );
 
+		add( "Devoted PD", "Shadow realm, the Void trap", VoidTrapLevel::new );
+
 		add( "Cursed PD", "Start hub", StartLevel::new );
 		add( "Cursed PD", "Safe room", SafeRoom::new );
 		add( "Cursed PD", "Grinding level", GrindingLevel::new );

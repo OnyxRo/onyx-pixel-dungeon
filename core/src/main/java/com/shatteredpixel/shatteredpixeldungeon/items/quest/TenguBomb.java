@@ -129,7 +129,7 @@ public class TenguBomb extends Bomb {
     }
 
     @Override
-    protected void onThrow( int cell ) {
+    public void onThrow( int cell ) {
         if (!Dungeon.level.pit[ cell ] && lightingFuse) {
             Actor.addDelayed(fuseShock = new TenguBomb.Fuse().ignite(this), 0);
         }

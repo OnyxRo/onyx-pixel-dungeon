@@ -83,6 +83,10 @@ if [ $QUICK -eq 0 ]; then
   run "BranchLevelTest" BranchLevelTest 12; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY branch)" | tail -8 | sed 's/^/  /'
   [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
+  #the Void trap floor, item infusion, the Gun and the Half Ripper quest
+  run "DevotedLeftoversTest" DevotedLeftoversTest; rc=$?
+  tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY devoted)" | tail -12 | sed 's/^/  /'
+  [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
 fi
 
 # mod boss fights, walked through headless. Skipped in --quick runs.

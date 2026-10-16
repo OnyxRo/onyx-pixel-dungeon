@@ -353,6 +353,8 @@ public class Dungeon {
 		Blacksmith.Quest.reset();
 		Imp.Quest.reset();
 		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.FriendlyThief.Quest.reset();
+		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper.Quest.reset();
+		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.BountyHunter.Quest.reset();
 
 		hero = new Hero();
 		hero.live();
@@ -584,9 +586,20 @@ public class Dungeon {
 		}
 		
 		PathFinder.setMapSize(level.width(), level.height());
-		
+
+		//Pixel Dungeon Reforged's Half Ripper. Leaving its floor without it, in a way it did not follow, fails the quest
+		if (Dungeon.depth != com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper.Quest.depth()
+				&& com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper.Quest.started()
+				&& !com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper.Quest.completed()
+				&& !com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper.Quest.failed()) {
+			com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper.Quest.abandon();
+		}
+
 		Dungeon.level = level;
 		hero.pos = pos;
+
+		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper.Quest.spawn(level);
+		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper.Quest.checkNeedToKill();
 
 		if (hero.buff(AscensionChallenge.class) != null){
 			hero.buff(AscensionChallenge.class).onLevelSwitch();
@@ -792,6 +805,8 @@ public class Dungeon {
 			Blacksmith	.Quest.storeInBundle( quests );
 			Imp			.Quest.storeInBundle( quests );
 			com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.FriendlyThief.Quest.storeInBundle( quests );
+			com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper.Quest.storeInBundle( quests );
+			com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.BountyHunter.Quest.storeInBundle( quests );
 			bundle.put( QUESTS, quests );
 			
 			SpecialRoom.storeRoomsInBundle( bundle );
@@ -910,12 +925,16 @@ public class Dungeon {
 				Blacksmith.Quest.restoreFromBundle( quests );
 				Imp.Quest.restoreFromBundle( quests );
 				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.FriendlyThief.Quest.restoreFromBundle( quests );
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper.Quest.restoreFromBundle( quests );
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.BountyHunter.Quest.restoreFromBundle( quests );
 			} else {
 				Ghost.Quest.reset();
 				Wandmaker.Quest.reset();
 				Blacksmith.Quest.reset();
 				Imp.Quest.reset();
 				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.FriendlyThief.Quest.reset();
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper.Quest.reset();
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.BountyHunter.Quest.reset();
 			}
 			
 			SpecialRoom.restoreRoomsFromBundle(bundle);

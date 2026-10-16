@@ -122,6 +122,19 @@ public class WndSandbox extends Window {
 			}
 		}, null );
 
+		//Devoted PD's conjurer summons, which in its game belong to a Zealot subclass
+		addRow( new RedButton( Messages.get(this, "summon") ) {
+			@Override
+			protected void onClick() {
+				hide();
+				if (Dungeon.energy < 20) Dungeon.energy = 20;
+				com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ConjureAbility abil =
+						com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.prolong( Dungeon.hero,
+								com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ConjureAbility.class, 100000f );
+				GameScene.show( new WndConjurerSummoning( abil ) );
+			}
+		}, null );
+
 		addRow( levelButton(1), levelButton(5) );
 		addRow( strengthButton(1), strengthButton(5) );
 

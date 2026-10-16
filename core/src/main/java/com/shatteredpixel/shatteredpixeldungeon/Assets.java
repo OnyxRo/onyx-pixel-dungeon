@@ -316,6 +316,11 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String WRETCH = "sprites/devoted/wretch.png"; //ported, devoted
+		public static final String WISP = "sprites/devoted/wisp.png"; //ported, devoted
+		public static final String WASP = "sprites/devoted/wasp.png"; //ported, devoted
+		public static final String HOMONCULUS = "sprites/devoted/homonculus.png"; //ported, devoted
+		public static final String BLUEIMP = "sprites/devoted/imp.png"; //ported, devoted
 		public static final String WYRM = "sprites/reforged/wyrm.png"; //ported, reforged
 		public static final String ROTTING = "sprites/cursed/rotting_fist.png"; //ported, cursed
 		public static final String BURNING = "sprites/cursed/burning_fist.png"; //ported, cursed
@@ -481,6 +486,7 @@ public class Assets {
 		public static final String NECRO    = "sprites/necromancer.png";
 		public static final String GHOUL    = "sprites/ghoul.png";
 		public static final String RIPPER   = "sprites/ripper.png";
+		public static final String HALFRIPPER = "sprites/reforged/halfripper.png"; //ported, reforged
 		public static final String SPAWNER  = "sprites/spawner.png";
 		public static final String DM100    = "sprites/dm100.png";
 		public static final String PYLON    = "sprites/pylon.png";

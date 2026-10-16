@@ -268,6 +268,7 @@ public class Hero extends Char {
 	public int exp = 0;
 	
 	public int HTBoost = 0;
+	public float bountyhunterbuff = 0; //Devoted PD's bounty hunter, 3 max HP for each upgrade turned into hardening
 	public int vitalityBonus = 0; //Matt Edition's Potion of Vitality, extra max HP on top of level and HTBoost
 	public ArrayList<Perks.Perk> perks = new ArrayList<>(); //Experienced PD's perks
 
@@ -300,6 +301,7 @@ public class Hero extends Char {
 		}
 
 		HT += vitalityBonus;
+		HT += (int) (bountyhunterbuff * 3);
 
 		if (boostHP){
 			HP += Math.max(HT - curHT, 0);
@@ -365,6 +367,7 @@ public class Hero extends Char {
 		
 		bundle.put( HTBOOST, HTBoost );
 		bundle.put( "vitality_bonus", vitalityBonus );
+		bundle.put( "bountyhunterbuff", bountyhunterbuff );
 		Perks.storeInBundle( bundle, perks );
 
 		belongings.storeInBundle( bundle );
@@ -378,6 +381,7 @@ public class Hero extends Char {
 
 		HTBoost = bundle.getInt(HTBOOST);
 		vitalityBonus = bundle.getInt("vitality_bonus");
+		bountyhunterbuff = bundle.getFloat("bountyhunterbuff");
 		Perks.restoreFromBundle( bundle, perks );
 
 		super.restoreFromBundle( bundle );
@@ -1525,6 +1529,59 @@ public class Hero extends Char {
 			return false;
 
 		} else if (!Dungeon.level.locked && transition != null && transition.inside(pos)) {
+
+			//Pixel Dungeon Reforged's Half Ripper, an escort. Close by, it goes up with the hero. Otherwise ask first.
+			com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper hr = null;
+			if (Dungeon.depth >= 21 && Dungeon.depth <= 24 && Dungeon.branch == 0
+					&& com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper.Quest.started()
+					&& !com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper.Quest.failed()
+					&& !com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper.Quest.completed()) {
+				for (Mob m : Dungeon.level.mobs) {
+					if (m instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper) {
+						hr = (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper) m;
+						break;
+					}
+				}
+			}
+
+			if (hr != null) {
+				final boolean goingUp = transition.type == LevelTransition.Type.REGULAR_ENTRANCE;
+				if (goingUp && Dungeon.level.trueDistance(pos, hr.pos) < 5.0f) {
+					hr.ascend();
+					if (Dungeon.depth == 21) {
+						ready();
+					} else if (Dungeon.level.activateTransition(this, transition)) {
+						curAction = null;
+					} else {
+						ready();
+					}
+				} else {
+					final com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper finalHr = hr;
+					final LevelTransition finalTransition = transition;
+					final String abandonTitle = com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper.Quest.GetAbandonTitleKey();
+					final String abandonDescriptionKey = com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper.Quest.GetAbandonDescriptionKey(goingUp);
+					com.watabou.noosa.Game.runOnRenderThread(new com.watabou.utils.Callback() {
+						public void call() {
+							GameScene.show(
+									new com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions(new com.watabou.noosa.Image(finalHr.sprite),
+											Messages.get(finalHr.getClass(), abandonTitle),
+											Messages.get(finalHr.getClass(), abandonDescriptionKey),
+											Messages.get(finalHr.getClass(), "hero_leave"), Messages.get(finalHr.getClass(), "hero_stay")) {
+										@Override
+										protected void onSelect(int index) {
+											if (index == 0 && Dungeon.level.activateTransition(Hero.this, finalTransition)) {
+												curAction = null;
+											} else {
+												ready();
+											}
+										}
+									}
+							);
+						}
+					});
+				}
+				return false;
+			}
 
 			if (Dungeon.level.activateTransition(this, transition)){
 				curAction = null;

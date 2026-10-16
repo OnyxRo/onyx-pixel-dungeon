@@ -109,7 +109,11 @@ public abstract class RegularLevel extends Level {
 	
 	protected Room roomEntrance;
 	protected Room roomExit;
-	
+
+	//used by Pixel Dungeon Reforged's Half Ripper quest
+	public Room GetExitRoom() { return roomExit; }
+	public Room GetEntranceRoom() { return roomEntrance; }
+
 	@Override
 	protected boolean build() {
 		

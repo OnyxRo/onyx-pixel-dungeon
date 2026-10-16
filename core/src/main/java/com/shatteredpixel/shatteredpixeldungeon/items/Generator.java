@@ -894,6 +894,18 @@ public class Generator {
 		return false;
 	}
 
+	//puts an artifact back in the pool, for rewards that were offered but not taken. Assumes all artifacts weigh the same.
+	public static boolean readdArtifact(Class<?extends Artifact> artifact) {
+		Category cat = Category.ARTIFACT;
+		for (int i = 0; i < cat.classes.length; i++){
+			if (cat.classes[i].equals(artifact) && cat.probs[i] == 0) {
+				cat.probs[i] = 1;
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private static final String FIRST_DECK = "first_deck";
 	private static final String GENERAL_PROBS = "general_probs";
 	private static final String CATEGORY_PROBS = "_probs";

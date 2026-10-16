@@ -404,6 +404,7 @@ public class WndBountyHunter extends Window {
 
 				Dungeon.hero.attackSkill += item.level();
 				Dungeon.hero.defenseSkill += item.level();
+				Dungeon.hero.bountyhunterbuff += 1;
                 Dungeon.hero.updateHT(false);
 
 				BountyHunter.Quest.favor -= 500 + 1000*BountyHunter.Quest.hardens;
@@ -463,9 +464,10 @@ public class WndBountyHunter extends Window {
 				Item newitem;
 
 				if (item.quantity() > 1)newitem = item.split(1);
-				else newitem = item;
+				else newitem = item.detachAll(Dungeon.hero.belongings.backpack);
 
 				newitem.stackable = false;
+				newitem.isInfused = true;
 				Dungeon.level.drop( newitem, Dungeon.hero.pos ).sprite.drop();
 				BountyHunter.Quest.favor -= 2000;
 				BountyHunter.Quest.smiths++;

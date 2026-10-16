@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Degrade;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.InfusionCD;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -94,6 +95,9 @@ public class Item implements Bundlable {
 	// These items are preserved even if the hero's inventory is lost via unblessed ankh
 	// this is largely set by the resurrection window, items can override this to always be kept
 	public boolean keptThoughLostInvent = false;
+
+	// Devoted PD's bounty hunter infusion, an infused item returns to the pack after being used up
+	public boolean isInfused = false;
 
 	// whether an item can be included in heroes remains
 	public boolean bones = false;
@@ -317,7 +321,14 @@ public class Item implements Bundlable {
 	}
 	
 	public final Item detach( Bag container ) {
-		
+
+		//Devoted PD's bounty hunter infusion. An infused item comes back to the pack a while after it leaves it
+		if (isInfused && quantity > 0 && Dungeon.hero != null) {
+			int cooldown = 50;
+			if (energyVal() > 0) cooldown = energyVal() * 30;
+			Buff.affect(Dungeon.hero, InfusionCD.class, cooldown).ToGiveBack = this;
+		}
+
 		if (quantity <= 0) {
 			
 			return null;
@@ -534,6 +545,7 @@ public class Item implements Bundlable {
 	}
 	
 	public String desc() {
+		if (isInfused) return Messages.get(this, "desc") + Messages.get(Item.class, "infusion_info", energyVal() > 0 ? energyVal() * 30 : 50);
 		return Messages.get(this, "desc");
 	}
 	
@@ -584,6 +596,7 @@ public class Item implements Bundlable {
 	private static final String CURSED_KNOWN	= "cursedKnown";
 	private static final String QUICKSLOT		= "quickslotpos";
 	private static final String KEPT_LOST       = "kept_lost";
+	private static final String INFUSED         = "infused";
 	private static final String CUSTOM_NOTE_ID = "custom_note_id";
 	
 	@Override
@@ -597,6 +610,7 @@ public class Item implements Bundlable {
 			bundle.put( QUICKSLOT, Dungeon.quickslot.getSlot(this) );
 		}
 		bundle.put( KEPT_LOST, keptThoughLostInvent );
+		bundle.put( INFUSED, isInfused );
 		if (customNoteID != -1)     bundle.put(CUSTOM_NOTE_ID, customNoteID);
 	}
 	
@@ -623,6 +637,7 @@ public class Item implements Bundlable {
 		}
 
 		keptThoughLostInvent = bundle.getBoolean( KEPT_LOST );
+		isInfused = bundle.getBoolean( INFUSED );
 		if (bundle.contains(CUSTOM_NOTE_ID))    customNoteID = bundle.getInt(CUSTOM_NOTE_ID);
 	}
 

@@ -446,6 +446,9 @@ public enum Catalog {
 		//items ported from mattedition
 		EXOTIC_POTIONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfVitality.class);
 
+		//items ported from reforged
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.Gun.class);
+
 
 	}
 

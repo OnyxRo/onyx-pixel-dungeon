@@ -142,6 +142,8 @@ public class Notes {
 		SAGECORPSE,
 		BOUNTYHUNTER,
 		ELDRITCH_BRAIN,
+		//from Pixel Dungeon Reforged
+		HALF_RIPPER,
 
 		DEMON_SPAWNER;
 	}
@@ -211,6 +213,9 @@ public class Notes {
 				case IMP:
 					return new Image(new ImpSprite());
 
+				case HALF_RIPPER:
+					return new Image(new com.shatteredpixel.shatteredpixeldungeon.sprites.HalfRipperSprite());
+
 				case DEMON_SPAWNER:
 					return new Image(new SpawnerSprite());
 			}
@@ -268,6 +273,8 @@ public class Notes {
 				case SAGECORPSE:     return Messages.get(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.SageCorpse.class, "desc");
 				case BOUNTYHUNTER:   return Messages.get(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.BountyHunter.class, "desc");
 				case ELDRITCH_BRAIN: return Messages.get(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.EldritchBrain.class, "desc");
+
+				case HALF_RIPPER:    return Messages.get(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper.class, "desc");
 
 				case DEMON_SPAWNER: return Messages.get(DemonSpawner.class, "desc");
 			}

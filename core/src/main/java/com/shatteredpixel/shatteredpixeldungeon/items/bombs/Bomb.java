@@ -117,10 +117,17 @@ public class Bomb extends Item {
 		return new Fuse();
 	}
 
+	//Devoted PD's Void trap bombs. A sub bomb ignites on landing after finaldelay turns, hits for a third,
+	//leaves items alone and never hurts the hero's enemies. Not saved, they only exist for a few turns.
+	public int finaldelay = 2;
+	public boolean subBomb = false;
+
 	@Override
-	protected void onThrow( int cell ) {
-		if (!Dungeon.level.pit[ cell ] && lightingFuse) {
-			Actor.addDelayed(fuse = createFuse().ignite(this), 2);
+	public void onThrow( int cell ) {
+		if (subBomb) {
+			Actor.addDelayed(fuse = createFuse().ignite(this), finaldelay);
+		} else if (!Dungeon.level.pit[ cell ] && lightingFuse) {
+			Actor.addDelayed(fuse = createFuse().ignite(this), finaldelay);
 		}
 		super.onThrow( cell );
 	}
@@ -181,7 +188,7 @@ public class Bomb extends Item {
 
 				//destroys items / triggers bombs caught in the blast.
 				Heap heap = Dungeon.level.heaps.get(i);
-				if (heap != null) {
+				if (heap != null && !subBomb) {
 					heap.explode();
 				}
 			}
@@ -196,8 +203,12 @@ public class Bomb extends Item {
 				int dmg = Random.NormalIntRange(4 + Dungeon.scalingDepth(), 12 + 3*Dungeon.scalingDepth());
 				dmg -= ch.drRoll();
 
+				if (subBomb) dmg = (int)(dmg * 0.33f);
+
 				if (dmg > 0) {
-					ch.damage(dmg, this);
+					//the Void trap bombs only hurt the hero, so they cannot kill the wraiths
+					if (subBomb && ch.alignment != Dungeon.hero.alignment) {}
+					else ch.damage(dmg, this);
 				}
 				
 				if (ch == Dungeon.hero && !ch.isAlive()) {
