@@ -374,6 +374,13 @@ public class ItemSpriteSheet {
 
 	public static final int WARPICK = MOD_ITEMS+0;
 	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;
+	public static final int SEED_COFFEE = xy(12, 45);
+	public static final int SEED_POTATO = xy(13, 45);
+	public static final int SEED_TOMATO = xy(14, 45);
+	public static final int POTION_RUSSET = xy(8, 45);
+	public static final int POTION_MAROON = xy(9, 45);
+	public static final int POTION_SEPIA = xy(10, 45);
+	public static final int SCROLL_EIHWAZ = xy(11, 45);
 	public static final int RAT = xy(7, 45);
 	public static final int ALBUM_BEAUTIFUL = xy(10, 39);
 	public static final int ALBUM_CHAIR = xy(11, 39);
@@ -605,6 +612,13 @@ public class ItemSpriteSheet {
 	static{
 		assignItemRect(WARPICK, 15, 14);
 		assignItemRect(WOODEN_BOOMERANG, 12, 12);
+		assignItemRect(SEED_COFFEE, 10, 10);
+		assignItemRect(SEED_POTATO, 10, 10);
+		assignItemRect(SEED_TOMATO, 10, 10);
+		assignItemRect(POTION_RUSSET, 12, 14);
+		assignItemRect(POTION_MAROON, 12, 14);
+		assignItemRect(POTION_SEPIA, 12, 14);
+		assignItemRect(SCROLL_EIHWAZ, 15, 14);
 		assignItemRect(RAT, 16, 8);
 		assignItemRect(ALBUM_BEAUTIFUL, 11, 11);
 		assignItemRect(ALBUM_CHAIR, 11, 11);

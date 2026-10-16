@@ -25,7 +25,7 @@ def mod_package_dir(mod):
     return best or 'core/src/main/java/' + PKG.replace('.', '/') + '/'
 
 RENAMES = [
-    ('mod package name is not ours', r'com\.(?!shatteredpixel\.shatteredpixeldungeon)\w+\.\w+\.(?=' + OWN_AREAS + r')', PKG + '.'),
+    ('mod package name is not ours', r'com\.(?!shatteredpixel\.shatteredpixeldungeon|badlogic|watabou)\w+\.\w+\.(?=' + OWN_AREAS + r')', PKG + '.'),
     # Shattered before 0.8 kept every asset name flat in Assets
     ('old flat sound names moved to Assets.Sounds', r'\bAssets\.SND_(\w+)', r'Assets.Sounds.\1'),
     ('old flat sprite sheet names moved to Assets.Sprites', r'\bAssets\.(?!Sounds|Sprites|Music|Environment|Interfaces|Effects|Splashes|Messages|Fonts)([A-Z][A-Z0-9_]+)\b', r'Assets.Sprites.\1'),

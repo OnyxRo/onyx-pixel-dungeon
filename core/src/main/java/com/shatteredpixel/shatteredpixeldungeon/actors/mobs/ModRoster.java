@@ -94,6 +94,40 @@ public class ModRoster {
 		add( "cursed", SonicBat.class, 1, 1, 99 );
 		add( "cursed", WaterElemental.class, 1, 1, 99 );
 		add( "cursed", WaterLarvae.class, 1, 1, 99 );
+		//Shittened PD. The mod's own spawner mixes these in by depth, this keeps the odds close. Weight 0 means the monster only comes from other things (a room, an item, another monster) or the sandbox.
+		add( "shittened", Capybara.class, 1, 1, 10 );
+		add( "shittened", CapybaraPile.class, 0, 1, 99 );
+		add( "shittened", Minibara.class, 0, 1, 99 );
+		add( "shittened", Bucket.class, 0, 1, 99 );
+		add( "shittened", CaveBat.class, 3, 11, 14 );
+		add( "shittened", DM105.class, 0, 1, 99 );
+		add( "shittened", DM16.class, 1, 11, 99 );
+		add( "shittened", EvolvedSwarm.class, 0, 1, 99 );
+		add( "shittened", Goldfish.class, 0, 1, 99 );
+		add( "shittened", Stool.class, 0, 1, 99 );
+		add( "shittened", Chair.class, 0, 1, 99 );
+		add( "shittened", CursedEye.class, 1, 17, 99 );
+		add( "shittened", DM102.class, 0, 1, 99 );
+		add( "shittened", DM102a2.class, 0, 1, 99 );
+		add( "shittened", DMS74UN.class, 0, 1, 99 );
+		add( "shittened", DemonRat.class, 0, 1, 99 );
+		add( "shittened", NormalRat.class, 2, 1, 5 );
+		add( "shittened", Perch.class, 0, 1, 99 );
+		add( "shittened", PinkCrab.class, 1, 2, 10 );
+		add( "shittened", RaveBat.class, 1, 9, 99 );
+		add( "shittened", Raven.class, 0, 1, 99 );
+		add( "shittened", Table.class, 0, 1, 99 );
+		add( "shittened", Boombox.class, 0, 1, 99 );
+		add( "shittened", Cobra.class, 1, 2, 10 );
+		add( "shittened", GlitchRat.class, 0, 1, 99 );
+		add( "shittened", HeroRat.class, 0, 1, 99 );
+		add( "shittened", RGBCrab.class, 1, 4, 14 );
+		add( "shittened", DM249.class, 1, 11, 99 );
+		add( "shittened", BabyGoblin.class, 0, 1, 99 );
+		add( "shittened", Goblin.class, 0, 1, 99 );
+		add( "shittened", MindGoblin.class, 0, 1, 99 );
+		add( "shittened", Glassbox.class, 1, 1, 99 );
+		add( "shittened", Ratatouille.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

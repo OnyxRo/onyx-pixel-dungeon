@@ -38,3 +38,11 @@ AdrenalineDart crashed the test
 CleansingDart crashed the test
 HolyDart crashed the test
 EscapeCrystal crashed the test
+Eye crashed the test
+CursedEye crashed the test
+Capybara crashed during its own turns
+CapybaraPile crashed during its own turns
+CaveBat crashed while trading blows
+CaveBat crashed during its own turns
+Boombox crashed while trading blows
+Boombox crashed during its own turns

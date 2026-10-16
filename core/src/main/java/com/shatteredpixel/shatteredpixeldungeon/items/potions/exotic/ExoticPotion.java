@@ -92,6 +92,14 @@ public class ExoticPotion extends Potion {
 		regToExo.put(PotionOfExperience.class, PotionOfDivineInspiration.class);
 		exoToReg.put(PotionOfDivineInspiration.class, PotionOfExperience.class);
 
+		//from Shittened PD
+		regToExo.put(com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfAcceleration.class, PotionOfFuror.class);
+		exoToReg.put(PotionOfFuror.class, com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfAcceleration.class);
+		regToExo.put(com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfKetchup.class, PotionOfKetchupStorm.class);
+		exoToReg.put(PotionOfKetchupStorm.class, com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfKetchup.class);
+		regToExo.put(com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFuel.class, PotionOfFumes.class);
+		exoToReg.put(PotionOfFumes.class, com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFuel.class);
+
 	}
 	
 	@Override

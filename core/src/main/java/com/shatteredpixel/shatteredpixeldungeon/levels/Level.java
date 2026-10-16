@@ -848,6 +848,28 @@ public abstract class Level implements Bundlable {
 		return cooldown * Dungeon.respawnBoost / DimensionalSundial.spawnMultiplierAtCurrentTime();
 	}
 
+	//from Shittened PD, spawns a given mob far from the hero
+	public boolean spawnMob(int disLimit, Mob mob){
+		PathFinder.buildDistanceMap(Dungeon.hero.pos, BArray.or(passable, avoid, null));
+
+		mob.state = mob.WANDERING;
+		int tries = 30;
+		do {
+			mob.pos = randomRespawnCell(mob);
+			tries--;
+		} while ((mob.pos == -1 || PathFinder.distance[mob.pos] < disLimit) && tries > 0);
+
+		if (Dungeon.hero.isAlive() && mob.pos != -1 && PathFinder.distance[mob.pos] >= disLimit) {
+			GameScene.add( mob );
+			if (!mob.buffs(ChampionEnemy.class).isEmpty()){
+				GLog.w(Messages.get(ChampionEnemy.class, "warn"));
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public boolean spawnMob(int disLimit){
 		PathFinder.buildDistanceMap(Dungeon.hero.pos, BArray.or(passable, avoid, null));
 

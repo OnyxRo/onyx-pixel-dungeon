@@ -372,6 +372,10 @@ public enum Music {
 		}
 	}
 	
+	public synchronized void clearQueue() {
+		trackList = new String[] {};
+	}
+
 	public synchronized boolean isEnabled() {
 		return enabled;
 	}

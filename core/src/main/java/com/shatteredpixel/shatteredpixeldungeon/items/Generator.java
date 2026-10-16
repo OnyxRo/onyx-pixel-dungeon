@@ -343,9 +343,13 @@ public class Generator {
 					PotionOfLevitation.class,
 					PotionOfParalyticGas.class,
 					PotionOfPurity.class,
-					PotionOfExperience.class};
-			POTION.defaultProbs  = new float[]{ 0, 3, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1 };
-			POTION.defaultProbs2 = new float[]{ 0, 3, 2, 2, 1, 2, 1, 1, 1, 1, 1, 0 };
+					PotionOfExperience.class,
+					//from Shittened PD. These are not in the normal deck, Shittened's monsters, loot bags and plants give them.
+					com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFuel.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfKetchup.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfAcceleration.class};
+			POTION.defaultProbs  = new float[]{ 0, 3, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0 };
+			POTION.defaultProbs2 = new float[]{ 0, 3, 2, 2, 1, 2, 1, 1, 1, 1, 1, 0, 0, 0, 0 };
 			POTION.probs = POTION.defaultProbs.clone();
 			
 			SEED.classes = new Class<?>[]{
@@ -360,8 +364,12 @@ public class Generator {
 					Stormvine.Seed.class,
 					Earthroot.Seed.class,
 					Mageroyal.Seed.class,
-					Starflower.Seed.class};
-			SEED.defaultProbs = new float[]{ 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1 };
+					Starflower.Seed.class,
+					//from Shittened PD, not in the normal deck
+					com.shatteredpixel.shatteredpixeldungeon.plants.TomatoPlant.Seed.class,
+					com.shatteredpixel.shatteredpixeldungeon.plants.PotatoPlant.Seed.class,
+					com.shatteredpixel.shatteredpixeldungeon.plants.CoffeeBush.Seed.class};
+			SEED.defaultProbs = new float[]{ 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0 };
 			SEED.probs = SEED.defaultProbs.clone();
 			
 			SCROLL.classes = new Class<?>[]{
@@ -376,10 +384,12 @@ public class Generator {
 					ScrollOfRage.class,
 					ScrollOfRetribution.class,
 					ScrollOfTerror.class,
-					ScrollOfTransmutation.class
+					ScrollOfTransmutation.class,
+					//from Shittened PD, not in the normal deck
+					com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfShit.class
 			};
-			SCROLL.defaultProbs  = new float[]{ 0, 3, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1 };
-			SCROLL.defaultProbs2 = new float[]{ 0, 3, 2, 2, 1, 2, 1, 1, 1, 1, 1, 0 };
+			SCROLL.defaultProbs  = new float[]{ 0, 3, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 0 };
+			SCROLL.defaultProbs2 = new float[]{ 0, 3, 2, 2, 1, 2, 1, 1, 1, 1, 1, 0, 0 };
 			SCROLL.probs = SCROLL.defaultProbs.clone();
 			
 			STONE.classes = new Class<?>[]{

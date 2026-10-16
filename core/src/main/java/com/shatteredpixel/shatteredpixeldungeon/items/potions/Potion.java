@@ -102,6 +102,10 @@ public class Potion extends Item {
 			put("charcoal",ItemSpriteSheet.POTION_CHARCOAL);
 			put("silver",ItemSpriteSheet.POTION_SILVER);
 			put("ivory",ItemSpriteSheet.POTION_IVORY);
+			//from Shittened PD
+			put("russet",ItemSpriteSheet.POTION_RUSSET);
+			put("maroon",ItemSpriteSheet.POTION_MAROON);
+			put("sepia",ItemSpriteSheet.POTION_SEPIA);
 		}
 	};
 
@@ -117,6 +121,8 @@ public class Potion extends Item {
 		mustThrowPots.add(PotionOfSnapFreeze.class);
 		mustThrowPots.add(PotionOfShroudingFog.class);
 		mustThrowPots.add(PotionOfStormClouds.class);
+		mustThrowPots.add(com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfKetchupStorm.class);
+		mustThrowPots.add(com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfFumes.class);
 		
 		//also all brews except unstable, hardcoded
 	}
@@ -125,6 +131,8 @@ public class Potion extends Item {
 	static{
 		canThrowPots.add(PotionOfPurity.class);
 		canThrowPots.add(PotionOfLevitation.class);
+		canThrowPots.add(PotionOfKetchup.class);
+		canThrowPots.add(PotionOfFuel.class);
 		
 		//exotic
 		canThrowPots.add(PotionOfCleansing.class);
@@ -496,6 +504,9 @@ public class Potion extends Item {
 			types.put(Stormvine.Seed.class,     PotionOfLevitation.class);
 			types.put(Sungrass.Seed.class,      PotionOfHealing.class);
 			types.put(Swiftthistle.Seed.class,  PotionOfHaste.class);
+			types.put(com.shatteredpixel.shatteredpixeldungeon.plants.CoffeeBush.Seed.class, PotionOfAcceleration.class);
+			types.put(com.shatteredpixel.shatteredpixeldungeon.plants.TomatoPlant.Seed.class, PotionOfKetchup.class);
+			types.put(com.shatteredpixel.shatteredpixeldungeon.plants.PotatoPlant.Seed.class, PotionOfFuel.class);
 		}
 		
 		@Override
