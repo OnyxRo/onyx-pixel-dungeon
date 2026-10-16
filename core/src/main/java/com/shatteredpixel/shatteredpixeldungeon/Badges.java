@@ -71,6 +71,7 @@ public class Badges {
 		MASTERY_HUNTRESS,
 		MASTERY_DUELIST,
 		MASTERY_CLERIC,
+		MASTERY_ZEALOT,
 		FOUND_RATMOGRIFY,
 
 		//bronze
@@ -79,6 +80,7 @@ public class Badges {
 		UNLOCK_HUNTRESS             ( 3 ),
 		UNLOCK_DUELIST              ( 4 ),
 		UNLOCK_CLERIC               ( 5 ),
+		UNLOCK_ZEALOT               ( 25 ),
 		MONSTERS_SLAIN_1            ( 6 ),
 		MONSTERS_SLAIN_2            ( 7 ),
 		GOLD_COLLECTED_1            ( 8 ),
@@ -128,6 +130,7 @@ public class Badges {
 		BOSS_SLAIN_1_HUNTRESS,
 		BOSS_SLAIN_1_DUELIST,
 		BOSS_SLAIN_1_CLERIC,
+		BOSS_SLAIN_1_ZEALOT,
 		BOSS_SLAIN_1_ALL_CLASSES    ( 54, BadgeType.GLOBAL ),
 		RESEARCHER_2                ( 55, BadgeType.JOURNAL ),
 		GAMES_PLAYED_2              ( 56, BadgeType.GLOBAL ),
@@ -177,6 +180,7 @@ public class Badges {
 		VICTORY_HUNTRESS,
 		VICTORY_DUELIST,
 		VICTORY_CLERIC,
+		VICTORY_ZEALOT,
 		VICTORY_ALL_CLASSES         ( 103, BadgeType.GLOBAL ),
 		DEATH_FROM_ALL              ( 104, BadgeType.GLOBAL ),
 		BOSS_SLAIN_3_GLADIATOR,
@@ -191,6 +195,8 @@ public class Badges {
 		BOSS_SLAIN_3_MONK,
 		BOSS_SLAIN_3_PRIEST,
 		BOSS_SLAIN_3_PALADIN,
+		BOSS_SLAIN_3_CONJURER,
+		BOSS_SLAIN_3_DEVOTEE,
 		BOSS_SLAIN_3_ALL_SUBCLASSES ( 105, BadgeType.GLOBAL ),
 		BOSS_CHALLENGE_3            ( 106 ),
 		BOSS_CHALLENGE_4            ( 107 ),
@@ -807,6 +813,7 @@ public class Badges {
 		firstBossClassBadges.put(HeroClass.HUNTRESS, Badge.BOSS_SLAIN_1_HUNTRESS);
 		firstBossClassBadges.put(HeroClass.DUELIST, Badge.BOSS_SLAIN_1_DUELIST);
 		firstBossClassBadges.put(HeroClass.CLERIC, Badge.BOSS_SLAIN_1_CLERIC);
+		firstBossClassBadges.put(HeroClass.ZEALOT, Badge.BOSS_SLAIN_1_ZEALOT);
 	}
 
 	private static LinkedHashMap<HeroClass, Badge> victoryClassBadges = new LinkedHashMap<>();
@@ -817,6 +824,7 @@ public class Badges {
 		victoryClassBadges.put(HeroClass.HUNTRESS, Badge.VICTORY_HUNTRESS);
 		victoryClassBadges.put(HeroClass.DUELIST, Badge.VICTORY_DUELIST);
 		victoryClassBadges.put(HeroClass.CLERIC, Badge.VICTORY_CLERIC);
+		victoryClassBadges.put(HeroClass.ZEALOT, Badge.VICTORY_ZEALOT);
 	}
 
 	private static LinkedHashMap<HeroSubClass, Badge> thirdBossSubclassBadges = new LinkedHashMap<>();
@@ -833,6 +841,8 @@ public class Badges {
 		thirdBossSubclassBadges.put(HeroSubClass.MONK, Badge.BOSS_SLAIN_3_MONK);
 		thirdBossSubclassBadges.put(HeroSubClass.PRIEST, Badge.BOSS_SLAIN_3_PRIEST);
 		thirdBossSubclassBadges.put(HeroSubClass.PALADIN, Badge.BOSS_SLAIN_3_PALADIN);
+		thirdBossSubclassBadges.put(HeroSubClass.CONJURER, Badge.BOSS_SLAIN_3_CONJURER);
+		thirdBossSubclassBadges.put(HeroSubClass.DEVOTEE, Badge.BOSS_SLAIN_3_DEVOTEE);
 	}
 	
 	public static void validateBossSlain() {
@@ -955,6 +965,9 @@ public class Badges {
 			case CLERIC:
 				badge = Badge.MASTERY_CLERIC;
 				break;
+			case ZEALOT:
+				badge = Badge.MASTERY_ZEALOT;
+				break;
 		}
 		
 		unlock(badge);
@@ -996,6 +1009,12 @@ public class Badges {
 					((MeleeWeapon) Dungeon.hero.belongings.weapon).STRReq(0) <= Dungeon.hero.STR()){
 				displayBadge(Badge.UNLOCK_DUELIST);
 			}
+		}
+	}
+
+	public static void validateZealotUnlock(){
+		if (!isUnlocked(Badge.UNLOCK_ZEALOT)){
+			displayBadge( Badge.UNLOCK_ZEALOT );
 		}
 	}
 

@@ -136,6 +136,12 @@ public class BuffIndicator extends Component {
 	public static final int MANY_POWER  = 83;
 	public static final int SEAL_SHIELD = 84;
 	public static final int THROWN_WEP  = 85;
+	//from Devoted PD
+	public static final int WRATH_BLOOD = 86;
+	public static final int WEAL        = 87;
+	public static final int WOE         = 88;
+	public static final int SHRINK      = 89;
+	public static final int GROW        = 90;
 
 	public static final int SIZE_SMALL  = 7;
 	public static final int SIZE_LARGE  = 16;

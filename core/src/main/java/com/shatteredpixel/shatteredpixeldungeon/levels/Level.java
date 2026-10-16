@@ -1628,6 +1628,13 @@ public abstract class Level implements Bundlable {
 	}
 	
 	//uses Pythagorean theorem for true distance, as if there was no movement grid
+	//from Devoted PD, nearest first
+	public java.util.ArrayList<Char> sortByDist(java.util.ArrayList<Char> l, Char source) {
+		java.util.ArrayList<Char> sorted = new java.util.ArrayList<>(l);
+		sorted.sort((x, y) -> Integer.compare(x.distance(source), y.distance(source)));
+		return sorted;
+	}
+
 	public float trueDistance(int a, int b){
 		int ax = a % width();
 		int ay = a / width();

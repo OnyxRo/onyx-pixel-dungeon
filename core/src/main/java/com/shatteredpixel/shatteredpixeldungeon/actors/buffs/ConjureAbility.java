@@ -95,7 +95,7 @@ public class ConjureAbility extends FlavourBuff implements ActionIndicator.Actio
 
 	@Override
 	public int actionIcon() {
-		return HeroIcon.SPIRIT_HAWK; //Devoted has its own icon, this borrows the Huntress's spirit hawk
+		return HeroIcon.CONJURE_MINIONS;
 	}
 
 	@Override
@@ -166,7 +166,19 @@ public class ConjureAbility extends FlavourBuff implements ActionIndicator.Actio
 			ScrollOfTeleportation.appear(ch, ch.pos);
 			Dungeon.energy -= energyCost();
 
-			//Devoted's Hive Mind talent, which made the summon invulnerable for a while, has no home here
+			if (hero.hasTalent(Talent.HIVE_MIND) && hero.buff(Invulnerability.class) != null)
+			{
+				float division = 0;
+
+				switch (hero.pointsInTalent(Talent.HIVE_MIND))
+				{
+					case 1: division = 0.6f; break;
+					case 2: division = 0.75f; break;
+					case 3: division = 1; break;
+				}
+
+				prolong( ch, Invulnerability.class, hero.buff(Invulnerability.class).cooldown() * division );
+			}
 
 			hero.next();
 

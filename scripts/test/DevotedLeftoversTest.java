@@ -37,6 +37,21 @@ public class DevotedLeftoversTest {
 		f.set( null, value );
 	}
 
+	static boolean isZealotTalent( com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent t ) {
+		switch (t) {
+			case ARCANE_MEAL: case DEMONIC_INTUITION: case WRATHFUL_STRIKE: case PAIN_IS_GAIN:
+			case CLEANSING_MEAL: case CONFIRMED_BELIEF: case HIDDEN_POWER: case INSTANT_GRATIFICATION: case ESOTERIC_MIND:
+			case DEMOLITIONIST: case UNHOLY_WRATH: case ELDRITCH_ENERGY: case HIVE_MIND: case TAG_TEAM:
+			case NIHILISM: case GOURMAND: case DEVOUR_RITUAL:
+			case FORBIDDEN_KNOWLEDGE: case FORTIFIED_CONCIOUSNESS: case CAUTION_TO_THE_WIND:
+			case SUSTAINED_PRESSURE: case SUBZERO_KICK: case GRAY_MATTER:
+			case WOE_IS_ME: case AND_WOE_IS_YOU: case WEIGHING_THE_DIE:
+				return true;
+			default:
+				return false;
+		}
+	}
+
 	static int countRippers( Level l ) {
 		int n = 0;
 		for (Mob m : l.mobs) if (m instanceof HalfRipper) n++;
@@ -157,6 +172,56 @@ public class DevotedLeftoversTest {
 		} catch (Throwable t) {
 			failures++;
 			System.out.println( "FAIL: Half Ripper threw " + t );
+			t.printStackTrace( System.out );
+		}
+
+		//the Zealot class, its kit, talents, subclasses, armor abilities and Blood Vial
+		try {
+			GamesInProgress.selectedClass = HeroClass.ZEALOT;
+			Dungeon.seed = 777002L;
+			Dungeon.init();
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero h = Dungeon.hero;
+			check( h.heroClass == HeroClass.ZEALOT, "hero is a Zealot" );
+			check( h.belongings.weapon instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Warpick, "Zealot starts with a warpick" );
+			check( h.belongings.artifact instanceof com.shatteredpixel.shatteredpixeldungeon.items.artifacts.BloodVial, "Zealot starts with the Blood Vial" );
+			check( h.talents.get(0).size() == 4, "Zealot tier 1 talents " + h.talents.get(0).size() );
+			check( h.talents.get(1).size() == 5, "Zealot tier 2 talents " + h.talents.get(1).size() );
+			check( h.talents.get(2).size() == 2, "Zealot tier 3 talents " + h.talents.get(2).size() );
+			check( h.talents.get(0).containsKey( com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.ARCANE_MEAL ), "Zealot has Arcane Meal" );
+
+			for ( com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass sub : HeroClass.ZEALOT.subClasses() ) {
+				h.subClass = sub;
+				com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.initSubclassTalents( h );
+				check( h.talents.get(2).size() >= 5, sub + " adds three talents, tier 3 has " + h.talents.get(2).size() );
+			}
+
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility[] abils = HeroClass.ZEALOT.armorAbilities();
+			check( abils.length == 3, "Zealot has three armor abilities" );
+			for ( com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility a : abils ) {
+				check( a.talents().length == 4, a.getClass().getSimpleName() + " has three talents and heroic energy" );
+				check( !com.shatteredpixel.shatteredpixeldungeon.messages.Messages.get( a, "name" ).startsWith( "!!!" ), a.getClass().getSimpleName() + " has a name" );
+			}
+
+			//every Zealot string resolves
+			for ( com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent t : com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.values() ) {
+				if (t.name().length() > 0 && t.maxPoints() > 0 && isZealotTalent( t )) {
+					check( !t.title().startsWith( "!!!" ), "talent " + t + " has a title" );
+					check( !t.desc().startsWith( "!!!" ), "talent " + t + " has a description" );
+				}
+			}
+			check( !HeroClass.ZEALOT.title().startsWith( "!!!" ) && !HeroClass.ZEALOT.desc().startsWith( "!!!" ), "Zealot class text" );
+
+			//class armor made from plain armor
+			com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor ca = com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor.upgrade( h, new com.shatteredpixel.shatteredpixeldungeon.items.armor.LeatherArmor() );
+			check( ca instanceof com.shatteredpixel.shatteredpixeldungeon.items.armor.ZealotArmor, "Zealot class armor" );
+
+			//the vial survives a save and carries its state
+			com.shatteredpixel.shatteredpixeldungeon.items.artifacts.BloodVial vial = (com.shatteredpixel.shatteredpixeldungeon.items.artifacts.BloodVial) h.belongings.artifact;
+			vial.DevoteeCharges = 2;
+			check( ((com.shatteredpixel.shatteredpixeldungeon.items.artifacts.BloodVial) vial.duplicate()).DevoteeCharges == 2, "Blood Vial keeps its Devotee charges" );
+		} catch (Throwable t) {
+			failures++;
+			System.out.println( "FAIL: Zealot threw " + t );
 			t.printStackTrace( System.out );
 		}
 

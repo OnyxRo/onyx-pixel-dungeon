@@ -195,6 +195,17 @@ public abstract class Char extends Actor {
 	public boolean[] fieldOfView = null;
 	
 	private LinkedHashSet<Buff> buffs = new LinkedHashSet<>();
+
+	//from Devoted PD
+	public void Heal(int amnt)
+	{
+		HP = Math.min(HT, HP + amnt);
+	}
+
+	public void SetHealth(int newhealth)
+	{
+		Heal(newhealth - HP);
+	}
 	
 	@Override
 	protected boolean act() {

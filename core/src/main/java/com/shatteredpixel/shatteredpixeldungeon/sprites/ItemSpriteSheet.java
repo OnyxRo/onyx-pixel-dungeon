@@ -374,6 +374,15 @@ public class ItemSpriteSheet {
 
 	public static final int WARPICK = MOD_ITEMS+0;
 	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;
+	public static final int MARKING_ROCK = xy(6, 39);
+	public static final int ARCANE_ROOT = xy(7, 39);
+	public static final int CRYSTAL_APPLE = xy(8, 39);
+	public static final int LARGE_RADISH = xy(9, 39);
+	public static final int VIAL_SHARD = xy(1, 39);
+	public static final int ARMOR_ZEALOT = xy(2, 39);
+	public static final int ARTIFACT_VIAL1 = xy(3, 39);
+	public static final int ARTIFACT_VIAL2 = xy(4, 39);
+	public static final int ARTIFACT_VIAL3 = xy(5, 39);
 	public static final int CHAINS = xy(12, 38);
 	public static final int ICYCORE = xy(13, 38);
 	public static final int WAND_EXPLOSION = xy(14, 38);
@@ -502,6 +511,15 @@ public class ItemSpriteSheet {
 	static{
 		assignItemRect(WARPICK, 15, 14);
 		assignItemRect(WOODEN_BOOMERANG, 12, 12);
+		assignItemRect(MARKING_ROCK, 15, 12);
+		assignItemRect(ARCANE_ROOT, 11, 12);
+		assignItemRect(CRYSTAL_APPLE, 9, 11);
+		assignItemRect(LARGE_RADISH, 9, 14);
+		assignItemRect(VIAL_SHARD, 9, 12);
+		assignItemRect(ARMOR_ZEALOT, 15, 15);
+		assignItemRect(ARTIFACT_VIAL1, 13, 14);
+		assignItemRect(ARTIFACT_VIAL2, 13, 14);
+		assignItemRect(ARTIFACT_VIAL3, 13, 14);
 		assignItemRect(CHAINS, 15, 16);
 		assignItemRect(ICYCORE, 11, 14);
 		assignItemRect(WAND_EXPLOSION, 14, 14);

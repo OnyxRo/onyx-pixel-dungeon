@@ -52,21 +52,26 @@ public class MysteryMeat extends Food {
 	}
 
 	public static void effect(Hero hero){
+		effect(hero, true);
+	}
+
+	//Devoted PD's Devotee turns the bad meat effect on enemies, with no message
+	public static void effect(com.shatteredpixel.shatteredpixeldungeon.actors.Char hero, boolean announce){
 		switch (Random.Int( 5 )) {
 			case 0:
-				GLog.w( Messages.get(MysteryMeat.class, "hot") );
+				if (announce) GLog.w( Messages.get(MysteryMeat.class, "hot") );
 				Buff.affect( hero, Burning.class ).reignite( hero );
 				break;
 			case 1:
-				GLog.w( Messages.get(MysteryMeat.class, "legs") );
+				if (announce) GLog.w( Messages.get(MysteryMeat.class, "legs") );
 				Buff.prolong( hero, Roots.class, Roots.DURATION*2f );
 				break;
 			case 2:
-				GLog.w( Messages.get(MysteryMeat.class, "not_well") );
+				if (announce) GLog.w( Messages.get(MysteryMeat.class, "not_well") );
 				Buff.affect( hero, Poison.class ).set( hero.HT / 5 );
 				break;
 			case 3:
-				GLog.w( Messages.get(MysteryMeat.class, "stuffed") );
+				if (announce) GLog.w( Messages.get(MysteryMeat.class, "stuffed") );
 				Buff.prolong( hero, Slow.class, Slow.DURATION );
 				break;
 		}

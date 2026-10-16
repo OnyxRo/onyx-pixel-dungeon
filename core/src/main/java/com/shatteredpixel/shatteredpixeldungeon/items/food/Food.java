@@ -91,6 +91,11 @@ public class Food extends Item {
 			hero.spend( eatingTime() );
 
 			Talent.onFoodEaten(hero, energy, this);
+			hero.lastEaten = this;
+			if (hero.subClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.DEVOTEE) {
+				com.shatteredpixel.shatteredpixeldungeon.items.artifacts.BloodVial ref = hero.belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.BloodVial.class);
+				if (ref != null) ref.DevoteeCharges = Math.min(1 + hero.pointsInTalent(Talent.DEVOUR_RITUAL), 3);
+			}
 			
 			Statistics.foodEaten++;
 			Badges.validateFoodEaten();

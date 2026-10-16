@@ -137,6 +137,12 @@ public class HornOfPlenty extends Artifact {
 		charge -= chargesToUse;
 		Talent.onArtifactUsed(hero);
 
+		hero.lastEaten = this;
+		if (hero.subClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.DEVOTEE) {
+			BloodVial ref = hero.belongings.getItem(BloodVial.class);
+			if (ref != null) ref.DevoteeCharges = Math.min(1 + hero.pointsInTalent(Talent.DEVOUR_RITUAL), 3);
+		}
+
 		hero.sprite.operate(hero.pos);
 		hero.busy();
 		SpellSprite.show(hero, SpellSprite.FOOD);

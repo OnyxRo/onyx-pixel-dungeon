@@ -131,7 +131,9 @@ public class Gallery {
 
 		//the full run bot plays a normal run, not a sandbox one
 		Dungeon.sandbox = !"fullrun".equals(System.getProperty("onyx.gallery.only"));
-		GamesInProgress.selectedClass = HeroClass.WARRIOR;
+		//-Donyx.gallery.class=ZEALOT plays the tour as another hero class
+		GamesInProgress.selectedClass = System.getProperty("onyx.gallery.class") != null
+				? HeroClass.valueOf(System.getProperty("onyx.gallery.class")) : HeroClass.WARRIOR;
 		GamesInProgress.curSlot = 1;
 		Dungeon.hero = null;
 		Dungeon.daily = Dungeon.dailyReplay = false;

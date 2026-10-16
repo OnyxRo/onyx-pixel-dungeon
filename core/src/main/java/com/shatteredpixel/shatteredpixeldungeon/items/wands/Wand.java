@@ -213,6 +213,15 @@ public abstract class Wand extends Item {
 			Buff.append(Dungeon.hero, TalismanOfForesight.CharAwareness.class, dur).charID = target.id();
 		}
 
+		if (Dungeon.hero.hasTalent(Talent.CONFIRMED_BELIEF) && Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invulnerability.class) != null) {
+			float dur;
+			if (Dungeon.hero.pointsInTalent(Talent.CONFIRMED_BELIEF) == 1) dur = 0.67f;
+			else dur = 1;
+
+			Buff.prolong(Dungeon.hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invulnerability.class,
+					Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invulnerability.class).cooldown() + dur);
+		}
+
 		if (target != Dungeon.hero &&
 				Dungeon.hero.subClass == HeroSubClass.WARLOCK &&
 				//standard 1 - 0.92^x chance, plus 7%. Starts at 15%

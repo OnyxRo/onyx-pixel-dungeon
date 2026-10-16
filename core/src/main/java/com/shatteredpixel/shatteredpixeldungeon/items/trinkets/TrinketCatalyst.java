@@ -121,6 +121,8 @@ public class TrinketCatalyst extends Item {
 
 		@Override
 		public Item brew(ArrayList<Item> ingredients) {
+			//Devoted PD unlocks the Zealot by creating a trinket
+			com.shatteredpixel.shatteredpixeldungeon.Badges.validateZealotUnlock();
 			//we silently re-add the catalyst so that we can clear it when a trinket is selected
 			//this way player isn't totally screwed if they quit the game while selecting
 			TrinketCatalyst newCata = (TrinketCatalyst) ingredients.get(0).duplicate();

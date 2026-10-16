@@ -89,7 +89,9 @@ public enum HeroClass {
 	ROGUE( HeroSubClass.ASSASSIN, HeroSubClass.FREERUNNER ),
 	HUNTRESS( HeroSubClass.SNIPER, HeroSubClass.WARDEN ),
 	DUELIST( HeroSubClass.CHAMPION, HeroSubClass.MONK ),
-	CLERIC( HeroSubClass.PRIEST, HeroSubClass.PALADIN );
+	CLERIC( HeroSubClass.PRIEST, HeroSubClass.PALADIN ),
+	//from Devoted PD
+	ZEALOT( HeroSubClass.CONJURER, HeroSubClass.DEVOTEE );
 
 	private HeroSubClass[] subClasses;
 
@@ -140,6 +142,10 @@ public enum HeroClass {
 			case CLERIC:
 				initCleric( hero );
 				break;
+
+			case ZEALOT:
+				initZealot( hero );
+				break;
 		}
 
 		if (SPDSettings.quickslotWaterskin()) {
@@ -167,6 +173,8 @@ public enum HeroClass {
 				return Badges.Badge.MASTERY_DUELIST;
 			case CLERIC:
 				return Badges.Badge.MASTERY_CLERIC;
+			case ZEALOT:
+				return Badges.Badge.MASTERY_ZEALOT;
 		}
 		return null;
 	}
@@ -260,6 +268,25 @@ public enum HeroClass {
 		new ScrollOfRemoveCurse().identify();
 	}
 
+	private static void initZealot( Hero hero ) {
+
+		(hero.belongings.weapon = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Warpick()).identify();
+		hero.belongings.weapon.activate(hero);
+
+		com.shatteredpixel.shatteredpixeldungeon.items.artifacts.BloodVial vial = new com.shatteredpixel.shatteredpixeldungeon.items.artifacts.BloodVial();
+		(hero.belongings.artifact = vial).identify();
+		hero.belongings.artifact.activate( hero );
+
+		com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.WoodenBoomerang rang = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.WoodenBoomerang();
+		rang.quantity(1).identify().collect(); //its stack is 3, but the Zealot starts with 1
+
+		Dungeon.quickslot.setSlot(0, vial);
+		Dungeon.quickslot.setSlot(1, rang);
+
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience().identify();
+		new com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution().identify();
+	}
+
 	public String title() {
 		return Messages.get(HeroClass.class, name());
 	}
@@ -290,6 +317,10 @@ public enum HeroClass {
 				return new ArmorAbility[]{new Challenge(), new ElementalStrike(), new Feint()};
 			case CLERIC:
 				return new ArmorAbility[]{new AscendedForm(), new Trinity(), new PowerOfMany()};
+			case ZEALOT:
+				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.zealot.CallingBeyond(),
+						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.zealot.EternalBalance(),
+						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.zealot.WealAndWoe()};
 		}
 	}
 
@@ -307,6 +338,8 @@ public enum HeroClass {
 				return Assets.Sprites.DUELIST;
 			case CLERIC:
 				return Assets.Sprites.CLERIC;
+			case ZEALOT:
+				return Assets.Sprites.ZEALOT;
 		}
 	}
 
@@ -324,6 +357,8 @@ public enum HeroClass {
 				return Assets.Splashes.DUELIST;
 			case CLERIC:
 				return Assets.Splashes.CLERIC;
+			case ZEALOT:
+				return Assets.Splashes.ZEALOT;
 		}
 	}
 	
@@ -346,6 +381,8 @@ public enum HeroClass {
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_DUELIST);
 			case CLERIC:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_CLERIC);
+			case ZEALOT:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_ZEALOT);
 		}
 	}
 	

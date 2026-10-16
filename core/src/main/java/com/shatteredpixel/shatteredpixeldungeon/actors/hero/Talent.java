@@ -27,6 +27,16 @@ import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArcaneArmor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Degrade;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invulnerability;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -197,10 +207,27 @@ public enum Talent {
 	//Power of Many T4
 	BEAMING_RAY(183, 4), LIFE_LINK(184, 4), STASIS(185, 4),
 
+	//Zealot T1, from Devoted PD
+	ARCANE_MEAL(192, 2), DEMONIC_INTUITION(193, 2), WRATHFUL_STRIKE(194, 2), PAIN_IS_GAIN(195, 2),
+	//Zealot T2
+	CLEANSING_MEAL(196, 2), CONFIRMED_BELIEF(197, 2), HIDDEN_POWER(198, 2), INSTANT_GRATIFICATION(199, 2), ESOTERIC_MIND(200, 2),
+	//Zealot T3
+	DEMOLITIONIST(201, 3), UNHOLY_WRATH(202, 3),
+	//Conjurer T3
+	ELDRITCH_ENERGY(203, 3), HIVE_MIND(204, 3), TAG_TEAM(205, 3),
+	//Devotee T3
+	NIHILISM(206, 3), GOURMAND(207, 3), DEVOUR_RITUAL(208, 3),
+	//Calling Beyond T4
+	FORBIDDEN_KNOWLEDGE(209, 4), FORTIFIED_CONCIOUSNESS(210, 4), CAUTION_TO_THE_WIND(211, 4),
+	//Eternal Balance T4
+	SUSTAINED_PRESSURE(212, 4), SUBZERO_KICK(213, 4), GRAY_MATTER(214, 4),
+	//Weal and Woe T4
+	WOE_IS_ME(215, 4), AND_WOE_IS_YOU(216, 4), WEIGHING_THE_DIE(217, 4),
+
 	//universal T4
 	HEROIC_ENERGY(26, 4), //See icon() and title() for special logic for this one
 	//Ratmogrify T4
-	RATSISTANCE(215, 4), RATLOMACY(216, 4), RATFORCEMENTS(217, 4);
+	RATSISTANCE(247, 4), RATLOMACY(248, 4), RATFORCEMENTS(249, 4);
 
 	public static class ImprovisedProjectileCooldown extends FlavourBuff{
 		public int icon() { return BuffIndicator.TIME; }
@@ -252,6 +279,13 @@ public enum Talent {
 		}
 	}
 	public static class BountyHunterTracker extends FlavourBuff{};
+	//Devoted PD's Zealot, after stabbing themselves the next melee hit makes the enemy bleed
+	public static class UnholyWrathTracker extends FlavourBuff{
+		{ type = Buff.buffType.POSITIVE; }
+		public int icon() { return BuffIndicator.TIME; }
+		public void tintIcon(Image icon) { icon.hardlight(0.8f, 0f, 0f); }
+		public float iconFadePercent() { return Math.max(0, 1f - (visualcooldown() / 20)); }
+	};
 	public static class RejuvenatingStepsCooldown extends FlavourBuff{
 		public int icon() { return BuffIndicator.TIME; }
 		public void tintIcon(Image icon) { icon.hardlight(0f, 0.35f, 0.15f); }
@@ -447,7 +481,7 @@ public enum Talent {
 	public int icon(){
 		if (this == HEROIC_ENERGY){
 			if (Ratmogrify.useRatroicEnergy){
-				return 218;
+				return 250;
 			}
 			HeroClass cls = Dungeon.hero != null ? Dungeon.hero.heroClass : GamesInProgress.selectedClass;
 			switch (cls){
@@ -463,6 +497,8 @@ public enum Talent {
 					return 154;
 				case CLERIC:
 					return 186;
+				case ZEALOT:
+					return 218;
 			}
 		} else {
 			return icon;
@@ -621,6 +657,22 @@ public enum Talent {
 		if (hero.hasTalent(STRENGTHENING_MEAL)){
 			//3 bonus physical damage for next 2/3 attacks
 			Buff.affect( hero, PhysicalEmpower.class).set(3, 1 + hero.pointsInTalent(STRENGTHENING_MEAL));
+		}
+		if (hero.hasTalent(ARCANE_MEAL)){
+			Buff.affect(hero, ArcaneArmor.class).set(5, 2 + hero.pointsInTalent(ARCANE_MEAL));
+		}
+		if (hero.hasTalent(CLEANSING_MEAL)){
+
+			Buff.detach(hero, Cripple.class);
+			Buff.detach(hero, Weakness.class);
+			Buff.detach(hero, Vulnerable.class);
+			Buff.detach(hero, Bleeding.class);
+			if (hero.pointsInTalent(CLEANSING_MEAL) == 2) {
+				Buff.detach(hero, Blindness.class);
+				Buff.detach(hero, Slow.class);
+				Buff.detach(hero, Vertigo.class);
+				Buff.detach(hero, Degrade.class);
+			}
 		}
 		if (hero.hasTalent(FOCUSED_MEAL)){
 			if (hero.heroClass == HeroClass.DUELIST){
@@ -879,6 +931,17 @@ public enum Talent {
 			hero.buff(LingeringMagicTracker.class).detach();
 		}
 
+		if (hero.hasTalent(Talent.UNHOLY_WRATH)
+				&& hero.buff(UnholyWrathTracker.class) != null){
+			Buff.affect( enemy, Bleeding.class ).set( Math.round(dmg * (Dungeon.hero.pointsInTalent(Talent.PAIN_IS_GAIN)*0.05  + 0.1) ));
+			hero.buff(UnholyWrathTracker.class).detach();
+		}
+
+		if (hero.hasTalent(Talent.WRATHFUL_STRIKE)
+				&& hero.buff(Invulnerability.class) != null){
+			dmg += hero.pointsInTalent(Talent.WRATHFUL_STRIKE);
+		}
+
 		if (hero.hasTalent(Talent.SUCKER_PUNCH)
 				&& enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)
 				&& enemy.buff(SuckerPunchTracker.class) == null){
@@ -994,6 +1057,9 @@ public enum Talent {
 			case CLERIC:
 				Collections.addAll(tierTalents, SATIATED_SPELLS, HOLY_INTUITION, SEARING_LIGHT, SHIELD_OF_LIGHT);
 				break;
+			case ZEALOT:
+				Collections.addAll(tierTalents, ARCANE_MEAL, DEMONIC_INTUITION, WRATHFUL_STRIKE, PAIN_IS_GAIN);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -1023,6 +1089,9 @@ public enum Talent {
 			case CLERIC:
 				Collections.addAll(tierTalents, ENLIGHTENING_MEAL, RECALL_INSCRIPTION, SUNRAY, DIVINE_SENSE, BLESS);
 				break;
+			case ZEALOT:
+				Collections.addAll(tierTalents, CLEANSING_MEAL, CONFIRMED_BELIEF, HIDDEN_POWER, INSTANT_GRATIFICATION, ESOTERIC_MIND);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -1051,6 +1120,9 @@ public enum Talent {
 				break;
 			case CLERIC:
 				Collections.addAll(tierTalents, CLEANSE, LIGHT_READING);
+				break;
+			case ZEALOT:
+				Collections.addAll(tierTalents, DEMOLITIONIST, UNHOLY_WRATH);
 				break;
 		}
 		for (Talent talent : tierTalents){
@@ -1115,6 +1187,12 @@ public enum Talent {
 				break;
 			case PALADIN:
 				Collections.addAll(tierTalents, LAY_ON_HANDS, AURA_OF_PROTECTION, WALL_OF_LIGHT);
+				break;
+			case CONJURER:
+				Collections.addAll(tierTalents, ELDRITCH_ENERGY, HIVE_MIND, TAG_TEAM);
+				break;
+			case DEVOTEE:
+				Collections.addAll(tierTalents, NIHILISM, GOURMAND, DEVOUR_RITUAL);
 				break;
 		}
 		for (Talent talent : tierTalents){

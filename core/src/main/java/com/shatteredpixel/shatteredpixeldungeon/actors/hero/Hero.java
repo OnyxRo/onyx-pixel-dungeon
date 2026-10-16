@@ -268,6 +268,7 @@ public class Hero extends Char {
 	public int exp = 0;
 	
 	public int HTBoost = 0;
+	public Item lastEaten; //Devoted PD's Devotee, the last food eaten decides what the Blood Vial does
 	public float bountyhunterbuff = 0; //Devoted PD's bounty hunter, 3 max HP for each upgrade turned into hardening
 	public int vitalityBonus = 0; //Matt Edition's Potion of Vitality, extra max HP on top of level and HTBoost
 	public ArrayList<Perks.Perk> perks = new ArrayList<>(); //Experienced PD's perks
@@ -368,6 +369,7 @@ public class Hero extends Char {
 		bundle.put( HTBOOST, HTBoost );
 		bundle.put( "vitality_bonus", vitalityBonus );
 		bundle.put( "bountyhunterbuff", bountyhunterbuff );
+		if (lastEaten != null) bundle.put( "last_eaten", lastEaten );
 		Perks.storeInBundle( bundle, perks );
 
 		belongings.storeInBundle( bundle );
@@ -382,6 +384,7 @@ public class Hero extends Char {
 		HTBoost = bundle.getInt(HTBOOST);
 		vitalityBonus = bundle.getInt("vitality_bonus");
 		bountyhunterbuff = bundle.getFloat("bountyhunterbuff");
+		lastEaten = bundle.contains("last_eaten") ? (Item) bundle.get("last_eaten") : null;
 		Perks.restoreFromBundle( bundle, perks );
 
 		super.restoreFromBundle( bundle );
@@ -1799,6 +1802,11 @@ public class Hero extends Char {
 			GLog.w( Messages.get(this, "pain_resist") );
 		}
 
+		//the Zealot's Hidden Power (Devoted PD), a big hit hides them for a moment
+		if (pointsInTalent(Talent.HIDDEN_POWER) != 0){
+			if (dmg >= HT/5) Buff.affect(this, Invisibility.class, 1f+pointsInTalent(Talent.HIDDEN_POWER));
+		}
+
 		//Experienced PD's Steel Skin. A hit that would kill from full health is halved
 		if (perks.contains(Perks.Perk.NO_ONESHOTS) && dmg >= HT && HP == HT){
 			dmg /= 2;
@@ -1832,6 +1840,18 @@ public class Hero extends Char {
 		if (buff(Talent.WarriorFoodImmunity.class) != null){
 			if (pointsInTalent(Talent.IRON_STOMACH) == 1)       damage /= 4f;
 			else if (pointsInTalent(Talent.IRON_STOMACH) == 2)  damage = 0;
+		}
+
+		//the Zealot's Esoteric Mind (Devoted PD), the trinket soaks up a little of every hit
+		if (hasTalent(Talent.ESOTERIC_MIND)) {
+			com.shatteredpixel.shatteredpixeldungeon.items.trinkets.Trinket ref = belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.trinkets.Trinket.class);
+			if (ref != null) {
+				int max = ref.level();
+
+				if (pointsInTalent(Talent.ESOTERIC_MIND) == 1 && max == 3) damage -= Random.NormalIntRange(0, max);
+				else if (pointsInTalent(Talent.ESOTERIC_MIND) == 2) damage -= Random.NormalIntRange(0, max);
+				damage = Math.max(0, damage);
+			}
 		}
 
 		dmg = Math.round(damage);

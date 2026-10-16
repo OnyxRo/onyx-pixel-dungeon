@@ -283,6 +283,10 @@ public enum Catalog {
 		RINGS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.rings.EndothermicRing.class);
 		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMalaise.class);
 		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfThorns.class);
+		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.BloodVial.class);
+		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.ArcaneRoot.class);
+		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.LargeRadish.class);
+		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.CrystalApple.class);
 		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.Meal.class, com.shatteredpixel.shatteredpixeldungeon.items.Wyvernfruit.class);
 		BREWS_ELIXIRS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.RockBlock.class, com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfOvergrowth.class);
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.RoyalSeal.class, com.shatteredpixel.shatteredpixeldungeon.items.quest.Ruby.class, com.shatteredpixel.shatteredpixeldungeon.items.quest.StaffSplinter.class, com.shatteredpixel.shatteredpixeldungeon.items.quest.EmberEssence.class);

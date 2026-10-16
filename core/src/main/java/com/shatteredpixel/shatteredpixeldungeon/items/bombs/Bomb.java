@@ -209,6 +209,28 @@ public class Bomb extends Item {
 					//the Void trap bombs only hurt the hero, so they cannot kill the wraiths
 					if (subBomb && ch.alignment != Dungeon.hero.alignment) {}
 					else ch.damage(dmg, this);
+
+					//the Zealot's Demolitionist (Devoted PD) turns the damage a bomb does into shielding
+					if (Dungeon.hero.hasTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.DEMOLITIONIST)
+							&& !subBomb && ch.alignment != Dungeon.hero.alignment)
+					{
+						int max = 0;
+
+						switch (Dungeon.hero.pointsInTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.DEMOLITIONIST)) {
+							case 1: max = 30; break;
+							case 2: max = 40; break;
+							case 3: max = 50; break;
+						}
+
+						if (Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier.class) != null) {
+							max -= Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier.class).shielding();
+						}
+
+						if (max > 0) {
+							com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(Dungeon.hero,
+									com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier.class).setShield(Math.min(max, dmg));
+						}
+					}
 				}
 				
 				if (ch == Dungeon.hero && !ch.isAlive()) {

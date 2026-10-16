@@ -493,6 +493,21 @@ public abstract class RegularLevel extends Level {
 			
 		}
 
+		//the Devotee's Gourmand (Devoted PD) adds odd foods to each floor
+		if (Dungeon.hero.hasTalent(Talent.GOURMAND))
+		{
+			int amnt = Random.Int(0, Dungeon.hero.pointsInTalent(Talent.GOURMAND) + 1);
+
+			Class<? extends Item>[] types = new Class[]{ com.shatteredpixel.shatteredpixeldungeon.items.food.LargeRadish.class };
+			if (Dungeon.hero.pointsInTalent(Talent.GOURMAND) == 2) types = new Class[]{ com.shatteredpixel.shatteredpixeldungeon.items.food.LargeRadish.class, com.shatteredpixel.shatteredpixeldungeon.items.food.ArcaneRoot.class };
+			if (Dungeon.hero.pointsInTalent(Talent.GOURMAND) == 3) types = new Class[]{ com.shatteredpixel.shatteredpixeldungeon.items.food.LargeRadish.class, com.shatteredpixel.shatteredpixeldungeon.items.food.ArcaneRoot.class, com.shatteredpixel.shatteredpixeldungeon.items.food.CrystalApple.class };
+			while (amnt > 0) {
+				Random.shuffle(types);
+				addItemToSpawn(com.watabou.utils.Reflection.newInstance(types[0]));
+				amnt--;
+			}
+		}
+
 		for (Item item : itemsToSpawn) {
 			int cell = randomDropCell();
 			if (item instanceof TrinketCatalyst){
@@ -574,11 +589,11 @@ public abstract class RegularLevel extends Level {
 		//cached rations try to drop in a special room on floors 2/4/7, to a max of 2/3
 		//we increment dropped by 2 for compatibility with old saves, when the talent dropped 4/6 items
 		Random.pushGenerator( Random.Long() );
-			if (Dungeon.hero.hasTalent(Talent.CACHED_RATIONS)){
+			if (Dungeon.hero.hasTalent(Talent.CACHED_RATIONS) || Dungeon.hero.hasTalent(Talent.DEMONIC_INTUITION)){
 				Talent.CachedRationsDropped dropped = Buff.affect(Dungeon.hero, Talent.CachedRationsDropped.class);
 				int targetFloor = (int)(2 + dropped.count());
 				if (dropped.count() > 4) targetFloor++;
-				if (Dungeon.depth >= targetFloor && dropped.count() < 2 + 2*Dungeon.hero.pointsInTalent(Talent.CACHED_RATIONS)){
+				if (Dungeon.depth >= targetFloor && dropped.count() < 2 + 2*(Dungeon.hero.pointsInTalent(Talent.CACHED_RATIONS) + Dungeon.hero.pointsInTalent(Talent.DEMONIC_INTUITION))){
 					int cell;
 					int tries = 100;
 					boolean valid;
@@ -595,7 +610,9 @@ public abstract class RegularLevel extends Level {
 							map[cell] = Terrain.GRASS;
 							losBlocking[cell] = false;
 						}
-						drop(new SupplyRation(), cell).type = Heap.Type.CHEST;
+						//the Zealot's Demonic Intuition (Devoted PD) hides stones of intuition in the same rooms
+						if (Dungeon.hero.hasTalent(Talent.CACHED_RATIONS)) drop(new SupplyRation(), cell).type = Heap.Type.CHEST;
+						else drop(new com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfIntuition(), cell).type = Heap.Type.SKELETON;
 						dropped.countUp(2);
 					}
 				}
