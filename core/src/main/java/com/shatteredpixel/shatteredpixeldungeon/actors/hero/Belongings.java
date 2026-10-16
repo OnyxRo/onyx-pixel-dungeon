@@ -87,6 +87,65 @@ public class Belongings implements Iterable<Item> {
 	//Ryuse's PD, helmets have a slot of their own
 	public com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet helmet = null;
 
+	//Ryuse's PD, extra equipment slots. Old saves have none of these, so they load empty
+	public static final int EXTRA_ARMORS = 5;
+	public static final int EXTRA_ARTIFACTS = 4;
+	public static final int EXTRA_RINGS = 4;
+	public Armor[] extraArmors = new Armor[EXTRA_ARMORS];
+	public Artifact[] extraArtifacts = new Artifact[EXTRA_ARTIFACTS];
+	public Ring[] extraRings = new Ring[EXTRA_RINGS];
+
+	private static int freeIn( Object[] arr ){
+		for (int i = 0; i < arr.length; i++) if (arr[i] == null) return i;
+		return -1;
+	}
+	public int freeExtraArmor()    { return freeIn(extraArmors); }
+	public int freeExtraArtifact() { return freeIn(extraArtifacts); }
+	public int freeExtraRing()     { return freeIn(extraRings); }
+
+	public boolean inExtraSlot( Item item ){
+		for (Object o : extraArmors)    if (o == item && item != null) return true;
+		for (Object o : extraArtifacts) if (o == item && item != null) return true;
+		for (Object o : extraRings)     if (o == item && item != null) return true;
+		return false;
+	}
+
+	//empties whichever extra slot holds the item, true if one did
+	public boolean clearExtraSlot( Item item ){
+		boolean found = false;
+		for (int i = 0; i < extraArmors.length; i++)    if (item != null && extraArmors[i] == item)    { extraArmors[i] = null; found = true; }
+		for (int i = 0; i < extraArtifacts.length; i++) if (item != null && extraArtifacts[i] == item) { extraArtifacts[i] = null; found = true; }
+		for (int i = 0; i < extraRings.length; i++)     if (item != null && extraRings[i] == item)     { extraRings[i] = null; found = true; }
+		return found;
+	}
+
+	//the main armor plus any worn in extra slots, ignoring nothing lost to the lost inventory debuff
+	public ArrayList<Armor> allArmors(){
+		ArrayList<Armor> result = new ArrayList<>();
+		if (armor() != null) result.add(armor());
+		for (Armor a : extraArmors){
+			if (a != null && (!lostInventory() || a.keptThroughLostInventory())) result.add(a);
+		}
+		return result;
+	}
+
+	//only the armor worn in extra slots
+	public ArrayList<Armor> extraArmorsWorn(){
+		ArrayList<Armor> result = new ArrayList<>();
+		for (Armor a : extraArmors){
+			if (a != null && (!lostInventory() || a.keptThroughLostInventory())) result.add(a);
+		}
+		return result;
+	}
+
+	private ArrayList<Item> extraItems(){
+		ArrayList<Item> result = new ArrayList<>();
+		for (Item i : extraArmors)    if (i != null) result.add(i);
+		for (Item i : extraArtifacts) if (i != null) result.add(i);
+		for (Item i : extraRings)     if (i != null) result.add(i);
+		return result;
+	}
+
 	//used when thrown weapons temporary become the current weapon
 	public KindOfWeapon thrownWeapon = null;
 
@@ -130,6 +189,9 @@ public class Belongings implements Iterable<Item> {
 		if (ring() != null)      equipped.add(ring());
 		if (secondWep() != null) equipped.add(secondWep());
 		if (helmet() != null)    equipped.add(helmet());
+		for (Item i : extraItems()) {
+			if (!lostInventory() || i.keptThroughLostInventory()) equipped.add(i);
+		}
 		return equipped.isEmpty() ? null : Random.element(equipped);
 	}
 
@@ -211,6 +273,9 @@ public class Belongings implements Iterable<Item> {
 		bundle.put( RING, ring );
 		bundle.put( SECOND_WEP, secondWep );
 		bundle.put( HELMET, helmet );
+		for (int i = 0; i < EXTRA_ARMORS; i++)    if (extraArmors[i] != null)    bundle.put( "extra_armor" + i, extraArmors[i] );
+		for (int i = 0; i < EXTRA_ARTIFACTS; i++) if (extraArtifacts[i] != null) bundle.put( "extra_artifact" + i, extraArtifacts[i] );
+		for (int i = 0; i < EXTRA_RINGS; i++)     if (extraRings[i] != null)     bundle.put( "extra_ring" + i, extraRings[i] );
 	}
 
 	public static boolean bundleRestoring = false;
@@ -241,6 +306,19 @@ public class Belongings implements Iterable<Item> {
 		helmet = (com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet) bundle.get(HELMET);
 		if (helmet() != null)       helmet().activate(owner);
 
+		for (int i = 0; i < EXTRA_ARMORS; i++) {
+			extraArmors[i] = bundle.contains("extra_armor" + i) ? (Armor) bundle.get("extra_armor" + i) : null;
+			if (extraArmors[i] != null) extraArmors[i].activate(owner);
+		}
+		for (int i = 0; i < EXTRA_ARTIFACTS; i++) {
+			extraArtifacts[i] = bundle.contains("extra_artifact" + i) ? (Artifact) bundle.get("extra_artifact" + i) : null;
+			if (extraArtifacts[i] != null) extraArtifacts[i].activate(owner);
+		}
+		for (int i = 0; i < EXTRA_RINGS; i++) {
+			extraRings[i] = bundle.contains("extra_ring" + i) ? (Ring) bundle.get("extra_ring" + i) : null;
+			if (extraRings[i] != null) extraRings[i].activate(owner);
+		}
+
 		bundleRestoring = false;
 	}
 
@@ -252,6 +330,9 @@ public class Belongings implements Iterable<Item> {
 		artifact = null;
 		misc = null;
 		ring = null;
+		extraArmors = new Armor[EXTRA_ARMORS];
+		extraArtifacts = new Artifact[EXTRA_ARTIFACTS];
+		extraRings = new Ring[EXTRA_RINGS];
 	}
 	
 	public static void preview( GamesInProgress.Info info, Bundle bundle ) {
@@ -413,6 +494,10 @@ public class Belongings implements Iterable<Item> {
 				Badges.validateItemLevelAquired(ring());
 			}
 		}
+		for (Item extra : extraItems()) {
+			extra.identify();
+			Badges.validateItemLevelAquired(extra);
+		}
 		if (ShardOfOblivion.passiveIDDisabled()){
 			GLog.p(Messages.get(ShardOfOblivion.class, "identify_ready_worn"));
 		}
@@ -426,6 +511,9 @@ public class Belongings implements Iterable<Item> {
 	
 	public void uncurseEquipped() {
 		ScrollOfRemoveCurse.uncurse( owner, armor(), weapon(), artifact(), misc(), ring(), secondWep(), helmet());
+		for (Item extra : extraItems()) {
+			ScrollOfRemoveCurse.uncurse( owner, extra );
+		}
 	}
 	
 	public Item randomUnequipped() {
@@ -457,7 +545,17 @@ public class Belongings implements Iterable<Item> {
 		
 		private Iterator<Item> backpackIterator = backpack.iterator();
 		
-		private Item[] equipped = {weapon, armor, artifact, misc, ring, secondWep, helmet};
+		private Item[] equipped = buildEquipped();
+
+		private Item[] buildEquipped(){
+			ArrayList<Item> list = new ArrayList<>();
+			list.add(weapon); list.add(armor); list.add(artifact); list.add(misc);
+			list.add(ring); list.add(secondWep); list.add(helmet);
+			for (Item i : extraArmors)    list.add(i);
+			for (Item i : extraArtifacts) list.add(i);
+			for (Item i : extraRings)     list.add(i);
+			return list.toArray(new Item[0]);
+		}
 		private int backpackIndex = equipped.length;
 		
 		@Override
@@ -510,7 +608,14 @@ public class Belongings implements Iterable<Item> {
 				equipped[6] = helmet = null;
 				break;
 			default:
-				backpackIterator.remove();
+				int slot = index - 1;
+				if (slot >= 7 && slot < backpackIndex){
+					Item gone = equipped[slot];
+					equipped[slot] = null;
+					clearExtraSlot(gone);
+				} else {
+					backpackIterator.remove();
+				}
 			}
 		}
 	}

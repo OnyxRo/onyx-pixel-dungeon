@@ -136,3 +136,14 @@ Left out, and why.
 - Not seen on screen yet. The sanity bar, the three new rooms, living plants waking up, guns firing, the herb and tincture windows. The arena picture showed the new monsters and living plants fine.
 
 Tool changes made. `port-itemsprites.py` reads `ui/items.png` for 0.5 and 0.6 mods. `port-skip.txt` has the mod launcher and the scenes it drags in.
+
+## Ryuse's PD, extra equipment slots (2026-10-16)
+
+Done as an additive change, so existing saves load and every class that reads `Belongings` still works. The old slots (weapon, armor, artifact, misc, ring, second weapon, helmet) are untouched. New on top of them, `Belongings.extraArmors` (5, so 6 armors in all as in the mod), `extraArtifacts` (4) and `extraRings` (4). Saved only when filled under `extra_armorN`, `extra_artifactN`, `extra_ringN`, so an old save loads with them empty. Helpers `freeExtraArmor/Artifact/Ring`, `inExtraSlot`, `clearExtraSlot`, `allArmors`, `extraArmorsWorn`. The item iterator, `observe`, `uncurseEquipped`, `randomEquipped`, `clear` and `Rankings` (ring identification) include them.
+- Rings and artifacts use a free extra slot automatically when the normal slots are full (`KindofMisc.doEquip`), before the swap window would appear. Ring bonuses already sum through buffs, so they work with no change. Two artifacts of one kind are still refused.
+- Armor asks where to go when the main slot is full and an extra slot is free ("Replace main armor" or "Wear as extra armor", `Armor.doEquip`). Extra armor adds its armor roll, evasion factor, speed factor, defense procs and glyph levels in `Hero` (`drRoll`, `evasion`, `speed`, `defenseProc`, `glyphLevel`). The warrior seal, hero sprite and the Armorer bonus still follow the main armor only.
+- The inventory window shows worn extras plus one empty slot per kind on the main backpack (`WndBag.placeItems`).
+- Thieves (Burglar, Snatcher) can steal from extra slots. Talent intuition identify hooks and ring descriptions cover extra rings.
+- `EquipmentPage` is ported as in the mod (a bag with no capacity, in the journal catalog, no use of its own, it only reuses the weapon holder picture). `actors/Damage.java` is the mod's damage description class, kept as inert data because the mod itself never used it outside the file.
+- Left out. HP, EXP and shield bar art, the mod's bars are the same colours as the ones already in `status_pane.png` (checked by pixel), so nothing changes. Loading screens (16x16 old layout pictures, this game has its own).
+- New test `scripts/test/ExtraSlotsTest.java`, run by the full `check.sh`.

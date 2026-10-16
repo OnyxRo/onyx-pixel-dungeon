@@ -615,6 +615,9 @@ public enum Talent {
 			if (hero.belongings.misc instanceof Ring && !ShardOfOblivion.passiveIDDisabled()) {
 				hero.belongings.misc.identify();
 			}
+			for (Ring extra : hero.belongings.extraRings){
+				if (extra != null && !ShardOfOblivion.passiveIDDisabled()) extra.identify();
+			}
 			for (Item item : Dungeon.hero.belongings){
 				if (item instanceof Ring){
 					((Ring) item).setKnown();

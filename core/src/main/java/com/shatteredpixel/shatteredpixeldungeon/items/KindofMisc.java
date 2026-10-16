@@ -65,6 +65,14 @@ public abstract class KindofMisc extends EquipableItem {
 			}
 		}
 
+		//Ryuse's PD, a free extra slot takes the item before anything has to be swapped out
+		int extraIdx = -1;
+		if (equipFull) {
+			if (this instanceof Artifact)  extraIdx = hero.belongings.freeExtraArtifact();
+			else if (this instanceof Ring) extraIdx = hero.belongings.freeExtraRing();
+			if (extraIdx >= 0) equipFull = false;
+		}
+
 		if (equipFull) {
 
 			final KindofMisc[] miscs = new KindofMisc[3];
@@ -143,7 +151,10 @@ public abstract class KindofMisc extends EquipableItem {
 				return false;
 			}
 
-			if (this instanceof Artifact){
+			if (extraIdx >= 0){
+				if (this instanceof Artifact)   hero.belongings.extraArtifacts[extraIdx] = (Artifact) this;
+				else                            hero.belongings.extraRings[extraIdx] = (Ring) this;
+			} else if (this instanceof Artifact){
 				if (hero.belongings.artifact == null)   hero.belongings.artifact = (Artifact) this;
 				else                                    hero.belongings.misc = (Artifact) this;
 			} else if (this instanceof Ring){
@@ -173,7 +184,9 @@ public abstract class KindofMisc extends EquipableItem {
 	public boolean doUnequip(Hero hero, boolean collect, boolean single) {
 		if (super.doUnequip(hero, collect, single)){
 
-			if (hero.belongings.artifact == this) {
+			if (hero.belongings.clearExtraSlot(this)) {
+				//worn in an extra slot, now empty
+			} else if (hero.belongings.artifact == this) {
 				hero.belongings.artifact = null;
 			} else if (hero.belongings.misc == this) {
 				hero.belongings.misc = null;
@@ -194,7 +207,8 @@ public abstract class KindofMisc extends EquipableItem {
 	public boolean isEquipped( Hero hero ) {
 		return hero != null && (hero.belongings.artifact() == this
 				|| hero.belongings.misc() == this
-				|| hero.belongings.ring() == this);
+				|| hero.belongings.ring() == this
+				|| hero.belongings.inExtraSlot(this));
 	}
 
 }

@@ -263,6 +263,44 @@ public class Armor extends EquipableItem {
 			return false;
 		}
 
+		//Ryuse's PD, with an extra armor slot free the player picks where this armor goes
+		if (hero.belongings.armor != null && hero.belongings.freeExtraArmor() >= 0 && !slotAsked){
+			GameScene.show(new WndOptions(new ItemSprite(this),
+					Messages.titleCase(name()),
+					Messages.get(Armor.class, "slot_message"),
+					Messages.get(Armor.class, "slot_main"),
+					Messages.get(Armor.class, "slot_extra")){
+				@Override
+				protected void onSelect(int index) {
+					slotAsked = true;
+					wearExtra = index == 1;
+					try {
+						doEquip(Dungeon.hero);
+					} finally {
+						slotAsked = false;
+						wearExtra = false;
+					}
+					updateQuickslot();
+				}
+			});
+			return false;
+		}
+
+		if (wearExtra && hero.belongings.freeExtraArmor() >= 0){
+			detach(hero.belongings.backpack);
+			hero.belongings.extraArmors[hero.belongings.freeExtraArmor()] = this;
+			cursedKnown = true;
+			if (cursed) {
+				equipCursed( hero );
+				GLog.n( Messages.get(Armor.class, "equip_cursed") );
+			}
+			activate(hero);
+			Talent.onItemEquipped(hero, this);
+			hero.spend( timeToEquip( hero ) );
+			hero.next();
+			return true;
+		}
+
 		detach(hero.belongings.backpack);
 
 		Armor oldArmor = hero.belongings.armor;
@@ -375,6 +413,10 @@ public class Armor extends EquipableItem {
 	public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
 		if (super.doUnequip( hero, collect, single )) {
 
+			if (hero.belongings.clearExtraSlot(this)){
+				return true;
+			}
+
 			hero.belongings.armor = null;
 			((HeroSprite)hero.sprite).updateArmor();
 
@@ -392,8 +434,12 @@ public class Armor extends EquipableItem {
 	
 	@Override
 	public boolean isEquipped( Hero hero ) {
-		return hero != null && hero.belongings.armor() == this;
+		return hero != null && (hero.belongings.armor() == this || hero.belongings.inExtraSlot(this));
 	}
+
+	//Ryuse's PD, set while the slot choice dialog is open
+	private transient boolean slotAsked = false;
+	private transient boolean wearExtra = false;
 
 	//from Transformation PD, armor numbers used by hero replicas
 	public int replicaDRMax() { return DRMax(); }
