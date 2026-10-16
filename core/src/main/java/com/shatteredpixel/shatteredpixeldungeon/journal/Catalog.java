@@ -623,6 +623,15 @@ public enum Catalog {
 		TRINKETS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MagicFeather.class);
 		TRINKETS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.trinkets.SpearShield.class);
 
+		//items ported from transformation
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.RedEnvelope.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.bags.HikingBackpack.class);
+		ARMOR.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.SlimeArmor.class);
+		ARMOR.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.SlimeGirlArmor.class);
+		THROWN_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.PortableBlackHole.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.Tatteki.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.tier6.AuxiliaryCore.class);
+
 
 	}
 

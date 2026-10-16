@@ -53,7 +53,7 @@ public class MirrorSprite extends MobSprite {
 	}
 
 	public void updateArmor(){
-		updateArmor( ((MirrorImage)ch).armTier );
+		updateArmor( ch instanceof MirrorImage ? ((MirrorImage)ch).armTier : 0 );
 	}
 	
 	public void updateArmor( int tier ) {

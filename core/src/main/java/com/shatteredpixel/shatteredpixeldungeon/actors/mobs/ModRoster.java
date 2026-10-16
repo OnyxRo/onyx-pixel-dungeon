@@ -153,6 +153,7 @@ public class ModRoster {
 		add( "transformation", SoulCollector.class, 1, 16, 25 );
 		add( "transformation", TapirCrocodile.class, 1, 21, 25 );
 		add( "transformation", TransformMimic.class, 0, 1, 99 );
+		add( "transformation", TwistedMirror.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

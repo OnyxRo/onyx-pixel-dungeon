@@ -395,6 +395,19 @@ public class Armor extends EquipableItem {
 		return hero != null && hero.belongings.armor() == this;
 	}
 
+	//from Transformation PD, armor numbers used by hero replicas
+	public int replicaDRMax() { return DRMax(); }
+
+	public int replicaDRMin() { return DRMin(); }
+
+	public float replicaEvasionFactor(Char owner, float evasion) {
+		return evasion + augment.evasionFactor(buffedLvl());
+	}
+
+	public float replicaSpeedFactor(Char owner, float speed) {
+		return speed;
+	}
+
 	public final int DRMax(){
 		return DRMax(buffedLvl());
 	}

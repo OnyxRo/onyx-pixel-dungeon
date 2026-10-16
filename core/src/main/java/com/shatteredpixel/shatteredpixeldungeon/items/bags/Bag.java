@@ -83,7 +83,7 @@ public class Bag extends Item implements Iterable<Item> {
 	@Override
 	public boolean collect( Bag container ) {
 
-		grabItems(container);
+		if (autoGrabOnCollect()) grabItems(container);
 
 		//if there are any quickslot placeholders that match items in this bag, assign them
 		for (Item item : items) {
@@ -109,6 +109,15 @@ public class Bag extends Item implements Iterable<Item> {
 			Dungeon.quickslot.clearItem(item);
 		}
 		updateQuickslot();
+	}
+
+	//from Transformation PD, a fallback bag takes items the backpack has no room for
+	public boolean isFallbackStorage() {
+		return false;
+	}
+
+	protected boolean autoGrabOnCollect() {
+		return true;
 	}
 
 	public void grabItems(){

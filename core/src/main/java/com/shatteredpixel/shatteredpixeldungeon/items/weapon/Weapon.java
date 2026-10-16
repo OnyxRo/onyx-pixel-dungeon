@@ -97,7 +97,9 @@ abstract public class Weapon extends KindOfWeapon {
 	public enum Augment {
 		SPEED   (0.7f, 2/3f),
 		DAMAGE  (1.5f, 5/3f),
-		NONE	(1.0f, 1f);
+		NONE	(1.0f, 1f),
+		//from Transformation PD, set by the Auxiliary Core. Adds magic damage, and speed or reach by weapon reach
+		MAGIC   (1.0f, 1f);
 
 		private float damageFactor;
 		private float delayFactor;
@@ -190,6 +192,11 @@ abstract public class Weapon extends KindOfWeapon {
 					attacker.buff(Smite.SmiteTracker.class) != null && defender.isAlive()){
 				defender.damage(Smite.bonusDmg((Hero) attacker, defender), Smite.INSTANCE);
 			}
+		}
+
+		if (augment == Augment.MAGIC && attacker != defender && defender.isAlive()
+				&& weaponTier() >= 1 && weaponTier() <= 5) {
+			defender.damage(Random.IntRange(weaponTier(), magicDamageMax()), this);
 		}
 
 		//do not progress toward ID in the specific case of a missile weapon with no parent using
@@ -344,6 +351,9 @@ abstract public class Weapon extends KindOfWeapon {
 
 	protected float baseDelay( Char owner ){
 		float delay = augment.delayFactor(this.DLY);
+		if (augment == Augment.MAGIC) {
+			delay *= magicDelayMultiplier(RCH);
+		}
 		if (owner instanceof Hero) {
 			int encumbrance = STRReq() - ((Hero)owner).STR();
 			if (encumbrance > 0){
@@ -371,6 +381,9 @@ abstract public class Weapon extends KindOfWeapon {
 	@Override
 	public int reachFactor(Char owner) {
 		int reach = RCH + (prefix == com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix.LONG ? 1 : 0);
+		if (augment == Augment.MAGIC) {
+			reach += magicReachBonus(RCH);
+		}
 		if (owner instanceof Hero && RingOfForce.fightingUnarmed((Hero) owner)){
 			reach = 1; //brawlers stance benefits from enchantments, but not innate reach
 			if (!RingOfForce.unarmedGetsWeaponEnchantment((Hero) owner)){
@@ -596,6 +609,30 @@ abstract public class Weapon extends KindOfWeapon {
 			if (enchantment == null && special != null) return special.glowing();
 			return enchantment != null && (cursedKnown || !enchantment.curse()) ? enchantment.glowing() : null;
 		}
+	}
+
+	//from Transformation PD, magic augment numbers
+	public static int magicDamageMax() {
+		return 10;
+	}
+
+	public static int magicReachBonus(int baseReach) {
+		return baseReach < 2 ? 1 : 0;
+	}
+
+	public static float magicDelayMultiplier(int baseReach) {
+		return baseReach > 1 ? 2f / 3f : 1f;
+	}
+
+	public int weaponTier() {
+		if (this instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon) return ((com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon) this).tier;
+		if (this instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon) return ((com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon) this).tier;
+		return 0;
+	}
+
+	//from Transformation PD
+	public Enchantment getEnchant(){
+		return enchantment;
 	}
 
 	public static abstract class Enchantment implements Bundlable {

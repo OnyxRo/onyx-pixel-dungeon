@@ -80,6 +80,30 @@ abstract public class MissileWeapon extends Weapon {
 	//whether or not this instance of the item exists purely to trigger its effect. i.e. no dropping
 	public boolean spawnedForEffect = false;
 	
+	//from Transformation PD. A phantom projectile repeats a throw without making another phantom
+	protected boolean phantomProjectile = false;
+
+	public interface QianfaRepeatProjectile {
+	}
+
+	protected final MissileWeapon markAsPhantom(MissileWeapon projectile) {
+		if (projectile != null) {
+			projectile.phantomProjectile = true;
+			projectile.spawnedForEffect = true;
+			projectile.parent = null;
+		}
+		return projectile;
+	}
+
+	//the mod's Seer Shot talent and raid origin tags do not exist here
+	protected void triggerSeerShot(int cell) {}
+
+	protected void onSuccessfulThrow(Char enemy) {}
+
+	protected MissileWeapon createPhantomProjectile() { return null; }
+
+	protected boolean hasSameExtractionRaidOrigin(Item other) { return true; }
+
 	protected boolean sticky = true;
 	
 	public static final float MAX_DURABILITY = 100;
@@ -97,6 +121,13 @@ abstract public class MissileWeapon extends Weapon {
 		return 10; //half of a melee weapon
 	}
 	
+	//from Transformation PD
+	public int damageRollWithLevelBonus(Char owner, int levelBonus) {
+		int level = buffedLvl() + levelBonus;
+		return augment.damageFactor(Random.NormalIntRange(
+				Math.max(0, min(level)), Math.max(0, max(level))));
+	}
+
 	@Override
 	public int min() {
 		if (Dungeon.hero != null){

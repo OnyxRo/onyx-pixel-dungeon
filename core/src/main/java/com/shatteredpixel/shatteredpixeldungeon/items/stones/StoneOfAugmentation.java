@@ -122,6 +122,7 @@ public class StoneOfAugmentation extends InventoryStone {
 			
 			if (toAugment instanceof Weapon){
 				for (final Weapon.Augment aug : Weapon.Augment.values()){
+					if (aug == Weapon.Augment.MAGIC) continue;
 					if (((Weapon) toAugment).augment != aug){
 						RedButton btnAug = new RedButton( Messages.get(this, aug.name()) ) {
 							@Override

@@ -441,6 +441,12 @@ public class Ring extends KindofMisc {
 		//another ring to read the level from, set by the Ringbox so its rings count at a scaled level
 		protected Ring ringSource = null;
 
+		//from Transformation PD, what a replica gets from this ring
+		public int copiedEquipmentBonus(boolean buffed) {
+			int itemLevel = buffed ? Ring.this.buffedLvl() : Ring.this.level();
+			return Ring.this.cursed ? Math.min(0, itemLevel - 2) : itemLevel + 1;
+		}
+
 		public void setRingSource( Ring source ){
 			this.ringSource = source;
 		}

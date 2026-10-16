@@ -263,7 +263,12 @@ abstract public class KindOfWeapon extends EquipableItem {
 	}
 	
 	public boolean canReach( Char owner, int target){
-		int reach = reachFactor(owner);
+		return canReach(owner, target, 0);
+	}
+
+	//from Transformation PD, extra reach from a talent or buff
+	public boolean canReach( Char owner, int target, int extraReach ){
+		int reach = reachFactor(owner) + extraReach;
 		if (Dungeon.level.distance( owner.pos, target ) > reach){
 			return false;
 		} else {

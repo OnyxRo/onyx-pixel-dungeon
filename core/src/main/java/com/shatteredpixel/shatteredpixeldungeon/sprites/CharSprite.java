@@ -411,7 +411,20 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		auraRays = nRays;
 	}
 
+	//from Transformation PD, which states are on right now
+	private final HashSet<State> activeStates = new HashSet<>();
+
+	public boolean isState( State state ) {
+		synchronized (State.class) {
+			//this can be called from the Visual constructor, before the sets exist
+			if (stateAdditions == null || activeStates == null || stateRemovals == null) return false;
+			return stateAdditions.contains(state)
+					|| (activeStates.contains(state) && !stateRemovals.contains(state));
+		}
+	}
+
 	protected synchronized void processStateAddition( State state ) {
+		activeStates.add(state);
 		switch (state) {
 			case BURNING:
 				if (burning != null) burning.on = false;
@@ -512,6 +525,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	}
 
 	protected synchronized void processStateRemoval( State state ) {
+		activeStates.remove(state);
 		switch (state) {
 			case BURNING:
 				if (burning != null) {
