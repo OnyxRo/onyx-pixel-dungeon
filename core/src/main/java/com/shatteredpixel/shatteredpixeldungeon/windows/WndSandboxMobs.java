@@ -60,7 +60,9 @@ public class WndSandboxMobs extends Window {
 			//Devoted's bosses, which do the same with Devoted's boss levels
 			"BlastFurnace", "FurnaceGolem", "RatBeast", "Thymor", "VelEssence", "VelTaleth", "Wendar", "Yuria",
 			//Matt Edition's unused boss, built for the Dwarf King's throne room
-			"DarkKing"
+			"DarkKing",
+			//Dragonic's Dragon, tied to its boss level
+			"Dragon"
 	));
 
 	public static boolean safeToSpawn( Class<?> cls ){

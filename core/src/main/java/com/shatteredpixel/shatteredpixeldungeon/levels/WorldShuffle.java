@@ -48,6 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.BeachLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.SurfaceLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.CursedTempleLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.DolyaHavenLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.DragonLairLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.PollutedSewersLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.UesLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.LushSurfaceLevel;
@@ -150,7 +151,9 @@ public class WorldShuffle {
 			//Abyssalnite Pixel Dungeon
 			AbyssalSewersLevel.class, AbyssalPrisonLevel.class, AbyssalCavesLevel.class, AbyssalCityLevel.class, AbyssalHallsLevel.class,
 			//Rat King Pixel Dungeon 2
-			RatKingSewersLevel.class
+			RatKingSewersLevel.class,
+			//Dragonic Pixel Dungeon
+			DragonLairLevel.class
 	};
 
 	/** A world that fits any region, used for Transformation's tower styles. */
@@ -195,7 +198,9 @@ public class WorldShuffle {
 			//Abyssalnite Pixel Dungeon
 			SEWERS, PRISON, CAVES, CITY, HALLS,
 			//Rat King Pixel Dungeon 2
-			SEWERS
+			SEWERS,
+			//Dragonic Pixel Dungeon, its lair sat past the Halls
+			HALLS
 	};
 
 	//the source mod's app icon for each world, in the same order as WORLDS. Null for Shattered's own
@@ -212,6 +217,7 @@ public class WorldShuffle {
 	private static final String RYUSE = "interfaces/mods/ryuse.png";
 	private static final String ABYSSALNITE = "interfaces/mods/abyssalnite.png";
 	private static final String RKPD2 = "interfaces/mods/rkpd2.png";
+	private static final String DRAGONIC = "interfaces/mods/dragonic.png";
 	private static final String CURSED = "interfaces/mods/cursed.png";
 	private static final String[] LOGOS = {
 			null, null, null, null, null,
@@ -244,7 +250,9 @@ public class WorldShuffle {
 			//Abyssalnite Pixel Dungeon
 			ABYSSALNITE, ABYSSALNITE, ABYSSALNITE, ABYSSALNITE, ABYSSALNITE,
 			//Rat King Pixel Dungeon 2
-			RKPD2
+			RKPD2,
+			//Dragonic Pixel Dungeon
+			DRAGONIC
 	};
 
 	/** The asset path of the icon of the mod a floor's world comes from, or null for Shattered's own worlds. */
@@ -277,6 +285,12 @@ public class WorldShuffle {
 			if (!mobs.isEmpty()) return mobs;
 		}
 		return com.shatteredpixel.shatteredpixeldungeon.actors.mobs.MobSpawner.getMobRotation(depth);
+	}
+
+	/** The short key of the mod a world number comes from, like "dragonic", or null for Shattered's own worlds. */
+	public static String keyOfWorld( int world ){
+		String logo = world >= 0 && world < LOGOS.length ? LOGOS[world] : null;
+		return logo == null ? null : logo.substring(logo.lastIndexOf('/') + 1).replace(".png", "");
 	}
 
 	/** The mod a world comes from as a short key like "reforged", or null for Shattered's own worlds. */
@@ -365,6 +379,10 @@ public class WorldShuffle {
 			int pick = forcedVariant >= 0 ? forcedVariant : (int)((Math.abs( Dungeon.seed ) / 7 + depth) & 1);
 			//a third variant is the final arena, only built when asked for by name (the boss test), never by the seed
 			return both[forcedVariant >= 0 ? pick % both.length : pick % Math.min(both.length, 2)];
+		}
+		if (world >= 0 && world < LOGOS.length && DRAGONIC.equals(LOGOS[world])) {
+			//Dragonic's Dragon guards the floor 25 gate in place of Yog, it was the last floor of its own game
+			return depth == 25 ? new DragonBossLevel() : null;
 		}
 		if (world < 0 || world >= LOGOS.length || !DEVOTED.equals(LOGOS[world])) return null;
 		switch (depth) {
@@ -539,11 +557,22 @@ public class WorldShuffle {
 	}
 
 	public static Class<?>[] trapClasses( RegularLevel level ){
-		return trapSource(level).trapClasses();
+		Class<?>[] classes = trapSource(level).trapClasses();
+		//Dragonic PD's lair adds its venom gas trap to the usual list
+		if (level instanceof DragonLairLevel) {
+			classes = java.util.Arrays.copyOf( classes, classes.length + 1 );
+			classes[classes.length - 1] = com.shatteredpixel.shatteredpixeldungeon.levels.traps.VenomTrap.class;
+		}
+		return classes;
 	}
 
 	public static float[] trapChances( RegularLevel level ){
-		return trapSource(level).trapChances();
+		float[] chances = trapSource(level).trapChances();
+		if (level instanceof DragonLairLevel) {
+			chances = java.util.Arrays.copyOf( chances, chances.length + 1 );
+			chances[chances.length - 1] = 4f;
+		}
+		return chances;
 	}
 
 	/** The floor's world name, like "The Astral Library", or null for Shattered's own worlds. */

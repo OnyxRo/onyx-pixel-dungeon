@@ -57,7 +57,11 @@ def parse(spec):
                 mode = None
             else: new.append(raw)
     if mode is not None: raise SystemExit('a <<<< block was never closed with >>>>')
-    return files
+    # the same file named in two @@ lines used to read the file twice and keep only the later result
+    merged = {}
+    for rel, edits in files:
+        merged.setdefault(rel, []).extend(edits)
+    return list(merged.items())
 
 def fuzzy_replace(t, o, n):
     """Replaces the one block of lines that equals o when trailing whitespace is ignored, or returns None."""

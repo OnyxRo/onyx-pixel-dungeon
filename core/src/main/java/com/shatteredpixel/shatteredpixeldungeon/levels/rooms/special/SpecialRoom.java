@@ -135,6 +135,12 @@ public abstract class SpecialRoom extends Room {
 		if (Dungeon.depth == 4){
 			floorSpecials.add(0, RatNestRoom.class);
 		}
+		//Dragonic PD, a statue that comes alive when its key is used, only in its own worlds
+		if (Dungeon.branch == 0 && Dungeon.depth > 1 && Dungeon.depth < 25 && Random.Int(3) == 0
+				&& "dragonic".equals(com.shatteredpixel.shatteredpixeldungeon.levels.WorldShuffle.keyOfWorld(
+						Dungeon.sandboxWorld >= 0 ? Dungeon.sandboxWorld : com.shatteredpixel.shatteredpixeldungeon.levels.WorldShuffle.worldFor(Dungeon.depth)))){
+			floorSpecials.add(0, StatueArmorRoom.class);
+		}
 		//laboratory rooms spawn on floor 3 or 4 each chapter
 		if (Dungeon.labRoomNeeded()){
 			Dungeon.LimitedDrops.LAB_ROOM.count++;

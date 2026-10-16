@@ -60,7 +60,13 @@ public enum HeroSubClass {
 
 	//from Ryuse's PD, they reuse other subclasses' pictures
 	EIDOLON(HeroIcon.WARLOCK),
-	ATTRACTOR(HeroIcon.PRIEST);
+	ATTRACTOR(HeroIcon.PRIEST),
+
+	//from Dragonic PD, they reuse other subclasses' pictures
+	DEVORANDUM(HeroIcon.BERSERKER),
+	MESSOREM(HeroIcon.ASSASSIN),
+	DRUID(HeroIcon.WARDEN),
+	ICEBREAKER(HeroIcon.CHAMPION);
 
 	int icon;
 

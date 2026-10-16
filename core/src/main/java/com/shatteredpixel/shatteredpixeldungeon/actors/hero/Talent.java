@@ -545,6 +545,10 @@ public enum Talent {
 					return 245;
 				case SUMMONER:
 					return 26;
+				case VIKING:
+					return 26;
+				case DRAGONKNIGHT:
+					return 26;
 			}
 		} else {
 			return icon;
@@ -1181,6 +1185,13 @@ public enum Talent {
 				//Ryuse's PD had no talents of its own for the Summoner, these are Shattered's picked to suit her
 				Collections.addAll(tierTalents, HEARTY_MEAL, SURVIVALISTS_INTUITION, SCHOLARS_INTUITION, BACKUP_BARRIER);
 				break;
+			case VIKING:
+				//Dragonic PD gave its heroes no talents, these are Shattered's picked to suit them
+				Collections.addAll(tierTalents, HEARTY_MEAL, VETERANS_INTUITION, PROVOKED_ANGER, IRON_WILL);
+				break;
+			case DRAGONKNIGHT:
+				Collections.addAll(tierTalents, HEARTY_MEAL, SURVIVALISTS_INTUITION, PROVOKED_ANGER, BACKUP_BARRIER);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -1219,6 +1230,12 @@ public enum Talent {
 			case SUMMONER:
 				Collections.addAll(tierTalents, INVIGORATING_MEAL, LIQUID_NATURE, ARCANE_VISION, HEIGHTENED_SENSES, SHIELD_BATTERY);
 				break;
+			case VIKING:
+				Collections.addAll(tierTalents, IRON_STOMACH, LIQUID_WILLPOWER, RUNIC_TRANSFERENCE, LETHAL_MOMENTUM, IMPROVISED_PROJECTILES);
+				break;
+			case DRAGONKNIGHT:
+				Collections.addAll(tierTalents, IRON_STOMACH, LIQUID_NATURE, RUNIC_TRANSFERENCE, LETHAL_MOMENTUM, IMPROVISED_PROJECTILES);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -1256,6 +1273,10 @@ public enum Talent {
 				break;
 			case SUMMONER:
 				Collections.addAll(tierTalents, ALLY_WARP, HOLD_FAST);
+				break;
+			case VIKING:
+			case DRAGONKNIGHT:
+				Collections.addAll(tierTalents, HOLD_FAST, STRONGMAN);
 				break;
 		}
 		for (Talent talent : tierTalents){
@@ -1332,6 +1353,18 @@ public enum Talent {
 				break;
 			case ARMORER:
 				Collections.addAll(tierTalents, WEAPON_MOD_AUTOLOAD, ARMOR_MOD_INFINITE_FALLING, ARMOR_MOD_EMERGENCY_DEFENSE);
+				break;
+			case DEVORANDUM:
+				Collections.addAll(tierTalents, BARKSKIN, SHIELDING_DEW, SOUL_EATER);
+				break;
+			case MESSOREM:
+				Collections.addAll(tierTalents, ENHANCED_LETHALITY, EMPOWERED_STRIKE, ASSASSINS_REACH);
+				break;
+			case DRUID:
+				Collections.addAll(tierTalents, BARKSKIN, SHIELDING_DEW, EVASIVE_ARMOR);
+				break;
+			case ICEBREAKER:
+				Collections.addAll(tierTalents, EMPOWERED_STRIKE, EVASIVE_ARMOR, LAY_ON_HANDS);
 				break;
 			case EIDOLON:
 				Collections.addAll(tierTalents, NECROMANCERS_MINIONS, SOUL_SIPHON, SHARED_UPGRADES);

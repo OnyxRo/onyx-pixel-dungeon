@@ -104,6 +104,14 @@ public class Item implements Bundlable {
 	public boolean bones = false;
 
 	public int customNoteID = -1;
+
+	// Transformation PD's Scroll of Extraction. How many Scrolls of Upgrade or Magical Infusions
+	// went into this item. Only those two write it, so ordinary upgrades are untouched.
+	public int upgradeScrollUses = 0;
+
+	public void recordUpgradeScrollUse() {
+		upgradeScrollUses++;
+	}
 	
 	public static final Comparator<Item> itemComparator = new Comparator<Item>() {
 		@Override
@@ -603,6 +611,7 @@ public class Item implements Bundlable {
 	private static final String KEPT_LOST       = "kept_lost";
 	private static final String INFUSED         = "infused";
 	private static final String CUSTOM_NOTE_ID = "custom_note_id";
+	private static final String UPGRADE_SCROLL_USES = "upgrade_scroll_uses";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -617,6 +626,7 @@ public class Item implements Bundlable {
 		bundle.put( KEPT_LOST, keptThoughLostInvent );
 		bundle.put( INFUSED, isInfused );
 		if (customNoteID != -1)     bundle.put(CUSTOM_NOTE_ID, customNoteID);
+		if (upgradeScrollUses > 0)  bundle.put(UPGRADE_SCROLL_USES, upgradeScrollUses);
 	}
 	
 	@Override
@@ -624,6 +634,7 @@ public class Item implements Bundlable {
 		quantity	= bundle.getInt( QUANTITY );
 		levelKnown	= bundle.getBoolean( LEVEL_KNOWN );
 		cursedKnown	= bundle.getBoolean( CURSED_KNOWN );
+		upgradeScrollUses = bundle.contains( UPGRADE_SCROLL_USES ) ? bundle.getInt( UPGRADE_SCROLL_USES ) : 0;
 		
 		int level = bundle.getInt( LEVEL );
 		if (level > 0) {

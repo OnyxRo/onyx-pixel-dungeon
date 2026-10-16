@@ -374,6 +374,13 @@ public class ItemSpriteSheet {
 
 	public static final int WARPICK = MOD_ITEMS+0;
 	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;
+	public static final int ARMOR_DRAGON_KNIGHT = xy(7, 49);
+	public static final int ARMOR_VIKING = xy(1, 49);
+	public static final int CURARE_DART = xy(2, 49);
+	public static final int DRAGON_DAGGER = xy(3, 49);
+	public static final int KNUCKLEDUSTER = xy(4, 49);
+	public static final int VIKING_MACE = xy(5, 49);
+	public static final int WAND_VENOM = xy(6, 49);
 	public static final int ARMOR_DM400 = xy(15, 47);
 	public static final int ARMOR_FREEMAN = xy(16, 47);
 	public static final int ARMOR_FRIAR = xy(1, 48);
@@ -662,6 +669,13 @@ public class ItemSpriteSheet {
 	static{
 		assignItemRect(WARPICK, 15, 14);
 		assignItemRect(WOODEN_BOOMERANG, 12, 12);
+		assignItemRect(ARMOR_DRAGON_KNIGHT, 15, 13);
+		assignItemRect(ARMOR_VIKING, 11, 13);
+		assignItemRect(CURARE_DART, 15, 15);
+		assignItemRect(DRAGON_DAGGER, 13, 13);
+		assignItemRect(KNUCKLEDUSTER, 15, 10);
+		assignItemRect(VIKING_MACE, 16, 15);
+		assignItemRect(WAND_VENOM, 14, 14);
 		assignItemRect(ARMOR_DM400, 14, 15);
 		assignItemRect(ARMOR_FREEMAN, 15, 13);
 		assignItemRect(ARMOR_FRIAR, 15, 16);
