@@ -67,6 +67,18 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.AbyssalCavesLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.AbyssalCityLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.AbyssalHallsLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.RatKingSewersLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.TowerSewersLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.OozySewersLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.TowerPrisonLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.TowerTempleLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.TowerCavesLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.GoblinGrottoLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.TowerMinesLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.TowerCityLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.DwarvenGatesLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.MagesQuarterLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.TowerHallsLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.SoulDesertLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.NecropolisLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.PalePalaceLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.SkyAlchemyGreenhouseLevel;
@@ -153,7 +165,9 @@ public class WorldShuffle {
 			//Rat King Pixel Dungeon 2
 			RatKingSewersLevel.class,
 			//Dragonic Pixel Dungeon
-			DragonLairLevel.class
+			DragonLairLevel.class,
+			//Tower Pixel Dungeon
+			TowerSewersLevel.class, OozySewersLevel.class, TowerPrisonLevel.class, TowerTempleLevel.class, TowerCavesLevel.class, GoblinGrottoLevel.class, TowerMinesLevel.class, TowerCityLevel.class, DwarvenGatesLevel.class, MagesQuarterLevel.class, TowerHallsLevel.class, SoulDesertLevel.class
 	};
 
 	/** A world that fits any region, used for Transformation's tower styles. */
@@ -200,7 +214,9 @@ public class WorldShuffle {
 			//Rat King Pixel Dungeon 2
 			SEWERS,
 			//Dragonic Pixel Dungeon, its lair sat past the Halls
-			HALLS
+			HALLS,
+			//Tower Pixel Dungeon
+			SEWERS, SEWERS, PRISON, PRISON, CAVES, CAVES, CAVES, CITY, CITY, CITY, HALLS, HALLS
 	};
 
 	//the source mod's app icon for each world, in the same order as WORLDS. Null for Shattered's own
@@ -219,6 +235,7 @@ public class WorldShuffle {
 	private static final String RKPD2 = "interfaces/mods/rkpd2.png";
 	private static final String DRAGONIC = "interfaces/mods/dragonic.png";
 	private static final String CURSED = "interfaces/mods/cursed.png";
+	private static final String TOWER = "interfaces/mods/tower.png";
 	private static final String[] LOGOS = {
 			null, null, null, null, null,
 			COMBUSTED, COMBUSTED, COMBUSTED,
@@ -252,7 +269,9 @@ public class WorldShuffle {
 			//Rat King Pixel Dungeon 2
 			RKPD2,
 			//Dragonic Pixel Dungeon
-			DRAGONIC
+			DRAGONIC,
+			//Tower Pixel Dungeon
+			TOWER, TOWER, TOWER, TOWER, TOWER, TOWER, TOWER, TOWER, TOWER, TOWER, TOWER, TOWER
 	};
 
 	/** The asset path of the icon of the mod a floor's world comes from, or null for Shattered's own worlds. */

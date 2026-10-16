@@ -1,0 +1,30 @@
+package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
+
+import com.shatteredpixel.shatteredpixeldungeon.actors.DamageSource;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.SkeletonArmoredSprite;
+import com.watabou.utils.Random;
+
+public class SkeletonArmored extends Skeleton{
+
+    {
+        HP = HT = 100;
+        defenseSkill = 4;
+        spriteClass = SkeletonArmoredSprite.class;
+    }
+
+    @Override
+    public int drRoll() {
+        return super.drRoll() + Random.NormalIntRange(2, 8);
+    }
+
+    @Override
+    public void damage(int dmg, Object src) {
+        if (!DamageSource.MAGICAL.contains(src.getClass())) dmg/=2;
+        super.damage(dmg, src);
+    }
+
+    @Override
+    public int damageRoll() {
+        return Random.NormalIntRange( 15, 22 );
+    }
+}

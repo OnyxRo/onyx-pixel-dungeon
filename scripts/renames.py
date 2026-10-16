@@ -89,6 +89,11 @@ RENAMES = [
     ('Transformation hero talent FISHING_TIME', r'\bhero\.(?:hasTalent|pointsInTalent)\(Talent\.FISHING_TIME\)(?:\s*==\s*2)?', 'false'),
     ('Transformation Talent.onRangedAttackHit hook', r'\bTalent\.onRangedAttackHit\([^;]*\);', '//Transformation talent hook, none here'),
     ('Dragonic, the old Dungeon.visible array is Dungeon.level.heroFOV', r'Dungeon\.visible\[', 'Dungeon.level.heroFOV['),
+    # Tower PD weapons are written on Shattered 3.x duelist abilities
+    ('3.x abilityChargeUse(hero) override became baseChargeUse(hero, target)', r'public\s+float\s+abilityChargeUse\(\s*Hero hero\s*\)\s*\{(\s*return[^;]*?)super\.abilityChargeUse\(\s*hero\s*\)', r'protected int baseChargeUse(Hero hero, Char target) {\1super.baseChargeUse(hero, target)'),
+    ('3.x heavyBlowAbility and cleaveAbility have a damage boost argument', r'\b(Mace\.heavyBlowAbility|Sword\.cleaveAbility)\(\s*hero\s*,\s*target\s*,\s*([\d.]+f?)\s*,\s*this\s*\)', r'\1(hero, target, \2, 0, this)'),
+    ('3.x sneakAbility has target and invisibility turns', r'Dagger\.sneakAbility\(\s*hero\s*,\s*(\d+)\s*,\s*this\s*\)', r'Dagger.sneakAbility(hero, target, \1, 2, this)'),
+    ('3.x beforeAbilityUsed(hero) takes the target', r'\bbeforeAbilityUsed\(\s*hero\s*\)', 'beforeAbilityUsed(hero, null)'),
 ]
 
 def convert_long(s):

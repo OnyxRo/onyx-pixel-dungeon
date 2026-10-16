@@ -29,7 +29,7 @@ public class ItemSpriteSheet {
 	public static final int SIZE = 16;
 
 	private static final int TX_WIDTH = 256;
-	private static final int TX_HEIGHT = 832;
+	private static final int TX_HEIGHT = 960;
 
 	private static final int WIDTH = TX_WIDTH / SIZE;
 
@@ -381,6 +381,23 @@ public class ItemSpriteSheet {
 	public static final int KNUCKLEDUSTER = xy(4, 49);
 	public static final int VIKING_MACE = xy(5, 49);
 	public static final int WAND_VENOM = xy(6, 49);
+	public static final int BAN_HAMMER = xy(1, 56);
+	public static final int BONE_CLAYMORE = xy(2, 56);
+	public static final int BONE_MACHETE = xy(3, 56);
+	public static final int DUAL_HATCHET = xy(4, 56);
+	public static final int EXOTIC_BLESSING = xy(5, 56);
+	public static final int EXOTIC_DISCOVERIES = xy(6, 56);
+	public static final int EXOTIC_GOLEMS = xy(7, 56);
+	public static final int EXOTIC_RATLEGION = xy(8, 56);
+	public static final int GOLDEN_SWORD = xy(9, 56);
+	public static final int INFIPIKE = xy(10, 56);
+	public static final int RED_KNIFE = xy(11, 56);
+	public static final int RING_LETHALITY = xy(12, 56);
+	public static final int SCROLL_ANIMATION = xy(13, 56);
+	public static final int SCROLL_DROWSINESS = xy(14, 56);
+	public static final int STONE_HAMMER = xy(15, 56);
+	public static final int TRISAI = xy(16, 56);
+	public static final int WAND_SNAKES = xy(1, 57);
 	public static final int ARMOR_DM400 = xy(15, 47);
 	public static final int ARMOR_FREEMAN = xy(16, 47);
 	public static final int ARMOR_FRIAR = xy(1, 48);
@@ -676,6 +693,23 @@ public class ItemSpriteSheet {
 		assignItemRect(KNUCKLEDUSTER, 15, 10);
 		assignItemRect(VIKING_MACE, 16, 15);
 		assignItemRect(WAND_VENOM, 14, 14);
+		assignItemRect(BAN_HAMMER, 16, 16);
+		assignItemRect(BONE_CLAYMORE, 16, 16);
+		assignItemRect(BONE_MACHETE, 15, 16);
+		assignItemRect(DUAL_HATCHET, 14, 14);
+		assignItemRect(EXOTIC_BLESSING, 12, 13);
+		assignItemRect(EXOTIC_DISCOVERIES, 15, 14);
+		assignItemRect(EXOTIC_GOLEMS, 15, 14);
+		assignItemRect(EXOTIC_RATLEGION, 15, 14);
+		assignItemRect(GOLDEN_SWORD, 14, 14);
+		assignItemRect(INFIPIKE, 11, 10);
+		assignItemRect(RED_KNIFE, 14, 14);
+		assignItemRect(RING_LETHALITY, 8, 10);
+		assignItemRect(SCROLL_ANIMATION, 15, 14);
+		assignItemRect(SCROLL_DROWSINESS, 15, 14);
+		assignItemRect(STONE_HAMMER, 13, 13);
+		assignItemRect(TRISAI, 13, 13);
+		assignItemRect(WAND_SNAKES, 14, 14);
 		assignItemRect(ARMOR_DM400, 14, 15);
 		assignItemRect(ARMOR_FREEMAN, 15, 13);
 		assignItemRect(ARMOR_FRIAR, 15, 16);
