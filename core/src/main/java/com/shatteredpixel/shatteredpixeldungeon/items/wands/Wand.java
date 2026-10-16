@@ -213,6 +213,20 @@ public abstract class Wand extends Item {
 			Buff.append(Dungeon.hero, TalismanOfForesight.CharAwareness.class, dur).charID = target.id();
 		}
 
+		//Reforged's Artificer talents. Volatile Chain marks the target for the next weapon hit, Arcshielding shields a hurt hero
+		if (Dungeon.hero.hasTalent(Talent.VOLATILE_CHAIN) && Dungeon.hero.heroClass != com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.ARTIFICER
+				&& target != null && target.isAlive() && target.alignment == Char.Alignment.ENEMY) {
+			Buff.prolong(Dungeon.hero, Talent.VolatileChainTracker.class, 5f).object = target.id();
+		}
+
+		if (Dungeon.hero.hasTalent(Talent.ARCSHIELDING)) {
+			float threshold = Dungeon.hero.pointsInTalent(Talent.ARCSHIELDING) == 2 ? 0.4f : 0.25f;
+			if (Dungeon.hero.HP/(float)Dungeon.hero.HT <= threshold) {
+				int shielding = Dungeon.hero.pointsInTalent(Talent.ARCSHIELDING) == 2 ? 5 : 3;
+				Buff.affect(Dungeon.hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier.class).setShield(shielding);
+			}
+		}
+
 		if (Dungeon.hero.hasTalent(Talent.CONFIRMED_BELIEF) && Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invulnerability.class) != null) {
 			float dur;
 			if (Dungeon.hero.pointsInTalent(Talent.CONFIRMED_BELIEF) == 1) dur = 0.67f;

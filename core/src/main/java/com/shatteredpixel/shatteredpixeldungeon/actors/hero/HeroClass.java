@@ -91,7 +91,9 @@ public enum HeroClass {
 	DUELIST( HeroSubClass.CHAMPION, HeroSubClass.MONK ),
 	CLERIC( HeroSubClass.PRIEST, HeroSubClass.PALADIN ),
 	//from Devoted PD
-	ZEALOT( HeroSubClass.CONJURER, HeroSubClass.DEVOTEE );
+	ZEALOT( HeroSubClass.CONJURER, HeroSubClass.DEVOTEE ),
+	//from Pixel Dungeon Reforged
+	ARTIFICER( HeroSubClass.CONSTRUCTOR, HeroSubClass.ARMORER );
 
 	private HeroSubClass[] subClasses;
 
@@ -146,6 +148,10 @@ public enum HeroClass {
 			case ZEALOT:
 				initZealot( hero );
 				break;
+
+			case ARTIFICER:
+				initArtificer( hero );
+				break;
 		}
 
 		if (SPDSettings.quickslotWaterskin()) {
@@ -175,6 +181,8 @@ public enum HeroClass {
 				return Badges.Badge.MASTERY_CLERIC;
 			case ZEALOT:
 				return Badges.Badge.MASTERY_ZEALOT;
+			case ARTIFICER:
+				return Badges.Badge.MASTERY_ARTIFICER;
 		}
 		return null;
 	}
@@ -268,6 +276,19 @@ public enum HeroClass {
 		new ScrollOfRemoveCurse().identify();
 	}
 
+	private static void initArtificer( Hero hero ) {
+		(hero.belongings.weapon = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger()).identify();
+		hero.belongings.weapon.activate(hero);
+
+		com.shatteredpixel.shatteredpixeldungeon.items.weapon.Gun gun = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.Gun();
+		gun.identify().collect();
+		Dungeon.quickslot.setSlot(0, gun);
+
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame().identify();
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost().identify();
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing().identify();
+	}
+
 	private static void initZealot( Hero hero ) {
 
 		(hero.belongings.weapon = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Warpick()).identify();
@@ -321,6 +342,10 @@ public enum HeroClass {
 				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.zealot.CallingBeyond(),
 						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.zealot.EternalBalance(),
 						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.zealot.WealAndWoe()};
+			case ARTIFICER:
+				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.artificer.Quickdraw(),
+						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.artificer.Truesight(),
+						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.artificer.Reflection()};
 		}
 	}
 
@@ -340,6 +365,8 @@ public enum HeroClass {
 				return Assets.Sprites.CLERIC;
 			case ZEALOT:
 				return Assets.Sprites.ZEALOT;
+			case ARTIFICER:
+				return Assets.Sprites.ARTIFICER;
 		}
 	}
 
@@ -359,6 +386,8 @@ public enum HeroClass {
 				return Assets.Splashes.CLERIC;
 			case ZEALOT:
 				return Assets.Splashes.ZEALOT;
+			case ARTIFICER:
+				return Assets.Splashes.ARTIFICER;
 		}
 	}
 	
@@ -383,6 +412,8 @@ public enum HeroClass {
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_CLERIC);
 			case ZEALOT:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_ZEALOT);
+			case ARTIFICER:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_ARTIFICER);
 		}
 	}
 	

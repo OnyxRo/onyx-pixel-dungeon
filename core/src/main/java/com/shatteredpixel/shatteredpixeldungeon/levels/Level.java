@@ -1412,6 +1412,7 @@ public abstract class Level implements Bundlable {
 			//grass is see-through by some specific entities, but not during the fungi quest
 			if (!(Dungeon.level instanceof  MiningLevel) || Blacksmith.Quest.Type() != Blacksmith.Quest.FUNGI){
 				if ((c instanceof Hero && ((Hero) c).subClass == HeroSubClass.WARDEN)
+						|| (c instanceof Hero && ((Hero) c).pointsInTalent(Talent.MECHANICAL_GOGGLES) >= 2)
 						|| c instanceof YogFist.SoiledFist || c instanceof GnollGeomancer) {
 					if (blocking == null) {
 						System.arraycopy(Dungeon.level.losBlocking, 0, modifiableBlocking, 0, modifiableBlocking.length);
@@ -1448,6 +1449,9 @@ public abstract class Level implements Bundlable {
 			float viewDist = c.viewDistance;
 			if (c instanceof Hero){
 				viewDist *= 1f + 0.25f*((Hero) c).pointsInTalent(Talent.FARSIGHT);
+				if (((Hero) c).hasTalent(Talent.MECHANICAL_GOGGLES)) {
+					viewDist *= 1.25f;
+				}
 				viewDist *= EyeOfNewt.visionRangeMultiplier();
 			}
 			
@@ -1578,6 +1582,7 @@ public abstract class Level implements Bundlable {
 				if (m instanceof WandOfWarding.Ward
 						|| m instanceof WandOfRegrowth.Lotus
 						|| m instanceof SpiritHawk.HawkAlly
+						|| (m instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.ConstructHero && Dungeon.hero.hasTalent(Talent.CONSTRUCT_VISION))
 						|| m.buff(PowerOfMany.PowerBuff.class) != null){
 					if (m.fieldOfView == null || m.fieldOfView.length != length()){
 						m.fieldOfView = new boolean[length()];

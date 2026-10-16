@@ -195,6 +195,17 @@ public abstract class Scroll extends Item {
 
 	public void readAnimation() {
 		Invisibility.dispel();
+
+		//Reforged's Volatile Salvage, a chance to keep the scroll
+		if (curUser.hasTalent(Talent.VOLATILE_SALVAGE)
+				&& !(this instanceof ScrollOfUpgrade)
+				&& Random.Int(1, 20) <= (curUser.pointsInTalent(Talent.VOLATILE_SALVAGE) == 1 ? 2 : 5)) {
+			Item saved = Reflection.newInstance(getClass());
+			if (saved != null) {
+				saved.collect();
+				GLog.p( Messages.get(com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion.class, "saved") );
+			}
+		}
 		curUser.spend( TIME_TO_READ );
 		curUser.busy();
 		((HeroSprite)curUser.sprite).read();

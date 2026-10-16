@@ -286,8 +286,18 @@ public class Potion extends Item {
 	}
 	
 	protected void drink( Hero hero ) {
-		
+
 		detach( hero.belongings.backpack );
+
+		//Reforged's Volatile Salvage, a chance to keep the potion
+		if (hero.hasTalent(Talent.VOLATILE_SALVAGE) && !(this instanceof PotionOfStrength) && !(this instanceof com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfMight)
+				&& Random.Int(1, 20) <= (hero.pointsInTalent(Talent.VOLATILE_SALVAGE) == 1 ? 2 : 5)) {
+			Item saved = Reflection.newInstance(getClass());
+			if (saved != null) {
+				saved.collect();
+				GLog.p( Messages.get(Potion.class, "saved") );
+			}
+		}
 		
 		hero.spend( TIME_TO_DRINK );
 		hero.busy();

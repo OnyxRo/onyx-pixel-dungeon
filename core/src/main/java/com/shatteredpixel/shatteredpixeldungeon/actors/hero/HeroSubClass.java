@@ -52,7 +52,11 @@ public enum HeroSubClass {
 
 	//from Devoted PD
 	CONJURER(HeroIcon.CONJURER),
-	DEVOTEE(HeroIcon.DEVOTEE);
+	DEVOTEE(HeroIcon.DEVOTEE),
+
+	//from Pixel Dungeon Reforged
+	CONSTRUCTOR(HeroIcon.CONSTRUCTOR),
+	ARMORER(HeroIcon.ARMORER);
 
 	int icon;
 

@@ -224,6 +224,23 @@ public enum Talent {
 	//Weal and Woe T4
 	WOE_IS_ME(215, 4), AND_WOE_IS_YOU(216, 4), WEIGHING_THE_DIE(217, 4),
 
+	//Artificer T1, from Pixel Dungeon Reforged (icons moved up by 27 since the Zealot uses the same cells)
+	TINKERERS_MEAL(219), PATTERN_RECOGNITION(220), VOLATILE_CHAIN(221), ARCSHIELDING(222),
+	//Artificer T2
+	QUICK_CALIBRATION(223), REACTIVE_CHEMISTRY(224), OVERCLOCKED_SYSTEMS(225), VOLATILE_SALVAGE(226), ADAPTIVE_MINEFIELD(227),
+	//Artificer T3
+	MECHANICAL_GOGGLES(228, 3), EFFECTIVE_SHOT(229, 3),
+	//Constructor T3
+	CONSTRUCT_VISION(230, 3), CONSTRUCT_MOBILITY(231, 3), CONSTRUCT_LETHALITY(232, 3),
+	//Armorer T3
+	WEAPON_MOD_AUTOLOAD(233, 3), ARMOR_MOD_INFINITE_FALLING(234, 3), ARMOR_MOD_EMERGENCY_DEFENSE(235, 3),
+	//Quickdraw T4
+	POWERFUL_SHOT(236, 4), DOUBLE_BARREL(237, 4), MULTISHOT(238, 4),
+	//Truesight T4
+	ENHANCED_VISION(239, 4), SONAR(240, 4), BRIGHT_LIGHT(241, 4),
+	//Reflection T4
+	ADRENALINE(242, 4), ENDURANCE(243, 4), POWERFUL_REFLECTION(244, 4),
+
 	//universal T4
 	HEROIC_ENERGY(26, 4), //See icon() and title() for special logic for this one
 	//Ratmogrify T4
@@ -279,6 +296,31 @@ public enum Talent {
 		}
 	}
 	public static class BountyHunterTracker extends FlavourBuff{};
+	//Pixel Dungeon Reforged's Artificer
+	public static class ArtificerFoodDamageBonus extends FlavourBuff {
+		{ actPriority = HERO_PRIO + 1; }
+	}
+	public static class ArtificerFoodEvasionBonus extends FlavourBuff {
+		{ actPriority = HERO_PRIO + 1; }
+	}
+	public static class VolatileChainTracker extends FlavourBuff{
+		public int object;
+		{ type = Buff.buffType.POSITIVE; }
+		public int icon() { return BuffIndicator.TIME; }
+		public void tintIcon(Image icon) { icon.hardlight(0f, 0.75f, 1f); }
+		public float iconFadePercent() { return Math.max(0, 1f - (visualcooldown() / 5)); }
+		private static final String OBJECT    = "object";
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(OBJECT, object);
+		}
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			object = bundle.getInt(OBJECT);
+		}
+	}
 	//Devoted PD's Zealot, after stabbing themselves the next melee hit makes the enemy bleed
 	public static class UnholyWrathTracker extends FlavourBuff{
 		{ type = Buff.buffType.POSITIVE; }
@@ -499,6 +541,8 @@ public enum Talent {
 					return 186;
 				case ZEALOT:
 					return 218;
+				case ARTIFICER:
+					return 245;
 			}
 		} else {
 			return icon;
@@ -531,6 +575,23 @@ public enum Talent {
 	}
 
 	public static void onTalentUpgraded( Hero hero, Talent talent ){
+		if (talent == PATTERN_RECOGNITION) {
+			java.util.ArrayList<Class> potions = hero.PatternRecognitionPotions;
+			for (com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion p : hero.belongings.getAllItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion.class)) {
+				if (!p.isKnown()) {
+					if (hero.pointsInTalent(PATTERN_RECOGNITION) == 2) {
+						p.setKnown();
+					} else if (!potions.contains(p.getClass())) {
+						potions.add(p.getClass());
+						if (Random.Int(2) == 0) {
+							p.setKnown();
+						}
+					}
+				}
+			}
+			if (hero.pointsInTalent(PATTERN_RECOGNITION) != 1) potions.clear();
+		}
+
 		//for metamorphosis
 		if (talent == IRON_WILL && hero.heroClass != HeroClass.WARRIOR){
 			Buff.affect(hero, BrokenSeal.WarriorShield.class);
@@ -657,6 +718,23 @@ public enum Talent {
 		if (hero.hasTalent(STRENGTHENING_MEAL)){
 			//3 bonus physical damage for next 2/3 attacks
 			Buff.affect( hero, PhysicalEmpower.class).set(3, 1 + hero.pointsInTalent(STRENGTHENING_MEAL));
+		}
+		if (hero.hasTalent(TINKERERS_MEAL)) {
+			if (hero.heroClass == HeroClass.ARTIFICER) {
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.Gun gun = hero.belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.weapon.Gun.class);
+				if (gun != null) {
+					gun.setLoaded(true);
+
+					if (hero.pointsInTalent(TINKERERS_MEAL) == 2) {
+						Buff.affect(hero, ArtificerFoodDamageBonus.class, hero.cooldown() > 0 ? hero.cooldown() : 5f);
+					}
+				}
+			} else {
+				Dungeon.energy += hero.pointsInTalent(TINKERERS_MEAL);
+			}
+		}
+		if (hero.hasTalent(QUICK_CALIBRATION)){
+			Buff.affect(hero, ArtificerFoodEvasionBonus.class, hero.cooldown() > 0 ? hero.cooldown() : 3f);
 		}
 		if (hero.hasTalent(ARCANE_MEAL)){
 			Buff.affect(hero, ArcaneArmor.class).set(5, 2 + hero.pointsInTalent(ARCANE_MEAL));
@@ -809,6 +887,33 @@ public enum Talent {
 				Buff.prolong(hero, LiquidAgilACCTracker.class, 5f).uses = Math.round(factor);
 			}
 		}
+		if (hero.hasTalent(REACTIVE_CHEMISTRY)) {
+			ArrayList<Char> affected = new ArrayList<>();
+			PathFinder.buildDistanceMap( cell, com.watabou.utils.BArray.not( Dungeon.level.solid, null ), 2 );
+			for (int i = 0; i < PathFinder.distance.length; i++) {
+				if (PathFinder.distance[i] < Integer.MAX_VALUE && Actor.findChar(i) != null) {
+					Char thisChar = Actor.findChar(i);
+					if (thisChar.alignment == Char.Alignment.ENEMY) {
+						affected.add(thisChar);
+					}
+				}
+			}
+			for (Char ch : affected){
+				if (hero.pointsInTalent(REACTIVE_CHEMISTRY) == 2) {
+					ch.damage(6, hero);
+
+					//knock them back along the line from the hero to them
+					if (ch.isAlive()) {
+						com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica trajectory = new com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica(hero.pos, ch.pos, com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica.STOP_TARGET);
+						trajectory = new com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size()-1), com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica.PROJECTILE);
+						com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave.throwChar(ch, trajectory, 2, false, true, hero);
+					}
+				}
+				else {
+					ch.damage(4, hero);
+				}
+			}
+		}
 	}
 
 	public static void onScrollUsed( Hero hero, int pos, float factor, Class<?extends Item> cls ){
@@ -929,6 +1034,13 @@ public enum Talent {
 				&& hero.buff(LingeringMagicTracker.class) != null){
 			dmg += Random.IntRange(hero.pointsInTalent(Talent.LINGERING_MAGIC) , 2);
 			hero.buff(LingeringMagicTracker.class).detach();
+		}
+
+		if (hero.hasTalent(Talent.VOLATILE_CHAIN)
+				&& hero.buff(VolatileChainTracker.class) != null
+				&& hero.buff(VolatileChainTracker.class).object == enemy.id()){
+			dmg += 1 + hero.pointsInTalent(Talent.VOLATILE_CHAIN);
+			hero.buff(VolatileChainTracker.class).detach();
 		}
 
 		if (hero.hasTalent(Talent.UNHOLY_WRATH)
@@ -1060,6 +1172,9 @@ public enum Talent {
 			case ZEALOT:
 				Collections.addAll(tierTalents, ARCANE_MEAL, DEMONIC_INTUITION, WRATHFUL_STRIKE, PAIN_IS_GAIN);
 				break;
+			case ARTIFICER:
+				Collections.addAll(tierTalents, TINKERERS_MEAL, PATTERN_RECOGNITION, VOLATILE_CHAIN, ARCSHIELDING);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -1092,6 +1207,9 @@ public enum Talent {
 			case ZEALOT:
 				Collections.addAll(tierTalents, CLEANSING_MEAL, CONFIRMED_BELIEF, HIDDEN_POWER, INSTANT_GRATIFICATION, ESOTERIC_MIND);
 				break;
+			case ARTIFICER:
+				Collections.addAll(tierTalents, QUICK_CALIBRATION, REACTIVE_CHEMISTRY, OVERCLOCKED_SYSTEMS, VOLATILE_SALVAGE, ADAPTIVE_MINEFIELD);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -1123,6 +1241,9 @@ public enum Talent {
 				break;
 			case ZEALOT:
 				Collections.addAll(tierTalents, DEMOLITIONIST, UNHOLY_WRATH);
+				break;
+			case ARTIFICER:
+				Collections.addAll(tierTalents, MECHANICAL_GOGGLES, EFFECTIVE_SHOT);
 				break;
 		}
 		for (Talent talent : tierTalents){
@@ -1193,6 +1314,12 @@ public enum Talent {
 				break;
 			case DEVOTEE:
 				Collections.addAll(tierTalents, NIHILISM, GOURMAND, DEVOUR_RITUAL);
+				break;
+			case CONSTRUCTOR:
+				Collections.addAll(tierTalents, CONSTRUCT_VISION, CONSTRUCT_MOBILITY, CONSTRUCT_LETHALITY);
+				break;
+			case ARMORER:
+				Collections.addAll(tierTalents, WEAPON_MOD_AUTOLOAD, ARMOR_MOD_INFINITE_FALLING, ARMOR_MOD_EMERGENCY_DEFENSE);
 				break;
 		}
 		for (Talent talent : tierTalents){

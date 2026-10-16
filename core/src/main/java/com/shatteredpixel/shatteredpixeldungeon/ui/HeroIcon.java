@@ -52,6 +52,8 @@ public class HeroIcon extends Image {
 	public static final int PALADIN     = 11;
 	public static final int CONJURER = 12;
 	public static final int DEVOTEE = 13;
+	public static final int CONSTRUCTOR = 14;
+	public static final int ARMORER = 15;
 
 	//abilities
 	public static final int HEROIC_LEAP     = 16;
@@ -75,6 +77,9 @@ public class HeroIcon extends Image {
 	public static final int RATMOGRIFY      = 34;
 	public static final int WEAL_AND_WOE = 35;
 	public static final int CALLING_BEYOND = 36;
+	public static final int QUICKDRAW = 38;
+	public static final int TRUESIGHT = 39;
+	public static final int REFLECTION = 67;
 	public static final int ETERNAL_BALANCE = 37;
 
 	//cleric spells
@@ -118,6 +123,7 @@ public class HeroIcon extends Image {
 	public static final int WEAPON_SWAP     = 109;
 	public static final int MONK_ABILITIES  = 110;
 	public static final int CONJURE_MINIONS = 111;
+	public static final int ARMORER_LIGHT = 112;
 
 	public HeroIcon(HeroSubClass subCls){
 		super( Assets.Interfaces.HERO_ICONS );

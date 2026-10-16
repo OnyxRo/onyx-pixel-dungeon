@@ -74,6 +74,11 @@ public class RingOfEnergy extends Ring {
 	public static float artifactChargeMultiplier( Char target ){
 		float bonus = (float)Math.pow(1.175, getBuffedBonus(target, Energy.class));
 
+		//Reforged's Overclocked Systems
+		if (target instanceof Hero && ((Hero) target).hasTalent(Talent.OVERCLOCKED_SYSTEMS)) {
+			bonus *= ((Hero) target).pointsInTalent(Talent.OVERCLOCKED_SYSTEMS) == 1 ? 1.2f : 1.35f;
+		}
+
 		if (target instanceof Hero && ((Hero) target).heroClass != HeroClass.ROGUE && ((Hero) target).hasTalent(Talent.LIGHT_CLOAK)){
 			bonus *= 1f + (0.2f * ((Hero) target).pointsInTalent(Talent.LIGHT_CLOAK)/3f);
 		}

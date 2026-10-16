@@ -157,12 +157,20 @@ public class Chasm implements Hero.Doom {
 		PixelScene.shake( 4, 1f );
 
 		Dungeon.level.occupyCell(hero );
-		Buff.prolong( hero, Cripple.class, Cripple.DURATION );
+		//Reforged's Armorer, with the right armor mod falling no longer cripples or bleeds and hurts less
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent mod = com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.ARMOR_MOD_INFINITE_FALLING;
+		if (!hero.hasTalent(mod)) {
+			Buff.prolong( hero, Cripple.class, Cripple.DURATION );
 
-		//The lower the hero's HP, the more bleed and the less upfront damage.
-		//Hero has a 50% chance to bleed out at 66% HP, and begins to risk instant-death at 25%
-		Buff.affect( hero, Bleeding.class).set( Math.round(hero.HT / (6f + (6f*(hero.HP/(float)hero.HT)))), Chasm.class);
-		hero.damage( Math.max( hero.HP / 2, Random.NormalIntRange( hero.HP / 2, hero.HT / 4 )), new Chasm() );
+			//The lower the hero's HP, the more bleed and the less upfront damage.
+			//Hero has a 50% chance to bleed out at 66% HP, and begins to risk instant-death at 25%
+			Buff.affect( hero, Bleeding.class).set( Math.round(hero.HT / (6f + (6f*(hero.HP/(float)hero.HT)))), Chasm.class);
+		}
+
+		float damageMultiplier = 1.0f;
+		if (hero.pointsInTalent(mod) == 2) damageMultiplier = 0.5f;
+		else if (hero.pointsInTalent(mod) == 3) damageMultiplier = 0.01f;
+		hero.damage( (int)(Math.max( hero.HP / 2, Random.NormalIntRange( hero.HP / 2, hero.HT / 4 )) * damageMultiplier), new Chasm() );
 	}
 
 	public static void mobFall( Mob mob ) {

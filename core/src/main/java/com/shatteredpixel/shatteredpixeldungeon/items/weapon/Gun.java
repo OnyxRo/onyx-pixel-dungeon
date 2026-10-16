@@ -4,10 +4,13 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EffectiveShotCooldown;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -34,8 +37,8 @@ import java.util.ArrayList;
  * reloads itself after a while). The shot pierces everything in a line and the blast also hits the enemies
  * around each target and the end of the beam. It grows with the hero's level, not with upgrades.
  *
- * Left out, Reforged's Artificer talents that changed it (Effective Shot, Arcshielding, Volatile Chain, Autoload)
- * and its damage types.
+ * Reforged's Artificer talents act on it (Tinkerer's Meal, Effective Shot, Arcshielding, Volatile Chain, Autoload).
+ * Its damage types are left out.
  */
 public class Gun extends Weapon {
 
@@ -104,7 +107,7 @@ public class Gun extends Weapon {
             AutoReloadTracker tracker = Dungeon.hero.buff(AutoReloadTracker.class);
             if (tracker != null) tracker.detach();
             if (!value) {
-                Buff.affect(Dungeon.hero, AutoReloadTracker.class, AUTO_RELOAD_TIME);
+                Buff.affect(Dungeon.hero, AutoReloadTracker.class, AUTO_RELOAD_TIME - 20 * Dungeon.hero.pointsInTalent(Talent.WEAPON_MOD_AUTOLOAD));
             }
         }
     }
@@ -198,6 +201,18 @@ public class Gun extends Weapon {
         return false;
     }
 
+    @Override
+    public int damageRoll(Char owner) {
+        boolean empowered = owner instanceof Hero && ((Hero) owner).hasTalent(Talent.EFFECTIVE_SHOT)
+                && owner.buff(EffectiveShotCooldown.class) == null;
+        int damage = empowered ? augment.damageFactor(max()) : augment.damageFactor(super.damageRoll(owner));
+        if (owner instanceof Hero && owner.buff(Talent.ArtificerFoodDamageBonus.class) != null) {
+            damage += 3;
+            owner.buff(Talent.ArtificerFoodDamageBonus.class).detach();
+        }
+        return damage;
+    }
+
     private static final String LOADED = "is_loaded";
 
     @Override
@@ -221,6 +236,14 @@ public class Gun extends Weapon {
         ArrayList<Integer> positionsToDamage = new ArrayList<>();
         final Ballistica beam = new Ballistica(user.pos, cell, Ballistica.STOP_SOLID);
 
+        //Arcshielding, a hurt Artificer shields themselves as they fire
+        if (user.hasTalent(Talent.ARCSHIELDING)) {
+            float threshold = user.pointsInTalent(Talent.ARCSHIELDING) == 2 ? 0.4f : 0.25f;
+            if (user.HP / (float) user.HT <= threshold) {
+                Buff.affect(user, Barrier.class).setShield(user.pointsInTalent(Talent.ARCSHIELDING) == 2 ? 5 : 3);
+            }
+        }
+
         int maxDistance = Math.min(level() * 2 + 12, beam.dist);
 
         ArrayList<Char> chars = new ArrayList<>();
@@ -242,11 +265,15 @@ public class Gun extends Weapon {
             }
         }
 
+        //the roll is made once, so the Effective Shot bonus and the food bonus apply to the whole shot
+        final int shotDamage = damageRoll(user);
+        lastShotDamage = shotDamage;
+
         for (Char ch : chars) {
             if (ch instanceof Mob) {
                 mobs.add((Mob) ch);
             }
-            ch.damage(damageRoll(user), this);
+            ch.damage(shotDamage, this);
             if (ch.sprite != null) ch.sprite.flash();
 
             positionsToDamage.add(ch.pos);
@@ -267,6 +294,23 @@ public class Gun extends Weapon {
 
         burnTerrain(positionsToDamage);
 
+        //Effective Shot, the empowered shot comes round again after a few shots
+        if (user.hasTalent(Talent.EFFECTIVE_SHOT)) {
+            EffectiveShotCooldown cd = user.buff(EffectiveShotCooldown.class);
+            if (cd == null) {
+                Buff.affect(user, EffectiveShotCooldown.class).set(7 - user.pointsInTalent(Talent.EFFECTIVE_SHOT));
+            } else {
+                cd.left--;
+                if (cd.left <= 0) cd.detach();
+            }
+        }
+
+        //Volatile Chain, the last enemy hit takes extra damage from the next weapon hit
+        if (user.hasTalent(Talent.VOLATILE_CHAIN) && !chars.isEmpty()) {
+            Char last = chars.get(chars.size() - 1);
+            if (last.isAlive()) Buff.prolong(user, Talent.VolatileChainTracker.class, 5f).object = last.id();
+        }
+
         Invisibility.dispel();
         user.sprite.parent.add(new Beam.LightRay(user.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(beam.collisionPos)));
 
@@ -275,6 +319,8 @@ public class Gun extends Weapon {
         Dungeon.observe();
         return mobs;
     }
+
+    private int lastShotDamage = 0;
 
     private ArrayList<Integer> getExplosionCells(int centerPos, int radius) {
         ArrayList<Integer> cells = new ArrayList<>();
@@ -310,7 +356,7 @@ public class Gun extends Weapon {
                 }
 
                 if (adjacent.alignment != Char.Alignment.ALLY) {
-                    adjacent.damage(damageRoll(user) / 2, this);
+                    adjacent.damage(lastShotDamage / 2, this);
                 }
             }
 

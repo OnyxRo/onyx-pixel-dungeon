@@ -225,6 +225,75 @@ public class DevotedLeftoversTest {
 			t.printStackTrace( System.out );
 		}
 
+		//the Artificer class from Reforged, its kit, talents, subclasses, abilities and the Construct
+		try {
+			GamesInProgress.selectedClass = HeroClass.ARTIFICER;
+			Dungeon.seed = 777003L;
+			Dungeon.init();
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero h = Dungeon.hero;
+			check( h.heroClass == HeroClass.ARTIFICER, "hero is an Artificer" );
+			check( h.belongings.getItem( com.shatteredpixel.shatteredpixeldungeon.items.weapon.Gun.class ) != null, "Artificer starts with the Gun" );
+			check( h.talents.get(0).size() == 4, "Artificer tier 1 talents " + h.talents.get(0).size() );
+			check( h.talents.get(1).size() == 5, "Artificer tier 2 talents " + h.talents.get(1).size() );
+			check( h.talents.get(2).size() == 2, "Artificer tier 3 talents " + h.talents.get(2).size() );
+
+			for ( com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass sub : HeroClass.ARTIFICER.subClasses() ) {
+				h.subClass = sub;
+				com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.initSubclassTalents( h );
+				check( h.talents.get(2).size() >= 5, sub + " adds three talents, tier 3 has " + h.talents.get(2).size() );
+				check( !sub.title().startsWith( "!!!" ) && !sub.desc().startsWith( "!!!" ), sub + " text" );
+			}
+
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility[] abils = HeroClass.ARTIFICER.armorAbilities();
+			check( abils.length == 3, "Artificer has three armor abilities" );
+			for ( com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility a : abils ) {
+				check( a.talents().length == 4, a.getClass().getSimpleName() + " has talents and heroic energy" );
+				check( !com.shatteredpixel.shatteredpixeldungeon.messages.Messages.get( a, "name" ).startsWith( "!!!" ), a.getClass().getSimpleName() + " has a name" );
+			}
+
+			for ( com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent t : com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.values() ) {
+				if (t.ordinal() >= com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.TINKERERS_MEAL.ordinal()
+						&& t.ordinal() <= com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.POWERFUL_REFLECTION.ordinal()) {
+					check( !t.title().startsWith( "!!!" ), "talent " + t + " has a title" );
+					check( !t.desc().startsWith( "!!!" ), "talent " + t + " has a description" );
+				}
+			}
+			check( !HeroClass.ARTIFICER.title().startsWith( "!!!" ) && !HeroClass.ARTIFICER.desc().startsWith( "!!!" ), "Artificer class text" );
+
+			com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor ca = com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor.upgrade( h, new com.shatteredpixel.shatteredpixeldungeon.items.armor.LeatherArmor() );
+			check( ca instanceof com.shatteredpixel.shatteredpixeldungeon.items.armor.ArtificerArmor, "Artificer class armor" );
+
+			//the Construct
+			h.lvl = 10;
+			h.updateHT( true );
+			com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.ConstructHero c = new com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.ConstructHero();
+			check( c.HT == Math.max( 1, (int)(h.HT * 0.75f) ), "Construct health is three quarters of the hero's, " + c.HT + " of " + h.HT );
+			check( c.damageRoll() > 0, "Construct hits for something" );
+			check( !com.shatteredpixel.shatteredpixeldungeon.messages.Messages.get( c, "name" ).startsWith( "!!!" ), "Construct name" );
+			check( !com.shatteredpixel.shatteredpixeldungeon.messages.Messages.get( c, "directed_follow" ).startsWith( "!!!" ), "Construct lines" );
+			com.watabou.utils.Bundle b = new com.watabou.utils.Bundle();
+			c.storeInBundle( b );
+			check( b.contains( "health_regen" ), "Construct saves its regeneration" );
+
+			//hero fields survive a save
+			h.constructRespawnTimer = 7;
+			h.PatternRecognitionPotions.add( com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing.class );
+			com.watabou.utils.Bundle hb = new com.watabou.utils.Bundle();
+			h.storeInBundle( hb );
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero h2 = new com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero();
+			h2.restoreFromBundle( hb );
+			check( h2.constructRespawnTimer == 7, "construct respawn timer survives a save" );
+			check( h2.PatternRecognitionPotions.size() == 1, "Pattern Recognition potions survive a save" );
+
+			//the Gun and the Artificer's talents
+			com.shatteredpixel.shatteredpixeldungeon.items.weapon.Gun g = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.Gun();
+			check( g.damageRoll( h ) >= 0, "Gun rolls damage with talents in play" );
+		} catch (Throwable t) {
+			failures++;
+			System.out.println( "FAIL: Artificer threw " + t );
+			t.printStackTrace( System.out );
+		}
+
 		System.out.println( "SUMMARY devoted leftovers checks: " + checks + ", failures: " + failures );
 		if (failures > 0) System.exit( 1 );
 	}

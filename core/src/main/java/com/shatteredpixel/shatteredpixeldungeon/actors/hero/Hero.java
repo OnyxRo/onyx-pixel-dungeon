@@ -269,6 +269,17 @@ public class Hero extends Char {
 	
 	public int HTBoost = 0;
 	public Item lastEaten; //Devoted PD's Devotee, the last food eaten decides what the Blood Vial does
+
+	//Pixel Dungeon Reforged's Artificer. The Construct comes back 50 turns after it dies, and Pattern Recognition
+	//remembers which potion kinds it has already half identified
+	public int constructRespawnTimer = 0;
+	public boolean doesConstructExist = false;
+	public java.util.ArrayList<Class> PatternRecognitionPotions = new java.util.ArrayList<>();
+
+	public void NotifyConstructDeath() {
+		constructRespawnTimer = 50;
+		doesConstructExist = false;
+	}
 	public float bountyhunterbuff = 0; //Devoted PD's bounty hunter, 3 max HP for each upgrade turned into hardening
 	public int vitalityBonus = 0; //Matt Edition's Potion of Vitality, extra max HP on top of level and HTBoost
 	public ArrayList<Perks.Perk> perks = new ArrayList<>(); //Experienced PD's perks
@@ -370,6 +381,8 @@ public class Hero extends Char {
 		bundle.put( "vitality_bonus", vitalityBonus );
 		bundle.put( "bountyhunterbuff", bountyhunterbuff );
 		if (lastEaten != null) bundle.put( "last_eaten", lastEaten );
+		bundle.put( "construct_respawn_timer", constructRespawnTimer );
+		bundle.put( "pattern_recognition_potions", PatternRecognitionPotions.toArray( new Class[0] ) );
 		Perks.storeInBundle( bundle, perks );
 
 		belongings.storeInBundle( bundle );
@@ -385,6 +398,11 @@ public class Hero extends Char {
 		vitalityBonus = bundle.getInt("vitality_bonus");
 		bountyhunterbuff = bundle.getFloat("bountyhunterbuff");
 		lastEaten = bundle.contains("last_eaten") ? (Item) bundle.get("last_eaten") : null;
+		constructRespawnTimer = bundle.getInt( "construct_respawn_timer" );
+		PatternRecognitionPotions.clear();
+		if (bundle.contains("pattern_recognition_potions")) {
+			for (Class c : bundle.getClassArray( "pattern_recognition_potions" )) if (c != null) PatternRecognitionPotions.add( c );
+		}
 		Perks.restoreFromBundle( bundle, perks );
 
 		super.restoreFromBundle( bundle );
@@ -643,8 +661,15 @@ public class Hero extends Char {
 			return INFINITE_EVASION;
 		}
 		
+		//Reforged's Quick Calibration, eating makes the next hits easy to dodge
+		if (buff(Talent.ArtificerFoodEvasionBonus.class) != null){
+			if (pointsInTalent(Talent.QUICK_CALIBRATION) == 2 || Random.Int(4) == 0){
+				return INFINITE_EVASION;
+			}
+		}
+
 		float evasion = defenseSkill;
-		
+
 		evasion *= RingOfEvasion.evasionMultiplier( this );
 
 		if (buff(Talent.LiquidAgilEVATracker.class) != null){
@@ -729,6 +754,15 @@ public class Hero extends Char {
 			if (wepDr > 0) dr += wepDr;
 		}
 
+		//Reforged's Armorer, a little extra armor, a lot more when badly hurt
+		if (subClass == HeroSubClass.ARMORER && belongings.armor() != null) {
+			dr += 2;
+			if (hasTalent(Talent.ARMOR_MOD_EMERGENCY_DEFENSE)) {
+				float hpThreshold = 0.15f + 0.05f * (pointsInTalent(Talent.ARMOR_MOD_EMERGENCY_DEFENSE) - 1);
+				if ((float) HP / (float) HT <= hpThreshold) dr += 4;
+			}
+		}
+
 		if (buff(HoldFast.class) != null){
 			dr += buff(HoldFast.class).armorBonus();
 		}
@@ -790,7 +824,10 @@ public class Hero extends Char {
 		float speed = super.speed();
 
 		speed *= RingOfHaste.speedMultiplier(this);
-		
+
+		//Reforged's Adrenaline talent for the Reflection ability
+		speed *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.artificer.Reflection.speedMultiplier(this);
+
 		if (belongings.armor() != null) {
 			speed = belongings.armor().speedFactor(this, speed);
 		}
@@ -1015,10 +1052,46 @@ public class Hero extends Char {
 				actResult = false;
 			}
 		}
-		
+		//Reforged's Constructor, a construct fights beside the hero and comes back after it falls
+		if (subClass == HeroSubClass.CONSTRUCTOR && Dungeon.level != null) {
+			if (constructRespawnTimer <= 0 && !doesConstructExist) {
+				for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+					if (mob instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.ConstructHero) {
+						doesConstructExist = true;
+						break;
+					}
+				}
+
+				if (!doesConstructExist) {
+					ArrayList<Integer> spawnPoints = new ArrayList<>();
+					for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
+						int p = pos + PathFinder.NEIGHBOURS8[i];
+						if (Actor.findChar(p) == null && (Dungeon.level.passable[p] && Dungeon.level.map[p] != Terrain.DOOR)) {
+							spawnPoints.add(p);
+						}
+					}
+
+					if (spawnPoints.size() > 0) {
+						com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.ConstructHero construct = new com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.ConstructHero();
+						construct.setupActionIndicator();
+						construct.pos = Random.element(spawnPoints);
+
+						interrupt();
+
+						GameScene.add(construct, 1f);
+
+						doesConstructExist = true;
+					}
+				}
+			}
+			else if (constructRespawnTimer > 0) {
+				--constructRespawnTimer;
+			}
+		}
+
 		return actResult;
 	}
-	
+
 	public void busy() {
 		ready = false;
 	}
@@ -1840,6 +1913,13 @@ public class Hero extends Char {
 		if (buff(Talent.WarriorFoodImmunity.class) != null){
 			if (pointsInTalent(Talent.IRON_STOMACH) == 1)       damage /= 4f;
 			else if (pointsInTalent(Talent.IRON_STOMACH) == 2)  damage = 0;
+		}
+
+		//Reforged's Reflection, a share of every hit goes back at the attacker and the rest is softened
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.artificer.Reflection.ReflectionTracker reflection =
+				buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.artificer.Reflection.ReflectionTracker.class);
+		if (reflection != null && src instanceof Char) {
+			damage = reflection.handledamageTaken((Char) src, damage);
 		}
 
 		//the Zealot's Esoteric Mind (Devoted PD), the trinket soaks up a little of every hit
@@ -2776,6 +2856,7 @@ public class Hero extends Char {
 						//unintentional trap detection scales from 40% at floor 0 to 30% at floor 25
 						} else if (Dungeon.level.map[curr] == Terrain.SECRET_TRAP) {
 							chance = 0.4f - (Dungeon.depth / 250f);
+							chance += 0.2f * pointsInTalent(Talent.ADAPTIVE_MINEFIELD);
 							
 						//unintentional door detection scales from 20% at floor 0 to 0% at floor 20
 						} else {

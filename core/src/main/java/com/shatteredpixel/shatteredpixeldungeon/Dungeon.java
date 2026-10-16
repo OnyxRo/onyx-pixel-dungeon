@@ -507,7 +507,12 @@ public class Dungeon {
 		
 		if (branch == 0) Statistics.qualifiedForNoKilling = !bossLevel();
 		Statistics.qualifiedForBossChallengeBadge = false;
-		
+
+		//Reforged's Mechanical Goggles, the Artificer sees monsters for a moment on arriving on a new floor
+		if (hero != null && hero.pointsInTalent(Talent.MECHANICAL_GOGGLES) == 3) {
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect( hero, MindVision.class, 0.0f );
+		}
+
 		return level;
 	}
 	

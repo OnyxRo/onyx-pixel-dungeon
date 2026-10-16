@@ -360,8 +360,16 @@ public class Gallery {
 	private static boolean fullSentExit = false;
 	private static int fullStuckCount = 0;
 
+	private static boolean subclassSet = false;
+
 	private static void fullRun(){
 		if (Dungeon.hero == null) return;
+		//-Donyx.gallery.subclass=CONSTRUCTOR gives the hero a subclass from the start
+		if (!subclassSet && System.getProperty("onyx.gallery.subclass") != null) {
+			subclassSet = true;
+			Dungeon.hero.subClass = com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.valueOf(System.getProperty("onyx.gallery.subclass"));
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.initSubclassTalents(Dungeon.hero);
+		}
 		Dungeon.hero.HT = Math.max( Dungeon.hero.HT, 9999 );
 		Dungeon.hero.HP = Dungeon.hero.HT;
 

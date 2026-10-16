@@ -72,6 +72,7 @@ public class Badges {
 		MASTERY_DUELIST,
 		MASTERY_CLERIC,
 		MASTERY_ZEALOT,
+		MASTERY_ARTIFICER,
 		FOUND_RATMOGRIFY,
 
 		//bronze
@@ -81,6 +82,7 @@ public class Badges {
 		UNLOCK_DUELIST              ( 4 ),
 		UNLOCK_CLERIC               ( 5 ),
 		UNLOCK_ZEALOT               ( 25 ),
+		UNLOCK_ARTIFICER            ( 6 ),
 		MONSTERS_SLAIN_1            ( 6 ),
 		MONSTERS_SLAIN_2            ( 7 ),
 		GOLD_COLLECTED_1            ( 8 ),
@@ -131,6 +133,7 @@ public class Badges {
 		BOSS_SLAIN_1_DUELIST,
 		BOSS_SLAIN_1_CLERIC,
 		BOSS_SLAIN_1_ZEALOT,
+		BOSS_SLAIN_1_ARTIFICER,
 		BOSS_SLAIN_1_ALL_CLASSES    ( 54, BadgeType.GLOBAL ),
 		RESEARCHER_2                ( 55, BadgeType.JOURNAL ),
 		GAMES_PLAYED_2              ( 56, BadgeType.GLOBAL ),
@@ -181,6 +184,7 @@ public class Badges {
 		VICTORY_DUELIST,
 		VICTORY_CLERIC,
 		VICTORY_ZEALOT,
+		VICTORY_ARTIFICER,
 		VICTORY_ALL_CLASSES         ( 103, BadgeType.GLOBAL ),
 		DEATH_FROM_ALL              ( 104, BadgeType.GLOBAL ),
 		BOSS_SLAIN_3_GLADIATOR,
@@ -511,6 +515,9 @@ public class Badges {
 	}
 	
 	public static void validateItemsCrafted() {
+		//Reforged PD unlocks the Artificer by crafting anything
+		validateArtificerUnlock();
+
 		Badge badge = null;
 		
 		if (!local.contains( Badge.ITEMS_CRAFTED_1 ) && Statistics.itemsCrafted >= 3) {
@@ -814,6 +821,7 @@ public class Badges {
 		firstBossClassBadges.put(HeroClass.DUELIST, Badge.BOSS_SLAIN_1_DUELIST);
 		firstBossClassBadges.put(HeroClass.CLERIC, Badge.BOSS_SLAIN_1_CLERIC);
 		firstBossClassBadges.put(HeroClass.ZEALOT, Badge.BOSS_SLAIN_1_ZEALOT);
+		firstBossClassBadges.put(HeroClass.ARTIFICER, Badge.BOSS_SLAIN_1_ARTIFICER);
 	}
 
 	private static LinkedHashMap<HeroClass, Badge> victoryClassBadges = new LinkedHashMap<>();
@@ -825,6 +833,7 @@ public class Badges {
 		victoryClassBadges.put(HeroClass.DUELIST, Badge.VICTORY_DUELIST);
 		victoryClassBadges.put(HeroClass.CLERIC, Badge.VICTORY_CLERIC);
 		victoryClassBadges.put(HeroClass.ZEALOT, Badge.VICTORY_ZEALOT);
+		victoryClassBadges.put(HeroClass.ARTIFICER, Badge.VICTORY_ARTIFICER);
 	}
 
 	private static LinkedHashMap<HeroSubClass, Badge> thirdBossSubclassBadges = new LinkedHashMap<>();
@@ -968,6 +977,9 @@ public class Badges {
 			case ZEALOT:
 				badge = Badge.MASTERY_ZEALOT;
 				break;
+			case ARTIFICER:
+				badge = Badge.MASTERY_ARTIFICER;
+				break;
 		}
 		
 		unlock(badge);
@@ -1009,6 +1021,12 @@ public class Badges {
 					((MeleeWeapon) Dungeon.hero.belongings.weapon).STRReq(0) <= Dungeon.hero.STR()){
 				displayBadge(Badge.UNLOCK_DUELIST);
 			}
+		}
+	}
+
+	public static void validateArtificerUnlock(){
+		if (!isUnlocked(Badge.UNLOCK_ARTIFICER)){
+			displayBadge( Badge.UNLOCK_ARTIFICER );
 		}
 	}
 
