@@ -117,7 +117,8 @@ public class VoidTrapLevel extends Level {
 		}
 
 		
-		int entrance = 1;
+		//the middle of the open area, cell 1 is on the map edge and crashes the field of view
+		int entrance = (SIZE / 2) * width() + SIZE / 2;
         transitions.add(new LevelTransition(this, entrance, LevelTransition.Type.REGULAR_ENTRANCE));
 
 

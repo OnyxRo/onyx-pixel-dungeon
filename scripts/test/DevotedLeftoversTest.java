@@ -79,6 +79,11 @@ public class DevotedLeftoversTest {
 			check( orbs == 4, "Void trap orbs " + orbs + " for hero level 4" );
 			check( portals == 1, "Void trap exit portals " + portals );
 			check( Dungeon.hero.lvl == 1, "Void trap drops the hero to level 1" );
+			int ex = v.entrance() % v.width(), ey = v.entrance() / v.width();
+			check( ex >= 2 && ey >= 2 && v.map[v.entrance()] == com.shatteredpixel.shatteredpixeldungeon.levels.Terrain.EMPTY, "Void trap entrance " + v.entrance() + " is inside the open area" );
+			Dungeon.level = v;
+			Dungeon.hero.pos = v.entrance();
+			Dungeon.observe();
 		} catch (Throwable t) {
 			failures++;
 			System.out.println( "FAIL: Void trap threw " + t );
