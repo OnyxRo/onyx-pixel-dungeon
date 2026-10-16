@@ -33,6 +33,12 @@ public class PollutedSewersLevel extends WorldLevel {
 		color2 = 0x59994a;
 	}
 
+	//Ryuse's in game song
+	@Override
+	protected String track() {
+		return Assets.Music.RYUSE_GAME;
+	}
+
 	@Override
 	public String tilesTex() {
 		return "environment/worlds/tiles_pollutedsewers.png";

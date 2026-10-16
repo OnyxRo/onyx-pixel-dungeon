@@ -264,7 +264,7 @@ public class WndSongs extends Window {
 				String path = (String) f.get( null );
 				if (path == null || !path.startsWith("music/") || !seen.add( path )) continue;
 				if (!Gdx.files.internal( path ).exists()) continue;
-				String mod = path.contains("devoted") ? DEVOTED : SHATTERED;
+				String mod = path.contains("devoted") ? DEVOTED : path.contains("/ryuse/") ? "Ryuse's Pixel Dungeon" : SHATTERED;
 				if (!groups.containsKey( mod )) groups.put( mod, new ArrayList<Song>() );
 				groups.get( mod ).add( new Song( path, mod, pretty( path ) ) );
 			} catch (IllegalAccessException e) {

@@ -185,6 +185,9 @@ public class Assets {
 		public static final String FUJI = "music/player/shittened/fuji.ogg"; //ported, shittened
 		public static final String DESTINATION = "music/player/shittened/destination.ogg"; //ported, shittened
 		public static final String TALE = "music/player/shittened/fantasy_tale.ogg"; //ported, shittened
+		public static final String RYUSE_GAME = "music/ryuse/game.ogg"; //ported, ryuse
+		public static final String RYUSE_THEME = "music/ryuse/theme.ogg"; //ported, ryuse
+		public static final String RYUSE_SURFACE = "music/ryuse/surface.ogg"; //ported, ryuse
 		public static final String ICE_CAVES = "music/mattedition/icecaves_calm.ogg"; //ported, mattedition
 		public static final String ICE_CAVES_TENSE = "music/mattedition/icecaves.ogg"; //ported, mattedition
 		public static final String BLACK_MIMIC_ARENA = "music/experienced/black_mimic_arena.ogg"; //ported, experienced
