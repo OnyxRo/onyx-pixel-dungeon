@@ -312,7 +312,8 @@ public class Hero extends Char {
 		HT = 20 + 5*(lvl-1) + HTBoost;
 		float multiplier = RingOfMight.HTMultiplier(this);
 		HT = Math.round(multiplier * HT);
-		
+		HT = com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.maxHP(this, HT);
+
 		if (buff(ElixirOfMight.HTBoost.class) != null){
 			HT += buff(ElixirOfMight.HTBoost.class).boost();
 		}
@@ -600,9 +601,14 @@ public class Hero extends Char {
 	@Override
 	public int attackSkill( Char target ) {
 		KindOfWeapon wep = belongings.attackingWeapon();
-		
+
+		if (com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.guaranteedHit(this)) {
+			return INFINITE_ACCURACY;
+		}
+
 		float accuracy = 1;
 		accuracy *= RingOfAccuracy.accuracyMultiplier( this );
+		accuracy *= com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.accuracy( this );
 		//Shittened PD, being well fed makes the hero a little better at everything
 		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Satisfied.class) != null) {
 			accuracy *= 1f + buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Satisfied.class).statBoost();
@@ -1787,6 +1793,7 @@ public class Hero extends Char {
 
 		damage = Talent.onAttackProc( this, enemy, damage );
 		damage = Perks.onAttackProc( this, enemy, damage );
+		damage = com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.onAttackProc( this, enemy, damage );
 
 		if (wep != null) {
 			damage = wep.proc( this, enemy, damage );
@@ -1962,6 +1969,9 @@ public class Hero extends Char {
 				damage = Math.max(0, damage);
 			}
 		}
+
+		//Ryuse's PD helmets
+		damage = com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.onDamageTaken( this, damage, src );
 
 		dmg = Math.round(damage);
 
@@ -2828,6 +2838,15 @@ public class Hero extends Char {
 		if (!ready) {
 			super.onOperateComplete();
 		}
+	}
+
+	@Override
+	public boolean isImmune(Class effect) {
+		//Ryuse's PD, an Attractor cannot be charmed
+		if (subClass == HeroSubClass.ATTRACTOR && effect == com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm.class){
+			return true;
+		}
+		return super.isImmune(effect);
 	}
 
 	public boolean search( boolean intentional ) {

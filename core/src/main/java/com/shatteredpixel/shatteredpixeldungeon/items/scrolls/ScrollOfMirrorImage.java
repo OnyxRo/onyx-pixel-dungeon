@@ -53,7 +53,10 @@ public class ScrollOfMirrorImage extends Scroll {
 			GLog.i(Messages.get(this, "no_copies"));
 		}
 		identify();
-		
+
+		com.shatteredpixel.shatteredpixeldungeon.Statistics.mirrorImageScrollUsed++;
+		com.shatteredpixel.shatteredpixeldungeon.Badges.validateSummonerUnlock();
+
 		Sample.INSTANCE.play( Assets.Sounds.READ );
 		
 		readAnimation();

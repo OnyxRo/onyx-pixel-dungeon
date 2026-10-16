@@ -92,6 +92,7 @@ public class Hunger extends Buff implements Hero.Doom {
 					hungerDelay *= 1.5f;
 				}
 				hungerDelay /= SaltCube.hungerGainMultiplier();
+				hungerDelay *= com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.hungerDelay(target);
 
 				float newLevel = level + (1f/hungerDelay);
 				//Shittened PD's Acceleration and Lavage make the stomach run

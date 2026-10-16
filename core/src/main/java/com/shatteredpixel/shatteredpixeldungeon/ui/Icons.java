@@ -483,6 +483,8 @@ public enum Icons {
 				return new ItemSprite(ItemSpriteSheet.ARTIFACT_VIAL3);
 			case ARTIFICER:
 				return new ItemSprite(ItemSpriteSheet.GUN);
+			case SUMMONER:
+				return new ItemSprite(ItemSpriteSheet.ARTIFACT_ROSE1);
 			default:
 				return null;
 		}

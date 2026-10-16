@@ -84,6 +84,8 @@ public class Belongings implements Iterable<Item> {
 	public Artifact artifact = null;
 	public KindofMisc misc = null;
 	public Ring ring = null;
+	//Ryuse's PD, helmets have a slot of their own
+	public com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet helmet = null;
 
 	//used when thrown weapons temporary become the current weapon
 	public KindOfWeapon thrownWeapon = null;
@@ -124,6 +126,7 @@ public class Belongings implements Iterable<Item> {
 		if (misc() != null)      equipped.add(misc());
 		if (ring() != null)      equipped.add(ring());
 		if (secondWep() != null) equipped.add(secondWep());
+		if (helmet() != null)    equipped.add(helmet());
 		return equipped.isEmpty() ? null : Random.element(equipped);
 	}
 
@@ -167,6 +170,14 @@ public class Belongings implements Iterable<Item> {
 		}
 	}
 
+	public com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet helmet(){
+		if (!lostInventory() || (helmet != null && helmet.keptThroughLostInventory())){
+			return helmet;
+		} else {
+			return null;
+		}
+	}
+
 	public KindOfWeapon secondWep(){
 		if (!lostInventory() || (secondWep != null && secondWep.keptThroughLostInventory())){
 			return secondWep;
@@ -184,6 +195,7 @@ public class Belongings implements Iterable<Item> {
 	private static final String RING       = "ring";
 
 	private static final String SECOND_WEP = "second_wep";
+	private static final String HELMET     = "helmet";
 
 	public void storeInBundle( Bundle bundle ) {
 		
@@ -195,6 +207,7 @@ public class Belongings implements Iterable<Item> {
 		bundle.put( MISC, misc );
 		bundle.put( RING, ring );
 		bundle.put( SECOND_WEP, secondWep );
+		bundle.put( HELMET, helmet );
 	}
 
 	public static boolean bundleRestoring = false;
@@ -222,12 +235,16 @@ public class Belongings implements Iterable<Item> {
 		secondWep = (KindOfWeapon) bundle.get(SECOND_WEP);
 		if (secondWep() != null)    secondWep().activate(owner);
 
+		helmet = (com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet) bundle.get(HELMET);
+		if (helmet() != null)       helmet().activate(owner);
+
 		bundleRestoring = false;
 	}
 
 	public void clear(){
 		backpack.clear();
 		weapon = secondWep = null;
+		helmet = null;
 		armor = null;
 		artifact = null;
 		misc = null;
@@ -405,7 +422,7 @@ public class Belongings implements Iterable<Item> {
 	}
 	
 	public void uncurseEquipped() {
-		ScrollOfRemoveCurse.uncurse( owner, armor(), weapon(), artifact(), misc(), ring(), secondWep());
+		ScrollOfRemoveCurse.uncurse( owner, armor(), weapon(), artifact(), misc(), ring(), secondWep(), helmet());
 	}
 	
 	public Item randomUnequipped() {
@@ -437,7 +454,7 @@ public class Belongings implements Iterable<Item> {
 		
 		private Iterator<Item> backpackIterator = backpack.iterator();
 		
-		private Item[] equipped = {weapon, armor, artifact, misc, ring, secondWep};
+		private Item[] equipped = {weapon, armor, artifact, misc, ring, secondWep, helmet};
 		private int backpackIndex = equipped.length;
 		
 		@Override
@@ -485,6 +502,9 @@ public class Belongings implements Iterable<Item> {
 				break;
 			case 5:
 				equipped[5] = secondWep = null;
+				break;
+			case 6:
+				equipped[6] = helmet = null;
 				break;
 			default:
 				backpackIterator.remove();

@@ -93,7 +93,9 @@ public enum HeroClass {
 	//from Devoted PD
 	ZEALOT( HeroSubClass.CONJURER, HeroSubClass.DEVOTEE ),
 	//from Pixel Dungeon Reforged
-	ARTIFICER( HeroSubClass.CONSTRUCTOR, HeroSubClass.ARMORER );
+	ARTIFICER( HeroSubClass.CONSTRUCTOR, HeroSubClass.ARMORER ),
+	//from Ryuse's PD
+	SUMMONER( HeroSubClass.EIDOLON, HeroSubClass.ATTRACTOR );
 
 	private HeroSubClass[] subClasses;
 
@@ -152,6 +154,10 @@ public enum HeroClass {
 			case ARTIFICER:
 				initArtificer( hero );
 				break;
+
+			case SUMMONER:
+				initSummoner( hero );
+				break;
 		}
 
 		//Shittened PD's prefixes never land on a hero's starting weapon
@@ -188,6 +194,8 @@ public enum HeroClass {
 				return Badges.Badge.MASTERY_ZEALOT;
 			case ARTIFICER:
 				return Badges.Badge.MASTERY_ARTIFICER;
+			case SUMMONER:
+				return Badges.Badge.MASTERY_SUMMONER;
 		}
 		return null;
 	}
@@ -281,6 +289,28 @@ public enum HeroClass {
 		new ScrollOfRemoveCurse().identify();
 	}
 
+	private static void initSummoner( Hero hero ) {
+		//Ryuse's PD. Summoner stats, 15 health that grows by 3 a level, a training whip and a dried rose that holds her lover's ghost
+		(hero.belongings.weapon = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.TrainingWhip()).identify();
+		hero.belongings.weapon.activate(hero);
+
+		com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose rose = new com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose();
+		(hero.belongings.artifact = rose).identify();
+		hero.belongings.artifact.activate( hero );
+		com.shatteredpixel.shatteredpixeldungeon.items.Generator.removeArtifact(rose.getClass());
+
+		hero.HT = hero.HP = 15;
+
+		ThrowingStone stones = new ThrowingStone();
+		stones.quantity(10).identify().collect();
+		Dungeon.quickslot.setSlot(0, stones);
+		Dungeon.quickslot.setSlot(1, rose);
+
+		new com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMirrorImage().identify();
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfPurity().identify();
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost().identify();
+	}
+
 	private static void initArtificer( Hero hero ) {
 		(hero.belongings.weapon = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger()).identify();
 		hero.belongings.weapon.activate(hero);
@@ -351,6 +381,8 @@ public enum HeroClass {
 				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.artificer.Quickdraw(),
 						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.artificer.Truesight(),
 						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.artificer.Reflection()};
+			case SUMMONER:
+				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.summoner.PhaseShift()};
 		}
 	}
 
@@ -372,6 +404,8 @@ public enum HeroClass {
 				return Assets.Sprites.ZEALOT;
 			case ARTIFICER:
 				return Assets.Sprites.ARTIFICER;
+			case SUMMONER:
+				return Assets.Sprites.SUMMONER;
 		}
 	}
 
@@ -393,6 +427,8 @@ public enum HeroClass {
 				return Assets.Splashes.ZEALOT;
 			case ARTIFICER:
 				return Assets.Splashes.ARTIFICER;
+			case SUMMONER:
+				return Assets.Splashes.SUMMONER;
 		}
 	}
 	
@@ -419,6 +455,8 @@ public enum HeroClass {
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_ZEALOT);
 			case ARTIFICER:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_ARTIFICER);
+			case SUMMONER:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_SUMMONER);
 		}
 	}
 	

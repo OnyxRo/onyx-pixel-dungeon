@@ -239,6 +239,12 @@ public abstract class Char extends Actor {
 	}
 
 	public String name(){
+		//Ryuse's PD, the Summoner knows the ghost by another name
+		if (Dungeon.hero != null && Dungeon.hero.heroClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.SUMMONER
+				&& (this instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost
+				|| this instanceof com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose.GhostHero)){
+			return Messages.get(this, "name_summoner");
+		}
 		return Messages.get(this, "name");
 	}
 

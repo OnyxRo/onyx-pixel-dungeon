@@ -876,7 +876,8 @@ public abstract class Wand extends Item {
 					+ (scalingAddition * Math.pow(scalingFactor, missingCharges)));
 
 			if (Regeneration.regenOn())
-				partialCharge += (1f/turnsToCharge) * RingOfEnergy.wandChargeMultiplier(target);
+				partialCharge += (1f/turnsToCharge) * RingOfEnergy.wandChargeMultiplier(target)
+						* com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.wandCharge(target);
 
 			for (Recharging bonus : target.buffs(Recharging.class)){
 				if (bonus != null && bonus.remainder() > 0f) {

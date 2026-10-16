@@ -1475,6 +1475,7 @@ public abstract class Level implements Bundlable {
 					viewDist *= 1.25f;
 				}
 				viewDist *= EyeOfNewt.visionRangeMultiplier();
+				viewDist = Math.max(1, viewDist + com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.viewDelta((Hero) c));
 			}
 			
 			ShadowCaster.castShadow( cx, cy, width(), fieldOfView, blocking, Math.round(viewDist) );
@@ -1623,6 +1624,21 @@ public abstract class Level implements Bundlable {
 			for (Mob mob : mobs) {
 				if (heroMindFov[mob.pos] && !fieldOfView[mob.pos]){
 					Dungeon.hero.mindVisionEnemies.add(mob);
+				}
+			}
+
+			//Ryuse's PD, a Summoner always sees what she summoned, an Eidolon sees all her allies
+			if (c instanceof Hero && ((Hero)c).heroClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.SUMMONER) {
+				for (Mob mob : mobs) {
+					if (fieldOfView[mob.pos]) continue;
+					boolean summoned = mob instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost
+							|| mob instanceof com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose.GhostHero
+							|| mob instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MirrorImage;
+					boolean eidolonAlly = ((Hero)c).subClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.EIDOLON
+							&& mob.alignment == Char.Alignment.ALLY;
+					if (summoned || eidolonAlly) {
+						Dungeon.hero.mindVisionEnemies.add(mob);
+					}
 				}
 			}
 

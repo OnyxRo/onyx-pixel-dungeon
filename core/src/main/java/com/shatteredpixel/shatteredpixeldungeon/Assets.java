@@ -370,6 +370,7 @@ public class Assets {
 		public static final String CLERIC   = "splashes/cleric.jpg";
 		public static final String ZEALOT   = "splashes/zealot.png"; //ported, devoted
 		public static final String ARTIFICER = "splashes/artificer.jpg"; //ported, reforged
+		public static final String SUMMONER = "splashes/summoner.jpg"; //ported, ryuse
 
 		public static final String SEWERS   = "splashes/sewers.jpg";
 		public static final String PRISON   = "splashes/prison.jpg";
@@ -496,6 +497,7 @@ public class Assets {
 		public static final String CLERIC   = "sprites/cleric.png";
 		public static final String ZEALOT   = "sprites/zealot.png"; //ported, devoted
 		public static final String ARTIFICER = "sprites/artificer.png"; //ported, reforged
+		public static final String SUMMONER = "sprites/summoner.png"; //ported, ryuse
 		public static final String SHIT_BAT = "sprites/shittened/bat.png"; //ported, shittened, the mod drew extra frames on this sheet
 		public static final String SHIT_GOO = "sprites/shittened/goo.png"; //ported, shittened, the mod drew extra frames on this sheet
 		public static final String SHIT_DM200 = "sprites/shittened/dm200.png"; //ported, shittened, the mod drew extra frames on this sheet

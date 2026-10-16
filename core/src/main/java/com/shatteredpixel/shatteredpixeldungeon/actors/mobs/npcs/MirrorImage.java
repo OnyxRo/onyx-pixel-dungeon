@@ -103,6 +103,10 @@ public class MirrorImage extends NPC {
 	public void duplicate( Hero hero ) {
 		this.hero = hero;
 		heroID = this.hero.id();
+		if (hero.heroClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.SUMMONER){
+			//Ryuse's PD, a Summoner's images have half of her health
+			this.HP = Math.max(1, hero.HP/2);
+		}
 		Buff.affect(this, MirrorInvis.class, Short.MAX_VALUE);
 	}
 	

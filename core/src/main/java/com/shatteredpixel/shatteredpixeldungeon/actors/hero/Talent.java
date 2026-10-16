@@ -543,6 +543,8 @@ public enum Talent {
 					return 218;
 				case ARTIFICER:
 					return 245;
+				case SUMMONER:
+					return 26;
 			}
 		} else {
 			return icon;
@@ -1175,6 +1177,10 @@ public enum Talent {
 			case ARTIFICER:
 				Collections.addAll(tierTalents, TINKERERS_MEAL, PATTERN_RECOGNITION, VOLATILE_CHAIN, ARCSHIELDING);
 				break;
+			case SUMMONER:
+				//Ryuse's PD had no talents of its own for the Summoner, these are Shattered's picked to suit her
+				Collections.addAll(tierTalents, HEARTY_MEAL, SURVIVALISTS_INTUITION, SCHOLARS_INTUITION, BACKUP_BARRIER);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -1210,6 +1216,9 @@ public enum Talent {
 			case ARTIFICER:
 				Collections.addAll(tierTalents, QUICK_CALIBRATION, REACTIVE_CHEMISTRY, OVERCLOCKED_SYSTEMS, VOLATILE_SALVAGE, ADAPTIVE_MINEFIELD);
 				break;
+			case SUMMONER:
+				Collections.addAll(tierTalents, INVIGORATING_MEAL, LIQUID_NATURE, ARCANE_VISION, HEIGHTENED_SENSES, SHIELD_BATTERY);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -1244,6 +1253,9 @@ public enum Talent {
 				break;
 			case ARTIFICER:
 				Collections.addAll(tierTalents, MECHANICAL_GOGGLES, EFFECTIVE_SHOT);
+				break;
+			case SUMMONER:
+				Collections.addAll(tierTalents, ALLY_WARP, HOLD_FAST);
 				break;
 		}
 		for (Talent talent : tierTalents){
@@ -1320,6 +1332,12 @@ public enum Talent {
 				break;
 			case ARMORER:
 				Collections.addAll(tierTalents, WEAPON_MOD_AUTOLOAD, ARMOR_MOD_INFINITE_FALLING, ARMOR_MOD_EMERGENCY_DEFENSE);
+				break;
+			case EIDOLON:
+				Collections.addAll(tierTalents, NECROMANCERS_MINIONS, SOUL_SIPHON, SHARED_UPGRADES);
+				break;
+			case ATTRACTOR:
+				Collections.addAll(tierTalents, AURA_OF_PROTECTION, WALL_OF_LIGHT, SHIELDING_DEW);
 				break;
 		}
 		for (Talent talent : tierTalents){

@@ -125,6 +125,9 @@ public class PrismaticGuard extends Buff {
 	}
 	
 	public static int maxHP( Hero hero ){
+		if (hero.heroClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.SUMMONER){
+			return 10 + (int)Math.floor(hero.lvl * 3f);
+		}
 		return 10 + (int)Math.floor(hero.lvl * 2.5f); //half of hero's HP
 	}
 

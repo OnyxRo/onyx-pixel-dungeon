@@ -1002,6 +1002,8 @@ public abstract class Mob extends Char {
 					Dungeon.hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(exp), FloatingText.EXPERIENCE);
 				}
 				Dungeon.hero.earnExp(exp, getClass());
+				com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose.shareExp(exp);
+				com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.kill(Dungeon.hero, this);
 				if (Dungeon.hero.perks.contains(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Perks.Perk.ADDITIONAL_MONEY)){
 					//Experienced PD's Bounty Hunter perk, 20% of a normal gold drop on top of the loot
 					com.shatteredpixel.shatteredpixeldungeon.items.Gold bounty = (com.shatteredpixel.shatteredpixeldungeon.items.Gold) new com.shatteredpixel.shatteredpixeldungeon.items.Gold().random();

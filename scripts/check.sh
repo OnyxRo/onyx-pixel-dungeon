@@ -49,18 +49,23 @@ else
 fi
 say "compiled"
 
+# the classpath is too long for one command line once Gradle's cache holds several lwjgl versions, so it goes in an argument file
+cpargs() { printf '%s\n' '-cp' "\"$(printf '%s' "$2" | sed 's/\\/\\\\/g')\"" > "$1"; }
+
 # 2. compile the tests
 TESTOUT="$ROOT/build/test"; rm -rf "$TESTOUT"; mkdir -p "$TESTOUT"
-javac -nowarn -encoding UTF-8 -cp "$CP" -d "$(W "$TESTOUT")" scripts/test/*.java >> "$LOG" 2>&1 \
+cpargs "$ROOT/build/cp-javac.args" "$CP"
+javac -nowarn -encoding UTF-8 @"$(W "$ROOT/build/cp-javac.args")" -d "$(W "$TESTOUT")" scripts/test/*.java >> "$LOG" 2>&1 \
   || { say "test compile FAILED"; grep -m8 "error:" -A2 "$LOG"; exit 1; }
 TCP="$(W "$TESTOUT")${SEP}${CP}"
+cpargs "$ROOT/build/cp-run.args" "$TCP"
 
 FAIL=0
 run() { # name, class, args...
   local name="$1"; shift
   say "== $name"
   SEG_START=$(( $(wc -l < "$LOG") + 1 ))
-  ( cd "$ASSETS" && java -Dsrc.root="$(W "$ROOT")" -Dmob.baseline="$(W "$ROOT/scripts/test/mob-baseline.txt")" -cp "$TCP" "$@" ) >> "$LOG" 2>&1
+  ( cd "$ASSETS" && java -Dsrc.root="$(W "$ROOT")" -Dmob.baseline="$(W "$ROOT/scripts/test/mob-baseline.txt")" @"$(W "$ROOT/build/cp-run.args")" "$@" ) >> "$LOG" 2>&1
   local rc=$?
   [ $rc -ne 0 ] && FAIL=1
   return $rc

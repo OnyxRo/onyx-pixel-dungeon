@@ -77,6 +77,9 @@ public class Regeneration extends Buff {
 					}
 				}
 
+				//Ryuse's PD helmets
+				delay *= com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.regenDelay(target);
+
 				//salt cube is turned off while regen is disabled.
 				if (target.buff(LockedFloor.class) == null) {
 					delay /= SaltCube.healthRegenMultiplier();

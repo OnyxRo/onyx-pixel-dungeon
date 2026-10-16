@@ -126,6 +126,11 @@ public class Ghost extends NPC {
 		return true;
 	}
 	
+	//Ryuse's PD, the Summoner's lover says different things
+	private static String sm( String key ){
+		return Dungeon.hero != null && Dungeon.hero.heroClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.SUMMONER ? key + "_summoner" : key;
+	}
+
 	@Override
 	public boolean interact(Char c) {
 		sprite.turnTo( pos, c.pos );
@@ -152,13 +157,13 @@ public class Ghost extends NPC {
 							switch (Quest.type) {
 								case 1:
 								default:
-									GameScene.show(new WndQuest(Ghost.this, Messages.get(Ghost.this, "rat_2")));
+									GameScene.show(new WndQuest(Ghost.this, Messages.get(Ghost.this, sm("rat_2"))));
 									break;
 								case 2:
-									GameScene.show(new WndQuest(Ghost.this, Messages.get(Ghost.this, "gnoll_2")));
+									GameScene.show(new WndQuest(Ghost.this, Messages.get(Ghost.this, sm("gnoll_2"))));
 									break;
 								case 3:
-									GameScene.show(new WndQuest(Ghost.this, Messages.get(Ghost.this, "crab_2")));
+									GameScene.show(new WndQuest(Ghost.this, Messages.get(Ghost.this, sm("crab_2"))));
 									break;
 							}
 						}
@@ -173,13 +178,13 @@ public class Ghost extends NPC {
 			switch (Quest.type){
 				case 1: default:
 					questBoss = new FetidRat();
-					txt_quest = Messages.get(this, "rat_1", Messages.titleCase(Dungeon.hero.name())); break;
+					txt_quest = Messages.get(this, sm("rat_1"), Messages.titleCase(Dungeon.hero.name())); break;
 				case 2:
 					questBoss = new GnollTrickster();
-					txt_quest = Messages.get(this, "gnoll_1", Messages.titleCase(Dungeon.hero.name())); break;
+					txt_quest = Messages.get(this, sm("gnoll_1"), Messages.titleCase(Dungeon.hero.name())); break;
 				case 3:
 					questBoss = new GreatCrab();
-					txt_quest = Messages.get(this, "crab_1", Messages.titleCase(Dungeon.hero.name())); break;
+					txt_quest = Messages.get(this, sm("crab_1"), Messages.titleCase(Dungeon.hero.name())); break;
 			}
 
 			questBoss.pos = Dungeon.level.randomRespawnCell( this );
@@ -319,15 +324,22 @@ public class Ghost extends NPC {
 				depth = Dungeon.depth;
 
 				//50%:tier2, 30%:tier3, 15%:tier4, 5%:tier5
-				switch (Random.chances(new float[]{0, 0, 10, 6, 3, 1})){
+				int armorTier = Random.chances(new float[]{0, 0, 10, 6, 3, 1});
+				//50%:tier2, 30%:tier3, 15%:tier4, 5%:tier5
+				int wepTier = Random.chances(new float[]{0, 0, 10, 6, 3, 1});
+				//Ryuse's PD, a Summoner's lover brings gear one tier better
+				boolean summoner = Dungeon.hero.heroClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.SUMMONER;
+				if (summoner){
+					if (armorTier < 5) armorTier++;
+					if (wepTier < 5) wepTier++;
+				}
+				switch (armorTier){
 					default:
 					case 2: armor = new LeatherArmor(); break;
 					case 3: armor = new MailArmor();    break;
 					case 4: armor = new ScaleArmor();   break;
 					case 5: armor = new PlateArmor();   break;
 				}
-				//50%:tier2, 30%:tier3, 15%:tier4, 5%:tier5
-				int wepTier = Random.chances(new float[]{0, 0, 10, 6, 3, 1});
 				weapon = (Weapon) Generator.random(Generator.wepTiers[wepTier - 1]);
 
 				//clear weapon's starting properties
@@ -347,6 +359,7 @@ public class Ghost extends NPC {
 				} else {
 					itemLevel = 3;
 				}
+				if (summoner) itemLevel++;
 				weapon.upgrade(itemLevel);
 				armor.upgrade(itemLevel);
 
@@ -356,7 +369,7 @@ public class Ghost extends NPC {
 				glyph = Armor.Glyph.random();
 
 				float enchantRoll = Random.Float();
-				if (enchantRoll > 0.2f * ParchmentScrap.enchantChanceMultiplier()){
+				if (enchantRoll > (summoner ? 0.4f : 0.2f) * ParchmentScrap.enchantChanceMultiplier()){
 					enchant = null;
 					glyph = null;
 				}
@@ -366,7 +379,7 @@ public class Ghost extends NPC {
 		
 		public static void process() {
 			if (spawned && given && !processed && (depth == Dungeon.depth)) {
-				GLog.n( Messages.get(Ghost.class, "find_me") );
+				GLog.n( Messages.get(Ghost.class, sm("find_me")) );
 				Sample.INSTANCE.play( Assets.Sounds.GHOST );
 				processed = true;
 				Statistics.questScores[0] += 1000;

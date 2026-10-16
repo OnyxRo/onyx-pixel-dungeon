@@ -49,3 +49,5 @@ Boombox crashed during its own turns
 Adventurer crashed during its own turns
 Evan has no desc string
 GreenGoo crashed during its own turns
+Ghost crashed during its own turns
+MirrorImage crashed the test

@@ -56,7 +56,11 @@ public enum HeroSubClass {
 
 	//from Pixel Dungeon Reforged
 	CONSTRUCTOR(HeroIcon.CONSTRUCTOR),
-	ARMORER(HeroIcon.ARMORER);
+	ARMORER(HeroIcon.ARMORER),
+
+	//from Ryuse's PD, they reuse other subclasses' pictures
+	EIDOLON(HeroIcon.WARLOCK),
+	ATTRACTOR(HeroIcon.PRIEST);
 
 	int icon;
 

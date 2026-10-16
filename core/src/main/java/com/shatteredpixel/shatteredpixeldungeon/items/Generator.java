@@ -242,6 +242,8 @@ public class Generator {
 		WAND	( 1, 1, Wand.class ),
 		RING	( 1, 0, Ring.class ),
 		ARTIFACT( 0, 1, Artifact.class),
+		//from Ryuse's PD
+		HELMET	( 1, 1, com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.class ),
 		
 		FOOD	( 0, 0, Food.class ),
 		//from Shittened PD. The new foods are not in normal drops, only in loot bags and the like.
@@ -484,9 +486,10 @@ public class Generator {
 					Greataxe.class,
 					Greatshield.class,
 					Gauntlet.class,
-					WarScythe.class
+					WarScythe.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.SummonerWhip.class //from Ryuse's PD
 			};
-			WEP_T5.defaultProbs = new float[]{ 2, 2, 2, 2, 2, 2, 2 };
+			WEP_T5.defaultProbs = new float[]{ 2, 2, 2, 2, 2, 2, 2, 2 };
 			WEP_T5.probs = WEP_T5.defaultProbs.clone();
 			
 			//see Generator.randomArmor
@@ -648,6 +651,28 @@ public class Generator {
 			};
 			ARTIFACT.defaultProbs = new float[]{ 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1 };
 			ARTIFACT.probs = ARTIFACT.defaultProbs.clone();
+
+			HELMET.classes = new Class<?>[]{
+					com.shatteredpixel.shatteredpixeldungeon.items.helmets.CircletEmerald.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.helmets.CrownOfDwarf.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.helmets.GuardHelmet.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.helmets.HeaddressRegeneration.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.helmets.HelmetBarbarian.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.helmets.HelmetCrusader.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.helmets.HoodApprentice.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.helmets.LittlePail.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.helmets.MaskOfClown.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.helmets.MaskOfHorror.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.helmets.MaskOfLider.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.helmets.MaskOfMadness.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.helmets.RangerHat.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.helmets.StrawHat.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.helmets.TurtleScarf.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.helmets.WizardHat.class
+			};
+			//the crown and the mask of madness never drop on their own, as in Ryuse's PD
+			HELMET.defaultProbs = new float[]{ 1, 0, 0.1f, 1, 1, 1, 1, 1, 1, 1, 0.1f, 0, 0.2f, 0.1f, 1, 1 };
+			HELMET.probs = HELMET.defaultProbs.clone();
 
 			//Trinkets are unique like artifacts, but unlike them you can only have one at once
 			//So we don't need the same enforcement of uniqueness

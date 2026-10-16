@@ -107,6 +107,27 @@ public class DriedRose extends Artifact {
 
 	public int droppedPetals = 0;
 
+	//Ryuse's PD, the Summoner's rose keeps its own ghost level and experience
+	public int exp = 0;
+	public int lvl = 1;
+
+	private static boolean summoner(){
+		return Dungeon.hero != null && Dungeon.hero.heroClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.SUMMONER;
+	}
+
+	private static boolean eidolon(){
+		return summoner() && Dungeon.hero.subClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.EIDOLON;
+	}
+
+	//called when a monster dies, the Summoner's ghost earns experience too
+	public static void shareExp( int exp ){
+		if (!summoner()) return;
+		DriedRose rose = Dungeon.hero.belongings.getItem(DriedRose.class);
+		if (rose != null && rose.ghost != null && rose.ghost.isAlive()){
+			rose.ghost.earnExp(exp);
+		}
+	}
+
 	public static final String AC_SUMMON = "SUMMON";
 	public static final String AC_DIRECT = "DIRECT";
 	public static final String AC_OUTFIT = "OUTFIT";
@@ -183,7 +204,7 @@ public class DriedRose extends Artifact {
 					hero.sprite.operate(hero.pos);
 
 					if (!firstSummon) {
-						ghost.yell( Messages.get(GhostHero.class, "hello", Messages.titleCase(Dungeon.hero.name())) );
+						ghost.yell( Messages.get(GhostHero.class, summoner() ? "hello_summoner" : "hello", Messages.titleCase(Dungeon.hero.name())) );
 						Sample.INSTANCE.play( Assets.Sounds.GHOST );
 						firstSummon = true;
 						
@@ -233,17 +254,20 @@ public class DriedRose extends Artifact {
 	}
 	
 	public int ghostStrength(){
-		return 13 + level()/2;
+		int str = 13 + level()/2;
+		if (summoner()) str += 2;
+		if (eidolon()) str += 2;
+		return str;
 	}
 
 	@Override
 	public String desc() {
 		if (!Ghost.Quest.completed()
 				&& (ShatteredPixelDungeon.scene() instanceof GameScene || ShatteredPixelDungeon.scene() instanceof AlchemyScene)){
-			return Messages.get(this, "desc_no_quest");
+			return Messages.get(this, summoner() ? "desc_no_quest_summoner" : "desc_no_quest");
 		}
-		
-		String desc = super.desc();
+
+		String desc = summoner() ? Messages.get(this, "desc_summoner") : super.desc();
 
 		if (isEquipped( Dungeon.hero )){
 			if (!cursed){
@@ -377,7 +401,9 @@ public class DriedRose extends Artifact {
 		bundle.put( FIRSTSUMMON, firstSummon );
 		bundle.put( GHOSTID, ghostID );
 		bundle.put( PETALS, droppedPetals );
-		
+		bundle.put( "ghost_exp", exp );
+		bundle.put( "ghost_lvl", lvl );
+
 		if (weapon != null) bundle.put( WEAPON, weapon );
 		if (armor != null)  bundle.put( ARMOR, armor );
 	}
@@ -390,7 +416,9 @@ public class DriedRose extends Artifact {
 		firstSummon = bundle.getBoolean( FIRSTSUMMON );
 		ghostID = bundle.getInt( GHOSTID );
 		droppedPetals = bundle.getInt( PETALS );
-		
+		exp = bundle.getInt( "ghost_exp" );
+		lvl = bundle.contains( "ghost_lvl" ) ? bundle.getInt( "ghost_lvl" ) : 1;
+
 		if (bundle.contains(WEAPON)) weapon = (MeleeWeapon)bundle.get( WEAPON );
 		if (bundle.contains(ARMOR))  armor = (Armor)bundle.get( ARMOR );
 	}
@@ -437,7 +465,10 @@ public class DriedRose extends Artifact {
 					&& target.buff(MagicImmune.class) == null
 					&& Regeneration.regenOn()) {
 				//500 turns to a full charge
-				partialCharge += (1/5f * RingOfEnergy.artifactChargeMultiplier(target));
+				float gain = (1/5f * RingOfEnergy.artifactChargeMultiplier(target));
+				if (summoner()) gain *= 1.5f;
+				if (eidolon()) gain *= 1.5f;
+				partialCharge += gain;
 				while (partialCharge > 1){
 					charge++;
 					partialCharge--;
@@ -595,7 +626,38 @@ public class DriedRose extends Artifact {
 			//same dodge as the hero
 			defenseSkill = (Dungeon.hero.lvl+4);
 			if (rose == null) return;
-			HT = 40 + 10*rose.level();
+			if (summoner()){
+				HT = 30 + 10*rose.level() + 5*rose.lvl;
+			} else {
+				HT = 40 + 10*rose.level();
+			}
+		}
+
+		public void earnExp( int exp ){
+			if (rose == null) return;
+			rose.exp += exp;
+			boolean leveled = false;
+			while (rose.exp >= maxExp(rose.lvl)){
+				rose.exp -= maxExp(rose.lvl);
+				if (rose.lvl < 30){
+					rose.lvl++;
+					leveled = true;
+				} else {
+					rose.exp = 0;
+				}
+			}
+			if (leveled){
+				int oldHT = HT;
+				updateRose();
+				HP = Math.min(HT, HP + (HT - oldHT));
+				if (sprite != null) {
+					sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "level_up") );
+				}
+			}
+		}
+
+		public static int maxExp( int lvl ){
+			return 5 + lvl * 5;
 		}
 
 		public Weapon weapon(){
@@ -634,11 +696,19 @@ public class DriedRose extends Artifact {
 			
 			//same accuracy as the hero.
 			int acc = Dungeon.hero.lvl + 9;
-			
+
 			if (weapon() != null){
 				acc *= weapon().accuracyFactor( this, target );
 			}
-			
+
+			if (summoner() && rose != null){
+				acc += rose.lvl;
+				acc *= 1.5f;
+			}
+			if (eidolon()){
+				acc *= 1.5f;
+			}
+
 			return acc;
 		}
 		
@@ -671,7 +741,10 @@ public class DriedRose extends Artifact {
 				//1-5 to 1-10
 				dmg += Random.NormalIntRange(1, rose.ghostStrength()-8);
 			}
-			
+
+			if (summoner()) dmg *= 1.1f;
+			if (eidolon()) dmg *= 1.1f;
+
 			return dmg;
 		}
 		
@@ -724,6 +797,10 @@ public class DriedRose extends Artifact {
 		public int defenseSkill(Char enemy) {
 			int defense = super.defenseSkill(enemy);
 
+			if (summoner() && rose != null){
+				defense += rose.lvl;
+			}
+
 			if (defense != 0 && armor() != null ){
 				defense = Math.round(armor().evasionFactor( this, defense ));
 			}
@@ -760,7 +837,7 @@ public class DriedRose extends Artifact {
 				Game.runOnRenderThread(new Callback() {
 					@Override
 					public void call() {
-						GameScene.show(new WndQuest(GhostHero.this, Messages.get(GhostHero.this, "introduce") ));
+						GameScene.show(new WndQuest(GhostHero.this, Messages.get(GhostHero.this, summoner() ? "introduce_summoner" : "introduce") ));
 					}
 				});
 				return true;
@@ -890,11 +967,12 @@ public class DriedRose extends Artifact {
 			
 			IconTitle titlebar = new IconTitle();
 			titlebar.icon( new ItemSprite(rose) );
-			titlebar.label( Messages.get(this, "title") );
+			titlebar.label( Messages.get(this, summoner() ? "title_summoner" : "title") );
 			titlebar.setRect( 0, 0, WIDTH, 0 );
 			add( titlebar );
-			
-			RenderedTextBlock message =
+
+			RenderedTextBlock message = summoner() ?
+					PixelScene.renderTextBlock(Messages.get(this, "desc_summoner", rose.ghostStrength(), rose.lvl), 6) :
 					PixelScene.renderTextBlock(Messages.get(this, "desc", rose.ghostStrength()), 6);
 			message.maxWidth( WIDTH );
 			message.setPos(0, titlebar.bottom() + GAP);

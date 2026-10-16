@@ -73,6 +73,7 @@ public class Badges {
 		MASTERY_CLERIC,
 		MASTERY_ZEALOT,
 		MASTERY_ARTIFICER,
+		MASTERY_SUMMONER,
 		FOUND_RATMOGRIFY,
 
 		//bronze
@@ -83,6 +84,7 @@ public class Badges {
 		UNLOCK_CLERIC               ( 5 ),
 		UNLOCK_ZEALOT               ( 25 ),
 		UNLOCK_ARTIFICER            ( 6 ),
+		UNLOCK_SUMMONER             ( 5 ),
 		MONSTERS_SLAIN_1            ( 6 ),
 		MONSTERS_SLAIN_2            ( 7 ),
 		GOLD_COLLECTED_1            ( 8 ),
@@ -134,6 +136,7 @@ public class Badges {
 		BOSS_SLAIN_1_CLERIC,
 		BOSS_SLAIN_1_ZEALOT,
 		BOSS_SLAIN_1_ARTIFICER,
+		BOSS_SLAIN_1_SUMMONER,
 		BOSS_SLAIN_1_ALL_CLASSES    ( 54, BadgeType.GLOBAL ),
 		RESEARCHER_2                ( 55, BadgeType.JOURNAL ),
 		GAMES_PLAYED_2              ( 56, BadgeType.GLOBAL ),
@@ -185,6 +188,7 @@ public class Badges {
 		VICTORY_CLERIC,
 		VICTORY_ZEALOT,
 		VICTORY_ARTIFICER,
+		VICTORY_SUMMONER,
 		VICTORY_ALL_CLASSES         ( 103, BadgeType.GLOBAL ),
 		DEATH_FROM_ALL              ( 104, BadgeType.GLOBAL ),
 		BOSS_SLAIN_3_GLADIATOR,
@@ -822,6 +826,7 @@ public class Badges {
 		firstBossClassBadges.put(HeroClass.CLERIC, Badge.BOSS_SLAIN_1_CLERIC);
 		firstBossClassBadges.put(HeroClass.ZEALOT, Badge.BOSS_SLAIN_1_ZEALOT);
 		firstBossClassBadges.put(HeroClass.ARTIFICER, Badge.BOSS_SLAIN_1_ARTIFICER);
+		firstBossClassBadges.put(HeroClass.SUMMONER, Badge.BOSS_SLAIN_1_SUMMONER);
 	}
 
 	private static LinkedHashMap<HeroClass, Badge> victoryClassBadges = new LinkedHashMap<>();
@@ -834,6 +839,7 @@ public class Badges {
 		victoryClassBadges.put(HeroClass.CLERIC, Badge.VICTORY_CLERIC);
 		victoryClassBadges.put(HeroClass.ZEALOT, Badge.VICTORY_ZEALOT);
 		victoryClassBadges.put(HeroClass.ARTIFICER, Badge.VICTORY_ARTIFICER);
+		victoryClassBadges.put(HeroClass.SUMMONER, Badge.VICTORY_SUMMONER);
 	}
 
 	private static LinkedHashMap<HeroSubClass, Badge> thirdBossSubclassBadges = new LinkedHashMap<>();
@@ -980,6 +986,9 @@ public class Badges {
 			case ARTIFICER:
 				badge = Badge.MASTERY_ARTIFICER;
 				break;
+			case SUMMONER:
+				badge = Badge.MASTERY_SUMMONER;
+				break;
 		}
 		
 		unlock(badge);
@@ -1030,6 +1039,13 @@ public class Badges {
 	public static void validateRatatouille() {}
 	public static void validateJackpot() {}
 	public static void validateDeathWithKetchup() {}
+
+	//Ryuse's PD, read three scrolls of mirror image in one run to unlock the Summoner
+	public static void validateSummonerUnlock(){
+		if (Statistics.mirrorImageScrollUsed >= 3 && !isUnlocked(Badge.UNLOCK_SUMMONER)){
+			displayBadge( Badge.UNLOCK_SUMMONER );
+		}
+	}
 
 	public static void validateArtificerUnlock(){
 		if (!isUnlocked(Badge.UNLOCK_ARTIFICER)){

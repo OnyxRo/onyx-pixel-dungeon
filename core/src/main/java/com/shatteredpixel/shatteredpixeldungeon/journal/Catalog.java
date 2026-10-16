@@ -555,6 +555,13 @@ public enum Catalog {
 		EXOTIC_SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfEnshittification.class);
 		STONES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfReforging.class);
 
+		//items ported from ryuse
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.TrainingWhip.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.SummonerWhip.class);
+		ARMOR.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.SummonerArmor.class);
+		for (Class<?> helmet : Generator.Category.HELMET.classes) ARMOR.addItems(helmet);
+		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EyeOfWisdom.class);
+
 
 	}
 

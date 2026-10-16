@@ -35,6 +35,7 @@ public class Statistics {
 	public static int enemiesSlain;
 	public static int foodEaten;
 	public static int shitsTaken; //from Shittened PD
+	public static int mirrorImageScrollUsed; //from Ryuse's PD
 	public static int itemsCrafted;
 	public static int piranhasKilled;
 	public static int hazardAssistedKills;
@@ -94,6 +95,7 @@ public class Statistics {
 		enemiesSlain	= 0;
 		foodEaten		= 0;
 		shitsTaken		= 0;
+		mirrorImageScrollUsed = 0;
 		itemsCrafted    = 0;
 		piranhasKilled	= 0;
 		hazardAssistedKills = 0;
@@ -140,6 +142,7 @@ public class Statistics {
 	private static final String SLAIN		= "enemiesSlain";
 	private static final String FOOD		= "foodEaten";
 	private static final String TURDS		= "shitsTaken";
+	private static final String MIRRORS		= "mirrorImageScrollUsed";
 	private static final String ALCHEMY		= "potionsCooked";
 	private static final String PIRANHAS	= "priranhas";
 	private static final String HAZARD_ASSISTS	= "hazard_assists";
@@ -190,6 +193,7 @@ public class Statistics {
 		bundle.put( SLAIN,		enemiesSlain );
 		bundle.put( FOOD,		foodEaten );
 		bundle.put( TURDS,		shitsTaken );
+		bundle.put( MIRRORS,	mirrorImageScrollUsed );
 		bundle.put( ALCHEMY,    itemsCrafted );
 		bundle.put( PIRANHAS,	piranhasKilled );
 		bundle.put(HAZARD_ASSISTS, hazardAssistedKills);
@@ -244,6 +248,7 @@ public class Statistics {
 		enemiesSlain	= bundle.getInt( SLAIN );
 		foodEaten		= bundle.getInt( FOOD );
 		shitsTaken		= bundle.getInt( TURDS );
+		mirrorImageScrollUsed = bundle.getInt( MIRRORS );
 		itemsCrafted    = bundle.getInt( ALCHEMY );
 		piranhasKilled	= bundle.getInt( PIRANHAS );
 		hazardAssistedKills = bundle.getInt( HAZARD_ASSISTS );
