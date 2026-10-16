@@ -147,3 +147,12 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - A bot that kills bosses with `die()` finds crashes in death handlers (the shared Pylon cast to a Caves boss level). Damage bosses in phases first, then kill. Check every shared mob class for casts of `Dungeon.level` to one boss level class when a mod adds its own boss level.
 - Special floors and mod levels built on depth 25 or above need clamps wherever a table is indexed by depth (`SecretRoom.secretsForFloor`, room pools).
 - Do not compile or run gradle while a tour is running.
+
+## Added after Ryuse's PD (2026-10-16)
+
+- **A hero class is a long list of touchpoints.** Copy the Zealot or Summoner ones, `HeroClass` (enum, init, mastery badge, armor abilities, sprite, splash, unlock), `HeroSubClass`, `Badges` (mastery, unlock, boss slain, victory, the two class maps, the mastery switch), `Talent` (three tiers, subclass tier, the Heroic Energy icon case), `Icons.get(HeroClass)`, `ClassArmor`, `Assets` sprite and splash, strings in `actors.properties` (heroclass short desc, desc, unlock, subclass short desc and desc, ability strings, `shopkeeper.talk_prison_<class>`) and `misc.properties` (badge).
+- **A mod with no talents for its hero** gets Shattered talents picked to suit the class, say so in PORTING.md.
+- **Kotlin mods.** The tools cannot copy `.kt`. Read the effect in each class and write it in Java.
+- **A new equipment slot** needs `Belongings` (field, accessor, bundle, clear, iterator, randomEquipped, uncurse), `WndBag` (the slot and the `equipped` count), and one static helper class that the rest of the game calls, so each hook is a single line. Generator needs a `Category` and its `classes` and `defaultProbs`. Put the items in the Catalog so the sandbox lists them.
+- **Check where a copied file sits against its package line.** `port-item.py` made a `tier1` folder for a class whose package line said `melee`, and its strings were keyed to the wrong package. Move the file, then fix the strings.
+- **If `check.sh` says 'Argument list too long'** the classpath outgrew one command line. It now uses argument files, do the same in any new script that builds a classpath from Gradle's cache.

@@ -32,6 +32,8 @@ public class Assets {
 	}
 
 	public static class Environment {
+		public static final String SEWER_SP = "environment/custom_tiles/ryuse/sewers_special.png"; //ported, ryuse
+		public static final String EYE_OF_WISDOM_TILE = "environment/custom_tiles/ryuse/eye_of_wisdom_tiles.png"; //ported, ryuse
 		public static final String CAPYNEST_SP = "environment/custom_tiles/shittened/capybaranest.png"; //ported, shittened
 		public static final String TILES_ICE2 = "environment/mattedition/tiles_ice_snow.png"; //ported, mattedition
 		public static final String TILES_THIEF_GUILD = "environment/matt/tiles_guild.png"; //ported, matt

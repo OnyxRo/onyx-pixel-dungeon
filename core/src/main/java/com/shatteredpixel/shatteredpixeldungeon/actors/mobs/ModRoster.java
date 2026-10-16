@@ -133,8 +133,8 @@ public class ModRoster {
 		add( "shittened", Evan.class, 0, 1, 99 );
 		add( "shittened", Tokmanni.class, 0, 1, 99 );
 		add( "shittened", GreenGoo.class, 0, 1, 99 );
-		add( "ryuse", PollutedCrab.class, 1, 1, 99 );
-		add( "ryuse", PollutedRat.class, 1, 1, 99 );
+		add( "ryuse", PollutedCrab.class, 2, 2, 9 );
+		add( "ryuse", PollutedRat.class, 3, 1, 9 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

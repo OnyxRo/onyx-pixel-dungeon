@@ -131,6 +131,10 @@ public abstract class SpecialRoom extends Room {
 	public static void initForFloor(){
 		floorSpecials = (ArrayList<Class<?extends Room>>) runSpecials.clone();
 		
+		//Ryuse's PD, a rat nest on the last sewer floor
+		if (Dungeon.depth == 4){
+			floorSpecials.add(0, RatNestRoom.class);
+		}
 		//laboratory rooms spawn on floor 3 or 4 each chapter
 		if (Dungeon.labRoomNeeded()){
 			Dungeon.LimitedDrops.LAB_ROOM.count++;

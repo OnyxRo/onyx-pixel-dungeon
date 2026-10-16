@@ -55,6 +55,8 @@ public class SpecialFloors {
 
 		add( "Devoted PD", "Shadow realm, the Void trap", VoidTrapLevel::new );
 
+		add( "Ryuse's PD", "Eye of Wisdom, the eye shaped chasm", EyeOfWisdomLevel::new );
+
 		add( "Cursed PD", "Start hub", StartLevel::new );
 		add( "Cursed PD", "Safe room", SafeRoom::new );
 		add( "Cursed PD", "Grinding level", GrindingLevel::new );
