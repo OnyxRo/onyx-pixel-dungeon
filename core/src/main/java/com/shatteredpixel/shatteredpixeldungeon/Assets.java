@@ -398,6 +398,7 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String GNOLLMARKSMAN = "sprites/deep/GnollMarksMan.png"; //ported, deep
 		public static final String TILES_LAIR = "sprites/dragonic/tiles_lair.png"; //ported, dragonic
 		public static final String STATUE_ARMOR = "sprites/dragonic/statuearmor.png"; //ported, dragonic
 		public static final String SMALLDRAKE = "sprites/dragonic/drake.png"; //ported, dragonic

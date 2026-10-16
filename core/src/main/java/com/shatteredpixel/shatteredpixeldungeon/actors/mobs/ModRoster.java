@@ -218,6 +218,34 @@ public class ModRoster {
 		add( "lovecraft", Pepe.class, 0, 1, 99 );
 		add( "lovecraft", BanditLord.class, 0, 1, 99 );
 		add( "lovecraft", LivingPlantFadeLeaf.class, 0, 1, 99 );
+		add( "deep", Assassin.class, 1, 1, 99 );
+		add( "deep", DarkRat.class, 1, 1, 99 );
+		add( "deep", Dummy.class, 1, 1, 99 );
+		add( "deep", Gangster.class, 1, 1, 99 );
+		add( "deep", GnollKnight.class, 1, 1, 99 );
+		add( "deep", GnollMarksman.class, 1, 1, 99 );
+		add( "deep", GnollNinja.class, 1, 1, 99 );
+		add( "deep", GnollThief.class, 1, 1, 99 );
+		add( "deep", Goolem.class, 1, 1, 99 );
+		add( "deep", Grieflord.class, 1, 1, 99 );
+		add( "deep", Idol.class, 1, 1, 99 );
+		add( "deep", KeyCreature.class, 1, 1, 99 );
+		add( "deep", LesserRat.class, 1, 1, 99 );
+		add( "deep", MandrakeClone.class, 1, 1, 99 );
+		add( "deep", NewbornElemental.class, 1, 1, 99 );
+		add( "deep", PurpleMushroom.class, 1, 1, 99 );
+		add( "deep", RedMushroom.class, 1, 1, 99 );
+		add( "deep", Sludge.class, 1, 1, 99 );
+		add( "deep", Spirit.class, 1, 1, 99 );
+		add( "deep", SummonIdol.class, 1, 1, 99 );
+		add( "deep", Terminator.class, 1, 1, 99 );
+		add( "deep", VoodooIdol.class, 1, 1, 99 );
+		add( "deep", YellowMushroom.class, 1, 1, 99 );
+		add( "deep", GangBoss.class, 1, 1, 99 );
+		add( "deep", GnollNinja1.class, 1, 1, 99 );
+		add( "deep", Mandrake.class, 1, 1, 99 );
+		add( "deep", ShamanLeader.class, 1, 1, 99 );
+		add( "deep", GnollNinja2.class, 1, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

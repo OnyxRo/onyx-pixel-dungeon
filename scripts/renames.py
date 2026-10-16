@@ -94,6 +94,13 @@ RENAMES = [
     ('3.x heavyBlowAbility and cleaveAbility have a damage boost argument', r'\b(Mace\.heavyBlowAbility|Sword\.cleaveAbility)\(\s*hero\s*,\s*target\s*,\s*([\d.]+f?)\s*,\s*this\s*\)', r'\1(hero, target, \2, 0, this)'),
     ('3.x sneakAbility has target and invisibility turns', r'Dagger\.sneakAbility\(\s*hero\s*,\s*(\d+)\s*,\s*this\s*\)', r'Dagger.sneakAbility(hero, target, \1, 2, this)'),
     ('3.x beforeAbilityUsed(hero) takes the target', r'\bbeforeAbilityUsed\(\s*hero\s*\)', 'beforeAbilityUsed(hero, null)'),
+    # Deep PD, written on the 0.4 base where Level fields were static
+    ('Deep, Level.water/passable/solid/flamable static arrays', r'\bLevel\.(water|passable|solid|flamable|avoid|losBlocking|pit)\b(?=\[|\.clone|;|\))', r'Dungeon.level.\1'),
+    ('Deep, Level.fieldOfView is heroFOV', r'\bLevel\.fieldOfView\b', 'Dungeon.level.heroFOV'),
+    ('Deep, King.Undead.count', r'King\.Undead\.count', '0'),
+    ('Deep, sprite folders flattened into sprites.deep', r'sprites\.(?:CavesMobsSprites|ForestMobsSprites|GnollMobsSprites|PrisonMobSprites|SewerMobSprites)\.(DarkRat|Goolem|LesserRat|Sludge|GnollKnight|GnollMarksman|BlueSoulBomb|RedSoulBomb|ShamanLeader|FemaleGangster|MaleGangster|GangBoss|NewbornElemental|Terminator|PurpleMushroom|RedMushroom|YellowMushroom|ElderShroom|Goblin)Sprite\b', r'sprites.deep.\1Sprite'),
+    ('Deep, sprites kept at the top of sprites are in sprites.deep here', r'sprites\.(Assassin|GnollThiefBoss|GnollThief|Grieflord|Idol|KeyCreature|Mandrake|FlyingCat)Sprite\b', r'sprites.deep.\1Sprite'),
+    ('Deep, other nested sprite folders hold Shattered sprites', r'sprites\.(?:CavesMobsSprites|ForestMobsSprites|GnollMobsSprites|PrisonMobSprites|SewerMobSprites|CityMobsSprites|HallsMobsSprites|MiscMobsSprites)\.(\w+)', r'sprites.\1'),
 ]
 
 def convert_long(s):
