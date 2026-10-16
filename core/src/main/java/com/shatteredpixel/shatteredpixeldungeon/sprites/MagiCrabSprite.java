@@ -8,7 +8,7 @@ public class MagiCrabSprite extends MobSprite {
     public MagiCrabSprite() {
         super();
 
-        texture( Assets.Sprites.CRAB );
+        texture( Assets.Sprites.TOWER_CRAB );
 
         TextureFilm frames = new TextureFilm( texture, 16, 16 );
 

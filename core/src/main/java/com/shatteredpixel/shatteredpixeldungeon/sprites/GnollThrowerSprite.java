@@ -11,7 +11,7 @@ public class GnollThrowerSprite extends MobSprite {
     public GnollThrowerSprite() {
         super();
 
-        texture( Assets.Sprites.GNOLL );
+        texture( Assets.Sprites.TOWER_GNOLL );
 
         TextureFilm frames = new TextureFilm( texture, 12, 15 );
 

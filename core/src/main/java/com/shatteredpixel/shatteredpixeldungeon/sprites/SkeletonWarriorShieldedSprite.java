@@ -10,7 +10,7 @@ public class SkeletonWarriorShieldedSprite extends MobSprite {
     public SkeletonWarriorShieldedSprite() {
         super();
 
-        texture( Assets.Sprites.SKELETON );
+        texture( Assets.Sprites.TOWER_SKELETON );
 
         TextureFilm frames = new TextureFilm( texture, 12, 15 );
 

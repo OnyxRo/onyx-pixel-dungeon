@@ -332,6 +332,23 @@ public class MeleeWeapon extends Weapon {
 	//shim for Cursed PD, its weapons scale their top damage by this
 	public float damageMultiplier = 1f;
 
+	//shims for Tower PD weapons. Rarity is only a label, the damage modifier is 1, and a weapon with
+	//a critical chance multiplies a hit by critMult now and then.
+	public int rarity = 0;
+	public float critChance = 0f;
+	public float critMult = 1f;
+	protected float damageModifier(){
+		return 1f;
+	}
+
+	@Override
+	public int proc(Char attacker, Char defender, int damage) {
+		if (critChance > 0f && com.watabou.utils.Random.Float() < critChance) {
+			damage = Math.round(damage * critMult);
+		}
+		return super.proc(attacker, defender, damage);
+	}
+
 	@Override
 	public int min(int lvl) {
 		//Shittened PD's prefix changes the low end

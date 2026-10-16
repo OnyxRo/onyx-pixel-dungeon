@@ -49,6 +49,8 @@ public abstract class ExoticScroll extends Scroll {
 	static{
 		//Abyssalnite's alternate exotics. Only the reverse lookup, so they exist and can be given but are not brewed
 		exoToReg.put(ScrollOfPetrification.class, ScrollOfTerror.class);
+		//Tower PD's Scroll of Discoveries, reverse lookup only
+		exoToReg.put(ScrollOfDiscoveries.class, ScrollOfMagicMapping.class);
 		exoToReg.put(ScrollOfAffection.class, ScrollOfLullaby.class);
 		exoToReg.put(ScrollOfConfusion.class, ScrollOfRage.class);
 		exoToReg.put(ScrollOfPolymorph.class, ScrollOfTransmutation.class);

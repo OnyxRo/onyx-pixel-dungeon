@@ -47,6 +47,7 @@ public class PathFinder {
 	//the four neighbours, then the four cells two steps away, then the cell itself. Used by ported mods
 	public static int[] CROSS2;
 	public static int[] NEIGHBOURS9;
+	public static int[] NEIGHBOURS25; //5x5 square without the middle, for Tower PD
 
 	//similar to their equivalent neighbour arrays, but the order is clockwise.
 	//Useful for some logic functions, but is slower due to lack of array-access order.
@@ -74,6 +75,10 @@ public class PathFinder {
 		NEIGHBOURS5 = new int[]{-width, -1, 0, +1, +width};
 		CROSS2 = new int[]{-width, -1, +1, +width, -width*2, -2, +2, +width*2, 0};
 		NEIGHBOURS9 = new int[]{-width-1, -width, -width+1, -1, 0, +1, +width-1, +width, +width+1};
+
+		NEIGHBOURS25 = new int[24];
+		int n25 = 0;
+		for (int dy = -2; dy <= 2; dy++) for (int dx = -2; dx <= 2; dx++) if (dx != 0 || dy != 0) NEIGHBOURS25[n25++] = dx + dy * width;
 
 		CIRCLE4 = new int[]{-width, +1, +width, -1};
 		CIRCLE8 = new int[]{-width-1, -width, -width+1, +1, +width+1, +width, +width-1, -1};

@@ -187,6 +187,9 @@ public class Assets {
 		public static final String TALE = "music/player/shittened/fantasy_tale.ogg"; //ported, shittened
 		public static final String RYUSE_GAME = "music/ryuse/game.ogg"; //ported, ryuse
 		public static final String RYUSE_THEME = "music/ryuse/theme.ogg"; //ported, ryuse
+		public static final String TOWER_GOBLIN_GROTTO = "music/tower/goblin_grotto.ogg"; //ported, tower
+		public static final String TOWER_GNOLL_GROTTO = "music/tower/gnoll_grotto.ogg"; //ported, tower
+		public static final String TOWER_METROPOLIS = "music/tower/metropolis_track.ogg"; //ported, tower
 		public static final String RYUSE_SURFACE = "music/ryuse/surface.ogg"; //ported, ryuse
 		public static final String ICE_CAVES = "music/mattedition/icecaves_calm.ogg"; //ported, mattedition
 		public static final String ICE_CAVES_TENSE = "music/mattedition/icecaves.ogg"; //ported, mattedition
@@ -396,6 +399,9 @@ public class Assets {
 
 	public static class Sprites {
 		public static final String TIMELESS_SOUL = "sprites/tower/timeless_soul.png"; //ported, tower
+		public static final String TOWER_GNOLL = "sprites/tower/gnoll.png"; //ported, tower, a sheet with extra frames
+		public static final String TOWER_CRAB = "sprites/tower/crab.png"; //ported, tower
+		public static final String TOWER_SKELETON = "sprites/tower/skeleton.png"; //ported, tower
 		public static final String GOBLINSHAMAN = "sprites/tower/goblinshaman.png"; //ported, tower
 		public static final String SLUGGER = "sprites/tower/slugger.png"; //ported, tower
 		public static final String LICTERIALASHER = "sprites/tower/licterialasher.png"; //ported, tower

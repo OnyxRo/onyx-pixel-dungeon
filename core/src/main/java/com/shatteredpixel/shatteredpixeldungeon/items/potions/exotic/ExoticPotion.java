@@ -56,6 +56,8 @@ public class ExoticPotion extends Potion {
 		exoToReg.put(PotionOfOverload.class, PotionOfExperience.class);
 		//Matt Edition's Potion of Vitality, also reverse lookup only (Mastery keeps the brewing slot)
 		exoToReg.put(PotionOfVitality.class, PotionOfStrength.class);
+		//Tower PD's Potion of Immortality, reverse lookup only
+		exoToReg.put(PotionOfImmortality.class, PotionOfHealing.class);
 		regToExo.put(PotionOfStrength.class, PotionOfMastery.class);
 		exoToReg.put(PotionOfMastery.class, PotionOfStrength.class);
 

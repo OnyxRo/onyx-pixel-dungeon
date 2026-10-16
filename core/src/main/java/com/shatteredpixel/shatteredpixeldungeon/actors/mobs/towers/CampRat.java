@@ -9,13 +9,14 @@ import com.watabou.utils.Random;
 
 public abstract class CampRat extends Rat {
     {
-        alignment = Alignment.ALLY;
+        //an ally of the tower hero in Tower PD, an ordinary enemy here
+        alignment = Alignment.ENEMY;
+        EXP = 4;
+        maxLvl = 9;
 
 
         immunities.add(Paralysis.class);
         immunities.add(StenchGas.class);
-
-        state = HUNTING;
 
         viewDistance = 11;
 
