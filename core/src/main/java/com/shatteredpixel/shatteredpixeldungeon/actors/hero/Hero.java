@@ -246,6 +246,47 @@ public class Hero extends Char {
 	
 	public Belongings belongings;
 	
+	//Lovecraft PD sanity and knowledge. Mental health falls from horrors and rises from healing things.
+	//At 0 the hero is insane and sometimes hurts themself when walking. Knowledge only counts up and down,
+	//the mod's scroll and wand gating was left out.
+	public int MHP = 10;
+	public int MHT = 10;
+	public int knowl = 0;
+
+	public void reduceMentalHealth( int value ){
+		if (value <= 0) return;
+		MHP = Math.max( 0, MHP - value );
+		if (sprite != null) sprite.showStatus( com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite.MENTAL, Messages.get(this, "redmentalh", value) );
+		GLog.n( Messages.get(this, "redmentalh", value) );
+	}
+
+	public void increaseMentalHealth( int value ){
+		if (value <= 0 || MHP >= MHT) return;
+		MHP = Math.min( MHT, MHP + value );
+		if (sprite != null) sprite.showStatus( com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite.MENTAL, Messages.get(this, "incmentalh", value) );
+		GLog.p( Messages.get(this, "incmentalh", value) );
+	}
+
+	public boolean isInsane(){
+		return MHP <= 0 && MHT > 0;
+	}
+
+	public int maxKnowl(){
+		return 5 + lvl * 5;
+	}
+
+	public void gainKnowl( int amount ){
+		if (amount <= 0) return;
+		knowl = Math.min( maxKnowl(), knowl + amount );
+		if (sprite != null) sprite.showStatus( com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite.MENTAL, Messages.get(this, "knowlplus", amount) );
+	}
+
+	public void loseKnowl( int amount ){
+		if (amount <= 0) return;
+		knowl = Math.max( 0, knowl - amount );
+		if (sprite != null) sprite.showStatus( com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite.MENTAL, Messages.get(this, "knowlminus", amount) );
+	}
+
 	//Cursed PD mana, spent by its Power items and refilled by MpRegen
 	public int magicSkill = 5;
 	public int MAX_MP = 10;
@@ -364,6 +405,9 @@ public class Hero extends Char {
 	private static final String TOTAL_EXPERIENCE = "totalExp";
 	private static final String MANA = "MP";
 	private static final String MANA_MAX = "MAX_MP";
+	private static final String MENTAL_HP = "mhp";
+	private static final String MENTAL_HT = "mht";
+	private static final String KNOWLEDGE = "knowl";
 	private static final String MAGIC_SKILL = "magicSkill";
 	private static final String LEVEL		= "lvl";
 	private static final String EXPERIENCE	= "exp";
@@ -387,6 +431,9 @@ public class Hero extends Char {
 		bundle.put( GRINDING, grinding );
 		bundle.put( TOTAL_EXPERIENCE, totalExp );
 		bundle.put( MANA_MAX, MAX_MP );
+		bundle.put( MENTAL_HP, MHP );
+		bundle.put( MENTAL_HT, MHT );
+		bundle.put( KNOWLEDGE, knowl );
 		bundle.put( MAGIC_SKILL, magicSkill );
 		
 		bundle.put( LEVEL, lvl );
@@ -439,6 +486,11 @@ public class Hero extends Char {
 		grinding = bundle.getBoolean( GRINDING );
 		totalExp = bundle.getInt( TOTAL_EXPERIENCE );
 
+		if (bundle.contains( MENTAL_HT )) {
+			MHP = bundle.getInt( MENTAL_HP );
+			MHT = bundle.getInt( MENTAL_HT );
+			knowl = bundle.getInt( KNOWLEDGE );
+		}
 		if (bundle.contains( MANA_MAX )) {
 			MP = bundle.getInt( MANA );
 			MAX_MP = bundle.getInt( MANA_MAX );
@@ -2691,6 +2743,12 @@ public class Hero extends Char {
 	@Override
 	public void move(int step, boolean travelling) {
 		boolean wasHighGrass = Dungeon.level.map[step] == Terrain.HIGH_GRASS;
+
+		//Lovecraft PD insanity, the hero stumbles and hurts themself half the time
+		if (isInsane() && isAlive() && Random.Int( 2 ) == 0){
+			damage( 1, this );
+			if (sprite != null) sprite.showStatus( com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite.MENTAL, Messages.get(this, "insane_stumble") );
+		}
 
 		//HERO MAY TAKE A SHIT (most of the time only when something was drunk or eaten that disagrees with them)
 		if (Random.Int(0,1500) == 4 && Dungeon.depth > 0 && Dungeon.branch == 0 && Dungeon.level != null && !Dungeon.level.locked){

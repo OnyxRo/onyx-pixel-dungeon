@@ -61,6 +61,7 @@ public class StatusPane extends Component {
 	private Image hp;
 	//Cursed PD's mana, a thin bar under health that only shows for a hero who uses powers
 	private com.watabou.noosa.ColorBlock mpBar;
+	private com.watabou.noosa.ColorBlock mhBar; //Lovecraft PD sanity, shown only while below full
 	private Image Dot; //a visual darkening over HP and shield that shows total incoming DOT
 	private BitmapText hpText;
 	private Button heroInfoOnBar;
@@ -147,6 +148,9 @@ public class StatusPane extends Component {
 		mpBar = new com.watabou.noosa.ColorBlock( 1, 2, 0xFF4A7BFF );
 		mpBar.visible = false;
 		add( mpBar );
+		mhBar = new com.watabou.noosa.ColorBlock( 1, 2, 0xFF8E5BC8 );
+		mhBar.visible = false;
+		add( mhBar );
 
 		if (large)  Dot = new Image(asset, 0, 103, 128, 9);
 		else        Dot = new Image(asset, 0, 40, 50, 4);
@@ -340,6 +344,10 @@ public class StatusPane extends Component {
 		com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero mpHero = Dungeon.hero;
 		boolean usesMana = mpHero.MAX_MP > 0 && (mpHero.MP < mpHero.MAX_MP
 				|| mpHero.belongings.getItem( com.shatteredpixel.shatteredpixeldungeon.items.powers.Power.class ) != null);
+		mhBar.x = hp.x;
+		mhBar.y = mpBar.y + 3f;
+		mhBar.visible = mpHero.MHP < mpHero.MHT;
+		if (mhBar.visible) mhBar.size( Math.max( 0f, hp.width * mpHero.MHP / (float)mpHero.MHT ), 2 );
 		mpBar.visible = usesMana;
 		if (usesMana) mpBar.size( Math.max( 0f, hp.width * Math.min( 1f, mpHero.MP / (float)mpHero.MAX_MP ) ), 2 );
 

@@ -200,3 +200,8 @@ TowerWandPrismatic
 TowerWave
 CustomParticle
 BossTenguClone
+# Lovecraft PD, its android launcher class
+LovecraftPixelDungeon
+BadgesScene
+IntroScene
+ChangesScene

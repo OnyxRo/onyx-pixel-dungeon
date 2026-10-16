@@ -349,9 +349,12 @@ public class Generator {
 					//from Shittened PD. These are not in the normal deck, Shittened's monsters, loot bags and plants give them.
 					com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFuel.class,
 					com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfKetchup.class,
-					com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfAcceleration.class};
-			POTION.defaultProbs  = new float[]{ 0, 3, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0 };
-			POTION.defaultProbs2 = new float[]{ 0, 3, 2, 2, 1, 2, 1, 1, 1, 1, 1, 0, 0, 0, 0 };
+					com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfAcceleration.class,
+					//from Lovecraft PD, only its monsters, plants and the sandbox hand these out
+					com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfSteam.class};
+			POTION.defaultProbs  = new float[]{ 0, 3, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 };
+			POTION.defaultProbs2 = new float[]{ 0, 3, 2, 2, 1, 2, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0 };
 			POTION.probs = POTION.defaultProbs.clone();
 			
 			SEED.classes = new Class<?>[]{
@@ -370,8 +373,11 @@ public class Generator {
 					//from Shittened PD, not in the normal deck
 					com.shatteredpixel.shatteredpixeldungeon.plants.TomatoPlant.Seed.class,
 					com.shatteredpixel.shatteredpixeldungeon.plants.PotatoPlant.Seed.class,
-					com.shatteredpixel.shatteredpixeldungeon.plants.CoffeeBush.Seed.class};
-			SEED.defaultProbs = new float[]{ 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0 };
+					com.shatteredpixel.shatteredpixeldungeon.plants.CoffeeBush.Seed.class,
+					//from Lovecraft PD, only its worlds drop these
+					com.shatteredpixel.shatteredpixeldungeon.plants.Dreamfoil.Seed.class,
+					com.shatteredpixel.shatteredpixeldungeon.plants.Steamweed.Seed.class};
+			SEED.defaultProbs = new float[]{ 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0 };
 			SEED.probs = SEED.defaultProbs.clone();
 			
 			SCROLL.classes = new Class<?>[]{

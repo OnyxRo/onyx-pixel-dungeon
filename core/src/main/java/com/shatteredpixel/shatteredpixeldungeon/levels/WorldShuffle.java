@@ -79,6 +79,12 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.DwarvenGatesLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.MagesQuarterLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.TowerHallsLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.SoulDesertLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.OverworldLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.EldritchSewersLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.EldritchPrisonLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.EldritchCavesLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.EldritchCityLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.EldritchHallsLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.NecropolisLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.PalePalaceLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.SkyAlchemyGreenhouseLevel;
@@ -167,7 +173,9 @@ public class WorldShuffle {
 			//Dragonic Pixel Dungeon
 			DragonLairLevel.class,
 			//Tower Pixel Dungeon
-			TowerSewersLevel.class, OozySewersLevel.class, TowerPrisonLevel.class, TowerTempleLevel.class, TowerCavesLevel.class, GoblinGrottoLevel.class, TowerMinesLevel.class, TowerCityLevel.class, DwarvenGatesLevel.class, MagesQuarterLevel.class, TowerHallsLevel.class, SoulDesertLevel.class
+			TowerSewersLevel.class, OozySewersLevel.class, TowerPrisonLevel.class, TowerTempleLevel.class, TowerCavesLevel.class, GoblinGrottoLevel.class, TowerMinesLevel.class, TowerCityLevel.class, DwarvenGatesLevel.class, MagesQuarterLevel.class, TowerHallsLevel.class, SoulDesertLevel.class,
+			//Lovecraft Pixel Dungeon
+			OverworldLevel.class, EldritchSewersLevel.class, EldritchPrisonLevel.class, EldritchCavesLevel.class, EldritchCityLevel.class, EldritchHallsLevel.class
 	};
 
 	/** A world that fits any region, used for Transformation's tower styles. */
@@ -216,7 +224,9 @@ public class WorldShuffle {
 			//Dragonic Pixel Dungeon, its lair sat past the Halls
 			HALLS,
 			//Tower Pixel Dungeon
-			SEWERS, SEWERS, PRISON, PRISON, CAVES, CAVES, CAVES, CITY, CITY, CITY, HALLS, HALLS
+			SEWERS, SEWERS, PRISON, PRISON, CAVES, CAVES, CAVES, CITY, CITY, CITY, HALLS, HALLS,
+			//Lovecraft Pixel Dungeon
+			SEWERS, SEWERS, PRISON, CAVES, CITY, HALLS
 	};
 
 	//the source mod's app icon for each world, in the same order as WORLDS. Null for Shattered's own
@@ -234,6 +244,7 @@ public class WorldShuffle {
 	private static final String ABYSSALNITE = "interfaces/mods/abyssalnite.png";
 	private static final String RKPD2 = "interfaces/mods/rkpd2.png";
 	private static final String DRAGONIC = "interfaces/mods/dragonic.png";
+	private static final String LOVECRAFT = "interfaces/mods/lovecraft.png";
 	private static final String CURSED = "interfaces/mods/cursed.png";
 	private static final String TOWER = "interfaces/mods/tower.png";
 	private static final String[] LOGOS = {
@@ -271,7 +282,9 @@ public class WorldShuffle {
 			//Dragonic Pixel Dungeon
 			DRAGONIC,
 			//Tower Pixel Dungeon
-			TOWER, TOWER, TOWER, TOWER, TOWER, TOWER, TOWER, TOWER, TOWER, TOWER, TOWER, TOWER
+			TOWER, TOWER, TOWER, TOWER, TOWER, TOWER, TOWER, TOWER, TOWER, TOWER, TOWER, TOWER,
+			//Lovecraft Pixel Dungeon
+			LOVECRAFT, LOVECRAFT, LOVECRAFT, LOVECRAFT, LOVECRAFT, LOVECRAFT
 	};
 
 	/** The asset path of the icon of the mod a floor's world comes from, or null for Shattered's own worlds. */
@@ -295,6 +308,9 @@ public class WorldShuffle {
 		}
 		if (Dungeon.branch == 0 && MATT.equals(modLogo(level))) {
 			return com.shatteredpixel.shatteredpixeldungeon.actors.mobs.MattSpawner.getMobRotation(level);
+		}
+		if (Dungeon.branch == 0 && LOVECRAFT.equals(modLogo(level))) {
+			return com.shatteredpixel.shatteredpixeldungeon.actors.mobs.LovecraftSpawner.getMobRotation(depth);
 		}
 		//any other mod with monsters on the roster
 		String key = modKey(level);

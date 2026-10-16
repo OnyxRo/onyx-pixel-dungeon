@@ -27,3 +27,5 @@ The cloud routine does the first unchecked task and checks it off. Smallest firs
 - [x] Experienced PD Perks. Done 2026-10-15, 17 of 18 perks. The cycle system stays out.
 - [x] Fix the item pictures (`TX_HEIGHT`) and the OOF Thief sprite. Done 2026-10-15, with `scripts/check-sprites.py` so it cannot come back unseen.
 - [x] Port Dragonic PD. Done 2026-10-16. Dragon Lair world, 8 monsters, the Dragon boss (sandbox only for now), the Viking and Dragon Knight heroes, 7 weapons, 7 items. Onyx to play the Dragon fight and both heroes, then add Dragonic to `bossPlaytested`. Left out, the Nilheim world (no art in the repo) and items that Shattered already has. See PORTING.md.
+- [x] Port Lovecraft PD in full (2026-10-16). 6 worlds, 18 monsters, 3 NPCs, about 90 items, the herb system, three rooms. What was left out is in PORTING.md.
+- [ ] Sandbox. Play a Lovecraft world (force Overworld or an Eldritch world). Check the sanity bar (a horror monster hitting you), a plant waking up as a living plant, firing a gun with the SHOOT action, cutting a plant with the Scissors and brewing a herb with the Tincture Bottle, and the elder sign room (drop the sign on the floor sign).

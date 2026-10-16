@@ -19,6 +19,14 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.tmobs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.towers.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.hostile.criminals.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.hostile.rats.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.hostile.scorpions.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.livingplants.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minibosses.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.ElderThing;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Gardner;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Pepe;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -187,6 +195,29 @@ public class ModRoster {
 		add( "tower", GoblinShaman.ShamanStrength.class, 1, 7, 12 );
 		add( "tower", GoblinShaman.ShamanShield.class, 1, 7, 12 );
 		add( "tower", GoblinShaman.ShamanRegen.class, 1, 7, 12 );
+		//Lovecraft PD. Spawning goes through LovecraftSpawner, so these are all weight 0 (bestiary, sandbox and tests only)
+		add( "lovecraft", KindSpirit.class, 0, 1, 99 );
+
+		add( "lovecraft", GreyRat.class, 0, 1, 99 );
+		add( "lovecraft", LivingPlantBlindWeed.class, 0, 1, 99 );
+		add( "lovecraft", LivingPlantDewCatcher.class, 0, 1, 99 );
+		add( "lovecraft", LivingPlantDreamFoil.class, 0, 1, 99 );
+		add( "lovecraft", LivingPlantEarthRoot.class, 0, 1, 99 );
+		add( "lovecraft", LivingPlantFireBloom.class, 0, 1, 99 );
+		add( "lovecraft", LivingPlantIceCap.class, 0, 1, 99 );
+		add( "lovecraft", LivingPlantSeedPod.class, 0, 1, 99 );
+		add( "lovecraft", LivingPlantSorrowMoss.class, 0, 1, 99 );
+		add( "lovecraft", LivingPlantStarFlower.class, 0, 1, 99 );
+		add( "lovecraft", LivingPlantSteamweed.class, 0, 1, 99 );
+		add( "lovecraft", LivingPlantStormVine.class, 0, 1, 99 );
+		add( "lovecraft", LivingPlantSunGrass.class, 0, 1, 99 );
+		add( "lovecraft", Murderer.class, 0, 1, 99 );
+		add( "lovecraft", RedScorpion.class, 0, 1, 99 );
+		add( "lovecraft", ElderThing.class, 0, 1, 99 );
+		add( "lovecraft", Gardner.class, 0, 1, 99 );
+		add( "lovecraft", Pepe.class, 0, 1, 99 );
+		add( "lovecraft", BanditLord.class, 0, 1, 99 );
+		add( "lovecraft", LivingPlantFadeLeaf.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

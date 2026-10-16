@@ -70,6 +70,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	public static final int NEUTRAL		= 0xFFFF00;
 	public static final int BLACK		= 0x000000; //Tower PD
 	public static final int MYSTERIOUS	= 0xAA66FF; //Tower PD
+	public static final int MENTAL		= 0x6E7FC8; //Lovecraft PD sanity text
 	
 	public static final float DEFAULT_MOVE_INTERVAL = 0.1f;
 	private static float moveInterval = DEFAULT_MOVE_INTERVAL;

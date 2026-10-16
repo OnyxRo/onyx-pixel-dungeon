@@ -638,16 +638,28 @@ abstract public class Weapon extends KindOfWeapon {
 	public static abstract class Enchantment implements Bundlable {
 
 		public static final Class<?>[] common = new Class<?>[]{
-				Blazing.class, Chilling.class, Kinetic.class, Shocking.class, Venomous.class
+				Blazing.class, Chilling.class, Kinetic.class, Shocking.class, Venomous.class,
+				//Lovecraft PD
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Midas.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Stunning.class
 		};
 
 		public static final Class<?>[] uncommon = new Class<?>[]{
 				Blocking.class, Blooming.class, Eldritch.class, Elastic.class,
-				Lucky.class, Projecting.class, Unstable.class, Vorpal.class
+				Lucky.class, Projecting.class, Unstable.class, Vorpal.class,
+				//Lovecraft PD
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Exploding.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Friendship.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Glowing.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Hunting.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Sting.class
 		};
 
 		public static final Class<?>[] rare = new Class<?>[]{
-				Corrupting.class, Crystal.class, Grim.class, Vampiric.class
+				Corrupting.class, Crystal.class, Grim.class, Vampiric.class,
+				//Lovecraft PD
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Holy.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.TimeFreezing.class
 		};
 
 		public static final float[] typeChances = new float[]{
@@ -660,7 +672,11 @@ abstract public class Weapon extends KindOfWeapon {
 				Annoying.class, Displacing.class, Dazzling.class, Explosive.class, Friendly.class,
 				Polarized.class, Pressurized.class, Sacrificial.class, Wayward.class, Wondrous.class,
 				com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Leech.class,
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Binding.class
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Binding.class,
+				//Lovecraft PD
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Menacing.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Blowback.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Cowardice.class
 		};
 			
 		public abstract int proc( Weapon weapon, Char attacker, Char defender, int damage );
