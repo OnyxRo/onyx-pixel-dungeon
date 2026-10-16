@@ -1032,6 +1032,13 @@ public abstract class Mob extends Char {
 	@Override
 	public void die( Object cause ) {
 
+		//Dragonic PD, the Ring of Life gives back some health when the hero kills something
+		if (cause == Dungeon.hero && alignment == Alignment.ENEMY && Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfLife.Life.class) != null
+				&& Random.Int(10) < 7){
+			Dungeon.hero.HP = com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfLife.lifeStealVal(HT);
+			Dungeon.hero.sprite.emitter().burst( com.shatteredpixel.shatteredpixeldungeon.effects.Speck.factory(com.shatteredpixel.shatteredpixeldungeon.effects.Speck.HEALING), 1 );
+		}
+
 		if (cause == Chasm.class){
 			//50% chance to round up, 50% to round down
 			if (EXP % 2 == 1) EXP += Random.Int(2);

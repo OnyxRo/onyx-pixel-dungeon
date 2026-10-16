@@ -153,6 +153,14 @@ public class ModRoster {
 		add( "transformation", SoulCollector.class, 1, 16, 25 );
 		add( "transformation", TapirCrocodile.class, 1, 21, 25 );
 		add( "transformation", TransformMimic.class, 0, 1, 99 );
+		add( "dragonic", Ainsley.class, 1, 22, 24 );
+		add( "dragonic", DreadKnight.class, 0, 1, 99 );
+		add( "dragonic", Shadow.class, 1, 22, 24 );
+		add( "dragonic", SkeletonWarrior.class, 0, 1, 99 );
+		add( "dragonic", SmallDrake.class, 1, 22, 24 );
+		add( "dragonic", StatueArmor.class, 0, 1, 99 );
+		add( "dragonic", FlamingSkull.class, 1, 22, 24 );
+		add( "dragonic", Slug.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

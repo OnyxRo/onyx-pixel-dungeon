@@ -88,6 +88,7 @@ RENAMES = [
     ('Transformation hero talents do not exist here', r'\bhero\.pointsNegative\(Talent\.LAND_SWIMMING\)\s*(<\s*2|==\s*0)', 'true'),
     ('Transformation hero talent FISHING_TIME', r'\bhero\.(?:hasTalent|pointsInTalent)\(Talent\.FISHING_TIME\)(?:\s*==\s*2)?', 'false'),
     ('Transformation Talent.onRangedAttackHit hook', r'\bTalent\.onRangedAttackHit\([^;]*\);', '//Transformation talent hook, none here'),
+    ('Dragonic, the old Dungeon.visible array is Dungeon.level.heroFOV', r'Dungeon\.visible\[', 'Dungeon.level.heroFOV['),
 ]
 
 def convert_long(s):

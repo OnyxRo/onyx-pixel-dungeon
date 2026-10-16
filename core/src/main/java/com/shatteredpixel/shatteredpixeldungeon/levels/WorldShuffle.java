@@ -48,6 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.BeachLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.SurfaceLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.CursedTempleLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.DolyaHavenLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.DragonLairLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.PollutedSewersLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.UesLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.LushSurfaceLevel;
@@ -150,7 +151,9 @@ public class WorldShuffle {
 			//Abyssalnite Pixel Dungeon
 			AbyssalSewersLevel.class, AbyssalPrisonLevel.class, AbyssalCavesLevel.class, AbyssalCityLevel.class, AbyssalHallsLevel.class,
 			//Rat King Pixel Dungeon 2
-			RatKingSewersLevel.class
+			RatKingSewersLevel.class,
+			//Dragonic Pixel Dungeon
+			DragonLairLevel.class
 	};
 
 	/** A world that fits any region, used for Transformation's tower styles. */
@@ -195,7 +198,9 @@ public class WorldShuffle {
 			//Abyssalnite Pixel Dungeon
 			SEWERS, PRISON, CAVES, CITY, HALLS,
 			//Rat King Pixel Dungeon 2
-			SEWERS
+			SEWERS,
+			//Dragonic Pixel Dungeon, its lair sat past the Halls
+			HALLS
 	};
 
 	//the source mod's app icon for each world, in the same order as WORLDS. Null for Shattered's own
@@ -212,6 +217,7 @@ public class WorldShuffle {
 	private static final String RYUSE = "interfaces/mods/ryuse.png";
 	private static final String ABYSSALNITE = "interfaces/mods/abyssalnite.png";
 	private static final String RKPD2 = "interfaces/mods/rkpd2.png";
+	private static final String DRAGONIC = "interfaces/mods/dragonic.png";
 	private static final String CURSED = "interfaces/mods/cursed.png";
 	private static final String[] LOGOS = {
 			null, null, null, null, null,
@@ -244,7 +250,9 @@ public class WorldShuffle {
 			//Abyssalnite Pixel Dungeon
 			ABYSSALNITE, ABYSSALNITE, ABYSSALNITE, ABYSSALNITE, ABYSSALNITE,
 			//Rat King Pixel Dungeon 2
-			RKPD2
+			RKPD2,
+			//Dragonic Pixel Dungeon
+			DRAGONIC
 	};
 
 	/** The asset path of the icon of the mod a floor's world comes from, or null for Shattered's own worlds. */

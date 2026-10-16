@@ -630,6 +630,17 @@ public enum Catalog {
 		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.Tincture.class);
 		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RitualDagger.class);
 
+		//items ported from shattered-pixel-dungeon-master
+		ENCHANTMENTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Stunning.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.DragonDagger.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knuckles.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.VikingMace.class);
+		THROWN_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.CurareDart.class);
+		POTIONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight.class);
+		RINGS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfLife.class);
+		SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion.class);
+		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfVenom.class);
+
 
 	}
 
