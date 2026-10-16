@@ -32,7 +32,7 @@ public class ChiefRatSprite extends MobSprite {
     public ChiefRatSprite() {
         super();
 
-        texture(Assets.Sprites.RAT);
+        texture(Assets.Sprites.TOWER_RAT);
 
         TextureFilm frames = new TextureFilm(texture, 16, 15);
 
