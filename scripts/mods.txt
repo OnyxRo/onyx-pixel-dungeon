@@ -18,3 +18,4 @@ ratking|https://github.com/Zrp200/rkpd2|Rat King PD 2, worlds only|
 ryuse|https://github.com/Ryuse/My-Pixel-Dungeon|Ryuse PD, worlds only|0.9.0b
 dragonic|https://github.com/duyhoang5152/DragonicPixelDungeon|Dragonic PD, Dragon Lair and its monsters|0.6.1b
 lovecraft|https://github.com/Sadsaltan/LovecraftPixelDungeon|Lovecraft PD, ported in full|0.6.x
+sps|https://github.com/hmdzl001/SPS-PD|SPecial Surprise PD, ported without tile sheets|0.4.1
