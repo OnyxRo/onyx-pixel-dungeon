@@ -35,6 +35,8 @@ import com.watabou.utils.SparseArray;
 public class Speck extends Image {
 
 	public static final int HEALING     = 0;
+	//Transformation PD stand in, the pheromone cloud reuses the healing speck
+	public static final int PHEROMONE   = 0;
 	public static final int STAR        = 1;
 	public static final int LIGHT       = 2;
 	public static final int QUESTION    = 3;

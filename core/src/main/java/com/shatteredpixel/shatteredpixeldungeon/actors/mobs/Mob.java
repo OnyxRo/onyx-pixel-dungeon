@@ -152,9 +152,37 @@ public abstract class Mob extends Char {
 	}
 
 	//from Transformation PD, marks a ranged attack that uses the physical pipeline
-	protected void beginPhysicalRangedAttack() {}
+	private boolean pendingPhysicalRanged = false;
 
-	protected void completePhysicalAttack(Char target, boolean hit) {}
+	protected void beginPhysicalRangedAttack() {
+		pendingPhysicalRanged = true;
+	}
+
+	protected void completePhysicalAttack(Char target, boolean hit) {
+		boolean ranged = pendingPhysicalRanged;
+		pendingPhysicalRanged = false;
+		if (hit && ranged && this instanceof RangedAttack) {
+			((RangedAttack) this).onRangedAttackHit(target);
+		}
+	}
+
+	protected boolean doPhysicalRangedAttack(Char enemy) {
+		return doPhysicalRangedAttack(enemy, false);
+	}
+
+	protected boolean doPhysicalRangedAttack(Char enemy, boolean zapAnimation) {
+		beginPhysicalRangedAttack();
+		if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
+			if (zapAnimation) sprite.zap(enemy.pos); else sprite.attack(enemy.pos);
+			return false;
+		} else {
+			boolean hit = attack( enemy );
+			completePhysicalAttack(enemy, hit);
+			Invisibility.dispel(this);
+			spend( attackDelay() );
+			return true;
+		}
+	}
 
 	protected void onAdd(){
 		if (firstAdded) {
@@ -832,7 +860,8 @@ public abstract class Mob extends Char {
 	
 	@Override
 	public void onAttackComplete() {
-		attack( enemy );
+		boolean hit = attack( enemy );
+		completePhysicalAttack( enemy, hit );
 		Invisibility.dispel(this);
 		spend( attackDelay() );
 		super.onAttackComplete();
