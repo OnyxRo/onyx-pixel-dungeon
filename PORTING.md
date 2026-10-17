@@ -136,3 +136,11 @@ Left out, and why.
 - Not seen on screen yet. The sanity bar, the three new rooms, living plants waking up, guns firing, the herb and tincture windows. The arena picture showed the new monsters and living plants fine.
 
 Tool changes made. `port-itemsprites.py` reads `ui/items.png` for 0.5 and 0.6 mods. `port-skip.txt` has the mod launcher and the scenes it drags in.
+
+## Goblins PD (2026-10-17, key `goblins`, repo locastan/GoblinsPixelDungeonGradle, a 0.3.0 base)
+
+Monsters only. 20 regular monsters (Assassin, BurningFist, ChaosMage and so on, listed in `ModRoster` under "goblins") and 12 pets, all with their own sheets under `sprites/goblins/`. The pets (`actors/mobs/pets/`, Bunny, Fairy, FireKlik, FrostKlik, MetalKlik, PhaseKlik, PoisonKlik, SpiderKlik, SugarplumFairy, PetBee, Scorpion, PetVelocirooster) are ordinary allies on a rewritten `PET` base with level, experience and the "may leave you" rule. Only the sandbox spawns them, since the mod's egg items and hero pet fields are not ported. Pet attack effects use `MagicMissile.boltFromChar` and `Electricity`.
+
+Left out. The mod's 16 old-API items (Egg, EasterEgg, HummingTool, Yumyuck, the two bags, glyphs, rings and enchantments) need rewrites for `level` access, bag, food and WndBag APIs, so they were dropped after a failed attempt. SewerFly, Lightnings and LightningTrap were dropped too. The mod's own Scorpion pet sheet frames were offset by 28, fixed.
+
+Tools added. `scripts/port-oldstats.py` converts 0.3 era stat blocks (HP, damage, defence, immunities) and `scripts/port-oldsheets.py` copies a mod's mob sheets into a subfolder and adds the Assets constants. `scripts/rerename.py` reruns `renames.py` on files. `scripts/port-olditems.py` moves `name = "..."` and plain `desc()`/`info()` strings into items.properties. `port-itemsprites.py` accepts `ONYX_ITEM_ROWS=122-127` to pin parallel agents to their own rows. Pets crash headless on `GameScene.scene` (emoticons), so they sit in `mob-baseline.txt`. Not seen on screen yet.

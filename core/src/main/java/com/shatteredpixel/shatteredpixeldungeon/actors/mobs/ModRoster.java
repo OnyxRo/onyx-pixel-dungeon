@@ -238,6 +238,19 @@ public class ModRoster {
 		add( "goblins", Undead.class, 0, 1, 99 );
 		add( "goblins", Yeti.class, 0, 1, 99 );
 		add( "goblins", Zombie.class, 0, 1, 99 );
+		add( "goblins", Velocirooster.class, 0, 1, 99 );
+		add( "goblins", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.Bunny.class, 0, 1, 99 );
+		add( "goblins", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.Fairy.class, 0, 1, 99 );
+		add( "goblins", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.FireKlik.class, 0, 1, 99 );
+		add( "goblins", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.FrostKlik.class, 0, 1, 99 );
+		add( "goblins", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.MetalKlik.class, 0, 1, 99 );
+		add( "goblins", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.PhaseKlik.class, 0, 1, 99 );
+		add( "goblins", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.PoisonKlik.class, 0, 1, 99 );
+		add( "goblins", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.SpiderKlik.class, 0, 1, 99 );
+		add( "goblins", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.SugarplumFairy.class, 0, 1, 99 );
+		add( "goblins", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.PetBee.class, 0, 1, 99 );
+		add( "goblins", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.Scorpion.class, 0, 1, 99 );
+		add( "goblins", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.PetVelocirooster.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

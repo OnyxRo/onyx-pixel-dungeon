@@ -52,7 +52,8 @@ def convert(name, props):
     if 'port-oldstats' in s: return props
     nl = '\r\n' if '\r\n' in s else '\n'
     s = s.replace('\r\n', '\n')
-    key = 'actors.mobs.' + name.lower()
+    key = 'actors.mobs.' + name.lower().replace('/', '.')
+    simple = name.split('/')[-1]
     m = re.search(r'\n\s*name\s*=\s*([^;]+);', s)
     if m:
         props = set_prop(props, key + '.name', jstr(m.group(1)))
@@ -80,7 +81,7 @@ def convert(name, props):
     if m: s = s.replace(m.group(0), '', 1)
     # resistance sets
     sets = {}
-    for kind in ('IMMUNITIES', 'RESISTANCES'):
+    for kind in ('IMMUNITIES', 'RESISTANCES', 'VULNERABLE'):
         m = re.search(r'\n\s*(?:private\s+)?static\s+final\s+HashSet<Class<\?>>\s+' + kind + r'\s*=\s*new[^;]*;\s*\n\s*static\s*\{', s)
         if m:
             e = block_end(s, m.end() - 1)
@@ -91,10 +92,11 @@ def convert(name, props):
             e = block_end(s, m.end() - 1)
             s = s[:m.start()] + s[e:]
     for kind, cl in sets.items():
+        if kind == 'VULNERABLE': continue
         for c in cl:
             extra.append(kind.lower() + '.add( ' + c + '.class );')
     # insert into the initializer, the first '{' block directly inside the class
-    ci = re.search(r'public\s+(?:abstract\s+)?class\s+' + name + r'\b[^{]*\{', s)
+    ci = re.search(r'public\s+(?:abstract\s+)?class\s+' + simple + r'\b[^{]*\{', s)
     ib = re.compile(r'\n[ \t]*\{').search(s, ci.end() - 1)
     ie = block_end(s, ib.start())
     init = s[ib.start():ie - 1].rstrip() + '\n'
@@ -108,6 +110,7 @@ def convert(name, props):
     if 'dmgRed' in stats:
         meths += '\n    @Override\n    public int drRoll() {\n        return Random.NormalIntRange( 0, %s );\n    }\n' % stats['dmgRed']
     s = s[:ib.start()] + init + meths + s[ie:]
+    s = re.sub(r'@Override\s*public\s+int\s+dr\(\s*\)\s*\{\s*return\s+([^;]+);\s*\}', lambda m: '@Override\n    public int drRoll() {\n        return ' + m.group(1) + ';\n    }', s)
     s = re.sub(r'(?<![\w."])name(?=\s*[,)])', 'name()', s)
     for imp in ('actors.Char', 'actors.mobs.Mob'):
         pass
@@ -117,7 +120,7 @@ def convert(name, props):
             s = re.sub(r'(package [\w.]+;\n)', r'\1\nimport ' + pkg + '.' + cls + ';', s, count=1)
     addimp('Char', 'com.shatteredpixel.shatteredpixeldungeon.actors')
     addimp('Random', 'com.watabou.utils')
-    s = s.replace('public class ' + name, '//port-oldstats\npublic class ' + name, 1)
+    s = s.replace('public class ' + simple, '//port-oldstats\npublic class ' + simple, 1)
     wr(path, s.replace('\n', nl))
     print('converted', name, list(stats))
     return props

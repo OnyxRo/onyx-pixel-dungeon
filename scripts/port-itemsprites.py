@@ -16,6 +16,10 @@ PK = 'core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/'
 # rows 13 and 19 (zero based 12 and 18) and every row from 33 down are kept for other mods' items.
 # The sheet grows by itself when they run out, see free_cell.
 def mod_rows(height):
+    # ONYX_ITEM_ROWS=122-127 (one based, as the brief names them) pins a parallel agent to its own rows
+    if os.environ.get('ONYX_ITEM_ROWS'):
+        a, b = [int(x) for x in os.environ['ONYX_ITEM_ROWS'].split('-')]
+        return list(range(a - 1, b))
     return [12, 18] + list(range(32, height // 16))
 
 def LP(p):
@@ -57,7 +61,9 @@ def free_cell():
     while True:
         for r in mod_rows(dst.height):
             for c in range(16):
+                if r * 16 + 16 > dst.height: continue
                 if dst.crop((c * 16, r * 16, c * 16 + 16, r * 16 + 16)).getbbox() is None: return c, r
+        if os.environ.get('ONYX_ITEM_ROWS') and max(mod_rows(0)) * 16 + 16 <= dst.height: raise SystemExit('the pinned item rows are full')
         # nothing free, add eight rows (128 px) at the bottom and look again
         grown = Image.new('RGBA', (dst.width, dst.height + 128), (0, 0, 0, 0))
         grown.paste(dst, (0, 0))

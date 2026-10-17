@@ -685,5 +685,11 @@ public class Assets {
 		public static final String GOB_ROTTING = "sprites/goblins/rotting_fist.png"; //ported, goblins
 		public static final String GOB_LARVA = "sprites/goblins/larva.png"; //ported, goblins
 		public static final String GOB_UNDEAD = "sprites/goblins/undead.png"; //ported, goblins
+		public static final String GOB_BEE = "sprites/goblins/bee.png"; //ported, goblins
+		public static final String GOB_SCORPIO = "sprites/goblins/scorpio.png"; //ported, goblins
+		public static final String GOB_ROOSTER = "sprites/goblins/velocirooster.png"; //ported, goblins
+		public static final String GOB_BUNNY = "sprites/goblins/rabbit.png"; //ported, goblins
+		public static final String GOB_FAIRY = "sprites/goblins/fairy.png"; //ported, goblins
+		public static final String GOB_KLIKS = "sprites/goblins/kliks.png"; //ported, goblins
 	}
 }

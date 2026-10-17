@@ -108,6 +108,9 @@ RENAMES = [
     ('Goblins, updateFieldOfView call is gone', r'[ \t]*Dungeon\.level\.updateFieldOfView\(\s*this\s*\);[ \t]*\r?\n', ''),
     ('Goblins, THROWN_ITEM is PROJECTILE', r'Ballistica\.THROWN_ITEM', 'Ballistica.PROJECTILE'),
     ('Goblins, MagicMissile.shadow(parent, from, to, cb) is boltFromChar', r'MagicMissile\.shadow\(\s*parent,\s*ch\.pos,\s*(\w+),', r'MagicMissile.boltFromChar( parent, MagicMissile.SHADOW, this, \1,'),
+    ('Goblins, Ballistica.cast(from, to, false, true)', r'Ballistica\.cast\(\s*(\w+)\s*,\s*([\w.]+)\s*,\s*false\s*,\s*true\s*\)', r'new Ballistica( \1, \2, Ballistica.PROJECTILE ).collisionPos'),
+    ('Goblins, Dungeon.fail with ResultDescriptions', r'Dungeon\.fail\(\s*Utils\.format\(\s*ResultDescriptions\.\w+\s*,[^;]*?\)\s*\);', 'Dungeon.fail( this );'),
+    ('Goblins, ResultDescriptions or Utils leftover imports', r'(?m)^import [\w.]*\.(?:ResultDescriptions|Utils);[ \t]*\r?\n', ''),
     ('Goblins, old void Mob.add(Buff) override', r'public void add\(\s*Buff buff\s*\)\s*\{', 'public boolean add( Buff buff ) {'),
 ]
 
