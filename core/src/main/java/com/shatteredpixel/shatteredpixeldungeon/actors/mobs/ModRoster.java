@@ -218,6 +218,26 @@ public class ModRoster {
 		add( "lovecraft", Pepe.class, 0, 1, 99 );
 		add( "lovecraft", BanditLord.class, 0, 1, 99 );
 		add( "lovecraft", LivingPlantFadeLeaf.class, 0, 1, 99 );
+		add( "goblins", Assassin.class, 0, 1, 99 );
+		add( "goblins", BurningFist.class, 0, 1, 99 );
+		add( "goblins", ChaosMage.class, 0, 1, 99 );
+		add( "goblins", ClayGolem.class, 0, 1, 99 );
+		add( "goblins", DemonLord.class, 0, 1, 99 );
+		add( "goblins", Fingers.class, 0, 1, 99 );
+		add( "goblins", GreenSnake.class, 0, 1, 99 );
+		add( "goblins", IceDemon.class, 0, 1, 99 );
+		add( "goblins", Larva.class, 0, 1, 99 );
+		add( "goblins", LostSoul.class, 0, 1, 99 );
+		add( "goblins", Minotaur.class, 0, 1, 99 );
+		add( "goblins", RedSnake.class, 0, 1, 99 );
+		add( "goblins", RottingFist.class, 0, 1, 99 );
+		add( "goblins", SlimeBrown.class, 0, 1, 99 );
+		add( "goblins", SlimeRed.class, 0, 1, 99 );
+		add( "goblins", SpiderBot.class, 0, 1, 99 );
+		add( "goblins", Tinkerer.class, 0, 1, 99 );
+		add( "goblins", Undead.class, 0, 1, 99 );
+		add( "goblins", Yeti.class, 0, 1, 99 );
+		add( "goblins", Zombie.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

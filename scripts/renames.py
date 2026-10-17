@@ -94,6 +94,21 @@ RENAMES = [
     ('3.x heavyBlowAbility and cleaveAbility have a damage boost argument', r'\b(Mace\.heavyBlowAbility|Sword\.cleaveAbility)\(\s*hero\s*,\s*target\s*,\s*([\d.]+f?)\s*,\s*this\s*\)', r'\1(hero, target, \2, 0, this)'),
     ('3.x sneakAbility has target and invisibility turns', r'Dagger\.sneakAbility\(\s*hero\s*,\s*(\d+)\s*,\s*this\s*\)', r'Dagger.sneakAbility(hero, target, \1, 2, this)'),
     ('3.x beforeAbilityUsed(hero) takes the target', r'\bbeforeAbilityUsed\(\s*hero\s*\)', 'beforeAbilityUsed(hero, null)'),
+    # Goblins PD (Shattered 0.3 base), static Level arrays are instance fields now
+    ('Goblins, Level.adjacent and distance are instance methods', r'\bLevel\.(adjacent|distance)\(', r'Dungeon.level.\1('),
+    ('Goblins, static Level maps became instance fields', r'\bLevel\.(water|passable|solid|avoid|flamable|pit|losBlocking|openSpace|secret|discoverable|visited|mapped|map)\b(?=\s*[\[,);.])', r'Dungeon.level.\1'),
+    ('Goblins, Level.fieldOfView is heroFOV', r'\bLevel\.fieldOfView\b', 'Dungeon.level.heroFOV'),
+    ('Goblins, Level.NEIGHBOURS arrays live in PathFinder', r'\bLevel\.(NEIGHBOURS\w+)\b', r'com.watabou.utils.PathFinder.\1'),
+    ('Goblins, randomDestination takes the char', r'Dungeon\.level\.randomDestination\(\s*\)', 'Dungeon.level.randomDestination( this )'),
+    ('Goblins, psionic blast does not exist here', r'(?m)^[ \t]*(?:IMMUNITIES|RESISTANCES)\.add\(\s*ScrollOfPsionicBlast\.class\s*\);[ \t]*\r?\n', ''),
+    ('Goblins, psionic blast import', r'(?m)^import [\w.]*\.ScrollOfPsionicBlast;[ \t]*\r?\n', ''),
+    ('Goblins, ResultDescriptions import', r'(?m)^import [\w.]*\.(?:ResultDescriptions|utils\.Utils);[ \t]*\r?\n', ''),
+    ('Goblins, Dungeon.findPath is Level.findStep', r'Dungeon\.findPath\(\s*this,\s*pos,\s*target,\s*([^,]+?),\s*([^,)]+?)\s*\)', r'Dungeon.findStep( this, target, \1, \2, true )'),
+    ('Goblins, Dungeon.flee is Level.flee', r'Dungeon\.flee\(\s*this,\s*pos,\s*target,\s*([^,]+?),\s*([^,)]+?)\s*\)', r'Dungeon.flee( this, target, \1, \2, true )'),
+    ('Goblins, updateFieldOfView call is gone', r'[ \t]*Dungeon\.level\.updateFieldOfView\(\s*this\s*\);[ \t]*\r?\n', ''),
+    ('Goblins, THROWN_ITEM is PROJECTILE', r'Ballistica\.THROWN_ITEM', 'Ballistica.PROJECTILE'),
+    ('Goblins, MagicMissile.shadow(parent, from, to, cb) is boltFromChar', r'MagicMissile\.shadow\(\s*parent,\s*ch\.pos,\s*(\w+),', r'MagicMissile.boltFromChar( parent, MagicMissile.SHADOW, this, \1,'),
+    ('Goblins, old void Mob.add(Buff) override', r'public void add\(\s*Buff buff\s*\)\s*\{', 'public boolean add( Buff buff ) {'),
 ]
 
 def convert_long(s):
