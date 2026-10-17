@@ -56,7 +56,10 @@ public abstract class EquipableItem extends Item {
 	@Override
 	public ArrayList<String> actions(Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		actions.add( isEquipped( hero ) ? AC_UNEQUIP : AC_EQUIP );
+		//Pixel Dungeon Reforged, the Cube challenge does not let weapons be equipped
+		if (!Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.CUBE) || !(this instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon)) {
+			actions.add( isEquipped( hero ) ? AC_UNEQUIP : AC_EQUIP );
+		}
 		return actions;
 	}
 
@@ -80,6 +83,9 @@ public abstract class EquipableItem extends Item {
 		super.execute( hero, action );
 
 		if (action.equals( AC_EQUIP )) {
+			if (Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.CUBE) && this instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon) {
+				return;
+			}
 			//In addition to equipping itself, item reassigns itself to the quickslot
 			//This is a special case as the item is being removed from inventory, but is staying with the hero.
 			int slot = Dungeon.quickslot.getSlot( this );

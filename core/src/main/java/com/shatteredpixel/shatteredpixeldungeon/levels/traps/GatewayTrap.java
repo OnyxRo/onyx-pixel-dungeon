@@ -148,6 +148,11 @@ public class GatewayTrap extends Trap {
 
 	}
 
+	//Pixel Dungeon Reforged, fixes where this trap sends things, used by the levitation trial room
+	public void SetDestination(int pos) {
+		telePos = pos;
+	}
+
 	private static final String TELE_POS = "tele_pos";
 
 	@Override

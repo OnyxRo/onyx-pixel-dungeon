@@ -68,6 +68,8 @@ public class Spinner extends Mob {
 
 	@Override
 	public int drRoll() {
+		//Pixel Dungeon Reforged Randomizer, Fragile Chitin
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Spinner.class) == 3) return 0;
 		return super.drRoll() + Random.NormalIntRange(0, 6);
 	}
 
@@ -96,6 +98,8 @@ public class Spinner extends Mob {
 		if (state == HUNTING || state == FLEEING){
 			webCoolDown--;
 		}
+		//Webless
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Spinner.class) == 1) webCoolDown = 500;
 
 		AiState lastState = state;
 		boolean result = super.act();
@@ -121,6 +125,9 @@ public class Spinner extends Mob {
 		damage = super.attackProc( enemy, damage );
 		if (Random.Int(2) == 0) {
 			int duration = Random.IntRange(7, 8);
+			//Potent Venom and Weak Venom
+			if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Spinner.class) == 3) duration += 5;
+			if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Spinner.class) == 2) duration -= 5;
 			//we only use half the ascension modifier here as total poison dmg doesn't scale linearly
 			duration = Math.round(duration * (AscensionChallenge.statModifier(this)/2f + 0.5f));
 			Buff.affect(enemy, Poison.class).set(duration);
@@ -137,10 +144,18 @@ public class Spinner extends Mob {
 
 		Char enemy = this.enemy;
 		if (enemy == null) return -1;
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Spinner.class) == 1) return -1;
 
 		//don't web a non-moving enemy that we're going to attack
 		if (state != FLEEING && enemy.pos == lastEnemyPos && canAttack(enemy)){
 			return -1;
+		}
+
+		//Direct Shot, the web lands right on the target
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Spinner.class) == 2) {
+			int direct = enemy.pos;
+			int reach = new Ballistica( pos, direct, Ballistica.STOP_TARGET | Ballistica.STOP_SOLID).collisionPos;
+			return (reach == direct && Dungeon.level.passable[direct]) ? direct : -1;
 		}
 		
 		Ballistica b;
@@ -179,6 +194,18 @@ public class Spinner extends Mob {
 	
 	public void shootWeb(){
 		int webPos = webPos();
+		if (webPos != -1 && com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Spinner.class) == 2) {
+			for (int offset : PathFinder.NEIGHBOURS4) {
+				if (Dungeon.level.passable[webPos + offset]) applyWebToCell(webPos + offset);
+			}
+			webCoolDown = 10;
+			if (Dungeon.level.heroFOV[enemy.pos]) Dungeon.hero.interrupt();
+			Char target = Dungeon.level.findMob(webPos);
+			if (target == null && Dungeon.hero.pos == webPos) target = Dungeon.hero;
+			if (target != null) com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.prolong(target, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots.class, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots.DURATION);
+			next();
+			return;
+		}
 		if (webPos != -1){
 			int i;
 			for ( i = 0; i < PathFinder.CIRCLE8.length; i++){
@@ -270,5 +297,11 @@ public class Spinner extends Mob {
 			return super.act(enemyInFOV, justAlerted);
 		}
 
+	}
+
+	//Pixel Dungeon Reforged Randomizer. Lasting Webs (in Web), Direct Shot, Potent Venom, Webless, Weak Venom
+	//(all above) and Fragile Chitin
+	{
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Spinner.class) == 3) HP = HT = Math.max(1, HP / 2);
 	}
 }

@@ -119,7 +119,8 @@ public class Necromancer extends Mob {
 			}
 		}
 		
-		if (mySkeleton != null && mySkeleton.isAlive() && mySkeleton.alignment == alignment){
+		//Pixel Dungeon Reforged Randomizer, with Persistent Undead the skeleton outlives its master
+		if (!(com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Necromancer.class) == 3) && mySkeleton != null && mySkeleton.isAlive() && mySkeleton.alignment == alignment){
 			mySkeleton.die(null);
 		}
 		
@@ -183,7 +184,8 @@ public class Necromancer extends Mob {
 			}
 			
 		//otherwise give it adrenaline
-		} else if (mySkeleton.buff(Adrenaline.class) == null) {
+		//Apprentice cannot give adrenaline
+		} else if (mySkeleton.buff(Adrenaline.class) == null && !(com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Necromancer.class) == 3)) {
 
 			if (sprite.visible || mySkeleton.sprite.visible) {
 				sprite.parent.add(new Beam.HealthRay(sprite.center(), mySkeleton.sprite.center()));
@@ -323,7 +325,13 @@ public class Necromancer extends Mob {
 						Dungeon.hero.interrupt();
 					}
 					
-					spend( firstSummon ? TICK : 2*TICK );
+					if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Necromancer.class) == 1) {
+						//Bone Army, no wait for the summoning
+						summonMinion();
+						if (mySkeleton == null) spend( TICK );
+					} else {
+						spend( firstSummon ? TICK : 2*TICK );
+					}
 				} else {
 					//wait for a turn
 					spend(TICK);
@@ -386,7 +394,15 @@ public class Necromancer extends Mob {
 				} else {
 					
 					//zap skeleton
-					if (mySkeleton.HP < mySkeleton.HT || mySkeleton.buff(Adrenaline.class) == null) {
+					boolean shouldZapSkeleton = com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Necromancer.class) == 3 ? mySkeleton.HP < mySkeleton.HT
+							: (mySkeleton.HP < mySkeleton.HT || mySkeleton.buff(Adrenaline.class) == null);
+					//Cowardly, keeps away from the hero while there is nothing to zap
+					if (!shouldZapSkeleton && com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Necromancer.class) == 2 && fieldOfView[Dungeon.hero.pos]) {
+						int oldPos = pos;
+						getFurther( Dungeon.hero.pos );
+						moveSprite( oldPos, pos );
+					}
+					if (shouldZapSkeleton) {
 						if (sprite != null && sprite.visible){
 							sprite.zap(mySkeleton.pos);
 							return false;
@@ -418,6 +434,9 @@ public class Necromancer extends Mob {
 			
 			//20/25 health to start
 			HP = 20;
+
+			//Shambling Bones, the necromancer's skeletons are a quarter as fast
+			baseSpeed = com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Necromancer.class) == 1 ? 0.25f : 1f;
 		}
 
 		@Override
@@ -439,5 +458,11 @@ public class Necromancer extends Mob {
 			}
 		}
 		
+	}
+
+	//Pixel Dungeon Reforged Randomizer. Bone Army, Cowardly, Persistent Undead, Shambling Bones, Apprentice (all above)
+	//and Frail Form
+	{
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Necromancer.class) == 2) HP = HT = 10;
 	}
 }

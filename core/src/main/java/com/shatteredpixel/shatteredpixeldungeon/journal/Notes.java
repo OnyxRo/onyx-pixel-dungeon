@@ -144,6 +144,7 @@ public class Notes {
 		ELDRITCH_BRAIN,
 		//from Pixel Dungeon Reforged
 		HALF_RIPPER,
+		RANDOMIZER,
 
 		DEMON_SPAWNER;
 	}
@@ -215,6 +216,8 @@ public class Notes {
 
 				case HALF_RIPPER:
 					return new Image(new com.shatteredpixel.shatteredpixeldungeon.sprites.HalfRipperSprite());
+				case RANDOMIZER:
+					return Icons.get(Icons.RANDOMIZER);
 
 				case DEMON_SPAWNER:
 					return new Image(new SpawnerSprite());
@@ -275,6 +278,13 @@ public class Notes {
 				case ELDRITCH_BRAIN: return Messages.get(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.EldritchBrain.class, "desc");
 
 				case HALF_RIPPER:    return Messages.get(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper.class, "desc");
+				case RANDOMIZER:
+					if (depth == 1)		return com.shatteredpixel.shatteredpixeldungeon.windows.WndRandomizerDisplay.getRandomizerDescriptionForRegion(1);
+					if (depth == 6)		return com.shatteredpixel.shatteredpixeldungeon.windows.WndRandomizerDisplay.getRandomizerDescriptionForRegion(2);
+					if (depth == 11)	return com.shatteredpixel.shatteredpixeldungeon.windows.WndRandomizerDisplay.getRandomizerDescriptionForRegion(3);
+					if (depth == 16)	return com.shatteredpixel.shatteredpixeldungeon.windows.WndRandomizerDisplay.getRandomizerDescriptionForRegion(4);
+					if (depth == 21)	return com.shatteredpixel.shatteredpixeldungeon.windows.WndRandomizerDisplay.getRandomizerDescriptionForRegion(5);
+					return "";
 
 				case DEMON_SPAWNER: return Messages.get(DemonSpawner.class, "desc");
 			}

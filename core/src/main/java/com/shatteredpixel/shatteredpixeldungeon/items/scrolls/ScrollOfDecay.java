@@ -46,7 +46,7 @@ public class ScrollOfDecay extends Scroll {
 
 	@Override
 	public void doRead() {
-		consumeScroll();
+		detach(curUser.belongings.backpack);
 
 		GameScene.flash(0xFF0000);
 

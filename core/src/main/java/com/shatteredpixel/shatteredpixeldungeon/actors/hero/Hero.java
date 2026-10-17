@@ -366,6 +366,8 @@ public class Hero extends Char {
 		int curHT = HT;
 		
 		HT = 20 + 5*(lvl-1) + HTBoost;
+		//Pixel Dungeon Reforged, x1.1 easy, x1.0 medium, x0.9 hard, x0.8 impossible
+		HT = Math.round(HT * (1.2f - 0.1f * Dungeon.difficulty));
 		float multiplier = RingOfMight.HTMultiplier(this);
 		HT = Math.round(multiplier * HT);
 		HT = com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.maxHP(this, HT);
@@ -1797,7 +1799,9 @@ public class Hero extends Char {
 
 		attackTarget = action.target;
 
-		if (isCharmedBy(attackTarget)){
+		//Pixel Dungeon Reforged Randomizer, with Partial Resistance a charmed hero can still strike the succubus
+		if (isCharmedBy(attackTarget) && !(attackTarget instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Succubus
+				&& com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Succubus.class) == 3)){
 			GLog.w( Messages.get(Charm.class, "cant_attack"));
 			ready();
 			return false;
@@ -2289,6 +2293,16 @@ public class Hero extends Char {
 			spend( delay / speed() );
 			
 			search(false);
+
+			//Pixel Dungeon Reforged, the Barrier Breaker challenge burns every door the hero walks into
+			if (Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.BARRIER_BREAKER)
+					&& (Dungeon.level.map[step] == Terrain.DOOR || Dungeon.level.map[step] == Terrain.OPEN_DOOR)) {
+				Level.set(step, Terrain.EMBERS);
+				com.watabou.noosa.audio.Sample.INSTANCE.play(Assets.Sounds.BLAST);
+				CellEmitter.center(step).burst(com.shatteredpixel.shatteredpixeldungeon.effects.particles.SmokeParticle.FACTORY, 10);
+				spend(speed());
+				GameScene.updateMap(step);
+			}
 
 			return true;
 

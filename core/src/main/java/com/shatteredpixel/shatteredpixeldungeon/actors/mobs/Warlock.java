@@ -76,6 +76,8 @@ public class Warlock extends Mob {
 	
 	@Override
 	protected boolean canAttack( Char enemy ) {
+		//Pixel Dungeon Reforged Randomizer, Short Range
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Warlock.class) == 1 && distance(enemy) > 3) return false;
 		return super.canAttack(enemy)
 				|| new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos;
 	}
@@ -103,14 +105,17 @@ public class Warlock extends Mob {
 	public static class DarkBolt{}
 	
 	protected void zap() {
-		spend( TIME_TO_ZAP );
+		//Spell Fatigue takes twice as long
+		spend( com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Warlock.class) == 2 ? TIME_TO_ZAP * 2f : TIME_TO_ZAP );
 
 		Invisibility.dispel(this);
 		Char enemy = this.enemy;
 		if (hit( this, enemy, true )) {
 			//TODO would be nice for this to work on ghost/statues too
 			if (enemy == Dungeon.hero && Random.Int( 2 ) == 0) {
-				Buff.prolong( enemy, Degrade.class, Degrade.DURATION );
+				//Arcane Mastery makes the degrade much stronger, Hindering Hex slows as well
+				Buff.prolong( enemy, Degrade.class, Degrade.DURATION ).poweredUp = com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Warlock.class) == 3;
+				if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Warlock.class) == 1) Buff.prolong( enemy, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow.class, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow.DURATION );
 				Sample.INSTANCE.play( Assets.Sounds.DEGRADE );
 			}
 			
@@ -149,5 +154,81 @@ public class Warlock extends Mob {
 			return i;
 		}
 
+	}
+
+	//Pixel Dungeon Reforged Randomizer. Cowardly Caster and Dance Fever
+	private boolean dancing = false;
+	private static final String DANCING = "dancing";
+
+	{
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Warlock.class) == 3) WANDERING = new Dancing();
+	}
+
+	@Override
+	public void storeInBundle( com.watabou.utils.Bundle bundle ) {
+		super.storeInBundle( bundle );
+		bundle.put( DANCING, dancing );
+	}
+
+	@Override
+	public void restoreFromBundle( com.watabou.utils.Bundle bundle ) {
+		super.restoreFromBundle( bundle );
+		dancing = bundle.getBoolean( DANCING );
+	}
+
+	private void setIsDancing( boolean isDancing ) {
+		dancing = isDancing;
+		if (sprite instanceof com.shatteredpixel.shatteredpixeldungeon.sprites.WarlockSprite) {
+			if (isDancing) {
+				((com.shatteredpixel.shatteredpixeldungeon.sprites.WarlockSprite) sprite).dance();
+			} else {
+				sprite.idle();
+			}
+		}
+	}
+
+	@Override
+	public void damage( int dmg, Object src ) {
+		if (dancing) setIsDancing( false );
+		super.damage( dmg, src );
+	}
+
+	@Override
+	public void beckon( int cell ) {
+		if (!dancing) super.beckon( cell );
+	}
+
+	@Override
+	public void notice() {
+		if (!dancing) super.notice();
+	}
+
+	@Override
+	protected boolean getCloser( int target ) {
+		if (state == HUNTING && com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Warlock.class) == 2) {
+			return enemySeen && getFurther( target );
+		}
+		return super.getCloser( target );
+	}
+
+	//Dance Fever, now and then a warlock out wandering stops and dances
+	private class Dancing extends Mob.Wandering {
+		@Override
+		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
+			if (!dancing) {
+				if (!enemyInFOV && !justAlerted && Random.Int( 50 ) == 0) {
+					setIsDancing( true );
+					spend( TICK );
+					return true;
+				}
+				return super.act( enemyInFOV, justAlerted );
+			}
+			if (sprite instanceof com.shatteredpixel.shatteredpixeldungeon.sprites.WarlockSprite
+					&& !((com.shatteredpixel.shatteredpixeldungeon.sprites.WarlockSprite) sprite).isDancing()) {
+				((com.shatteredpixel.shatteredpixeldungeon.sprites.WarlockSprite) sprite).dance();
+			}
+			spend( TICK );
+			return true;
+		}
 	}
 }

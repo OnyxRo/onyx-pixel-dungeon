@@ -64,12 +64,14 @@ public class Thief extends Mob {
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
 		bundle.put( ITEM, item );
+		bundle.put( MAX_GOLD, maxGold );
 	}
 
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
 		item = (Item)bundle.get( ITEM );
+		maxGold = bundle.getInt( MAX_GOLD );
 	}
 
 	@Override
@@ -85,6 +87,8 @@ public class Thief extends Mob {
 
 	@Override
 	public float attackDelay() {
+		//Pixel Dungeon Reforged Randomizer, Single Strike takes away the second attack
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Thief.class) == 2) return super.attackDelay();
 		return super.attackDelay()*0.5f;
 	}
 
@@ -126,7 +130,9 @@ public class Thief extends Mob {
 	public int attackProc( Char enemy, int damage ) {
 		damage = super.attackProc( enemy, damage );
 		
-		if (canStealOnAttack() && alignment == Alignment.ENEMY && item == null
+		//Clumsy Hands, only a third of the attempts go anywhere
+		boolean clumsy = com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Thief.class) == 1 && Random.Int(3) > 0;
+		if (!clumsy && canStealOnAttack() && alignment == Alignment.ENEMY && item == null
 				&& enemy instanceof Hero && steal( (Hero)enemy )) {
 			state = FLEEING;
 		}
@@ -136,7 +142,7 @@ public class Thief extends Mob {
 
 	@Override
 	public int defenseProc(Char enemy, int damage) {
-		if (state == FLEEING) {
+		if (state == FLEEING && !(com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Thief.class) == 3)) {
 			Dungeon.level.drop( new Gold(), pos ).sprite.drop();
 		}
 
@@ -158,9 +164,9 @@ public class Thief extends Mob {
 
 	protected boolean steal( Hero hero ) {
 
-		Item toSteal = hero.belongings.randomUnequipped();
+		Item toSteal = hero.belongings.getThiefItemToSteal();
 
-		if (toSteal != null && !toSteal.unique && toSteal.level() < 1 ) {
+		if (toSteal != null ) {
 
 			GLog.w( Messages.get(theftMessageClass(), "stole", toSteal.name()) );
 			if (!toSteal.stackable) {
@@ -168,7 +174,8 @@ public class Thief extends Mob {
 			}
 			Item.updateQuickslot();
 
-			item = toSteal.detach( hero.belongings.backpack );
+			//Bold Fingers can take something the hero was wearing, which is no longer in the pack
+			item = hero.belongings.backpack.contains( toSteal ) ? toSteal.detach( hero.belongings.backpack ) : toSteal;
 			if (item instanceof Honeypot){
 				item = ((Honeypot)item).shatter(this, this.pos);
 			} else if (item instanceof Honeypot.ShatteredPot) {
@@ -238,6 +245,24 @@ public class Thief extends Mob {
 			} else {
 				state = WANDERING;
 			}
+		}
+	}
+
+	//Pixel Dungeon Reforged Randomizer. Master Pickpocket and Bold Fingers (in Belongings.getThiefItemToSteal),
+	//Bandit Recruitment (in the mob spawner), Clumsy Hands and Single Strike (above), Gold Bags
+	private int maxGold = 0;
+	private static final String MAX_GOLD = "max_gold";
+
+	@Override
+	public void damage( int dmg, Object src ) {
+		int before = HP;
+		super.damage( dmg, src );
+		//Gold Bags, a thief spills 25 to 50 gold over its life whether it runs or not
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Thief.class) == 3 && before > HP) {
+			if (maxGold == 0) maxGold = Random.Int( 25, 50 );
+			float share = (float)(before - HP) / (float)HT;
+			int gold = (int)(maxGold * share);
+			if (gold > 0) Dungeon.level.drop( new Gold( gold ), pos ).sprite.drop();
 		}
 	}
 }

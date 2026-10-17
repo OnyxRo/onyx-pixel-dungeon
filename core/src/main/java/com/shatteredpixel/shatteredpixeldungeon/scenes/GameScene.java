@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Randomizer;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndSongs;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndModInfo;
 import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
@@ -803,6 +804,9 @@ public class GameScene extends PixelScene {
 			} else {
 				DimensionalSundial.sundialWarned = false;
 			}
+
+			//Pixel Dungeon Reforged, the Randomizer challenge shows what changed in each new region
+			Randomizer.showRandomizerWindowIfRequired();
 
 			InterlevelScene.mode = InterlevelScene.Mode.NONE;
 

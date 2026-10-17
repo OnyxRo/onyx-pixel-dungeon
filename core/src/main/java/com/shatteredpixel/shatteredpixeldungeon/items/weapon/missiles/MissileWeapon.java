@@ -304,6 +304,10 @@ abstract public class MissileWeapon extends Weapon {
 	@Override
 	protected void onThrow( int cell ) {
 		Char enemy = Actor.findChar( cell );
+		//Pixel Dungeon Reforged, in the Cube challenge only the Force Cube can hit anything
+		if (Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.CUBE) && !(this instanceof ForceCube)) {
+			enemy = null;
+		}
 		if (enemy == null || enemy == curUser) {
 			parent = null;
 

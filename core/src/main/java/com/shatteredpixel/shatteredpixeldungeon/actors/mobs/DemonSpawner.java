@@ -119,7 +119,8 @@ public class DemonSpawner extends Mob {
 					Actor.add(new Pushing(spawn, pos, spawn.pos));
 				}
 
-				spawnCooldown += 60;
+				//Pixel Dungeon Reforged Randomizer, Rapid Deployment is every 30 turns and Lazy Spawners every 100
+				spawnCooldown += com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(RipperDemon.class) == 1 ? 30 : (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(RipperDemon.class) == 3 ? 100 : 60);
 				if (Dungeon.depth > 21){
 					//60/53.33/46.67/40 turns to spawn on floor 21/22/23/24
 					spawnCooldown -= Math.min(20, (Dungeon.depth-21)*6.67);

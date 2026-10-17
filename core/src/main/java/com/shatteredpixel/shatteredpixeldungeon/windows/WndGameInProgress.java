@@ -99,6 +99,7 @@ public class WndGameInProgress extends Window {
 		pos += GAP;
 		statSlot( Messages.get(this, "gold"), info.goldCollected );
 		statSlot( Messages.get(this, "depth"), info.maxDepth );
+		if (info.difficulty != 2) statSlot( Messages.get(this, "difficulty"), Messages.get(this, "difficulty" + info.difficulty) );
 		if (info.sandbox) statSlot( Messages.get(this, "mode"), "_" + Messages.get(this, "sandbox") + "_" );
 		if (info.daily) {
 			if (info.dailyReplay) {

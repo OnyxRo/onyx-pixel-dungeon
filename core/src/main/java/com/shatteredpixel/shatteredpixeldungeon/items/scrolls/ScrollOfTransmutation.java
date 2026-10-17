@@ -85,6 +85,10 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		} else if (item instanceof Scroll) {
 			return item != this || item.quantity() > 1 || identifiedByUse;
 
+		//Pixel Dungeon Reforged, the trinkets of Trinket Madness are stuck to the hero
+		} else if (item instanceof Trinket && Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.TRINKET_MADNESS)) {
+			return false;
+
 		//all non-unique artifacts (no holy tome or cloak of shadows, basically)
 		} else if (item instanceof Artifact) {
 			return !item.unique;

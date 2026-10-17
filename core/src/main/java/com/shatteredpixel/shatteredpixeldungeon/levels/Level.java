@@ -845,6 +845,8 @@ public abstract class Level implements Bundlable {
 		} else {
 			cooldown = TIME_TO_RESPAWN;
 		}
+		//Pixel Dungeon Reforged, the Horde challenge brings wandering monsters twice as often
+		if (Dungeon.isChallenged(Challenges.HORDE)) cooldown /= 2f;
 		return cooldown * Dungeon.respawnBoost / DimensionalSundial.spawnMultiplierAtCurrentTime();
 	}
 
@@ -1426,6 +1428,10 @@ public abstract class Level implements Bundlable {
 		
 		boolean sighted = c.buff( Blindness.class ) == null && c.buff( Shadows.class ) == null
 						&& c.isAlive();
+		//Pixel Dungeon Reforged Randomizer, Hollow Sockets leave skeletons blind for good
+		if (c instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Skeleton && com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Skeleton.class) == 2) {
+			sighted = false;
+		}
 		if (sighted) {
 			boolean[] blocking = null;
 

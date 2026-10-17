@@ -610,6 +610,7 @@ public class Assets {
 		public static final String EYE      = "sprites/eye.png";
 		public static final String GNOLL    = "sprites/gnoll.png";
 		public static final String CRAB     = "sprites/crab.png";
+		public static final String MONSTER_UNKNOWN = "sprites/monster_unknown.png"; //Pixel Dungeon Reforged, the Monster Unknown challenge
 		public static final String GOO      = "sprites/goo.png";
 		public static final String SWARM    = "sprites/swarm.png";
 		public static final String SKELETON = "sprites/skeleton.png";

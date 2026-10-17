@@ -63,7 +63,8 @@ public class ReclaimTrap extends TargetedSpell {
 
 		if (storedTrap == null) {
 			Trap t = Dungeon.level.traps.get(bolt.collisionPos);
-			if (t != null && t.active && t.visible) {
+			if (t != null && t.active && t.visible
+					&& !(t instanceof com.shatteredpixel.shatteredpixeldungeon.levels.traps.PressurePlateTrap)) {
 				t.disarm(); //even disarms traps that normally wouldn't be
 				
 				Sample.INSTANCE.play(Assets.Sounds.LIGHTNING);

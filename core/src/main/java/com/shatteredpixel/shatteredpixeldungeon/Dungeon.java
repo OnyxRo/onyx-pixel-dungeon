@@ -204,6 +204,10 @@ public class Dungeon {
 	}
 
 	public static int challenges;
+	//Pixel Dungeon Reforged. 1 easy, 2 medium (the way Shattered plays), 3 hard, 4 impossible
+	public static int difficulty = 2;
+	//Pixel Dungeon Reforged's Randomizer challenge, see Randomizer for how the bits are laid out
+	public static long randomizer;
 	public static float mobsToChampion;
 
 	public static Hero hero;
@@ -306,7 +310,9 @@ public class Dungeon {
 
 		initialVersion = version = Game.versionCode;
 		challenges = SPDSettings.challenges();
+		difficulty = SPDSettings.difficulty();
 		mobsToChampion = 1;
+		Randomizer.initialize();
 
 		Actor.clear();
 		Actor.resetNextID();
@@ -320,6 +326,7 @@ public class Dungeon {
 
 			SpecialRoom.initForRun();
 			SecretRoom.initForRun();
+			com.shatteredpixel.shatteredpixeldungeon.levels.rooms.modifierunlocks.ModifierUnlockRoom.initForRun();
 
 			Generator.fullReset();
 
@@ -720,7 +727,8 @@ public class Dungeon {
 
 	public static boolean trinketCataNeeded(){
 		//one trinket catalyst on floors 1-3
-		return depth < 5 && !LimitedDrops.TRINKET_CATA.dropped() && Random.Int(4-depth) == 0;
+		return depth < 5 && !LimitedDrops.TRINKET_CATA.dropped() && Random.Int(4-depth) == 0
+				&& !Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.TRINKET_MADNESS);
 	}
 
 	public static boolean labRoomNeeded(){
@@ -750,6 +758,8 @@ public class Dungeon {
 	private static final String SINGLE_MOD = "single_mod";
 	private static final String LAST_PLAYED = "last_played";
 	private static final String CHALLENGES	= "challenges";
+	private static final String DIFFICULTY	= "difficulty";
+	private static final String RANDOMIZER	= "randomizer";
 	private static final String MOBS_TO_CHAMPION	= "mobs_to_champion";
 	private static final String HERO		= "hero";
 	private static final String DEPTH		= "depth";
@@ -784,6 +794,8 @@ public class Dungeon {
 			bundle.put( SINGLE_MOD, singleMod );
 			bundle.put( LAST_PLAYED, lastPlayed = Game.realTime);
 			bundle.put( CHALLENGES, challenges );
+			bundle.put( DIFFICULTY, difficulty );
+			bundle.put( RANDOMIZER, randomizer );
 			bundle.put( MOBS_TO_CHAMPION, mobsToChampion );
 			bundle.put( HERO, hero );
 			bundle.put( DEPTH, depth );
@@ -827,6 +839,7 @@ public class Dungeon {
 			
 			SpecialRoom.storeRoomsInBundle( bundle );
 			SecretRoom.storeRoomsInBundle( bundle );
+			com.shatteredpixel.shatteredpixeldungeon.levels.rooms.modifierunlocks.ModifierUnlockRoom.storeRoomsInBundle( bundle );
 			
 			Statistics.storeInBundle( bundle );
 			Notes.storeInBundle( bundle );
@@ -911,6 +924,8 @@ public class Dungeon {
 		Toolbar.swappedQuickslots = false;
 
 		Dungeon.challenges = bundle.getInt( CHALLENGES );
+		Dungeon.difficulty = bundle.contains( DIFFICULTY ) ? bundle.getInt( DIFFICULTY ) : 2;
+		Dungeon.randomizer = bundle.contains( RANDOMIZER ) ? bundle.getLong( RANDOMIZER ) : 0L;
 		Dungeon.mobsToChampion = bundle.getFloat( MOBS_TO_CHAMPION );
 		
 		Dungeon.level = null;
@@ -955,6 +970,7 @@ public class Dungeon {
 			
 			SpecialRoom.restoreRoomsFromBundle(bundle);
 			SecretRoom.restoreRoomsFromBundle(bundle);
+			com.shatteredpixel.shatteredpixeldungeon.levels.rooms.modifierunlocks.ModifierUnlockRoom.restoreRoomsFromBundle(bundle);
 
 			generatedLevels.clear();
 			for (int i : bundle.getIntArray(GENERATED_LEVELS)){
@@ -1045,6 +1061,7 @@ public class Dungeon {
 		info.depth = bundle.getInt( DEPTH );
 		info.version = bundle.getInt( VERSION );
 		info.challenges = bundle.getInt( CHALLENGES );
+		info.difficulty = bundle.contains( DIFFICULTY ) ? bundle.getInt( DIFFICULTY ) : 2;
 		info.seed = bundle.getLong( SEED );
 		info.customSeed = bundle.getString( CUSTOM_SEED );
 		info.daily = bundle.getBoolean( DAILY );

@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollSprite;
@@ -53,6 +55,107 @@ public class Gnoll extends Mob {
 	
 	@Override
 	public int drRoll() {
+		//Pixel Dungeon Reforged Randomizer, Brittle Armour
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Gnoll.class) == 2) return super.drRoll() - 1;
 		return super.drRoll() + Random.NormalIntRange(0, 2);
+	}
+
+	//Pixel Dungeon Reforged Randomizer. Pack Hunters, Sling Masters, Alarm Network, Battle Scarred, Brittle Armour (above),
+	//Pacifist Patrol
+	{
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Gnoll.class) == 3) HUNTING = new Fleeing();
+	}
+
+	private int partnerId = -1;
+	private boolean seenPlayer = false;
+	private static final String PARTNER_ID = "partner_id";
+	private static final String SEEN_PLAYER = "seen_player";
+
+	@Override
+	public void storeInBundle( com.watabou.utils.Bundle bundle ) {
+		super.storeInBundle( bundle );
+		bundle.put( PARTNER_ID, partnerId );
+		bundle.put( SEEN_PLAYER, seenPlayer );
+	}
+
+	@Override
+	public void restoreFromBundle( com.watabou.utils.Bundle bundle ) {
+		super.restoreFromBundle( bundle );
+		if (bundle.contains( PARTNER_ID )) partnerId = bundle.getInt( PARTNER_ID );
+		seenPlayer = bundle.getBoolean( SEEN_PLAYER );
+	}
+
+	@Override
+	protected void onAdd() {
+		boolean first = firstAdded;
+		super.onAdd();
+		if (first && com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Gnoll.class) == 1) {
+			HP = (int) (HT * Random.Float(0.5f, 1.0f));
+		}
+	}
+
+	@Override
+	protected boolean act() {
+		//a pack hunter brings a partner along, who does not bring another
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Gnoll.class) == 1 && partnerId == -1 && !(this instanceof GnollExile)) {
+			partnerId = -2; //only tries once
+			java.util.ArrayList<Integer> candidates = new java.util.ArrayList<>();
+			int[] neighbours = {pos + 1, pos - 1, pos + Dungeon.level.width(), pos - Dungeon.level.width()};
+			for (int n : neighbours) {
+				if (Dungeon.level.passable[n] && Actor.findChar( n ) == null) {
+					candidates.add( n );
+				}
+			}
+			if (!candidates.isEmpty()) {
+				Gnoll child = new Gnoll();
+				child.partnerId = this.id();
+				this.partnerId = child.id();
+				if (state != SLEEPING) {
+					child.state = child.WANDERING;
+				}
+				child.pos = Random.element( candidates );
+				com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene.add( child );
+				Dungeon.level.occupyCell( child );
+				if (sprite.visible) {
+					Actor.add( new com.shatteredpixel.shatteredpixeldungeon.effects.Pushing( child, pos, child.pos ) );
+				}
+				for (com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff b : buffs()) {
+					if (b.revivePersists) {
+						com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(child, b.getClass());
+					}
+				}
+			}
+		}
+
+		//a wandering hunter keeps close to its partner
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Gnoll.class) == 1 && state == WANDERING && partnerId >= 0) {
+			Char partner = (Char) Actor.findById( partnerId );
+			if (partner instanceof Gnoll && partner.isAlive() && Dungeon.level.distance( pos, partner.pos ) > 2) {
+				target = partner.pos;
+			}
+		}
+		return super.act();
+	}
+
+	@Override
+	public void notice() {
+		super.notice();
+		if (!seenPlayer && com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Gnoll.class) == 3 && fieldOfView[Dungeon.hero.pos] && Dungeon.hero.invisible <= 0) {
+			seenPlayer = true;
+			com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter.center( pos ).start( com.shatteredpixel.shatteredpixeldungeon.effects.Speck.factory( com.shatteredpixel.shatteredpixeldungeon.effects.Speck.SCREAM ), 0.3f, 3 );
+			com.watabou.noosa.audio.Sample.INSTANCE.play( com.shatteredpixel.shatteredpixeldungeon.Assets.Sounds.ALERT );
+			for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
+				mob.beckon( pos );
+			}
+		}
+	}
+
+	@Override
+	protected boolean canAttack( Char enemy ) {
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Gnoll.class) == 2) {
+			return super.canAttack( enemy )
+					|| new com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica( pos, enemy.pos, com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica.PROJECTILE ).collisionPos == enemy.pos;
+		}
+		return super.canAttack( enemy );
 	}
 }

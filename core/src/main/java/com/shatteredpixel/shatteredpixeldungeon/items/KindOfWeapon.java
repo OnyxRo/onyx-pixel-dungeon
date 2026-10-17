@@ -105,6 +105,10 @@ abstract public class KindOfWeapon extends EquipableItem {
 	@Override
 	public boolean doEquip( Hero hero ) {
 
+		if (Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.CUBE)) {
+			return false;
+		}
+
 		isSwiftEquipping = false;
 		if (hero.belongings.contains(this) && hero.hasTalent(Talent.SWIFT_EQUIP)){
 			if (hero.buff(Talent.SwiftEquipCooldown.class) == null
@@ -159,6 +163,10 @@ abstract public class KindOfWeapon extends EquipableItem {
 	}
 
 	public boolean equipSecondary( Hero hero ){
+
+		if (Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.CUBE)) {
+			return false;
+		}
 
 		isSwiftEquipping = false;
 		if (hero.belongings.contains(this) && hero.hasTalent(Talent.SWIFT_EQUIP)){

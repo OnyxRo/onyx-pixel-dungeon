@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RatSprite;
@@ -53,7 +54,10 @@ public class Rat extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 1, 4 );
+		int dmg = Random.NormalIntRange( 1, 4 );
+		//Pixel Dungeon Reforged Randomizer, Nibbling Nuisances
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Rat.class) == 2) dmg /= 2;
+		return dmg;
 	}
 	
 	@Override
@@ -78,5 +82,41 @@ public class Rat extends Mob {
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
 		if (bundle.contains(RAT_ALLY)) alignment = Alignment.ALLY;
+	}
+
+	//Pixel Dungeon Reforged Randomizer. Evasive Pests, Toxic Fangs, Meaty Rats, Nibbling Nuisances (above), Frail Vermin
+	{
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Rat.class) == 2) defenseSkill = 25;
+	}
+
+	@Override
+	protected void onAdd() {
+		boolean first = firstAdded;
+		super.onAdd();
+		if (first && com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Rat.class) == 3) {
+			HT = Math.max(1, HT / 2);
+			HP = Math.min(HP, HT);
+		}
+	}
+
+	@Override
+	public int attackProc( Char enemy, int damage ) {
+		damage = super.attackProc( enemy, damage );
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Rat.class) == 3 && Random.Int(3) == 0) {
+			int duration = Random.IntRange(1, 3);
+			if (Random.Float() > 0.8f) duration++;
+			duration = Math.round(duration * (com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge.statModifier(this) / 2f + 0.5f));
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(enemy, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison.class).set(duration);
+		}
+		return damage;
+	}
+
+	@Override
+	public void rollToDropLoot() {
+		super.rollToDropLoot();
+		if (Dungeon.hero.lvl > maxLvl + 2) return;
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Rat.class) == 1 && Random.Float() > 0.5f) {
+			Dungeon.level.drop(new com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat(), pos).sprite.drop();
+		}
 	}
 }

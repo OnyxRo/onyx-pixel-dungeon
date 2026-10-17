@@ -64,7 +64,7 @@ public class PrisonPainter extends RegularPainter {
 		}
 
 		for (Room r : rooms){
-			if (r instanceof SpecialRoom){
+			if (r instanceof SpecialRoom || r instanceof com.shatteredpixel.shatteredpixeldungeon.levels.rooms.modifierunlocks.ModifierUnlockRoom){
 				continue;
 			}
 			int chance = 15; //1/15 by default, some rooms can be more common though

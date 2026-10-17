@@ -89,6 +89,10 @@ public class Gold extends Item {
 	@Override
 	public Item random() {
 		quantity = Random.IntRange( 30 + Dungeon.depth * 10, 60 + Dungeon.depth * 20 );
+		//Pixel Dungeon Reforged, +20% gold on easy, -10% on hard and -20% on impossible
+		if (Dungeon.difficulty == 1) quantity = (int) (quantity * 1.2f);
+		else if (Dungeon.difficulty == 3) quantity = (int) (quantity * 0.9f);
+		else if (Dungeon.difficulty == 4) quantity = (int) (quantity * 0.8f);
 		return this;
 	}
 

@@ -410,7 +410,7 @@ public class Item implements Bundlable {
 		//only the hero can be affected by Degradation
 		if (Dungeon.hero != null && Dungeon.hero.buff( Degrade.class ) != null
 			&& (isEquipped( Dungeon.hero ) || Dungeon.hero.belongings.contains( this ))) {
-			return Degrade.reduceLevel(level());
+			return Dungeon.hero.buff(Degrade.class).reduceLevelFor(level());
 		} else {
 			return level();
 		}
@@ -469,6 +469,10 @@ public class Item implements Bundlable {
 	}
 	
 	public boolean isUpgradable() {
+		//Pixel Dungeon Reforged, in the Cube challenge only the Force Cube can be upgraded
+		if (Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.CUBE)) {
+			return this instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ForceCube;
+		}
 		return true;
 	}
 	

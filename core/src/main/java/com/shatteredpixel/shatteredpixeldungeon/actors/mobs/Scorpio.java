@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ScorpioSprite;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
@@ -106,6 +107,10 @@ public class Scorpio extends Mob {
 
 	@Override
 	public Item createLoot() {
+		//Pixel Dungeon Reforged Randomizer, Acidic Carriers now and then drop a potion of experience
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Scorpio.class) == 2 && Random.Int(10) == 0) {
+			return new com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience();
+		}
 		Class<?extends Potion> loot;
 		do{
 			loot = (Class<? extends Potion>) Random.oneOf(Generator.Category.POTION.classes);
@@ -114,4 +119,73 @@ public class Scorpio extends Mob {
 		return Reflection.newInstance(loot);
 	}
 	
+
+	//Pixel Dungeon Reforged Randomizer. Acidic Infestation (in the mob spawner), Acidic Carriers (above), Lightning Fast,
+	//Territorial Hunters, Sluggish Crawl, Brittle Shells
+	private int lastEnemyPosition = -1;
+	private static final String LAST_ENEMY_POSITION = "last_enemy_position";
+
+	{
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Scorpio.class) == 3) HP = HT = Math.max(1, HT / 3);
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Scorpio.class) == 3) WANDERING = new Territorial();
+	}
+
+	@Override
+	public void storeInBundle( com.watabou.utils.Bundle bundle ) {
+		super.storeInBundle( bundle );
+		bundle.put( LAST_ENEMY_POSITION, lastEnemyPosition );
+	}
+
+	@Override
+	public void restoreFromBundle( com.watabou.utils.Bundle bundle ) {
+		super.restoreFromBundle( bundle );
+		if (bundle.contains( LAST_ENEMY_POSITION )) lastEnemyPosition = bundle.getInt( LAST_ENEMY_POSITION );
+	}
+
+	@Override
+	protected boolean act() {
+		if (enemy != null && enemySeen) lastEnemyPosition = enemy.pos;
+		return super.act();
+	}
+
+	@Override
+	public float speed() {
+		float speed = super.speed();
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Scorpio.class) == 2) speed *= 2f;
+		else if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Scorpio.class) == 1) speed *= 0.25f;
+		return speed;
+	}
+
+	//Territorial Hunters, when wandering it picks places that do not go past where it last saw the hero
+	private class Territorial extends Mob.Wandering {
+		@Override
+		protected int randomDestination() {
+			if (lastEnemyPosition == -1) return super.randomDestination();
+
+			int len = Dungeon.level.length();
+			boolean[] passable = new boolean[len];
+			for (int i = 0; i < len; i++) {
+				passable[i] = Dungeon.level.passable[i] && (Dungeon.level.visited[i] || Dungeon.level.mapped[i]);
+			}
+
+			com.watabou.utils.Point seen = Dungeon.level.cellToPoint( lastEnemyPosition );
+			int destination = super.randomDestination();
+			for (int tries = 0; tries < 100; tries++) {
+				destination = super.randomDestination();
+				PathFinder.Path path = Dungeon.findPath( Scorpio.this, destination, passable, fieldOfView, true );
+				boolean valid = true;
+				if (path != null) {
+					for (int step : path) {
+						com.watabou.utils.Point p = Dungeon.level.cellToPoint( step );
+						if ((p.x - seen.x) * (p.x - seen.x) + (p.y - seen.y) * (p.y - seen.y) < 3) {
+							valid = false;
+							break;
+						}
+					}
+				}
+				if (valid) break;
+			}
+			return destination;
+		}
+	}
 }

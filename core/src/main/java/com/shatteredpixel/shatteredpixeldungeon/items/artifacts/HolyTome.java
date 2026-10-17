@@ -90,7 +90,14 @@ public class HolyTome extends Artifact {
 			else if (cursed)       GLog.i( Messages.get(this, "cursed") );
 			else {
 
-				GameScene.show(new WndClericSpells(this, hero, false));
+				if (!Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.CUBE)) {
+					GameScene.show(new WndClericSpells(this, hero, false));
+				} else {
+					GameScene.show(new com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage(
+							new com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite(com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet.ARTIFACT_TOME),
+							Messages.get(this, "name").toUpperCase(),
+							Messages.get(com.shatteredpixel.shatteredpixeldungeon.Challenges.class, "cube.holytome_desc")));
+				}
 
 			}
 

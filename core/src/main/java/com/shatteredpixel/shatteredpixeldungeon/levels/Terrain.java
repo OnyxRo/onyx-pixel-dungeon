@@ -37,6 +37,10 @@ public class Terrain {
 	public static final int LOCKED_DOOR		= 10;
 	public static final int HERO_LKD_DR     = 38; //a door that was locked by the skeleton key
 	public static final int CRYSTAL_DOOR	= 31;
+	//Reforged's gates for the pressure plate trial room. Here a locked gate is drawn and acts like a crystal door
+	//(nothing but a crystal key opens it) and an unlocked gate is plain special floor.
+	public static final int LOCKED_GATE		= CRYSTAL_DOOR;
+	public static final int UNLOCKED_GATE	= 14; //EMPTY_SP, which is defined further down
 	public static final int PEDESTAL		= 11;
 	public static final int WALL_DECO		= 12;
 	public static final int BARRICADE		= 13;

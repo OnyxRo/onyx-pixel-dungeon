@@ -37,16 +37,39 @@ public class SummoningTrap extends Trap {
 
 	private static final float DELAY = 2f;
 
+	//Pixel Dungeon Reforged, a trap that always brings a fixed number of monsters, used by the summoning trial room
+	private int m_MobCountOverride = -1;
+	public SummoningTrap OverrideMobCount(int count) {
+		m_MobCountOverride = count;
+		return this;
+	}
+
 	{
 		color = TEAL;
 		shape = WAVES;
+	}
+
+	private static final String MOB_COUNT_OVERRIDE_TAG = "mob_count_override";
+
+	@Override
+	public void restoreFromBundle(com.watabou.utils.Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		if (bundle.contains(MOB_COUNT_OVERRIDE_TAG)) m_MobCountOverride = bundle.getInt(MOB_COUNT_OVERRIDE_TAG);
+	}
+
+	@Override
+	public void storeInBundle(com.watabou.utils.Bundle bundle) {
+		super.storeInBundle(bundle);
+		if (m_MobCountOverride != -1) bundle.put(MOB_COUNT_OVERRIDE_TAG, m_MobCountOverride);
 	}
 
 	@Override
 	public void activate() {
 
 		int nMobs = 1;
-		if (Random.Int( 2 ) == 0) {
+		if (m_MobCountOverride != -1) {
+			nMobs = m_MobCountOverride;
+		} else if (Random.Int( 2 ) == 0) {
 			nMobs++;
 			if (Random.Int( 2 ) == 0) {
 				nMobs++;

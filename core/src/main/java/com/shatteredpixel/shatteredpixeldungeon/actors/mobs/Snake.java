@@ -69,4 +69,50 @@ public class Snake extends Mob {
 		}
 		return super.defenseVerb();
 	}
+
+	//Pixel Dungeon Reforged Randomizer. Venomous Bite, Phantom Scales, Hardened Hide, Paper Thin, Seed Hoarders, Rat Hunters
+	{
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Snake.class) == 1) HP = HT = 1;
+	}
+
+	@Override
+	public int attackProc( Char enemy, int damage ) {
+		damage = super.attackProc( enemy, damage );
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Snake.class) == 1 && Random.Int(3) == 0) {
+			int duration = Random.IntRange(1, 3);
+			if (Random.Float() > 0.8f) duration++;
+			duration = Math.round(duration * (com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge.statModifier(this) / 2f + 0.5f));
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(enemy, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison.class).set(duration);
+			state = FLEEING;
+		}
+		return damage;
+	}
+
+	@Override
+	public boolean surprisedBy( Char enemy, boolean attacking ) {
+		boolean surprised = super.surprisedBy( enemy, attacking );
+		if (surprised && com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Snake.class) == 2 && Random.Float() > 0.5f) {
+			surprised = false;
+		}
+		return surprised;
+	}
+
+	@Override
+	public int drRoll() {
+		return super.drRoll() + (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Snake.class) == 3 ? 2 : 0);
+	}
+
+	@Override
+	public float lootChance() {
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Snake.class) == 2) return 1f;
+		return super.lootChance();
+	}
+
+	@Override
+	protected void extraAttackTargets( java.util.HashSet<Char> enemies ) {
+		if (!(com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Snake.class) == 3) || alignment != Alignment.ENEMY) return;
+		for (Mob mob : Dungeon.level.mobs) {
+			if (mob instanceof Rat && fieldOfView[mob.pos] && mob.invisible <= 0) enemies.add(mob);
+		}
+	}
 }

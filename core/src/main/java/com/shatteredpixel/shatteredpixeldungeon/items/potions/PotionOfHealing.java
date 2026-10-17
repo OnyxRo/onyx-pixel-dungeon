@@ -89,4 +89,19 @@ public class PotionOfHealing extends Potion {
 	public int value() {
 		return isKnown() ? 30 * quantity : super.value();
 	}
+
+	//Pixel Dungeon Reforged, three bat membranes make a potion of healing
+	public static class MembraneRecipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
+
+		{
+			inputs =  new Class[]{ com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bat.Membrane.class };
+			inQuantity = new int[]{3};
+
+			cost = 8;
+
+			output = PotionOfHealing.class;
+			outQuantity = 1;
+		}
+
+	}
 }

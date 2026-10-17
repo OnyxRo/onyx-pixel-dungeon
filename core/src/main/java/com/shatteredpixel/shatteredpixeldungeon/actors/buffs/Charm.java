@@ -74,6 +74,12 @@ public class Charm extends FlavourBuff {
 			}
 		}
 
+		//Pixel Dungeon Reforged Randomizer, Persistent Charm cannot be broken by taking damage
+		if (src instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Succubus
+				&& com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Succubus.class) == 3) {
+			return;
+		}
+
 		if (ignoreNextHit){
 			ignoreNextHit = false;
 			return;

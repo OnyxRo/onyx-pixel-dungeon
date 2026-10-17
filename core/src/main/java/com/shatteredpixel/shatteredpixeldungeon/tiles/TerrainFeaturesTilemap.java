@@ -58,6 +58,9 @@ public class TerrainFeaturesTilemap extends DungeonTilemap {
 			Trap trap = traps.get(pos);
 			if (!trap.visible)
 				return -1;
+			else if (trap instanceof com.shatteredpixel.shatteredpixeldungeon.levels.traps.PressurePlateTrap)
+				return (trap.active ? com.shatteredpixel.shatteredpixeldungeon.levels.traps.PressurePlateTrap.ACTIVE_ID
+						: com.shatteredpixel.shatteredpixeldungeon.levels.traps.PressurePlateTrap.INACTIVE_ID);
 			else
 				return (trap.active ? trap.color : Trap.BLACK) + (trap.shape * 16);
 		}
@@ -140,7 +143,12 @@ public class TerrainFeaturesTilemap extends DungeonTilemap {
 	public static Image getTrapVisual( Trap trap ){
 		if (instance == null) instance = new TerrainFeaturesTilemap(null, null);
 
-		RectF uv = instance.tileset.get((trap.active ? trap.color : Trap.BLACK) + (trap.shape * 16));
+		int visual = (trap.active ? trap.color : Trap.BLACK) + (trap.shape * 16);
+		if (trap instanceof com.shatteredpixel.shatteredpixeldungeon.levels.traps.PressurePlateTrap) {
+			visual = trap.active ? com.shatteredpixel.shatteredpixeldungeon.levels.traps.PressurePlateTrap.ACTIVE_ID
+					: com.shatteredpixel.shatteredpixeldungeon.levels.traps.PressurePlateTrap.INACTIVE_ID;
+		}
+		RectF uv = instance.tileset.get(visual);
 		if (uv == null) return null;
 
 		Image img = new Image( instance.texture );

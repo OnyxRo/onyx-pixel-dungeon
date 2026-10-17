@@ -174,6 +174,52 @@ public enum HeroClass {
 				break;
 		}
 
+		//Pixel Dungeon Reforged, Trinket Madness starts the hero with three upgraded trinkets that stick
+		if (Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.TRINKET_MADNESS)) {
+			com.shatteredpixel.shatteredpixeldungeon.items.trinkets.Trinket[] trinkets = new com.shatteredpixel.shatteredpixeldungeon.items.trinkets.Trinket[3];
+			for (int j = 0; j < 3; ++j) {
+				boolean ok;
+				int tries = 0;
+				do {
+					trinkets[j] = (com.shatteredpixel.shatteredpixeldungeon.items.trinkets.Trinket) com.shatteredpixel.shatteredpixeldungeon.items.Generator.random(com.shatteredpixel.shatteredpixeldungeon.items.Generator.Category.TRINKET);
+					ok = true;
+					for (int k = 0; k < j; ++k) {
+						//no duplicates, and the clump and the mechanism cancel each other out
+						if (trinkets[k].getClass() == trinkets[j].getClass()
+								|| (trinkets[k] instanceof com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MossyClump && trinkets[j] instanceof com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrapMechanism)
+								|| (trinkets[k] instanceof com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrapMechanism && trinkets[j] instanceof com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MossyClump)) {
+							ok = false;
+						}
+					}
+				} while (!ok && ++tries < 50);
+			}
+			for (int j = 0; j < 3; ++j) {
+				trinkets[j].upgrade(3).collect();
+				trinkets[j].identify(false);
+			}
+		}
+
+		//Pixel Dungeon Reforged, the Cube challenge takes every weapon away and hands over one Force Cube
+		if (Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.CUBE)) {
+			hero.belongings.weapon = null;
+			for (com.shatteredpixel.shatteredpixeldungeon.items.Item cubeItem : new java.util.ArrayList<>(hero.belongings.backpack.items)) {
+				if (cubeItem instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow
+						|| cubeItem instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.Gun
+						|| cubeItem instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff) {
+					cubeItem.detachAll(hero.belongings.backpack);
+					Dungeon.quickslot.clearItem(cubeItem);
+				}
+			}
+			com.shatteredpixel.shatteredpixeldungeon.items.Item fc = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ForceCube().upgrade();
+			fc.collect();
+			for (int s = 0; s < QuickSlot.SIZE; s++) {
+				if (Dungeon.quickslot.getItem(s) == null) {
+					Dungeon.quickslot.setSlot(s, fc);
+					break;
+				}
+			}
+		}
+
 		//Shittened PD's prefixes never land on a hero's starting weapon
 		if (hero.belongings.weapon instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon) {
 			((com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon) hero.belongings.weapon).reforge(com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix.NONE);

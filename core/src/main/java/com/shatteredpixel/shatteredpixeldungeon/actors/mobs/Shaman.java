@@ -56,7 +56,9 @@ public abstract class Shaman extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 5, 10 );
+		//Pixel Dungeon Reforged Randomizer, Ritual Blade doubles the melee damage
+		int dmg = Random.NormalIntRange( 5, 10 );
+		return com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Shaman.class) == 2 ? dmg * 2 : dmg;
 	}
 	
 	@Override
@@ -111,13 +113,15 @@ public abstract class Shaman extends Mob {
 	public static class EarthenBolt{}
 	
 	private void zap() {
-		spend( 1f );
+		//Sluggish Casting takes twice as long
+		spend( com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Shaman.class) == 1 ? 2f : 1f );
 
 		Invisibility.dispel(this);
 		Char enemy = this.enemy;
 		if (hit( this, enemy, true )) {
 			
-			if (Random.Int( 2 ) == 0) {
+			//Diluted Magic, a debuff one time in five instead of one in two
+			if (Random.Int( com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Shaman.class) == 2 ? 5 : 2 ) == 0) {
 				debuff( enemy );
 				if (enemy == Dungeon.hero) Sample.INSTANCE.play( Assets.Sounds.DEBUFF );
 			}
@@ -155,7 +159,8 @@ public abstract class Shaman extends Mob {
 		
 		@Override
 		protected void debuff( Char enemy ) {
-			Buff.prolong( enemy, Weakness.class, Weakness.DURATION );
+			Buff.prolong( enemy, Weakness.class, Weakness.DURATION * curseMultiplier() );
+			extraDebuff( enemy, 0 );
 		}
 	}
 	
@@ -166,7 +171,8 @@ public abstract class Shaman extends Mob {
 		
 		@Override
 		protected void debuff( Char enemy ) {
-			Buff.prolong( enemy, Vulnerable.class, Vulnerable.DURATION );
+			Buff.prolong( enemy, Vulnerable.class, Vulnerable.DURATION * curseMultiplier() );
+			extraDebuff( enemy, 1 );
 		}
 	}
 	
@@ -177,7 +183,8 @@ public abstract class Shaman extends Mob {
 		
 		@Override
 		protected void debuff( Char enemy ) {
-			Buff.prolong( enemy, Hex.class, Hex.DURATION );
+			Buff.prolong( enemy, Hex.class, Hex.DURATION * curseMultiplier() );
+			extraDebuff( enemy, 2 );
 		}
 	}
 	
@@ -190,5 +197,24 @@ public abstract class Shaman extends Mob {
 		} else {
 			return PurpleShaman.class;
 		}
+	}
+
+	//Pixel Dungeon Reforged Randomizer. Cross-Training and Persistent Curses
+	{
+		//Frail Casters
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Shaman.class) == 3) HP = HT = 1;
+	}
+
+	protected float curseMultiplier() {
+		return com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Shaman.class) == 3 ? 2f : 1f;
+	}
+
+	//Cross-Training, a second curse of another kind, 0 is weakness, 1 vulnerable and 2 hex
+	protected void extraDebuff( Char enemy, int own ) {
+		if (!(com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Shaman.class) == 1)) return;
+		int other = (own + 1 + Random.Int( 2 )) % 3;
+		if (other == 0) Buff.prolong( enemy, Weakness.class, Weakness.DURATION * curseMultiplier() );
+		else if (other == 1) Buff.prolong( enemy, Vulnerable.class, Vulnerable.DURATION * curseMultiplier() );
+		else Buff.prolong( enemy, Hex.class, Hex.DURATION * curseMultiplier() );
 	}
 }

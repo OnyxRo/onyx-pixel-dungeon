@@ -99,6 +99,7 @@ public class ItemSpriteSheet {
 	public static final int TENGU_BOMB      = UNCOLLECTIBLE+8;
 	public static final int TENGU_SHOCKER   = UNCOLLECTIBLE+9;
 	public static final int GEO_BOULDER     = UNCOLLECTIBLE+10;
+	public static final int CHALLENGE_CUP   = UNCOLLECTIBLE+11; //Pixel Dungeon Reforged
 	static{
 		assignItemRect(GOLD,        15, 13);
 		assignItemRect(ENERGY,      16, 16);
@@ -111,6 +112,7 @@ public class ItemSpriteSheet {
 		assignItemRect(TENGU_BOMB,      10, 10);
 		assignItemRect(TENGU_SHOCKER,   10, 10);
 		assignItemRect(GEO_BOULDER,     16, 15);
+		assignItemRect(CHALLENGE_CUP,   14, 12);
 	}
 
 	private static final int CONTAINERS     =                               xy(1, 3);   //16 slots
@@ -374,6 +376,7 @@ public class ItemSpriteSheet {
 
 	public static final int WARPICK = MOD_ITEMS+0;
 	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;
+	public static final int BAT_MEMBRANE = xy(11, 49);
 	public static final int HOWARD_CHEST = xy(2, 100);
 	public static final int EVAN_CHEST = xy(3, 100);
 	public static final int GOLD_CHEST = xy(4, 100);
@@ -756,6 +759,7 @@ public class ItemSpriteSheet {
 	static{
 		assignItemRect(WARPICK, 15, 14);
 		assignItemRect(WOODEN_BOOMERANG, 12, 12);
+		assignItemRect(BAT_MEMBRANE, 16, 16);
 		assignItemRect(HOWARD_CHEST, 16, 14);
 		assignItemRect(EVAN_CHEST, 16, 14);
 		assignItemRect(GOLD_CHEST, 16, 14);

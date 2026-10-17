@@ -45,7 +45,7 @@ public class ScrollOfGrowth extends ExoticScroll {
 
 	@Override
 	public void doRead() {
-		consumeScroll();
+		detach(curUser.belongings.backpack);
 
 		GameScene.flash(0xFF0000);
 

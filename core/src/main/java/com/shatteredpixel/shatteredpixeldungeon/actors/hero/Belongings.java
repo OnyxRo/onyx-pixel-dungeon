@@ -514,4 +514,343 @@ public class Belongings implements Iterable<Item> {
 			}
 		}
 	}
+
+	/*****************************************************************
+	 * Pixel Dungeon Reforged, the Adaptive challenge. Every time an enemy dies all of the hero's gear is swapped
+	 * for random gear of the same kind, keeping upgrades, curses and whether it was identified. Unique things
+	 * (class items, the waterskin, keys, potions of strength) are left alone.
+	 *****************************************************************/
+
+	public void TriggerAdaptive() {
+		ArrayList<Item> items = getAllItems(Item.class);
+
+		// detach all items first, just so that we don't drop items that don't need to
+		// be dropped because we're removing later stuff
+		for (Item item : items) {
+			if (item.unique) {
+				continue;
+			}
+
+			if (item == weapon || item == armor || item == artifact || item == ring || item == misc || item == secondWep) {
+				continue;
+			}
+
+			if (item instanceof Armor) {
+				// because of basic armour, we should only shuffle its glyph/curse
+				continue;
+			}
+
+			item.detachAll(backpack);
+		}
+
+		for (Item item : items) {
+			if (item.unique) {
+				continue;
+			}
+
+			int totalCount = item.quantity();
+			for (int i = 0; i < totalCount; ++i) {
+				if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon) {
+					ReplaceMeleeWeapon((com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon)item);
+				} else if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon) {
+					ReplaceMissile((com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon) item);
+				} else if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll) {
+					ReplaceScroll();
+				} else if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion) {
+					ReplacePotion();
+				} else if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.food.Food) {
+					giveRandom(com.shatteredpixel.shatteredpixeldungeon.items.Generator.random(com.shatteredpixel.shatteredpixeldungeon.items.Generator.Category.FOOD));
+				} else if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone
+						|| item instanceof com.shatteredpixel.shatteredpixeldungeon.plants.Plant.Seed) {
+					giveRandom(com.shatteredpixel.shatteredpixeldungeon.items.Generator.random(
+							Random.Int(2) == 0 ? com.shatteredpixel.shatteredpixeldungeon.items.Generator.Category.SEED
+									: com.shatteredpixel.shatteredpixeldungeon.items.Generator.Category.STONE));
+				} else if (item instanceof Artifact) {
+					ReplaceArtifacts((Artifact) item);
+				} else if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb) {
+					giveRandom(randomFromCatalog(com.shatteredpixel.shatteredpixeldungeon.journal.Catalog.BOMBS));
+				} else if (item instanceof Ring) {
+					ReplaceRing((Ring) item);
+				} else if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.spells.Spell) {
+					giveRandom(randomFromCatalog(com.shatteredpixel.shatteredpixeldungeon.journal.Catalog.SPELLS));
+				} else if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.trinkets.Trinket) {
+					giveRandom(com.shatteredpixel.shatteredpixeldungeon.items.Generator.random(com.shatteredpixel.shatteredpixeldungeon.items.Generator.Category.TRINKET));
+				} else if (item instanceof Wand) {
+					ReplaceWand((Wand) item);
+				} else if (item instanceof Armor) {
+					ShuffleArmor((Armor) item);
+				} else {
+					item.collect();
+					break;
+				}
+			}
+		}
+	}
+
+	private void giveRandom(Item item) {
+		if (item == null) return;
+		if (!item.collect()) {
+			Dungeon.level.drop( item, Dungeon.hero.pos ).sprite.drop();
+		}
+	}
+
+	//a uniformly picked item class from one of the journal catalogs, for kinds of item the generator has no deck for
+	private static Item randomFromCatalog(com.shatteredpixel.shatteredpixeldungeon.journal.Catalog catalog) {
+		ArrayList<Class<?>> classes = new ArrayList<>(catalog.items());
+		for (int tries = 0; tries < 10 && !classes.isEmpty(); tries++) {
+			Class<?> cls = Random.element(classes);
+			try {
+				Object o = com.watabou.utils.Reflection.newInstance(cls);
+				if (o instanceof Item) return (Item) o;
+			} catch (Exception e) {
+				//not every catalog entry can be made from nothing, try another
+			}
+		}
+		return null;
+	}
+
+	private void ReplaceMeleeWeapon(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon wep) {
+		int tier = wep.tier;
+		com.shatteredpixel.shatteredpixeldungeon.items.Generator.Category c = com.shatteredpixel.shatteredpixeldungeon.items.Generator.Category.WEP_T1;
+		switch (tier) {
+			case 2: c = com.shatteredpixel.shatteredpixeldungeon.items.Generator.Category.WEP_T2; break;
+			case 3: c = com.shatteredpixel.shatteredpixeldungeon.items.Generator.Category.WEP_T3; break;
+			case 4: c = com.shatteredpixel.shatteredpixeldungeon.items.Generator.Category.WEP_T4; break;
+			case 5: c = com.shatteredpixel.shatteredpixeldungeon.items.Generator.Category.WEP_T5; break;
+			default: break;
+		}
+		boolean enchanted = wep.hasGoodEnchant();
+		boolean cursed = wep.cursed;
+		boolean curseKnown = wep.cursedKnown;
+		boolean identified = wep.isIdentified();
+		int level = wep.level();
+
+		com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon w =
+				(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon) com.shatteredpixel.shatteredpixeldungeon.items.Generator.random(c);
+		w.enchantment = null;
+		w.cursed = false;
+		if (enchanted) {
+			w.enchant();
+		} else if (cursed) {
+			w.enchant(Weapon.Enchantment.randomCurse());
+			w.cursed = true;
+		}
+		if (curseKnown) {
+			w.cursedKnown = true;
+		}
+		w.level(level);
+		if (identified) {
+			w.identify();
+		}
+
+		if (wep == this.weapon) {
+			wep.doUnequip(Dungeon.hero, false, false);
+			weapon = w;
+			w.activate(Dungeon.hero);
+		} else if (wep == this.secondWep) {
+			wep.doUnequip(Dungeon.hero, false, false);
+			secondWep = w;
+		} else {
+			giveRandom(w);
+		}
+	}
+
+	private void ReplaceMissile(com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon missile) {
+		com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon w =
+				com.shatteredpixel.shatteredpixeldungeon.items.Generator.randomMissile();
+		boolean enchanted = missile.hasGoodEnchant();
+		boolean cursed = missile.cursed;
+		boolean identified = missile.isIdentified();
+		int upgrades = missile.level();
+
+		if (enchanted) {
+			w.enchant();
+		}
+		if (cursed) {
+			w.enchant(Weapon.Enchantment.randomCurse());
+			w.cursed = true;
+		}
+		w.level(upgrades);
+		w.quantity(1);
+		if (identified) {
+			w.identify();
+		}
+		giveRandom(w);
+	}
+
+	private void ReplacePotion() {
+		com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion p = null;
+
+		switch (Random.Int(4)) {
+			case 0: default:
+				p = (com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion) com.shatteredpixel.shatteredpixeldungeon.items.Generator.random(com.shatteredpixel.shatteredpixeldungeon.items.Generator.Category.POTION);
+				break;
+			case 1:
+				p = (com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion) com.shatteredpixel.shatteredpixeldungeon.items.Generator.random(com.shatteredpixel.shatteredpixeldungeon.items.Generator.Category.POTION);
+				if (com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion.regToExo.containsKey(p.getClass())){
+					p = com.watabou.utils.Reflection.newInstance(com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion.regToExo.get(p.getClass()));
+				}
+				break;
+			case 2: case 3:
+				Item b = randomFromCatalog(com.shatteredpixel.shatteredpixeldungeon.journal.Catalog.BREWS_ELIXIRS);
+				if (b instanceof com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion) {
+					p = (com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion) b;
+				} else {
+					p = (com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion) com.shatteredpixel.shatteredpixeldungeon.items.Generator.random(com.shatteredpixel.shatteredpixeldungeon.items.Generator.Category.POTION);
+				}
+				break;
+		}
+		giveRandom(p);
+	}
+
+	private void ReplaceScroll() {
+		com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll s =
+				(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll) com.shatteredpixel.shatteredpixeldungeon.items.Generator.random(com.shatteredpixel.shatteredpixeldungeon.items.Generator.Category.SCROLL);
+
+		if (Random.Float() >= 0.5f && com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll.regToExo.containsKey(s.getClass())){
+			s = com.watabou.utils.Reflection.newInstance(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll.regToExo.get(s.getClass()));
+		}
+		giveRandom(s);
+	}
+
+	private void ReplaceArtifacts(Artifact oldArtifact) {
+		Artifact a = com.shatteredpixel.shatteredpixeldungeon.items.Generator.randomArtifact();
+
+		if (a == null) { // keep this artifact
+			if (!(oldArtifact == this.artifact || oldArtifact == this.misc)) {
+				oldArtifact.collect();
+			}
+			return;
+		}
+
+		com.shatteredpixel.shatteredpixeldungeon.items.Generator.readdArtifact(oldArtifact.getClass());
+		a.cursed = oldArtifact.cursed;
+		a.upgrade(oldArtifact.level());
+		a.cursedKnown = oldArtifact.cursedKnown;
+
+		if (oldArtifact == this.artifact) {
+			oldArtifact.doUnequip(Dungeon.hero, false, false);
+			this.artifact = a;
+			a.activate(Dungeon.hero);
+		} else if (oldArtifact == this.misc) {
+			oldArtifact.doUnequip(Dungeon.hero, false, false);
+			this.misc = a;
+			a.activate(Dungeon.hero);
+		} else {
+			giveRandom(a);
+		}
+	}
+
+	private void ReplaceRing(Ring oldRing) {
+		Ring r = (Ring) com.shatteredpixel.shatteredpixeldungeon.items.Generator.random(com.shatteredpixel.shatteredpixeldungeon.items.Generator.Category.RING);
+		r.cursed = oldRing.cursed;
+		r.upgrade(oldRing.level());
+		r.cursedKnown = oldRing.cursedKnown;
+
+		if (oldRing == this.ring) {
+			oldRing.doUnequip(Dungeon.hero, false, false);
+			this.ring = r;
+			r.activate(Dungeon.hero);
+		} else if (oldRing == this.misc) {
+			oldRing.doUnequip(Dungeon.hero, false, false);
+			this.misc = r;
+			r.activate(Dungeon.hero);
+		} else {
+			giveRandom(r);
+		}
+	}
+
+	private void ReplaceWand(Wand oldWand) {
+		Wand w = (Wand) com.shatteredpixel.shatteredpixeldungeon.items.Generator.random(com.shatteredpixel.shatteredpixeldungeon.items.Generator.Category.WAND);
+		w.cursed = oldWand.cursed;
+		w.cursedKnown = oldWand.cursedKnown;
+		w.upgrade(oldWand.level());
+		w.curCharges = oldWand.curCharges;
+		w.partialCharge = oldWand.partialCharge;
+		if (oldWand.isIdentified()) {
+			w.identify();
+		}
+		giveRandom(w);
+	}
+
+	private void ShuffleArmor(Armor a) {
+		if (a.hasGoodGlyph()) {
+			a.inscribe();
+		}
+		if (a.hasCurseGlyph()) {
+			a.glyph = Armor.Glyph.randomCurse();
+		}
+	}
+
+
+	//Pixel Dungeon Reforged Randomizer, what a thief goes for. Master Pickpocket looks for the best loot,
+	//Bold Fingers sometimes takes something that is being worn.
+	public Item getThiefItemToSteal() {
+		if (owner.buff(LostInventory.class) != null) return null;
+
+		Item toReturn = null;
+
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Thief.class) == 3 && Random.Int(2) == 0) {
+			int attempts = 0;
+			do {
+				Item candidate = null;
+				switch (Random.Int(5)) {
+					case 0: candidate = weapon(); break;
+					case 1: candidate = armor(); break;
+					case 2: candidate = artifact(); break;
+					case 3: candidate = misc(); break;
+					case 4: candidate = ring(); break;
+				}
+				if (candidate != null && !candidate.unique && !candidate.cursed
+						&& !(candidate instanceof ClassArmor)
+						&& !(candidate instanceof Armor && ((Armor) candidate).checkSeal() != null)
+						&& candidate instanceof EquipableItem
+						&& ((EquipableItem) candidate).doUnequip(Dungeon.hero, false, false)) {
+					toReturn = candidate;
+				}
+			} while (toReturn == null && ++attempts < 20);
+			if (toReturn != null) {
+				Dungeon.quickslot.clearItem(toReturn);
+				toReturn.updateQuickslot();
+				return toReturn;
+			}
+		}
+
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Thief.class) == 1) {
+			ArrayList<Item> highestPriority = new ArrayList<>();
+			ArrayList<Item> secondPriority = new ArrayList<>();
+
+			for (Item item : backpack.items) {
+				if (item.unique) continue;
+				if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade
+						|| item instanceof com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfDivineInspiration
+						|| item instanceof com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength
+						|| item instanceof com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfMight
+						|| item instanceof com.shatteredpixel.shatteredpixeldungeon.items.Ankh
+						|| item.level() > 5) {
+					highestPriority.add(item);
+				} else if (item instanceof Artifact
+						|| item instanceof com.shatteredpixel.shatteredpixeldungeon.items.trinkets.Trinket
+						|| item instanceof com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing
+						|| item instanceof com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfHoneyedHealing
+						|| item instanceof com.shatteredpixel.shatteredpixeldungeon.items.Honeypot
+						|| item instanceof com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass.Seed
+						|| item instanceof com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience
+						|| item instanceof com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation) {
+					secondPriority.add(item);
+				}
+			}
+
+			if (!highestPriority.isEmpty()) return Random.element(highestPriority);
+			if (!secondPriority.isEmpty()) return Random.element(secondPriority);
+		}
+
+		//otherwise any plain item, nothing unique or upgraded
+		int attempts = 0;
+		do {
+			toReturn = randomUnequipped();
+			if (toReturn != null && !toReturn.unique && toReturn.level() < 1) return toReturn;
+		} while (++attempts < 100);
+		return null;
+	}
 }

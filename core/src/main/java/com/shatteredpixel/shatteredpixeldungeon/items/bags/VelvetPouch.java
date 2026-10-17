@@ -37,7 +37,9 @@ public class VelvetPouch extends Bag {
 	@Override
 	public boolean canHold( Item item ) {
 		if (item instanceof Plant.Seed || item instanceof Runestone
-				|| item instanceof GooBlob || item instanceof MetalShard){
+				|| item instanceof GooBlob || item instanceof MetalShard
+				|| (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.trinkets.Trinket
+					&& com.shatteredpixel.shatteredpixeldungeon.Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.TRINKET_MADNESS))){
 			return super.canHold(item);
 		} else {
 			return false;
