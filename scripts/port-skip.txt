@@ -148,3 +148,4 @@ VenomMine
 WeakForcefield
 ChangingRoomTile
 CustomTileVisual
+Floor

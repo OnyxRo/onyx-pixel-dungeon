@@ -163,6 +163,33 @@ for _n, _o in [('strengthTech', 'STRENGTH_POTIONS'), ('upgradeDrops', 'UPGRADE_S
                ('utilityKit', 'SB_UTILITY_KIT'), ('plasmidKit', 'SB_PLASMID_KIT'), ('blasterHolster', 'SB_BLASTER_HOLSTER'),
                ('guardHP', 'SB_GUARD_HP'), ('allGearUpgrade', 'SB_ALL_GEAR_UPGRADE')]:
     RENAMES.append(('Spacebase, limitedDrops.' + _n, r'\bDungeon\.limitedDrops\.' + _n + r'\b', 'Dungeon.LimitedDrops.' + _o))
+SPS_RULES = [
+    # SPS (hmdzl) calls the level class Floor and keeps it in Dungeon.depth, the depth number is Dungeon.dungeondepth
+    ('SPS Dungeon.depth is the level, order matters, before dungeondepth', r'\bDungeon\.depth\b', 'Dungeon.level'),
+    ('SPS dungeondepth is the plain depth', r'Dungeon\.dungeondepth', 'Dungeon.depth'),
+    ('SPS Floor static array is a level field', r'\bFloor\.(passable|flamable|solid|avoid|water|pit|losBlocking|map|discoverable|visited|mapped|openSpace|secret)\b', r'Dungeon.level.\1'),
+    ('SPS Floor.fieldOfView is the hero FOV', r'\bFloor\.fieldOfView\b', 'Dungeon.level.heroFOV'),
+    ('SPS Floor.NEIGHBOURS', r'\bFloor\.(NEIGHBOURS\d+)', r'PathFinder.\1'),
+    ('SPS Floor.getLength', r'\bFloor\.getLength\(\)', 'Dungeon.level.length()'),
+    ('SPS Floor.getWidth', r'\bFloor\.getWidth\(\)', 'Dungeon.level.width()'),
+    ('SPS Floor.WIDTH', r'\bFloor\.WIDTH\b', 'Dungeon.level.width()'),
+    ('SPS Floor.distance is an instance method', r'\bFloor\.(distance|adjacent)\(', r'Dungeon.level.\1('),
+    ('SPS bare WIDTH', r'(?<![\w.])WIDTH\b', 'Dungeon.level.width()'),
+    ('SPS bare LENGTH', r'(?<![\w.])LENGTH\b', 'Dungeon.level.length()'),
+    ('SPS effect blob Fire is our Fire', r'actors\.blobs\.effectblobs\.Fire\b', 'actors.blobs.Fire'),
+    ('SPS three argument damage override', r'public\s+void\s+damage\(\s*int\s+(\w+)\s*,\s*Object\s+(\w+)\s*,\s*int\s+\w+\s*\)', r'public void damage( int \1, Object \2 )'),
+    ('SPS three argument super.damage', r'super\.damage\(\s*(\w+)\s*,\s*(\w+)\s*,\s*[^;]*?\)\s*;', r'super.damage( \1, \2 );'),
+    ('SPS Floor class is Level', r'\bFloor\b', 'Level'),
+    ('SPS Mob evadeSkill field is defenseSkill', r'\bevadeSkill\s*=', 'defenseSkill ='),
+    ('SPS evadeSkill(Char) is defenseSkill(Char)', r'\bevadeSkill\(\s*Char\b', 'defenseSkill( Char'),
+    ('SPS hitSkill(Char) is attackSkill(Char)', r'\bhitSkill\(\s*Char\b', 'attackSkill( Char'),
+    ('SPS old MagicMissile call is boltFromChar', r'MagicMissile\.(blueLight|coldLight|earth|fire|force|poison|shadow)\(\s*parent\s*,\s*[\w.]+\s*,\s*([\w.]+)\s*,', lambda m: 'MagicMissile.boltFromChar( parent, MagicMissile.' + {'blueLight': 'FROST', 'coldLight': 'FROST', 'earth': 'EARTH', 'fire': 'FIRE', 'force': 'FORCE', 'poison': 'POISON', 'shadow': 'SHADOW'}[m.group(1)] + ', this, ' + m.group(2) + ','),
+    ('SPS Burning.set is reignite', r'Buff\.affect\(\s*([\w.]+)\s*,\s*Burning\.class\s*\)\.set\([^)]*\)', r'Buff.affect(\1, Burning.class).reignite(\1)'),
+    ('SPS blob seed signature', r'public\s+void\s+seed\(\s*int\s+cell\s*,\s*int\s+amount\s*\)', 'public void seed( Level level, int cell, int amount ) { if (cur == null) cur = new int[level.length()]; if (off == null) off = new int[cur.length];'),
+    ('SPS blob super seed', r'super\.seed\(\s*cell\s*,\s*amount\s*\)', 'super.seed( level, cell, amount )'),
+    ('SPS floating text with an icon', r'showStatusWithIcon\(\s*[\w.]+\s*,\s*([^;]+?)\s*,\s*FloatingText2\.\w+\s*\)', r'showStatus( CharSprite.NEGATIVE, \1 )'),
+    ('SPS belongings.discharge does not exist', r'[\w.]*belongings\.discharge\(\)\s*;', '//belongings.discharge() has no use here'),
+]
 
 def convert_long(s):
     """Mods built for huge numbers (Experienced) use long for damage. This game uses int."""
@@ -172,12 +199,12 @@ def convert_long(s):
     s = re.sub(r'\bLong\b', 'Integer', s)
     return re.sub(r'(\d)L\b', r'\1', s)
 
-def apply(s):
+def apply(s, sps=False):
     """Returns the fixed text and the list of reasons that fired."""
     fired = []
     t = convert_long(s)
     if t != s: fired.append('long damage became int')
-    for why, pat, rep in RENAMES:
+    for why, pat, rep in (SPS_RULES if (sps or 'com.hmdzl.spspd' in s) else []) + RENAMES:
         t2 = re.sub(pat, rep, t)
         if t2 != t: fired.append(why); t = t2
     # old style resistance and immunity sets (Pixel Spacebase) become the fields of this game's Char
@@ -208,4 +235,56 @@ def apply(s):
     if re.search(r'\bPathFinder\.', t) and 'import com.watabou.utils.PathFinder;' not in t:
         t = re.sub(r'(package [\w.]+;\r?\n)', r'\1\nimport com.watabou.utils.PathFinder;', t, count=1)
         fired.append('added the PathFinder import')
+    if sps or 'com.hmdzl.spspd' in s:
+        t, f2 = sps_fixups(t)
+        fired += f2
+    return t, fired
+
+
+_CONST_CACHE = {}
+def _our_constants(rel, kind):
+    key = (rel, kind)
+    if key not in _CONST_CACHE:
+        import os
+        p = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'core', 'src', 'main', 'java', *PKG.split('.'), *rel.split('/'))
+        try:
+            txt = open(p, encoding='utf-8', errors='replace').read()
+        except OSError:
+            txt = ''
+        if kind == 'int':
+            _CONST_CACHE[key] = set(re.findall(r'(?:public\s+)?static\s+final\s+int\s+(\w+)\s*=', txt))
+        else:
+            m = re.search(r'enum\s+\w+\s*\{(.*?)[;}]', txt, re.S)
+            _CONST_CACHE[key] = set(re.findall(r'\b([A-Z][A-Z0-9_]+)\b', m.group(1))) if m else set()
+    return _CONST_CACHE[key]
+
+_BUFF_NAMES = None
+def _our_buff_icons():
+    global _BUFF_NAMES
+    if _BUFF_NAMES is None:
+        import os
+        p = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'core', 'src', 'main', 'java', *PKG.split('.'), 'ui', 'BuffIndicator.java')
+        try:
+            _BUFF_NAMES = set(re.findall(r'public static final int (\w+)\s*=', open(p, encoding='utf-8', errors='replace').read()))
+        except OSError:
+            _BUFF_NAMES = set()
+    return _BUFF_NAMES
+
+def sps_fixups(t):
+    """SPS only. Buff icons we do not have become no icon, and the imports its short files leave out are added."""
+    fired = []
+    for cls, rel, fallback, kind in (('BuffIndicator', 'ui/BuffIndicator.java', 'NONE', 'int'), ('Speck', 'effects/Speck.java', 'STENCH', 'int'),
+                                     ('CharSprite', 'sprites/CharSprite.java', 'NEGATIVE', 'int'), ('HeroSubClass', 'actors/hero/HeroSubClass.java', 'null', 'enum')):
+        names = _our_constants(rel, kind)
+        if names:
+            t2 = re.sub(r'\b' + cls + r'\.([A-Z][A-Z0-9_]+)\b', lambda m: m.group(0) if m.group(1) in names else (cls + '.' + fallback if fallback != 'null' else 'null'), t)
+            if t2 != t: fired.append('SPS ' + cls + ' constant we lack'); t = t2
+    pk = re.search(r'package ([\w.]+);', t)
+    pkg = pk.group(1) if pk else ''
+    for sym, imp, pat in (('Dungeon', PKG + '.Dungeon', r'\bDungeon\.'), ('PathFinder', 'com.watabou.utils.PathFinder', r'\bPathFinder\.'),
+                          ('DungeonTilemap', PKG + '.DungeonTilemap', r'\bDungeonTilemap\.|\bnew DungeonTilemap'),
+                          ('Level', PKG + '.levels.Level', r'\bLevel\b(?!\s*\()')):
+        if re.search(pat, t) and not re.search(r'import [\w.]*\.' + sym + r';', t) and pkg + '.' + sym != imp and not re.search(r'class ' + sym + r'\b', t):
+            t = re.sub(r'(package [\w.]+;\r?\n)', r'\1\nimport ' + imp + ';\n', t, count=1)
+            fired.append('SPS added the ' + sym + ' import')
     return t, fired

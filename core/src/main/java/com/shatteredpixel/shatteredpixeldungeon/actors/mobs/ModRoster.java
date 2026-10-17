@@ -282,6 +282,12 @@ public class ModRoster {
 		add( "spacebase", WarMachine.class, 0, 1, 99 );
 		add( "spacebase", Xenomorph.class, 0, 1, 99 );
 		add( "spacebase", ArmoredCrawler.class, 0, 1, 99 );
+		add( "sps", IceBug.class, 0, 1, 99 );
+		add( "sps", BambooMob.class, 0, 1, 99 );
+		add( "sps", Zombie.class, 0, 1, 99 );
+		add( "sps", DemonRabbit.class, 0, 1, 99 );
+		add( "sps", FireRabbit.class, 0, 1, 99 );
+		add( "sps", Shit.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

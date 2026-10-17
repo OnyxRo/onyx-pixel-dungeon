@@ -49,6 +49,10 @@ public class Food extends Item {
 	public static final String AC_EAT	= "EAT";
 	
 	public float energy = Hunger.HUNGRY;
+	//SPS compat. The mod's foods set these and override doEat for their effect.
+	public int hornValue = 3;
+	public float eattime = 3;
+	public void doEat() {}
 
 	//from Shittened PD, what is in the food, shown in its description window
 	public float carbs = 30f;
@@ -91,6 +95,8 @@ public class Food extends Item {
 			
 			satisfy(hero);
 			cureinfc(hero);
+			curUser = hero;
+			doEat();
 			GLog.i( Messages.get(this, "eat_msg") );
 			
 			hero.sprite.operate( hero.pos );

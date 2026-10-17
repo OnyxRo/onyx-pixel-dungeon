@@ -1,6 +1,8 @@
 /*
  * Unleashed Pixel Dungeon
  * Copyright (C) 2015  David Mitchell
+ * Pixel Dungeon
+ * Copyright (C) 2012-2014  Oleg Dolya
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -61,4 +63,70 @@ public class Zombie extends UMob {
     }
 
     { immunities.addAll( IMMUNITIES ); }
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BeOld;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ZombieSprite;
+import com.watabou.utils.Random;
+
+public class Zombie extends Mob {
+	
+
+	{
+		spriteClass = ZombieSprite.class;
+
+		HP = HT = 70+(adj(0)*Random.NormalIntRange(3, 7));
+		defenseSkill = 9+adj(1);
+		baseSpeed = 2f;
+		
+		
+		EXP = 7;
+		maxLvl = 18;
+		
+	    state = WANDERING;	
+		
+		loot = PotionOfToxicGas.class;
+		lootChance = 0.1f;
+		
+		properties.add(Property.UNDEAD);
+	}
+
+
+	@Override
+	public float attackDelay() {
+		return 2f;
+	}
+	
+	@Override
+	public int damageRoll() {
+		return Random.NormalIntRange(10+adj(0), 20+adj(0));
+	}
+
+	@Override
+	public int attackSkill( Char target) {
+		return 15 +adj(0);
+	}
+
+	@Override
+	public int drRoll() {
+		return Random.NormalIntRange(3, 8);
+	}
+	
+	@Override
+	public int attackProc(Char enemy, int damage) {
+		if (Random.Int(3) == 0) {
+			Buff.affect(enemy, BeOld.class).set(20);
+		}
+
+		return damage;
+	}
+
+	{
+		weakness.add(Burning.class);
+		resistances.add(ToxicGas.class);
+	}
 }
