@@ -311,6 +311,7 @@ public class Hero extends Char {
 	public int totalExp = 0;
 
 	public int STR;
+	public int CakeUsed = 0; // Magic Ling cake, strength bonuses used
 	
 	public float awareness;
 	
@@ -2166,6 +2167,8 @@ public class Hero extends Char {
 		}
 	}
 	
+	public ArrayList<Mob> visibleEnemiesList() { return new ArrayList<>(visibleEnemies); } //Magic Ling
+
 	public int visibleEnemies() {
 		return visibleEnemies.size();
 	}

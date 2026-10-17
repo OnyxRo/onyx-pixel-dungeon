@@ -246,6 +246,7 @@ public class Assets {
 	}
 
 	public static class Sounds {
+		public static final String DOGWOOF = "sounds/magicling/puppy_bark.ogg"; //ported, magicling
 		public static final String VIRTUE = "sounds/transformati/virtue.mp3"; //ported, transformati
 		public static final String SUFFER = "sounds/transformati/suffer.mp3"; //ported, transformati
 		public static final String WIN_SMALL = "sounds/shittened/win_small.mp3"; //ported, shittened

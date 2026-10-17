@@ -136,3 +136,9 @@ Left out, and why.
 - Not seen on screen yet. The sanity bar, the three new rooms, living plants waking up, guns firing, the herb and tincture windows. The arena picture showed the new monsters and living plants fine.
 
 Tool changes made. `port-itemsprites.py` reads `ui/items.png` for 0.5 and 0.6 mods. `port-skip.txt` has the mod launcher and the scenes it drags in.
+
+## Magic Ling PD weapons and items (2026-10-17)
+
+Ported Magic Ling's melee weapons, missiles, enchantments, wands, food, potions, props (trinkets, `items/props`, simplified `Prop` that rolls from a class list instead of the mod's Statistics pools) and quest items. check.sh --new passes (ItemArenaTest clean).
+Left out because they need mod systems we do not have. EndingBlade, SakaFishSketon, DogStick, KingAxe, BloodthirstyThorn, RiceSword (hunger scaling), LingJing, DragonWater, ScrollOfGolems, ScrollOfSoul, WandOfScale, LaserPython (mod bosses and pets), iceCoinValue shop hooks (NYZ_SHOP badge), LanFireGo (blank item).
+Swaps. Mod colours became hex, mod buff icons and sprite states became Shattered's (ARMOR, LIGHT, SHIELDED, CHILLED), mod chains became Effects.Type.CHAIN, DamageType arguments dropped. Added `Poison.GetPoisonLevel`, `Hero.visibleEnemiesList`, `Hero.CakeUsed`, `Statistics.Hollow_Holiday`, `Food.effect`. PotionOfLightStromCloud is reverse-lookup only in ExoticPotion.

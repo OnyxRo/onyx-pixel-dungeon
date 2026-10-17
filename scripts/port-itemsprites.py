@@ -16,6 +16,10 @@ PK = 'core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/'
 # rows 13 and 19 (zero based 12 and 18) and every row from 33 down are kept for other mods' items.
 # The sheet grows by itself when they run out, see free_cell.
 def mod_rows(height):
+    # ITEM_ROWS=68-75 (one based) restricts a parallel agent to its own rows
+    if os.environ.get('ITEM_ROWS'):
+        a, b = os.environ['ITEM_ROWS'].split('-')
+        return list(range(int(a) - 1, int(b)))
     return [12, 18] + list(range(32, height // 16))
 
 def LP(p):
@@ -32,17 +36,20 @@ ms = io.open(sheets[0], encoding='utf-8', errors='replace').read()
 cut = ms.find('class Icons')
 body = ms[:cut] if cut != -1 else ms
 defs = dict(re.findall(r'int\s+(\w+)\s*=\s*([^;]+);', body))
+mw = re.search(r'private static final int WIDTH\s*=\s*(\d+);', body)
+SW = int(mw.group(1)) if mw else 16   # some mods (Magic Ling) use a wider sheet
 
 def value(name, depth=0):
     assert depth < 20, name
     expr = defs[name]
-    expr = re.sub(r'xy\(\s*(\d+)\s*,\s*(\d+)\s*\)', lambda m: str(int(m.group(1)) - 1 + 16 * (int(m.group(2)) - 1)), expr)
+    expr = re.sub(r'xy\(\s*(\d+)\s*,\s*(\d+)\s*\)', lambda m: str(int(m.group(1)) - 1 + SW * (int(m.group(2)) - 1)), expr)
     expr = re.sub(r'[A-Za-z_]\w*', lambda m: str(value(m.group(0), depth + 1)) if m.group(0) in defs else m.group(0), expr)
     assert re.fullmatch(r'[\d\s+\-*()]+', expr), (name, expr)
     return int(eval(expr))
 
 sheet_path = LP(MOD + 'core/src/main/assets/sprites/items.png')
 if not os.path.exists(sheet_path): sheet_path = LP(MOD + 'core/src/main/assets/items.png')   # pre 0.8 mods keep it flat
+if not os.path.exists(sheet_path): sheet_path = LP(MOD + 'core/src/main/assets/sprites/items/items.png')   # Magic Ling keeps it in an items folder
 if not os.path.exists(sheet_path): sheet_path = LP(MOD + 'core/src/main/assets/ui/items.png')   # 0.5 and 0.6 mods keep it under ui
 src = Image.open(sheet_path).convert('RGBA')
 dstp = ROOT + 'core/src/main/assets/sprites/items.png'
@@ -56,6 +63,7 @@ def free_cell():
     global dst
     while True:
         for r in mod_rows(dst.height):
+            if r * 16 + 16 > dst.height: break
             for c in range(16):
                 if dst.crop((c * 16, r * 16, c * 16 + 16, r * 16 + 16)).getbbox() is None: return c, r
         # nothing free, add eight rows (128 px) at the bottom and look again
@@ -71,7 +79,7 @@ for name in NAMES:
     if name not in defs:
         print('NOT IN MOD', name); continue
     i = value(name)
-    x, y = (i % 16) * 16, (i // 16) * 16
+    x, y = (i % SW) * 16, (i // SW) * 16
     tile = src.crop((x, y, x + 16, y + 16)); bb = tile.getbbox()
     if not bb:
         print('EMPTY CELL', name); continue
