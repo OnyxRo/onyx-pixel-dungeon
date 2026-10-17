@@ -90,6 +90,7 @@ public class Statistics {
 	//Abyssalnite's septium pillar fight, how many pillars are down and which are awake
 	public static int killcount = 0;
 	public static int rituals = 0; //Cursed PD, how many sacrifices have been made to Hau Tul
+	public static boolean Hollow_Holiday = false, Tomb_Reach = false; //Magic Ling quest book flags
 	public static boolean FirstActive = false, SecondActive = false, ThirdActive = false, FourthActive = false;
 	
 	public static void reset() {

@@ -22,6 +22,7 @@ public class BrokenArmor extends FlavourBuff {
     @Override
     public void tintIcon(Image icon) {
         icon.hardlight(Window.WATA_COLOR);
+        icon.hardlight(0x33BBFF);
     }
 
     @Override

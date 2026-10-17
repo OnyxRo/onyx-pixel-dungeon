@@ -36,6 +36,7 @@ import com.watabou.utils.Bundle;
 public class Poison extends Buff implements Hero.Doom, Buff.DOTbuff {
 	
 	protected float left;
+	public float GetPoisonLevel() { return left; } //Magic Ling
 
 	//Lovecraft PD, poison lasts shorter on a hero with ring of elements
 	public static float durationFactor( com.shatteredpixel.shatteredpixeldungeon.actors.Char ch ) {

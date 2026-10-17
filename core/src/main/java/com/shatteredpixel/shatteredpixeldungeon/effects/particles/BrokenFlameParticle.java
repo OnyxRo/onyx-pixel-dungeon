@@ -21,6 +21,7 @@ public class BrokenFlameParticle extends PixelParticle.Shrinking {
         super();
 
         color(Window.ORAGNECOLOR);
+        color(0xFF8800);
         lifespan = 0.6f;
 
         acc.set( 0, -80 );

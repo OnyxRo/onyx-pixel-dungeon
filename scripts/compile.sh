@@ -17,7 +17,7 @@ find "$ROOT/SPD-classes/src/main/java" "$ROOT/core/src/main/java" \
      "$ROOT/services/updates/debugUpdates/src/main/java" \
      "$ROOT/services/news/debugNews/src/main/java" \
      "$ROOT/desktop/src/main/java" -name '*.java' > "$SRC"
-javac -nowarn -encoding UTF-8 --release 11 -cp "$LIB/libs.jar" -d "$OUT/classes" @"$SRC" 2>&1 | grep -v "^Note:" || true
+javac -Xmaxerrs 3000 -nowarn -encoding UTF-8 --release 11 -cp "$LIB/libs.jar" -d "$OUT/classes" @"$SRC" 2>&1 | grep -v "^Note:" || true
 test -f "$OUT/classes/com/shatteredpixel/shatteredpixeldungeon/desktop/DesktopLauncher.class"
 # game assets
 cp -r "$ROOT/core/src/main/assets/." "$OUT/classes/"

@@ -36,6 +36,7 @@ def mod_rows(height):
         a, b = [int(x) for x in er.split('-')]
         return list(range(a - 1, b))
     # ITEM_ROWS=60-67 (one based, set when several agents share the sheet) limits pictures to those rows
+    # ITEM_ROWS=68-75 (one based) restricts a parallel agent to its own rows
     if os.environ.get('ITEM_ROWS'):
         a, b = os.environ['ITEM_ROWS'].split('-')
         return list(range(int(a) - 1, int(b)))
@@ -56,12 +57,15 @@ ms = io.open(sheets[0], encoding='utf-8', errors='replace').read()
 cut = ms.find('class Icons')
 body = ms[:cut] if cut != -1 else ms
 defs = dict(re.findall(r'int\s+(\w+)\s*=\s*([^;]+);', body))
+mw = re.search(r'private static final int WIDTH\s*=\s*(\d+);', body)
+SW = int(mw.group(1)) if mw else 16   # some mods (Magic Ling) use a wider sheet
 
 def value(name, depth=0):
     assert depth < 20, name
     expr = defs[name]
     expr = re.sub(r'xy\(\s*(\d+)\s*,\s*(\d+)\s*\)', lambda m: str(int(m.group(1)) - 1 + MOD_COLS * (int(m.group(2)) - 1)), expr)
     expr = re.sub(r'xy\(\s*(\d+)\s*,\s*(\d+)\s*\)', lambda m: str(int(m.group(1)) - 1 + COLS * (int(m.group(2)) - 1)), expr)
+    expr = re.sub(r'xy\(\s*(\d+)\s*,\s*(\d+)\s*\)', lambda m: str(int(m.group(1)) - 1 + SW * (int(m.group(2)) - 1)), expr)
     expr = re.sub(r'[A-Za-z_]\w*', lambda m: str(value(m.group(0), depth + 1)) if m.group(0) in defs else m.group(0), expr)
     assert re.fullmatch(r'[\d\s+\-*()]+', expr), (name, expr)
     return int(eval(expr))
@@ -80,6 +84,7 @@ MOD_COLS = src.width // 16
 sheet_path = LP(MOD + 'core/src/main/assets/sprites/items.png')
 if not os.path.exists(sheet_path): sheet_path = LP(MOD + 'core/src/main/assets/sprites/items/items.png')   # Magic Ling keeps it in a folder
 if not os.path.exists(sheet_path): sheet_path = LP(MOD + 'core/src/main/assets/items.png')   # pre 0.8 mods keep it flat
+if not os.path.exists(sheet_path): sheet_path = LP(MOD + 'core/src/main/assets/sprites/items/items.png')   # Magic Ling keeps it in an items folder
 if not os.path.exists(sheet_path): sheet_path = LP(MOD + 'core/src/main/assets/ui/items.png')   # 0.5 and 0.6 mods keep it under ui
 src = Image.open(sheet_path).convert('RGBA')
 COLS = src.width // 16   # Magic Ling's sheet is 32 cells wide, Shattered's is 16
@@ -119,6 +124,7 @@ def free_cell():
                 grown.paste(dst, (0, 0))
                 dst = grown
                 print('item sheet grown to', dst.height, 'px high')
+            if r * 16 + 16 > dst.height: break
             for c in range(16):
                 if dst.crop((c * 16, r * 16, c * 16 + 16, r * 16 + 16)).getbbox() is None: return c, r
         if os.environ.get('ITEM_ROWS'):
@@ -138,6 +144,7 @@ for name in NAMES:
     i = value(name)
     x, y = (i % MOD_COLS) * 16, (i // MOD_COLS) * 16
     x, y = (i % COLS) * 16, (i // COLS) * 16
+    x, y = (i % SW) * 16, (i // SW) * 16
     tile = src.crop((x, y, x + 16, y + 16)); bb = tile.getbbox()
     if not bb:
         print('EMPTY CELL', name); continue
