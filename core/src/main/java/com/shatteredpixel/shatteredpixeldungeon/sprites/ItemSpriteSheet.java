@@ -29,7 +29,7 @@ public class ItemSpriteSheet {
 	public static final int SIZE = 16;
 
 	private static final int TX_WIDTH = 256;
-	private static final int TX_HEIGHT = 960;
+	private static final int TX_HEIGHT = 2128;
 
 	private static final int WIDTH = TX_WIDTH / SIZE;
 
@@ -374,6 +374,7 @@ public class ItemSpriteSheet {
 
 	public static final int WARPICK = MOD_ITEMS+0;
 	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;
+	public static final int CHAIN = xy(1, 128);
 	public static final int ARMOR_DRAGON_KNIGHT = xy(7, 49);
 	public static final int ARMOR_VIKING = xy(1, 49);
 	public static final int CURARE_DART = xy(2, 49);
@@ -750,6 +751,7 @@ public class ItemSpriteSheet {
 	static{
 		assignItemRect(WARPICK, 15, 14);
 		assignItemRect(WOODEN_BOOMERANG, 12, 12);
+		assignItemRect(CHAIN, 15, 16);
 		assignItemRect(ARMOR_DRAGON_KNIGHT, 15, 13);
 		assignItemRect(ARMOR_VIKING, 11, 13);
 		assignItemRect(CURARE_DART, 15, 15);

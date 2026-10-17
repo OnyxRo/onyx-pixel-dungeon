@@ -15,7 +15,12 @@ NAMES = sys.argv[3:]
 PK = 'core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/'
 # rows 13 and 19 (zero based 12 and 18) and every row from 33 down are kept for other mods' items.
 # The sheet grows by itself when they run out, see free_cell.
+# ITEM_ROWS=128-133 (one based, like the notes) limits a parallel port to its own rows and grows the sheet to fit
+_ER = os.environ.get('ITEM_ROWS')
 def mod_rows(height):
+    if _ER:
+        a, b = [int(x) for x in _ER.split('-')]
+        return list(range(a - 1, b))
     return [12, 18] + list(range(32, height // 16))
 
 def LP(p):
@@ -24,7 +29,8 @@ def LP(p):
 
 # the mod's package folder is not always the same as this game's
 sheets = []
-for dirpath, dirs, files in os.walk(LP(MOD + 'core/src/main/java')):
+_JB = MOD + ('core/src/main/java' if os.path.isdir(MOD + 'core') else 'src/main/java')
+for dirpath, dirs, files in os.walk(LP(_JB)):
     if 'ItemSpriteSheet.java' in files: sheets.append(os.path.join(dirpath, 'ItemSpriteSheet.java'))
 assert sheets, 'mod has no ItemSpriteSheet'
 ms = io.open(sheets[0], encoding='utf-8', errors='replace').read()
@@ -41,12 +47,17 @@ def value(name, depth=0):
     assert re.fullmatch(r'[\d\s+\-*()]+', expr), (name, expr)
     return int(eval(expr))
 
-sheet_path = LP(MOD + 'core/src/main/assets/sprites/items.png')
-if not os.path.exists(sheet_path): sheet_path = LP(MOD + 'core/src/main/assets/items.png')   # pre 0.8 mods keep it flat
-if not os.path.exists(sheet_path): sheet_path = LP(MOD + 'core/src/main/assets/ui/items.png')   # 0.5 and 0.6 mods keep it under ui
+_AB = MOD + ('core/src/main/assets/' if os.path.isdir(MOD + 'core') else 'src/main/assets/')
+sheet_path = LP(_AB + 'sprites/items.png')
+if not os.path.exists(sheet_path): sheet_path = LP(_AB + 'items.png')   # pre 0.8 mods keep it flat
+if not os.path.exists(sheet_path): sheet_path = LP(_AB + 'ui/items.png')   # 0.5 and 0.6 mods keep it under ui
 src = Image.open(sheet_path).convert('RGBA')
 dstp = ROOT + 'core/src/main/assets/sprites/items.png'
 dst = Image.open(dstp).convert('RGBA')
+if _ER:
+    _need = int(_ER.split('-')[1]) * 16
+    if dst.height < _need:
+        _g = Image.new('RGBA', (dst.width, _need), (0, 0, 0, 0)); _g.paste(dst, (0, 0)); dst = _g
 p = ROOT + PK + 'sprites/ItemSpriteSheet.java'
 s = io.open(p, encoding='utf-8', newline='').read()
 nl = '\r\n' if '\r\n' in s else '\n'

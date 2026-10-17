@@ -16,6 +16,7 @@ def mod_package_dir(mod):
     """The folder holding the mod's game code, like core/src/main/java/com/shatteredpixel/cursedpixeldungeon/"""
     import os
     base = os.path.join(mod, 'core', 'src', 'main', 'java')
+    if not os.path.isdir(base): base = os.path.join(mod, 'src', 'main', 'java')  # single module mods (Unleashed)
     best = None
     for dp, dirs, files in os.walk(base):
         if 'actors' in dirs and 'items' in dirs:
@@ -94,6 +95,27 @@ RENAMES = [
     ('3.x heavyBlowAbility and cleaveAbility have a damage boost argument', r'\b(Mace\.heavyBlowAbility|Sword\.cleaveAbility)\(\s*hero\s*,\s*target\s*,\s*([\d.]+f?)\s*,\s*this\s*\)', r'\1(hero, target, \2, 0, this)'),
     ('3.x sneakAbility has target and invisibility turns', r'Dagger\.sneakAbility\(\s*hero\s*,\s*(\d+)\s*,\s*this\s*\)', r'Dagger.sneakAbility(hero, target, \1, 2, this)'),
     ('3.x beforeAbilityUsed(hero) takes the target', r'\bbeforeAbilityUsed\(\s*hero\s*\)', 'beforeAbilityUsed(hero, null)'),
+    # Unleashed PD (Shattered 0.3) keeps level data in static fields
+    ('0.3 Level.adjacent is an instance method', r'\bLevel\.adjacent\(', 'Dungeon.level.adjacent('),
+    ('0.3 static Level.water, passable, avoid, solid, pit, losBlocking arrays', r'\bLevel\.(water|passable|avoid|solid|pit|losBlocking)\b(?=\s*[\[,;)])', r'Dungeon.level.\1'),
+    ('0.3 static Level.fieldOfView is the hero field of view', r'\bLevel\.fieldOfView\b', 'Dungeon.level.heroFOV'),
+    ('0.3 Level.NEIGHBOURS moved to PathFinder', r'\bLevel\.(NEIGHBOURS\w+)\b', r'PathFinder.\1'),
+    ('0.3 Level.WIDTH is width()', r'\bLevel\.WIDTH\b', 'Dungeon.level.width()'),
+    ('0.3 Level.randomDestination() takes a Char', r'Dungeon\.level\.randomDestination\(\s*\)', 'Dungeon.level.randomDestination( this )'),
+    ('0.3 ScrollOfPsionicBlast is exotic now', r'items\.scrolls\.ScrollOfPsionicBlast\b', 'items.scrolls.exotic.ScrollOfPsionicBlast'),
+    ('0.3 weapon Death enchantment is Grim', r'items\.weapon\.enchantments\.Death\b', 'items.weapon.enchantments.Grim'),
+    ('0.3 weapon Luck enchantment is Lucky', r'items\.weapon\.enchantments\.Luck\b', 'items.weapon.enchantments.Lucky'),
+    ('0.3 weapon Instability enchantment is Unstable', r'items\.weapon\.enchantments\.Instability\b', 'items.weapon.enchantments.Unstable'),
+    ('0.3 weapon Shock enchantment is Shocking', r'items\.weapon\.enchantments\.Shock\b', 'items.weapon.enchantments.Shocking'),
+    ('0.3 armor Bounce glyph is Repulsion', r'items\.armor\.glyphs\.Bounce\b', 'items.armor.glyphs.Repulsion'),
+    ('0.3 Dungeon.limitedDrops.swarmHP is LimitedDrops.SWARM_HP', r'Dungeon\.limitedDrops\.swarmHP\b', 'Dungeon.LimitedDrops.SWARM_HP'),
+    ('0.3 a mob that logs its own TXT_KILL', r'GLog\.n\(\s*TXT_KILL\s*,\s*name\s*\)', 'GLog.n( "You were killed by " + name + "..." )'),
+    ('0.3 weapon Fire enchantment is Blazing', r'items\.weapon\.enchantments\.Fire\b', 'items.weapon.enchantments.Blazing'),
+    ('0.3 weapon Leech enchantment is Vampiric', r'items\.weapon\.enchantments\.Leech\b', 'items.weapon.enchantments.Sapping'),
+    ('0.3 mob death message via ResultDescriptions', r'Dungeon\.fail\(\s*Utils\.format\(\s*ResultDescriptions\.\w+\s*,\s*[^;]*?\)\s*\)\s*;', 'Dungeon.fail( getClass() );'),
+    ('0.3 ResultDescriptions import', r'import [\w.]*\.ResultDescriptions;\r?\n', ''),
+    ('0.3 resistances() set override becomes an instance initializer', r'@Override\s*public\s+HashSet<Class<\?>>\s+resistances\(\)\s*\{\s*return\s+RESISTANCES;\s*\}', '{ resistances.addAll( RESISTANCES ); }'),
+    ('0.3 immunities() set override becomes an instance initializer', r'@Override\s*public\s+HashSet<Class<\?>>\s+immunities\(\)\s*\{\s*return\s+IMMUNITIES;\s*\}', '{ immunities.addAll( IMMUNITIES ); }'),
 ]
 
 def convert_long(s):
@@ -123,4 +145,10 @@ def apply(s):
     if 'Random.' in t and 'import com.watabou.utils.Random;' not in t:
         t = re.sub(r'(package [\w.]+;\r?\n)', r'\1\nimport com.watabou.utils.Random;', t, count=1)
         fired.append('added the Random import')
+    if re.search(r'\bDungeon\.', t) and not re.search(r'import [\w.]*\.Dungeon;', t) and 'package ' + PKG + ';' not in t:
+        t = re.sub(r'(package [\w.]+;\r?\n)', r'\1\nimport ' + PKG + '.Dungeon;', t, count=1)
+        fired.append('added the Dungeon import')
+    if re.search(r'\bPathFinder\.', t) and 'import com.watabou.utils.PathFinder;' not in t:
+        t = re.sub(r'(package [\w.]+;\r?\n)', r'\1\nimport com.watabou.utils.PathFinder;', t, count=1)
+        fired.append('added the PathFinder import')
     return t, fired

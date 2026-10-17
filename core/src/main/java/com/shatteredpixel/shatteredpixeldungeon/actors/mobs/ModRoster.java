@@ -218,6 +218,30 @@ public class ModRoster {
 		add( "lovecraft", Pepe.class, 0, 1, 99 );
 		add( "lovecraft", BanditLord.class, 0, 1, 99 );
 		add( "lovecraft", LivingPlantFadeLeaf.class, 0, 1, 99 );
+		//Unleashed PD, depths mapped from its 36 floors to our 26. Weight 0 are boss fight parts and water vault monsters, sandbox and tests only
+		add( "unleashed", GreenSnake.class, 2, 1, 3 );
+		add( "unleashed", Velocirooster.class, 2, 3, 5 );
+		add( "unleashed", SewerFly.class, 1, 2, 6 );
+		add( "unleashed", SlimeBrown.class, 1, 3, 4 );
+		add( "unleashed", SlimeRed.class, 1, 4, 5 );
+		add( "unleashed", Zombie.class, 2, 6, 8 );
+		add( "unleashed", Assassin.class, 1, 8, 9 );
+		add( "unleashed", ClayGolem.class, 2, 12, 14 );
+		add( "unleashed", SpiderBot.class, 2, 13, 14 );
+		add( "unleashed", BrownWolf.class, 2, 16, 19 );
+		add( "unleashed", GrayWolf.class, 1, 17, 19 );
+		add( "unleashed", Yeti.class, 1, 18, 19 );
+		add( "unleashed", IceDemon.class, 1, 19, 19 );
+		add( "unleashed", LostSoul.class, 1, 22, 24 );
+		add( "unleashed", Squid.class, 0, 1, 99 );
+		add( "unleashed", Tinkerer.class, 0, 1, 99 );
+		add( "unleashed", Minotaur.class, 0, 1, 99 );
+		add( "unleashed", ChaosMage.class, 0, 1, 99 );
+		add( "unleashed", DemonLord.class, 0, 1, 99 );
+		add( "unleashed", BurningFist.class, 0, 1, 99 );
+		add( "unleashed", RottingFist.class, 0, 1, 99 );
+		add( "unleashed", Larva.class, 0, 1, 99 );
+		add( "unleashed", Undead.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */
