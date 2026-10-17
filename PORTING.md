@@ -137,7 +137,6 @@ Left out, and why.
 
 Tool changes made. `port-itemsprites.py` reads `ui/items.png` for 0.5 and 0.6 mods. `port-skip.txt` has the mod launcher and the scenes it drags in.
 
-<<<<<<< HEAD
 ## Lovecraft and Dragonic, finishing pass (2026-10-16, branch onyx/p2-lovedrag)
 
 Lovecraft.
@@ -152,7 +151,6 @@ Dragonic.
 - Nilheim (`NilheimLevel`, Prison region, 56 worlds in total). The mod's own sheet is missing from its repo, so the tiles are Shattered's Prison sheet shifted to an icy blue, with the Prison water, music and ambience.
 - Seed Pouch, Wand Holster, Newborn Elemental and Tamahawk were compared with what this game has (same sizes and stats), nothing to add. Boomerang is the new Lovecraft one.
 - Dragon boss test. `BossArenaTest.dragonPhases` drives the level's own `progress()` through all four phases and fails if the floor is still sealed after the last. A step that stops at a headless limit is moved on by hand and shown as forced. Still worth playing the fight in the sandbox.
-=======
 ## Unleashed PD (2026-10-16, repo FthrNature/unleashed-pixel-dungeon, key `unleashed`)
 Base is Shattered 0.3, so everything is written on the old API. Worlds are NOT ported on purpose, Onyx is redrawing that art. Only code and sprites came over.
 
@@ -165,4 +163,3 @@ Base is Shattered 0.3, so everything is written on the old API. Worlds are NOT p
 - Left out, need the mod's own systems. Donations altar, Weightstone, Horror enchantment, difficulty levels (`Dungeon.difficultyLevel`), the infinite levels, the Frozen boss level and the old painters (all built on the 0.3 level code and its frozen tile sheet).
 - Worlds the mod would add, for later when the art is redrawn. Sheets are 256x64 in the old layout. Unleashed Sewers (tiles0, water0, stage sewers), Prison (tiles1, water1, stage prison), Caves (tiles2, water2, stage caves), City (tiles3, water3, stage city), Frozen Caves (tiles4, water4, an extra ice stage on floors 25 to 29 of the mod, closest here to floors 14 to 18), Halls (tiles5, water5, stage halls).
 - Tool changes. `renames.py` now handles 0.3 static `Level.` fields and methods, set style `resistances()` and `immunities()`, old enchantment names, `Dungeon.limitedDrops`, imports of Dungeon and PathFinder added by themselves. `mod_package_dir` and `port-copier.py` find single module mods (`src/main/java`). `port-itemsprites.py` takes `ITEM_ROWS=128-133` to stay inside a parallel agent's rows. New `scripts/apply-renames.py`, `scripts/errsum.py`, `scripts/port-unleashed-copy.py`.
->>>>>>> onyx/p2-unleashed

@@ -29,11 +29,7 @@ public class ItemSpriteSheet {
 	public static final int SIZE = 16;
 
 	private static final int TX_WIDTH = 256;
-<<<<<<< HEAD
-	private static final int TX_HEIGHT = 1696;
-=======
 	private static final int TX_HEIGHT = 2128;
->>>>>>> onyx/p2-unleashed
 
 	private static final int WIDTH = TX_WIDTH / SIZE;
 
@@ -378,15 +374,12 @@ public class ItemSpriteSheet {
 
 	public static final int WARPICK = MOD_ITEMS+0;
 	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;
-<<<<<<< HEAD
 	public static final int HOWARD_CHEST = xy(2, 100);
 	public static final int EVAN_CHEST = xy(3, 100);
 	public static final int GOLD_CHEST = xy(4, 100);
 	public static final int HEAVY_CROSSBOW = xy(0, 100);
 	public static final int WEIGHT = xy(1, 100);
-=======
 	public static final int CHAIN = xy(1, 128);
->>>>>>> onyx/p2-unleashed
 	public static final int ARMOR_DRAGON_KNIGHT = xy(7, 49);
 	public static final int ARMOR_VIKING = xy(1, 49);
 	public static final int CURARE_DART = xy(2, 49);
@@ -763,15 +756,12 @@ public class ItemSpriteSheet {
 	static{
 		assignItemRect(WARPICK, 15, 14);
 		assignItemRect(WOODEN_BOOMERANG, 12, 12);
-<<<<<<< HEAD
 		assignItemRect(HOWARD_CHEST, 16, 14);
 		assignItemRect(EVAN_CHEST, 16, 14);
 		assignItemRect(GOLD_CHEST, 16, 14);
 		assignItemRect(HEAVY_CROSSBOW, 14, 14);
 		assignItemRect(WEIGHT, 14, 12);
-=======
 		assignItemRect(CHAIN, 15, 16);
->>>>>>> onyx/p2-unleashed
 		assignItemRect(ARMOR_DRAGON_KNIGHT, 15, 13);
 		assignItemRect(ARMOR_VIKING, 11, 13);
 		assignItemRect(CURARE_DART, 15, 15);
