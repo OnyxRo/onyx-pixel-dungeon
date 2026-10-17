@@ -23,9 +23,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BeOld;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.UnBlessAnkh;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFirebolt;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ZombieSprite;
 import com.watabou.utils.Random;
 
@@ -51,10 +49,6 @@ public class Zombie extends Mob {
 		properties.add(Property.UNDEAD);
 	}
 
-	@Override
-	public Item SupercreateLoot(){
-		return new UnBlessAnkh();
-	}
 
 	@Override
 	public float attackDelay() {
@@ -87,7 +81,6 @@ public class Zombie extends Mob {
 
 	{
 		weakness.add(Burning.class);
-		weakness.add(WandOfFirebolt.class);
 		resistances.add(ToxicGas.class);
 	}
 }

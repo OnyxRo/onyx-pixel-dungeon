@@ -222,6 +222,8 @@ public class Hero extends Char {
 	public int defenseSkill = 5;
 
 	public boolean ready = false;
+	//SPS compat. Set by the SPS Strength Down buff, nothing here reads it.
+	public boolean weakened = false;
 	public boolean damageInterrupt = true;
 	public HeroAction curAction = null;
 	public HeroAction lastAction = null;

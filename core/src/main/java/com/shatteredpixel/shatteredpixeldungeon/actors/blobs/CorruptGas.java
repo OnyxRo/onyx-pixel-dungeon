@@ -66,7 +66,7 @@ public class CorruptGas extends Blob implements Hero.Doom {
 	public void use(BlobEmitter emitter) {
 		super.use(emitter);
 
-		emitter.pour(Speck.factory(Speck.CORRUPT), 0.6f);
+		emitter.pour(Speck.factory(Speck.STENCH), 0.6f);
 	}
 
 	@Override

@@ -31,7 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.damagetype.DamageType;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFirebolt;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -68,7 +67,7 @@ public class FireRabbit extends Mob {
 	@Override
 	public boolean attack( Char enemy, float dmgMulti, float dmgBonus, float accMulti ) {
 
-		for (int hitpos : beam.subPath(1, beam.dist)) {
+		if (beam != null) for (int hitpos : beam.subPath(1, beam.dist)) {
 			GameScene.add(Blob.seed(hitpos, 5, FireEffectDamage.class));
 		}
 		return super.attack( enemy, dmgMulti, dmgBonus, accMulti );
@@ -93,7 +92,7 @@ public class FireRabbit extends Mob {
 	@Override
 	public int attackProc(Char enemy, int damage) {
 		if (Random.Int(3) == 0) {
-			Buff.affect(enemy, Burning.class).set(4f);
+			Buff.affect(enemy, Burning.class).reignite(enemy);
 			yell( Messages.get(this, "yell") );
 		}
         if (Dungeon.level.distance( pos, enemy.pos ) == 3){
@@ -115,7 +114,6 @@ public class FireRabbit extends Mob {
 		immunities.add(Burning.class);
 		immunities.add(DamageType.FireDamage.class);
 		immunities.add(Fire.class);
-		immunities.add(WandOfFirebolt.class);
 	}
 
 }

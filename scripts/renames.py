@@ -116,6 +116,12 @@ SPS_RULES = [
     ('SPS Mob evadeSkill field is defenseSkill', r'\bevadeSkill\s*=', 'defenseSkill ='),
     ('SPS evadeSkill(Char) is defenseSkill(Char)', r'\bevadeSkill\(\s*Char\b', 'defenseSkill( Char'),
     ('SPS hitSkill(Char) is attackSkill(Char)', r'\bhitSkill\(\s*Char\b', 'attackSkill( Char'),
+    ('SPS old MagicMissile call is boltFromChar', r'MagicMissile\.(blueLight|coldLight|earth|fire|force|poison|shadow)\(\s*parent\s*,\s*[\w.]+\s*,\s*([\w.]+)\s*,', lambda m: 'MagicMissile.boltFromChar( parent, MagicMissile.' + {'blueLight': 'FROST', 'coldLight': 'FROST', 'earth': 'EARTH', 'fire': 'FIRE', 'force': 'FORCE', 'poison': 'POISON', 'shadow': 'SHADOW'}[m.group(1)] + ', this, ' + m.group(2) + ','),
+    ('SPS Burning.set is reignite', r'Buff\.affect\(\s*([\w.]+)\s*,\s*Burning\.class\s*\)\.set\([^)]*\)', r'Buff.affect(\1, Burning.class).reignite(\1)'),
+    ('SPS blob seed signature', r'public\s+void\s+seed\(\s*int\s+cell\s*,\s*int\s+amount\s*\)', 'public void seed( Level level, int cell, int amount ) { if (cur == null) cur = new int[level.length()]; if (off == null) off = new int[cur.length];'),
+    ('SPS blob super seed', r'super\.seed\(\s*cell\s*,\s*amount\s*\)', 'super.seed( level, cell, amount )'),
+    ('SPS floating text with an icon', r'showStatusWithIcon\(\s*[\w.]+\s*,\s*([^;]+?)\s*,\s*FloatingText2\.\w+\s*\)', r'showStatus( CharSprite.NEGATIVE, \1 )'),
+    ('SPS belongings.discharge does not exist', r'[\w.]*belongings\.discharge\(\)\s*;', '//belongings.discharge() has no use here'),
 ]
 
 def convert_long(s):
@@ -126,12 +132,12 @@ def convert_long(s):
     s = re.sub(r'\bLong\b', 'Integer', s)
     return re.sub(r'(\d)L\b', r'\1', s)
 
-def apply(s):
+def apply(s, sps=False):
     """Returns the fixed text and the list of reasons that fired."""
     fired = []
     t = convert_long(s)
     if t != s: fired.append('long damage became int')
-    for why, pat, rep in (SPS_RULES if 'com.hmdzl.spspd' in s else []) + RENAMES:
+    for why, pat, rep in (SPS_RULES if (sps or 'com.hmdzl.spspd' in s) else []) + RENAMES:
         t2 = re.sub(pat, rep, t)
         if t2 != t: fired.append(why); t = t2
     # the old Skeleton Key that boss levels dropped is the Worn Key now
@@ -145,10 +151,28 @@ def apply(s):
     if 'Random.' in t and 'import com.watabou.utils.Random;' not in t:
         t = re.sub(r'(package [\w.]+;\r?\n)', r'\1\nimport com.watabou.utils.Random;', t, count=1)
         fired.append('added the Random import')
-    if 'com.hmdzl.spspd' in s:
+    if sps or 'com.hmdzl.spspd' in s:
         t, f2 = sps_fixups(t)
         fired += f2
     return t, fired
+
+
+_CONST_CACHE = {}
+def _our_constants(rel, kind):
+    key = (rel, kind)
+    if key not in _CONST_CACHE:
+        import os
+        p = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'core', 'src', 'main', 'java', *PKG.split('.'), *rel.split('/'))
+        try:
+            txt = open(p, encoding='utf-8', errors='replace').read()
+        except OSError:
+            txt = ''
+        if kind == 'int':
+            _CONST_CACHE[key] = set(re.findall(r'(?:public\s+)?static\s+final\s+int\s+(\w+)\s*=', txt))
+        else:
+            m = re.search(r'enum\s+\w+\s*\{(.*?)[;}]', txt, re.S)
+            _CONST_CACHE[key] = set(re.findall(r'\b([A-Z][A-Z0-9_]+)\b', m.group(1))) if m else set()
+    return _CONST_CACHE[key]
 
 _BUFF_NAMES = None
 def _our_buff_icons():
@@ -165,10 +189,12 @@ def _our_buff_icons():
 def sps_fixups(t):
     """SPS only. Buff icons we do not have become no icon, and the imports its short files leave out are added."""
     fired = []
-    names = _our_buff_icons()
-    if names:
-        t2 = re.sub(r'\bBuffIndicator\.([A-Z][A-Z0-9_]+)\b', lambda m: m.group(0) if m.group(1) in names else 'BuffIndicator.NONE', t)
-        if t2 != t: fired.append('SPS buff icon we lack is NONE'); t = t2
+    for cls, rel, fallback, kind in (('BuffIndicator', 'ui/BuffIndicator.java', 'NONE', 'int'), ('Speck', 'effects/Speck.java', 'STENCH', 'int'),
+                                     ('CharSprite', 'sprites/CharSprite.java', 'NEGATIVE', 'int'), ('HeroSubClass', 'actors/hero/HeroSubClass.java', 'null', 'enum')):
+        names = _our_constants(rel, kind)
+        if names:
+            t2 = re.sub(r'\b' + cls + r'\.([A-Z][A-Z0-9_]+)\b', lambda m: m.group(0) if m.group(1) in names else (cls + '.' + fallback if fallback != 'null' else 'null'), t)
+            if t2 != t: fired.append('SPS ' + cls + ' constant we lack'); t = t2
     pk = re.search(r'package ([\w.]+);', t)
     pkg = pk.group(1) if pk else ''
     for sym, imp, pat in (('Dungeon', PKG + '.Dungeon', r'\bDungeon\.'), ('PathFinder', 'com.watabou.utils.PathFinder', r'\bPathFinder\.'),

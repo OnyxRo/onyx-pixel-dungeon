@@ -46,7 +46,7 @@ public class STRdown extends FlavourBuff {
 		if (super.attachTo(target) && target==Dungeon.hero) {
 			Hero hero = (Hero) target;
 			hero.weakened = true;
-			hero.belongings.discharge();
+			//belongings.discharge() has no use here
 
 			return true;
 		} else {

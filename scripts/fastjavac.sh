@@ -7,7 +7,7 @@ cd "$ROOT"
 SEP=":"; W() { printf '%s' "$1"; }
 case "$(uname -s)" in MINGW*|MSYS*|CYGWIN*) SEP=";"; W() { cygpath -w "$1"; } ;; esac
 JARS=""
-while IFS= read -r j; do JARS="$JARS$(W "$j")${SEP}"; done < <(find ~/.gradle/caches/modules-2/files-2.1 -name '*.jar' ! -name '*sources*' 2>/dev/null)
+while IFS= read -r j; do JARS="$JARS$(W "$j")${SEP}"; done < <(find ~/.gradle/caches/modules-2/files-2.1 -name '*.jar' ! -name '*sources*' 2>/dev/null | grep -v -F 1.9.10)
 mkdir -p build/fast
 printf '%s\n' '-cp' "\"$(printf '%s' "$JARS" | sed 's/\\/\\\\/g')\"" > build/fast-cp.args
 find SPD-classes/src/main/java core/src/main/java services/src/main/java services/updates/debugUpdates/src/main/java services/news/debugNews/src/main/java -name '*.java' > build/fast-src.txt

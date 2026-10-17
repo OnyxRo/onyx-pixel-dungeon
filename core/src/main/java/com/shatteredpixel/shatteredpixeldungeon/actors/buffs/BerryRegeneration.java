@@ -69,7 +69,7 @@ public class BerryRegeneration extends Buff {
 	@Override
 	public boolean act() {
 		if (target.isAlive()) {
-			if (Dungeon.hero.subClass == HeroSubClass.PASTOR && target.HP < target.HT){
+			if (Dungeon.hero.subClass == null && target.HP < target.HT){
 			  target.HP += (int)(Math.min(2+target.HT/12,target.HT*1.5 - target.HP));
 			} else if (target.HP < target.HT) {
 				target.HP += (int)(Math.min(1+target.HT/25,(target.HT-target.HP)));

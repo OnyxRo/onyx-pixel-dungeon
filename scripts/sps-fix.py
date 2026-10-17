@@ -27,20 +27,31 @@ for path, errs in todo.items():
     full = path if os.path.isabs(path) else os.path.join(ROOT, path)
     try: s = io.open(full, encoding='utf-8', newline='').read()
     except OSError: continue
-    nl = '\r\n' if '\r\n' in s else '\n'
-    lines = s.split(nl)
+    lines = s.splitlines(True)   # files mix line endings, keep each one as it is
     kill = set()
     for ln, msg, sym in errs:
         if ln - 1 >= len(lines): continue
-        line = lines[ln - 1]
+        line = lines[ln - 1].rstrip(chr(13) + chr(10))
         name = sym.split()[-1] if sym else ''
         if line.lstrip().startswith('import ') and (('cannot find symbol' in msg and name and line.strip().endswith('.' + name + ';')) or 'does not exist' in msg or 'static import only' in msg):
             kill.add(ln - 1)
         elif re.match(r'^\s*(resistances|immunities|weakness)\.add\(\s*[\w.]+\.class\s*\)\s*;\s*$', line) and 'cannot find symbol' in msg and name and (name + '.class') in line:
             kill.add(ln - 1)
+        elif 'cannot find symbol' in msg and name and re.match(r'^\s*(lootOther|loot)\s*=\s*(new\s+' + re.escape(name) + r'\b.*|' + re.escape(name) + r'\.class)\s*;\s*$', line):
+            kill.add(ln - 1)
+        elif 'cannot find symbol' in msg and name:
+            # a SupercreateLoot override that builds a missing item is dropped whole, nothing calls it here
+            for b in range(ln - 1, max(ln - 8, 0), -1):
+                if 'SupercreateLoot' in lines[b]:
+                    a = b - 1 if lines[b - 1].strip() == '@Override' else b
+                    depth = 0; e = b
+                    for k in range(b, min(b + 20, len(lines))):
+                        depth += lines[k].count('{') - lines[k].count('}')
+                        if depth == 0 and '{' in ''.join(lines[b:k + 1]): e = k; break
+                    kill.update(range(a, e + 1)); break
     if kill:
         lines = [x for j, x in enumerate(lines) if j not in kill]
-        io.open(full, 'w', encoding='utf-8', newline='').write(nl.join(lines))
+        io.open(full, 'w', encoding='utf-8', newline='').write(''.join(lines))
         changed += len(kill)
         print(os.path.basename(path), 'removed', len(kill), 'lines')
 print('lines removed', changed)

@@ -26,8 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.EnergyParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMending;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.guns.GunD;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.arrows.GlassFruit;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -50,17 +48,11 @@ public class DemonRabbit extends Mob {
 		loot = new GlassFruit();
 		lootChance = 0.2f;
 		
-		lootOther = new PotionOfMending();
 		lootChanceOther = 0.1f; // by default, see die()
 		
 		properties.add(Property.DEMONIC);
         properties.add(Property.ORC);
 	}
-
-    @Override
-    public Item SupercreateLoot(){
-        return new GunD();
-    }
 
     @Override
     public boolean act() {

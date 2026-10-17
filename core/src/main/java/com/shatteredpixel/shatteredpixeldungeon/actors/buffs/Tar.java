@@ -54,7 +54,7 @@ public class Tar extends Buff {
 		if (target.isAlive()) {
 		Burning burning = target.buff(Burning.class);
 	    if (target.isAlive() && burning!=null){
-	    Buff.affect(target,Burning.class).set(3f);
+	    Buff.affect(target, Burning.class).reignite(target);
 	    }
 		   spend(TICK);
 		}

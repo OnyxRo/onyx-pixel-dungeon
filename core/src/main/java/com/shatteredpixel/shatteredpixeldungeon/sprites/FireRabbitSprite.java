@@ -62,7 +62,7 @@ public class FireRabbitSprite extends MobSprite {
 		if (anim == attack) {
 
 			Sample.INSTANCE.play(Assets.Sounds.ZAP);
-			MagicMissile.fire(parent, ch.pos, posToShoot, new Callback() {
+			MagicMissile.boltFromChar( parent, MagicMissile.FIRE, this, posToShoot, new Callback() {
 				@Override
 				public void call() {
 					ch.onAttackComplete();

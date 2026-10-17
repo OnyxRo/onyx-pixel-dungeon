@@ -28,10 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FrostIce;
 import com.shatteredpixel.shatteredpixeldungeon.actors.damagetype.DamageType;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.StoneOre;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFlow;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFreeze;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.EnchantmentIce;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.EnchantmentIce2;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Icecap;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -110,13 +106,9 @@ public class IceBug extends Mob {
 
 	{
 		resistances.add(DamageType.IceDamage.class);
-		resistances.add(WandOfFlow.class);
-		resistances.add(WandOfFreeze.class);
 
 		immunities.add(FrostIce.class);
 		
-		immunities.add(EnchantmentIce.class);
-		immunities.add(EnchantmentIce2.class);
 	}
 
 

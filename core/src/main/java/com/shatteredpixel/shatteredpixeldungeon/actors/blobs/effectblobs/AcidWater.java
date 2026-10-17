@@ -68,7 +68,7 @@ public class AcidWater extends Blob {
 	}
 
 	@Override
-	public void seed(int cell, int amount) {
+	public void seed( Level level, int cell, int amount ) { if (cur == null) cur = new int[level.length()]; if (off == null) off = new int[cur.length];
 		if (cur[cell] == 0) {
 			volume += amount;
 			cur[cell] = amount;

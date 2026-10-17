@@ -86,7 +86,7 @@ public class SwampGas extends Blob {
 	public void use(BlobEmitter emitter) {
 		super.use(emitter);
 
-		emitter.pour(Speck.factory(Speck.TARGAS,true ), 0.6f);
+		emitter.pour(Speck.factory(Speck.STENCH,true ), 0.6f);
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
-import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText2;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -27,11 +26,11 @@ public class ShieldArmor extends Buff {
 		public int absorb(int damage) {
 
         if (level <= damage) {
-			target.sprite.showStatusWithIcon(CharSprite.MELEE_DAMAGE,"-"+ Integer.toString(level), FloatingText2.SHIELDING);
+			target.sprite.showStatus( CharSprite.NEGATIVE, "-"+ Integer.toString(level) );
             detach();
             return damage - level;
         } else {
-			target.sprite.showStatusWithIcon(CharSprite.MELEE_DAMAGE, "-"+ Integer.toString(damage),FloatingText2.SHIELDING);
+			target.sprite.showStatus( CharSprite.NEGATIVE, "-"+ Integer.toString(damage) );
             level -= damage;
             return 0;
         }
