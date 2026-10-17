@@ -51,6 +51,10 @@ public class BuffIndicator extends Component {
 	//FIXME this is becoming a mess, should do a big cleaning pass on all of these
 	//and think about tinting options
 	public static final int MIND_VISION = 0;
+	//Transformation PD stand ins, the mod drew its own
+	public static final int GOLDCURSE = 8;
+	public static final int MELEESDEFENCE = 8;
+	public static final int MISSILESDEFENCE = 8;
 	public static final int LEVITATION  = 1;
 	public static final int FIRE        = 2;
 	public static final int POISON      = 3;

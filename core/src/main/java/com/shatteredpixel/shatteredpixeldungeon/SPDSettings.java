@@ -123,6 +123,11 @@ public class SPDSettings extends GameSettings {
 	//It speeds up the attack, zap and operate animations of monsters, never the hero's.
 	public static final String KEY_ANIM_SPEED = "anim_speed";
 
+	//from Transformation PD, character animations are always on
+	public static boolean charAnimations() {
+		return true;
+	}
+
 	public static void animSpeed( int slider ){
 		put( KEY_ANIM_SPEED, slider );
 	}

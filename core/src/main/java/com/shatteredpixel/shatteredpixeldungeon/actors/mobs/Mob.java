@@ -151,6 +151,11 @@ public abstract class Mob extends Char {
 	public void onAllyConversion(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff source) {
 	}
 
+	//from Transformation PD, marks a ranged attack that uses the physical pipeline
+	protected void beginPhysicalRangedAttack() {}
+
+	protected void completePhysicalAttack(Char target, boolean hit) {}
+
 	protected void onAdd(){
 		if (firstAdded) {
 			//modify health for ascension challenge if applicable, only on first add

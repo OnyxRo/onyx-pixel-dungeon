@@ -29,6 +29,10 @@ import java.util.HashSet;
 
 public class Statistics {
 
+	//from Transformation PD, which hero boss reward scrolls were already handed out
+	public static boolean[] subLimation = new boolean[3];
+
+
 	public static int goldCollected;
 	public static int deepestFloor;
 	public static int highestAscent;

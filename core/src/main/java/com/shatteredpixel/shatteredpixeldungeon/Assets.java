@@ -144,6 +144,7 @@ public class Assets {
 	}
 
 	public static class Music {
+		public static final String BACKS1_2 = "music/transformation/chuboss.ogg"; //ported, transformation
 		public static final String BACKS1_1 = "music/transformati/combat_area.ogg"; //ported, transformati
 		public static final String TWINGO_TANGO = "music/player/shittened/twingo_tango.ogg"; //ported, shittened
 		public static final String TWINGO_TURBO = "music/player/shittened/twingo_turbo.ogg"; //ported, shittened
@@ -399,6 +400,20 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String WARRIORBOSS = "sprites/transformation/warriorboss.png"; //ported, transformation
+		public static final String MYRIAD_BLACK_SHADOW_OVERLAY = "sprites/transformation/myriad_black_shadow_overlay.png"; //ported, transformation
+		public static final String SUCCBOSS = "sprites/transformation/succboss.png"; //ported, transformation
+		public static final String SCORPIOBOSS = "sprites/transformation/scorpioboss.png"; //ported, transformation
+		public static final String ROGUEBOSS = "sprites/transformation/rogueboss.png"; //ported, transformation
+		public static final String RIPPERBOSS = "sprites/transformation/ripperboss.png"; //ported, transformation
+		public static final String MONKMASTER = "sprites/transformation/monkmaster.png"; //ported, transformation
+		public static final String HUNTRESSBOSS = "sprites/transformation/huntressboss.png"; //ported, transformation
+		public static final String GREATSHOPER = "sprites/transformation/greatshoper.png"; //ported, transformation
+		public static final String GREATDEMON = "sprites/transformation/greatdemon.png"; //ported, transformation
+		public static final String GOLDGOLEM = "sprites/transformation/goldgolem.png"; //ported, transformation
+		public static final String GOLDELEMETAL = "sprites/transformation/goldelemental.png"; //ported, transformation
+		public static final String EYEBOSS = "sprites/transformation/eyeboss.png"; //ported, transformation
+		public static final String DIEDTENGU = "sprites/transformation/diedtengu.png"; //ported, transformation
 		public static final String DEATH_BUTTERFLY = "sprites/transformation/death_butterfly.png"; //ported, transformation
 		public static final String DARK_MECHANICAL_FIST = "sprites/transformation/dark_mechanical_fist.png"; //ported, transformation
 		public static final String CORPSE = "sprites/transformation/corpse.png"; //ported, transformation
