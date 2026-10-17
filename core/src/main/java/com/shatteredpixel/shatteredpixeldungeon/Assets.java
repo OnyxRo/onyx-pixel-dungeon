@@ -850,5 +850,28 @@ public class Assets {
 		public static final String VAULT_TOKENS_DOOR= "sprites/vault_tokens_door.png";
 		public static final String VAULT_MIRROR     = "sprites/vault_mirror.png";
 		public static final String VAULT_BOSS_ELEMENTAL= "sprites/vault_boss_elemental.png";
+		public static final String GOB_MONK = "sprites/goblins/monk.png"; //ported, goblins
+		public static final String GOB_CHAOS = "sprites/goblins/chaos_mage.png"; //ported, goblins
+		public static final String GOB_GOLEM = "sprites/goblins/golem.png"; //ported, goblins
+		public static final String GOB_EVILLORD = "sprites/goblins/demonlord.png"; //ported, goblins
+		public static final String GOB_SNAKE = "sprites/goblins/snakes.png"; //ported, goblins
+		public static final String GOB_ICEDEMON = "sprites/goblins/icedemon.png"; //ported, goblins
+		public static final String GOB_LOSTSOUL = "sprites/goblins/lost_souls.png"; //ported, goblins
+		public static final String GOB_MINOTAUR = "sprites/goblins/minotaur.png"; //ported, goblins
+		public static final String GOB_SLIME = "sprites/goblins/slime.png"; //ported, goblins
+		public static final String GOB_SPIDERBOT = "sprites/goblins/spiderbot.png"; //ported, goblins
+		public static final String GOB_SQUID = "sprites/goblins/squid.png"; //ported, goblins
+		public static final String GOB_KING = "sprites/goblins/king.png"; //ported, goblins
+		public static final String GOB_ZOMBIE = "sprites/goblins/zombie.png"; //ported, goblins
+		public static final String GOB_BURNING = "sprites/goblins/burning_fist.png"; //ported, goblins
+		public static final String GOB_ROTTING = "sprites/goblins/rotting_fist.png"; //ported, goblins
+		public static final String GOB_LARVA = "sprites/goblins/larva.png"; //ported, goblins
+		public static final String GOB_UNDEAD = "sprites/goblins/undead.png"; //ported, goblins
+		public static final String GOB_BEE = "sprites/goblins/bee.png"; //ported, goblins
+		public static final String GOB_SCORPIO = "sprites/goblins/scorpio.png"; //ported, goblins
+		public static final String GOB_ROOSTER = "sprites/goblins/velocirooster.png"; //ported, goblins
+		public static final String GOB_BUNNY = "sprites/goblins/rabbit.png"; //ported, goblins
+		public static final String GOB_FAIRY = "sprites/goblins/fairy.png"; //ported, goblins
+		public static final String GOB_KLIKS = "sprites/goblins/kliks.png"; //ported, goblins
 	}
 }

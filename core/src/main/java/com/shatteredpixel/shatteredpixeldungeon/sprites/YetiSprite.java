@@ -26,6 +26,7 @@ public class YetiSprite extends MobSprite {
         super();
 
         texture( Assets.Sprites.U_GOLEM );
+        texture( Assets.Sprites.GOB_GOLEM );
 
         TextureFilm frames = new TextureFilm( texture, 16, 16 );
 

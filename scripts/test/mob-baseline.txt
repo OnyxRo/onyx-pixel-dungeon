@@ -63,3 +63,15 @@ Drone crashed during its own turns
 Statue crashed the test
 ArmoredStatue crashed the test
 DeadEye crashed the test
+Bunny crashed during its own turns
+Fairy crashed during its own turns
+FireKlik crashed during its own turns
+FrostKlik crashed during its own turns
+MetalKlik crashed during its own turns
+PhaseKlik crashed during its own turns
+PoisonKlik crashed during its own turns
+SpiderKlik crashed during its own turns
+SugarplumFairy crashed during its own turns
+PetBee crashed during its own turns
+Scorpion crashed during its own turns
+PetVelocirooster crashed during its own turns

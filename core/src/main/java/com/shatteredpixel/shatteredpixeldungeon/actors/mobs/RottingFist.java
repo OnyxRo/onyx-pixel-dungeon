@@ -18,11 +18,13 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
@@ -32,11 +34,16 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPsi
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RottingFistSprite;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.GobRottingFistSprite;
 import com.watabou.utils.Random;
 
 import java.util.HashSet;
 
 public class RottingFist extends UMob {
+//port-oldstats
+public class RottingFist extends Mob {
 
     private static final int REGENERATION	= 4;
 
@@ -58,6 +65,41 @@ public class RottingFist extends UMob {
     }
 
     private String TXT_DESC = "The Rotting Fist is an extension of an ancient god into our dimension.";
+        spriteClass = GobRottingFistSprite.class;
+
+        HP = HT = 300;
+        defenseSkill = 25;
+
+        EXP = 0;
+
+        state = WANDERING;
+        immunities.add( Amok.class );
+        immunities.add( Sleep.class );
+        immunities.add( Paralysis.class );
+        immunities.add( Terror.class );
+        immunities.add( Poison.class );
+        immunities.add( Vertigo.class );
+        resistances.add( ToxicGas.class );
+        resistances.add( Grim.class );
+    }
+
+    @Override
+    public int attackSkill( Char target ) {
+        return 36;
+    }
+
+    @Override
+    public int damageRoll() {
+        return Random.NormalIntRange( 24, 36 );
+    }
+
+    @Override
+    public int drRoll() {
+        return Random.NormalIntRange( 0, 15 );
+    }
+
+
+    private String TXT_DESC = "This Rotting Fist was once the right hand of the Sacred.";
 
     @Override
     public int attackProc( Char enemy, int damage ) {

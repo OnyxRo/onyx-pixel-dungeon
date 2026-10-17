@@ -25,6 +25,7 @@ public class SlimeRedSprite  extends MobSprite {
         super();
 
         texture(Assets.Sprites.U_SLIME);
+        texture(Assets.Sprites.GOB_SLIME);
 
         TextureFilm frames = new TextureFilm(texture, 20, 14);
 

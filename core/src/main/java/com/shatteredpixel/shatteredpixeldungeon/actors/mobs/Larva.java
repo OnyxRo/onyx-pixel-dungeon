@@ -45,4 +45,38 @@ public class Larva extends UMob {
         return TXT_DESC;
 
     }
+import com.watabou.utils.Random;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.GobLarvaSprite;
+
+//port-oldstats
+public class Larva extends Mob {
+
+    {
+        spriteClass = GobLarvaSprite.class;
+
+        HP = HT = 25;
+        defenseSkill = 20;
+
+        EXP = 0;
+
+        state = HUNTING;
+    }
+
+    @Override
+    public int attackSkill( Char target ) {
+        return 30;
+    }
+
+    @Override
+    public int damageRoll() {
+        return Random.NormalIntRange( 15, 20 );
+    }
+
+    @Override
+    public int drRoll() {
+        return Random.NormalIntRange( 0, 8 );
+    }
+
+    private String TXT_DESC = "Larvae of some kind of fly, that feasted on the festering bodyparts of the sacred. They became imbued with demonic power themselves.";
 }

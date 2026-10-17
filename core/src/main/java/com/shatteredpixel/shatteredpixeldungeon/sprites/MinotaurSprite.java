@@ -26,6 +26,7 @@ public class MinotaurSprite extends MobSprite {
         super();
 
         texture( Assets.Sprites.MINOTAUR );
+        texture( Assets.Sprites.GOB_MINOTAUR );
 
         TextureFilm frames = new TextureFilm( texture, 12, 15 );
 

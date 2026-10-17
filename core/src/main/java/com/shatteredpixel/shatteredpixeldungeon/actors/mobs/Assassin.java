@@ -32,6 +32,14 @@ public class Assassin extends UMob {
 
     {
         name = "assassin";
+import com.watabou.utils.Random;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.AssassinSprite;
+
+//port-oldstats
+public class Assassin extends Mob {
+
+    {
         spriteClass = AssassinSprite.class;
 
         HP = HT = 30;
@@ -51,4 +59,24 @@ public class Assassin extends UMob {
         return
                 "A trainee Assassin, eager to make his first kill so he can complete his training.";
     }
+
+        EXP = 6;
+        maxLvl = 15;
+    }
+
+    @Override
+    public int attackSkill( Char target ) {
+        return 14;
+    }
+
+    @Override
+    public int damageRoll() {
+        return Random.NormalIntRange( 3, 10 );
+    }
+
+    @Override
+    public int drRoll() {
+        return Random.NormalIntRange( 0, 5 );
+    }
+
 }

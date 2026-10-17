@@ -18,6 +18,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
@@ -37,6 +38,10 @@ public class LostSoul  extends UMob {
 
     {
         name = "lost soul";
+//port-oldstats
+public class LostSoul  extends Mob {
+
+    {
         spriteClass = LostSoulSprite.class;
 
         HP = HT = 100;
@@ -55,6 +60,29 @@ public class LostSoul  extends UMob {
         TYPE_UNDEAD = true;
         TYPE_EVIL = true;
     }
+
+    @Override
+        properties.add( Property.UNDEAD );
+        immunities.add( Burning.class );
+        immunities.add( Blazing.class );
+        immunities.add( WandOfFireblast.class );
+    }
+
+    @Override
+    public int attackSkill( Char target ) {
+        return 46;
+    }
+
+    @Override
+    public int damageRoll() {
+        return Random.NormalIntRange( 22, 35 );
+    }
+
+    @Override
+    public int drRoll() {
+        return Random.NormalIntRange( 0, 15 );
+    }
+
 
     @Override
     public int attackProc( Char enemy, int damage ) {

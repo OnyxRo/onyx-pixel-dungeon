@@ -22,6 +22,8 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
@@ -46,6 +48,13 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ChaosMageSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MinotaurSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfDisintegration;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vampiric;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ChaosMageSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Random;
 
 import java.util.HashSet;
@@ -53,6 +62,9 @@ import java.util.HashSet;
 public class ChaosMage extends UMob {
     {
         name = "chaos mage";
+//port-oldstats
+public class ChaosMage extends Mob {
+    {
         spriteClass = ChaosMageSprite.class;
 
         HP = HT = 125;
@@ -72,6 +84,32 @@ public class ChaosMage extends UMob {
         state = HUNTING;
         mobType = MOBTYPE_RANGED;
     }
+
+    @Override
+        state = HUNTING;
+        immunities.add( Terror.class );
+        immunities.add( Vertigo.class );
+        immunities.add( Charm.class );
+        resistances.add( Grim.class );
+        resistances.add( Vampiric.class );
+        resistances.add( WandOfDisintegration.class );
+    }
+
+    @Override
+    public int attackSkill( Char target ) {
+        return 40;
+    }
+
+    @Override
+    public int damageRoll() {
+        return Random.NormalIntRange( 20, 35 );
+    }
+
+    @Override
+    public int drRoll() {
+        return Random.NormalIntRange( 0, 18 );
+    }
+
 
     @Override
     public int attackProc(Char enemy, int damage) {

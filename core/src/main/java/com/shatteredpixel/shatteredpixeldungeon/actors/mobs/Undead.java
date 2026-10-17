@@ -25,12 +25,15 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.UndeadSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.GobUndeadSprite;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
 import java.util.HashSet;
 
 public class Undead extends UMob {
+//port-oldstats
+public class Undead extends Mob {
 
     public static int count = 0;
 
@@ -52,6 +55,36 @@ public class Undead extends UMob {
 
         state = WANDERING;
     }
+
+    @Override
+        spriteClass = GobUndeadSprite.class;
+
+        HP = HT = 28;
+        defenseSkill = 15;
+
+        EXP = 0;
+
+        state = WANDERING;
+        properties.add( Property.UNDEAD );
+        immunities.add( Grim.class );
+        immunities.add( Paralysis.class );
+    }
+
+    @Override
+    public int attackSkill( Char target ) {
+        return 16;
+    }
+
+    @Override
+    public int damageRoll() {
+        return Random.NormalIntRange( 12, 16 );
+    }
+
+    @Override
+    public int drRoll() {
+        return Random.NormalIntRange( 0, 5 );
+    }
+
 
     @Override
     protected void onAdd() {

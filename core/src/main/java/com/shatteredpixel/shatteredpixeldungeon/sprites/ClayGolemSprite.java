@@ -27,6 +27,7 @@ public class ClayGolemSprite extends MobSprite {
         super();
 
         texture( Assets.Sprites.GOLEM );
+        texture( Assets.Sprites.GOB_GOLEM );
 
         TextureFilm frames = new TextureFilm( texture, 16, 16 );
 

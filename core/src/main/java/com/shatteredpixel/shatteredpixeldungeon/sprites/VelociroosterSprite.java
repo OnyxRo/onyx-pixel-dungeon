@@ -26,6 +26,7 @@ public class VelociroosterSprite extends MobSprite {
         super();
 
         texture( Assets.Sprites.ROOSTER );
+        texture( Assets.Sprites.GOB_ROOSTER );
 
         TextureFilm frames = new TextureFilm( texture, 16, 16 );
 

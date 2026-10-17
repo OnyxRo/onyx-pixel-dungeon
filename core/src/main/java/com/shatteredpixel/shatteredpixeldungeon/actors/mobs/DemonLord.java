@@ -40,6 +40,10 @@ public class DemonLord extends UMob {
 
     {
         name = "demon lord";
+//port-oldstats
+public class DemonLord extends Mob {
+
+    {
         spriteClass = DemonLordSprite.class;
 
         HP = HT = 180;
@@ -53,6 +57,34 @@ public class DemonLord extends UMob {
         TYPE_EVIL = true;
         maxLvl = 34;
     }
+
+    @Override
+        EXP = 16;
+
+        maxLvl = 34;
+        immunities.add( Freezing.class );
+        immunities.add( Sleep.class );
+        immunities.add( Terror.class );
+        immunities.add( Vertigo.class );
+        resistances.add( Grim.class );
+        resistances.add( Burning.class );
+    }
+
+    @Override
+    public int attackSkill( Char target ) {
+        return 45;
+    }
+
+    @Override
+    public int damageRoll() {
+        return Random.NormalIntRange( 20, 50 );
+    }
+
+    @Override
+    public int drRoll() {
+        return Random.NormalIntRange( 0, 22 );
+    }
+
 
     @Override
     public int attackProc(Char enemy, int damage) {

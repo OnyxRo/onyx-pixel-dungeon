@@ -30,6 +30,7 @@ public class SquidSprite extends MobSprite {
         super();
 
         texture( Assets.Sprites.SQUID );
+        texture( Assets.Sprites.GOB_SQUID );
 
         TextureFilm frames = new TextureFilm( texture, 16, 17 );
 

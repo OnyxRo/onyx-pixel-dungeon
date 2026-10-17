@@ -39,6 +39,10 @@ public class Tinkerer extends UMob {
 
     {
         name = "mad tinkerer";
+//port-oldstats
+public class Tinkerer extends Mob {
+
+    {
         spriteClass = TinkererSprite.class;
 
         HP = HT = 85;
@@ -49,6 +53,7 @@ public class Tinkerer extends UMob {
         dmgMax = 20;
         dmgRed = 8;
 
+
         viewDistance = Light.DISTANCE;
 
         EXP = 11;
@@ -56,6 +61,29 @@ public class Tinkerer extends UMob {
         state = HUNTING;
         mobType = MOBTYPE_SPECIAL;
     }
+
+    @Override
+        immunities.add( Terror.class );
+        immunities.add( Vertigo.class );
+        immunities.add( Charm.class );
+        resistances.add( Grim.class );
+    }
+
+    @Override
+    public int attackSkill( Char target ) {
+        return 25;
+    }
+
+    @Override
+    public int damageRoll() {
+        return Random.NormalIntRange( 16, 20 );
+    }
+
+    @Override
+    public int drRoll() {
+        return Random.NormalIntRange( 0, 8 );
+    }
+
 
     @Override
     protected boolean canAttack( Char enemy ) {
@@ -118,3 +146,4 @@ public class Tinkerer extends UMob {
     }
 
     { immunities.addAll( IMMUNITIES ); }}
+    }}

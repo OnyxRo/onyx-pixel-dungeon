@@ -26,6 +26,7 @@ public class ZombieSprite  extends MobSprite {
         super();
 
         texture( Assets.Sprites.ZOMBIE );
+        texture( Assets.Sprites.GOB_ZOMBIE );
 
         TextureFilm frames = new TextureFilm( texture, 12, 16 );
 

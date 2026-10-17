@@ -34,6 +34,7 @@ public class AssassinSprite extends MobSprite {
         super();
 
         texture( Assets.Sprites.U_MONK );
+        texture( Assets.Sprites.GOB_MONK );
 
         TextureFilm frames = new TextureFilm( texture, 15, 14 );
 

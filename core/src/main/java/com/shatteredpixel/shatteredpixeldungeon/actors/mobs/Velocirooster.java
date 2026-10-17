@@ -24,6 +24,15 @@ public class Velocirooster extends UMob {
 
     {
         name = "velocirooster";
+import com.watabou.utils.Random;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.VelociroosterSprite;
+
+//port-oldstats
+public class Velocirooster extends Mob {
+
+    {
         spriteClass = VelociroosterSprite.class;
 
         HP = HT = 18;
@@ -54,5 +63,34 @@ public class Velocirooster extends UMob {
                 "The Velocirooster is a vicious cousin of the domesticated rooster." +
                 " It races through the dungeon and attacks with razor sharp talons and a vicious beak." +
                 " No one is sure how they got in the dungeon, but they seem at home here now.";
+    }
+        baseSpeed = 2f;
+
+        EXP = 4;
+        maxLvl = 11;
+
+        loot = new MysteryMeat();
+        lootChance = 0.167f;
+    }
+
+    @Override
+    public int attackSkill( Char target ) {
+        return 11;
+    }
+
+    @Override
+    public int damageRoll() {
+        return Random.NormalIntRange( 3, 6 );
+    }
+
+    @Override
+    public int drRoll() {
+        return Random.NormalIntRange( 0, 2 );
+    }
+
+
+    @Override
+    public String defenseVerb() {
+        return "Dodged";
     }
 }

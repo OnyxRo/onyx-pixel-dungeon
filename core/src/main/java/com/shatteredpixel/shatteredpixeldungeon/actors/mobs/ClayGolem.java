@@ -17,6 +17,8 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.watabou.utils.Random;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ClayGolemSprite;
@@ -27,6 +29,10 @@ public class ClayGolem extends UMob {
 
     {
         name = "clay golem";
+//port-oldstats
+public class ClayGolem extends Mob {
+
+    {
         spriteClass = ClayGolemSprite.class;
 
         HP = HT = 40;
@@ -41,6 +47,30 @@ public class ClayGolem extends UMob {
         mobType = MOBTYPE_TOUGH;
         TYPE_MINDLESS = true;
     }
+
+    @Override
+
+        EXP = 8;
+        maxLvl = 18;
+        immunities.add( Terror.class );
+        immunities.add( Sleep.class );
+    }
+
+    @Override
+    public int attackSkill( Char target ) {
+        return 15;
+    }
+
+    @Override
+    public int damageRoll() {
+        return Random.NormalIntRange( 8, 18 );
+    }
+
+    @Override
+    public int drRoll() {
+        return Random.NormalIntRange( 0, 10 );
+    }
+
 
     @Override
     public float attackDelay() {

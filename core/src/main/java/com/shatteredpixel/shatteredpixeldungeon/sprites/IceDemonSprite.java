@@ -26,6 +26,7 @@ public class IceDemonSprite  extends MobSprite {
         super();
 
         texture( Assets.Sprites.ICEDEMON);
+        texture( Assets.Sprites.GOB_ICEDEMON);
 
         TextureFilm frames = new TextureFilm( texture, 16, 15 );
 

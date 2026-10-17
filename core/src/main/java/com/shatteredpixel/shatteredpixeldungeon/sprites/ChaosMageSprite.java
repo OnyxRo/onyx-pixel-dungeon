@@ -27,6 +27,7 @@ public class ChaosMageSprite extends MobSprite {
         super();
 
         texture( Assets.Sprites.CHAOS );
+        texture( Assets.Sprites.GOB_CHAOS );
 
         TextureFilm frames = new TextureFilm( texture, 12, 14 );
 

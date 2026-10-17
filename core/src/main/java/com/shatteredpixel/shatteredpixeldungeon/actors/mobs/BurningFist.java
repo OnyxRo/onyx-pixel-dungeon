@@ -18,6 +18,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
@@ -29,6 +30,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPsionicBlast;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -60,6 +65,51 @@ public class BurningFist extends UMob {
     }
 
     private String TXT_DESC = "The Burning Fist is an extension of an ancient god into our dimension.";
+import com.shatteredpixel.shatteredpixeldungeon.sprites.GobBurningFistSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+
+import java.util.HashSet;
+
+//port-oldstats
+public class BurningFist extends Mob {
+
+    {
+        spriteClass = GobBurningFistSprite.class;
+
+        HP = HT = 200;
+        defenseSkill = 25;
+
+        EXP = 0;
+
+        state = WANDERING;
+        immunities.add( Amok.class );
+        immunities.add( Sleep.class );
+        immunities.add( Terror.class );
+        immunities.add( Burning.class );
+        immunities.add( Paralysis.class );
+        immunities.add( Vertigo.class );
+        resistances.add( ToxicGas.class );
+        resistances.add( Grim.class );
+    }
+
+    @Override
+    public int attackSkill( Char target ) {
+        return 36;
+    }
+
+    @Override
+    public int damageRoll() {
+        return Random.NormalIntRange( 20, 32 );
+    }
+
+    @Override
+    public int drRoll() {
+        return Random.NormalIntRange( 0, 15 );
+    }
+
+
+    private String TXT_DESC = "This Burning Fist was once the left hand of the Sacred.";
 
     @Override
     protected boolean canAttack( Char enemy ) {
@@ -83,6 +133,8 @@ public class BurningFist extends UMob {
                 if (!enemy.isAlive() && enemy == Dungeon.hero) {
                     Dungeon.fail( getClass() );
                     GLog.n( "You were killed by " + name + "..." );
+                    Dungeon.fail( this );
+                    GLog.n("%s crushes you with a flaming fist.", name());
                 }
                 return true;
 
@@ -101,6 +153,8 @@ public class BurningFist extends UMob {
 
         for (int i=0; i < PathFinder.NEIGHBOURS9.length; i++) {
             GameScene.add(Blob.seed(pos + PathFinder.NEIGHBOURS9[i], 2, Fire.class));
+        for (int i=0; i < com.watabou.utils.PathFinder.NEIGHBOURS9.length; i++) {
+            GameScene.add(Blob.seed(pos + com.watabou.utils.PathFinder.NEIGHBOURS9[i], 2, Fire.class));
         }
 
         return super.act();

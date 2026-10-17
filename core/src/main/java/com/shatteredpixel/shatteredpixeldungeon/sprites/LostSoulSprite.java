@@ -28,6 +28,7 @@ public class LostSoulSprite extends MobSprite {
         super();
 
         texture( Assets.Sprites.LOSTSOUL );
+        texture( Assets.Sprites.GOB_LOSTSOUL );
 
         TextureFilm frames = new TextureFilm( texture, 12, 16 );
 

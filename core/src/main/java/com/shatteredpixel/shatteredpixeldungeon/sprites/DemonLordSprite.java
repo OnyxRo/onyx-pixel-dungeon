@@ -26,6 +26,7 @@ public class DemonLordSprite extends MobSprite {
         super();
 
         texture( Assets.Sprites.EVILLORD);
+        texture( Assets.Sprites.GOB_EVILLORD);
 
         TextureFilm frames = new TextureFilm( texture, 16, 16 );
 

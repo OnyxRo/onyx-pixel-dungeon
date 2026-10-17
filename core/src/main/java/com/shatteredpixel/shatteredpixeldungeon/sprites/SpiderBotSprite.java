@@ -25,6 +25,7 @@ public class SpiderBotSprite extends MobSprite {
         super();
 
         texture(Assets.Sprites.SPIDERBOT);
+        texture(Assets.Sprites.GOB_SPIDERBOT);
 
         TextureFilm frames = new TextureFilm( texture, 16, 16 );
 

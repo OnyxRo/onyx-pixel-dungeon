@@ -18,6 +18,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -32,6 +33,7 @@ public class TinkererSprite extends MobSprite {
         super();
 
         texture( Assets.Sprites.U_KING );
+        texture( Assets.Sprites.GOB_KING );
 
         TextureFilm frames = new TextureFilm( texture, 16, 16 );
 

@@ -20,6 +20,10 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Freezing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPsionicBlast;
+import com.watabou.utils.Random;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Freezing;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.IceDemonSprite;
 
@@ -29,6 +33,10 @@ public class IceDemon extends UMob {
 
     {
         name = "ice demon";
+//port-oldstats
+public class IceDemon extends Mob {
+
+    {
         spriteClass = IceDemonSprite.class;
 
         HP = HT = 110;
@@ -66,5 +74,28 @@ public class IceDemon extends UMob {
     }
 
     { immunities.addAll( IMMUNITIES ); }
+        EXP = 12;
+
+        maxLvl = 29;
+        immunities.add( Freezing.class );
+        immunities.add( Terror.class );
+        resistances.add( Grim.class );
+    }
+
+    @Override
+    public int attackSkill( Char target ) {
+        return 40;
+    }
+
+    @Override
+    public int damageRoll() {
+        return Random.NormalIntRange( 20, 35 );
+    }
+
+    @Override
+    public int drRoll() {
+        return Random.NormalIntRange( 0, 18 );
+    }
+
 }
 

@@ -26,6 +26,7 @@ public class GreenSnakeSprite extends MobSprite {
         super();
 
         texture( Assets.Sprites.SNAKE );
+        texture( Assets.Sprites.GOB_SNAKE );
 
         TextureFilm frames = new TextureFilm( texture, 16, 16 );
 

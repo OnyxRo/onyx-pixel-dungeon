@@ -27,6 +27,10 @@ public class SlimeRed  extends UMob {
 
     {
         name = "red slime";
+//port-oldstats
+public class SlimeRed  extends Mob {
+
+    {
         spriteClass = SlimeRedSprite.class;
 
         HP = HT = 15;
@@ -41,6 +45,28 @@ public class SlimeRed  extends UMob {
 
         mobType = MOBTYPE_DEBUFF;
     }
+
+    @Override
+
+        EXP = 5;
+        maxLvl = 11;
+    }
+
+    @Override
+    public int attackSkill( Char target ) {
+        return 11;
+    }
+
+    @Override
+    public int damageRoll() {
+        return Random.NormalIntRange( 3, 6 );
+    }
+
+    @Override
+    public int drRoll() {
+        return Random.NormalIntRange( 0, 4 );
+    }
+
 
     @Override
     public int attackProc( Char enemy, int damage ) {

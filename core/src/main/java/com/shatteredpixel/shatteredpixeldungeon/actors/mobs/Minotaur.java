@@ -36,6 +36,9 @@ import java.util.HashSet;
 public class Minotaur extends UMob {
     {
         name = "minotaur";
+//port-oldstats
+public class Minotaur extends Mob {
+    {
         spriteClass = MinotaurSprite.class;
 
         HP = HT = 120;
@@ -53,6 +56,34 @@ public class Minotaur extends UMob {
 
         state = HUNTING;
     }
+
+    @Override
+
+        EXP = 11;
+        maxLvl = 28;
+
+        state = HUNTING;
+        immunities.add( Terror.class );
+        immunities.add( Vertigo.class );
+        immunities.add( Charm.class );
+        resistances.add( Grim.class );
+    }
+
+    @Override
+    public int attackSkill( Char target ) {
+        return 32;
+    }
+
+    @Override
+    public int damageRoll() {
+        return Random.NormalIntRange( 12, 30 );
+    }
+
+    @Override
+    public int drRoll() {
+        return Random.NormalIntRange( 0, 14 );
+    }
+
 
     @Override
     public int attackProc(Char enemy, int damage) {

@@ -23,6 +23,13 @@ import com.watabou.utils.Random;
 public class SlimeBrown extends UMob {
     {
         name = "brown slime";
+import com.watabou.utils.Random;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.SlimeBrownSprite;
+
+//port-oldstats
+public class SlimeBrown extends Mob {
+    {
         spriteClass = SlimeBrownSprite.class;
 
         HP = HT = 14;
@@ -43,4 +50,24 @@ public class SlimeBrown extends UMob {
                 "Slimes look like icky little piles of goo, but they can pack a bite." +
                         "The brown slime is probably the weakest of the dungeon slimes.";
     }
+
+        EXP = 3;
+        maxLvl = 10;
+    }
+
+    @Override
+    public int attackSkill( Char target ) {
+        return 10;
+    }
+
+    @Override
+    public int damageRoll() {
+        return Random.NormalIntRange( 3, 6 );
+    }
+
+    @Override
+    public int drRoll() {
+        return Random.NormalIntRange( 0, 3 );
+    }
+
 }

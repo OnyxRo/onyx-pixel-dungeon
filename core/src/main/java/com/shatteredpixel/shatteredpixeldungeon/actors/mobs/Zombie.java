@@ -19,6 +19,8 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.watabou.utils.Random;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ZombieSprite;
 
@@ -28,6 +30,10 @@ public class Zombie extends UMob {
 
     {
         name = "zombie";
+//port-oldstats
+public class Zombie extends Mob {
+
+    {
         spriteClass = ZombieSprite.class;
 
         HP = HT = 22;
@@ -129,4 +135,31 @@ public class Zombie extends Mob {
 		weakness.add(Burning.class);
 		resistances.add(ToxicGas.class);
 	}
+
+        EXP = 5;
+        maxLvl = 12;
+        properties.add( Property.UNDEAD );
+        immunities.add( Grim.class );
+    }
+
+    @Override
+    public int attackSkill( Char target ) {
+        return 14;
+    }
+
+    @Override
+    public int damageRoll() {
+        return Random.NormalIntRange( 3, 8 );
+    }
+
+    @Override
+    public int drRoll() {
+        return Random.NormalIntRange( 0, 4 );
+    }
+
+
+    @Override
+    public String defenseVerb() {
+        return "blocked";
+    }
 }

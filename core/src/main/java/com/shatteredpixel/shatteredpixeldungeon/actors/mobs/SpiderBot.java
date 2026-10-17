@@ -25,6 +25,15 @@ public class SpiderBot extends UMob {
 
     {
         name = "metal spider";
+import com.watabou.utils.Random;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.SpiderBotSprite;
+
+//port-oldstats
+public class SpiderBot extends Mob {
+
+    {
         spriteClass = SpiderBotSprite.class;
 
         HP = HT = 60;
@@ -48,4 +57,21 @@ public class SpiderBot extends UMob {
         return
                 "A metal spider; This strange little contraption stumbles around the dungeon looking for prey.";
     }
+    }
+
+    @Override
+    public int attackSkill( Char target ) {
+        return 25;
+    }
+
+    @Override
+    public int damageRoll() {
+        return Random.NormalIntRange( 12, 16 );
+    }
+
+    @Override
+    public int drRoll() {
+        return Random.NormalIntRange( 0, 8 );
+    }
+
 }

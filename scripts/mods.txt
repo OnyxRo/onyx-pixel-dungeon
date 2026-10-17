@@ -21,3 +21,4 @@ lovecraft|https://github.com/Sadsaltan/LovecraftPixelDungeon|Lovecraft PD, porte
 unleashed|https://github.com/FthrNature/unleashed-pixel-dungeon|Unleashed PD, monsters and a few items ported, worlds left for Onyx's redraw|0.3
 spacebase|https://github.com/codefitz/Pixel-Spacebase|Pixel Spacebase, sci-fi station|alpha
 sps|https://github.com/hmdzl001/SPS-PD|SPecial Surprise PD, ported without tile sheets|0.4.1
+goblins|https://github.com/locastan/GoblinsPixelDungeonGradle|Goblins PD, ported in full except tile art|0.3.0
