@@ -81,7 +81,7 @@ public class Tatteki extends Weapon {
     public ArrayList<String> actions(Hero hero) {
         ArrayList<String> actions = super.actions(hero);
         actions.add(AC_SHOOT);
-        if(true){
+        if(hero.hasTalent(Talent.KUNIKUCHI)){
             actions.add(AC_LOAD);
         }
         return actions;
@@ -187,7 +187,7 @@ public class Tatteki extends Weapon {
             if (item != null && item instanceof Bomb) {
                 bomb = (Bomb) item;
                 Hero hero = Dungeon.hero;
-                bombnumber = 1;
+                bombnumber = Math.max(1, hero.pointsInTalent(Talent.KUNIKUCHI)*2-1);
                 hero.sprite.operate( hero.pos );
                 Sample.INSTANCE.play( Assets.Sounds.UNLOCK );
                 hero.busy();
@@ -479,8 +479,8 @@ public class Tatteki extends Weapon {
         @Override
         public void cast(final Hero user, final int dst) {
             int cooldown =0;
-            if(false){
-                cooldown += 1+ 0;
+            if(((Hero)user).hasTalent(Talent.SOKO)){
+                cooldown += 1+ 3*((Hero)user).pointsInTalent(Talent.SOKO);
             }
             Buff.affect(user,Tatteki.LoadCooldown.class,30-cooldown);
             final int cell = throwPos( user, dst );

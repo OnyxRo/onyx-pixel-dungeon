@@ -216,6 +216,7 @@ public class Tengu extends Mob {
 		}
 		
 		GameScene.bossSlain();
+		Badges.validateNinjaUnlock(); //Transformation PD
 		super.die( cause );
 		
 		Badges.validateBossSlain();

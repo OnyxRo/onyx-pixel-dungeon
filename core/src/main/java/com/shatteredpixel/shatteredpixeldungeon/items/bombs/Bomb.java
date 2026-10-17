@@ -64,6 +64,15 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class Bomb extends Item {
+
+	//Transformation PD's bomb talents (Bomb Maniac, Shock Bomb) live in its common talent pool, which is not here yet.
+	//Its abilities call these, so they pass the damage through.
+	public static int damageWithBombTalents(Hero hero, int damage) {
+		return damage;
+	}
+
+	public static void applyShockBomb(Hero hero, Char target) {
+	}
 	
 	{
 		image = ItemSpriteSheet.BOMB;

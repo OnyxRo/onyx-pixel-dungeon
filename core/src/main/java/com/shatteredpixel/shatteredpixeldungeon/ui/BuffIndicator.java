@@ -185,6 +185,10 @@ public class BuffIndicator extends Component {
 	public static final int RUNNINGTOREPORT = HASTE;
 	public static final int HOLYPRAER = BLESS; //Transformation PD, its own icon was a new cell
 	public static final int DARK_HOOK = AMULET; //Transformation PD
+	public static final int THROW_SKILL = RECHARGING; //Transformation PD
+	public static final int WATER_SMOOTH = HASTE;
+	public static final int DECOY = MIND_VISION;
+	public static final int ONESWORD = WEAPON;
 
 	public static final int SIZE_SMALL  = 7;
 	public static final int SIZE_LARGE  = 16;

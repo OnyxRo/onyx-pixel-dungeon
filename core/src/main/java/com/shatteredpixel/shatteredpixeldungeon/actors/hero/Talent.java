@@ -278,6 +278,23 @@ public enum Talent {
 	//Mad Slime T4
 	NO_PICK(439, 4), FOOD_BONUS(440, 4), DELICIOUS_DIGESTION(441, 4),
 
+	//Ninja T1, from Transformation PD
+	NINJA_MEAL(448), HUNTING_INTUITION(449), AGILE_ATTACK(450), YOU_SCARED_ME(451),
+	//Ninja T2
+	YUNYING_MEAL(452), XIA(453), QUICK_SEARCH(454), NINJA_SOCIAL(455), FEINT(456),
+	//Ninja T3
+	QIANFA_THROWING(457, 3), LIGHT_BOX(458, 3),
+	//Tatteki Ninja T3
+	SOKO(459, 3), KONO_FUKUSA(460, 3), KUNIKUCHI(461, 3),
+	//Ninja Master T3
+	SOUL_HUNTING(462, 3), USE_ENVIRONMENT(463, 3), MIND_WATER(464, 3),
+	//Decoy T4
+	DEVERSION(465, 4), SHINKAGE(466, 4), ALLHUNTING(467, 4),
+	//Spider Jar T4
+	POWER_GUNPOWDER(468, 4), TEA_STAINS(469, 4), FIREWORK(470, 4),
+	//One Sword T4
+	OFFENSIVE(471, 4), GLIMPSE(472, 4), KILL_CONTINUE(473, 4),
+
 	//universal T4
 	HEROIC_ENERGY(26, 4), //See icon() and title() for special logic for this one
 	//Ratmogrify T4
@@ -590,6 +607,8 @@ public enum Talent {
 					return 602;
 				case SLIMEGIRL:
 					return 442;
+				case NINJA:
+					return 474;
 			}
 		} else {
 			return icon;
@@ -871,6 +890,7 @@ public enum Talent {
 
 	//called when the hero's side kills an enemy, the Friar's rewards for it
 	public static void onFriarKill( Hero hero, Char enemy ){
+		onNinjaKill(hero, enemy);
 		Class P = com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Panic.class;
 		if (hero.heroClass == HeroClass.FRIAR){
 			int virtueKillExtend = hero.subClass.is(HeroSubClass.PIOUS) && hero.hasTalent(BRIGHT_WARRIOR) ? 3 + hero.pointsInTalent(BRIGHT_WARRIOR)*3 : 3;
@@ -1061,6 +1081,122 @@ public enum Talent {
 		return dmg;
 	}
 
+	//---- Transformation PD, the Ninja ---------------------------------------------------------
+
+	public static class AgileAttack extends Buff {
+		{ type = buffType.POSITIVE; }
+		@Override public int icon() { return BuffIndicator.WEAPON; }
+		@Override public void tintIcon(Image icon) { icon.hardlight(1f, 0.8f, 0.85f); }
+	}
+
+	public static class NinjaSocial extends Buff {
+		{ type = buffType.POSITIVE; }
+		public int left;
+		private static final String LEFT = "left";
+		public void set(int uses){ left = Math.max(left, uses); }
+		@Override public int icon() { return BuffIndicator.INVERT_MARK; }
+		@Override public void tintIcon(Image icon) { icon.hardlight(1.0f, 0f, 0f); }
+		@Override public float iconFadePercent() { return Math.max(0, (5-left) / 5f); }
+		@Override public String iconTextDisplay() { return Integer.toString(left); }
+		@Override public String desc() { return Messages.get(this, "desc", left); }
+		@Override public void storeInBundle( Bundle bundle ) { super.storeInBundle(bundle); bundle.put(LEFT, left); }
+		@Override public void restoreFromBundle( Bundle bundle ) { super.restoreFromBundle(bundle); left = bundle.getInt(LEFT); }
+	}
+
+	public static class XiaDef extends FlavourBuff {
+		@Override public int icon() { return BuffIndicator.WEAPON; }
+		@Override public void tintIcon(Image icon) { icon.hardlight(1f, 0.75f, 0.79f); }
+		@Override public float iconFadePercent() { return Math.max(0, (5 - visualcooldown()) / 5); }
+	}
+
+	public static class LightBox extends FlavourBuff {
+		@Override public int icon() { return BuffIndicator.NONE; }
+	}
+
+	public static class FeintCooldown extends FlavourBuff {
+		@Override public int icon() { return BuffIndicator.TIME; }
+		@Override public void tintIcon(Image icon) { icon.hardlight(0.6f, 0.6f, 0.6f); }
+		@Override public float iconFadePercent() { return Math.max(0, visualcooldown() / 20); }
+	}
+
+	private static void onNinjaFoodEaten( Hero hero, Item foodSource ){
+		if (hero.hasTalent(NINJA_MEAL)){
+			com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Shuriken_Box box = hero.belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Shuriken_Box.class);
+			if (box != null){
+				box.directCharge(hero.pointsInTalent(NINJA_MEAL));
+				com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging.charge(hero);
+			} else {
+				Buff.affect( hero, ArtifactRecharge.class).set(hero.pointsInTalent(NINJA_MEAL)).ignoreHornOfPlenty = foodSource instanceof com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
+			}
+		}
+		if (hero.hasTalent(YUNYING_MEAL)){
+			Buff.affect(hero, Invisibility.class, hero.pointsInTalent(YUNYING_MEAL)*2);
+		}
+	}
+
+	//a thrown item that is not a weapon draws every enemy in sight to where it lands (Feint)
+	public static void onItemThrownDistraction( Hero hero, int cell ){
+		if (hero.hasTalent(FEINT) && hero.buff(FeintCooldown.class) == null){
+			for (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob mob : Dungeon.level.mobs.toArray( new com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob[0] )) {
+				if (mob.alignment != Char.Alignment.ALLY && Dungeon.level.heroFOV[mob.pos]) {
+					if (mob.state != mob.PASSIVE) mob.state = mob.WANDERING;
+					mob.beckon( cell );
+				}
+			}
+			Buff.affect(hero, FeintCooldown.class, 25 - hero.pointsInTalent(FEINT)*5);
+		}
+	}
+
+	//an enemy missed the hero
+	public static void onHeroDodged( Hero hero, Char attacker ){
+		if (hero.hasTalent(AGILE_ATTACK)){
+			Buff.affect(hero, AgileAttack.class);
+		}
+		if (hero.hasTalent(YOU_SCARED_ME) && hero.shielding() < (hero.pointsInTalent(YOU_SCARED_ME)+1)*2){
+			Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier.class).incShield(
+					Math.min(1+hero.pointsInTalent(YOU_SCARED_ME), (hero.pointsInTalent(YOU_SCARED_ME)+1)*2-hero.shielding()));
+		}
+		if (hero.heroClass == HeroClass.FRIAR && hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Suffering.Paranoia.class) != null
+				&& hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.class) != null && Random.Int(10) < 3){
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.sufferingReason(hero, 5);
+		}
+	}
+
+	private static int onNinjaAttack( Hero hero, Char enemy, int dmg ){
+		if (hero.hasTalent(KONO_FUKUSA) && enemy instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob
+				&& (((com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob) enemy).surprisedBy(hero)
+					|| ((com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob) enemy).state == ((com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob) enemy).HUNTING)){
+			dmg *= 1 + 0.2*hero.pointsInTalent(KONO_FUKUSA);
+		}
+		if (hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ninja.OneSword.OKU_OneSword.class) != null
+				&& hero.belongings.attackingWeapon() instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon){
+			float onesword = 1.3f;
+			if (((com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon) hero.belongings.attackingWeapon()).hasTrait(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon.WeaponTrait.ONE_SWORD_BLADE, hero)){
+				onesword += 0.2f;
+			}
+			if (hero.hasTalent(OFFENSIVE)) onesword += 0.15f*hero.pointsInTalent(OFFENSIVE);
+			dmg *= onesword;
+		}
+		if (enemy.buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ninja.Decoy.ShadowMark.class) != null && hero.hasTalent(ALLHUNTING)){
+			dmg *= 1+0.15f*hero.pointsInTalent(ALLHUNTING);
+		}
+		if (hero.hasTalent(AGILE_ATTACK) && hero.buff(AgileAttack.class) != null){
+			hero.buff(AgileAttack.class).detach();
+			dmg += 1+2*hero.pointsInTalent(AGILE_ATTACK);
+		}
+		return dmg;
+	}
+
+	private static void onNinjaKill( Hero hero, Char enemy ){
+		if (hero.hasTalent(KILL_CONTINUE) && hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ninja.OneSword.OKU_OneSword.class) != null
+				&& hero.belongings.attackingWeapon() instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon){
+			Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ninja.OneSword.OKU_OneSword.class, hero.pointsInTalent(KILL_CONTINUE));
+		}
+		if (hero.hasTalent(NINJA_SOCIAL)){
+			Buff.affect(hero, NinjaSocial.class).set(1+2*hero.pointsInTalent(NINJA_SOCIAL));
+		}
+	}
+
 	public static void onTalentUpgraded( Hero hero, Talent talent ){
 		if (talent == MIDAS_TOUCH && hero.hasTalent(MIDAS_TOUCH)){
 			Dungeon.level.drop(new com.shatteredpixel.shatteredpixeldungeon.items.LiquidMetal().quantity(20 * hero.pointsInTalent(MIDAS_TOUCH)), hero.pos).sprite.drop(hero.pos);
@@ -1173,6 +1309,7 @@ public enum Talent {
 
 	public static void onFoodEaten( Hero hero, float foodVal, Item foodSource ){
 		onSlimeFoodEaten(hero);
+		onNinjaFoodEaten(hero, foodSource);
 		if (hero.hasTalent(WHISPERING_MEAL)){
 			float duration = hero.pointsInTalent(WHISPERING_MEAL) == 1 ? 2f : 4f;
 			for (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob mob : Dungeon.level.mobs.toArray(new com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob[0])){
@@ -1528,6 +1665,7 @@ public enum Talent {
 
 	public static int onAttackProc( Hero hero, Char enemy, int dmg ){
 		dmg = onSlimeAttack(hero, enemy, dmg);
+		dmg = onNinjaAttack(hero, enemy, dmg);
 
 		//Transformation PD, the Friar's Crystal Gunpowder and Bullseye
 		if (hero.hasTalent(CRYSTAL_GUNPOWDER)){
@@ -1706,6 +1844,9 @@ public enum Talent {
 			case SLIMEGIRL:
 				Collections.addAll(tierTalents, RESILIENT_MEAL, LIQUID_ARMOR);
 				break;
+			case NINJA:
+				Collections.addAll(tierTalents, NINJA_MEAL, HUNTING_INTUITION);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -1756,6 +1897,9 @@ public enum Talent {
 			case SLIMEGIRL:
 				Collections.addAll(tierTalents, TOUGH_MEAL, SLIME_GREENHOUSE, ENERGY_ABSORPTION);
 				break;
+			case NINJA:
+				Collections.addAll(tierTalents, YUNYING_MEAL, XIA, FEINT);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -1803,6 +1947,9 @@ public enum Talent {
 				break;
 			case SLIMEGIRL:
 				Collections.addAll(tierTalents, ORIGINAL_MONSTER);
+				break;
+			case NINJA:
+				Collections.addAll(tierTalents, LIGHT_BOX);
 				break;
 		}
 		for (Talent talent : tierTalents){
@@ -1909,6 +2056,12 @@ public enum Talent {
 				break;
 			case DARKSLIME:
 				Collections.addAll(tierTalents, POTENT_OOZE, DARK_GAS, DARK_LIQUID);
+				break;
+			case TATTEKI_NINJA:
+				Collections.addAll(tierTalents, SOKO, KONO_FUKUSA, KUNIKUCHI);
+				break;
+			case NINJA_MASTER:
+				Collections.addAll(tierTalents, SOUL_HUNTING, USE_ENVIRONMENT, MIND_WATER);
 				break;
 		}
 		for (Talent talent : tierTalents){

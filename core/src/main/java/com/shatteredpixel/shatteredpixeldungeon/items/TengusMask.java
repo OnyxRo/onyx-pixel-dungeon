@@ -108,15 +108,14 @@ public class TengusMask extends Item {
 			Buff.affect(curUser, Preparation.class);
 		}
 		
-		//Transformation PD, the Dark Slime's hook
-		if (way == HeroSubClass.DARKSLIME) {
-			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.DarkHook darkHook = Buff.affect(curUser, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.DarkHook.class);
-			ActionIndicator.setAction(darkHook);
-		}
 		//Transformation PD, the Friar's two subclasses
+		curUser.ensureSubclassBuffs();
+		if (way == HeroSubClass.TATTEKI_NINJA && curUser.belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.weapon.Tatteki.class) == null) {
+			com.shatteredpixel.shatteredpixeldungeon.items.weapon.Tatteki t = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.Tatteki();
+			t.identify();
+			if (!t.collect(curUser.belongings.backpack)) Dungeon.level.drop(t, curUser.pos).sprite.drop();
+		}
 		if (way == HeroSubClass.PIOUS) {
-			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason reason = Buff.affect(curUser, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.class);
-			ActionIndicator.setAction(reason);
 			if (curUser.belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RitualDagger.class) == null){
 				com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RitualDagger dagger = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RitualDagger();
 				dagger.identify();

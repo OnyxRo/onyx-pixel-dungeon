@@ -66,6 +66,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	public static final int DEFAULT		= 0xFFFFFF;
 	public static final int POSITIVE	= 0x00FF00;
 	public static final int NEGATIVE	= 0xFF0000;
+	public static final int ORANGE	= 0xFFA500; //Transformation PD
 	public static final int WARNING		= 0xFF8800;
 	public static final int NEUTRAL		= 0xFFFF00;
 	public static final int BLACK		= 0x000000; //Tower PD

@@ -1074,6 +1074,16 @@ public abstract class Level implements Bundlable {
 		}
 	}
 
+	//Transformation PD, bombs knock down region decorations
+	public boolean destroyRegionDeco(int cell) {
+		if (!insideMap(cell) || this instanceof SewerLevel) return false;
+		if (map[cell] != Terrain.REGION_DECO && map[cell] != Terrain.REGION_DECO_ALT) {
+			return false;
+		}
+		set(cell, Terrain.EMPTY_DECO, this);
+		return true;
+	}
+
 	public void cleanWalls() {
 		if (discoverable == null || discoverable.length != length) {
 			discoverable = new boolean[length()];

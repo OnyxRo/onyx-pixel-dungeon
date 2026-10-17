@@ -627,6 +627,26 @@ public class Hero extends Char {
 		return super.blockSound(pitch);
 	}
 
+	//Transformation PD. The buffs and action buttons that come with a subclass. Called when the subclass is chosen and when a run loads.
+	public void ensureSubclassBuffs() {
+		if (subClass.is(HeroSubClass.PIOUS)) {
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason reason = Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.class);
+			com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator.setAction(reason);
+		}
+		if (subClass.is(HeroSubClass.DARKSLIME)) {
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.DarkHook darkHook = Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.DarkHook.class);
+			if (buff(Talent.DarkHookCooldown.class) == null) {
+				com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator.setAction(darkHook);
+			} else {
+				com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator.clearAction(darkHook);
+			}
+		}
+		if (subClass.is(HeroSubClass.NINJA_MASTER)) {
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ninja_Energy ninjaEnergy = Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ninja_Energy.class);
+			com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator.setAction(ninjaEnergy);
+		}
+	}
+
 	public void live() {
 		for (Buff b : buffs()){
 			if (!b.revivePersists) b.detach();
@@ -636,6 +656,7 @@ public class Hero extends Char {
 		Buff.affect( this, MpRegen.class );
 		//Dragonic PD, the Dragon Knight sears raw meat
 		if (heroClass == HeroClass.DRAGONKNIGHT) Buff.affect( this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sear.class );
+		ensureSubclassBuffs();
 	}
 	
 	public int tier() {
@@ -971,6 +992,13 @@ public class Hero extends Char {
 			speed *= 0.8f;
 		}
 
+		//Transformation PD, the One Sword stance
+		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ninja.OneSword.OKU_OneSword.class) != null){
+			float onespd = 2f;
+			if (hasTalent(Talent.GLIMPSE)) onespd += 0.375f*pointsInTalent(Talent.GLIMPSE);
+			speed *= onespd;
+		}
+
 		//Reforged's Adrenaline talent for the Reflection ability
 		speed *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.artificer.Reflection.speedMultiplier(this);
 
@@ -1054,8 +1082,15 @@ public class Hero extends Char {
 		//Dragonic PD, Fortify also speeds up attacks
 		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Fortify.class) != null) delay *= 0.75f;
 
+		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ninja.OneSword.OKU_OneSword.class) != null
+				&& belongings.attackingWeapon() instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon){
+			float oneSwordSpeed = 1.5f;
+			if (hasTalent(Talent.OFFENSIVE)) oneSwordSpeed += 0.125f * pointsInTalent(Talent.OFFENSIVE);
+			delay /= oneSwordSpeed;
+		}
+
 		if (!RingOfForce.fightingUnarmed(this)) {
-			
+
 			float armed = delay * belongings.attackingWeapon().delayFactor( this );
 			if ( buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Furor.class ) != null) armed /= 4f;
 			return armed;

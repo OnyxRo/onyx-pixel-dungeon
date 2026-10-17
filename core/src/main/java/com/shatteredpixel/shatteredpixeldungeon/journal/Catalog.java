@@ -942,6 +942,9 @@ public enum Catalog {
 		//items ported from transformation
 		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.SprayGun.class);
 
+		//items ported from transformation
+		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Shuriken_Box.class);
+
 
 	}
 

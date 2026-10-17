@@ -216,6 +216,11 @@ public class Blob extends Actor {
 		area.union(cell%level.width(), cell/level.width());
 	}
 	
+	//Transformation PD
+	public boolean get(int cell){
+		return cur[cell] > 0;
+	}
+
 	public void clear( int cell ) {
 		if (volume == 0) return;
 		volume -= cur[cell];

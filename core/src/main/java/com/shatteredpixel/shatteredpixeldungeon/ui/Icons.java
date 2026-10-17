@@ -493,6 +493,8 @@ public enum Icons {
 				return new ItemSprite(ItemSpriteSheet.SPRAYGUN_BASE);
 			case SLIMEGIRL:
 				return new ItemSprite(ItemSpriteSheet.SLIMEBALL);
+			case NINJA:
+				return new ItemSprite(ItemSpriteSheet.ARTIFACT_SHURIKEN);
 			default:
 				return null;
 		}

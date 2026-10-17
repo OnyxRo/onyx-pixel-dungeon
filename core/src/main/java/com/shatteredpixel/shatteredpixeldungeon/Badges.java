@@ -78,6 +78,7 @@ public class Badges {
 		MASTERY_DRAGONKNIGHT,
 		MASTERY_FRIAR,
 		MASTERY_SLIMEGIRL,
+		MASTERY_NINJA,
 		FOUND_RATMOGRIFY,
 
 		//bronze
@@ -93,6 +94,7 @@ public class Badges {
 		UNLOCK_DRAGONKNIGHT         ( 4 ),
 		UNLOCK_FRIAR                ( 5 ),
 		UNLOCK_SLIMEGIRL            ( 6 ),
+		UNLOCK_NINJA                ( 4 ),
 		MONSTERS_SLAIN_1            ( 6 ),
 		MONSTERS_SLAIN_2            ( 7 ),
 		GOLD_COLLECTED_1            ( 8 ),
@@ -147,6 +149,7 @@ public class Badges {
 		BOSS_SLAIN_1_SUMMONER,
 		BOSS_SLAIN_1_FRIAR,
 		BOSS_SLAIN_1_SLIMEGIRL,
+		BOSS_SLAIN_1_NINJA,
 		BOSS_SLAIN_1_VIKING,
 		BOSS_SLAIN_1_DRAGONKNIGHT,
 		BOSS_SLAIN_1_ALL_CLASSES    ( 54, BadgeType.GLOBAL ),
@@ -203,6 +206,7 @@ public class Badges {
 		VICTORY_SUMMONER,
 		VICTORY_FRIAR,
 		VICTORY_SLIMEGIRL,
+		VICTORY_NINJA,
 		VICTORY_VIKING,
 		VICTORY_DRAGONKNIGHT,
 		VICTORY_ALL_CLASSES         ( 103, BadgeType.GLOBAL ),
@@ -846,6 +850,7 @@ public class Badges {
 		firstBossClassBadges.put(HeroClass.SUMMONER, Badge.BOSS_SLAIN_1_SUMMONER);
 		firstBossClassBadges.put(HeroClass.FRIAR, Badge.BOSS_SLAIN_1_FRIAR);
 		firstBossClassBadges.put(HeroClass.SLIMEGIRL, Badge.BOSS_SLAIN_1_SLIMEGIRL);
+		firstBossClassBadges.put(HeroClass.NINJA, Badge.BOSS_SLAIN_1_NINJA);
 		firstBossClassBadges.put(HeroClass.VIKING, Badge.BOSS_SLAIN_1_VIKING);
 		firstBossClassBadges.put(HeroClass.DRAGONKNIGHT, Badge.BOSS_SLAIN_1_DRAGONKNIGHT);
 	}
@@ -863,6 +868,7 @@ public class Badges {
 		victoryClassBadges.put(HeroClass.SUMMONER, Badge.VICTORY_SUMMONER);
 		victoryClassBadges.put(HeroClass.FRIAR, Badge.VICTORY_FRIAR);
 		victoryClassBadges.put(HeroClass.SLIMEGIRL, Badge.VICTORY_SLIMEGIRL);
+		victoryClassBadges.put(HeroClass.NINJA, Badge.VICTORY_NINJA);
 		victoryClassBadges.put(HeroClass.VIKING, Badge.VICTORY_VIKING);
 		victoryClassBadges.put(HeroClass.DRAGONKNIGHT, Badge.VICTORY_DRAGONKNIGHT);
 	}
@@ -1021,6 +1027,9 @@ public class Badges {
 			case SLIMEGIRL:
 				badge = Badge.MASTERY_SLIMEGIRL;
 				break;
+			case NINJA:
+				badge = Badge.MASTERY_NINJA;
+				break;
 			case VIKING:
 				badge = Badge.MASTERY_VIKING;
 				break;
@@ -1115,6 +1124,13 @@ public class Badges {
 	public static void validateSlimeUnlock(){
 		if (!isUnlocked(Badge.UNLOCK_SLIMEGIRL)){
 			displayBadge( Badge.UNLOCK_SLIMEGIRL );
+		}
+	}
+
+	//Transformation PD, defeat Tengu to unlock the Ninja
+	public static void validateNinjaUnlock(){
+		if (!isUnlocked(Badge.UNLOCK_NINJA)){
+			displayBadge( Badge.UNLOCK_NINJA );
 		}
 	}
 

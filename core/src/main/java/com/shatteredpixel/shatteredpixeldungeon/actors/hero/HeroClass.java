@@ -101,7 +101,8 @@ public enum HeroClass {
 	DRAGONKNIGHT( HeroSubClass.DEVORANDUM, HeroSubClass.MESSOREM ),
 	//from Transformation PD
 	FRIAR( HeroSubClass.ALCHEMIST, HeroSubClass.PIOUS ),
-	SLIMEGIRL( HeroSubClass.WATERSLIME, HeroSubClass.DARKSLIME );
+	SLIMEGIRL( HeroSubClass.WATERSLIME, HeroSubClass.DARKSLIME ),
+	NINJA( HeroSubClass.TATTEKI_NINJA, HeroSubClass.NINJA_MASTER );
 
 	//the Summoner has two pictures, one is chosen each time the game starts
 	private static final String SUMMONER_SPLASH = Math.random() < 0.5 ? Assets.Splashes.SUMMONER : Assets.Splashes.SORCERESS;
@@ -183,6 +184,10 @@ public enum HeroClass {
 			case SLIMEGIRL:
 				initSlimeGirl( hero );
 				break;
+
+			case NINJA:
+				initNinja( hero );
+				break;
 		}
 
 		//Shittened PD's prefixes never land on a hero's starting weapon
@@ -229,6 +234,8 @@ public enum HeroClass {
 				return Badges.Badge.MASTERY_FRIAR;
 			case SLIMEGIRL:
 				return Badges.Badge.MASTERY_SLIMEGIRL;
+			case NINJA:
+				return Badges.Badge.MASTERY_NINJA;
 		}
 		return null;
 	}
@@ -375,6 +382,19 @@ public enum HeroClass {
 		(hero.belongings.armor = new com.shatteredpixel.shatteredpixeldungeon.items.armor.SlimeArmor()).identify();
 	}
 
+	private static void initNinja( Hero hero ) {
+		//Transformation PD. A wakizashi, a shuriken box and a toxic gas potion to throw
+		(hero.belongings.weapon = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Wakizashi()).identify();
+		hero.belongings.weapon.activate(hero);
+		com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Shuriken_Box box = new com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Shuriken_Box();
+		com.shatteredpixel.shatteredpixeldungeon.items.Generator.removeArtifact(box.getClass());
+		(hero.belongings.artifact = box).identify();
+		hero.belongings.artifact.activate( hero );
+		Dungeon.quickslot.setSlot(0, box);
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas().identify();
+		new com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation().identify();
+	}
+
 	private static void initSummoner( Hero hero ) {
 		//Ryuse's PD. Summoner stats, 15 health that grows by 3 a level, a training whip and a dried rose that holds her lover's ghost
 		(hero.belongings.weapon = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.TrainingWhip()).identify();
@@ -484,6 +504,10 @@ public enum HeroClass {
 				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.slime.SpringSpell(),
 						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.slime.RapidWaterfall(),
 						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.slime.MadSlime()};
+			case NINJA:
+				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ninja.Decoy(),
+						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ninja.SpiderJar(),
+						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ninja.OneSword()};
 		}
 	}
 
@@ -515,6 +539,8 @@ public enum HeroClass {
 				return Assets.Sprites.FRIAR;
 			case SLIMEGIRL:
 				return Assets.Sprites.SLIMEGIRL;
+			case NINJA:
+				return Assets.Sprites.NINJA;
 		}
 	}
 
@@ -547,6 +573,8 @@ public enum HeroClass {
 				return Assets.Splashes.FRIAR;
 			case SLIMEGIRL:
 				return Assets.Splashes.SLIMEGIRL;
+			case NINJA:
+				return Assets.Splashes.NINJA;
 		}
 	}
 	
@@ -583,6 +611,8 @@ public enum HeroClass {
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_FRIAR);
 			case SLIMEGIRL:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_SLIMEGIRL);
+			case NINJA:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_NINJA);
 		}
 	}
 	

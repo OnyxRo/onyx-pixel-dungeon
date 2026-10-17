@@ -659,6 +659,7 @@ public abstract class Char extends Actor {
 					enemy.sprite.showStatus(CharSprite.NEUTRAL, enemy.defenseVerb());
 				}
 			}
+			if (enemy instanceof Hero) Talent.onHeroDodged((Hero) enemy, this); //Transformation PD
 			if (visibleFight) {
 				//TODO enemy.defenseSound? currently miss plays for monks/crab even when they parry
 				Sample.INSTANCE.play(Assets.Sounds.MISS);
@@ -736,6 +737,7 @@ public abstract class Char extends Actor {
 			defRoll *= buff.evasionAndAccuracyFactor();
 		}
 		defRoll *= AscensionChallenge.statModifier(defender);
+		if (defender.buff(Talent.XiaDef.class) != null) defRoll *= 1.5f; //Transformation PD, the Ninja
 		if (Dungeon.hero.heroClass != HeroClass.CLERIC
 				&& Dungeon.hero.hasTalent(Talent.BLESS)
 				&& defender.alignment == Alignment.ALLY){
@@ -843,6 +845,7 @@ public abstract class Char extends Actor {
 		if ( buff( Adrenaline.class ) != null) speed *= 2f;
 		if ( buff( Haste.class ) != null) speed *= 3f;
 		if ( buff( Dread.class ) != null) speed *= 2f;
+		if ( buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ninja_Energy.WaterSmooth.class ) != null && Dungeon.level.water[pos]) speed *= 2f; //Transformation PD
 		//from Shittened PD
 		if ( buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CaffeineRush.class ) != null) speed *= 1.25f;
 		if ( buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Acceleration.class ) != null) speed *= com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Acceleration.multiplier(this);
