@@ -40,7 +40,7 @@ for bundle, keys in prefixes.items():
         src = MOD + MSG + bundle + '/' + bundle + '_en.properties'
     if not os.path.exists(LP(src)):
         # older mods keep text under resources/<package path>/messages
-        hits = glob.glob(LP(MOD + 'core/src/main/resources') + '/**/messages/' + bundle + '/' + bundle + '.properties', recursive=True)
+        hits = glob.glob(LP(MOD + 'core/src/main/resources') + '/**/*messages/' + bundle + '/' + bundle + '.properties', recursive=True)
         if hits: src = hits[0]
     dst = ROOT + MSG + bundle + '/' + bundle + '.properties'
     if not os.path.exists(LP(src)) or not os.path.exists(dst): continue

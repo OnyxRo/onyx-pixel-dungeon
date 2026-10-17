@@ -21,6 +21,13 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.watabou.utils.Random;
+
+import com.shatteredpixel.shatteredpixeldungeon.sprites.deep.*;
+
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
@@ -66,4 +73,48 @@ public class NewbornElemental extends Elemental {
     @Override
     protected void meleeProc(Char enemy, int damage) {
     }
+
+public class NewbornElemental extends Elemental {
+
+	{
+		spriteClass = NewbornElementalSprite.class;
+
+		HT = 65;
+		HP = HT/2; //32
+
+		defenseSkill = 12;
+
+		EXP = 7;
+
+		properties.add(Property.MINIBOSS);
+	}
+
+		@Override
+	protected void meleeProc( Char enemy, int damage ) {
+		if (Random.Int( 2 ) == 0 && !Dungeon.level.water[enemy.pos]) {
+			Buff.affect( enemy, Burning.class ).reignite( enemy );
+		}
+	}
+
+	@Override
+	protected void rangedProc( Char enemy ) {
+		if (!Dungeon.level.water[enemy.pos]) {
+			Buff.affect( enemy, Burning.class ).reignite( enemy, 4f );
+		}
+	}
+
+@Override
+	public boolean add(Buff buff) {
+		if (buff instanceof Frost || buff instanceof Chill) {
+			die(buff);
+			return true;
+		}
+		return super.add(buff);
+	}
+
+	@Override
+	public void die(Object cause) {
+		super.die(cause);
+		Dungeon.level.drop( new Embers(), pos ).sprite.drop();
+	}
 }

@@ -40,6 +40,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.tumulus.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.galaxy.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.hollow.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.Assassin;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.Goolem;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.Terminator;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.GangBoss;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.ShamanLeader;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -415,6 +420,34 @@ public class ModRoster {
 		add( "goblins", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.PetBee.class, 0, 1, 99 );
 		add( "goblins", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.Scorpion.class, 0, 1, 99 );
 		add( "goblins", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.PetVelocirooster.class, 0, 1, 99 );
+		add( "deep", Assassin.class, 0, 1, 99 );
+		add( "deep", DarkRat.class, 1, 3, 8 );
+		add( "deep", Dummy.class, 0, 1, 99 );
+		add( "deep", Gangster.class, 1, 6, 12 );
+		add( "deep", GnollKnight.class, 1, 3, 9 );
+		add( "deep", GnollMarksman.class, 1, 2, 8 );
+		add( "deep", GnollNinja.class, 0, 1, 99 );
+		add( "deep", GnollThief.class, 1, 2, 8 );
+		add( "deep", Goolem.class, 0, 1, 99 );
+		add( "deep", Grieflord.class, 0, 1, 99 );
+		add( "deep", Idol.class, 0, 1, 99 );
+		add( "deep", KeyCreature.class, 0, 1, 99 );
+		add( "deep", LesserRat.class, 1, 1, 5 );
+		add( "deep", MandrakeClone.class, 0, 1, 99 );
+		add( "deep", NewbornElemental.class, 0, 1, 99 );
+		add( "deep", PurpleMushroom.class, 1, 4, 10 );
+		add( "deep", RedMushroom.class, 1, 4, 10 );
+		add( "deep", Sludge.class, 1, 4, 9 );
+		add( "deep", Spirit.class, 1, 1, 4 );
+		add( "deep", SummonIdol.class, 0, 1, 99 );
+		add( "deep", Terminator.class, 0, 1, 99 );
+		add( "deep", VoodooIdol.class, 0, 1, 99 );
+		add( "deep", YellowMushroom.class, 1, 4, 10 );
+		add( "deep", GangBoss.class, 0, 1, 99 );
+		add( "deep", GnollNinja1.class, 0, 1, 99 );
+		add( "deep", Mandrake.class, 1, 2, 8 );
+		add( "deep", ShamanLeader.class, 0, 1, 99 );
+		add( "deep", GnollNinja2.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

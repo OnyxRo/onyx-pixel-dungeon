@@ -86,6 +86,8 @@ public class Item implements Bundlable {
 	private int level = 0;
 
 	public boolean levelKnown = false;
+	//Deep PD, ghost shards raise this, a few Deep weapons read it
+	public int shardlvl = 0;
 	
 	public boolean cursed;
 	public boolean cursedKnown;
@@ -598,6 +600,14 @@ public class Item implements Bundlable {
 		return quantity != 1 ? Integer.toString( quantity ) : null;
 	}
 
+	//Deep PD, a ghost shard enhancement
+	public Item enhance() {
+		cursed = false;
+		shardlvl++;
+		updateQuickslot();
+		return this;
+	}
+
 	public static void updateQuickslot() {
 		GameScene.updateItemDisplays = true;
 	}
@@ -612,6 +622,7 @@ public class Item implements Bundlable {
 	private static final String INFUSED         = "infused";
 	private static final String CUSTOM_NOTE_ID = "custom_note_id";
 	private static final String UPGRADE_SCROLL_USES = "upgrade_scroll_uses";
+	private static final String SHARD_LEVEL = "shard_level";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -627,6 +638,7 @@ public class Item implements Bundlable {
 		bundle.put( INFUSED, isInfused );
 		if (customNoteID != -1)     bundle.put(CUSTOM_NOTE_ID, customNoteID);
 		if (upgradeScrollUses > 0)  bundle.put(UPGRADE_SCROLL_USES, upgradeScrollUses);
+		if (shardlvl > 0)  bundle.put(SHARD_LEVEL, shardlvl);
 	}
 	
 	@Override
@@ -635,6 +647,7 @@ public class Item implements Bundlable {
 		levelKnown	= bundle.getBoolean( LEVEL_KNOWN );
 		cursedKnown	= bundle.getBoolean( CURSED_KNOWN );
 		upgradeScrollUses = bundle.contains( UPGRADE_SCROLL_USES ) ? bundle.getInt( UPGRADE_SCROLL_USES ) : 0;
+		shardlvl = bundle.contains( SHARD_LEVEL ) ? bundle.getInt( SHARD_LEVEL ) : 0;
 		
 		int level = bundle.getInt( LEVEL );
 		if (level > 0) {
