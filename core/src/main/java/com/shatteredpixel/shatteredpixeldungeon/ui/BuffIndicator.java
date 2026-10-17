@@ -162,6 +162,11 @@ public class BuffIndicator extends Component {
 	public static final int MEDIUMSAT   = 103;
 	public static final int FULLYSAT    = 104;
 	public static final int OVERSAT     = 105;
+	//Magic Ling PD, stand in icons
+	public static final int WICKBONE    = CORRUPT;
+	public static final int LOST_SOUL   = CORRUPT;
+	public static final int BASE_STATUS = MARK;
+	public static final int DK          = HEART;
 
 	//Tower PD buffs, drawn with icons that already exist
 	public static final int ANIMATED     = AMOK;

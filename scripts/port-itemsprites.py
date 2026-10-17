@@ -35,6 +35,10 @@ def mod_rows(height):
     if er:
         a, b = [int(x) for x in er.split('-')]
         return list(range(a - 1, b))
+    # ITEM_ROWS=60-67 (one based, set when several agents share the sheet) limits pictures to those rows
+    if os.environ.get('ITEM_ROWS'):
+        a, b = os.environ['ITEM_ROWS'].split('-')
+        return list(range(int(a) - 1, int(b)))
     return [12, 18] + list(range(32, height // 16))
 
 def LP(p):
@@ -57,6 +61,7 @@ def value(name, depth=0):
     assert depth < 20, name
     expr = defs[name]
     expr = re.sub(r'xy\(\s*(\d+)\s*,\s*(\d+)\s*\)', lambda m: str(int(m.group(1)) - 1 + MOD_COLS * (int(m.group(2)) - 1)), expr)
+    expr = re.sub(r'xy\(\s*(\d+)\s*,\s*(\d+)\s*\)', lambda m: str(int(m.group(1)) - 1 + COLS * (int(m.group(2)) - 1)), expr)
     expr = re.sub(r'[A-Za-z_]\w*', lambda m: str(value(m.group(0), depth + 1)) if m.group(0) in defs else m.group(0), expr)
     assert re.fullmatch(r'[\d\s+\-*()]+', expr), (name, expr)
     return int(eval(expr))
@@ -72,6 +77,12 @@ if os.path.exists(_sc):
     _n = int(io.open(_sc).read().strip() or 1)
     if _n > 1: src = src.resize((src.width // _n, src.height // _n), Image.NEAREST)
 MOD_COLS = src.width // 16
+sheet_path = LP(MOD + 'core/src/main/assets/sprites/items.png')
+if not os.path.exists(sheet_path): sheet_path = LP(MOD + 'core/src/main/assets/sprites/items/items.png')   # Magic Ling keeps it in a folder
+if not os.path.exists(sheet_path): sheet_path = LP(MOD + 'core/src/main/assets/items.png')   # pre 0.8 mods keep it flat
+if not os.path.exists(sheet_path): sheet_path = LP(MOD + 'core/src/main/assets/ui/items.png')   # 0.5 and 0.6 mods keep it under ui
+src = Image.open(sheet_path).convert('RGBA')
+COLS = src.width // 16   # Magic Ling's sheet is 32 cells wide, Shattered's is 16
 dstp = ROOT + 'core/src/main/assets/sprites/items.png'
 dst = Image.open(dstp).convert('RGBA')
 if _ER:
@@ -103,6 +114,11 @@ def free_cell():
             return None
         for r in mod_rows(dst.height):
             if r < 0: break
+            if (r + 1) * 16 > dst.height:
+                grown = Image.new('RGBA', (dst.width, (r + 1) * 16), (0, 0, 0, 0))
+                grown.paste(dst, (0, 0))
+                dst = grown
+                print('item sheet grown to', dst.height, 'px high')
             for c in range(16):
                 if dst.crop((c * 16, r * 16, c * 16 + 16, r * 16 + 16)).getbbox() is None: return c, r
         if os.environ.get('ITEM_ROWS'):
@@ -121,6 +137,7 @@ for name in NAMES:
         print('NOT IN MOD', name); continue
     i = value(name)
     x, y = (i % MOD_COLS) * 16, (i // MOD_COLS) * 16
+    x, y = (i % COLS) * 16, (i // COLS) * 16
     tile = src.crop((x, y, x + 16, y + 16)); bb = tile.getbbox()
     if not bb:
         print('EMPTY CELL', name); continue
@@ -136,10 +153,11 @@ if consts:
     dst.save(dstp)
     a = '	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;\n'
     assert a in s
-    s = s.replace(a, a + consts, 1)
+    # ITEM_BEFORE=1 puts the new lines before the anchor, so two ports that add lines do not touch the same spot
+    s = s.replace(a, (consts + a) if os.environ.get('ITEM_BEFORE') else (a + consts), 1)
     # TX_HEIGHT must equal the sheet height or every picture is stretched
     s = re.sub(r'(int TX_HEIGHT = )\d+;', lambda m: m.group(1) + '%d;' % dst.height, s, count=1)
     a = '		assignItemRect(WOODEN_BOOMERANG, 12, 12);\n'
     assert a in s
-    s = s.replace(a, a + rects, 1)
+    s = s.replace(a, (rects + a) if os.environ.get('ITEM_BEFORE') else (a + rects), 1)
     io.open(p, 'w', encoding='utf-8', newline='').write(s.replace('\n', nl))

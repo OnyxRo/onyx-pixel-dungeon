@@ -105,6 +105,10 @@ public class Dungeon {
 	//enum of items which have limited spawns, records how many have spawned
 	//could all be their own separate numbers, but this allows iterating, much nicer for bundling/initializing.
 	public static enum LimitedDrops {
+		//from Magic Ling PD, the Shield Huntsman's drop and its necromancer drops
+		HUNR_HP,
+		NSR,
+		WORM_HP,
 		//from Shittened PD
 		FOODCRATE,
 		TWINGO_ALBUM,

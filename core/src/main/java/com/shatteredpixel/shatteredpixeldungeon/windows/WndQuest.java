@@ -26,6 +26,13 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 
 public class WndQuest extends WndTitledMessage {
 
+	//Magic Ling PD, an NPC with several lines of talk, shown as one window
+	public static void chating( NPC questgiver, java.util.ArrayList<String> text ) {
+		if (text != null && !text.isEmpty()) {
+			com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene.show( new WndQuest( questgiver, String.join( "\n\n", text ) ) );
+		}
+	}
+
 	public WndQuest( NPC questgiver, String text ) {
 		super( questgiver.sprite(), Messages.titleCase( questgiver.name() ), text );
 	}

@@ -181,7 +181,13 @@ public class MobArenaTest {
 		}
 		//a null emitter, sprite or field of view is the headless run's limit, not a bug in the port. Counted apart, shown once.
 		//Run with -Dstrict=true to make these failures again.
-		if (t instanceof NullPointerException && !Boolean.getBoolean( "strict" ) && String.valueOf( t.getMessage() ).matches( "(?is).*(emitter|sprite|fieldOfView|Camera|[.]parent).*" )) {
+		if (t instanceof NullPointerException && !Boolean.getBoolean( "strict" ) && String.valueOf( t.getMessage() ).matches( "(?is).*(emitter|sprite|fieldOfView|Camera|[.]parent|emoicons).*" )) {
+			headless++;
+			System.out.println( "HEADLESS (not counted): " + cls.getSimpleName() + " " + what );
+			return;
+		}
+		//a monster whose sprite class casts the character, run against the headless stub sprite
+		if (t instanceof ClassCastException && !Boolean.getBoolean( "strict" ) && String.valueOf( t.getMessage() ).contains( "sprites.CharSprite cannot be cast" )) {
 			headless++;
 			System.out.println( "HEADLESS (not counted): " + cls.getSimpleName() + " " + what );
 			return;

@@ -466,6 +466,11 @@ public class Armor extends EquipableItem {
 		return evasion + augment.evasionFactor(buffedLvl());
 	}
 	
+	//Magic Ling PD, armor that changes how loud its wearer is
+	public float stealthFactor( Char owner, float stealth ){
+		return stealth;
+	}
+
 	public float speedFactor( Char owner, float speed ){
 		
 		if (owner instanceof Hero) {

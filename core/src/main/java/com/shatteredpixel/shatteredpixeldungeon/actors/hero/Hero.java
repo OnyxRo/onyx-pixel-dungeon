@@ -213,6 +213,12 @@ public class Hero extends Char {
 	
 	public HeroClass heroClass = HeroClass.ROGUE;
 	public HeroSubClass subClass = HeroSubClass.NONE;
+
+	//Magic Ling PD, assassins and freerunners count as each other
+	public boolean isSubclass(HeroSubClass sc) {
+		if (this.subClass == HeroSubClass.ASSASSIN || this.subClass == HeroSubClass.FREERUNNER) return true;
+		return sc == this.subClass;
+	}
 	public ArmorAbility armorAbility = null;
 	public ArrayList<LinkedHashMap<Talent, Integer>> talents = new ArrayList<>();
 	public LinkedHashMap<Talent, Talent> metamorphedTalents = new LinkedHashMap<>();

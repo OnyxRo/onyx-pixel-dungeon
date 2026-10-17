@@ -891,8 +891,19 @@ public abstract class Char extends Actor {
 		return cachedIncomingDOT;
 	}
 	
+	//Magic Ling PD, damage types. Its overrides take a type, ours are rewritten to the plain form by renames.py
+	public enum DamageType { PHYSICAL, MAGIC, REAL, Element, HG }
+
+	public void damage( int dmg, Object src, DamageType type ) {
+		damage( dmg, src );
+	}
+
+	public boolean attack( Char enemy, float dmgMulti, float dmgBonus, float accMulti, DamageType type ) {
+		return attack( enemy, dmgMulti, dmgBonus, accMulti );
+	}
+
 	public void damage( int dmg, Object src ) {
-		
+
 		if (!isAlive() || dmg < 0) {
 			return;
 		}
@@ -1645,6 +1656,8 @@ public abstract class Char extends Actor {
 				new HashSet<Class>( Arrays.asList(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep.class, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep.class, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy.class) ));
 		//SPS monster kinds, plain tags with no built in resistances
 		MAGICER, ORC, FISHER, ELF, DWARF, TROLL, GOBLIN, BEAST, DRAGON, PLANT, ELEMENT, MECH, ALIEN, UNKNOW;
+		//Magic Ling PD
+		SEARCH, PETS, HOLLOW, ABYSS, NECRO, TUMULUS, NOKOCK, NOBIG, NPC, HUNTER, MIMIC, UNKNOWN, GODCRACK, UNLESS;
 
 		private HashSet<Class> resistances;
 		private HashSet<Class> immunities;

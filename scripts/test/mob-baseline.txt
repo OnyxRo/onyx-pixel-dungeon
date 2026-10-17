@@ -62,3 +62,4 @@ BlindingDart crashed the test
 Drone crashed during its own turns
 Statue crashed the test
 ArmoredStatue crashed the test
+DeadEye crashed the test

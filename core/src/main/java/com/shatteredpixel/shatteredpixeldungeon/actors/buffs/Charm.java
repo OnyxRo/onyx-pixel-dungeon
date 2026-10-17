@@ -33,6 +33,10 @@ public class Charm extends FlavourBuff {
 
 	public static final float DURATION = 10f;
 
+	//Magic Ling PD, the Succubus Queen's own charm
+	public static class CharmLing extends Charm {
+	}
+
 	{
 		type = buffType.NEGATIVE;
 		announced = true;

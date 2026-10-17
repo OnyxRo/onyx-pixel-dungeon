@@ -475,6 +475,23 @@ public abstract class Wand extends Item {
 		return 1;
 	}
 	
+	//Magic Ling PD, a monster fires the wand
+	public void fx(Ballistica bolt, com.shatteredpixel.shatteredpixeldungeon.actors.Char user, Callback callback) {
+		MagicMissile.boltFromChar( user.sprite.parent,
+				MagicMissile.MAGIC_MISSILE,
+				user.sprite,
+				bolt.collisionPos,
+				callback);
+		Sample.INSTANCE.play( Assets.Sounds.ZAP );
+	}
+
+	public void rivalOnZap(Ballistica shot, com.shatteredpixel.shatteredpixeldungeon.actors.Char user) {
+		com.shatteredpixel.shatteredpixeldungeon.actors.Char target = Actor.findChar( shot.collisionPos );
+		if (target != null && target != user) {
+			target.damage( Random.NormalIntRange( 2 + level() * 2, 8 + level() * 4 ), user );
+		}
+	}
+
 	public void fx(Ballistica bolt, Callback callback) {
 		MagicMissile.boltFromChar( curUser.sprite.parent,
 				MagicMissile.MAGIC_MISSILE,
