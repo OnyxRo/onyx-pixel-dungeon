@@ -44,7 +44,7 @@ public class PoltergeistSprite extends MobSprite {
                 new Callback() {
                     @Override
                     public void call() {
-                        ((Elemental)ch).onZapComplete();
+                        ch.onAttackComplete();
                     }
                 } );
         Sample.INSTANCE.play( Assets.Sounds.ZAP );

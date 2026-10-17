@@ -20,6 +20,10 @@ def rd(p): return io.open(LP(p), encoding='utf-8', errors='replace', newline='')
 
 out = subprocess.run(['git', 'status', '--short', '--untracked-files=all'], cwd=ROOT, capture_output=True, text=True).stdout
 files = [l[3:].strip() for l in out.split('\n') if l.strip().endswith('.java') and PK in l]
+# PORT_SINCE=<commit> also counts every java file changed since that commit, for strings redone after a commit
+if os.environ.get('PORT_SINCE'):
+    d = subprocess.run(['git', 'diff', '--name-only', os.environ['PORT_SINCE']], cwd=ROOT, capture_output=True, text=True).stdout
+    files += [l.strip() for l in d.split('\n') if l.strip().endswith('.java') and PK in l]
 extra = sys.argv[4:]
 for e in extra: files += [p.replace(os.sep, '/')[len(ROOT):] for p in glob.glob(ROOT + PK + e)]
 prefixes = {}
@@ -31,6 +35,9 @@ for f in sorted(set(files)):
 total = 0
 for bundle, keys in prefixes.items():
     src = MOD + MSG + bundle + '/' + bundle + '.properties'
+    # Magic Ling keeps Chinese in the plain file and English in <bundle>_en.properties
+    if os.path.exists(LP(MOD + MSG + bundle + '/' + bundle + '_en.properties')):
+        src = MOD + MSG + bundle + '/' + bundle + '_en.properties'
     if not os.path.exists(LP(src)):
         # older mods keep text under resources/<package path>/messages
         hits = glob.glob(LP(MOD + 'core/src/main/resources') + '/**/messages/' + bundle + '/' + bundle + '.properties', recursive=True)
