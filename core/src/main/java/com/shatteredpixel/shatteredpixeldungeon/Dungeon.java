@@ -1065,13 +1065,17 @@ public class Dungeon {
 	}
 	
 	public static void win( Object cause ) {
+		win( cause, false );
+	}
+
+	public static void win( Object cause, boolean saul ) {
 
 		updateLevelExplored();
 		Statistics.gameWon = true;
 
 		hero.belongings.identify();
 
-		Rankings.INSTANCE.submit( true, cause );
+		Rankings.INSTANCE.submit( true, cause, saul );
 	}
 
 	public static void updateLevelExplored(){

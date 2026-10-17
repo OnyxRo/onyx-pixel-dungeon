@@ -1075,7 +1075,12 @@ public class Hero extends Char {
 	
 	@Override
 	public boolean act() {
-		
+
+		//Shittened PD, now and then a friend request pops up
+		if (Random.Int(8000) == 0) {
+			GameScene.friendRequest();
+		}
+
 		//calls to dungeon.observe will also update hero's local FOV.
 		fieldOfView = Dungeon.level.heroFOV;
 
@@ -1575,10 +1580,17 @@ public class Hero extends Char {
 				
 				sprite.operate( doorCell );
 				
-				Sample.INSTANCE.play( Assets.Sounds.UNLOCK );
+				//Shittened PD, the exit gate has a sound of its own
+				if (door == Terrain.LOCKED_EXIT) {
+					Sample.INSTANCE.play( Assets.Sounds.GATE_UNLOCK );
+				} else {
+					Sample.INSTANCE.play( Assets.Sounds.UNLOCK );
+				}
 				
 			} else {
 				GLog.w( Messages.get(this, "locked_door") );
+				Sample.INSTANCE.play(Random.oneOf(Assets.Sounds.LOCKED_DOOR_1,
+						Assets.Sounds.LOCKED_DOOR_2, Assets.Sounds.LOCKED_DOOR_3), 0.3f, Random.Float(0.95f, 1.05f));
 				ready();
 			}
 
@@ -1855,7 +1867,27 @@ public class Hero extends Char {
 		}
 		if (!fullRest) {
 			if (sprite != null) {
-				sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, "wait"));
+				//Shittened PD, the hero mutters something different each time
+				int min = 0, max = 17;
+				int randomNumber = min + (int)(max * (1f - Math.sqrt(0.96f - Random.Float() * Random.Float())));
+				if (randomNumber > 15) {
+					randomNumber = 15;
+				}
+
+				String status = Messages.get(this, "wait_" + randomNumber);
+
+				sprite.showStatus(CharSprite.DEFAULT, status);
+				if (status.contains("dies")) {
+					for (Item item : belongings.backpack) {
+						if (item instanceof Ankh) {
+							item.detach(belongings.backpack);
+						}
+					}
+
+					for (int i = 0; i < 5; i++) damage(999, this);
+					GLog.n("You waited yourself to death");
+					Badges.validateBoredom();
+				}
 			}
 		}
 		resting = fullRest;
@@ -2482,7 +2514,7 @@ public class Hero extends Char {
 
 				GLog.newLine();
 				GLog.p( Messages.get(this, "level_cap"));
-				Sample.INSTANCE.play( Assets.Sounds.LEVELUP );
+				Sample.INSTANCE.play( levelUpSound() );
 			}
 			
 		}
@@ -2493,7 +2525,7 @@ public class Hero extends Char {
 				GLog.newLine();
 				GLog.p( Messages.get(this, "new_level") );
 				sprite.showStatus( CharSprite.POSITIVE, Messages.get(Hero.class, "level_up") );
-				Sample.INSTANCE.play( Assets.Sounds.LEVELUP );
+				Sample.INSTANCE.play( levelUpSound() );
 				if (lvl < Talent.tierLevelThresholds[Talent.MAX_TALENT_TIERS+1]){
 					GLog.newLine();
 					GLog.p( Messages.get(this, "new_talent") );
@@ -2704,12 +2736,25 @@ public class Hero extends Char {
 			@Override
 			public void call() {
 				GameScene.gameOver();
-				Sample.INSTANCE.play( Assets.Sounds.DEATH );
+				//Shittened PD, a dozen ways to die
+				Sample.INSTANCE.play( Random.oneOf(Assets.Sounds.DEATH_1, Assets.Sounds.DEATH_2, Assets.Sounds.DEATH_3,
+						Assets.Sounds.DEATH_4, Assets.Sounds.DEATH_5, Assets.Sounds.DEATH_6,
+						Assets.Sounds.DEATH_7, Assets.Sounds.DEATH_8, Assets.Sounds.DEATH_9,
+						Assets.Sounds.DEATH_10, Assets.Sounds.DEATH_11, Assets.Sounds.DEATH_12, Assets.Sounds.OOF) );
 			}
 		});
 
 		if (cause instanceof Hero.Doom) {
 			((Hero.Doom)cause).onDeath();
+		}
+
+		if (Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.KetchupStormed.class) != null) Badges.validateDeathWithKetchup();
+
+		//Shittened PD, the Dwarf King's throne room gets his victory tune, everywhere else goes quiet
+		if (Dungeon.level instanceof com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel) {
+			com.watabou.noosa.audio.Music.INSTANCE.play(Assets.Music.KING_VICTORY, false);
+		} else {
+			com.watabou.noosa.audio.Music.INSTANCE.stop();
 		}
 
 		Dungeon.deleteGame( GamesInProgress.curSlot, true );
@@ -2777,22 +2822,57 @@ public class Hero extends Char {
 		}
 		
 		if (!flying && travelling) {
-			if (Dungeon.level.water[pos]) {
-				Sample.INSTANCE.play( Assets.Sounds.WATER, 1, Random.Float( 0.8f, 1.25f ) );
-			} else if (Dungeon.level.map[pos] == Terrain.EMPTY_SP) {
-				Sample.INSTANCE.play( Assets.Sounds.STURDY, 1, Random.Float( 0.96f, 1.05f ) );
-			} else if (Dungeon.level.map[pos] == Terrain.GRASS
-					|| Dungeon.level.map[pos] == Terrain.EMBERS
-					|| Dungeon.level.map[pos] == Terrain.FURROWED_GRASS){
-				if (step == pos && wasHighGrass) {
-					Sample.INSTANCE.play(Assets.Sounds.TRAMPLE, 1, Random.Float( 0.96f, 1.05f ) );
-				} else {
-					Sample.INSTANCE.play( Assets.Sounds.GRASS, 1, Random.Float( 0.96f, 1.05f ) );
-				}
-			} else {
-				Sample.INSTANCE.play( Assets.Sounds.STEP, 1, Random.Float( 0.96f, 1.05f ) );
-			}
+			stepSound( step, wasHighGrass );
 		}
+	}
+
+	//Shittened PD, every kind of floor has its own footsteps (and so do the floors Shattered would have used one sound for)
+	private void stepSound( int step, boolean wasHighGrass ) {
+		int depth = Dungeon.depth;
+		boolean grassy = Dungeon.level.map[pos] == Terrain.GRASS
+				|| Dungeon.level.map[pos] == Terrain.EMBERS
+				|| Dungeon.level.map[pos] == Terrain.FURROWED_GRASS;
+		String[] water = {Assets.Sounds.WATER_1, Assets.Sounds.WATER_2, Assets.Sounds.WATER_3};
+		String[] wood = {Assets.Sounds.WOOD_1, Assets.Sounds.WOOD_2, Assets.Sounds.WOOD_3};
+		String[] metal = {Assets.Sounds.METAL_1, Assets.Sounds.METAL_2, Assets.Sounds.METAL_3, Assets.Sounds.METAL_4};
+		String[] trample = {Assets.Sounds.TRAMPLE_1, Assets.Sounds.TRAMPLE_2};
+		String[] grass = {Assets.Sounds.GRASS_1, Assets.Sounds.GRASS_2, Assets.Sounds.GRASS_3};
+		String[] sand = {Assets.Sounds.SAND_1, Assets.Sounds.SAND_2, Assets.Sounds.SAND_3, Assets.Sounds.SAND_4, Assets.Sounds.SAND_5};
+		String[] dirt = {Assets.Sounds.DIRT_1, Assets.Sounds.DIRT_2, Assets.Sounds.DIRT_3, Assets.Sounds.DIRT_4, Assets.Sounds.DIRT_5, Assets.Sounds.DIRT_6};
+		String[] step_ = {Assets.Sounds.STEP_1, Assets.Sounds.STEP_2, Assets.Sounds.STEP_3, Assets.Sounds.STEP_4,
+				Assets.Sounds.STEP_5, Assets.Sounds.STEP_6, Assets.Sounds.STEP_7};
+
+		if (Dungeon.level.water[pos]) {
+			Sample.INSTANCE.play( Random.oneOf(water), 2f, Random.Float( 0.8f, 1.25f ) );
+		} else if (Dungeon.level.map[pos] == Terrain.EMPTY_SP) {
+			if (depth <= 0 || depth < 6 || depth > 14) {
+				Sample.INSTANCE.play( Random.oneOf(wood), 1, Random.Float( 0.96f, 1.05f ) );
+			} else {
+				Sample.INSTANCE.play( Random.oneOf(metal), 1, Random.Float( 0.96f, 1.05f ) );
+			}
+		} else if (grassy) {
+			if (step == pos && wasHighGrass) {
+				Sample.INSTANCE.play( Random.oneOf(trample), 1, Random.Float( 0.96f, 1.05f ) );
+				if (depth <= 0) Sample.INSTANCE.play( Random.oneOf(grass), 4f, Random.Float( 0.9f, 1.15f ) );
+			} else if (depth < 0) {
+				Sample.INSTANCE.play( Random.oneOf(sand), 3f, Random.Float( 0.9f, 1.15f ) );
+			} else {
+				Sample.INSTANCE.play( Random.oneOf(grass), 2f, Random.Float( 0.9f, 1.15f ) );
+			}
+		} else if (depth < 0) {
+			Sample.INSTANCE.play( Random.oneOf(sand), 3f, Random.Float( 0.9f, 1.15f ) );
+		} else if (depth == 0) {
+			Sample.INSTANCE.play( Random.oneOf(grass), 2f, Random.Float( 0.9f, 1.15f ) );
+		} else if (depth > 5 && depth < 11) {
+			Sample.INSTANCE.play( Random.oneOf(dirt), 1.5f, Random.Float( 0.96f, 1.05f ) );
+		} else {
+			Sample.INSTANCE.play( Random.oneOf(step_), 1.5f, Random.Float( 0.96f, 1.05f ) );
+		}
+	}
+
+	public static String levelUpSound() {
+		return Random.oneOf(Assets.Sounds.LEVELUP_1, Assets.Sounds.LEVELUP_2, Assets.Sounds.LEVELUP_3,
+				Assets.Sounds.LEVELUP_4, Assets.Sounds.LEVELUP_5, Assets.Sounds.LEVELUP_6);
 	}
 	
 	@Override

@@ -39,6 +39,8 @@ public class Statistics {
 	public static int enemiesSlain;
 	public static int foodEaten;
 	public static int shitsTaken; //from Shittened PD
+	public static int ratsSlain; //Shittened PD
+	public static boolean audioDisabled = false; //Shittened PD, true once sound or music was switched off during the run
 	public static int mirrorImageScrollUsed; //from Ryuse's PD
 	public static int itemsCrafted;
 	public static int piranhasKilled;
@@ -99,6 +101,8 @@ public class Statistics {
 		enemiesSlain	= 0;
 		foodEaten		= 0;
 		shitsTaken		= 0;
+		ratsSlain		= 0;
+		audioDisabled	= false;
 		mirrorImageScrollUsed = 0;
 		itemsCrafted    = 0;
 		piranhasKilled	= 0;
@@ -146,6 +150,8 @@ public class Statistics {
 	private static final String SLAIN		= "enemiesSlain";
 	private static final String FOOD		= "foodEaten";
 	private static final String TURDS		= "shitsTaken";
+	private static final String RATS		= "ratsSlain";
+	private static final String AUDIO_DISABLED	= "audioDisabled";
 	private static final String MIRRORS		= "mirrorImageScrollUsed";
 	private static final String ALCHEMY		= "potionsCooked";
 	private static final String PIRANHAS	= "priranhas";
@@ -197,6 +203,8 @@ public class Statistics {
 		bundle.put( SLAIN,		enemiesSlain );
 		bundle.put( FOOD,		foodEaten );
 		bundle.put( TURDS,		shitsTaken );
+		bundle.put( RATS,		ratsSlain );
+		bundle.put( AUDIO_DISABLED,	audioDisabled );
 		bundle.put( MIRRORS,	mirrorImageScrollUsed );
 		bundle.put( ALCHEMY,    itemsCrafted );
 		bundle.put( PIRANHAS,	piranhasKilled );
@@ -252,6 +260,8 @@ public class Statistics {
 		enemiesSlain	= bundle.getInt( SLAIN );
 		foodEaten		= bundle.getInt( FOOD );
 		shitsTaken		= bundle.getInt( TURDS );
+		ratsSlain		= bundle.getInt( RATS );
+		audioDisabled	= bundle.getBoolean( AUDIO_DISABLED );
 		mirrorImageScrollUsed = bundle.getInt( MIRRORS );
 		itemsCrafted    = bundle.getInt( ALCHEMY );
 		piranhasKilled	= bundle.getInt( PIRANHAS );

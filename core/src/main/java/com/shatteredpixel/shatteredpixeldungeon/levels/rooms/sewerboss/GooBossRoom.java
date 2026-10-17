@@ -43,6 +43,12 @@ public abstract class GooBossRoom extends StandardRoom {
 		return false;
 	}
 
+	/** Shittened PD's Green Goo, which its own game never spawned. One sewer boss floor in four gets it in place of Goo. */
+	public static com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob newBoss(){
+		if (Random.Int(4) == 0) return new com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GreenGoo();
+		return new com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Goo();
+	}
+
 	public static GooBossRoom randomGooRoom(){
 		switch (Random.Int(4)){
 			case 0: default:

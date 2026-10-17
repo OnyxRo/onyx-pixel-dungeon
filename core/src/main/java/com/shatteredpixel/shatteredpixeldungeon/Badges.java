@@ -229,7 +229,24 @@ public class Badges {
 		GAMES_PLAYED_5              ( 124, BadgeType.GLOBAL ),
 		HIGH_SCORE_5                ( 125 ),
 		CHAMPION_2                  ( 126 ),
-		CHAMPION_3                  ( 127 );
+		CHAMPION_3                  ( 127 ),
+
+		//Shittened PD
+		VICTORY_SAUL                ( 128 ),
+		BOREDOM                     ( 129 ),
+		FRIEND                      ( 130 ),
+		TURD_1                      ( 131 ),
+		TURD_2                      ( 132 ),
+		TURD_3                      ( 133 ),
+		NOT_SHITTENED               ( 134 ),
+		RATATOUILLE                 ( 135 ),
+		RATS_1                      ( 136 ),
+		RATS_2                      ( 137 ),
+		RATS_3                      ( 138 ),
+		RATS_4                      ( 139 ),
+		PAT_RAT                     ( 140 ),
+		KETCHUP                     ( 141 ),
+		JACKPOT                     ( 160 );
 
 		public boolean meta;
 
@@ -1053,12 +1070,117 @@ public class Badges {
 		}
 	}
 
-	//Shittened PD has badges for these. They are not drawn here, so the hooks are kept and do nothing.
-	public static void validateTurd() {}
-	public static void validatePatRat() {}
-	public static void validateRatatouille() {}
-	public static void validateJackpot() {}
-	public static void validateDeathWithKetchup() {}
+	//Shittened PD
+	public static void validateVictoryWithSaul() {
+		Badge badge = Badge.VICTORY_SAUL;
+		local.add( badge );
+		displayBadge( badge );
+		unlock( badge );
+	}
+
+	public static void validateBoredom() {
+		Badge badge = Badge.BOREDOM;
+		local.add( badge );
+		displayBadge( badge );
+		unlock( badge );
+	}
+
+	public static void validateFriend() {
+		Badge badge = Badge.FRIEND;
+		local.add( badge );
+		displayBadge( badge );
+		unlock( badge );
+	}
+
+	public static void validateTurd() {
+
+		Badge badge = null;
+
+		if (!local.contains( Badge.TURD_1 ) && Statistics.shitsTaken >= 1) {
+			badge = Badge.TURD_1;
+			local.add( badge );
+		}
+		if (!local.contains( Badge.TURD_2 ) && Statistics.shitsTaken >= 3) {
+			if (badge != null) unlock(badge);
+			badge = Badge.TURD_2;
+			local.add( badge );
+		}
+		if (!local.contains( Badge.TURD_3 ) && Statistics.shitsTaken >= 6) {
+			if (badge != null) unlock(badge);
+			badge = Badge.TURD_3;
+			local.add( badge );
+		}
+
+		displayBadge(badge);
+	}
+
+	//Shittened's own game never called this, here it is checked when the run is won
+	public static void validateNotShittened() {
+		if (!local.contains( Badge.NOT_SHITTENED ) && !Statistics.audioDisabled
+				&& SPDSettings.SFXVol() != 0 && SPDSettings.musicVol() != 0
+				&& SPDSettings.music() && SPDSettings.soundFx()) {
+			Badge badge = Badge.NOT_SHITTENED;
+			local.add( badge );
+			displayBadge( badge );
+		}
+	}
+
+	public static void validateRatatouille() {
+		if (!local.contains( Badge.RATATOUILLE )) {
+			Badge badge = Badge.RATATOUILLE;
+			local.add( badge );
+			displayBadge( badge );
+		}
+	}
+
+	public static void validateRats() {
+
+		Badge badge = null;
+
+		if (!local.contains( Badge.RATS_1 ) && Statistics.ratsSlain >= 5) {
+			badge = Badge.RATS_1;
+			local.add( badge );
+		}
+		if (!local.contains( Badge.RATS_2 ) && Statistics.ratsSlain >= 15) {
+			if (badge != null) unlock(badge);
+			badge = Badge.RATS_2;
+			local.add( badge );
+		}
+		if (!local.contains( Badge.RATS_3 ) && Statistics.ratsSlain >= 25) {
+			if (badge != null) unlock(badge);
+			badge = Badge.RATS_3;
+			local.add( badge );
+		}
+		if (!local.contains( Badge.RATS_4 ) && Statistics.ratsSlain >= 40) {
+			if (badge != null) unlock(badge);
+			badge = Badge.RATS_4;
+			local.add( badge );
+		}
+
+		displayBadge(badge);
+	}
+
+	public static void validatePatRat() {
+		if (!local.contains( Badge.PAT_RAT )) {
+			Badge badge = Badge.PAT_RAT;
+			local.add( badge );
+			displayBadge( badge );
+		}
+	}
+
+	public static void validateDeathWithKetchup() {
+		if (!local.contains( Badge.KETCHUP )) {
+			Badge badge = Badge.KETCHUP;
+			local.add( badge );
+			displayBadge( badge );
+		}
+	}
+
+	public static void validateJackpot() {
+		Badge badge = Badge.JACKPOT;
+		local.add( badge );
+		displayBadge( badge );
+	}
 
 	//Dragonic PD, kill 50 enemies in one run to unlock the Viking, slay any boss to unlock the Dragon Knight
 	public static void validateVikingUnlock(){
@@ -1120,6 +1242,8 @@ public class Badges {
 			local.add( badge );
 			displayBadge( badge );
 		}
+
+		validateNotShittened();
 
 		badge = victoryClassBadges.get(Dungeon.hero.heroClass);
 		if (badge == null) return;
@@ -1349,7 +1473,9 @@ public class Badges {
 			{Badge.RESEARCHER_1, Badge.RESEARCHER_2, Badge.RESEARCHER_3, Badge.RESEARCHER_4, Badge.RESEARCHER_5},
 			{Badge.HIGH_SCORE_1, Badge.HIGH_SCORE_2, Badge.HIGH_SCORE_3, Badge.HIGH_SCORE_4, Badge.HIGH_SCORE_5},
 			{Badge.GAMES_PLAYED_1, Badge.GAMES_PLAYED_2, Badge.GAMES_PLAYED_3, Badge.GAMES_PLAYED_4, Badge.GAMES_PLAYED_5},
-			{Badge.CHAMPION_1, Badge.CHAMPION_2, Badge.CHAMPION_3}
+			{Badge.CHAMPION_1, Badge.CHAMPION_2, Badge.CHAMPION_3},
+			{Badge.TURD_1, Badge.TURD_2, Badge.TURD_3},
+			{Badge.RATS_1, Badge.RATS_2, Badge.RATS_3, Badge.RATS_4}
 	};
 
 	//don't show the later badge if the earlier one isn't unlocked

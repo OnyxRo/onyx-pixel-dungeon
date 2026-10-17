@@ -141,6 +141,11 @@ public abstract class SpecialRoom extends Room {
 						Dungeon.sandboxWorld >= 0 ? Dungeon.sandboxWorld : com.shatteredpixel.shatteredpixeldungeon.levels.WorldShuffle.worldFor(Dungeon.depth)))){
 			floorSpecials.add(0, StatueArmorRoom.class);
 		}
+		//Shittened PD, a sleeping Demon Rat on an altar of painted rats. The mod wrote this room and never used it, so it
+		//turns up now and then in the last chapter
+		if (Dungeon.branch == 0 && Dungeon.depth > 20 && Dungeon.depth < 25 && Random.Int(3) == 0){
+			floorSpecials.add(0, RatRoom.class);
+		}
 		//laboratory rooms spawn on floor 3 or 4 each chapter
 		if (Dungeon.labRoomNeeded()){
 			Dungeon.LimitedDrops.LAB_ROOM.count++;

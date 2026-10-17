@@ -115,6 +115,29 @@ public enum Sample {
 		}
 	}
 
+	//Shittened PD, plays a sound and cuts it off after a while
+	public void playForDuration( Object id, float duration ) {
+		playForDuration( id, duration, 1f );
+	}
+
+	public void playForDuration( Object id, float duration, float volume ) {
+		playForDuration( id, duration, volume, 1f );
+	}
+
+	public synchronized void playForDuration( Object id, float duration, float volume, float pitch ) {
+		if (enabled && ids.containsKey( id )) {
+			final Sound sound = ids.get( id );
+			final long instance = sound.play( globalVolume*volume, pitch, 0f );
+
+			com.badlogic.gdx.utils.Timer.schedule( new com.badlogic.gdx.utils.Timer.Task(){
+				@Override
+				public void run(){
+					sound.stop( instance );
+				}
+			}, duration );
+		}
+	}
+
 	private class DelayedSoundEffect{
 		Object id;
 		float delay;

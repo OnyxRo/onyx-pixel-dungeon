@@ -395,7 +395,13 @@ public class SPDSettings extends GameSettings {
 	public static final String KEY_IGNORE_SILENT= "ignore_silent";
 	public static final String KEY_MUSIC_BG     = "music_bg";
 	
+	//Shittened PD, switching sound off during a run costs the Not Shittened Enough badge
+	private static void audioChanged( boolean off ) {
+		if (off && Dungeon.hero != null) Statistics.audioDisabled = true;
+	}
+
 	public static void music( boolean value ) {
+		audioChanged( !value );
 		Music.INSTANCE.enable( value );
 		put( KEY_MUSIC, value );
 	}
@@ -405,6 +411,7 @@ public class SPDSettings extends GameSettings {
 	}
 	
 	public static void musicVol( int value ){
+		audioChanged( value == 0 );
 		Music.INSTANCE.volume(value*value/100f);
 		put( KEY_MUSIC_VOL, value );
 	}
@@ -414,6 +421,7 @@ public class SPDSettings extends GameSettings {
 	}
 	
 	public static void soundFx( boolean value ) {
+		audioChanged( !value );
 		Sample.INSTANCE.enable( value );
 		put( KEY_SOUND_FX, value );
 	}
@@ -423,6 +431,7 @@ public class SPDSettings extends GameSettings {
 	}
 	
 	public static void SFXVol( int value ) {
+		audioChanged( value == 0 );
 		Sample.INSTANCE.volume(value*value/100f);
 		put( KEY_SFX_VOL, value );
 	}

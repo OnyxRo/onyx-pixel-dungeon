@@ -40,7 +40,9 @@ public enum Holiday {
 	//Nothing in Nov
 	PD_BIRTHDAY,            //Dec 1st to Dec 7th                                    (7 days)
 	WINTER_HOLIDAYS,        //Dec 15th to Dec 26th                                  (12 days)
-	NEW_YEARS;              //Dec 27th to Jan 2nd                                   (7 days)
+	NEW_YEARS,              //Dec 27th to Jan 2nd                                   (7 days)
+	FINNISH_INDEPENDENCE_DAY, //Dec 6th, Shittened PD (it wrote this day in but its date check never returned it)
+	VALENTINES_DAY;         //Feb 14th, Shittened PD
 
 	//total of 61-62 festive days each year, mainly concentrated in Late Oct to Early Feb
 
@@ -60,6 +62,12 @@ public enum Holiday {
 
 	//requires a gregorian calendar
 	public static Holiday getHolidayForDate(GregorianCalendar cal){
+
+		//Valentine's Day, Shittened PD
+		if (cal.get(Calendar.MONTH) == Calendar.FEBRUARY
+				&& cal.get(Calendar.DAY_OF_MONTH) == 14){
+			return VALENTINES_DAY;
+		}
 
 		//Lunar New Year
 		if (isLunarNewYear(cal.get(Calendar.YEAR),
@@ -96,6 +104,12 @@ public enum Holiday {
 		if (cal.get(Calendar.MONTH) == Calendar.OCTOBER
 				&& cal.get(Calendar.DAY_OF_MONTH) >= 24){
 			return HALLOWEEN;
+		}
+
+		//Finnish Independence Day, Shittened PD
+		if (cal.get(Calendar.MONTH) == Calendar.DECEMBER
+				&& cal.get(Calendar.DAY_OF_MONTH) == 6){
+			return FINNISH_INDEPENDENCE_DAY;
 		}
 
 		//Pixel Dungeon's Birthday

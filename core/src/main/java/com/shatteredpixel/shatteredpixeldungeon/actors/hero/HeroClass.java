@@ -120,6 +120,11 @@ public enum HeroClass {
 		i = new Food();
 		if (!Challenges.isItemBlocked(i)) i.collect();
 
+		//Shittened PD, Finland's independence day comes with a Finnish album
+		if (com.shatteredpixel.shatteredpixeldungeon.utils.Holiday.getCurrentHoliday() == com.shatteredpixel.shatteredpixeldungeon.utils.Holiday.FINNISH_INDEPENDENCE_DAY) {
+			new com.shatteredpixel.shatteredpixeldungeon.items.albums.FinnishAlbum().collect();
+		}
+
 		new VelvetPouch().collect();
 		Dungeon.LimitedDrops.VELVET_POUCH.drop();
 
