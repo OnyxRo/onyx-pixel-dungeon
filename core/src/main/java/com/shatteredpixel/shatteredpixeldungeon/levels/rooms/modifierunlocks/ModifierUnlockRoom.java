@@ -46,7 +46,8 @@ public abstract class ModifierUnlockRoom extends Room {
 		//sandbox runs keep every modifier unlocked, there is nothing to find. Normal runs only get a room
 		//while something is still locked. The floor comes from its own generator, so the same seed always
 		//picks the same floor and the rest of the dungeon is not shifted by it.
-		if (Dungeon.sandbox || !Challenges.HasAnyChallengesToUnlock()) {
+		//-Donyx.notrial switches the rooms off, for telling level generation bugs apart in the headless tests
+		if (System.getProperty("onyx.notrial") != null || Dungeon.sandbox || !Challenges.HasAnyChallengesToUnlock()) {
 			m_DepthToSpawn = -1;
 			return;
 		}

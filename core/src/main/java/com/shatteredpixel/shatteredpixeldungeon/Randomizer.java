@@ -103,11 +103,15 @@ public class Randomizer {
 		}
 	}
 
+	//Only for the headless tests, 1 to 3 makes every creature use that buff or nerf, so each one can be run
+	public static int testBuff = 0, testNerf = 0;
+
 	public static int getCreatureBuff(Class<? extends Char> creature) {
 		if (!Dungeon.isChallenged(Challenges.RANDOMIZER)) return 0;
 
 		CreatureData data = m_creatureData.get(creature);
 		if (data == null) return 0;
+		if (testBuff > 0) return testBuff;
 		int bitForRegion = (-12 * data.region) + 72;
 		int buffedCreatureId = getBits(bitForRegion, 4);
 		if (buffedCreatureId == data.id) {
@@ -121,6 +125,7 @@ public class Randomizer {
 
 		CreatureData data = m_creatureData.get(creature);
 		if (data == null) return 0;
+		if (testNerf > 0) return testNerf;
 		int bitForRegion = (-12 * data.region) + 72;
 		int nerfedCreatureId = getBits(bitForRegion - 4, 4);
 		if (nerfedCreatureId == data.id) {
