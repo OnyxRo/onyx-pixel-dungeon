@@ -209,6 +209,7 @@ public abstract class Char extends Actor {
 
 	//from Transformation PD, healing returns what was gained, the tags on damage are dropped
 	public int heal( int h ){
+		for (Buff b : buffs()) if (b instanceof HealingBlocker && ((HealingBlocker)b).blocksIncomingHealing()) return 0;
 		int before = HP;
 		Heal( h );
 		return HP - before;
@@ -428,6 +429,8 @@ public abstract class Char extends Actor {
 		} else if (hit( this, enemy, accMulti, false )) {
 			
 			int dr = Math.round(enemy.drRoll() * AscensionChallenge.statModifier(enemy));
+			dr = modifyEnemyArmor(enemy, dr);
+			if (attackIgnoresArmor(enemy)) dr = 0;
 			
 			if (this instanceof Hero){
 				Hero h = (Hero)this;
@@ -1212,6 +1215,18 @@ public abstract class Char extends Actor {
 		return damageTags;
 	}
 
+	//from Transformation PD, a buff that stops healing
+	public interface HealingBlocker { boolean blocksIncomingHealing(); }
+
+	//from Transformation PD, lets an attack change or skip the armor of its target
+	protected int modifyEnemyArmor(Char enemy, int armor) {
+		return armor;
+	}
+
+	protected boolean attackIgnoresArmor(Char enemy) {
+		return false;
+	}
+
 	public interface DeathListener {
 		void onCharDied( Char deceased );
 	}
@@ -1597,7 +1612,12 @@ public abstract class Char extends Actor {
 		ANNOYING,
 		HUMAN,
 		//Transformation PD, marsh slime and kin
-		DARKSLIME;
+		DARKSLIME,
+		EVIL,
+		GOLD,
+		//Transformation PD, cannot be put to sleep
+		UNSLEEP( new HashSet<Class>(Arrays.asList(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep.class, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep.class, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy.class, Terror.class)),
+				new HashSet<Class>( Arrays.asList(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep.class, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep.class, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy.class) ));
 
 		private HashSet<Class> resistances;
 		private HashSet<Class> immunities;

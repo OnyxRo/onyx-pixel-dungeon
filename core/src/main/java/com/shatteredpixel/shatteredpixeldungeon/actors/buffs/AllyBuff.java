@@ -51,6 +51,7 @@ public abstract class AllyBuff extends Buff {
 			if (target.buff(PinCushion.class) != null){
 				target.buff(PinCushion.class).detach();
 			}
+			if (target instanceof Mob) ((Mob) target).onAllyConversion(this);
 			return true;
 		} else {
 			return false;

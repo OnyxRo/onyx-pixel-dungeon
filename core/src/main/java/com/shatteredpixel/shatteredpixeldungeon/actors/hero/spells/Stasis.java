@@ -118,6 +118,19 @@ public class Stasis extends ClericSpell {
 
 	}
 
+	//from Transformation PD, a mob that wants to know when it leaves stasis
+	public interface ReleaseListener {
+		void onStasisReleased();
+	}
+
+	public static void discardHeldAlly(Mob expected) {
+		if (Dungeon.hero == null) return;
+		StasisBuff stasisBuff = Dungeon.hero.buff(StasisBuff.class);
+		if (stasisBuff != null && expected != null && stasisBuff.stasisAlly == expected) {
+			stasisBuff.detach();
+		}
+	}
+
 	public static Char getStasisAlly(){
 		if (Dungeon.hero != null && Dungeon.hero.buff(StasisBuff.class) != null){
 			return Dungeon.hero.buff(StasisBuff.class).stasisAlly;
@@ -162,6 +175,7 @@ public class Stasis extends ClericSpell {
 			}
 			stasisAlly.pos = Random.element(spawnPoints);
 			GameScene.add(stasisAlly);
+			if (stasisAlly instanceof ReleaseListener) ((ReleaseListener) stasisAlly).onStasisReleased();
 
 			if (stasisAlly instanceof DirectableAlly){
 				((DirectableAlly) stasisAlly).clearDefensingPos();

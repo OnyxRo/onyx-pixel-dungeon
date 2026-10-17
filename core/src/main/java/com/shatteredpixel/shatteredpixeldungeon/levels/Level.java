@@ -723,6 +723,10 @@ public abstract class Level implements Bundlable {
 		}
 	}
 
+	//from Transformation PD, bosses that were sealed in once seal the floor again after their death. Nothing to do here.
+	public void reunseal(){}
+	public void reseal(){}
+
 	public void seal(){
 		if (!locked) {
 			locked = true;

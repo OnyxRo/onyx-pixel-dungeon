@@ -74,7 +74,7 @@ public class CityBossLevel extends Level {
 	private static final int topDoor = 7 + arena.top*15;
 
 	public static final int throne;
-	private static final int[] pedestals = new int[4];
+	public static final int[] pedestals = new int[4];
 
 	static {
 		Point c = arena.center();
@@ -83,6 +83,13 @@ public class CityBossLevel extends Level {
 		pedestals[1] = c.x+3 + (c.y-3) * WIDTH;
 		pedestals[2] = c.x+3 + (c.y+3) * WIDTH;
 		pedestals[3] = c.x-3 + (c.y+3) * WIDTH;
+	}
+
+	//from Transformation PD, a free pedestal to summon on
+	public int getSummoningPos1(){
+		java.util.ArrayList<Integer> positions = new java.util.ArrayList<>();
+		for (int pedestal : pedestals) positions.add(pedestal);
+		return positions.isEmpty() ? -1 : com.watabou.utils.Random.element(positions);
 	}
 
 	private ImpShopRoom impShop;

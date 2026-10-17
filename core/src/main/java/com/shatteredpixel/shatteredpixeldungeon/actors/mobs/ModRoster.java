@@ -18,6 +18,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.tmobs.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.tboss.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.towers.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.hostile.criminals.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.hostile.rats.*;
@@ -242,6 +243,22 @@ public class ModRoster {
 		add( "unleashed", RottingFist.class, 0, 1, 99 );
 		add( "unleashed", Larva.class, 0, 1, 99 );
 		add( "unleashed", Undead.class, 0, 1, 99 );
+		add( "transformation", WildDread.class, 0, 1, 99 );
+		add( "transformation", DarkMechanicalFist.class, 0, 1, 99 );
+		add( "transformation", DeathButterfly.class, 0, 1, 99 );
+		add( "transformation", Corpse.class, 0, 1, 99 );
+		add( "transformation", ElfWineCup.class, 0, 1, 99 );
+		add( "transformation", AlienatedPrismaticGuard.class, 0, 1, 99 );
+		add( "transformation", VaultMob.class, 0, 1, 99 );
+		add( "transformation", Obscura.class, 0, 1, 99 );
+		add( "transformation", ChaosDisciples.class, 0, 1, 99 );
+		add( "transformation", WarriorBoss.class, 0, 1, 99 );
+		add( "transformation", HuntressBoss.class, 0, 1, 99 );
+		add( "transformation", RogueBoss.class, 0, 1, 99 );
+		add( "transformation", GreatDemon.class, 0, 1, 99 );
+		add( "transformation", GoldBoss.class, 0, 1, 99 );
+		add( "transformation", GreatShoper.class, 0, 1, 99 );
+		add( "transformation", MyriadBlackShadow.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

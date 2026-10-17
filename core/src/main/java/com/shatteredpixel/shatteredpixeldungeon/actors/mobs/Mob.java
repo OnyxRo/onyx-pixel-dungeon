@@ -147,6 +147,43 @@ public abstract class Mob extends Char {
 	protected static final float TIME_TO_WAKE_UP = 1f;
 
 	protected boolean firstAdded = true;
+	//from Transformation PD, called after an AllyBuff converts this mob to an ally
+	public void onAllyConversion(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff source) {
+	}
+
+	//from Transformation PD, marks a ranged attack that uses the physical pipeline
+	private boolean pendingPhysicalRanged = false;
+
+	protected void beginPhysicalRangedAttack() {
+		pendingPhysicalRanged = true;
+	}
+
+	protected void completePhysicalAttack(Char target, boolean hit) {
+		boolean ranged = pendingPhysicalRanged;
+		pendingPhysicalRanged = false;
+		if (hit && ranged && this instanceof RangedAttack) {
+			((RangedAttack) this).onRangedAttackHit(target);
+		}
+	}
+
+	protected boolean doPhysicalRangedAttack(Char enemy) {
+		return doPhysicalRangedAttack(enemy, false);
+	}
+
+	protected boolean doPhysicalRangedAttack(Char enemy, boolean zapAnimation) {
+		beginPhysicalRangedAttack();
+		if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
+			if (zapAnimation) sprite.zap(enemy.pos); else sprite.attack(enemy.pos);
+			return false;
+		} else {
+			boolean hit = attack( enemy );
+			completePhysicalAttack(enemy, hit);
+			Invisibility.dispel(this);
+			spend( attackDelay() );
+			return true;
+		}
+	}
+
 	protected void onAdd(){
 		if (firstAdded) {
 			//modify health for ascension challenge if applicable, only on first add
@@ -823,7 +860,8 @@ public abstract class Mob extends Char {
 	
 	@Override
 	public void onAttackComplete() {
-		attack( enemy );
+		boolean hit = attack( enemy );
+		completePhysicalAttack( enemy, hit );
 		Invisibility.dispel(this);
 		spend( attackDelay() );
 		super.onAttackComplete();

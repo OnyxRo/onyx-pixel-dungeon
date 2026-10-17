@@ -1198,6 +1198,13 @@ public class Badges {
 		displayBadge( badge );
 	}
 
+	//from Transformation PD, these badges are not here
+	public static void validateDeathFromAlienatedPrismaticGuard() {}
+	public static void validateCorpseSlain() {}
+	public static void validateBack() {}
+	public enum BossIdentity { WARRIOR_HERO, ROGUE_HERO, HUNTRESS_HERO, MAGE_HERO }
+	public static void validateHeroBossSlain(BossIdentity id) {}
+
 	public static void validateHighScore( int score ){
 		Badge badge = null;
 		if (score >= 5000) {

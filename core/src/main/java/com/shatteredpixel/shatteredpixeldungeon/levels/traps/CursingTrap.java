@@ -113,7 +113,8 @@ public class CursingTrap extends Trap {
 		GLog.n( Messages.get(CursingTrap.class, "curse") );
 	}
 
-	private static void curse(Item item){
+	public static boolean curse(Item item){
+		boolean changed = !item.cursed || !item.cursedKnown;
 		item.cursed = item.cursedKnown = true;
 
 		if (item instanceof Weapon){
@@ -129,5 +130,6 @@ public class CursingTrap extends Trap {
 			}
 		}
 		Item.updateQuickslot();
+		return changed;
 	}
 }

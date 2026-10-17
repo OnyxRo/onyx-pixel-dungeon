@@ -94,6 +94,17 @@ public class SpiritBow extends Weapon {
 		}
 	}
 
+	//from Transformation PD
+	public static Class[] harmfulPlantPool() {
+		return harmfulPlants.clone();
+	}
+
+	public static void activateHarmfulPlant(Char defender, int index) {
+		Plant plant = (Plant) Reflection.newInstance(harmfulPlants[index]);
+		plant.pos = defender.pos;
+		plant.activate(defender.isAlive() ? defender : null);
+	}
+
 	private static Class[] harmfulPlants = new Class[]{
 			Blindweed.class, Firebloom.class, Icecap.class, Sorrowmoss.class,  Stormvine.class
 	};
