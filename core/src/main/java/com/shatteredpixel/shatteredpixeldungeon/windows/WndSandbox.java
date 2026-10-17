@@ -135,6 +135,15 @@ public class WndSandbox extends Window {
 			}
 		}, null );
 
+		//Experienced PD's cycles, the dungeon again from floor 1 with every enemy stronger
+		addRow( new RedButton( Messages.get(this, "cycle", Dungeon.cycle + 1), 8 ) {
+			@Override
+			protected void onClick() {
+				hide();
+				Dungeon.goForNewCycle();
+			}
+		}, null );
+
 		addRow( levelButton(1), levelButton(5) );
 		addRow( strengthButton(1), strengthButton(5) );
 

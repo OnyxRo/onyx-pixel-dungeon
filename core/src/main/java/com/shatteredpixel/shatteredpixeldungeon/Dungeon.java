@@ -229,6 +229,8 @@ public class Dungeon {
 	public static int vitalityPotionsUsed = 0; //Matt Edition's Potion of Vitality, each one used gives less
 	public static int additionalMobs = 0;
 	public static float fireDamage = 1f;
+	//Experienced PD's cycle, 0 is the normal game, see mechanics/Cycles and goForNewCycle
+	public static int cycle = 0;
 
 	public static int gold;
 	public static int energy;
@@ -351,6 +353,7 @@ public class Dungeon {
 		vitalityPotionsUsed = 0;
 		additionalMobs = 0;
 		fireDamage = 1f;
+		cycle = 0;
 
 		droppedItems = new SparseArray<>();
 		oofedItems = new ArrayList<>();
@@ -794,6 +797,7 @@ public class Dungeon {
 			bundle.put( "vitalitypotions", vitalityPotionsUsed );
 			bundle.put( "additionalmobs", additionalMobs );
 			bundle.put( "firedamage", fireDamage );
+			if (cycle > 0) bundle.put( "cycle", cycle );
 			bundle.put( ENERGY, energy );
 
 			for (int d : droppedItems.keyArray()) {
@@ -1002,6 +1006,7 @@ public class Dungeon {
 		vitalityPotionsUsed = bundle.contains( "vitalitypotions" ) ? bundle.getInt( "vitalitypotions" ) : 0;
 		additionalMobs = bundle.getInt( "additionalmobs" );
 		fireDamage = bundle.contains( "firedamage" ) ? bundle.getFloat( "firedamage" ) : 1f;
+		cycle = bundle.contains( "cycle" ) ? bundle.getInt( "cycle" ) : 0;
 		energy = bundle.getInt( ENERGY );
 
 		Statistics.restoreFromBundle( bundle );
@@ -1056,6 +1061,39 @@ public class Dungeon {
 		Statistics.preview( info, bundle );
 	}
 	
+	//Experienced PD's New Game Plus. The hero keeps everything and walks the dungeon again from floor 1
+	//with every enemy stronger, see mechanics/Cycles. Quests and one time drops come back.
+	public static void goForNewCycle(){
+		if (cycle >= com.shatteredpixel.shatteredpixeldungeon.mechanics.Cycles.MAX_CYCLE) return;
+		Statistics.deepestFloor = 0;
+		depth = 0;
+		branch = 0;
+		if (cycle < 2) {
+			Ghost.Quest.reset();
+			Wandmaker.Quest.reset();
+		}
+		Blacksmith.Quest.reset();
+		Imp.Quest.reset();
+		droppedItems = new SparseArray<>();
+		for (LimitedDrops a : LimitedDrops.values()) {
+			if (!a.name().equals("BBAT") && a != LimitedDrops.CHEESY_CHEEST) a.count = 0;
+		}
+		Notes.reset();
+		cycle++;
+		SpecialRoom.initForRun();
+		SecretRoom.initForRun();
+		Generator.generalReset();
+		generatedLevels.clear();
+		com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene.curTransition = new LevelTransition(Dungeon.level, -1, LevelTransition.Type.REGULAR_EXIT, 1, Dungeon.branch, null);
+		com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene.mode = com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene.Mode.DESCEND;
+		Game.switchScene( com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene.class );
+	}
+
+	//true when the Endless Cycles challenge is on
+	public static boolean cyclesOn(){
+		return isChallenged( Challenges.ENDLESS_CYCLES );
+	}
+
 	public static void fail( Object cause ) {
 		if (WndResurrect.instance == null) {
 			updateLevelExplored();

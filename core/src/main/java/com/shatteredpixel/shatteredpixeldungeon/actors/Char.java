@@ -456,6 +456,7 @@ public abstract class Char extends Actor {
 			}
 
 			dmg = dmg*dmgMulti;
+			dmg *= com.shatteredpixel.shatteredpixeldungeon.mechanics.Cycles.damage( this );
 
 			//flat damage bonus is affected by multipliers
 			dmg += dmgBonus;
@@ -667,8 +668,8 @@ public abstract class Char extends Actor {
 	}
 
 	public static boolean hit( Char attacker, Char defender, float accMulti, boolean magic ) {
-		float acuStat = attacker.attackSkill( defender );
-		float defStat = defender.defenseSkill( attacker );
+		float acuStat = attacker.attackSkill( defender ) * com.shatteredpixel.shatteredpixeldungeon.mechanics.Cycles.skill( attacker );
+		float defStat = defender.defenseSkill( attacker ) * com.shatteredpixel.shatteredpixeldungeon.mechanics.Cycles.skill( defender );
 
 		if (defender instanceof Hero && ((Hero) defender).damageInterrupt){
 			((Hero) defender).interrupt();

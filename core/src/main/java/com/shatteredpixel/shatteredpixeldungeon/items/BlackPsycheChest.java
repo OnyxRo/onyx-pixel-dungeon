@@ -54,11 +54,13 @@ public class BlackPsycheChest extends Item {
     }
 
     private static final String AC_ACCESS = "ACCESS";
+    private static final String AC_RESET = "RESET";
 
     @Override
     public ArrayList<String> actions(Hero hero ) {
         ArrayList<String> actions = super.actions(hero);
         actions.add(AC_ACCESS);
+        actions.add(AC_RESET);
         return actions;
     }
 
@@ -71,7 +73,11 @@ public class BlackPsycheChest extends Item {
             InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
             Game.switchScene( InterlevelScene.class );
         }
-        if (action.equals(AC_ACCESS)){
+        if (action.equals(AC_RESET)){
+            //Experienced PD's cycle, see Dungeon.goForNewCycle
+            Dungeon.goForNewCycle();
+        }
+        if (action.equals(AC_ACCESS) || action.equals(AC_RESET)){
             Catalog.countUse(getClass());
             detachAll(Dungeon.hero.belongings.backpack);
         }
@@ -80,8 +86,8 @@ public class BlackPsycheChest extends Item {
     @Override
     public String desc() {
         String desc;
-        if (0  < 3){
-            return Messages.get(BlackPsycheChest.class, "desc" + 0) + "\n\n" + super.desc();
+        if (Dungeon.cycle < 3){
+            return Messages.get(BlackPsycheChest.class, "desc" + Dungeon.cycle) + "\n\n" + super.desc();
         } else {
             return Messages.get(BlackPsycheChest.class, "desc" + 3) + "\n\n" + super.desc();
         }
