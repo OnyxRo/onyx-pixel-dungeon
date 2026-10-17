@@ -711,6 +711,12 @@ public enum Talent {
 		hero.spendAndNext(1f);
 	}
 
+	private static boolean hasBlockingWeapon( Hero hero ){
+		com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon w = hero.belongings.weapon();
+		return w instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon
+				&& ((com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon) w).hasTrait(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon.WeaponTrait.BLOCKING, hero);
+	}
+
 	public static int alchemyEnergyCost( Hero hero, int cost ){
 		if (hero == null || cost <= 0 || !hero.subClass.is(HeroSubClass.ALCHEMIST)) return cost;
 		return Math.max(1, cost - (3 + hero.pointsInTalent(ALCHEMY_SHIELD)));
@@ -786,6 +792,9 @@ public enum Talent {
 
 	//called from Hero.damage for every hit, returns the damage left
 	public static int onHeroDamage( Hero hero, int dmg, Object src ){
+		if (hero.hasTalent(BULWARK_GREATSHIELD) && src instanceof Char && hasBlockingWeapon(hero)){
+			dmg = Math.round(dmg * (hero.pointsInTalent(BULWARK_GREATSHIELD) == 1 ? 0.90f : 0.85f));
+		}
 		AlchemyShield shield = hero.buff(AlchemyShield.class);
 		if (shield != null) dmg = shield.absorb(dmg, src);
 		if (dmg >= hero.HP && triggerDyingWill(hero)){
@@ -863,6 +872,9 @@ public enum Talent {
 	}
 
 	public static void onTalentUpgraded( Hero hero, Talent talent ){
+		if (talent == MIDAS_TOUCH && hero.hasTalent(MIDAS_TOUCH)){
+			Dungeon.level.drop(new com.shatteredpixel.shatteredpixeldungeon.items.LiquidMetal().quantity(20 * hero.pointsInTalent(MIDAS_TOUCH)), hero.pos).sprite.drop(hero.pos);
+		}
 		if (talent == PATTERN_RECOGNITION) {
 			java.util.ArrayList<Class> potions = hero.PatternRecognitionPotions;
 			for (com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion p : hero.belongings.getAllItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion.class)) {
@@ -970,6 +982,14 @@ public enum Talent {
 	public static class NatureBerriesDropped extends CounterBuff{{revivePersists = true;}};
 
 	public static void onFoodEaten( Hero hero, float foodVal, Item foodSource ){
+		if (hero.hasTalent(WHISPERING_MEAL)){
+			float duration = hero.pointsInTalent(WHISPERING_MEAL) == 1 ? 2f : 4f;
+			for (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob mob : Dungeon.level.mobs.toArray(new com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob[0])){
+				if (mob.alignment == Char.Alignment.ENEMY && Dungeon.level.heroFOV[mob.pos]){
+					Buff.affect(mob, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror.class, duration).object = hero.id();
+				}
+			}
+		}
 		if (hero.hasTalent(HEARTY_MEAL)){
 			//4/6 HP healed, when hero is below 33% health (with a little rounding up)
 			if (hero.HP/(float)hero.HT < 0.334f) {
@@ -1127,6 +1147,10 @@ public enum Talent {
 	}
 
 	public static void onPotionUsed( Hero hero, int cell, float factor ){
+		if (hero.hasTalent(LIQUID_BARRIER)){
+			float duration = hero.pointsInTalent(LIQUID_BARRIER) == 1 ? 5f : 10f;
+			Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BlobImmunity.class, duration * factor);
+		}
 		if (hero.hasTalent(LIQUID_WILLPOWER)){
 			// 6.5/10% of max HP
 			int shieldToGive = Math.round( factor * hero.HT * (0.030f + 0.035f*hero.pointsInTalent(LIQUID_WILLPOWER)));
@@ -1311,6 +1335,15 @@ public enum Talent {
 	}
 
 	public static int onAttackProc( Hero hero, Char enemy, int dmg ){
+
+		//Transformation PD, the Friar's Crystal Gunpowder and Bullseye
+		if (hero.hasTalent(CRYSTAL_GUNPOWDER)){
+			dmg += Math.min(2 * hero.pointsInTalent(CRYSTAL_GUNPOWDER), Dungeon.energy * hero.pointsInTalent(CRYSTAL_GUNPOWDER));
+		}
+		if (hero.belongings.attackingWeapon() instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart
+				&& hero.hasTalent(BULLSEYE) && enemy.alignment != hero.alignment){
+			dmg += hero.pointsInTalent(BULLSEYE) == 1 ? 3 : 5;
+		}
 
 		if (hero.hasTalent(Talent.PROVOKED_ANGER)
 			&& hero.buff(ProvokedAngerTracker.class) != null){

@@ -58,11 +58,16 @@ public class LiquidMetal extends Item {
 	}
 
 	private static final String AC_APPLY = "APPLY";
+	private static final String AC_TRANSMUTE = "TRANSMUTE"; //Transformation PD, the Friar's Midas Touch
+	private static final int TRANSMUTE_COST = 20;
 
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
 		actions.add( AC_APPLY );
+		if (hero.hasTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.MIDAS_TOUCH)){
+			actions.add( AC_TRANSMUTE );
+		}
 		return actions;
 	}
 
@@ -76,7 +81,49 @@ public class LiquidMetal extends Item {
 			curUser = hero;
 			GameScene.selectItem( itemSelector );
 
+		} else if (action.equals(AC_TRANSMUTE)) {
+
+			curUser = hero;
+			GameScene.show(new com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions(new com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite(this),
+					Messages.get(this, "transmute_title"),
+					Messages.get(this, "transmute_prompt"),
+					Messages.get(this, "transmute_yes"),
+					Messages.get(this, "transmute_no")){
+				@Override
+				protected void onSelect(int index) {
+					if (index == 0){
+						transmutePotion();
+					}
+				}
+			});
 		}
+	}
+
+	private void transmutePotion(){
+		if (quantity() < TRANSMUTE_COST){
+			GLog.w(Messages.get(this, "transmute_not_enough"));
+			return;
+		}
+
+		com.shatteredpixel.shatteredpixeldungeon.items.Item potion;
+		do {
+			potion = com.shatteredpixel.shatteredpixeldungeon.items.Generator.randomUsingDefaults(com.shatteredpixel.shatteredpixeldungeon.items.Generator.Category.POTION);
+		} while (potion instanceof com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength);
+
+		if (!potion.collect(curUser.belongings.backpack)){
+			Dungeon.level.drop(potion, curUser.pos).sprite.drop();
+		}
+
+		if (quantity() > TRANSMUTE_COST){
+			quantity(quantity() - TRANSMUTE_COST);
+		} else {
+			detachAll(curUser.belongings.backpack);
+		}
+
+		GLog.p(Messages.get(this, "transmute", potion.name()));
+		curUser.sprite.operate(curUser.pos);
+		Sample.INSTANCE.play(Assets.Sounds.DRINK);
+		updateQuickslot();
 	}
 
 	@Override
@@ -183,6 +230,9 @@ public class LiquidMetal extends Item {
 				curUser.sprite.operate(curUser.pos);
 				Sample.INSTANCE.play(Assets.Sounds.DRINK);
 				updateQuickslot();
+				if (curUser.hasTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.FAST_RELOAD) && curUser.heroClass != com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.FRIAR){
+					Buff.affect(curUser, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.GreaterHaste.class).set(curUser.pointsInTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.FAST_RELOAD));
+				}
 				curUser.sprite.emitter().start(Speck.factory(Speck.LIGHT), 0.1f, 10);
 			}
 		}

@@ -298,6 +298,12 @@ public class ShopRoom extends SpecialRoom {
 
 		itemsToSpawn.add( new SmallRation() );
 		itemsToSpawn.add( new SmallRation() );
+		//Transformation PD, the Friar's Tranquil Tincture
+		if (Dungeon.hero != null && Dungeon.hero.hasTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.TRANQUIL_TINCTURE)){
+			for (int i = 0; i < Dungeon.hero.pointsInTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.TRANQUIL_TINCTURE) + 1; i++){
+				itemsToSpawn.add( new com.shatteredpixel.shatteredpixeldungeon.items.food.Tincture() );
+			}
+		}
 		
 		switch (Random.Int(4)){
 			case 0:

@@ -523,6 +523,16 @@ public abstract class Char extends Actor {
 				dmg *= 0.67f;
 			}
 
+			//Transformation PD, the Friar's sanity effects and blessings
+			if ( buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Suffering.Fear.class ) != null ) dmg *= 0.75f;
+			if ( buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Suffering.Ecstasy.class ) != null ) dmg *= 1.3f;
+			if ( buff( Talent.HeavyWound.class ) != null ) dmg *= 0.5f;
+			if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.friar.HolyPrayer.HolyPrayerBlessing.class) != null
+					&& (enemy.properties().contains(Property.UNDEAD) || enemy.properties().contains(Property.DEMONIC))
+					&& Dungeon.hero != null && Dungeon.hero.hasTalent(Talent.HATRED_OF_EVIL)) {
+				dmg *= 1f+0.2f+0.1f*Dungeon.hero.pointsInTalent(Talent.HATRED_OF_EVIL);
+			}
+
 			int effectiveDamage = enemy.defenseProc( this, Math.round(dmg) );
 			//do not trigger on-hit logic if defenseProc returned a negative value
 			if (effectiveDamage >= 0) {

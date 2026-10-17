@@ -70,6 +70,7 @@ public class Item implements Bundlable {
 	
 	public static final String AC_DROP		= "DROP";
 	public static final String AC_THROW		= "THROW";
+	public static final String AC_INSPECT	= "INSPECT"; //Transformation PD, the Friar's Raven's Eye
 	
 	protected String defaultAction;
 	public boolean usesTargeting;
@@ -126,6 +127,9 @@ public class Item implements Bundlable {
 		ArrayList<String> actions = new ArrayList<>();
 		actions.add( AC_DROP );
 		actions.add( AC_THROW );
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.canRavensEyeInspect(hero, this)){
+			actions.add( AC_INSPECT );
+		}
 		return actions;
 	}
 
@@ -185,6 +189,12 @@ public class Item implements Bundlable {
 			
 			if (hero.belongings.backpack.contains(this) || isEquipped(hero)) {
 				doThrow(hero);
+			}
+			
+		} else if (action.equals( AC_INSPECT )) {
+			
+			if (hero.belongings.backpack.contains(this) || isEquipped(hero)) {
+				com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.doRavensEyeInspect(hero, this);
 			}
 			
 		}
