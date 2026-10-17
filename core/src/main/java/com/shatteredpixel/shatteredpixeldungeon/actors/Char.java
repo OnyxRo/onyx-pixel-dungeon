@@ -1498,6 +1498,10 @@ public abstract class Char extends Actor {
 	}
 	
 	protected final HashSet<Class> resistances = new HashSet<>();
+	//SPS compat. Classes this character takes extra damage from, filled in by SPS monsters.
+	protected final HashSet<Class> weakness = new HashSet<>();
+	//SPS compat. Three argument damage, the third argument is the SPS damage type and is ignored.
+	public void damage( int dmg, Object src, int spsType ) { damage( dmg, src ); }
 	
 	//returns percent effectiveness after resistances
 	//TODO currently resistances reduce effectiveness by a static 50%, and do not stack.
@@ -1597,7 +1601,9 @@ public abstract class Char extends Actor {
 		ANNOYING,
 		HUMAN,
 		//Transformation PD, marsh slime and kin
-		DARKSLIME;
+		DARKSLIME,
+		//SPS monster kinds, plain tags with no built in resistances
+		MAGICER, ORC, FISHER, ELF, DWARF, TROLL, GOBLIN, BEAST, DRAGON, PLANT, ELEMENT, MECH, ALIEN, UNKNOW;
 
 		private HashSet<Class> resistances;
 		private HashSet<Class> immunities;

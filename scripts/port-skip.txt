@@ -205,3 +205,4 @@ LovecraftPixelDungeon
 BadgesScene
 IntroScene
 ChangesScene
+Floor

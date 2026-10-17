@@ -96,6 +96,28 @@ RENAMES = [
     ('3.x beforeAbilityUsed(hero) takes the target', r'\bbeforeAbilityUsed\(\s*hero\s*\)', 'beforeAbilityUsed(hero, null)'),
 ]
 
+SPS_RULES = [
+    # SPS (hmdzl) calls the level class Floor and keeps it in Dungeon.depth, the depth number is Dungeon.dungeondepth
+    ('SPS Dungeon.depth is the level, order matters, before dungeondepth', r'\bDungeon\.depth\b', 'Dungeon.level'),
+    ('SPS dungeondepth is the plain depth', r'Dungeon\.dungeondepth', 'Dungeon.depth'),
+    ('SPS Floor static array is a level field', r'\bFloor\.(passable|flamable|solid|avoid|water|pit|losBlocking|map|discoverable|visited|mapped|openSpace|secret)\b', r'Dungeon.level.\1'),
+    ('SPS Floor.fieldOfView is the hero FOV', r'\bFloor\.fieldOfView\b', 'Dungeon.level.heroFOV'),
+    ('SPS Floor.NEIGHBOURS', r'\bFloor\.(NEIGHBOURS\d+)', r'PathFinder.\1'),
+    ('SPS Floor.getLength', r'\bFloor\.getLength\(\)', 'Dungeon.level.length()'),
+    ('SPS Floor.getWidth', r'\bFloor\.getWidth\(\)', 'Dungeon.level.width()'),
+    ('SPS Floor.WIDTH', r'\bFloor\.WIDTH\b', 'Dungeon.level.width()'),
+    ('SPS Floor.distance is an instance method', r'\bFloor\.(distance|adjacent)\(', r'Dungeon.level.\1('),
+    ('SPS bare WIDTH', r'(?<![\w.])WIDTH\b', 'Dungeon.level.width()'),
+    ('SPS bare LENGTH', r'(?<![\w.])LENGTH\b', 'Dungeon.level.length()'),
+    ('SPS effect blob Fire is our Fire', r'actors\.blobs\.effectblobs\.Fire\b', 'actors.blobs.Fire'),
+    ('SPS three argument damage override', r'public\s+void\s+damage\(\s*int\s+(\w+)\s*,\s*Object\s+(\w+)\s*,\s*int\s+\w+\s*\)', r'public void damage( int \1, Object \2 )'),
+    ('SPS three argument super.damage', r'super\.damage\(\s*(\w+)\s*,\s*(\w+)\s*,\s*[^;]*?\)\s*;', r'super.damage( \1, \2 );'),
+    ('SPS Floor class is Level', r'\bFloor\b', 'Level'),
+    ('SPS Mob evadeSkill field is defenseSkill', r'\bevadeSkill\s*=', 'defenseSkill ='),
+    ('SPS evadeSkill(Char) is defenseSkill(Char)', r'\bevadeSkill\(\s*Char\b', 'defenseSkill( Char'),
+    ('SPS hitSkill(Char) is attackSkill(Char)', r'\bhitSkill\(\s*Char\b', 'attackSkill( Char'),
+]
+
 def convert_long(s):
     """Mods built for huge numbers (Experienced) use long for damage. This game uses int."""
     if not re.search(r'\blong\s+(?:min|max|damageRoll|proc|value|STRReq|defenseFactor)\b|long\s+damage\b', s):
@@ -109,7 +131,7 @@ def apply(s):
     fired = []
     t = convert_long(s)
     if t != s: fired.append('long damage became int')
-    for why, pat, rep in RENAMES:
+    for why, pat, rep in (SPS_RULES if 'com.hmdzl.spspd' in s else []) + RENAMES:
         t2 = re.sub(pat, rep, t)
         if t2 != t: fired.append(why); t = t2
     # the old Skeleton Key that boss levels dropped is the Worn Key now
@@ -123,4 +145,36 @@ def apply(s):
     if 'Random.' in t and 'import com.watabou.utils.Random;' not in t:
         t = re.sub(r'(package [\w.]+;\r?\n)', r'\1\nimport com.watabou.utils.Random;', t, count=1)
         fired.append('added the Random import')
+    if 'com.hmdzl.spspd' in s:
+        t, f2 = sps_fixups(t)
+        fired += f2
+    return t, fired
+
+_BUFF_NAMES = None
+def _our_buff_icons():
+    global _BUFF_NAMES
+    if _BUFF_NAMES is None:
+        import os
+        p = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'core', 'src', 'main', 'java', *PKG.split('.'), 'ui', 'BuffIndicator.java')
+        try:
+            _BUFF_NAMES = set(re.findall(r'public static final int (\w+)\s*=', open(p, encoding='utf-8', errors='replace').read()))
+        except OSError:
+            _BUFF_NAMES = set()
+    return _BUFF_NAMES
+
+def sps_fixups(t):
+    """SPS only. Buff icons we do not have become no icon, and the imports its short files leave out are added."""
+    fired = []
+    names = _our_buff_icons()
+    if names:
+        t2 = re.sub(r'\bBuffIndicator\.([A-Z][A-Z0-9_]+)\b', lambda m: m.group(0) if m.group(1) in names else 'BuffIndicator.NONE', t)
+        if t2 != t: fired.append('SPS buff icon we lack is NONE'); t = t2
+    pk = re.search(r'package ([\w.]+);', t)
+    pkg = pk.group(1) if pk else ''
+    for sym, imp, pat in (('Dungeon', PKG + '.Dungeon', r'\bDungeon\.'), ('PathFinder', 'com.watabou.utils.PathFinder', r'\bPathFinder\.'),
+                          ('DungeonTilemap', PKG + '.DungeonTilemap', r'\bDungeonTilemap\.|\bnew DungeonTilemap'),
+                          ('Level', PKG + '.levels.Level', r'\bLevel\b(?!\s*\()')):
+        if re.search(pat, t) and not re.search(r'import [\w.]*\.' + sym + r';', t) and pkg + '.' + sym != imp and not re.search(r'class ' + sym + r'\b', t):
+            t = re.sub(r'(package [\w.]+;\r?\n)', r'\1\nimport ' + imp + ';\n', t, count=1)
+            fired.append('SPS added the ' + sym + ' import')
     return t, fired

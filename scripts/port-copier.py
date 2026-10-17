@@ -36,6 +36,10 @@ for f in glob.glob(MB + '**/*.java', recursive=True):
     mod_index.setdefault(os.path.basename(f)[:-5], []).append(f)
 
 def compile_errors():
+    if os.environ.get('FASTJAVAC'):
+        # plain javac over the whole tree, no error cap, much faster than gradle (scripts/fastjavac.sh)
+        r = subprocess.run(['bash', 'scripts/fastjavac.sh'], cwd=ROOT, capture_output=True, text=True, errors='replace')
+        return (r.stdout or '') + (r.stderr or '')
     r = subprocess.run([ROOT + 'gradlew.bat', 'core:compileJava', '--console=plain', '-q'], cwd=ROOT,
                        capture_output=True, text=True, errors='replace')
     out = (r.stdout or '') + (r.stderr or '')

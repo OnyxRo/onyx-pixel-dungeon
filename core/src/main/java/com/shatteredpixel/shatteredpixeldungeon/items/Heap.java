@@ -212,6 +212,15 @@ public class Heap implements Bundlable {
 		}
 	}
 	
+	//SPS compat. Hits by SPS damage blobs, fire burns and ice freezes the heap, the others do nothing here.
+	public void firehit() { burn(); }
+	public void icehit() { freeze(); }
+	public void lighthit() {}
+	public void shockhit() {}
+	public void darkhit() {}
+	public void earthhit() {}
+	public void energyhit() {}
+
 	public void burn() {
 		hidden = false;
 

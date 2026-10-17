@@ -1,0 +1,46 @@
+"""Mechanical clean up of compile errors in files ported from SPS.
+
+  python -I scripts/sps-fix.py [log]          log defaults to build/fast.log, prints what it changed
+
+Only does what is safe to do without thinking
+  - deletes an import line whose class or package does not exist
+  - deletes a line that only adds a missing class to resistances, immunities or weakness, like  immunities.add(EnchantmentIce.class);
+Everything else it leaves for a person.
+"""
+import re, sys, io, os
+log = sys.argv[1] if len(sys.argv) > 1 else 'build/fast.log'
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+t = io.open(os.path.join(ROOT, log), encoding='utf-8', errors='replace').read().split('\n')
+todo = {}
+for i, l in enumerate(t):
+    m = re.match(r'(.*\.java):(\d+): error: (.*)', l)
+    if not m: continue
+    path, ln, msg = m.group(1), int(m.group(2)), m.group(3)
+    if 'sps' not in path and 'shatteredpixeldungeon' not in path: continue
+    sym = ''
+    for k in (1, 2, 3, 4):
+        if i + k < len(t) and 'symbol:' in t[i + k]:
+            sym = t[i + k].split('symbol:')[1].strip(); break
+    todo.setdefault(path, []).append((ln, msg, sym))
+changed = 0
+for path, errs in todo.items():
+    full = path if os.path.isabs(path) else os.path.join(ROOT, path)
+    try: s = io.open(full, encoding='utf-8', newline='').read()
+    except OSError: continue
+    nl = '\r\n' if '\r\n' in s else '\n'
+    lines = s.split(nl)
+    kill = set()
+    for ln, msg, sym in errs:
+        if ln - 1 >= len(lines): continue
+        line = lines[ln - 1]
+        name = sym.split()[-1] if sym else ''
+        if line.lstrip().startswith('import ') and (('cannot find symbol' in msg and name and line.strip().endswith('.' + name + ';')) or 'does not exist' in msg or 'static import only' in msg):
+            kill.add(ln - 1)
+        elif re.match(r'^\s*(resistances|immunities|weakness)\.add\(\s*[\w.]+\.class\s*\)\s*;\s*$', line) and 'cannot find symbol' in msg and name and (name + '.class') in line:
+            kill.add(ln - 1)
+    if kill:
+        lines = [x for j, x in enumerate(lines) if j not in kill]
+        io.open(full, 'w', encoding='utf-8', newline='').write(nl.join(lines))
+        changed += len(kill)
+        print(os.path.basename(path), 'removed', len(kill), 'lines')
+print('lines removed', changed)

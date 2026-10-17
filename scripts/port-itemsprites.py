@@ -16,6 +16,11 @@ PK = 'core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/'
 # rows 13 and 19 (zero based 12 and 18) and every row from 33 down are kept for other mods' items.
 # The sheet grows by itself when they run out, see free_cell.
 def mod_rows(height):
+    # ITEM_ROWS="134-145" (one based, as in xy()) keeps a parallel port inside its own rows, the sheet grows to hold them
+    er = os.environ.get('ITEM_ROWS')
+    if er:
+        a, b = [int(x) for x in er.split('-')]
+        return list(range(a - 1, b))
     return [12, 18] + list(range(32, height // 16))
 
 def LP(p):
@@ -55,9 +60,18 @@ s = s.replace('\r\n', '\n')
 def free_cell():
     global dst
     while True:
+        if os.environ.get('ITEM_ROWS') and dst.height < max(mod_rows(0)) * 16 + 16:
+            need = max(mod_rows(0)) * 16 + 16
+            grown = Image.new('RGBA', (dst.width, need), (0, 0, 0, 0))
+            grown.paste(dst, (0, 0))
+            dst = grown
+        elif os.environ.get('ITEM_ROWS') and getattr(free_cell, 'full', False):
+            return None
         for r in mod_rows(dst.height):
             for c in range(16):
                 if dst.crop((c * 16, r * 16, c * 16 + 16, r * 16 + 16)).getbbox() is None: return c, r
+        if os.environ.get('ITEM_ROWS'):
+            return None
         # nothing free, add eight rows (128 px) at the bottom and look again
         grown = Image.new('RGBA', (dst.width, dst.height + 128), (0, 0, 0, 0))
         grown.paste(dst, (0, 0))
@@ -75,7 +89,10 @@ for name in NAMES:
     tile = src.crop((x, y, x + 16, y + 16)); bb = tile.getbbox()
     if not bb:
         print('EMPTY CELL', name); continue
-    c, r = free_cell()
+    cell = free_cell()
+    if cell is None:
+        print('NO FREE CELL in ITEM_ROWS for', name); continue
+    c, r = cell
     dst.paste(tile, (c * 16, r * 16))
     consts += '	public static final int %s = xy(%d, %d);\n' % (name, c + 1, r + 1)
     rects += '		assignItemRect(%s, %d, %d);\n' % (name, bb[2], bb[3])

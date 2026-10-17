@@ -129,6 +129,10 @@ public abstract class Mob extends Char {
 	protected int target = -1;
 	
 	public int defenseSkill = 0;
+	//SPS compat fields
+	protected boolean skilluse = false;
+	protected Object lootOther = null;
+	protected float lootChanceOther = 0;
 	
 	public int EXP = 1;
 	public int maxLvl = Hero.MAX_LEVEL-1;
@@ -829,6 +833,17 @@ public abstract class Mob extends Char {
 		super.onAttackComplete();
 	}
 	
+	//SPS compat. Monsters from SPecial Surprise PD scale their stats with adj(type), a share of the depth.
+	public int adj( int type ){
+		if (type == 0) return Dungeon.depth;
+		if (type == 1) return Dungeon.depth / 2;
+		if (type == 2) return Dungeon.depth / 4;
+		if (type == 3) return Dungeon.depth * 2;
+		return 1;
+	}
+	//SPS compat. A second loot roll some SPS monsters override, unused unless a port calls it.
+	public com.shatteredpixel.shatteredpixeldungeon.items.Item SupercreateLoot() { return null; }
+
 	@Override
 	public int defenseSkill( Char enemy ) {
 		if (buff(GuidingLight.Illuminated.class) != null && Dungeon.hero.heroClass == HeroClass.CLERIC){

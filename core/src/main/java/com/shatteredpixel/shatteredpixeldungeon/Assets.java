@@ -398,6 +398,13 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String SOKOBANSHEEP = "sprites/sps/sokobansheep.png"; //ported, sps
+		public static final String ZOMBIE = "sprites/sps/zombie.png"; //ported, sps
+		public static final String SHIT = "sprites/sps/shit.png"; //ported, sps
+		public static final String MOB_BAMBOO = "sprites/sps/bamboo.png"; //ported, sps
+		public static final String ICEBUG = "sprites/sps/icebug.png"; //ported, sps
+		public static final String FIRERABBIT = "sprites/sps/firerabbit.png"; //ported, sps
+		public static final String DEMON_RABBIT = "sprites/sps/demonrabbit.png"; //ported, sps
 		public static final String TILES_LAIR = "sprites/dragonic/tiles_lair.png"; //ported, dragonic
 		public static final String STATUE_ARMOR = "sprites/dragonic/statuearmor.png"; //ported, dragonic
 		public static final String SMALLDRAKE = "sprites/dragonic/drake.png"; //ported, dragonic
