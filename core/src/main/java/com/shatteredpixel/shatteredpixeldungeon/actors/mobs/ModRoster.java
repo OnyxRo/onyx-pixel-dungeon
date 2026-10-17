@@ -225,7 +225,6 @@ public class ModRoster {
 		add( "transformation", Corpse.class, 0, 1, 99 );
 		add( "transformation", ElfWineCup.class, 0, 1, 99 );
 		add( "transformation", AlienatedPrismaticGuard.class, 0, 1, 99 );
-		add( "transformation", TowerBossSlashMarks.class, 0, 1, 99 );
 		add( "transformation", VaultMob.class, 0, 1, 99 );
 		add( "transformation", Obscura.class, 0, 1, 99 );
 		add( "transformation", ChaosDisciples.class, 0, 1, 99 );
