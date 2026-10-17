@@ -575,7 +575,7 @@ public class Generator {
 					com.shatteredpixel.shatteredpixeldungeon.items.food.FriedEgg.class,
 					com.shatteredpixel.shatteredpixeldungeon.items.food.Milk.class,
 					com.shatteredpixel.shatteredpixeldungeon.items.food.Omelet.class,
-					com.shatteredpixel.shatteredpixeldungeon.items.food.Cheese.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.food.MilkCheese.class,
 					com.shatteredpixel.shatteredpixeldungeon.items.food.Flour.class,
 					com.shatteredpixel.shatteredpixeldungeon.items.food.Pancakes.class,
 					com.shatteredpixel.shatteredpixeldungeon.items.food.PancakesWithCheese.class,

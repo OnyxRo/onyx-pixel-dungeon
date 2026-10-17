@@ -2,6 +2,8 @@
 
   python port-itemsprites.py <project root> <mod root> NAME [NAME ...]
 
+NAME=OTHER copies the mod's NAME under the constant OTHER here, for when this game already has another NAME.
+
 For each ItemSpriteSheet constant named, works out which 16x16 cell the mod drew it in,
 pastes that cell into a free cell of the rows kept for other mods' items (rows 13 and 19 of
 sprites/items.png), and adds the constant and its size to this game's ItemSpriteSheet.
@@ -76,12 +78,15 @@ def free_cell():
         print('item sheet grown to', dst.height, 'px high')
 
 consts = ''; rects = ''
-for name in NAMES:
+for spec in NAMES:
+    # NAME=OTHER copies the mod's NAME under the constant OTHER here (when we already own a constant of that name)
+    mod_name, _, alias = spec.partition('=')
+    name = alias or mod_name
     if re.search(r'int ' + name + r'\s*=', s):
         print('already there', name); continue
-    if name not in defs:
-        print('NOT IN MOD', name); continue
-    i = value(name)
+    if mod_name not in defs:
+        print('NOT IN MOD', mod_name); continue
+    i = value(mod_name)
     x, y = (i % 16) * 16, (i // 16) * 16
     tile = src.crop((x, y, x + 16, y + 16)); bb = tile.getbbox()
     if not bb:

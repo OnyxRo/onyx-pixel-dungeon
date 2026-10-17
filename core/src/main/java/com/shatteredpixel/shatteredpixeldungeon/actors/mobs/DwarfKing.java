@@ -107,6 +107,9 @@ public class DwarfKing extends Mob {
 
 	private int phase = 1;
 	private int summonsMade = 0;
+	//Shittened PD, a king nobody attacks is happy to wait for his guest
+	private int waitTime = com.watabou.utils.DeviceCompat.isDebug() ? 500 : 2500;
+	private final int randomSpeech = Random.Int(1,3);
 
 	private float summonCooldown = 0;
 	private float abilityCooldown = 0;
@@ -124,6 +127,7 @@ public class DwarfKing extends Mob {
 	private static final String SUMMON_CD = "summon_cd";
 	private static final String ABILITY_CD = "ability_cd";
 	private static final String LAST_ABILITY = "last_ability";
+	private static final String WAIT_TIME = "wait_time";
 
 	@Override
 	public void storeInBundle(Bundle bundle) {
@@ -133,6 +137,7 @@ public class DwarfKing extends Mob {
 		bundle.put( SUMMON_CD, summonCooldown );
 		bundle.put( ABILITY_CD, abilityCooldown );
 		bundle.put( LAST_ABILITY, lastAbility );
+		bundle.put( WAIT_TIME, waitTime );
 	}
 
 	@Override
@@ -143,6 +148,7 @@ public class DwarfKing extends Mob {
 		summonCooldown = bundle.getFloat( SUMMON_CD );
 		abilityCooldown = bundle.getFloat( ABILITY_CD );
 		lastAbility = bundle.getInt( LAST_ABILITY );
+		if (bundle.contains( WAIT_TIME )) waitTime = bundle.getInt( WAIT_TIME );
 
 		if (phase == 2) properties.add(Property.IMMOVABLE);
 
@@ -154,6 +160,25 @@ public class DwarfKing extends Mob {
 	protected boolean act() {
 		if (pos == CityBossLevel.throne){
 			throwItems();
+		}
+
+		if (phase == 1 && HP > HT - 50 && Dungeon.level.locked && Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge.class) == null) {
+			//Shittened PD, just wait. Nothing happens until the king is hurt, and 2500 turns later he lets you go
+			{
+				waitTime--;
+				if (waitTime == 2400) talk(Messages.get(this, "wait_1_" + Random.Int(1,4)));
+				if (waitTime == 1800) talk(Messages.get(this, "wait_2_" + randomSpeech));
+				if (waitTime == 1600) talk(Messages.get(this, "wait_3_" + randomSpeech));
+				if (waitTime == 150) talk(Messages.get(this, "wait_4_" + Random.Int(1,4)));
+				if (waitTime == 0) {
+					Statistics.bossScores[3] += 8000;
+					Dungeon.level.unseal();
+					talk(Messages.get(this, "goodjob"));
+					Badges.validateFriend();
+				}
+				spend(TICK);
+				return true;
+			}
 		}
 
 		if (phase == 1) {

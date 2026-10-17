@@ -92,4 +92,10 @@ public class Gold extends Item {
 		return this;
 	}
 
+
+	//Shittened PD, gold goes by other names
+	@Override
+	public String name() {
+		return com.shatteredpixel.shatteredpixeldungeon.messages.Messages.get(this, "name_" + Random.Int(11));
+	}
 }

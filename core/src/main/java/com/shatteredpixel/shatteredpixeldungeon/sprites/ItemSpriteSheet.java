@@ -29,7 +29,7 @@ public class ItemSpriteSheet {
 	public static final int SIZE = 16;
 
 	private static final int TX_WIDTH = 256;
-	private static final int TX_HEIGHT = 2128;
+	private static final int TX_HEIGHT = 3040;
 
 	private static final int WIDTH = TX_WIDTH / SIZE;
 
@@ -374,6 +374,7 @@ public class ItemSpriteSheet {
 
 	public static final int WARPICK = MOD_ITEMS+0;
 	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;
+	public static final int MILK_CHEESE = xy(1, 150);
 	public static final int HOWARD_CHEST = xy(2, 100);
 	public static final int EVAN_CHEST = xy(3, 100);
 	public static final int GOLD_CHEST = xy(4, 100);
@@ -756,6 +757,7 @@ public class ItemSpriteSheet {
 	static{
 		assignItemRect(WARPICK, 15, 14);
 		assignItemRect(WOODEN_BOOMERANG, 12, 12);
+		assignItemRect(MILK_CHEESE, 15, 11);
 		assignItemRect(HOWARD_CHEST, 16, 14);
 		assignItemRect(EVAN_CHEST, 16, 14);
 		assignItemRect(GOLD_CHEST, 16, 14);
