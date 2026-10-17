@@ -430,6 +430,8 @@ public enum Catalog {
 		TRINKETS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.trinkets.LuckyDice.class);
 		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Ringbox.class);
 		SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollKillAll.class);
+		SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfDecay.class);
+		EXOTIC_SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfGrowth.class);
 		SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollTeleportToStaircase.class);
 		STONES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfBlight.class);
 		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfDisplacement.class);

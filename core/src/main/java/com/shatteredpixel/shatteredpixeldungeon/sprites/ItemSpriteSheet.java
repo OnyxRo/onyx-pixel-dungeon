@@ -1307,8 +1307,9 @@ public class ItemSpriteSheet {
 	public static final int SCROLL_BERKANAN = SCROLLS+9;
 	public static final int SCROLL_ODAL     = SCROLLS+10;
 	public static final int SCROLL_TIWAZ    = SCROLLS+11;
+	public static final int SCROLL_JERA     = SCROLLS+12; //Pixel Dungeon Reforged, the rune of the Scroll of Decay
 
-	public static final int ARCANE_RESIN    = SCROLLS+13;
+	public static final int ARCANE_RESIN   = SCROLLS+13;
 	static {
 		for (int i = SCROLLS; i < SCROLLS+16; i++)
 			assignItemRect(i, 15, 14);
@@ -1328,6 +1329,7 @@ public class ItemSpriteSheet {
 	public static final int EXOTIC_BERKANAN = EXOTIC_SCROLLS+9;
 	public static final int EXOTIC_ODAL     = EXOTIC_SCROLLS+10;
 	public static final int EXOTIC_TIWAZ    = EXOTIC_SCROLLS+11;
+	public static final int EXOTIC_JERA     = EXOTIC_SCROLLS+12;
 	static {
 		for (int i = EXOTIC_SCROLLS; i < EXOTIC_SCROLLS+16; i++)
 			assignItemRect(i, 15, 14);
@@ -1738,12 +1740,17 @@ public class ItemSpriteSheet {
 		//from Shittened PD
 		public static final int SCROLL_SHIT = SCROLLS+12;
 		public static final int SCROLL_ENSHIT = EXOTIC_SCROLLS+12;
+		//from Pixel Dungeon Reforged
+		public static final int SCROLL_DECAY = SCROLLS+13;
+		public static final int SCROLL_GROWTH = EXOTIC_SCROLLS+13;
 		public static final int POTION_ACC = POTIONS+12;
 		public static final int POTION_KET = POTIONS+13;
 		public static final int POTION_FUEL = POTIONS+14;
 		public static final int POTION_FUROR = EXOTIC_POTIONS+12;
 		public static final int POTION_KET_STORM = EXOTIC_POTIONS+13;
 		static {
+			assignIconRect( SCROLL_DECAY, 5, 6 );
+			assignIconRect( SCROLL_GROWTH, 5, 6 );
 			assignIconRect( SCROLL_SHIT, 7, 4 );
 			assignIconRect( SCROLL_ENSHIT, 8, 8 );
 			assignIconRect( POTION_ACC, 7, 6 );

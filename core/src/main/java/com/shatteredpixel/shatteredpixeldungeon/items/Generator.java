@@ -394,10 +394,13 @@ public class Generator {
 					ScrollOfTerror.class,
 					ScrollOfTransmutation.class,
 					//from Shittened PD, not in the normal deck
-					com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfShit.class
+					com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfShit.class,
+					//from Pixel Dungeon Reforged, appended so older saves keep their decks. It is in the deck
+					//with a small weight, Reforged's own deck gave it one in thirteen
+					com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfDecay.class
 			};
-			SCROLL.defaultProbs  = new float[]{ 0, 3, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 0 };
-			SCROLL.defaultProbs2 = new float[]{ 0, 3, 2, 2, 1, 2, 1, 1, 1, 1, 1, 0, 0 };
+			SCROLL.defaultProbs  = new float[]{ 0, 3, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 0, 1 };
+			SCROLL.defaultProbs2 = new float[]{ 0, 3, 2, 2, 1, 2, 1, 1, 1, 1, 1, 0, 0, 1 };
 			SCROLL.probs = SCROLL.defaultProbs.clone();
 			
 			STONE.classes = new Class<?>[]{

@@ -1,0 +1,86 @@
+/*
+ * Onyx's Pixel Dungeon
+ * Based on Shattered Pixel Dungeon, Copyright (C) 2014-2025 Evan Debenham
+ * Scroll of Growth ported from Pixel Dungeon Reforged by nathanlink169
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ */
+
+package com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic;
+
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
+import com.shatteredpixel.shatteredpixeldungeon.combat.DamageType;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfDecay;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.noosa.audio.Sample;
+
+//Pixel Dungeon Reforged. The exotic Scroll of Decay.
+public class ScrollOfGrowth extends ExoticScroll {
+
+	{
+		icon = ItemSpriteSheet.Icons.SCROLL_GROWTH;
+	}
+
+	@Override
+	public void doRead() {
+		consumeScroll();
+
+		GameScene.flash(0xFF0000);
+
+		int[] neighbours = ScrollOfDecay.getAffectedTiles(curUser.pos);
+		for (int neighbour : neighbours) {
+			if (neighbour < 0 || neighbour >= Dungeon.level.length()) continue;
+			if (Dungeon.level.passable[neighbour]) {
+				Char ch = Actor.findChar(neighbour);
+
+				if (ch != null) {
+					if (!ch.properties().contains(Char.Property.UNDEAD)) {
+						Buff.affect(ch, Bless.class, Bless.DURATION);
+						Buff.affect(ch, Adrenaline.class, Adrenaline.DURATION);
+					} else if (!ch.isImmune(getClass())) {
+						int damage = (int)Math.max(0.6f * ch.HP, 0.1f * ch.GetMaxHP());
+						ch.Damage(damage, this, DamageType.of(DamageType.POSITIVE_ENERGY));
+						Buff.affect(ch, Weakness.class, Weakness.DURATION);
+
+						if (!ch.properties().contains(Char.Property.BOSS) && !ch.properties().contains(Char.Property.MINIBOSS)) {
+							Buff.affect(ch, Doom.class);
+						}
+					}
+				}
+
+				if (Dungeon.level.map[neighbour] == Terrain.EMBERS) {
+					Level.set(neighbour, Terrain.HIGH_GRASS);
+				}
+			}
+		}
+		GameScene.updateMap();
+
+		identify();
+
+		Sample.INSTANCE.play( Assets.Sounds.READ );
+
+		readAnimation();
+	}
+}
