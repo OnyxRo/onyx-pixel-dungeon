@@ -1116,6 +1116,11 @@ public abstract class Mob extends Char {
 			Dungeon.hero.sprite.emitter().burst( com.shatteredpixel.shatteredpixeldungeon.effects.Speck.factory(com.shatteredpixel.shatteredpixeldungeon.effects.Speck.HEALING), 1 );
 		}
 
+		//Transformation PD, the Friar's rewards and kill talents
+		if (cause == Dungeon.hero && alignment == Alignment.ENEMY){
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.onFriarKill(Dungeon.hero, this);
+		}
+
 		if (cause == Chasm.class){
 			//50% chance to round up, 50% to round down
 			if (EXP % 2 == 1) EXP += Random.Int(2);

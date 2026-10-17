@@ -489,6 +489,8 @@ public enum Icons {
 				return new ItemSprite(ItemSpriteSheet.VIKING_MACE);
 			case DRAGONKNIGHT:
 				return new ItemSprite(ItemSpriteSheet.DRAGON_DAGGER);
+			case FRIAR:
+				return new ItemSprite(ItemSpriteSheet.SPRAYGUN_BASE);
 			default:
 				return null;
 		}

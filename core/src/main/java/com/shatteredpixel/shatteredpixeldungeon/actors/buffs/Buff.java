@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.BronzeWatch;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Reflection;
 
@@ -167,6 +168,26 @@ public class Buff extends Actor {
 
 	public static<T extends FlavourBuff> T append( Char target, Class<T> buffClass, float duration ) {
 		T buff = append( target, buffClass );
+		buff.spend( duration * target.resist(buffClass) );
+		return buff;
+	}
+
+	//Transformation PD. Extends an active buff by a number of turns without letting it pass the buff's own DURATION.
+	public static<T extends FlavourBuff> T extend( Char target, Class<T> buffClass, float duration ) {
+		float staticDuration;
+		try {
+			staticDuration = buffClass.getField("DURATION").getFloat(null);
+		} catch (Exception e) {
+			staticDuration = Float.MAX_VALUE;
+		}
+		return extend(target, buffClass, duration, staticDuration);
+	}
+
+	public static<T extends FlavourBuff> T extend( Char target, Class<T> buffClass, float duration, float maxDuration ) {
+		if (target.buff(Virtue.Fearless.class) != null && buffClass == Panic.class) return null;
+		T buff = affect( target, buffClass );
+		duration = Math.min(duration, maxDuration - buff.cooldown());
+		duration = BronzeWatch.adjustDuration(target, duration);
 		buff.spend( duration * target.resist(buffClass) );
 		return buff;
 	}

@@ -91,6 +91,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
@@ -240,6 +241,23 @@ public enum Talent {
 	ENHANCED_VISION(239, 4), SONAR(240, 4), BRIGHT_LIGHT(241, 4),
 	//Reflection T4
 	ADRENALINE(242, 4), ENDURANCE(243, 4), POWERFUL_REFLECTION(244, 4),
+
+	//Friar T1, from Transformation PD (icons are the mod's cell numbers, copied by scripts/port-icons.py)
+	TRANQUIL_TINCTURE(576), RAVENS_EYE(577), CRYSTAL_GUNPOWDER(578), BULWARK_GREATSHIELD(579),
+	//Friar T2
+	WHISPERING_MEAL(580), LIQUID_BARRIER(581), FAST_RELOAD(582), OTHERWORLD_BANE(583), BULLSEYE(584),
+	//Friar T3
+	MIDAS_TOUCH(585, 3), HUMAN_GLORY(586, 3),
+	//Alchemist T3
+	ALCHEMY_SHIELD(587, 3), CLOSE_BLAST(588, 3), CONSERVATION(589, 3),
+	//Pious T3
+	NEVER_COMPROMISE(590, 3), REWIND_TIME(591, 3), BRIGHT_WARRIOR(592, 3),
+	//Reason Dose T4
+	HEART_DOSE(593, 4), SHIELD_DOSE(594, 4), CALM_DOSE(595, 4),
+	//Concentrated Potion T4
+	CONCENTRATED_ESSENCE(596, 4), REAGENT_ENHANCEMENT(597, 4), REUSE_REAGENT(598, 4),
+	//Holy Prayer T4
+	PIOUS_FAITH(599, 4), SUPREME_BLESSING(600, 4), HATRED_OF_EVIL(601, 4),
 
 	//universal T4
 	HEROIC_ENERGY(26, 4), //See icon() and title() for special logic for this one
@@ -549,6 +567,8 @@ public enum Talent {
 					return 26;
 				case DRAGONKNIGHT:
 					return 26;
+				case FRIAR:
+					return 602;
 			}
 		} else {
 			return icon;
@@ -578,6 +598,268 @@ public enum Talent {
 			}
 		}
 		return Messages.get(this, name() + ".desc");
+	}
+
+	//---- Transformation PD, the Friar ------------------------------------------------------------
+
+	public static class AlchemyShield extends Buff {
+		private static final String LAYERS = "layers";
+		private static final int MAX_LAYERS = 3;
+		{ type = buffType.POSITIVE; }
+		private int layers = 0;
+
+		public void gain( int amount ){
+			if (amount <= 0) return;
+			layers = Math.min(MAX_LAYERS, layers + amount);
+			BuffIndicator.refreshHero();
+		}
+
+		public int absorb( int damage, Object src ){
+			if (damage <= 0 || layers <= 0 || !(src instanceof Char)) return damage;
+			if (((Char)src).alignment == target.alignment) return damage;
+			int reduction = currentReduction();
+			layers--;
+			if (layers <= 0) detach(); else BuffIndicator.refreshHero();
+			return Math.max(0, damage - reduction);
+		}
+
+		private int currentReduction(){ return Math.min(20, 5 + Dungeon.energy); }
+		@Override public int icon() { return BuffIndicator.ARMOR; }
+		@Override public String iconTextDisplay() { return Integer.toString(layers); }
+		@Override public String desc() { return Messages.get(this, "desc", currentReduction(), layers); }
+		@Override public void storeInBundle( Bundle bundle ) { super.storeInBundle(bundle); bundle.put(LAYERS, layers); }
+		@Override public void restoreFromBundle( Bundle bundle ) { super.restoreFromBundle(bundle); layers = bundle.getInt(LAYERS); }
+	}
+
+	public static class DyingWill extends Buff {
+		{ type = buffType.POSITIVE; }
+		@Override public int icon() { return BuffIndicator.CORRUPT; }
+		@Override public void tintIcon(Image icon) { icon.hardlight(0xFF2222); }
+		@Override
+		public boolean act() {
+			if (!hasSufferingOrVirtue(target)){
+				detach();
+				Buff.affect(target, HeavyWound.class, 100f);
+				if (target.sprite != null) target.sprite.showStatus(CharSprite.WARNING, Messages.get(this, "heavy_wound"));
+				GLog.w(Messages.get(this, "heavy_wound_log"));
+			}
+			spend(TICK);
+			return true;
+		}
+	}
+
+	public static class HeavyWound extends FlavourBuff {
+		{ type = buffType.NEGATIVE; }
+		@Override public int icon() { return BuffIndicator.CORRUPT; }
+		@Override public void tintIcon(Image icon) { icon.hardlight(0x555555); }
+	}
+
+	public static class RewindTimeUsed extends FlavourBuff {
+		{ type = buffType.POSITIVE; }
+		@Override public int icon() { return BuffIndicator.TIME; }
+		@Override public void tintIcon(Image icon) { icon.hardlight(0.64f, 0.53f, 0.42f); }
+		@Override public float iconFadePercent() { return Math.max(0, visualcooldown() / 50); }
+	}
+
+	//Transformation PD calls this after every armor ability, boss talents hang off it. None are here yet.
+	public static void onArmorAbility( Hero hero, float chargeUse ){
+	}
+
+	public static boolean canRavensEyeInspect( Hero hero, Item item ){
+		return hero != null && item != null && hero.hasTalent(RAVENS_EYE)
+				&& (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon
+					|| item instanceof com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor
+					|| item instanceof com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact
+					|| item instanceof com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring
+					|| item instanceof com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand)
+				&& !item.isIdentified() && !item.cursedKnown;
+	}
+
+	public static void doRavensEyeInspect( final Hero hero, final Item item ){
+		if (!canRavensEyeInspect(hero, item)) return;
+		com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene.show(new com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions(
+				new com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite(item), RAVENS_EYE.title(),
+				Messages.get(Item.class, "eye_prompt"), Messages.get(Item.class, "eye_yes"), Messages.get(Item.class, "eye_no")){
+			@Override
+			protected void onSelect(int index) {
+				if (index == 0) inspectWithRavensEye(hero, item);
+			}
+		});
+	}
+
+	private static void inspectWithRavensEye( Hero hero, Item item ){
+		if (!canRavensEyeInspect(hero, item)) return;
+		int points = hero.pointsInTalent(RAVENS_EYE);
+		if (hero.heroClass == HeroClass.FRIAR){
+			int cost = points == 1 ? 30 : 20;
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason reason = hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.class);
+			if (reason == null || reason.reason < cost){
+				GLog.w(Messages.get(Item.class, "no_reason"));
+				return;
+			}
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.loseReason(hero, cost);
+		} else {
+			Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding.class).set(points == 1 ? 6 : 4);
+		}
+		item.cursedKnown = true;
+		Item.updateQuickslot();
+		if (item.cursed) GLog.w(Messages.get(Item.class, "cursed")); else GLog.i(Messages.get(Item.class, "uncursed"));
+		hero.busy();
+		hero.sprite.operate(hero.pos);
+		hero.sprite.parent.add( new com.shatteredpixel.shatteredpixeldungeon.effects.Identification( hero.sprite.center().offset( 0, -16 ) ) );
+		Sample.INSTANCE.play(Assets.Sounds.READ);
+		hero.spendAndNext(1f);
+	}
+
+	public static int alchemyEnergyCost( Hero hero, int cost ){
+		if (hero == null || cost <= 0 || !hero.subClass.is(HeroSubClass.ALCHEMIST)) return cost;
+		return Math.max(1, cost - (3 + hero.pointsInTalent(ALCHEMY_SHIELD)));
+	}
+
+	public static void onAlchemyEnergyConsumed( Hero hero ){
+		if (hero != null && hero.subClass.is(HeroSubClass.ALCHEMIST) && hero.hasTalent(ALCHEMY_SHIELD)){
+			Buff.affect(hero, AlchemyShield.class).gain(hero.pointsInTalent(ALCHEMY_SHIELD));
+		}
+	}
+
+	public static float alchemistCloseBlastMultiplier( Hero hero, int distance, int maxRange ){
+		if (hero == null || !hero.subClass.is(HeroSubClass.ALCHEMIST) || !hero.hasTalent(CLOSE_BLAST)) return 1f;
+		int closerSteps = Math.min(4, Math.max(0, maxRange - distance));
+		return 1f + closerSteps * (0.05f + 0.05f * hero.pointsInTalent(CLOSE_BLAST));
+	}
+
+	public static boolean alchemistSprayChargePreserved( Hero hero ){
+		if (hero == null || !hero.subClass.is(HeroSubClass.ALCHEMIST) || !hero.hasTalent(CONSERVATION)) return false;
+		return Random.Float() < 0.1f * hero.pointsInTalent(CONSERVATION);
+	}
+
+	public static boolean alchemistPotionLoadPreserved( Hero hero ){
+		if (hero == null || !hero.subClass.is(HeroSubClass.ALCHEMIST) || !hero.hasTalent(CONSERVATION)) return false;
+		return Random.Float() < 0.15f * (hero.pointsInTalent(CONSERVATION) + 1);
+	}
+
+	public static float bullseyeAccuracyFactor( Hero hero ){
+		if (hero != null && hero.hasTalent(BULLSEYE)) return hero.pointsInTalent(BULLSEYE) == 1 ? 1.5f : 1.75f;
+		return 1f;
+	}
+
+	private static boolean hasSuffering(Char ch){
+		return ch.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Suffering.Fear.class) != null
+				|| ch.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Suffering.Despair.class) != null
+				|| ch.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Suffering.Paranoia.class) != null
+				|| ch.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Suffering.Ecstasy.class) != null;
+	}
+
+	private static boolean hasSufferingOrVirtue(Char ch){
+		return hasSuffering(ch)
+				|| ch.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Virtue.Firm.class) != null
+				|| ch.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Virtue.Fearless.class) != null
+				|| ch.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Virtue.Inspire.class) != null;
+	}
+
+	private static boolean triggerDyingWill(Hero hero){
+		if (hero == null || !hero.hasTalent(NEVER_COMPROMISE) || !hasSufferingOrVirtue(hero)) return false;
+		int shift = 60 - 10 * hero.pointsInTalent(NEVER_COMPROMISE);
+		if (hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Suffering.Fear.class) != null) Buff.extend(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Suffering.Fear.class, shift);
+		else if (hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Suffering.Despair.class) != null) Buff.extend(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Suffering.Despair.class, shift);
+		else if (hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Suffering.Paranoia.class) != null) Buff.extend(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Suffering.Paranoia.class, shift);
+		else if (hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Suffering.Ecstasy.class) != null) Buff.extend(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Suffering.Ecstasy.class, shift);
+		else if (hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Virtue.Firm.class) != null) Buff.extend(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Virtue.Firm.class, -shift);
+		else if (hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Virtue.Fearless.class) != null) Buff.extend(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Virtue.Fearless.class, -shift);
+		else if (hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Virtue.Inspire.class) != null) Buff.extend(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Virtue.Inspire.class, -shift);
+		Buff.affect(hero, DyingWill.class);
+		if (hero.sprite != null) hero.sprite.showStatus(CharSprite.NEGATIVE, Messages.get(DyingWill.class, "name"));
+		GLog.n(Messages.get(DyingWill.class, "get"));
+		return true;
+	}
+
+	public static int beforeSufferingReasonLoss(Hero hero, int lose){
+		com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason r = hero == null ? null : hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.class);
+		if (r == null || !hero.hasTalent(REWIND_TIME) || hero.buff(RewindTimeUsed.class) != null) return lose;
+		if (hasSuffering(hero) && r.reason >= 20 && r.reason - lose < 20){
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.gainReason(hero, 20 + 10 * hero.pointsInTalent(REWIND_TIME));
+			Buff.detach(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Panic.class);
+			Buff.affect(hero, RewindTimeUsed.class, 50f);
+		}
+		return lose;
+	}
+
+	//called from Hero.damage for every hit, returns the damage left
+	public static int onHeroDamage( Hero hero, int dmg, Object src ){
+		AlchemyShield shield = hero.buff(AlchemyShield.class);
+		if (shield != null) dmg = shield.absorb(dmg, src);
+		if (dmg >= hero.HP && triggerDyingWill(hero)){
+			dmg = Math.max(0, hero.HP - 1);
+			Sample.INSTANCE.play( Assets.Sounds.DEATHSDOOR, 1, 1, Random.Float( 0.9f, 1.1f ) );
+		}
+		processFriarReasonLoss(hero, dmg, src);
+		return dmg;
+	}
+
+	//the Friar loses sanity (Reason) when monsters hurt them
+	private static void processFriarReasonLoss( Hero hero, int dmg, Object src ){
+		if (hero.heroClass != HeroClass.FRIAR || !(src instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob)) return;
+		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob mob = (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob) src;
+		Class R = com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.class;
+		if (mob instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith){
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.loseReason(hero, 5);
+			if (Random.Int(3) == 0){
+				Buff.extend(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Panic.class, 10);
+				Sample.INSTANCE.play( Assets.Sounds.PANIC, 1, 1, Random.Float( 0.9f, 1.1f ) );
+			}
+		} else if (mob.properties().contains(Char.Property.UNDEAD) || mob.properties().contains(Char.Property.DEMONIC)){
+			if (hero.HP < hero.HT/2){
+				com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.loseReason(hero, Math.min(dmg + Random.Int(2, 6), 30));
+				boolean yog = mob instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogDzewa || mob instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogFist;
+				if ((yog && Random.Int(2) == 0) || Random.Int(5) == 0){
+					Buff.extend(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Panic.class, 10);
+					Sample.INSTANCE.play( Assets.Sounds.PANIC, 1, 1, Random.Float( 0.9f, 1.1f ) );
+				}
+			} else {
+				com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.loseReason(hero, Math.min(dmg + Random.Int(1, 3), 30));
+			}
+		} else if (hero.HP < hero.HT/2){
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.loseReason(hero, Math.min(dmg + Random.Int(2, 6), 30));
+		}
+		if (hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Suffering.Fear.class) != null && Random.Int(10) < 3){
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.sufferingReason(hero, 5);
+		}
+	}
+
+	//called when the hero's side kills an enemy, the Friar's rewards for it
+	public static void onFriarKill( Hero hero, Char enemy ){
+		Class P = com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Panic.class;
+		if (hero.heroClass == HeroClass.FRIAR){
+			int virtueKillExtend = hero.subClass.is(HeroSubClass.PIOUS) && hero.hasTalent(BRIGHT_WARRIOR) ? 3 + hero.pointsInTalent(BRIGHT_WARRIOR)*3 : 3;
+			if (enemy instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogDzewa){
+				com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.gainReason(hero, 100);
+				Buff.detach(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Panic.class);
+			} else if (enemy.properties().contains(Char.Property.BOSS)){
+				com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.gainReason(hero, 50);
+				Buff.detach(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Panic.class);
+			} else if (enemy.properties().contains(Char.Property.MINIBOSS)){
+				com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.gainReason(hero, 10);
+			} else if (enemy instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith){
+				com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.gainReason(hero, 2);
+				Buff.detach(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Panic.class);
+			} else if (enemy.properties().contains(Char.Property.UNDEAD) || enemy.properties().contains(Char.Property.DEMONIC)){
+				if (hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Virtue.Firm.class) != null
+						|| hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Virtue.Fearless.class) != null
+						|| hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Virtue.Inspire.class) != null){
+					Buff.extend(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Virtue.Inspire.class, virtueKillExtend);
+				}
+				if (Random.Int(4) == 0) hero.heal(hero.HT/10);
+			}
+		}
+		if ((enemy.properties().contains(Char.Property.UNDEAD) || enemy.properties().contains(Char.Property.DEMONIC)) && hero.hasTalent(OTHERWORLD_BANE)){
+			Buff.affect( hero, MindVision.class, 1+hero.pointsInTalent(OTHERWORLD_BANE) );
+			com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite.show(hero, com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite.VISION, 1, 0.77f, 0.9f);
+			Dungeon.observe();
+		}
+		if (hero.subClass.is(HeroSubClass.PIOUS)){
+			com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RitualDagger ritualDagger = hero.belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RitualDagger.class);
+			if (ritualDagger != null) ritualDagger.onKill(hero);
+		}
 	}
 
 	public static void onTalentUpgraded( Hero hero, Talent talent ){
@@ -1192,6 +1474,9 @@ public enum Talent {
 			case DRAGONKNIGHT:
 				Collections.addAll(tierTalents, HEARTY_MEAL, SURVIVALISTS_INTUITION, PROVOKED_ANGER, BACKUP_BARRIER);
 				break;
+			case FRIAR:
+				Collections.addAll(tierTalents, TRANQUIL_TINCTURE, RAVENS_EYE);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -1236,6 +1521,9 @@ public enum Talent {
 			case DRAGONKNIGHT:
 				Collections.addAll(tierTalents, IRON_STOMACH, LIQUID_NATURE, RUNIC_TRANSFERENCE, LETHAL_MOMENTUM, IMPROVISED_PROJECTILES);
 				break;
+			case FRIAR:
+				Collections.addAll(tierTalents, WHISPERING_MEAL, LIQUID_BARRIER, FAST_RELOAD);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -1277,6 +1565,9 @@ public enum Talent {
 			case VIKING:
 			case DRAGONKNIGHT:
 				Collections.addAll(tierTalents, HOLD_FAST, STRONGMAN);
+				break;
+			case FRIAR:
+				Collections.addAll(tierTalents, HUMAN_GLORY);
 				break;
 		}
 		for (Talent talent : tierTalents){
@@ -1371,6 +1662,12 @@ public enum Talent {
 				break;
 			case ATTRACTOR:
 				Collections.addAll(tierTalents, AURA_OF_PROTECTION, WALL_OF_LIGHT, SHIELDING_DEW);
+				break;
+			case ALCHEMIST:
+				Collections.addAll(tierTalents, ALCHEMY_SHIELD, CLOSE_BLAST, CONSERVATION);
+				break;
+			case PIOUS:
+				Collections.addAll(tierTalents, NEVER_COMPROMISE, REWIND_TIME, BRIGHT_WARRIOR);
 				break;
 		}
 		for (Talent talent : tierTalents){

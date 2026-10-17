@@ -125,6 +125,49 @@ public class HeroIcon extends Image {
 	public static final int CONJURE_MINIONS = 111;
 	public static final int ARMORER_LIGHT = 112;
 
+	//Transformation PD hero icons. scripts/port-icons.py copied the mod's cells 0 to 207 into ours at the mod's cell number plus 128.
+	public static final int MODCELL = 128;
+	public static final int FREEMAN = 12 + MODCELL;
+	public static final int WATERSLIME = 13 + MODCELL;
+	public static final int DARKSLIME = 14 + MODCELL;
+	public static final int SPRING_SPELL = 35 + MODCELL;
+	public static final int RAPID_WATERFALL = 36 + MODCELL;
+	public static final int MAD_SLIME = 37 + MODCELL;
+	public static final int TATTEKI = 67 + MODCELL;
+	public static final int NINJAMASTER = 68 + MODCELL;
+	public static final int DECOY = 69 + MODCELL;
+	public static final int SPIDERJAR = 70 + MODCELL;
+	public static final int ONESWORD = 71 + MODCELL;
+	public static final int DARK_HOOK = 111 + MODCELL;
+	public static final int NINJA_NORMAL = 112 + MODCELL;
+	public static final int NINJA_WATER = 113 + MODCELL;
+	public static final int NINJA_GRASS = 114 + MODCELL;
+	public static final int SMOKEMASK = 115 + MODCELL;
+	public static final int DRONEDIRECT = 116 + MODCELL;
+	public static final int BALANCE = 117 + MODCELL;
+	public static final int INVASION = 118 + MODCELL;
+	public static final int PARRY = 119 + MODCELL;
+	public static final int REASON = 120 + MODCELL;
+	public static final int RITUAL = 121 + MODCELL;
+	public static final int RAID_SESSION = 122 + MODCELL;
+	public static final int NATURAL_CHILD = 123 + MODCELL;
+	public static final int AT400 = 192 + MODCELL;
+	public static final int AU400 = 193 + MODCELL;
+	public static final int ROUTINE = 194 + MODCELL;
+	public static final int DM400GAS = 195 + MODCELL;
+	public static final int HONEYCOMB = 196 + MODCELL;
+	public static final int SALESCONTRACT = 197 + MODCELL;
+	public static final int RUNEMAGE = 198 + MODCELL;
+	public static final int COMBATMASTER = 199 + MODCELL;
+	public static final int MARCHFORWARD = 200 + MODCELL;
+	public static final int TABOOMAGIC = 201 + MODCELL;
+	public static final int KINGBLADE = 202 + MODCELL;
+	public static final int ALCHEMIST = 203 + MODCELL;
+	public static final int PIOUS = 204 + MODCELL;
+	public static final int REASONDOSE = 205 + MODCELL;
+	public static final int CONPOTION = 206 + MODCELL;
+	public static final int HOLY_PRAYER = 207 + MODCELL;
+
 	public HeroIcon(HeroSubClass subCls){
 		super( Assets.Interfaces.HERO_ICONS );
 		if (film == null){

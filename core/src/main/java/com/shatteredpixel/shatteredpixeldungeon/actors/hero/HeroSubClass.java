@@ -66,7 +66,16 @@ public enum HeroSubClass {
 	DEVORANDUM(HeroIcon.BERSERKER),
 	MESSOREM(HeroIcon.ASSASSIN),
 	DRUID(HeroIcon.WARDEN),
-	ICEBREAKER(HeroIcon.CHAMPION);
+	ICEBREAKER(HeroIcon.CHAMPION),
+
+	//from Transformation PD
+	ALCHEMIST(HeroIcon.ALCHEMIST),
+	PIOUS(HeroIcon.PIOUS);
+
+	//Transformation PD asks this of subclasses (its Rat King hero shares them all)
+	public boolean is(HeroSubClass sub) {
+		return this == sub;
+	}
 
 	int icon;
 

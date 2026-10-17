@@ -76,6 +76,7 @@ public class Badges {
 		MASTERY_SUMMONER,
 		MASTERY_VIKING,
 		MASTERY_DRAGONKNIGHT,
+		MASTERY_FRIAR,
 		FOUND_RATMOGRIFY,
 
 		//bronze
@@ -89,6 +90,7 @@ public class Badges {
 		UNLOCK_SUMMONER             ( 5 ),
 		UNLOCK_VIKING               ( 6 ),
 		UNLOCK_DRAGONKNIGHT         ( 4 ),
+		UNLOCK_FRIAR                ( 5 ),
 		MONSTERS_SLAIN_1            ( 6 ),
 		MONSTERS_SLAIN_2            ( 7 ),
 		GOLD_COLLECTED_1            ( 8 ),
@@ -141,6 +143,7 @@ public class Badges {
 		BOSS_SLAIN_1_ZEALOT,
 		BOSS_SLAIN_1_ARTIFICER,
 		BOSS_SLAIN_1_SUMMONER,
+		BOSS_SLAIN_1_FRIAR,
 		BOSS_SLAIN_1_VIKING,
 		BOSS_SLAIN_1_DRAGONKNIGHT,
 		BOSS_SLAIN_1_ALL_CLASSES    ( 54, BadgeType.GLOBAL ),
@@ -195,6 +198,7 @@ public class Badges {
 		VICTORY_ZEALOT,
 		VICTORY_ARTIFICER,
 		VICTORY_SUMMONER,
+		VICTORY_FRIAR,
 		VICTORY_VIKING,
 		VICTORY_DRAGONKNIGHT,
 		VICTORY_ALL_CLASSES         ( 103, BadgeType.GLOBAL ),
@@ -836,6 +840,7 @@ public class Badges {
 		firstBossClassBadges.put(HeroClass.ZEALOT, Badge.BOSS_SLAIN_1_ZEALOT);
 		firstBossClassBadges.put(HeroClass.ARTIFICER, Badge.BOSS_SLAIN_1_ARTIFICER);
 		firstBossClassBadges.put(HeroClass.SUMMONER, Badge.BOSS_SLAIN_1_SUMMONER);
+		firstBossClassBadges.put(HeroClass.FRIAR, Badge.BOSS_SLAIN_1_FRIAR);
 		firstBossClassBadges.put(HeroClass.VIKING, Badge.BOSS_SLAIN_1_VIKING);
 		firstBossClassBadges.put(HeroClass.DRAGONKNIGHT, Badge.BOSS_SLAIN_1_DRAGONKNIGHT);
 	}
@@ -851,6 +856,7 @@ public class Badges {
 		victoryClassBadges.put(HeroClass.ZEALOT, Badge.VICTORY_ZEALOT);
 		victoryClassBadges.put(HeroClass.ARTIFICER, Badge.VICTORY_ARTIFICER);
 		victoryClassBadges.put(HeroClass.SUMMONER, Badge.VICTORY_SUMMONER);
+		victoryClassBadges.put(HeroClass.FRIAR, Badge.VICTORY_FRIAR);
 		victoryClassBadges.put(HeroClass.VIKING, Badge.VICTORY_VIKING);
 		victoryClassBadges.put(HeroClass.DRAGONKNIGHT, Badge.VICTORY_DRAGONKNIGHT);
 	}
@@ -1003,6 +1009,9 @@ public class Badges {
 			case SUMMONER:
 				badge = Badge.MASTERY_SUMMONER;
 				break;
+			case FRIAR:
+				badge = Badge.MASTERY_FRIAR;
+				break;
 			case VIKING:
 				badge = Badge.MASTERY_VIKING;
 				break;
@@ -1083,6 +1092,13 @@ public class Badges {
 	public static void validateArtificerUnlock(){
 		if (!isUnlocked(Badge.UNLOCK_ARTIFICER)){
 			displayBadge( Badge.UNLOCK_ARTIFICER );
+		}
+	}
+
+	//Transformation PD, defeat Yog-Dzewa to unlock the Friar
+	public static void validateFriarUnlock(){
+		if (!isUnlocked(Badge.UNLOCK_FRIAR)){
+			displayBadge( Badge.UNLOCK_FRIAR );
 		}
 	}
 

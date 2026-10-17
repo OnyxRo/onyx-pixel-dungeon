@@ -98,7 +98,9 @@ public enum HeroClass {
 	SUMMONER( HeroSubClass.EIDOLON, HeroSubClass.ATTRACTOR ),
 	//from Dragonic PD
 	VIKING( HeroSubClass.DRUID, HeroSubClass.ICEBREAKER ),
-	DRAGONKNIGHT( HeroSubClass.DEVORANDUM, HeroSubClass.MESSOREM );
+	DRAGONKNIGHT( HeroSubClass.DEVORANDUM, HeroSubClass.MESSOREM ),
+	//from Transformation PD
+	FRIAR( HeroSubClass.ALCHEMIST, HeroSubClass.PIOUS );
 
 	//the Summoner has two pictures, one is chosen each time the game starts
 	private static final String SUMMONER_SPLASH = Math.random() < 0.5 ? Assets.Splashes.SUMMONER : Assets.Splashes.SORCERESS;
@@ -172,6 +174,10 @@ public enum HeroClass {
 			case DRAGONKNIGHT:
 				initDragonKnight( hero );
 				break;
+
+			case FRIAR:
+				initFriar( hero );
+				break;
 		}
 
 		//Shittened PD's prefixes never land on a hero's starting weapon
@@ -214,6 +220,8 @@ public enum HeroClass {
 				return Badges.Badge.MASTERY_VIKING;
 			case DRAGONKNIGHT:
 				return Badges.Badge.MASTERY_DRAGONKNIGHT;
+			case FRIAR:
+				return Badges.Badge.MASTERY_FRIAR;
 		}
 		return null;
 	}
@@ -334,6 +342,21 @@ public enum HeroClass {
 		new com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror().identify();
 	}
 
+	private static void initFriar( Hero hero ) {
+		//Transformation PD. A lather whip, the alchemy spray gun and a mind that can break (the Reason buff)
+		(hero.belongings.weapon = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.LatherWhip()).identify();
+		hero.belongings.weapon.activate(hero);
+
+		com.shatteredpixel.shatteredpixeldungeon.items.weapon.SprayGun sprayGun = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.SprayGun();
+		sprayGun.identify().collect();
+		Dungeon.quickslot.setSlot(0, sprayGun);
+
+		com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.class);
+
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHaste().identify();
+		new com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror().identify();
+	}
+
 	private static void initSummoner( Hero hero ) {
 		//Ryuse's PD. Summoner stats, 15 health that grows by 3 a level, a training whip and a dried rose that holds her lover's ghost
 		(hero.belongings.weapon = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.TrainingWhip()).identify();
@@ -435,6 +458,10 @@ public enum HeroClass {
 			case DRAGONKNIGHT:
 				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.dragonknight.DeafeningRoar(),
 						new Shockwave(), new HeroicLeap()};
+			case FRIAR:
+				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.friar.ReasonDose(),
+						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.friar.ConcentratedPotion(),
+						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.friar.HolyPrayer()};
 		}
 	}
 
@@ -462,6 +489,8 @@ public enum HeroClass {
 				return Assets.Sprites.VIKING;
 			case DRAGONKNIGHT:
 				return Assets.Sprites.DRAGONKNIGHT;
+			case FRIAR:
+				return Assets.Sprites.FRIAR;
 		}
 	}
 
@@ -490,6 +519,8 @@ public enum HeroClass {
 				return Assets.Splashes.WARRIOR;
 			case DRAGONKNIGHT:
 				return Assets.Splashes.DUELIST;
+			case FRIAR:
+				return Assets.Splashes.FRIAR;
 		}
 	}
 	
@@ -522,6 +553,8 @@ public enum HeroClass {
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_VIKING);
 			case DRAGONKNIGHT:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_DRAGONKNIGHT);
+			case FRIAR:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_FRIAR);
 		}
 	}
 	

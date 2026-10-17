@@ -74,6 +74,17 @@ public class MagicMissile extends Emitter {
 	public static final int ELMO            = 15;
 	public static final int POISON          = 16;
 	public static final int LIGHT_MISSILE   = 17;
+	//Transformation PD, the alchemy spray gun
+	public static final int HEAL_MISSILE    = 18;
+	public static final int SPRAY_BASE      = 19;
+	public static final int SPRAY_STRENGTH  = 20;
+	public static final int SPRAY_TOXIC     = 21;
+	public static final int SPRAY_HASTE     = 22;
+	public static final int SPRAY_LEVITATION= 23;
+	public static final int SPRAY_PURITY    = 24;
+	public static final int SPRAY_EXP       = 25;
+	public static final int SPRAY_MIND      = 26;
+	public static final int SPRAY_INVIS     = 27;
 
 	public static final int MAGIC_MISS_CONE = 100;
 	public static final int FROST_CONE      = 101;
@@ -89,6 +100,16 @@ public class MagicMissile extends Emitter {
 	public static final int SPARK_CONE      = 112;
 	public static final int BLOOD_CONE      = 113;
 	public static final int POISON_CONE     = 114;
+	public static final int HEAL_CONE       = 115;
+	public static final int SPRAY_BASE_CONE = 116;
+	public static final int SPRAY_STRENGTH_CONE = 117;
+	public static final int SPRAY_TOXIC_CONE = 118;
+	public static final int SPRAY_HASTE_CONE = 119;
+	public static final int SPRAY_LEVITATION_CONE = 120;
+	public static final int SPRAY_PURITY_CONE = 121;
+	public static final int SPRAY_EXP_CONE  = 122;
+	public static final int SPRAY_MIND_CONE = 123;
+	public static final int SPRAY_INVIS_CONE = 124;
 
 	//use SPECK + the constant of the Speck you want. e.g. MagicMissile.SPECK + Speck.TOXIC
 	public static final int SPECK           = 1000;
@@ -208,6 +229,46 @@ public class MagicMissile extends Emitter {
 				size( 4 );
 				pour( WhiteParticle.YELLOW, 0.01f );
 				break;
+			case HEAL_MISSILE:
+				size( 4 );
+				pour( BloodParticle.HEAL, 0.03f );
+				break;
+			case SPRAY_BASE:
+				size( 4 );
+				pour( BloodParticle.SPRAY_BASE, 0.01f );
+				break;
+			case SPRAY_STRENGTH:
+				size( 4 );
+				pour( BloodParticle.SPRAY_STRENGTH, 0.01f );
+				break;
+			case SPRAY_TOXIC:
+				size( 4 );
+				pour( BloodParticle.SPRAY_TOXIC, 0.01f );
+				break;
+			case SPRAY_HASTE:
+				size( 4 );
+				pour( BloodParticle.SPRAY_HASTE, 0.01f );
+				break;
+			case SPRAY_LEVITATION:
+				size( 4 );
+				pour( BloodParticle.SPRAY_LEVITATION, 0.01f );
+				break;
+			case SPRAY_PURITY:
+				size( 4 );
+				pour( BloodParticle.SPRAY_PURITY, 0.01f );
+				break;
+			case SPRAY_EXP:
+				size( 4 );
+				pour( BloodParticle.SPRAY_EXP, 0.01f );
+				break;
+			case SPRAY_MIND:
+				size( 4 );
+				pour( BloodParticle.SPRAY_MIND, 0.01f );
+				break;
+			case SPRAY_INVIS:
+				size( 4 );
+				pour( BloodParticle.SPRAY_INVIS, 0.01f );
+				break;
 
 			case MAGIC_MISS_CONE:
 				size( 10 );
@@ -264,6 +325,46 @@ public class MagicMissile extends Emitter {
 			case POISON_CONE:
 				size( 10 );
 				pour( PoisonParticle.MISSILE, 0.03f );
+				break;
+			case HEAL_CONE:
+				size( 10 );
+				pour( BloodParticle.HEAL, 0.03f );
+				break;
+			case SPRAY_BASE_CONE:
+				size( 10 );
+				pour( BloodParticle.SPRAY_BASE, 0.03f );
+				break;
+			case SPRAY_STRENGTH_CONE:
+				size( 10 );
+				pour( BloodParticle.SPRAY_STRENGTH, 0.03f );
+				break;
+			case SPRAY_TOXIC_CONE:
+				size( 10 );
+				pour( BloodParticle.SPRAY_TOXIC, 0.03f );
+				break;
+			case SPRAY_HASTE_CONE:
+				size( 10 );
+				pour( BloodParticle.SPRAY_HASTE, 0.03f );
+				break;
+			case SPRAY_LEVITATION_CONE:
+				size( 10 );
+				pour( BloodParticle.SPRAY_LEVITATION, 0.03f );
+				break;
+			case SPRAY_PURITY_CONE:
+				size( 10 );
+				pour( BloodParticle.SPRAY_PURITY, 0.03f );
+				break;
+			case SPRAY_EXP_CONE:
+				size( 10 );
+				pour( BloodParticle.SPRAY_EXP, 0.03f );
+				break;
+			case SPRAY_MIND_CONE:
+				size( 10 );
+				pour( BloodParticle.SPRAY_MIND, 0.03f );
+				break;
+			case SPRAY_INVIS_CONE:
+				size( 10 );
+				pour( BloodParticle.SPRAY_INVIS, 0.03f );
 				break;
 		}
 

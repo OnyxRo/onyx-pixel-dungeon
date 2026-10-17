@@ -259,6 +259,9 @@ public class Assets {
 		public static final String DOGWOOF = "sounds/magicling/puppy_bark.ogg"; //ported, magicling
 		public static final String VIRTUE = "sounds/transformati/virtue.mp3"; //ported, transformati
 		public static final String SUFFER = "sounds/transformati/suffer.mp3"; //ported, transformati
+		public static final String PANIC = "sounds/transformati/panic.mp3"; //ported, transformati
+		public static final String SQUIRT = "sounds/transformati/squirt.mp3"; //ported, transformati
+		public static final String DEATHSDOOR = "sounds/transformati/deathsdoor.mp3"; //ported, transformati
 		public static final String WIN_SMALL = "sounds/shittened/win_small.mp3"; //ported, shittened
 		public static final String WIN_MEDIUM = "sounds/shittened/win_medium.mp3"; //ported, shittened
 		public static final String WIN_LARGE = "sounds/shittened/win_large.mp3"; //ported, shittened
@@ -391,6 +394,7 @@ public class Assets {
 		public static final String CLERIC   = "splashes/cleric.jpg";
 		public static final String ZEALOT   = "splashes/zealot.png"; //ported, devoted
 		public static final String ARTIFICER = "splashes/artificer.jpg"; //ported, reforged
+		public static final String FRIAR = "splashes/friar.png"; //ported, transformation
 		public static final String SUMMONER = "splashes/summoner.jpg"; //ported, ryuse
 		public static final String SORCERESS = "splashes/sorceress.png"; //ported, ryuse, the Summoner's other picture
 
@@ -746,6 +750,7 @@ public class Assets {
 		public static final String CLERIC   = "sprites/cleric.png";
 		public static final String ZEALOT   = "sprites/zealot.png"; //ported, devoted
 		public static final String ARTIFICER = "sprites/artificer.png"; //ported, reforged
+		public static final String FRIAR = "sprites/friar.png"; //ported, transformation
 		public static final String SUMMONER = "sprites/summoner.png"; //ported, ryuse
 		public static final String VIKING = "sprites/viking.png"; //ported, dragonic
 		public static final String DRAGONKNIGHT = "sprites/dragonknight.png"; //ported, dragonic

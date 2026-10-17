@@ -738,6 +738,13 @@ public class Hero extends Char {
 		if (buff(Scimitar.SwordDance.class) != null){
 			accuracy *= 1.50f;
 		}
+		//Transformation PD, the Friar
+		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.friar.HolyPrayer.HolyPrayerBlessing.class) != null){
+			accuracy *= buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.friar.HolyPrayer.HolyPrayerBlessing.class).accuracyAndEvasionFactor();
+		}
+		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.class) != null && hasTalent(Talent.HUMAN_GLORY)){
+			accuracy *= 1f + 0.1f * pointsInTalent(Talent.HUMAN_GLORY);
+		}
 		
 		if (!RingOfForce.fightingUnarmed(this)) {
 			return Math.max(1, Math.round(attackSkill * accuracy * wep.accuracyFactor( this, target )));
@@ -784,6 +791,17 @@ public class Hero extends Char {
 
 		if (buff(Quarterstaff.DefensiveStance.class) != null){
 			evasion *= 3;
+		}
+
+		//Transformation PD, the Friar
+		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Suffering.Ecstasy.class) != null){
+			evasion *= 0.5f;
+		}
+		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.friar.HolyPrayer.HolyPrayerBlessing.class) != null){
+			evasion *= buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.friar.HolyPrayer.HolyPrayerBlessing.class).accuracyAndEvasionFactor();
+		}
+		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.class) != null && hasTalent(Talent.HUMAN_GLORY)){
+			evasion *= 1f + 0.1f * pointsInTalent(Talent.HUMAN_GLORY);
 		}
 		
 		if (paralysed > 0) {
@@ -2069,6 +2087,9 @@ public class Hero extends Char {
 		//we ceil this one to avoid letting the player easily take 0 dmg from tenacity early
 		dmg = (int)Math.ceil(dmg * RingOfTenacity.damageMultiplier( this ));
 
+		//Transformation PD talents that react to a hit (Alchemy Shield, Dying Will, the Friar's sanity loss)
+		dmg = Talent.onHeroDamage( this, dmg, src );
+
 		int preHP = HP + shielding();
 		if (src instanceof Hunger) preHP -= shielding();
 		super.damage( dmg, src );
@@ -2614,6 +2635,15 @@ public class Hero extends Char {
 				GLog.w(Messages.get(this, "revive"));
 				Statistics.ankhsUsed++;
 				Catalog.countUse(Ankh.class);
+
+				//Transformation PD, a blessed ankh clears the Friar's mind a little
+				if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.class) != null){
+					com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.gainReason(this, 50);
+					Buff.detach(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Suffering.Fear.class);
+					Buff.detach(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Suffering.Despair.class);
+					Buff.detach(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Suffering.Paranoia.class);
+					Buff.detach(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Suffering.Ecstasy.class);
+				}
 
 				ankh.detach(belongings.backpack);
 

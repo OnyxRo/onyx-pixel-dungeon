@@ -73,13 +73,18 @@ public class PotionOfCleansing extends ExoticPotion {
 	}
 
 	public static void cleanse(Char ch, float duration){
+		cleanse(ch, duration, true);
+	}
+
+	//Transformation PD, the Friar's Calm Dose cleanses without feeding the hero
+	public static void cleanse(Char ch, float duration, boolean satisfyHunger){
 		for (Buff b : ch.buffs()){
 			if (b.type == Buff.buffType.NEGATIVE
 					&& !(b instanceof AllyBuff)
 					&& !(b instanceof LostInventory)){
 				b.detach();
 			}
-			if (b instanceof Hunger){
+			if (satisfyHunger && b instanceof Hunger){
 				((Hunger) b).satisfy(Hunger.STARVING);
 			}
 		}

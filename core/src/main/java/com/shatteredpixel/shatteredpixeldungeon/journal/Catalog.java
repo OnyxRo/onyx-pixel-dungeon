@@ -939,6 +939,9 @@ public enum Catalog {
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.upgrade.ArmourGhostShard.class);
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.upgrade.RareGhostShard.class);
 
+		//items ported from transformation
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.SprayGun.class);
+
 
 	}
 

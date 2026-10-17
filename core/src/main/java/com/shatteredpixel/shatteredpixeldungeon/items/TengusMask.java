@@ -36,6 +36,8 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndChooseSubclass;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 
@@ -106,6 +108,26 @@ public class TengusMask extends Item {
 			Buff.affect(curUser, Preparation.class);
 		}
 		
+		//Transformation PD, the Friar's two subclasses
+		if (way == HeroSubClass.PIOUS) {
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason reason = Buff.affect(curUser, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.class);
+			ActionIndicator.setAction(reason);
+			if (curUser.belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RitualDagger.class) == null){
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RitualDagger dagger = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RitualDagger();
+				dagger.identify();
+				if (!dagger.collect(curUser.belongings.backpack)){
+					Dungeon.level.drop(dagger, curUser.pos).sprite.drop();
+				} else {
+					dagger.resetRitual(curUser);
+				}
+			}
+		}
+		if (way == HeroSubClass.ALCHEMIST && curUser.belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.weapon.SprayGun.class) == null) {
+			com.shatteredpixel.shatteredpixeldungeon.items.weapon.SprayGun gun = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.SprayGun();
+			gun.identify();
+			if (!gun.collect(curUser.belongings.backpack)) Dungeon.level.drop(gun, curUser.pos).sprite.drop();
+		}
+
 		curUser.sprite.operate( curUser.pos );
 		Sample.INSTANCE.play( Assets.Sounds.MASTERY );
 		

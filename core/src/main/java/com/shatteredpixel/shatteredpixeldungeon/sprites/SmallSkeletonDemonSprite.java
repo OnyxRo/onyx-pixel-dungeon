@@ -8,7 +8,7 @@ public class SmallSkeletonDemonSprite extends MobSprite {
     public SmallSkeletonDemonSprite() {
         super();
 
-        texture( Assets.Sprites.SHARD);
+        texture( Assets.Sprites.SHARD_ML);
 
         TextureFilm frames = new TextureFilm( texture, 16, 16);
 

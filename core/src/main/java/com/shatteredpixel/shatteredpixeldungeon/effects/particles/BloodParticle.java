@@ -47,6 +47,37 @@ public class BloodParticle extends PixelParticle.Shrinking {
 		}
 	};
 	
+	//Transformation PD, the alchemy spray gun's colours
+	public static final Emitter.Factory SPRAY_BASE       = colored(0xB2F2FF);
+	public static final Emitter.Factory SPRAY_STRENGTH   = colored(0xCC0022);
+	public static final Emitter.Factory SPRAY_HEAL       = colored(0x2EE62E);
+	public static final Emitter.Factory SPRAY_MIND       = colored(0x919999);
+	public static final Emitter.Factory SPRAY_TOXIC      = colored(0xA15CE5);
+	public static final Emitter.Factory SPRAY_HASTE      = colored(0xCCBB00);
+	public static final Emitter.Factory SPRAY_INVIS      = colored(0xD9D9D9);
+	public static final Emitter.Factory SPRAY_LEVITATION = colored(0x195D80);
+	public static final Emitter.Factory SPRAY_PURITY     = colored(0xFF4CD2);
+	public static final Emitter.Factory SPRAY_EXP        = colored(0x404040);
+	public static final Emitter.Factory HEAL             = SPRAY_HEAL;
+
+	private static Emitter.Factory colored(final int color) {
+		return new Factory() {
+			@Override
+			public void emit( Emitter emitter, int index, float x, float y ) {
+				((BloodParticle)emitter.recycle( BloodParticle.class )).reset( x, y, color );
+			}
+			@Override
+			public boolean lightMode() {
+				return true;
+			}
+		};
+	}
+
+	public void reset( float x, float y, int color ) {
+		reset( x, y );
+		color( color );
+	}
+
 	public BloodParticle() {
 		super();
 		
