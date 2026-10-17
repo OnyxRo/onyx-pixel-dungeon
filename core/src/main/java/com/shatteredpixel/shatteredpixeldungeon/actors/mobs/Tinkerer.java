@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPsionicBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -35,10 +34,6 @@ import com.watabou.utils.Random;
 
 import java.util.HashSet;
 
-public class Tinkerer extends UMob {
-
-    {
-        name = "mad tinkerer";
 //port-oldstats
 public class Tinkerer extends Mob {
 
@@ -47,11 +42,6 @@ public class Tinkerer extends Mob {
 
         HP = HT = 85;
         defenseSkill = 25;
-        atkSkill = 25;
-
-        dmgMin = 16;
-        dmgMax = 20;
-        dmgRed = 8;
 
 
         viewDistance = Light.DISTANCE;
@@ -59,10 +49,6 @@ public class Tinkerer extends Mob {
         EXP = 11;
         maxLvl = 25;
         state = HUNTING;
-        mobType = MOBTYPE_SPECIAL;
-    }
-
-    @Override
         immunities.add( Terror.class );
         immunities.add( Vertigo.class );
         immunities.add( Charm.class );
@@ -111,12 +97,6 @@ public class Tinkerer extends Mob {
     }
 
     @Override
-    public String description() {
-        return
-                "This madman runs around the dungeon caring for his robotic creations.";
-    }
-
-    @Override
     public void die( Object cause ) {
 
         super.die( cause );
@@ -128,22 +108,4 @@ public class Tinkerer extends Mob {
     public void notice() {
         super.notice();
         yell( "I will not let you harm my creations!" );
-    }
-
-    private static final HashSet<Class<?>> RESISTANCES = new HashSet<Class<?>>();
-    static {
-        RESISTANCES.add( Grim.class );
-        RESISTANCES.add( ScrollOfPsionicBlast.class );
-    }
-
-    { resistances.addAll( RESISTANCES ); }
-
-    private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
-    static {
-        IMMUNITIES.add( Terror.class );
-        IMMUNITIES.add( Vertigo.class );
-        IMMUNITIES.add( Charm.class );
-    }
-
-    { immunities.addAll( IMMUNITIES ); }}
     }}

@@ -33,46 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Embers;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.NewbornElementalSprite;
-
-public class NewbornElemental extends Elemental {
-
-    {
-        spriteClass = NewbornElementalSprite.class;
-
-        HT = 65;
-        HP = HT / 2; //32
-
-        defenseSkill = 12;
-
-        EXP = 7;
-
-        properties.add(Property.MINIBOSS);
-    }
-
-    @Override
-    public boolean add(Buff buff) {
-        if (buff instanceof Frost || buff instanceof Chill) {
-            die(buff);
-            return true;
-        } else {
-            return super.add(buff);
-        }
-    }
-
-    @Override
-    public void die(Object cause) {
-        super.die(cause);
-        Dungeon.level.drop(new Embers(), pos).sprite.drop();
-    }
-
-    @Override
-    protected void rangedProc(Char enemy) {
-    }
-
-    @Override
-    protected void meleeProc(Char enemy, int damage) {
-    }
 
 public class NewbornElemental extends Elemental {
 

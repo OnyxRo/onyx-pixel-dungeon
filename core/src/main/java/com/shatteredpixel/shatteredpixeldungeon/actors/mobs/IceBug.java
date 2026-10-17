@@ -105,7 +105,7 @@ public class IceBug extends Mob {
 	}
 
 	{
-		resistances.add(DamageType.IceDamage.class);
+		resistances.add(com.shatteredpixel.shatteredpixeldungeon.actors.damagetype.DamageType.IceDamage.class);
 
 		immunities.add(FrostIce.class);
 		

@@ -24,14 +24,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.AssassinSprite;
-import com.watabou.utils.Random;
-
-public class Assassin extends UMob {
-
-    {
-        name = "assassin";
 import com.watabou.utils.Random;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.AssassinSprite;
@@ -44,21 +36,6 @@ public class Assassin extends Mob {
 
         HP = HT = 30;
         defenseSkill = 10;
-        atkSkill = 14;
-        dmgRed = 5;
-        dmgMin = 3;
-        dmgMax = 10;
-
-        EXP = 6;
-        maxLvl = 15;
-        TYPE_EVIL = true;
-    }
-
-    @Override
-    public String description() {
-        return
-                "A trainee Assassin, eager to make his first kill so he can complete his training.";
-    }
 
         EXP = 6;
         maxLvl = 15;

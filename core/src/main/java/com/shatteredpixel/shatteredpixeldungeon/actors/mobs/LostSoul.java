@@ -24,7 +24,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFireblast;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
@@ -34,10 +33,6 @@ import com.watabou.utils.Random;
 
 import java.util.HashSet;
 
-public class LostSoul  extends UMob {
-
-    {
-        name = "lost soul";
 //port-oldstats
 public class LostSoul  extends Mob {
 
@@ -46,22 +41,12 @@ public class LostSoul  extends Mob {
 
         HP = HT = 100;
         defenseSkill = 32;
-        atkSkill = 46;
-        dmgRed = 15;
-        dmgMin = 22;
-        dmgMax = 35;
 
         EXP = 12;
         maxLvl = 32;
 
         baseSpeed = 2f;
         flying = true;
-        mobType = MOBTYPE_DEBUFF;
-        TYPE_UNDEAD = true;
-        TYPE_EVIL = true;
-    }
-
-    @Override
         properties.add( Property.UNDEAD );
         immunities.add( Burning.class );
         immunities.add( Blazing.class );
@@ -110,19 +95,4 @@ public class LostSoul  extends Mob {
         }
         return false;
     }
-
-    @Override
-    public String description() {
-        return
-                "A fallen hero forced to spend eternity wandering halls and protecting the Chaos Mage.";
-    }
-
-    private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
-    static {
-        IMMUNITIES.add( Burning.class );
-        IMMUNITIES.add( Blazing.class );
-        IMMUNITIES.add( WandOfFireblast.class );
-    }
-
-    { immunities.addAll( IMMUNITIES ); }
 }

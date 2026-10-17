@@ -24,39 +24,18 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.UndeadSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GobUndeadSprite;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
 import java.util.HashSet;
 
-public class Undead extends UMob {
 //port-oldstats
 public class Undead extends Mob {
 
     public static int count = 0;
 
     {
-        name = "undead dwarf";
-        spriteClass = UndeadSprite.class;
-
-        HP = HT = 28;
-        defenseSkill = 15;
-        atkSkill = 16;
-        dmgMin = 12;
-        dmgMax = 16;
-        dmgRed = 5;
-
-        EXP = 0;
-        TYPE_EVIL = true;
-        TYPE_UNDEAD = true;
-        TYPE_MINDLESS = true;
-
-        state = WANDERING;
-    }
-
-    @Override
         spriteClass = GobUndeadSprite.class;
 
         HP = HT = 28;
@@ -128,19 +107,4 @@ public class Undead extends Mob {
     public String defenseVerb() {
         return "blocked";
     }
-
-    @Override
-    public String description() {
-        return
-                "These undead dwarves, risen by the will of the King of Dwarves, were members of his court. " +
-                        "They appear as skeletons with a stunning amount of facial hair.";
-    }
-
-    private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
-    static {
-        IMMUNITIES.add( Grim.class );
-        IMMUNITIES.add( Paralysis.class );
-    }
-
-    { immunities.addAll( IMMUNITIES ); }
 }

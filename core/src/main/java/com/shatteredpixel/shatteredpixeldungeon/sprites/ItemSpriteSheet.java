@@ -504,7 +504,7 @@ public class ItemSpriteSheet {
 	public static final int DEGUER = xy(12, 69);
 	public static final int DELICIOUSRECIPE = xy(13, 69);
 	public static final int DIRT_KNIFE_STAND = xy(14, 69);
-	public static final int DOGSTICK = xy(15, 69);
+	public static final int DOGSTICK_2 = xy(15, 69);
 	public static final int DRAGONHEART = xy(16, 69);
 	public static final int DRAGONSHILED = xy(1, 70);
 	public static final int DREAM_SEED = xy(2, 70);
@@ -517,7 +517,7 @@ public class ItemSpriteSheet {
 	public static final int FBK = xy(9, 70);
 	public static final int FIREFISHSWORD = xy(10, 70);
 	public static final int FISHBONE = xy(11, 70);
-	public static final int FISHSKELETON = xy(12, 70);
+	public static final int FISHSKELETON_2 = xy(12, 70);
 	public static final int FLAME_SCROLL = xy(13, 70);
 	public static final int FLOWERS = xy(14, 70);
 	public static final int FrozenGraveMeat = xy(15, 70);
@@ -525,7 +525,7 @@ public class ItemSpriteSheet {
 	public static final int GOLDLANGGUN = xy(1, 71);
 	public static final int GREEN_DARK = xy(2, 71);
 	public static final int Gold_Iron = xy(3, 71);
-	public static final int GraveMeat = xy(4, 71);
+	public static final int GraveMeat_2 = xy(4, 71);
 	public static final int HASTE_SWORD = xy(5, 71);
 	public static final int HEARTOFCRYSTALFRACTAL = xy(6, 71);
 	public static final int HELL_BUTTERFLY = xy(7, 71);
@@ -580,7 +580,7 @@ public class ItemSpriteSheet {
 	public static final int STDR = xy(8, 74);
 	public static final int STICK_CIRCLE = xy(9, 74);
 	public static final int SUGAR_BLOCK = xy(10, 74);
-	public static final int SWORD_BAG = xy(11, 74);
+	public static final int SWORD_BAG_2 = xy(11, 74);
 	public static final int SZJ_REBACK = xy(12, 74);
 	public static final int TERRORDOLL = xy(13, 74);
 	public static final int TERRORDOLLB = xy(14, 74);

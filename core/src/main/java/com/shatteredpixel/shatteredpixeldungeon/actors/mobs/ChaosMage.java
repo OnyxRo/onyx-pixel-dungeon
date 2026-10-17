@@ -17,37 +17,18 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPsionicBlast;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfDisintegration;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vampiric;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ChaosMageSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.MinotaurSprite;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfDisintegration;
@@ -59,9 +40,6 @@ import com.watabou.utils.Random;
 
 import java.util.HashSet;
 
-public class ChaosMage extends UMob {
-    {
-        name = "chaos mage";
 //port-oldstats
 public class ChaosMage extends Mob {
     {
@@ -69,10 +47,6 @@ public class ChaosMage extends Mob {
 
         HP = HT = 125;
         defenseSkill = 28;
-        atkSkill = 40;
-        dmgRed = 18;
-        dmgMin = 20;
-        dmgMax = 35;
 
         EXP = 15;
         maxLvl = 30;
@@ -80,12 +54,6 @@ public class ChaosMage extends Mob {
         viewDistance = Light.DISTANCE;
 
         baseSpeed = 2f;
-        TYPE_EVIL = true;
-        state = HUNTING;
-        mobType = MOBTYPE_RANGED;
-    }
-
-    @Override
         state = HUNTING;
         immunities.add( Terror.class );
         immunities.add( Vertigo.class );
@@ -126,12 +94,6 @@ public class ChaosMage extends Mob {
         return damage;
     }
 
-    @Override
-    public String description() {
-        return
-                "A powerful mage gone crazy with power, he wishes only to increase his power.";
-    }
-
     protected boolean corrupt( Hero hero ) {
         switch (Random.Int(7)) {
             case 0:
@@ -169,23 +131,4 @@ public class ChaosMage extends Mob {
         super.notice();
         GLog.i("The Chaos Mage cackles with glee");
     }
-
-    private static final HashSet<Class<?>> RESISTANCES = new HashSet<Class<?>>();
-    static {
-        RESISTANCES.add( Grim.class );
-        RESISTANCES.add( Vampiric.class );
-        RESISTANCES.add( WandOfDisintegration.class );
-        RESISTANCES.add( ScrollOfPsionicBlast.class );
-    }
-
-    { resistances.addAll( RESISTANCES ); }
-
-    private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
-    static {
-        IMMUNITIES.add( Terror.class );
-        IMMUNITIES.add( Vertigo.class );
-        IMMUNITIES.add( Charm.class );
-    }
-
-    { immunities.addAll( IMMUNITIES ); }
 }

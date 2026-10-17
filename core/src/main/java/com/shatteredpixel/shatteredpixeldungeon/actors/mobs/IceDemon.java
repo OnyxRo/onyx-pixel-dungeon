@@ -17,9 +17,6 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Freezing;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPsionicBlast;
 import com.watabou.utils.Random;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Freezing;
@@ -29,10 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.IceDemonSprite;
 
 import java.util.HashSet;
 
-public class IceDemon extends UMob {
-
-    {
-        name = "ice demon";
 //port-oldstats
 public class IceDemon extends Mob {
 
@@ -41,39 +34,6 @@ public class IceDemon extends Mob {
 
         HP = HT = 110;
         defenseSkill = 26;
-        atkSkill = 40;
-        dmgRed = 18;
-        dmgMin = 20;
-        dmgMax = 35;
-        EXP = 12;
-
-        TYPE_EVIL = true;
-        maxLvl = 29;
-    }
-
-    @Override
-    public String description() {
-        return
-                "These little demons care only about serving their demon lord.  Ice runs in thier veins and "+
-                "evil runs in their little hearts.";
-    }
-
-
-    private static final HashSet<Class<?>> RESISTANCES = new HashSet<Class<?>>();
-    static {
-        RESISTANCES.add( Grim.class );
-        RESISTANCES.add( ScrollOfPsionicBlast.class );
-    }
-
-    { resistances.addAll( RESISTANCES ); }
-
-    private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
-    static {
-        IMMUNITIES.add( Freezing.class );
-        IMMUNITIES.add( Terror.class );
-    }
-
-    { immunities.addAll( IMMUNITIES ); }
         EXP = 12;
 
         maxLvl = 29;

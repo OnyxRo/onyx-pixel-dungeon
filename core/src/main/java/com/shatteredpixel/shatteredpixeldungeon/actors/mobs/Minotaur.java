@@ -26,16 +26,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPsionicBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MinotaurSprite;
 import com.watabou.utils.Random;
 
 import java.util.HashSet;
 
-public class Minotaur extends UMob {
-    {
-        name = "minotaur";
 //port-oldstats
 public class Minotaur extends Mob {
     {
@@ -43,21 +39,6 @@ public class Minotaur extends Mob {
 
         HP = HT = 120;
         defenseSkill = 22;
-        atkSkill = 32;
-        dmgRed = 14;
-        dmgMin = 12;
-        dmgMax = 30;
-
-        EXP = 11;
-        maxLvl = 28;
-        mobType = MOBTYPE_TOUGH;
-        TYPE_ANIMAL = true;
-        TYPE_EVIL = true;
-
-        state = HUNTING;
-    }
-
-    @Override
 
         EXP = 11;
         maxLvl = 28;
@@ -107,13 +88,6 @@ public class Minotaur extends Mob {
     }
 
     @Override
-    public String description() {
-        return
-                "The Minotaur is half-man, half-bull and all angry. " +
-                "It prowls the dungeon and gores intruders with it's mighty horns.";
-    }
-
-    @Override
     public void die( Object cause ) {
 
         super.die( cause );
@@ -125,21 +99,4 @@ public class Minotaur extends Mob {
         super.notice();
         yell( "You shall not pass!" );
     }
-
-    private static final HashSet<Class<?>> RESISTANCES = new HashSet<Class<?>>();
-    static {
-        RESISTANCES.add( Grim.class );
-        RESISTANCES.add( ScrollOfPsionicBlast.class );
-    }
-
-    { resistances.addAll( RESISTANCES ); }
-
-    private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
-    static {
-        IMMUNITIES.add( Terror.class );
-        IMMUNITIES.add( Vertigo.class );
-        IMMUNITIES.add( Charm.class );
-    }
-
-    { immunities.addAll( IMMUNITIES ); }
 }

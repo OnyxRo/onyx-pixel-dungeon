@@ -17,7 +17,6 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -26,10 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPsionicBlast;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
@@ -38,33 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.BurningFistSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
-
-import java.util.HashSet;
-
-public class BurningFist extends UMob {
-
-    {
-        name = "burning fist";
-        spriteClass = BurningFistSprite.class;
-
-        HP = HT = 200;
-        atkSkill = 36;
-        defenseSkill = 25;
-        dmgRed = 15;
-        dmgMin = 20;
-        dmgMax = 32;
-
-        EXP = 0;
-
-        TYPE_EVIL = true;
-        state = WANDERING;
-    }
-
-    private String TXT_DESC = "The Burning Fist is an extension of an ancient god into our dimension.";
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GobBurningFistSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -131,8 +99,6 @@ public class BurningFist extends Mob {
                 enemy.sprite.flash();
 
                 if (!enemy.isAlive() && enemy == Dungeon.hero) {
-                    Dungeon.fail( getClass() );
-                    GLog.n( "You were killed by " + name + "..." );
                     Dungeon.fail( this );
                     GLog.n("%s crushes you with a flaming fist.", name());
                 }
@@ -151,39 +117,10 @@ public class BurningFist extends Mob {
     @Override
     public boolean act() {
 
-        for (int i=0; i < PathFinder.NEIGHBOURS9.length; i++) {
-            GameScene.add(Blob.seed(pos + PathFinder.NEIGHBOURS9[i], 2, Fire.class));
         for (int i=0; i < com.watabou.utils.PathFinder.NEIGHBOURS9.length; i++) {
             GameScene.add(Blob.seed(pos + com.watabou.utils.PathFinder.NEIGHBOURS9[i], 2, Fire.class));
         }
 
         return super.act();
     }
-
-    @Override
-    public String description() {
-        return TXT_DESC;
-
-    }
-
-    private static final HashSet<Class<?>> RESISTANCES = new HashSet<Class<?>>();
-    static {
-        RESISTANCES.add( ToxicGas.class );
-        RESISTANCES.add( Grim.class );
-
-    }
-
-    { resistances.addAll( RESISTANCES ); }
-
-    private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
-    static {
-        IMMUNITIES.add( Amok.class );
-        IMMUNITIES.add( Sleep.class );
-        IMMUNITIES.add( Terror.class );
-        IMMUNITIES.add( Burning.class );
-        IMMUNITIES.add( ScrollOfPsionicBlast.class );
-        IMMUNITIES.add( Vertigo.class );
-    }
-
-    { immunities.addAll( IMMUNITIES ); }
 }

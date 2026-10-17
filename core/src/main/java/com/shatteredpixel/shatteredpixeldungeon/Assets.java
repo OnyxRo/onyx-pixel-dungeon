@@ -527,7 +527,7 @@ public class Assets {
 		public static final String SMSLIGHT = "sprites/pets/magicling/smlt.png"; //ported, magicling
 		public static final String SMACERS = "sprites/pets/magicling/cerberus_jr.png"; //ported, magicling
 		public static final String SKFSBABY = "sprites/pets/magicling/sakababy.png"; //ported, magicling
-		public static final String SHARD = "sprites/tumulus/magicling/shard.png"; //ported, magicling
+		public static final String SHARD_ML = "sprites/tumulus/magicling/shard.png"; //ported, magicling
 		public static final String SAESD = "sprites/magicling/bluedragon.png"; //ported, magicling
 		public static final String REDWRAITH = "sprites/magicling/bluewraith.png"; //ported, magicling
 		public static final String NECRO_WARLOCK = "sprites/tumulus/magicling/necro_warlock.png"; //ported, magicling
@@ -558,7 +558,7 @@ public class Assets {
 		public static final String HEROGNOLLOLD = "sprites/gold/magicling/tribesman_old.png"; //ported, magicling
 		public static final String BATEX = "sprites/magicling/BrownBat.png"; //ported, magicling
 		public static final String NEWBORN_CRAB = "sprites/magicling/crab_newborn.png"; //ported, magicling
-		public static final String SKULLS = "sprites/gold/magicling/skulls.png"; //ported, magicling
+		public static final String SKULLS_ML = "sprites/gold/magicling/skulls.png"; //ported, magicling
 		public static final String ROYAL_GUARD = "sprites/gold/magicling/royal_guard.png"; //ported, magicling
 		public static final String PRISONER = "sprites/gold/magicling/prisoner.png"; //ported, magicling
 		public static final String MAYFLY = "sprites/gold/magicling/mayfly.png"; //ported, magicling
@@ -846,7 +846,7 @@ public class Assets {
 		public static final String SPIDERBOT = "sprites/unleashed/spiderbot.png"; //ported, unleashed
 		public static final String SQUID = "sprites/unleashed/squid.png"; //ported, unleashed
 		public static final String ROOSTER = "sprites/unleashed/velocirooster.png"; //ported, unleashed
-		public static final String ZOMBIE = "sprites/unleashed/zombie.png"; //ported, unleashed
+		public static final String ZOMBIE_UNLEASHED = "sprites/unleashed/zombie.png"; //ported, unleashed
 		public static final String U_MONK = "sprites/unleashed/monk.png"; //ported, unleashed. The mod sheet has extra frames
 		public static final String U_SLIME = "sprites/unleashed/slime.png"; //ported, unleashed. The mod sheet has extra frames
 		public static final String U_KING = "sprites/unleashed/king.png"; //ported, unleashed. The mod sheet has extra frames

@@ -23,10 +23,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SlimeRedSprite;
 import com.watabou.utils.Random;
 
-public class SlimeRed  extends UMob {
-
-    {
-        name = "red slime";
 //port-oldstats
 public class SlimeRed  extends Mob {
 
@@ -35,18 +31,6 @@ public class SlimeRed  extends Mob {
 
         HP = HT = 15;
         defenseSkill = 5;
-        atkSkill = 11;
-        dmgRed = 4;
-        dmgMin = 3;
-        dmgMax = 6;
-
-        EXP = 5;
-        maxLvl = 11;
-
-        mobType = MOBTYPE_DEBUFF;
-    }
-
-    @Override
 
         EXP = 5;
         maxLvl = 11;
@@ -76,12 +60,5 @@ public class SlimeRed  extends Mob {
         }
 
         return damage;
-    }
-
-    @Override
-    public String description() {
-        return
-                "Slimes look like icky little piles of goo, but they can pack a bite." +
-                        "The red slimes are poisonous in addition to other icky characteristics.";
     }
 }

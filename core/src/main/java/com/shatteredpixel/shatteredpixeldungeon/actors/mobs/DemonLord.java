@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.WornKey;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPsionicBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.DemonLordSprite;
@@ -36,10 +35,6 @@ import com.watabou.utils.Random;
 
 import java.util.HashSet;
 
-public class DemonLord extends UMob {
-
-    {
-        name = "demon lord";
 //port-oldstats
 public class DemonLord extends Mob {
 
@@ -48,17 +43,6 @@ public class DemonLord extends Mob {
 
         HP = HT = 180;
         defenseSkill = 35;
-        atkSkill = 45;
-        dmgRed = 22;
-        dmgMin = 20;
-        dmgMax = 50;
-        EXP = 16;
-
-        TYPE_EVIL = true;
-        maxLvl = 34;
-    }
-
-    @Override
         EXP = 16;
 
         maxLvl = 34;
@@ -97,15 +81,6 @@ public class DemonLord extends Mob {
         return damage;
     }
 
-
-    @Override
-    public String description() {
-        return
-                "A demon lord called from the pits of hell itself has come to claim this dungeon. "+
-                "for years he was held in check by the power of the dwarf king, but now you have "+
-                "let him loose on the world.";
-    }
-
     @Override
     public void die( Object cause ) {
 
@@ -115,26 +90,6 @@ public class DemonLord extends Mob {
 
         yell( "..." );
     }
-
-
-    private static final HashSet<Class<?>> RESISTANCES = new HashSet<Class<?>>();
-    static {
-        RESISTANCES.add( Grim.class );
-        RESISTANCES.add( Burning.class );
-    }
-
-    { resistances.addAll( RESISTANCES ); }
-
-    private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
-    static {
-        IMMUNITIES.add( Freezing.class );
-        IMMUNITIES.add( Sleep.class );
-        IMMUNITIES.add( Terror.class );
-        IMMUNITIES.add( ScrollOfPsionicBlast.class );
-        IMMUNITIES.add( Vertigo.class );
-    }
-
-    { immunities.addAll( IMMUNITIES ); }
 
 }
 

@@ -17,14 +17,6 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.SpiderBotSprite;
-import com.watabou.utils.Random;
-
-public class SpiderBot extends UMob {
-
-    {
-        name = "metal spider";
 import com.watabou.utils.Random;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
@@ -38,25 +30,12 @@ public class SpiderBot extends Mob {
 
         HP = HT = 60;
         defenseSkill = 12;
-        atkSkill = 25;
-        dmgRed = 8;
-        dmgMin = 12;
-        dmgMax = 16;
 
 
         viewDistance = Light.DISTANCE;
 
         EXP = 10;
         maxLvl = 20;
-        mobType = MOBTYPE_DEBUFF;
-        TYPE_MINDLESS = true;
-    }
-
-    @Override
-    public String description() {
-        return
-                "A metal spider; This strange little contraption stumbles around the dungeon looking for prey.";
-    }
     }
 
     @Override

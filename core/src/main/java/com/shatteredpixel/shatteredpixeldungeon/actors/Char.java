@@ -1653,9 +1653,9 @@ public abstract class Char extends Actor {
 		GOLD,
 		//Transformation PD, cannot be put to sleep
 		UNSLEEP( new HashSet<Class>(Arrays.asList(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep.class, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep.class, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy.class, Terror.class)),
-				new HashSet<Class>( Arrays.asList(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep.class, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep.class, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy.class) ));
+				new HashSet<Class>( Arrays.asList(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep.class, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep.class, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy.class) )),
 		//SPS monster kinds, plain tags with no built in resistances
-		MAGICER, ORC, FISHER, ELF, DWARF, TROLL, GOBLIN, BEAST, DRAGON, PLANT, ELEMENT, MECH, ALIEN, UNKNOW;
+		MAGICER, ORC, FISHER, ELF, DWARF, TROLL, GOBLIN, BEAST, DRAGON, PLANT, ELEMENT, MECH, ALIEN, UNKNOW,
 		//Magic Ling PD
 		SEARCH, PETS, HOLLOW, ABYSS, NECRO, TUMULUS, NOKOCK, NOBIG, NPC, HUNTER, MIMIC, UNKNOWN, GODCRACK, UNLESS;
 

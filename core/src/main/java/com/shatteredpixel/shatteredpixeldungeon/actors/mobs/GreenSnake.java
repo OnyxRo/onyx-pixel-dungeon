@@ -17,12 +17,6 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
-import com.shatteredpixel.shatteredpixeldungeon.sprites.GreenSnakeSprite;
-
-public class GreenSnake extends UMob {
-
-    {
-        name = "dungeon snake";
 import com.watabou.utils.Random;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GreenSnakeSprite;
@@ -35,23 +29,12 @@ public class GreenSnake extends Mob {
 
         HP = HT = 10;
         defenseSkill = 3;
-        atkSkill = 8;
-        dmgRed = 1;
-        dmgMin = 1;
-        dmgMax = 4;
-        EXP = 2;
-
-        TYPE_ANIMAL = true;
         EXP = 2;
 
         maxLvl = 6;
     }
 
     @Override
-    public String description() {
-        return
-                "Common dungeon snakes thrive in the dark and damp environments found in caves and sewers.";
-    }
     public int attackSkill( Char target ) {
         return 8;
     }

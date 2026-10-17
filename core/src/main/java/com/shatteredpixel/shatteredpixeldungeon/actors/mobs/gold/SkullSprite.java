@@ -9,7 +9,7 @@ public class SkullSprite extends MobSprite {
     public SkullSprite() {
         super();
 
-        texture( Assets.Sprites.SKULLS);
+        texture( Assets.Sprites.SKULLS_ML);
 
         TextureFilm frames = new TextureFilm( texture, 10, 10 );
 

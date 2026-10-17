@@ -17,34 +17,6 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
-import com.shatteredpixel.shatteredpixeldungeon.sprites.LarvaSprite;
-
-public class Larva extends UMob {
-
-    {
-        name = "god's larva";
-        spriteClass = LarvaSprite.class;
-
-        HP = HT = 25;
-        defenseSkill = 20;
-        atkSkill = 30;
-        dmgRed = 8;
-        dmgMin = 15;
-        dmgMax = 20;
-
-        EXP = 0;
-
-        TYPE_ANIMAL = true;
-        TYPE_EVIL = true;
-        state = HUNTING;
-    }
-    private String TXT_DESC = "The Larva is the offspring of an ancient god.";
-
-    @Override
-    public String description() {
-        return TXT_DESC;
-
-    }
 import com.watabou.utils.Random;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GobLarvaSprite;

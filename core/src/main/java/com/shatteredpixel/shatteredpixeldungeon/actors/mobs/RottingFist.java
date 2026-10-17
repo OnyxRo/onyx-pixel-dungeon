@@ -30,10 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPsionicBlast;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.RottingFistSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GobRottingFistSprite;
@@ -41,30 +37,12 @@ import com.watabou.utils.Random;
 
 import java.util.HashSet;
 
-public class RottingFist extends UMob {
 //port-oldstats
 public class RottingFist extends Mob {
 
     private static final int REGENERATION	= 4;
 
     {
-        name = "rotting fist";
-        spriteClass = RottingFistSprite.class;
-
-        HP = HT = 300;
-        defenseSkill = 25;
-        atkSkill = 36;
-        dmgRed = 15;
-        dmgMin = 24;
-        dmgMax = 36;
-
-        EXP = 0;
-
-        TYPE_EVIL = true;
-        state = WANDERING;
-    }
-
-    private String TXT_DESC = "The Rotting Fist is an extension of an ancient god into our dimension.";
         spriteClass = GobRottingFistSprite.class;
 
         HP = HT = 300;
@@ -121,30 +99,4 @@ public class RottingFist extends Mob {
 
         return super.act();
     }
-
-    @Override
-    public String description() {
-        return TXT_DESC;
-
-    }
-
-    private static final HashSet<Class<?>> RESISTANCES = new HashSet<Class<?>>();
-    static {
-        RESISTANCES.add( ToxicGas.class );
-        RESISTANCES.add( Grim.class );
-        RESISTANCES.add( ScrollOfPsionicBlast.class );
-    }
-
-    { resistances.addAll( RESISTANCES ); }
-
-    private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
-    static {
-        IMMUNITIES.add( Amok.class );
-        IMMUNITIES.add( Sleep.class );
-        IMMUNITIES.add( Terror.class );
-        IMMUNITIES.add( Poison.class );
-        IMMUNITIES.add( Vertigo.class );
-    }
-
-    { immunities.addAll( IMMUNITIES ); }
 }

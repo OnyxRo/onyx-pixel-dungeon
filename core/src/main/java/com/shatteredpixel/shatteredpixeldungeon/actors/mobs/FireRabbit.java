@@ -112,7 +112,7 @@ public class FireRabbit extends Mob {
 	{
 		immunities.add(Locked.class);
 		immunities.add(Burning.class);
-		immunities.add(DamageType.FireDamage.class);
+		immunities.add(com.shatteredpixel.shatteredpixeldungeon.actors.damagetype.DamageType.FireDamage.class);
 		immunities.add(Fire.class);
 	}
 
