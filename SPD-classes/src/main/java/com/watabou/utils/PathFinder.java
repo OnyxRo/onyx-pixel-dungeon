@@ -48,6 +48,8 @@ public class PathFinder {
 	public static int[] CROSS2;
 	public static int[] NEIGHBOURS9;
 	public static int[] NEIGHBOURS25; //5x5 square without the middle, for Tower PD
+	public static int[] NEIGHBOURS1; //Magic Ling PD, the cell above
+	public static int[] NEIGHBOURS13; //Magic Ling PD, a diamond of radius 2 without the middle
 
 	//similar to their equivalent neighbour arrays, but the order is clockwise.
 	//Useful for some logic functions, but is slower due to lack of array-access order.
@@ -76,6 +78,8 @@ public class PathFinder {
 		CROSS2 = new int[]{-width, -1, +1, +width, -width*2, -2, +2, +width*2, 0};
 		NEIGHBOURS9 = new int[]{-width-1, -width, -width+1, -1, 0, +1, +width-1, +width, +width+1};
 
+		NEIGHBOURS1 = new int[]{-width};
+		NEIGHBOURS13 = new int[]{-width*2, -width-1, -width, -width+1, -2, -1, +1, +2, +width-1, +width, +width+1, +width*2};
 		NEIGHBOURS25 = new int[24];
 		int n25 = 0;
 		for (int dy = -2; dy <= 2; dy++) for (int dx = -2; dx <= 2; dx++) if (dx != 0 || dy != 0) NEIGHBOURS25[n25++] = dx + dy * width;

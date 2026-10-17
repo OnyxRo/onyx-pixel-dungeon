@@ -312,6 +312,9 @@ public class WorldShuffle {
 		if (Dungeon.branch == 0 && LOVECRAFT.equals(modLogo(level))) {
 			return com.shatteredpixel.shatteredpixeldungeon.actors.mobs.LovecraftSpawner.getMobRotation(depth);
 		}
+		if (Dungeon.branch == 0 && MAGIC_LING.equals(modLogo(level))) {
+			return com.shatteredpixel.shatteredpixeldungeon.actors.mobs.MagicLingSpawner.getMobRotation(depth);
+		}
 		//any other mod with monsters on the roster
 		String key = modKey(level);
 		if (Dungeon.branch == 0 && key != null && com.shatteredpixel.shatteredpixeldungeon.actors.mobs.ModRoster.hasMod(key)) {

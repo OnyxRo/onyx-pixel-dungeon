@@ -888,8 +888,19 @@ public abstract class Char extends Actor {
 		return cachedIncomingDOT;
 	}
 	
+	//Magic Ling PD, damage types. Its overrides take a type, ours are rewritten to the plain form by renames.py
+	public enum DamageType { PHYSICAL, MAGIC, REAL, Element, HG }
+
+	public void damage( int dmg, Object src, DamageType type ) {
+		damage( dmg, src );
+	}
+
+	public boolean attack( Char enemy, float dmgMulti, float dmgBonus, float accMulti, DamageType type ) {
+		return attack( enemy, dmgMulti, dmgBonus, accMulti );
+	}
+
 	public void damage( int dmg, Object src ) {
-		
+
 		if (!isAlive() || dmg < 0) {
 			return;
 		}
@@ -1597,7 +1608,9 @@ public abstract class Char extends Actor {
 		ANNOYING,
 		HUMAN,
 		//Transformation PD, marsh slime and kin
-		DARKSLIME;
+		DARKSLIME,
+		//Magic Ling PD
+		SEARCH, PETS, HOLLOW, ABYSS, NECRO, TUMULUS, NOKOCK, NOBIG, NPC, HUNTER, MIMIC, UNKNOWN, GODCRACK, UNLESS;
 
 		private HashSet<Class> resistances;
 		private HashSet<Class> immunities;

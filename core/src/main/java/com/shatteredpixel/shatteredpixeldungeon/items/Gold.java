@@ -86,6 +86,11 @@ public class Gold extends Item {
 		return true;
 	}
 	
+	//Magic Ling PD, four times the usual pile
+	public int random_4X() {
+		return Random.IntRange( 30 + Dungeon.depth * 10, 60 + Dungeon.depth * 20 ) * 4;
+	}
+
 	@Override
 	public Item random() {
 		quantity = Random.IntRange( 30 + Dungeon.depth * 10, 60 + Dungeon.depth * 20 );

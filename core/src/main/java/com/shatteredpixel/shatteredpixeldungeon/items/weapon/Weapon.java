@@ -326,6 +326,11 @@ abstract public class Weapon extends KindOfWeapon {
 		return !isIdentified() && usesLeftToID <= 0;
 	}
 	
+	//Magic Ling PD, weapon hooks for mobs that carry weapons. Plain weapons give nothing extra here
+	public int DRMax(Char owner) { return 0; }
+	public int defenseRoll(Char owner) { return 0; }
+	public float speedFactor(Char owner) { return 1f; }
+
 	@Override
 	public float accuracyFactor(Char owner, Char target) {
 		

@@ -94,6 +94,18 @@ RENAMES = [
     ('3.x heavyBlowAbility and cleaveAbility have a damage boost argument', r'\b(Mace\.heavyBlowAbility|Sword\.cleaveAbility)\(\s*hero\s*,\s*target\s*,\s*([\d.]+f?)\s*,\s*this\s*\)', r'\1(hero, target, \2, 0, this)'),
     ('3.x sneakAbility has target and invisibility turns', r'Dagger\.sneakAbility\(\s*hero\s*,\s*(\d+)\s*,\s*this\s*\)', r'Dagger.sneakAbility(hero, target, \1, 2, this)'),
     ('3.x beforeAbilityUsed(hero) takes the target', r'\bbeforeAbilityUsed\(\s*hero\s*\)', 'beforeAbilityUsed(hero, null)'),
+    # Magic Ling PD gives every hit a damage type. Char here has the type enum and three argument calls, but overrides keep the plain form
+    ('Magic Ling damage override with a type', r'(public|protected)(\s+)void(\s+)damage\(\s*int\s+(\w+)\s*,\s*Object\s+(\w+)\s*,\s*(?:Char\.)?DamageType\s+(\w+)\s*\)\s*\{', r'\1\2void\3damage( int \4, Object \5 ) {\n\t\tDamageType \6 = DamageType.PHYSICAL;'),
+    ('Magic Ling attack override with a type', r'(public|protected)(\s+)boolean(\s+)attack\(\s*Char\s+(\w+)\s*,\s*float\s+(\w+)\s*,\s*float\s+(\w+)\s*,\s*float\s+(\w+)\s*,\s*(?:Char\.)?DamageType\s+(\w+)\s*\)\s*\{', r'\1\2boolean\3attack( Char \4, float \5, float \6, float \7 ) {\n\t\tDamageType \8 = DamageType.PHYSICAL;'),
+    ('Magic Ling inner sprite classes of vanilla sprites', r'\b(?:BatSprite\.BatEDSprite|CrabSprite\.NewBornCrabSprite|MimicSprite\.Dimand)\b', lambda m: 'com.shatteredpixel.shatteredpixeldungeon.sprites.MagicLingSprites.' + m.group(0).split('.')[1]),
+    ('Magic Ling counters kept in MagicLingStats', r'\bStatistics\.(survey_research_points|unLockedFireDargon|doNotLookLing|sakaBackStage|spawnersIce|spawnersTombTownAlive|lanterfireactive|crivusfruitslevel2|crivusfruitslevel3|dimandchestmazeCollected|skydeadFight|defalult_deaddog|bossRushMode|dwarfKill|killYogMobsAnargy|attackIFGirl|RandomQuest|GoldMobDead|GoldMobLimit|TPDoorDieds|KillMazeMimic|goldRefogreCount)\b', r'com.shatteredpixel.shatteredpixeldungeon.MagicLingStats.\1'),
+    ('Magic Ling Random.Boolean', r'\bRandom\.Boolean\(\)', '(Random.Int(2) == 0)'),
+    ('Magic Ling Terrain.SALT_WATER', r'\bTerrain\.SALT_WATER\b', 'Terrain.WATER'),
+    ('Magic Ling mob.properties field', r'\b(mob|enemy|ch)\.properties\.contains', r'\1.properties().contains'),
+    ('Magic Ling ColorTargetedCell', r'new ColorTargetedCell\(', 'com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell.colored('),
+    ('Magic Ling Speck.ROT', r'\bSpeck\.ROT\b', 'Speck.TOXIC'),
+    ('Magic Ling Beam.DeathRayS', r'\bBeam\.DeathRayS\b', 'Beam.DeathRay'),
+    ('Magic Ling GameScene.scene.add', r'\bGameScene\.scene\.add\(', 'com.watabou.noosa.Game.scene().add('),
 ]
 
 def convert_long(s):

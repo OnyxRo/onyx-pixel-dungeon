@@ -130,6 +130,11 @@ public class Hunger extends Buff implements Hero.Doom {
 		return true;
 	}
 
+	//Magic Ling PD, the Crumb eats at the hero's food
+	public void damgeExtraHungry( int amount ) {
+		affectHunger( -amount );
+	}
+
 	public void satisfy( float energy ) {
 		affectHunger( energy, false );
 	}

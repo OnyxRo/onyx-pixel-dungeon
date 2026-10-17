@@ -16,6 +16,10 @@ PK = 'core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/'
 # rows 13 and 19 (zero based 12 and 18) and every row from 33 down are kept for other mods' items.
 # The sheet grows by itself when they run out, see free_cell.
 def mod_rows(height):
+    # ITEM_ROWS=60-67 (one based, set when several agents share the sheet) limits pictures to those rows
+    if os.environ.get('ITEM_ROWS'):
+        a, b = os.environ['ITEM_ROWS'].split('-')
+        return list(range(int(a) - 1, int(b)))
     return [12, 18] + list(range(32, height // 16))
 
 def LP(p):
@@ -36,15 +40,17 @@ defs = dict(re.findall(r'int\s+(\w+)\s*=\s*([^;]+);', body))
 def value(name, depth=0):
     assert depth < 20, name
     expr = defs[name]
-    expr = re.sub(r'xy\(\s*(\d+)\s*,\s*(\d+)\s*\)', lambda m: str(int(m.group(1)) - 1 + 16 * (int(m.group(2)) - 1)), expr)
+    expr = re.sub(r'xy\(\s*(\d+)\s*,\s*(\d+)\s*\)', lambda m: str(int(m.group(1)) - 1 + COLS * (int(m.group(2)) - 1)), expr)
     expr = re.sub(r'[A-Za-z_]\w*', lambda m: str(value(m.group(0), depth + 1)) if m.group(0) in defs else m.group(0), expr)
     assert re.fullmatch(r'[\d\s+\-*()]+', expr), (name, expr)
     return int(eval(expr))
 
 sheet_path = LP(MOD + 'core/src/main/assets/sprites/items.png')
+if not os.path.exists(sheet_path): sheet_path = LP(MOD + 'core/src/main/assets/sprites/items/items.png')   # Magic Ling keeps it in a folder
 if not os.path.exists(sheet_path): sheet_path = LP(MOD + 'core/src/main/assets/items.png')   # pre 0.8 mods keep it flat
 if not os.path.exists(sheet_path): sheet_path = LP(MOD + 'core/src/main/assets/ui/items.png')   # 0.5 and 0.6 mods keep it under ui
 src = Image.open(sheet_path).convert('RGBA')
+COLS = src.width // 16   # Magic Ling's sheet is 32 cells wide, Shattered's is 16
 dstp = ROOT + 'core/src/main/assets/sprites/items.png'
 dst = Image.open(dstp).convert('RGBA')
 p = ROOT + PK + 'sprites/ItemSpriteSheet.java'
@@ -56,6 +62,11 @@ def free_cell():
     global dst
     while True:
         for r in mod_rows(dst.height):
+            if (r + 1) * 16 > dst.height:
+                grown = Image.new('RGBA', (dst.width, (r + 1) * 16), (0, 0, 0, 0))
+                grown.paste(dst, (0, 0))
+                dst = grown
+                print('item sheet grown to', dst.height, 'px high')
             for c in range(16):
                 if dst.crop((c * 16, r * 16, c * 16 + 16, r * 16 + 16)).getbbox() is None: return c, r
         # nothing free, add eight rows (128 px) at the bottom and look again
@@ -71,7 +82,7 @@ for name in NAMES:
     if name not in defs:
         print('NOT IN MOD', name); continue
     i = value(name)
-    x, y = (i % 16) * 16, (i // 16) * 16
+    x, y = (i % COLS) * 16, (i // COLS) * 16
     tile = src.crop((x, y, x + 16, y + 16)); bb = tile.getbbox()
     if not bb:
         print('EMPTY CELL', name); continue
@@ -84,10 +95,11 @@ if consts:
     dst.save(dstp)
     a = '	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;\n'
     assert a in s
-    s = s.replace(a, a + consts, 1)
+    # ITEM_BEFORE=1 puts the new lines before the anchor, so two ports that add lines do not touch the same spot
+    s = s.replace(a, (consts + a) if os.environ.get('ITEM_BEFORE') else (a + consts), 1)
     # TX_HEIGHT must equal the sheet height or every picture is stretched
     s = re.sub(r'(int TX_HEIGHT = )\d+;', lambda m: m.group(1) + '%d;' % dst.height, s, count=1)
     a = '		assignItemRect(WOODEN_BOOMERANG, 12, 12);\n'
     assert a in s
-    s = s.replace(a, a + rects, 1)
+    s = s.replace(a, (rects + a) if os.environ.get('ITEM_BEFORE') else (a + rects), 1)
     io.open(p, 'w', encoding='utf-8', newline='').write(s.replace('\n', nl))

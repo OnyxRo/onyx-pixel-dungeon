@@ -373,6 +373,11 @@ public class ItemSpriteSheet {
 	private static final int MOD_ITEMS      =                               xy(1, 13);
 
 	public static final int WARPICK = MOD_ITEMS+0;
+	public static final int BONE_KNIFE = xy(1, 60);
+	public static final int SWORD_BAG = xy(2, 60);
+	public static final int GraveMeat = xy(3, 60);
+	public static final int DOGSTICK = xy(4, 60);
+	public static final int FISHSKELETON = xy(5, 60);
 	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;
 	public static final int ARMOR_DRAGON_KNIGHT = xy(7, 49);
 	public static final int ARMOR_VIKING = xy(1, 49);
@@ -749,6 +754,11 @@ public class ItemSpriteSheet {
 	public static final int RUBY = MOD_ITEMS+12;
 	static{
 		assignItemRect(WARPICK, 15, 14);
+		assignItemRect(BONE_KNIFE, 16, 13);
+		assignItemRect(SWORD_BAG, 16, 16);
+		assignItemRect(GraveMeat, 14, 13);
+		assignItemRect(DOGSTICK, 11, 15);
+		assignItemRect(FISHSKELETON, 16, 16);
 		assignItemRect(WOODEN_BOOMERANG, 12, 12);
 		assignItemRect(ARMOR_DRAGON_KNIGHT, 15, 13);
 		assignItemRect(ARMOR_VIKING, 11, 13);

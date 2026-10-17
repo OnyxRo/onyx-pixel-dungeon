@@ -110,6 +110,9 @@ import java.util.HashSet;
 
 public abstract class Mob extends Char {
 
+	//Magic Ling PD, marks natural animals
+	public boolean isAnimal = false;
+
 	{
 		actPriority = MOB_PRIO;
 		
