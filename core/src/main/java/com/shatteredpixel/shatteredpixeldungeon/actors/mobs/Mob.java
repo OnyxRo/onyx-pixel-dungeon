@@ -147,6 +147,10 @@ public abstract class Mob extends Char {
 	protected static final float TIME_TO_WAKE_UP = 1f;
 
 	protected boolean firstAdded = true;
+	//from Transformation PD, called after an AllyBuff converts this mob to an ally
+	public void onAllyConversion(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff source) {
+	}
+
 	protected void onAdd(){
 		if (firstAdded) {
 			//modify health for ascension challenge if applicable, only on first add

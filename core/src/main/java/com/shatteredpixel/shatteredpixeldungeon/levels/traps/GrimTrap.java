@@ -41,6 +41,13 @@ import com.watabou.utils.Callback;
 
 public class GrimTrap extends Trap {
 
+	//from Transformation PD
+	public static int grimDamage(Char target) {
+		int damage = Math.round(target.HT / 2f + target.HP / 2f);
+		return target == Dungeon.hero ? (int) Math.min(damage, target.HT * 0.9f) : damage;
+	}
+
+
 	{
 		color = GREY;
 		shape = LARGE_DOT;

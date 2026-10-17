@@ -382,6 +382,24 @@ public abstract class Actor implements Bundlable {
 		}
 	}
 	
+	//from Transformation PD, special enemy alignments are not here, so nothing is special
+	public static boolean isSpecialEnemyAlignment( Char.Alignment alignment ){
+		return false;
+	}
+
+	public static boolean isHostile( Char source, Char target ){
+		if (source == null || target == null || source == target
+				|| source.alignment == Char.Alignment.NEUTRAL || target.alignment == Char.Alignment.NEUTRAL) {
+			return false;
+		}
+		return source.alignment != target.alignment;
+	}
+
+	public static synchronized Char findCharById( int id ) {
+		Actor actor = ids.get(id);
+		return actor instanceof Char ? (Char) actor : null;
+	}
+
 	public static synchronized Char findChar( int pos ) {
 		for (Char ch : chars){
 			if (ch.pos == pos)

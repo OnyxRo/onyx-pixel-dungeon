@@ -218,6 +218,15 @@ public class ModRoster {
 		add( "lovecraft", Pepe.class, 0, 1, 99 );
 		add( "lovecraft", BanditLord.class, 0, 1, 99 );
 		add( "lovecraft", LivingPlantFadeLeaf.class, 0, 1, 99 );
+		add( "transformation", WildDread.class, 0, 1, 99 );
+		add( "transformation", DarkMechanicalFist.class, 0, 1, 99 );
+		add( "transformation", DeathButterfly.class, 0, 1, 99 );
+		add( "transformation", Corpse.class, 0, 1, 99 );
+		add( "transformation", ElfWineCup.class, 0, 1, 99 );
+		add( "transformation", AlienatedPrismaticGuard.class, 0, 1, 99 );
+		add( "transformation", TowerBossSlashMarks.class, 0, 1, 99 );
+		add( "transformation", VaultMob.class, 0, 1, 99 );
+		add( "transformation", Obscura.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */
