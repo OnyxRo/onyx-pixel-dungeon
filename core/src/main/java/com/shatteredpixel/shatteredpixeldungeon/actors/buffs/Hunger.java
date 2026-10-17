@@ -92,6 +92,9 @@ public class Hunger extends Buff implements Hero.Doom {
 					hungerDelay *= 1.5f;
 				}
 				hungerDelay /= SaltCube.hungerGainMultiplier();
+				if (target instanceof Hero && ((Hero) target).hasTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.NATURAL_AFFINITY)){
+					hungerDelay *= 1 + ((Hero) target).pointsInTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.NATURAL_AFFINITY) * 0.25f;
+				}
 				hungerDelay *= com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.hungerDelay(target);
 
 				float newLevel = level + (1f/hungerDelay);
@@ -102,6 +105,7 @@ public class Hunger extends Buff implements Hero.Doom {
 
 					GLog.n( Messages.get(this, "onstarving") );
 					hero.damage( 1, this );
+					if (hero.heroClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.FRIAR) Reason.loseReason(target, 2);
 
 					hero.interrupt();
 					newLevel = STARVING;
@@ -171,6 +175,7 @@ public class Hunger extends Buff implements Hero.Doom {
 		} else if (oldLevel < STARVING && level >= STARVING){
 			GLog.n( Messages.get(this, "onstarving") );
 			target.damage( 1, this );
+			if (target instanceof Hero && ((Hero) target).heroClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.FRIAR) Reason.loseReason(target, 2);
 		}
 
 		BuffIndicator.refreshHero();

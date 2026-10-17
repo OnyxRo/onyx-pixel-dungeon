@@ -205,6 +205,7 @@ public class Reason extends Buff implements ActionIndicator.Action {
     }
 
     public static void sufferingReason(Char c,int lose) {
+        if (c instanceof Hero) lose = Talent.beforeSufferingReasonLoss((Hero) c, lose);
         Reason r=null;
         if(c!=null && c.buff(Reason.class)!=null){
             r=c.buff(Reason.class);

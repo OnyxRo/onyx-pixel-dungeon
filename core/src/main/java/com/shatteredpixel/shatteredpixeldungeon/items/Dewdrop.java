@@ -82,6 +82,7 @@ public class Dewdrop extends Item {
 	public static boolean consumeDew(int quantity, Hero hero, boolean force){
 		//20 drops for a full heal
 		int effect = Math.round( hero.HT * 0.05f * quantity );
+		if (hero.hasTalent(Talent.QUALITY_ABSORPTION)) effect += (hero.pointsInTalent(Talent.QUALITY_ABSORPTION) + 1) * quantity;
 
 		int heal = Math.min( hero.HT - hero.HP, effect );
 

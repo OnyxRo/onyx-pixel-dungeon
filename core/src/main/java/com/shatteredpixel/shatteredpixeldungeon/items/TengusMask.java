@@ -108,6 +108,11 @@ public class TengusMask extends Item {
 			Buff.affect(curUser, Preparation.class);
 		}
 		
+		//Transformation PD, the Dark Slime's hook
+		if (way == HeroSubClass.DARKSLIME) {
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.DarkHook darkHook = Buff.affect(curUser, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.DarkHook.class);
+			ActionIndicator.setAction(darkHook);
+		}
 		//Transformation PD, the Friar's two subclasses
 		if (way == HeroSubClass.PIOUS) {
 			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason reason = Buff.affect(curUser, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.class);

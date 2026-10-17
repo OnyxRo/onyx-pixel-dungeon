@@ -70,7 +70,9 @@ public enum HeroSubClass {
 
 	//from Transformation PD
 	ALCHEMIST(HeroIcon.ALCHEMIST),
-	PIOUS(HeroIcon.PIOUS);
+	PIOUS(HeroIcon.PIOUS),
+	WATERSLIME(HeroIcon.WATERSLIME),
+	DARKSLIME(HeroIcon.DARKSLIME);
 
 	//Transformation PD asks this of subclasses (its Rat King hero shares them all)
 	public boolean is(HeroSubClass sub) {

@@ -533,6 +533,7 @@ public class YogDzewa extends Mob {
 		updateVisibility(Dungeon.level);
 
 		GameScene.bossSlain();
+		Badges.validateFriarUnlock(); //Transformation PD
 
 		if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES) && Statistics.spawnersAlive == 4){
 			Badges.validateBossChallengeCompleted();

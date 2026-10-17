@@ -253,6 +253,11 @@ public class Armor extends EquipableItem {
 
 	@Override
 	public boolean doEquip( Hero hero ) {
+		//Transformation PD, the Slime Girl can only wear slime armor
+		if (hero.heroClass == HeroClass.SLIMEGIRL && !((this instanceof SlimeArmor) || (this instanceof SlimeGirlArmor))){
+			GLog.n( Messages.get(Armor.class, "slime") );
+			return false;
+		}
 
 		// 15/25% chance
 		if (hero.heroClass != HeroClass.CLERIC && hero.hasTalent(Talent.HOLY_INTUITION)
@@ -373,6 +378,10 @@ public class Armor extends EquipableItem {
 
 	@Override
 	public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
+		if (hero.heroClass == HeroClass.SLIMEGIRL && !((this instanceof SlimeArmor) || (this instanceof SlimeGirlArmor))){
+			GLog.n( Messages.get(Armor.class, "slime") );
+			return false;
+		}
 		if (super.doUnequip( hero, collect, single )) {
 
 			hero.belongings.armor = null;

@@ -90,9 +90,18 @@ public class Ooze extends Buff implements Buff.DOTbuff {
 	@Override
 	public boolean act() {
 		//washing away happens before debuff effects if debuff has gotten to act
-		if (acted && Dungeon.level.water[target.pos] && !target.flying){
+		boolean potentOoze = Dungeon.hero != null && Dungeon.hero.hasTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.POTENT_OOZE);
+		if (acted && Dungeon.level.water[target.pos] && !target.flying && !potentOoze){
 			detach();
 		} else if (target.isAlive()) {
+			//Transformation PD, the Dark Slime is not hurt by ooze
+			if (target == Dungeon.hero && Dungeon.hero.subClass.is(com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.DARKSLIME)){
+				detach();
+				return true;
+			}
+			if (potentOoze && acted && Dungeon.level.water[target.pos] && !target.flying){
+				left -= 4 - Dungeon.hero.pointsInTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.POTENT_OOZE);
+			}
 
 			acted = true;
 			if (Dungeon.scalingDepth() > 5) {

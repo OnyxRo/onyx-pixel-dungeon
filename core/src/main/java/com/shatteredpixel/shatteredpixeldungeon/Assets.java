@@ -395,6 +395,7 @@ public class Assets {
 		public static final String ZEALOT   = "splashes/zealot.png"; //ported, devoted
 		public static final String ARTIFICER = "splashes/artificer.jpg"; //ported, reforged
 		public static final String FRIAR = "splashes/friar.png"; //ported, transformation
+		public static final String SLIMEGIRL = "splashes/slime.png"; //ported, transformation
 		public static final String SUMMONER = "splashes/summoner.jpg"; //ported, ryuse
 		public static final String SORCERESS = "splashes/sorceress.png"; //ported, ryuse, the Summoner's other picture
 
@@ -751,6 +752,7 @@ public class Assets {
 		public static final String ZEALOT   = "sprites/zealot.png"; //ported, devoted
 		public static final String ARTIFICER = "sprites/artificer.png"; //ported, reforged
 		public static final String FRIAR = "sprites/friar.png"; //ported, transformation
+		public static final String SLIMEGIRL = "sprites/slimegirl.png"; //ported, transformation
 		public static final String SUMMONER = "sprites/summoner.png"; //ported, ryuse
 		public static final String VIKING = "sprites/viking.png"; //ported, dragonic
 		public static final String DRAGONKNIGHT = "sprites/dragonknight.png"; //ported, dragonic

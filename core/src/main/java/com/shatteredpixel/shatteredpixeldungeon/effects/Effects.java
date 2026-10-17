@@ -36,7 +36,8 @@ public class Effects {
 		DEATH_RAY,
 		LIGHT_RAY,
 		HEALTH_RAY,
-		GUNSHOT
+		GUNSHOT,
+		DARK_HOOK //Transformation PD
 	}
 	
 	public static Image get( Type type ) {
@@ -56,6 +57,9 @@ public class Effects {
 				break;
 			case CHAIN:
 				icon.frame(icon.texture.uvRect(6, 16, 11, 22));
+				break;
+			case DARK_HOOK:
+				icon.frame(icon.texture.uvRect(11, 22, 16, 28));
 				break;
 			case ETHEREAL_CHAIN:
 				icon.frame(icon.texture.uvRect(11, 16, 16, 22));

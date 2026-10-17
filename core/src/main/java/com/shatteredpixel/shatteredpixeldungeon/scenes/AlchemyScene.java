@@ -644,7 +644,7 @@ public class AlchemyScene extends PixelScene {
 
 			Recipe recipe = recipes.get(i);
 
-			int cost = recipe.cost(ingredients);
+			int cost = com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.alchemyEnergyCost(Dungeon.hero, recipe.cost(ingredients));
 
 			outputs[i].visible = true;
 			outputs[i].setRect(outputs[0].left(), top, BTN_SIZE, BTN_SIZE);
@@ -692,12 +692,13 @@ public class AlchemyScene extends PixelScene {
 		Item result = null;
 		
 		if (recipe != null){
-			int cost = recipe.cost(ingredients);
+			int cost = com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.alchemyEnergyCost(Dungeon.hero, recipe.cost(ingredients));
 			if (toolkit != null){
 				cost = toolkit.consumeEnergy(cost);
 			}
 			Catalog.countUses(EnergyCrystal.class, cost);
 			Dungeon.energy -= cost;
+			if (cost > 0) com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.onAlchemyEnergyConsumed(Dungeon.hero);
 
 			String energyText = Messages.get(AlchemyScene.class, "energy") + " " + Dungeon.energy;
 			if (toolkit != null){

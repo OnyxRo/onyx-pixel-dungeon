@@ -92,6 +92,8 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
@@ -258,6 +260,23 @@ public enum Talent {
 	CONCENTRATED_ESSENCE(596, 4), REAGENT_ENHANCEMENT(597, 4), REUSE_REAGENT(598, 4),
 	//Holy Prayer T4
 	PIOUS_FAITH(599, 4), SUPREME_BLESSING(600, 4), HATRED_OF_EVIL(601, 4),
+
+	//Slime Girl T1, from Transformation PD
+	RESILIENT_MEAL(416), LIQUID_PERCEPTION(417), WATER_WAVE(418), LIQUID_ARMOR(419),
+	//Slime Girl T2
+	TOUGH_MEAL(420), SLIME_GREENHOUSE(421), ENERGY_ABSORPTION(422), NATURAL_AFFINITY(423), QUALITY_ABSORPTION(424),
+	//Slime Girl T3
+	ORIGINAL_MONSTER(425, 3), EMPOWERING_LIFE(426, 3),
+	//Water Slime T3
+	WATER_BODY(427, 3), WATER_REVIVAL(428, 3), WATER_REGENERATION(429, 3),
+	//Dark Slime T3
+	POTENT_OOZE(430, 3), DARK_GAS(431, 3), DARK_LIQUID(432, 3),
+	//Spring Spell T4
+	POTENT_HEALING(433, 4), EFFICIENT_HEALING(434, 4), MASS_HEALING(435, 4),
+	//Rapid Waterfall T4
+	VIOLENT_STORM(436, 4), NEW_TRAP(437, 4), HOLY_BATH(438, 4),
+	//Mad Slime T4
+	NO_PICK(439, 4), FOOD_BONUS(440, 4), DELICIOUS_DIGESTION(441, 4),
 
 	//universal T4
 	HEROIC_ENERGY(26, 4), //See icon() and title() for special logic for this one
@@ -569,6 +588,8 @@ public enum Talent {
 					return 26;
 				case FRIAR:
 					return 602;
+				case SLIMEGIRL:
+					return 442;
 			}
 		} else {
 			return icon;
@@ -797,6 +818,19 @@ public enum Talent {
 		}
 		AlchemyShield shield = hero.buff(AlchemyShield.class);
 		if (shield != null) dmg = shield.absorb(dmg, src);
+		if (hero.subClass.is(HeroSubClass.WATERSLIME)){
+			SlimeMucusCooldown mucus = hero.buff(SlimeMucusCooldown.class);
+			if (mucus != null) mucus.Reduce();
+		}
+		if (hero.hasTalent(ENERGY_ABSORPTION) && !(src instanceof Hunger)){
+			float before = dmg;
+			if (hero.heroClass == HeroClass.SLIMEGIRL){
+				dmg = (int)Math.min(dmg, hero.HT/(4+2*hero.pointsInTalent(ENERGY_ABSORPTION)));
+			} else {
+				dmg = (int)Math.min(dmg, hero.HT*(0.4f-0.1f*hero.pointsInTalent(ENERGY_ABSORPTION)));
+			}
+			if (before >= 1) dmg = Math.max(dmg, 1);
+		}
 		if (dmg >= hero.HP && triggerDyingWill(hero)){
 			dmg = Math.max(0, hero.HP - 1);
 			Sample.INSTANCE.play( Assets.Sounds.DEATHSDOOR, 1, 1, Random.Float( 0.9f, 1.1f ) );
@@ -869,6 +903,162 @@ public enum Talent {
 			com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RitualDagger ritualDagger = hero.belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RitualDagger.class);
 			if (ritualDagger != null) ritualDagger.onKill(hero);
 		}
+	}
+
+	//---- Transformation PD, the Slime Girl ------------------------------------------------------
+
+	public static class ResilientArmor extends Buff {
+		{ type = buffType.POSITIVE; }
+		public int left;
+		private static final String LEFT = "left";
+		@Override public int icon() { return BuffIndicator.ARMOR; }
+		@Override public void tintIcon(Image icon) { icon.hardlight(1, 1, 0); }
+		@Override public float iconFadePercent() { return Math.max(0, (3-left) / 3f); }
+		@Override public String iconTextDisplay() { return Integer.toString(left); }
+		@Override public String desc() { return Messages.get(this, "desc", left); }
+		public void set(int shots){ left = Math.max(left, shots); }
+		@Override public void storeInBundle( Bundle bundle ) { super.storeInBundle(bundle); bundle.put(LEFT, left); }
+		@Override public void restoreFromBundle( Bundle bundle ) { super.restoreFromBundle(bundle); left = bundle.getInt(LEFT); }
+	}
+
+	public static class SlimeMucusCooldown extends FlavourBuff {
+		@Override public int icon() { return BuffIndicator.TIME; }
+		@Override public void tintIcon(Image icon) { icon.hardlight(0.3f, 1f, 0.3f); }
+		@Override public float iconFadePercent() { return Math.max(0, visualcooldown() / 30); }
+		public void Reduce(){
+			spend(-1);
+			if (visualcooldown() <= 0) detach();
+		}
+	}
+
+	public static class DarkHookCooldown extends FlavourBuff {
+		@Override public int icon() { return BuffIndicator.TIME; }
+		@Override public void tintIcon(Image icon) { icon.hardlight(0.5f, 0.2f, 0.7f); }
+		@Override public float iconFadePercent() { return Math.max(0, visualcooldown() / 100); }
+		@Override
+		public void detach(){
+			if (Dungeon.hero != null && Dungeon.hero.subClass.is(HeroSubClass.DARKSLIME)){
+				ActionIndicator.setAction(Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.DarkHook.class));
+				BuffIndicator.refreshHero();
+			}
+			if (target.remove( this ) && target.sprite != null) fx( false );
+		}
+	}
+
+	//eating, for the Slime Girl
+	private static void onSlimeFoodEaten( Hero hero ){
+		if (hero.hasTalent(RESILIENT_MEAL)){
+			Buff.affect( hero, ResilientArmor.class).set(1 + hero.pointsInTalent(RESILIENT_MEAL)*2);
+		}
+		if (hero.hasTalent(TOUGH_MEAL)){
+			int healing;
+			if (hero.pointsInTalent(TOUGH_MEAL) == 1){
+				healing = Math.min(Math.max((int)(0.1 * (hero.HT - hero.HP)), 3), 15);
+			} else {
+				healing = Math.min(Math.max((int)(0.15 * (hero.HT - hero.HP)), 5), 25);
+			}
+			if (hero.hasTalent(ORIGINAL_MONSTER)) healing = (int)(healing * 1.5);
+			if (hero.subClass == HeroSubClass.WARDEN) {
+				Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Healing.class).setHeal(healing, 0, 1);
+			} else {
+				Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass.Health.class).boost(healing);
+			}
+		}
+	}
+
+	//drinking a potion, Liquid Perception tells you what one unknown potion or scroll is
+	private static void onSlimePotionUsed( Hero hero, float factor ){
+		if (hero.hasTalent(LIQUID_PERCEPTION) && factor == 2){
+			java.util.HashSet<Class<? extends com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion>> potions = com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion.getUnknown();
+			java.util.HashSet<Class<? extends com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll>> scrolls = com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll.getUnknown();
+			if (hero.pointsInTalent(LIQUID_PERCEPTION) == 2 && Random.Int(2) == 1 && !scrolls.isEmpty()){
+				com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll s = com.watabou.utils.Reflection.newInstance(Random.element(scrolls));
+				if (s != null){ s.identify(); GLog.p(Messages.get(Talent.class, "liquid_perception_found", s.name())); }
+			} else if (!potions.isEmpty()){
+				com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion p = com.watabou.utils.Reflection.newInstance(Random.element(potions));
+				if (p != null){ p.identify(); GLog.p(Messages.get(Talent.class, "liquid_perception_found", p.name())); }
+			}
+		}
+	}
+
+	//the Slime Girl's and Dark Slime's reactions when the hero is hit by an enemy in melee. Returns the damage left.
+	public static int onSlimeDefense( Hero hero, Char enemy, int damage ){
+		if (hero.pointsInTalent(DARK_GAS) > 0 && hero.subClass.is(HeroSubClass.DARKSLIME)){
+			boolean gas = false;
+			switch (hero.pointsInTalent(DARK_GAS)){
+				case 3:
+					if (Random.Int( 5 ) == 0){
+						com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene.add(com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob.seed(hero.pos, 20, com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StenchGas.class));
+						gas = true;
+					}
+				case 2:
+					if (Random.Int( 5 ) == 0){
+						com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene.add(com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob.seed(hero.pos, 20, com.shatteredpixel.shatteredpixeldungeon.actors.blobs.CorrosiveGas.class));
+						gas = true;
+					}
+				case 1:
+					if (Random.Int( 5 ) == 0){
+						com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene.add(com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob.seed(hero.pos, 20, com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas.class));
+						gas = true;
+					}
+					break;
+			}
+			if (gas) Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BlobImmunity.class, 4);
+		}
+		if (hero.buff(ResilientArmor.class) != null){
+			hero.buff(ResilientArmor.class).left--;
+			if (hero.buff(ResilientArmor.class).left <= 0) hero.buff(ResilientArmor.class).detach();
+		}
+		if (hero.subClass.is(HeroSubClass.DARKSLIME) && Random.Int(20) < 3){
+			Buff.affect(enemy, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze.class).set(20);
+		}
+		if (hero.subClass.is(HeroSubClass.WATERSLIME) && hero.buff(SlimeMucusCooldown.class) == null){
+			ArrayList<Integer> pos = new ArrayList<>();
+			PathFinder.buildDistanceMap( hero.pos, com.watabou.utils.BArray.not( Dungeon.level.solid, null ), 4 );
+			for (int i = 0; i < PathFinder.distance.length; i++) {
+				if (PathFinder.distance[i] < Integer.MAX_VALUE
+						&& Dungeon.level.traps.get(i) == null
+						&& com.shatteredpixel.shatteredpixeldungeon.actors.Actor.findChar( i ) == null
+						&& Dungeon.level.passable[i]
+						&& Dungeon.level.map[i] != com.shatteredpixel.shatteredpixeldungeon.levels.Terrain.EMPTY_SP) {
+					pos.add(i);
+				}
+			}
+			if (!pos.isEmpty()){
+				int hpToReduce = Math.max((int)(0.1 * hero.HP), 1);
+				if (hero.pointsInTalent(WATER_REVIVAL) == 3) hpToReduce = Math.max((int)(0.05 * hero.HP), 1);
+				if (hero.HP > hpToReduce){
+					Buff.affect(hero, SlimeMucusCooldown.class, 30f);
+					hero.HP -= hpToReduce;
+					hero.sprite.showStatusWithIcon(CharSprite.NEGATIVE, Integer.toString(hpToReduce), FloatingText.PHYS_DMG);
+					com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.SlimeMucus slime = new com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.SlimeMucus();
+					slime.pos = Random.element(pos);
+					com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene.add(slime, 1f);
+					Dungeon.level.occupyCell(slime);
+					Dungeon.level.pressCell(slime.pos);
+				}
+			}
+		}
+		return damage;
+	}
+
+	//attacking, for the Slime Girl
+	private static int onSlimeAttack( Hero hero, Char enemy, int dmg ){
+		if (hero.subClass.is(HeroSubClass.DARKSLIME) && Random.Int(10) < 5){
+			Buff.affect(enemy, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze.class).set(20);
+		}
+		if (hero.pointsInTalent(WATER_WAVE) > 0 && Dungeon.level.water[enemy.pos]){
+			dmg += hero.pointsInTalent(WATER_WAVE);
+		}
+		return dmg;
+	}
+
+	//The Slime Girl's wands, shots and heals are bigger when she has a shield
+	public static int empoweringLifeDamage( Hero hero, int dmg ){
+		if (hero != null && hero.hasTalent(EMPOWERING_LIFE) && hero.shielding() > 0){
+			dmg = (int)(dmg * (1f + 0.1f * hero.pointsInTalent(EMPOWERING_LIFE)));
+		}
+		return dmg;
 	}
 
 	public static void onTalentUpgraded( Hero hero, Talent talent ){
@@ -982,6 +1172,7 @@ public enum Talent {
 	public static class NatureBerriesDropped extends CounterBuff{{revivePersists = true;}};
 
 	public static void onFoodEaten( Hero hero, float foodVal, Item foodSource ){
+		onSlimeFoodEaten(hero);
 		if (hero.hasTalent(WHISPERING_MEAL)){
 			float duration = hero.pointsInTalent(WHISPERING_MEAL) == 1 ? 2f : 4f;
 			for (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob mob : Dungeon.level.mobs.toArray(new com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob[0])){
@@ -1147,6 +1338,7 @@ public enum Talent {
 	}
 
 	public static void onPotionUsed( Hero hero, int cell, float factor ){
+		onSlimePotionUsed(hero, factor);
 		if (hero.hasTalent(LIQUID_BARRIER)){
 			float duration = hero.pointsInTalent(LIQUID_BARRIER) == 1 ? 5f : 10f;
 			Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BlobImmunity.class, duration * factor);
@@ -1335,6 +1527,7 @@ public enum Talent {
 	}
 
 	public static int onAttackProc( Hero hero, Char enemy, int dmg ){
+		dmg = onSlimeAttack(hero, enemy, dmg);
 
 		//Transformation PD, the Friar's Crystal Gunpowder and Bullseye
 		if (hero.hasTalent(CRYSTAL_GUNPOWDER)){
@@ -1510,6 +1703,9 @@ public enum Talent {
 			case FRIAR:
 				Collections.addAll(tierTalents, TRANQUIL_TINCTURE, RAVENS_EYE);
 				break;
+			case SLIMEGIRL:
+				Collections.addAll(tierTalents, RESILIENT_MEAL, LIQUID_ARMOR);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -1557,6 +1753,9 @@ public enum Talent {
 			case FRIAR:
 				Collections.addAll(tierTalents, WHISPERING_MEAL, LIQUID_BARRIER, FAST_RELOAD);
 				break;
+			case SLIMEGIRL:
+				Collections.addAll(tierTalents, TOUGH_MEAL, SLIME_GREENHOUSE, ENERGY_ABSORPTION);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -1601,6 +1800,9 @@ public enum Talent {
 				break;
 			case FRIAR:
 				Collections.addAll(tierTalents, HUMAN_GLORY);
+				break;
+			case SLIMEGIRL:
+				Collections.addAll(tierTalents, ORIGINAL_MONSTER);
 				break;
 		}
 		for (Talent talent : tierTalents){
@@ -1701,6 +1903,12 @@ public enum Talent {
 				break;
 			case PIOUS:
 				Collections.addAll(tierTalents, NEVER_COMPROMISE, REWIND_TIME, BRIGHT_WARRIOR);
+				break;
+			case WATERSLIME:
+				Collections.addAll(tierTalents, WATER_BODY, WATER_REVIVAL, WATER_REGENERATION);
+				break;
+			case DARKSLIME:
+				Collections.addAll(tierTalents, POTENT_OOZE, DARK_GAS, DARK_LIQUID);
 				break;
 		}
 		for (Talent talent : tierTalents){

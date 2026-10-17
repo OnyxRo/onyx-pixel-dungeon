@@ -287,6 +287,7 @@ public class Goo extends Mob {
 		Dungeon.level.unseal();
 		
 		GameScene.bossSlain();
+		Badges.validateSlimeUnlock(); //Transformation PD
 		Dungeon.level.drop( new WornKey( Dungeon.depth ), pos ).sprite.drop();
 		
 		//60% chance of 2 blobs, 30% chance of 3, 10% chance for 4. Average of 2.5

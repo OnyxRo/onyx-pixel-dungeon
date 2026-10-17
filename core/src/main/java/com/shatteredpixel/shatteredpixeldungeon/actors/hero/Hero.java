@@ -374,7 +374,15 @@ public class Hero extends Char {
 	public void updateHT( boolean boostHP ){
 		int curHT = HT;
 		
-		HT = 20 + 5*(lvl-1) + HTBoost;
+		if (heroClass == HeroClass.SLIMEGIRL){
+			//Transformation PD, the Slime Girl is sturdier to start and gains more a level
+			HT = 25 + 6*(lvl-1) + HTBoost;
+		} else {
+			HT = 20 + 5*(lvl-1) + HTBoost;
+		}
+		if (subClass.is(HeroSubClass.WATERSLIME)){
+			HT += (int) Math.round(0.5 * lvl * (1 + pointsInTalent(Talent.WATER_BODY)));
+		}
 		float multiplier = RingOfMight.HTMultiplier(this);
 		HT = Math.round(multiplier * HT);
 		HT = com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.maxHP(this, HT);
@@ -385,6 +393,10 @@ public class Hero extends Char {
 
 		HT += vitalityBonus;
 		HT += (int) (bountyhunterbuff * 3);
+		if (subClass.is(HeroSubClass.DARKSLIME)){
+			HT *= 0.8f;
+		}
+		if (HT < 1) HT = 1;
 
 		if (boostHP){
 			HP += Math.max(HT - curHT, 0);
@@ -1958,6 +1970,9 @@ public class Hero extends Char {
 
 		//Cursed PD's guard turns a blow aside, see Defense
 		if (guardProc( enemy, damage )) return 0;
+
+		//Transformation PD, the Slime Girl
+		damage = Talent.onSlimeDefense( this, enemy, damage );
 		
 		if (damage > 0 && subClass == HeroSubClass.BERSERKER){
 			Berserk berserk = Buff.affect(this, Berserk.class);
