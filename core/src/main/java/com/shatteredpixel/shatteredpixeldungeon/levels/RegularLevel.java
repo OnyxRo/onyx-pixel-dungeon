@@ -481,6 +481,16 @@ public abstract class RegularLevel extends Level {
 					if (heaps.get(cell) == dropped) {
 						dropped.type = Heap.Type.LOCKED_CHEST;
 						addItemToSpawn(new GoldenKey(Dungeon.depth));
+						//Lovecraft PD, in its worlds a locked chest is one of five kinds, each with its own key
+						if ("lovecraft".equals( WorldShuffle.modKey( this ) )) {
+							Heap.Type[] kinds = { Heap.Type.EBONY_CHEST, Heap.Type.HOWARD_CHEST, Heap.Type.EVAN_CHEST, Heap.Type.GOLD_CHEST };
+							int pick = Random.Int( 5 );
+							if (pick > 0) {
+								itemsToSpawn.remove( itemsToSpawn.size() - 1 );
+								dropped.type = kinds[pick - 1];
+								addItemToSpawn( Heap.lovecraftKey( dropped.type, Dungeon.depth ) );
+							}
+						}
 					}
 				}
 			} else {

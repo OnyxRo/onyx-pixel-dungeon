@@ -223,6 +223,14 @@ public class ItemSprite extends MovieClip {
 				view( ItemSpriteSheet.LOCKED_CHEST, null ); break;
 			case CRYSTAL_CHEST:
 				view( ItemSpriteSheet.CRYSTAL_CHEST, null ); break;
+			case EBONY_CHEST:
+				view( ItemSpriteSheet.EBONY_CHEST, null ); break;
+			case HOWARD_CHEST:
+				view( ItemSpriteSheet.HOWARD_CHEST, null ); break;
+			case EVAN_CHEST:
+				view( ItemSpriteSheet.EVAN_CHEST, null ); break;
+			case GOLD_CHEST:
+				view( ItemSpriteSheet.GOLD_CHEST, null ); break;
 			case TOMB:
 				view( ItemSpriteSheet.TOMB, null ); break;
 			case SKELETON:

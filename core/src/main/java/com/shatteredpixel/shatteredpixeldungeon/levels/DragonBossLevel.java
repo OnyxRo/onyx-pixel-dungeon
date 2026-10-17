@@ -253,6 +253,7 @@ public class DragonBossLevel extends Level {
 				passable[(dragon.pos) - i] = true;
 
 			}
+			unseal(); //Dragonic ended the game here, in this game the way down opens. Done first so nothing later can leave the floor sealed
 			dragon.die(Dungeon.hero);
 			dragon.sprite.kill();
 			changeMap(MAP_END);

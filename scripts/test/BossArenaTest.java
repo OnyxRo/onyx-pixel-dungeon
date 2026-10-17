@@ -70,7 +70,7 @@ public class BossArenaTest {
 				} catch (Throwable t) {
 					current = null;
 					String msg = String.valueOf( t.getMessage() );
-					if (t instanceof NullPointerException && msg.matches( "(?is).*(emitter|sprite|fieldOfView|Camera|[.]parent|Scene).*" )) {
+					if (t instanceof NullPointerException && msg.matches( "(?is).*(emitter|sprite|fieldOfView|Camera|[.]parent|Scene|HealthIndicator).*" )) {
 						headless++;
 						System.out.println( "HEADLESS (not counted): " + name + " on floor " + depth + ": " + msg.substring( 0, Math.min( 120, msg.length() ) ) );
 					} else {
@@ -165,7 +165,9 @@ public class BossArenaTest {
 		//dying bosses may hand the unseal to a later turn, give the level a few of its own
 		if (level.locked && !bosses.isEmpty()) {
 			String cls = level.getClass().getSimpleName();
-			if (MULTI_PHASE.contains( name ) || MULTI_PHASE.contains( cls ) || cls.contains( "PrisonBossLevel" ) || cls.contains( "TenguBossLevel" )) {
+			if (level instanceof com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel) {
+				dragonPhases( (com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel)level, name, depth );
+			} else if (MULTI_PHASE.contains( name ) || MULTI_PHASE.contains( cls ) || cls.contains( "PrisonBossLevel" ) || cls.contains( "TenguBossLevel" )) {
 				//the boss changes the map and comes back several times, one kill in a headless run is not the end of the fight
 				warnings++;
 				System.out.println( "WARN: " + name + " on floor " + depth + " is a multi-phase fight, kill the boss in every phase in the sandbox to check the unseal." );
@@ -191,6 +193,39 @@ public class BossArenaTest {
 		}
 	}
 
+	/**
+	 * The Dragon's four phases (fire rings, fire wave, maze, crumbling arena) are driven by calling the level's own
+	 * progress step, the way the hero's movement does in play. The last step must unseal the floor.
+	 */
+	static void dragonPhases( com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel level, String name, int depth ) {
+		com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.State before = com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.state;
+		StringBuilder trail = new StringBuilder( String.valueOf( before ) );
+		boolean cutShort = false;
+		for (int i = 0; i < 6 && com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.state != com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.State.WON; i++) {
+			com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.State was = com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.state;
+			boolean hit = quietly( level::progress );
+			cutShort |= hit;
+			System.out.println( "INFO: Dragon step from " + was + " limit hit " + hit + " sealed " + level.locked );
+			trail.append( " > " ).append( com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.state );
+			if (com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.state == was) {
+				//a step that stopped at a headless limit (a null sprite) leaves the state behind, move it on by hand so the later phases and the unseal still run
+				if (!cutShort) break;
+				com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.state = com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.State.values()[was.ordinal() + 1];
+				trail.append( " (forced)" );
+				cutShort = false;
+			}
+		}
+		boolean won = com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.state == com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.State.WON;
+		System.out.println( "INFO: Dragon phases " + trail );
+		if (won && level.locked) {
+			failures++;
+			System.out.println( "FAIL: " + name + " on floor " + depth + " is still sealed after all four phases" );
+		} else if (!won) {
+			warnings++;
+			System.out.println( "WARN: " + name + " on floor " + depth + " stopped at " + com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.state + (cutShort ? " at a headless limit" : "") + ", play the later phases in the sandbox." );
+		}
+	}
+
 	/** Runs one step. A null emitter, sprite or scene is the headless run's limit, the state it leaves behind is still checked. */
 	static boolean quietly( Runnable step ) {
 		try {
@@ -198,7 +233,7 @@ public class BossArenaTest {
 			return false;
 		} catch (NullPointerException e) {
 			String msg = String.valueOf( e.getMessage() );
-			if (!msg.matches( "(?is).*(emitter|sprite|fieldOfView|Camera|[.]parent|Scene).*" )) throw e;
+			if (!msg.matches( "(?is).*(emitter|sprite|fieldOfView|Camera|[.]parent|Scene|HealthIndicator).*" )) throw e;
 			headless++;
 			//which frames keep hitting the limit, printed once each so the stubs can be improved
 			StackTraceElement top = e.getStackTrace()[0];

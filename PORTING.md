@@ -136,3 +136,18 @@ Left out, and why.
 - Not seen on screen yet. The sanity bar, the three new rooms, living plants waking up, guns firing, the herb and tincture windows. The arena picture showed the new monsters and living plants fine.
 
 Tool changes made. `port-itemsprites.py` reads `ui/items.png` for 0.5 and 0.6 mods. `port-skip.txt` has the mod launcher and the scenes it drags in.
+
+## Lovecraft and Dragonic, finishing pass (2026-10-16, branch onyx/p2-lovedrag)
+
+Lovecraft.
+- Potion of Might is a normal potion again (the Dragonic merge had turned it into a plain item while the deck and loot still treated it as a potion). It raises mental health as in the mod. Venom, Venom Gas, Wand of Venom, Stunning, Knuckles and Curare Dart were compared line by line with the Lovecraft versions, the only differences are API names, so the monsters behave as in the mod. Venom now extends Poison (Dragonic's form), which keeps the "died from venom" ending.
+- Knowledge gating (`Hero.knowledgeGated`, only inside Lovecraft worlds and never in a god mode sandbox). A scroll needs at least 1 knowledge and costs 1, a wand gets a LIGHT action for 5 knowledge (Light and Bless for half the usual time, the mod's Mental Strength buff is not here). Knowledge comes from opening chests and tombs (`Heap.open`), finding secrets (2 each), and the herbs that already gave it.
+- Weightstone (applies Shattered's speed or damage augment, the mod's imbue system is gone), Dividing, Heavy Crossbow, Boomerang and Chakram (thrown boomerangs on `HeavyBoomerang`, the mod's were equipped weapons). Scroll of Magical Infusion was already in from Dragonic and matches the mod.
+- Four new locked chests (Ebony, Howard, Evan, Gold) with their own keys (Wooden, Lead, Titanium, Platinum). In a Lovecraft world a locked chest is one of five kinds as in the mod (`RegularLevel`, `Heap.lovecraftKey`). Pictures in row 100 of items.png, cells 2 to 4 (Ebony already existed).
+- Item pictures of this pass are in row 100 cells 0 to 4. `TX_HEIGHT` is 1696 now.
+- Left out. The Cthulhu and badge scenes do not exist in the mod, it only has Cthulhu in book titles and flavour text. The insanity choice windows, WndAlchemy, WndGrimoire and the language and prefs windows still rewrite core screens. Seed Pouch, Food Bag and Wand Holster match Velvet Pouch, Food Holder and Magical Holster in this game.
+
+Dragonic.
+- Nilheim (`NilheimLevel`, Prison region, 56 worlds in total). The mod's own sheet is missing from its repo, so the tiles are Shattered's Prison sheet shifted to an icy blue, with the Prison water, music and ambience.
+- Seed Pouch, Wand Holster, Newborn Elemental and Tamahawk were compared with what this game has (same sizes and stats), nothing to add. Boomerang is the new Lovecraft one.
+- Dragon boss test. `BossArenaTest.dragonPhases` drives the level's own `progress()` through all four phases and fails if the floor is still sealed after the last. A step that stops at a headless limit is moved on by hand and shown as forced. Still worth playing the fight in the sandbox.

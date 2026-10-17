@@ -76,6 +76,7 @@ import java.util.ArrayList;
 public abstract class Wand extends Item {
 
 	public static final String AC_ZAP	= "ZAP";
+	public static final String AC_LIGHT	= "LIGHT";
 
 	private static final float TIME_TO_ZAP	= 1f;
 	
@@ -108,6 +109,10 @@ public abstract class Wand extends Item {
 		if (curCharges > 0 || !curChargeKnown) {
 			actions.add( AC_ZAP );
 		}
+		//Lovecraft PD, five knowledge buy a short burst of light and blessing
+		if (hero.knowledgeGated() && hero.knowl >= 5) {
+			actions.add( AC_LIGHT );
+		}
 
 		return actions;
 	}
@@ -122,7 +127,16 @@ public abstract class Wand extends Item {
 			curUser = hero;
 			curItem = this;
 			GameScene.selectCell( zapper );
-			
+
+		}
+
+		if (action.equals( AC_LIGHT )) {
+			hero.loseKnowl( 5 );
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.prolong( hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light.class, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless.DURATION/2 );
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.prolong( hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless.class, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless.DURATION/2 );
+			hero.sprite.showStatus( com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite.POSITIVE, Messages.get( Wand.class, "light_msg" ) );
+			hero.spend( 1f );
+			hero.busy();
 		}
 	}
 

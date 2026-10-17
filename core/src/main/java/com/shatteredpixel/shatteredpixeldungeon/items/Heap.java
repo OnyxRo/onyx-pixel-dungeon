@@ -65,11 +65,28 @@ public class Heap implements Bundlable {
 		CHEST,
 		LOCKED_CHEST,
 		CRYSTAL_CHEST,
+		//from Lovecraft PD, locked chests with their own keys
+		EBONY_CHEST,
+		HOWARD_CHEST,
+		EVAN_CHEST,
+		GOLD_CHEST,
 		TOMB,
 		SKELETON,
 		REMAINS
 	}
 	public Type type = Type.HEAP;
+
+	/** Lovecraft PD, the key a chest of its own kind needs, or null for any other chest. */
+	public static com.shatteredpixel.shatteredpixeldungeon.items.keys.Key lovecraftKey( Type t, int depth ){
+		switch (t) {
+			case EBONY_CHEST: return new com.shatteredpixel.shatteredpixeldungeon.items.keys.WoodenKey( depth );
+			case HOWARD_CHEST: return new com.shatteredpixel.shatteredpixeldungeon.items.keys.LeadKey( depth );
+			case EVAN_CHEST: return new com.shatteredpixel.shatteredpixeldungeon.items.keys.TitaniumKey( depth );
+			case GOLD_CHEST: return new com.shatteredpixel.shatteredpixeldungeon.items.keys.PlatinKey( depth );
+			default: return null;
+		}
+	}
+
 	
 	public int pos = 0;
 	
@@ -380,6 +397,7 @@ public class Heap implements Bundlable {
 			case CHEST:
 				return Messages.get(this, "chest");
 			case LOCKED_CHEST:
+			case EBONY_CHEST: case HOWARD_CHEST: case EVAN_CHEST: case GOLD_CHEST:
 				return Messages.get(this, "locked_chest");
 			case CRYSTAL_CHEST:
 				return Messages.get(this, "crystal_chest");
@@ -400,6 +418,8 @@ public class Heap implements Bundlable {
 				return Messages.get(this, "chest_desc");
 			case LOCKED_CHEST:
 				return Messages.get(this, "locked_chest_desc");
+			case EBONY_CHEST: case HOWARD_CHEST: case EVAN_CHEST: case GOLD_CHEST:
+				return Messages.get(this, "locked_chest_desc_other");
 			case CRYSTAL_CHEST:
 				if (peek() instanceof Artifact)
 					return Messages.get(this, "crystal_chest_desc", Messages.get(this, "artifact") );

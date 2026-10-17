@@ -176,7 +176,14 @@ public abstract class Scroll extends Item {
 		super.execute( hero, action );
 
 		if (action.equals( AC_READ )) {
-			
+
+			//Lovecraft PD, in its worlds a scroll costs one knowledge and cannot be read without any
+			if (hero.knowledgeGated() && hero.knowl <= 0) {
+				GLog.n( Messages.get(Scroll.class, "lacking_knowl") );
+				hero.sprite.showStatus( com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite.NEGATIVE, "?" );
+				return;
+			}
+
 			if (hero.buff(MagicImmune.class) != null){
 				GLog.w( Messages.get(this, "no_magic") );
 			} else if (hero.buff( Blindness.class ) != null) {
@@ -186,12 +193,13 @@ public abstract class Scroll extends Item {
 					&& !(this instanceof ScrollOfRemoveCurse || this instanceof ScrollOfAntiMagic)){
 				GLog.n( Messages.get(this, "cursed") );
 			} else {
+				if (hero.knowledgeGated()) hero.loseKnowl( 1 );
 				doRead();
 			}
-			
+
 		}
 	}
-	
+
 	public abstract void doRead();
 
 	public void readAnimation() {

@@ -175,7 +175,9 @@ public class WorldShuffle {
 			//Tower Pixel Dungeon
 			TowerSewersLevel.class, OozySewersLevel.class, TowerPrisonLevel.class, TowerTempleLevel.class, TowerCavesLevel.class, GoblinGrottoLevel.class, TowerMinesLevel.class, TowerCityLevel.class, DwarvenGatesLevel.class, MagesQuarterLevel.class, TowerHallsLevel.class, SoulDesertLevel.class,
 			//Lovecraft Pixel Dungeon
-			OverworldLevel.class, EldritchSewersLevel.class, EldritchPrisonLevel.class, EldritchCavesLevel.class, EldritchCityLevel.class, EldritchHallsLevel.class
+			OverworldLevel.class, EldritchSewersLevel.class, EldritchPrisonLevel.class, EldritchCavesLevel.class, EldritchCityLevel.class, EldritchHallsLevel.class,
+			//Dragonic Pixel Dungeon, second part
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.NilheimLevel.class
 	};
 
 	/** A world that fits any region, used for Transformation's tower styles. */
@@ -226,7 +228,9 @@ public class WorldShuffle {
 			//Tower Pixel Dungeon
 			SEWERS, SEWERS, PRISON, PRISON, CAVES, CAVES, CAVES, CITY, CITY, CITY, HALLS, HALLS,
 			//Lovecraft Pixel Dungeon
-			SEWERS, SEWERS, PRISON, CAVES, CITY, HALLS
+			SEWERS, SEWERS, PRISON, CAVES, CITY, HALLS,
+			//Dragonic Pixel Dungeon, Nilheim
+			PRISON
 	};
 
 	//the source mod's app icon for each world, in the same order as WORLDS. Null for Shattered's own
@@ -284,7 +288,9 @@ public class WorldShuffle {
 			//Tower Pixel Dungeon
 			TOWER, TOWER, TOWER, TOWER, TOWER, TOWER, TOWER, TOWER, TOWER, TOWER, TOWER, TOWER,
 			//Lovecraft Pixel Dungeon
-			LOVECRAFT, LOVECRAFT, LOVECRAFT, LOVECRAFT, LOVECRAFT, LOVECRAFT
+			LOVECRAFT, LOVECRAFT, LOVECRAFT, LOVECRAFT, LOVECRAFT, LOVECRAFT,
+			//Dragonic Pixel Dungeon, second part
+			DRAGONIC
 	};
 
 	/** The asset path of the icon of the mod a floor's world comes from, or null for Shattered's own worlds. */

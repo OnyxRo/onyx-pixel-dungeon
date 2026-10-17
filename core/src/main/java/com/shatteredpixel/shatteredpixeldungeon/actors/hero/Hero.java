@@ -275,6 +275,12 @@ public class Hero extends Char {
 		return 5 + lvl * 5;
 	}
 
+	/** Lovecraft PD gates scrolls and wands on knowledge, only in its worlds and never in a sandbox run with god mode. */
+	public boolean knowledgeGated(){
+		return Dungeon.level != null && !Dungeon.godMode()
+				&& "lovecraft".equals( com.shatteredpixel.shatteredpixeldungeon.levels.WorldShuffle.modKey( Dungeon.level ) );
+	}
+
 	public void gainKnowl( int amount ){
 		if (amount <= 0) return;
 		knowl = Math.min( maxKnowl(), knowl + amount );
@@ -1482,6 +1488,8 @@ public class Hero extends Char {
 					noKey = Dungeon.branch != 0 || Notes.keyCount(new GoldenKey(Dungeon.depth)) < 1;
 				} else if (heap.type == Type.CRYSTAL_CHEST){
 					noKey = Dungeon.branch != 0 || Notes.keyCount(new CrystalKey(Dungeon.depth)) < 1;
+				} else if (Heap.lovecraftKey( heap.type, Dungeon.depth ) != null){
+					noKey = Dungeon.branch != 0 || Notes.keyCount( Heap.lovecraftKey( heap.type, Dungeon.depth ) ) < 1;
 				}
 
 				if (noKey){
@@ -2907,11 +2915,14 @@ public class Hero extends Char {
 					if (hasKey && keyUseTrack != null){
 						keyUseTrack.processCrystalLockOpened();
 					}
+				} else if (Heap.lovecraftKey( heap.type, Dungeon.depth ) != null){
+					hasKey = Dungeon.branch == 0 && Notes.remove( Heap.lovecraftKey( heap.type, Dungeon.depth ) );
 				}
 
 				if (hasKey) {
 					GameScene.updateKeyDisplay();
 					heap.open(this);
+					if (knowledgeGated()) gainKnowl(1);
 					spend(Key.TIME_TO_UNLOCK);
 				}
 			}
@@ -3080,7 +3091,8 @@ public class Hero extends Char {
 							ScrollOfMagicMapping.discover( curr );
 							
 							if (fieldOfView[curr]) smthFound = true;
-	
+							if (knowledgeGated() && isAlive()) gainKnowl(2);
+
 							if (talisman != null){
 								if (oldValue == Terrain.SECRET_TRAP){
 									talisman.charge(2);

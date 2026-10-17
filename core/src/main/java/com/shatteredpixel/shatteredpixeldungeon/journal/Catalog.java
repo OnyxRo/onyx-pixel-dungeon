@@ -722,7 +722,6 @@ public enum Catalog {
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.keys.PlatinKey.class);
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.keys.TitaniumKey.class);
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.keys.WoodenKey.class);
-		POTIONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight.class);
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.quest.ElderSign.class);
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.quest.YellowSign.class);
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.tools.Scissors.class);
@@ -762,6 +761,13 @@ public enum Catalog {
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.itemplants.SteamWeedItem.class);
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.itemplants.StormvineItem.class);
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.plants.itemplants.SungrassItem.class);
+
+		//items ported from lovecraft
+		ENCHANTMENTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Dividing.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.guns.HeavyCrossbow.class);
+		THROWN_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang.class);
+		THROWN_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Chakram.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.Weightstone.class);
 
 
 	}
