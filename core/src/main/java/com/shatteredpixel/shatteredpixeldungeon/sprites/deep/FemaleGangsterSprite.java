@@ -29,7 +29,7 @@ public class FemaleGangsterSprite extends MobSprite {
     public FemaleGangsterSprite() {
         super();
 
-        texture( Assets.Gangster);
+        texture( Assets.Sprites.Gangster);
 
         TextureFilm frames = new TextureFilm( texture, 12, 15 );
 

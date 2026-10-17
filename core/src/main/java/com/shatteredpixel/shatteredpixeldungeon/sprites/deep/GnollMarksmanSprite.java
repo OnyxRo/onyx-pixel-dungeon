@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.sprites.deep;
 
+import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.deep.*;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;

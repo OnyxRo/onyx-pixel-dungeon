@@ -29,7 +29,7 @@ public class SludgeSprite extends MobSprite {
 	public SludgeSprite() {
 		super();
 		
-		texture( Assets.Sludge );
+		texture( Assets.Sprites.Sludge );
 		
 		TextureFilm frames = new TextureFilm( texture, 14, 16 );
 		

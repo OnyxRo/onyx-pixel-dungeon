@@ -29,7 +29,7 @@ public class ItemSpriteSheet {
 	public static final int SIZE = 16;
 
 	private static final int TX_WIDTH = 256;
-	private static final int TX_HEIGHT = 960;
+	private static final int TX_HEIGHT = 1824;
 
 	private static final int WIDTH = TX_WIDTH / SIZE;
 
@@ -372,6 +372,18 @@ public class ItemSpriteSheet {
 	//items ported from other mods. Row 13 of the sheet, 16 slots
 	private static final int MOD_ITEMS      =                               xy(1, 13);
 
+	public static final int Aegis = xy(1, 114);
+	public static final int PinLuna = xy(2, 114);
+	public static final int PinSol = xy(3, 114);
+	public static final int SacrificialKnife = xy(4, 114);
+	public static final int Sorrowblade = xy(5, 114);
+	public static final int TheDebugger = xy(6, 114);
+	public static final int Cards = xy(7, 114);
+	public static final int ShadowShard = xy(8, 114);
+	public static final int CURSED_KEY = xy(9, 114);
+	public static final int ELVEN_KEY = xy(10, 114);
+	public static final int ROUGH_KEY = xy(11, 114);
+	public static final int SpiritsChalice = xy(12, 114);
 	public static final int WARPICK = MOD_ITEMS+0;
 	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;
 	public static final int ARMOR_DRAGON_KNIGHT = xy(7, 49);
@@ -748,6 +760,18 @@ public class ItemSpriteSheet {
 	public static final int ESSENCE = MOD_ITEMS+11;
 	public static final int RUBY = MOD_ITEMS+12;
 	static{
+		assignItemRect(Aegis, 16, 16);
+		assignItemRect(PinLuna, 16, 16);
+		assignItemRect(PinSol, 16, 16);
+		assignItemRect(SacrificialKnife, 16, 16);
+		assignItemRect(Sorrowblade, 16, 16);
+		assignItemRect(TheDebugger, 16, 16);
+		assignItemRect(Cards, 16, 16);
+		assignItemRect(ShadowShard, 16, 16);
+		assignItemRect(CURSED_KEY, 16, 16);
+		assignItemRect(ELVEN_KEY, 16, 16);
+		assignItemRect(ROUGH_KEY, 16, 16);
+		assignItemRect(SpiritsChalice, 16, 16);
 		assignItemRect(WARPICK, 15, 14);
 		assignItemRect(WOODEN_BOOMERANG, 12, 12);
 		assignItemRect(ARMOR_DRAGON_KNIGHT, 15, 13);

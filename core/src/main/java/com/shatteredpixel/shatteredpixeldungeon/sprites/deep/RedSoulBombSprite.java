@@ -29,7 +29,7 @@ public class RedSoulBombSprite extends MobSprite {
     public RedSoulBombSprite() {
         super();
 
-        texture( Assets.ShamanLeader );
+        texture( Assets.Sprites.ShamanLeader );
         TextureFilm film = new TextureFilm( texture, 30, 19 );
 
         idle = new Animation( 12, true );

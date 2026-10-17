@@ -29,7 +29,7 @@ public class LesserRatSprite extends MobSprite {
     public LesserRatSprite() {
         super();
 
-        texture( Assets.LesserRat );
+        texture( Assets.Sprites.LesserRat );
 
         TextureFilm frames = new TextureFilm( texture, 15, 16 );
 

@@ -29,7 +29,7 @@ public class IdolSprite extends MobSprite {
     public IdolSprite() {
         super();
 
-        texture( Assets.Idol);
+        texture( Assets.Sprites.Idol);
 
         TextureFilm frames = new TextureFilm( texture, 14, 19 );
 

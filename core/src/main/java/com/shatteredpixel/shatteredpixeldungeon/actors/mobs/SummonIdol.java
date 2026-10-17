@@ -20,6 +20,10 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.sprites.RatSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CrabSprite;
+
 import com.shatteredpixel.shatteredpixeldungeon.sprites.deep.*;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;

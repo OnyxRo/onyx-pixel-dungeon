@@ -29,7 +29,7 @@ public class MaleGangsterSprite extends MobSprite {
     public MaleGangsterSprite() {
         super();
 
-        texture( Assets.Gangster);
+        texture( Assets.Sprites.Gangster);
 
         TextureFilm frames = new TextureFilm( texture, 12, 15 );
 

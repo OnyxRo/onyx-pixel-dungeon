@@ -249,6 +249,7 @@ public class Generator {
 		//from Shittened PD. The new foods are not in normal drops, only in loot bags and the like.
 		FOOD_NEW( 0, 0, Food.class ),
 		EXOTIC	( 0, 0, com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion.class ),
+		IDOL	( 0, 0, Item.class ), //Deep PD, what idols drop
 		
 		POTION	( 8, 8, Potion.class ),
 		SEED	( 1, 1, Plant.Seed.class ),
@@ -623,6 +624,13 @@ public class Generator {
 			EXOTIC.classes = com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion.exoToReg.keySet().toArray(new Class<?>[0]);
 			EXOTIC.probs = new float[EXOTIC.classes.length];
 			java.util.Arrays.fill(EXOTIC.probs, 1f);
+			IDOL.classes = new Class<?>[]{
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Cards.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ShadowShard.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.Stylus.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.Gold.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.SacrificialKnife.class };
+			IDOL.probs = new float[]{ 20, 10, 15, 15, 20 };
 			
 			RING.classes = new Class<?>[]{
 					RingOfAccuracy.class,

@@ -97,7 +97,8 @@ RENAMES = [
     # Deep PD, written on the 0.4 base where Level fields were static
     ('Deep, Level.water/passable/solid/flamable static arrays', r'\bLevel\.(water|passable|solid|flamable|avoid|losBlocking|pit)\b(?=\[|\.clone|;|\))', r'Dungeon.level.\1'),
     ('Deep, Level.fieldOfView is heroFOV', r'\bLevel\.fieldOfView\b', 'Dungeon.level.heroFOV'),
-    ('Deep, King.Undead.count', r'King\.Undead\.count', '0'),
+    ('Old immunities()/resistances() methods became fields', r'@Override\s+public\s+HashSet<Class<\?>>\s+(immunities|resistances)\s*\(\s*\)\s*\{\s*return\s+(\w+)\s*;\s*\}', r'{ \1.addAll( \2 ); }'),
+    ('Deep, King.Undead.count',r'King\.Undead\.count', '0'),
     ('Deep, sprite folders flattened into sprites.deep', r'sprites\.(?:CavesMobsSprites|ForestMobsSprites|GnollMobsSprites|PrisonMobSprites|SewerMobSprites)\.(DarkRat|Goolem|LesserRat|Sludge|GnollKnight|GnollMarksman|BlueSoulBomb|RedSoulBomb|ShamanLeader|FemaleGangster|MaleGangster|GangBoss|NewbornElemental|Terminator|PurpleMushroom|RedMushroom|YellowMushroom|ElderShroom|Goblin)Sprite\b', r'sprites.deep.\1Sprite'),
     ('Deep, sprites kept at the top of sprites are in sprites.deep here', r'sprites\.(Assassin|GnollThiefBoss|GnollThief|Grieflord|Idol|KeyCreature|Mandrake|FlyingCat)Sprite\b', r'sprites.deep.\1Sprite'),
     ('Deep, other nested sprite folders hold Shattered sprites', r'sprites\.(?:CavesMobsSprites|ForestMobsSprites|GnollMobsSprites|PrisonMobSprites|SewerMobSprites|CityMobsSprites|HallsMobsSprites|MiscMobsSprites)\.(\w+)', r'sprites.\1'),
@@ -127,6 +128,9 @@ def apply(s):
     if re.search(r'\bChar\b', t) and not re.search(r'import [\w.]*\.Char;', t) and 'package ' + PKG + '.actors;' not in t:
         t = re.sub(r'(package [\w.]+;\r?\n)', r'\1\nimport ' + PKG + '.actors.Char;', t, count=1)
         fired.append('added the Char import')
+    if re.search(r'\bDungeon\.', t) and not re.search(r'import [\w.]*\.Dungeon;', t) and not re.search(r'package ' + re.escape(PKG) + r';', t):
+        t = re.sub(r'(package [\w.]+;\r?\n)', r'\1\nimport ' + PKG + '.Dungeon;', t, count=1)
+        fired.append('added the Dungeon import')
     if 'Random.' in t and 'import com.watabou.utils.Random;' not in t:
         t = re.sub(r'(package [\w.]+;\r?\n)', r'\1\nimport com.watabou.utils.Random;', t, count=1)
         fired.append('added the Random import')

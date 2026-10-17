@@ -29,7 +29,7 @@ public class TerminatorSprite extends MobSprite {
     public TerminatorSprite() {
         super();
 
-        texture( Assets.Terminator);
+        texture( Assets.Sprites.Terminator);
 
         TextureFilm frames = new TextureFilm( texture, 18, 20 );
 

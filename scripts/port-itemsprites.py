@@ -16,6 +16,10 @@ PK = 'core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/'
 # rows 13 and 19 (zero based 12 and 18) and every row from 33 down are kept for other mods' items.
 # The sheet grows by itself when they run out, see free_cell.
 def mod_rows(height):
+    # ITEM_ROWS=114-121 (one based, inclusive) limits a parallel run to its own rows
+    if os.environ.get('ITEM_ROWS'):
+        a, b = os.environ['ITEM_ROWS'].split('-')
+        return list(range(int(a) - 1, int(b)))
     return [12, 18] + list(range(32, height // 16))
 
 def LP(p):
@@ -57,7 +61,12 @@ def free_cell():
     while True:
         for r in mod_rows(dst.height):
             for c in range(16):
-                if dst.crop((c * 16, r * 16, c * 16 + 16, r * 16 + 16)).getbbox() is None: return c, r
+                if dst.crop((c * 16, r * 16, c * 16 + 16, r * 16 + 16)).getbbox() is None:
+                    if r * 16 + 16 > dst.height:   # a fixed row range can lie below the sheet
+                        grown = Image.new('RGBA', (dst.width, r * 16 + 16), (0, 0, 0, 0))
+                        grown.paste(dst, (0, 0))
+                        dst = grown
+                    return c, r
         # nothing free, add eight rows (128 px) at the bottom and look again
         grown = Image.new('RGBA', (dst.width, dst.height + 128), (0, 0, 0, 0))
         grown.paste(dst, (0, 0))
@@ -84,10 +93,21 @@ if consts:
     dst.save(dstp)
     a = '	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;\n'
     assert a in s
-    s = s.replace(a, a + consts, 1)
+    anchor = os.environ.get('ITEM_ANCHOR')   # a constant name, the block goes before its line so parallel merges do not touch
+    if anchor:
+        ca = '	public static final int %s = ' % anchor
+        assert ca in s, anchor
+        s = s.replace(ca, consts + ca, 1)
+    else:
+        s = s.replace(a, a + consts, 1)
     # TX_HEIGHT must equal the sheet height or every picture is stretched
     s = re.sub(r'(int TX_HEIGHT = )\d+;', lambda m: m.group(1) + '%d;' % dst.height, s, count=1)
     a = '		assignItemRect(WOODEN_BOOMERANG, 12, 12);\n'
     assert a in s
-    s = s.replace(a, a + rects, 1)
+    if anchor:
+        ra = '		assignItemRect(%s, ' % anchor
+        assert ra in s, anchor
+        s = s.replace(ra, rects + ra, 1)
+    else:
+        s = s.replace(a, a + rects, 1)
     io.open(p, 'w', encoding='utf-8', newline='').write(s.replace('\n', nl))

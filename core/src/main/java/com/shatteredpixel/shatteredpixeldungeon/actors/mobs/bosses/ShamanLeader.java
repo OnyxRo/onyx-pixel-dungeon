@@ -290,10 +290,7 @@ public class ShamanLeader extends Mob implements Callback {
             RESISTANCES.add(LightningTrap.Electricity.class);
         }
 
-        @Override
-        public HashSet<Class<?>> resistances () {
-            return RESISTANCES;
-        }
+        { resistances.addAll( RESISTANCES ); }
 
 
     private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
@@ -301,10 +298,7 @@ public class ShamanLeader extends Mob implements Callback {
     IMMUNITIES.add( Paralysis.class );
     IMMUNITIES.add( Vertigo.class );
     }
-    @Override
-    public HashSet<Class<?>> immunities() {
-        return IMMUNITIES;
-    }
+    { immunities.addAll( IMMUNITIES ); }
 
     public static class BlueSoulBomb extends Mob {
 
@@ -381,10 +375,7 @@ public class ShamanLeader extends Mob implements Callback {
             IMMUNITIES.add( Paralysis.class );
         }
 
-        @Override
-        public HashSet<Class<?>> immunities() {
-            return IMMUNITIES;
-        }
+        { immunities.addAll( IMMUNITIES ); }
     }
     public static class RedSoulBomb extends Mob {
 
@@ -455,10 +446,7 @@ public class ShamanLeader extends Mob implements Callback {
             IMMUNITIES.add( Paralysis.class );
         }
 
-        @Override
-        public HashSet<Class<?>> immunities() {
-            return IMMUNITIES;
-        }
+        { immunities.addAll( IMMUNITIES ); }
     }
 }
 

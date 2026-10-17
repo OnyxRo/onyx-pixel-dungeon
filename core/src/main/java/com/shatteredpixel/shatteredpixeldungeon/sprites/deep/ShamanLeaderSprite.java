@@ -33,7 +33,7 @@ public class ShamanLeaderSprite extends MobSprite {
     public ShamanLeaderSprite() {
         super();
 
-        texture( Assets.ShamanLeader );
+        texture( Assets.Sprites.ShamanLeader );
 
         TextureFilm frames = new TextureFilm( texture, 30, 19 );
         idle = new Animation( 5, true );

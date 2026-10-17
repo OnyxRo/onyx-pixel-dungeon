@@ -88,7 +88,7 @@ public class Grieflord extends Mob {
     protected boolean canAttack(Char enemy) {
 
         if (beamCooldown == 0) {
-            Ballistica aim = new Ballistica(pos, enemy.pos, Ballistica.STOP_TERRAIN);
+            Ballistica aim = new Ballistica(pos, enemy.pos, Ballistica.STOP_SOLID);
 
             if (enemy.invisible == 0 && Dungeon.level.heroFOV[enemy.pos] && aim.subPath(1, aim.dist).contains(enemy.pos)) {
                 beam = aim;
@@ -107,7 +107,7 @@ public class Grieflord extends Mob {
         rooted = true;
 
         if (beam == null && beamTarget != -1) {
-            beam = new Ballistica(pos, beamTarget, Ballistica.STOP_TERRAIN);
+            beam = new Ballistica(pos, beamTarget, Ballistica.STOP_SOLID);
             sprite.turnTo(pos, beamTarget);
         }
         if (beamCooldown > 0)
@@ -231,10 +231,7 @@ public class Grieflord extends Mob {
         RESISTANCES.add(Vampiric.class);
     }
 
-    @Override
-    public HashSet<Class<?>> resistances() {
-        return RESISTANCES;
-    }
+    { resistances.addAll( RESISTANCES ); }
 
     private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 
@@ -249,10 +246,7 @@ public class Grieflord extends Mob {
         ((GrieflordSprite) sprite).idle();
         return super.defenseProc(enemy, damage);
     }
-    @Override
-    public HashSet<Class<?>> immunities() {
-        return IMMUNITIES;
-    }
+    { immunities.addAll( IMMUNITIES ); }
 
     private class Hunting extends Mob.Hunting{
         @Override

@@ -29,7 +29,7 @@ public class GnollKnightSprite extends MobSprite {
     public GnollKnightSprite() {
         super();
 
-        texture(Assets.GnollKnight);
+        texture(Assets.Sprites.GnollKnight);
 
         TextureFilm frames = new TextureFilm(texture, 13, 17);
 

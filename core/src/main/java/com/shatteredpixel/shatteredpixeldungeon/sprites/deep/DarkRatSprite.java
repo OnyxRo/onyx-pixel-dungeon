@@ -29,7 +29,7 @@ public class DarkRatSprite extends MobSprite {
     public DarkRatSprite() {
         super();
 
-        texture( Assets.DarkRat );
+        texture( Assets.Sprites.DarkRat );
 
         TextureFilm frames = new TextureFilm( texture, 16, 15 );
 

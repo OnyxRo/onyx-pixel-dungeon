@@ -33,7 +33,7 @@ public class KeyCreatureSprite extends MobSprite {
     public KeyCreatureSprite() {
         super();
 
-        texture( Assets.KeyCreature );
+        texture( Assets.Sprites.KeyCreature );
 
         TextureFilm frames = new TextureFilm( texture, 19, 20 );
 

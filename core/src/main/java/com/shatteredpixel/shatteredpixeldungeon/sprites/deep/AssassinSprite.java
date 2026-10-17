@@ -29,7 +29,7 @@ public class AssassinSprite extends MobSprite {
     public AssassinSprite() {
         super();
 
-        texture( Assets.Assassin);
+        texture( Assets.Sprites.Assassin);
 
         TextureFilm frames = new TextureFilm( texture, 18, 17 );
 

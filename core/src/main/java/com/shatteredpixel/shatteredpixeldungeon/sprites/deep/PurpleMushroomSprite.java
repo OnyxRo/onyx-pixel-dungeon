@@ -29,7 +29,7 @@ public class PurpleMushroomSprite extends MobSprite {
     public PurpleMushroomSprite() {
         super();
 
-        texture(Assets.PurpleMushroom);
+        texture(Assets.Sprites.PurpleMushroom);
 
         TextureFilm frames = new TextureFilm(texture, 15, 14);
 

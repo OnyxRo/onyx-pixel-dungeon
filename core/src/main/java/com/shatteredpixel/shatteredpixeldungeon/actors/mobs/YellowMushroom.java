@@ -72,8 +72,5 @@ public class YellowMushroom extends Mob {
         IMMUNITIES.add( Toxic.class );
     }
 
-    @Override
-    public HashSet<Class<?>> immunities() {
-        return IMMUNITIES;
-    }
+    { immunities.addAll( IMMUNITIES ); }
 }

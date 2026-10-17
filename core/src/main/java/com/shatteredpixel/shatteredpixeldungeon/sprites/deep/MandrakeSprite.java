@@ -29,7 +29,7 @@ public class MandrakeSprite extends MobSprite {
     public MandrakeSprite() {
         super();
 
-        texture( Assets.Mandrake );
+        texture( Assets.Sprites.Mandrake );
 
         TextureFilm frames = new TextureFilm( texture, 11, 13 );
 

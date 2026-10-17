@@ -20,6 +20,8 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.sprites.DM300Sprite;
+
 import com.shatteredpixel.shatteredpixeldungeon.sprites.deep.*;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;

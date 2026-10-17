@@ -234,8 +234,5 @@ public class KeyCreature extends Mob implements Callback {
         RESISTANCES.add( Grim.class );
     }
 
-    @Override
-    public HashSet<Class<?>> resistances() {
-        return RESISTANCES;
-    }
+    { resistances.addAll( RESISTANCES ); }
 }

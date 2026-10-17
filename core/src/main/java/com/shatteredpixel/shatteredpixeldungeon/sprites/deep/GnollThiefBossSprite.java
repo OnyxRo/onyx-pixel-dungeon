@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.sprites.deep;
 
+import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MobSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.deep.*;
 
@@ -36,7 +37,7 @@ public class GnollThiefBossSprite extends MobSprite {
     public GnollThiefBossSprite() {
         super();
 
-        texture( Assets.GnollThief );
+        texture( Assets.Sprites.GnollThief );
 
         TextureFilm frames = new TextureFilm( texture, 15, 15 );
 

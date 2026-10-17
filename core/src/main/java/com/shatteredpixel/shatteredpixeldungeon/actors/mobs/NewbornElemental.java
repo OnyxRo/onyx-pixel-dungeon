@@ -20,6 +20,12 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.watabou.utils.Random;
+
 import com.shatteredpixel.shatteredpixeldungeon.sprites.deep.*;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -43,13 +49,27 @@ public class NewbornElemental extends Elemental {
 		properties.add(Property.MINIBOSS);
 	}
 
+		@Override
+	protected void meleeProc( Char enemy, int damage ) {
+		if (Random.Int( 2 ) == 0 && !Dungeon.level.water[enemy.pos]) {
+			Buff.affect( enemy, Burning.class ).reignite( enemy );
+		}
+	}
+
 	@Override
-	public void add(Buff buff) {
+	protected void rangedProc( Char enemy ) {
+		if (!Dungeon.level.water[enemy.pos]) {
+			Buff.affect( enemy, Burning.class ).reignite( enemy, 4f );
+		}
+	}
+
+@Override
+	public boolean add(Buff buff) {
 		if (buff instanceof Frost || buff instanceof Chill) {
 			die(buff);
-		} else {
-			super.add(buff);
+			return true;
 		}
+		return super.add(buff);
 	}
 
 	@Override

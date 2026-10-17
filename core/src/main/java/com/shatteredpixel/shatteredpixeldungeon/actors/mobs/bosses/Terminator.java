@@ -101,7 +101,7 @@ public class Terminator extends Mob {
                 HP--;
 
         LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
-        if (lock != null && !immunities().contains(src.getClass())) lock.addTime(dmg*1.5f);
+        if (lock != null && !isImmune(src.getClass())) lock.addTime(dmg*1.5f);
     }
 
     @Override
@@ -129,10 +129,7 @@ public class Terminator extends Mob {
         RESISTANCES.add( Grim.class );
     }
 
-    @Override
-    public HashSet<Class<?>> resistances() {
-        return RESISTANCES;
-    }
+    { resistances.addAll( RESISTANCES ); }
 
     private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
     static {
@@ -140,10 +137,7 @@ public class Terminator extends Mob {
         IMMUNITIES.add( Terror.class );
     }
 
-    @Override
-    public HashSet<Class<?>> immunities() {
-        return IMMUNITIES;
-    }
+    { immunities.addAll( IMMUNITIES ); }
 
     @Override
     public void restoreFromBundle(Bundle bundle) {

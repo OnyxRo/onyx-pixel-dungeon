@@ -23,7 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites.deep;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MobSprite;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Grieflord;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
@@ -41,7 +41,7 @@ public class GrieflordSprite extends MobSprite {
 	public GrieflordSprite() {
 		super();
 		
-		texture( Assets.Grieflord );
+		texture( Assets.Sprites.Grieflord );
 		
 		TextureFilm frames = new TextureFilm( texture, 21, 17 );
 		

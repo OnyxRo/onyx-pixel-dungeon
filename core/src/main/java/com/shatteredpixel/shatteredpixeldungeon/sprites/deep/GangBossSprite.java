@@ -31,7 +31,7 @@ public class GangBossSprite extends MobSprite {
     public GangBossSprite() {
         super();
 
-        texture( Assets.GangBoss );
+        texture( Assets.Sprites.GangBoss );
 
         TextureFilm frames = new TextureFilm( texture, 15, 15 );
 
