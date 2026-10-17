@@ -136,3 +136,11 @@ Left out, and why.
 - Not seen on screen yet. The sanity bar, the three new rooms, living plants waking up, guns firing, the herb and tincture windows. The arena picture showed the new monsters and living plants fine.
 
 Tool changes made. `port-itemsprites.py` reads `ui/items.png` for 0.5 and 0.6 mods. `port-skip.txt` has the mod launcher and the scenes it drags in.
+
+## Magic Ling PD monsters, first batch (2026-10-17)
+
+The easy monsters (the ones the report planned as easy) are in, registered in `ModRoster` under "magicling" and spawned by depth in Magic Ling worlds through `MagicLingSpawner` (the mod's own floor rotation, with Shattered monsters it names, alternates one in fifty). Strings are the mod's English file (`<bundle>_en.properties`, now read by `port-strings.py`), with placeholder texts from the new `scripts/port-placeholders.py` for classes the mod gave none.
+
+Shims added so the mod's code compiles. `Armor.stealthFactor`, `Charm.CharmLing`, `Gold.random_4X`, `SmallLight.onZapComplete`, three Dungeon.LimitedDrops, a few buff icon, color and Terrain stand-ins, and five item pictures (rows 60 and up of `items.png`, `port-itemsprites.py` now reads Magic Ling's 32 cell wide sheet and takes ITEM_ROWS and ITEM_BEFORE env settings). `MobArenaTest` counts the emoicons null pointer and CharSprite cast errors as headless limits.
+
+Not done. The 108 "hard" monsters (bosses, plot NPCs, score minigames, boss levels) pulled in about 2900 compile errors, mostly missing mod systems (GameRules, Boss base class, Halo, BallisticaReal, utils and mechanics packages, music helpers, ChinaHoliday and score systems). That attempt is parked in `git stash` (two entries on branch onyx/p2-mlmobs) and not committed. Porting them needs the mod's Boss and GameRules systems first, or a per monster hand port.
