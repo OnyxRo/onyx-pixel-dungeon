@@ -60,6 +60,20 @@ public class Statue extends Mob {
 		defenseSkill = 4 + Dungeon.depth;
 	}
 
+	//Tower PD, a statue made from a given weapon (Scroll of Golems)
+	public Statue( Weapon weapon1 ) {
+		this();
+		weapon = weapon1;
+		levelGenStatue = false;
+		HP = HT = 100;
+		defenseSkill = 5;
+	}
+
+	public Statue( Weapon weapon1, Weapon.Enchantment enchantment ) {
+		this( weapon1 );
+		weapon.enchant( enchantment );
+	}
+
 	public void createWeapon( boolean useDecks ){
 		if (useDecks) {
 			weapon = (MeleeWeapon) Generator.random(Generator.Category.WEAPON);

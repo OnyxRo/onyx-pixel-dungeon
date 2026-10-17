@@ -163,6 +163,22 @@ public class BuffIndicator extends Component {
 	public static final int FULLYSAT    = 104;
 	public static final int OVERSAT     = 105;
 
+	//Tower PD buffs, drawn with icons that already exist
+	public static final int ANIMATED     = AMOK;
+	public static final int FAINT        = DROWSY;
+	public static final int GOLDARMOR    = ARMOR;
+	public static final int HIGHLIGHTED  = MARK;
+	public static final int INSPIRED     = BLESS;
+	public static final int MINIONBOSS   = CORRUPT;
+	public static final int OVERCHARGE   = RECHARGING;
+	public static final int PREDICTION   = FORESIGHT;
+	public static final int SOULBLEEDING = BLEEDING;
+	public static final int VILE         = HEX;
+	public static final int WAVE         = AMULET;
+	public static final int WAVECOOLDOWN = TIME;
+	public static final int EXPOSED      = VULNERABLE;
+	public static final int RUNNINGTOREPORT = HASTE;
+
 	public static final int SIZE_SMALL  = 7;
 	public static final int SIZE_LARGE  = 16;
 	

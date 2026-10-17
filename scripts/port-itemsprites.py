@@ -25,6 +25,11 @@ def mod_rows(height):
     if os.environ.get('ITEM_ROWS'):
         a, b = os.environ['ITEM_ROWS'].split('-')
         return list(range(int(a) - 1, int(b)))
+    #ITEM_ROWS=106-113 (one based, as the briefs name them) limits a run to those rows, the sheet grows to hold them
+    er = os.environ.get('ITEM_ROWS')
+    if er:
+        a, b = [int(x) for x in er.split('-')]
+        return [r for r in range(a - 1, b) if (r + 1) * 16 <= height] or [-1]
     return [12, 18] + list(range(32, height // 16))
 
 def LP(p):
@@ -46,7 +51,7 @@ defs = dict(re.findall(r'int\s+(\w+)\s*=\s*([^;]+);', body))
 def value(name, depth=0):
     assert depth < 20, name
     expr = defs[name]
-    expr = re.sub(r'xy\(\s*(\d+)\s*,\s*(\d+)\s*\)', lambda m: str(int(m.group(1)) - 1 + 16 * (int(m.group(2)) - 1)), expr)
+    expr = re.sub(r'xy\(\s*(\d+)\s*,\s*(\d+)\s*\)', lambda m: str(int(m.group(1)) - 1 + MOD_COLS * (int(m.group(2)) - 1)), expr)
     expr = re.sub(r'[A-Za-z_]\w*', lambda m: str(value(m.group(0), depth + 1)) if m.group(0) in defs else m.group(0), expr)
     assert re.fullmatch(r'[\d\s+\-*()]+', expr), (name, expr)
     return int(eval(expr))
@@ -61,6 +66,7 @@ _sc = LP(MOD + 'core/src/main/assets/asset_pixel_scale.txt')
 if os.path.exists(_sc):
     _n = int(io.open(_sc).read().strip() or 1)
     if _n > 1: src = src.resize((src.width // _n, src.height // _n), Image.NEAREST)
+MOD_COLS = src.width // 16
 dstp = ROOT + 'core/src/main/assets/sprites/items.png'
 dst = Image.open(dstp).convert('RGBA')
 if _ER:
@@ -84,6 +90,7 @@ def free_cell():
             print('item sheet grown to', dst.height, 'px high')
     while True:
         for r in mod_rows(dst.height):
+            if r < 0: break
             for c in range(16):
                 if dst.crop((c * 16, r * 16, c * 16 + 16, r * 16 + 16)).getbbox() is None: return c, r
         # nothing free, add eight rows (128 px) at the bottom and look again
@@ -99,7 +106,7 @@ for name in NAMES:
     if name not in defs:
         print('NOT IN MOD', name); continue
     i = value(name)
-    x, y = (i % 16) * 16, (i // 16) * 16
+    x, y = (i % MOD_COLS) * 16, (i // MOD_COLS) * 16
     tile = src.crop((x, y, x + 16, y + 16)); bb = tile.getbbox()
     if not bb:
         print('EMPTY CELL', name); continue

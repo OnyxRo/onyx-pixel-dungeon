@@ -1,0 +1,88 @@
+package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.towers;
+
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.NoTowerWithering;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.SkeletonSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.TowerGrave1Sprite;
+
+public class TowerGrave1 extends TowerCSpawning{
+
+    {
+        HP = HT = 50;
+
+        spriteClass = TowerGrave1Sprite.class;
+
+        maxMinions = 3;
+        minionCooldown = 20;
+        minionCooldownLeft = 1;
+
+        minionHP = 15;
+        minionDamageMax = 6;
+        minionDamageMin = 4;
+        minionAttackSkill = 10;
+        minionDefenseSkill = 5;
+        minionDR = 1;
+
+        spawnsExcessMinions = true;
+
+        cost = 200;
+
+        upgrade1Cost = 300;
+
+        upgradeLevel = 3;
+
+    }
+    @Override
+    public void spawnMinion(int pos) {
+        TowerCSpawningMinion minion = minion();
+        minion.pos = pos;
+
+        Dungeon.level.occupyCell(minion);
+        minion.state = minion.WANDERING;
+
+        minion.HT = minion.HP = minionHP;
+        minion.minionDamageMax= minionDamageMax;
+        minion.minionDamageMin= minionDamageMin;
+        minion.minionAttackSkill= minionAttackSkill;
+        minion.minionDefenseSkill= minionDefenseSkill;
+        minion.minionDR= minionDR;
+
+        minion.alignment = alignment;
+        minion.momID = id();
+        minion.momTower = this;
+
+        addMinion(minion);
+        GameScene.add(minion);
+
+        CellEmitter.get(this.pos).burst(ShadowParticle.UP, 5);
+        CellEmitter.get(minion.pos).burst(ShadowParticle.UP, 5);
+    }
+
+    @Override
+    public void affectExcessMinion(TowerCSpawningMinion minion) {
+        super.affectExcessMinion(minion);
+        Buff.affect(minion, NoTowerWithering.class);
+    }
+
+    protected TowerCSpawningMinion minion(){
+        return new SkeletonMinion1();
+    }
+
+    public static class SkeletonMinion1 extends TowerCSpawningMinion {
+        {
+            spriteClass = SkeletonSprite.class;
+            properties.add(Property.UNDEAD);
+
+            staysNearMomTower = true;
+            diesWithoutMomtower = true;
+        }
+        public SkeletonMinion1() {
+            super();
+        }
+    }
+
+}

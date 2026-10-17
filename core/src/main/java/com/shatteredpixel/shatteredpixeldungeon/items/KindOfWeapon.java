@@ -42,6 +42,9 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 abstract public class KindOfWeapon extends EquipableItem {
+	//Tower PD, hero spells cool down faster or slower with the weapon
+	public float spellCooldownModifier = 1f;
+
 
 	protected String hitSound = Assets.Sounds.HIT;
 	protected float hitSoundPitch = 1f;

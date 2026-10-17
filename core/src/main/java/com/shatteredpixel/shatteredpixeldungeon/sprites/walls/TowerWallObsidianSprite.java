@@ -1,0 +1,82 @@
+package com.shatteredpixel.shatteredpixeldungeon.sprites.walls;
+
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.MobSprite;
+import com.watabou.noosa.TextureFilm;
+
+public class TowerWallObsidianSprite extends MobSprite {
+
+    private Animation cracked;//new anim
+    private Animation broken;
+
+
+    public TowerWallObsidianSprite() {
+        super();
+
+        texture(Assets.Sprites.TOWERWALLRUNIC);
+
+        TextureFilm frames = new TextureFilm(texture, 16, 16);
+
+        idle = new Animation(1, true);
+        idle.frames(frames, 0);
+
+
+        attack = idle.clone();
+
+        run = idle.clone();
+
+        cracked = new Animation(1,true);
+        cracked.frames(frames,1);
+
+        broken = new Animation(1,true);
+        broken.frames(frames,2);
+
+        die = broken.clone();
+
+        play(idle);
+    }
+
+    public void cracked(){//methods for the new anim
+        play(cracked);
+    }
+
+    public void broken(){
+        play(broken);
+    }
+
+    @Override
+    public void idle() {
+        if (ch==null) play (idle); else linkVisuals(ch);
+    }
+
+    //walls show no emotions
+    @Override
+    public void showAlert() {
+    }
+
+    @Override
+    public void showLost() {
+    }
+
+    @Override
+    public void showSleep() {
+    }
+    @Override
+    public void linkVisuals(Char ch) {
+        super.linkVisuals(ch);
+        if (ch.HP<0.3f*ch.HT) {
+            broken();
+        } else if (ch.HP<0.6f*ch.HT) {
+            cracked();
+        } else play(idle);
+
+    }
+
+    @Override
+    public void move(int from, int to) {
+        linkVisuals(ch);
+        super.move(from, to);
+        linkVisuals(ch);
+    }
+}

@@ -1,0 +1,307 @@
+package com.shatteredpixel.shatteredpixeldungeon.levels.endlessarenas;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.level;
+
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WaveCooldownBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bat;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.BossTroll;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Brute;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM100;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM200;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM201;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DMW;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DMWHead;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DMWMinion;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DMWWheels;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Gnoll;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollThrower;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollTrickster;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Goblin;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GoblinFat;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GoblinGiant;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GoblinNinja;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GoblinSand;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GoblinShaman;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Rat;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Slugger;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Spinner;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Swarm;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NewShopKeeper;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.towers.TowerPylonBroken;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.CausticBrew;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfToxicEssence;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCorrosiveGas;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Arena;
+import com.shatteredpixel.shatteredpixeldungeon.levels.ArenaCaves;
+import com.shatteredpixel.shatteredpixeldungeon.levels.CavesLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndModes;
+import com.watabou.noosa.audio.Music;
+import com.watabou.utils.Random;
+
+import java.util.ArrayList;
+
+public class EndlessArena5 extends ArenaCaves {
+
+    {
+        name = "Bot factory";
+
+        color1 = 0x48763c;
+        color2 = 0x59994a;
+        viewDistance = 15;
+        WIDTH = 79;
+        HEIGHT = 79;
+
+        amuletCell = 39 + WIDTH*39;
+        exitCell = amuletCell;
+        towerShopKeeperCell = 29 + WIDTH*35;
+        normalShopKeeperCell = 24 + WIDTH*35;
+
+        arenaDepth = 15;
+
+        startGold = 8000;
+        maxWaves = 12000;
+        waveCooldownNormal = 10;
+        waveCooldownBoss = 200;
+
+        waterIsToxic = true;
+    }
+
+
+    @Override
+    public int mobsToDeploy(int wave) {
+        int num = 0;
+        switch (wave % 15){
+            case 1: num = (wave*  (int)Math.sqrt(Math.sqrt(wave))/5 + 1) * 10;break;
+            case 2: num = (wave*  (int)Math.sqrt(Math.sqrt(wave))/5 + 1) * 10;break;
+            case 3: num = (wave*  (int)Math.sqrt(Math.sqrt(wave))/5 + 1) * 10;break;
+            case 4: num = (wave*  (int)Math.sqrt(Math.sqrt(wave))/5 + 1) * 5;break;
+            case 5: num = (wave*  (int)Math.sqrt(Math.sqrt(wave))/5 + 1) * 7;break;
+            case 6: num = (wave*  (int)Math.sqrt(Math.sqrt(wave))/5) * 5;break;
+            case 7: num = (wave*  (int)Math.sqrt(Math.sqrt(wave))/5) * 2;break;
+            case 8: num = (wave*  (int)Math.sqrt(Math.sqrt(wave))/5) * 2;break;
+            case 9: num = (wave*  (int)Math.sqrt(Math.sqrt(wave))/5) * 3;break;
+            case 10: num = (wave* (int)Math.sqrt(Math.sqrt(wave))/5 + 1) * 2;break;
+            case 11: num = (wave* (int)Math.sqrt(Math.sqrt(wave))/5 + 1) * 7;break;
+            case 12: num = (wave* (int)Math.sqrt(Math.sqrt(wave))/5 + 1) * 10;break;
+            case 13: num = (wave* (int)Math.sqrt(Math.sqrt(wave))/5 + 1) * 2;break;
+            case 14: num = (wave* (int)Math.sqrt(Math.sqrt(wave))/5 + 1) * 3;break;
+            case 0: num = wave/9;break;
+        }
+        return num;
+    }
+    @Override
+    public Mob chooseMob(int wave) {
+        Mob mob = new Rat();
+        switch (wave % 15){
+            case 1: mob = new DM100(); break;
+            case 2: mob = new DMWMinion(); break;
+            case 3: mob = Random.oneOf(
+                    new DM100(),
+                    new DMWMinion()
+            ); break;
+            case 4: mob = new DM200(); break;
+            case 5: mob = Random.oneOf(
+                    new DMWMinion(),
+                    new DM200()
+            ); break;
+            case 6: mob = new DM200(); break;
+            case 7: mob = new DMWHead(); break;
+            case 8: mob = new DMWWheels(); break;
+            case 9: mob = Random.oneOf(
+                    new DM201(),
+                    new DM200()
+            ); break;
+            case 10: mob = Random.oneOf(
+                    new DMWWheels(),
+                    new DMWHead()
+            ); break;
+            case 11: if (!bossSpawned) {
+                bossSpawned = true;
+                mob = new DMW();
+            }
+            else mob = Random.oneOf(
+                        new DM100(),
+                        new DMWMinion());
+            break;
+            case 12: mob = new DMWMinion(); break;
+            case 13: mob = new DMWWheels(); break;
+            case 14: mob = new Slugger(); break;
+            case 0:  mob = new DMW(); break;
+        }
+        if (level.mode == WndModes.Modes.CHALLENGE){
+            affectMob(mob);
+        }
+        mob.alignment = Char.Alignment.ENEMY;
+        return mob;
+    }
+
+    public void deployMobs(int wave) {
+        if (wave % 15 == 6 || wave % 15 == 13) deploymobs(wave, Direction.RANDOM, 5);
+        if (wave % 15 == 14) deploymobs(wave, Direction.TOOLEFT, 5);
+        else if (wave % 15 == 2) deploymobs(wave, Direction.RANDOM, 10);
+        else switch (wave%4){
+            case 0: deploymobs(wave, Direction.TOORIGHT, 1); break;
+            case 1: deploymobs(wave, Direction.TOOUP, 1); break;
+            case 2: deploymobs(wave, Direction.TOOLEFT, 1); break;
+            case 3: deploymobs(wave, Direction.TOODOWN, 1); break;
+        }
+    }
+
+
+
+
+    public void addDestinations() {
+        ArrayList<Integer> candidates = new ArrayList<>();
+        for (int m = 0; m < WIDTH * HEIGHT; m++) {
+            if (this.passable[m] && this.distance(amuletCell, m) > 10) candidates.add(m);
+        }
+        for (int i = 0;i<5;i++){
+            this.drop(new Gold(Random.Int(30, 50)), Random.element(candidates));
+            this.drop(Generator.random(Generator.Category.POTION), Random.element(candidates));
+            this.drop(Generator.randomUsingDefaults(Generator.Category.SCROLL), Random.element(candidates));
+            this.drop(new SmallRation(), Random.element(candidates)).type = Heap.Type.SKELETON;
+            this.drop(Generator.random(Generator.Category.STONE), Random.element(candidates));
+            this.drop(Generator.random(Generator.Category.POTION), Random.element(candidates));
+            this.drop(Random.oneOf(new CausticBrew(), new ElixirOfToxicEssence(), new PotionOfCorrosiveGas()), Random.element(candidates));
+            this.drop(Generator.random(Generator.Category.MISSILE), Random.element(candidates));
+            this.drop(new com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb(), Random.element(candidates));
+        }
+        super.addDestinations();
+    }
+
+
+
+    @Override
+    public void playLevelMusic() {
+        Music.INSTANCE.playTracks(
+                new String[]{Assets.Music.GOBLIN_GROTTO},
+                new float[]{1},
+                false);
+    }
+
+    @Override
+    public void doStuffEndwave(int wave) {
+        int goldAdd = 900;
+        Dungeon.gold+=goldAdd;
+        GLog.w(Messages.get(Arena.class, "goldaddendwave", goldAdd));
+        ArrayList<Integer> candidates = new ArrayList<>();
+        for (int m = 0; m<WIDTH*HEIGHT;m++){
+            if (this.passable[m] && distance(amuletCell, m)>12) candidates.add(m);
+        }
+
+        GLog.p(Messages.get(Arena.class, "lootdrop", goldAdd));
+        this.drop(Random.oneOf(
+                Generator.random(Generator.Category.POTION),
+                Generator.random(Generator.Category.SCROLL),
+                Generator.random(Generator.Category.STONE),
+                new com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb()),  Random.element(candidates));
+        this.drop(Generator.random(),  Random.element(candidates));
+
+        for (Heap heap : Dungeon.level.heaps.valueList()) {
+            heap.sprite.link(heap);
+            heap.sprite.update();
+        }
+        super.doStuffEndwave(wave);
+    }
+
+
+    @Override
+    protected boolean build() {
+
+        setSize(WIDTH,HEIGHT);
+        //base room
+
+
+        map = new int[]{4, 4, 4, 4, 4, 4, 4, 4, 12, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 12, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 12, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 12, 4, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 14, 1, 1, 1, 1, 1, 4, 4, 1, 1, 1, 1, 1, 4, 4, 1, 1, 1, 4, 4, 4, 4, 4, 1, 1, 14, 29, 14, 14, 14, 14, 14, 29, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 29, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 29, 14, 14, 14, 29, 14, 14, 14, 29, 14, 14, 14, 29, 14, 14, 14, 29, 29, 14, 14, 14, 14, 29, 14, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4, 1, 1, 4, 4, 1, 1, 4, 4, 4, 4, 4, 4, 4, 1, 14, 29, 14, 11, 11, 11, 14, 29, 14, 11, 11, 11, 11, 11, 11, 11, 11, 14, 29, 14, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 29, 11, 11, 11, 29, 11, 11, 11, 29, 11, 11, 11, 29, 11, 11, 11, 29, 29, 11, 11, 11, 11, 29, 29, 11, 11, 4, 4, 4, 4, 4, 4, 4, 4, 1, 1, 4, 4, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4, 14, 29, 14, 4, 4, 4, 14, 29, 14, 4, 4, 4, 1, 1, 1, 1, 25, 14, 29, 14, 1, 1, 25, 1, 1, 1, 1, 1, 14, 14, 14, 29, 14, 14, 14, 29, 14, 14, 14, 29, 14, 14, 14, 29, 14, 14, 14, 29, 29, 14, 14, 14, 14, 29, 29, 14, 14, 4, 4, 4, 4, 4, 4, 4, 4, 1, 1, 4, 4, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4, 14, 29, 14, 4, 4, 21, 14, 29, 14, 21, 4, 4, 1, 1, 1, 1, 1, 14, 29, 14, 1, 1, 1, 1, 1, 1, 1, 1, 14, 14, 14, 0, 14, 14, 14, 0, 14, 14, 14, 0, 14, 14, 14, 0, 14, 14, 14, 0, 0, 14, 14, 14, 14, 0, 0, 14, 14, 4, 4, 4, 4, 4, 4, 4, 12, 1, 1, 4, 4, 1, 1, 1, 1, 4, 4, 4, 4, 4, 1, 14, 29, 14, 4, 4, 4, 14, 29, 14, 4, 4, 4, 1, 4, 11, 3, 1, 14, 29, 14, 1, 1, 1, 1, 1, 20, 1, 1, 14, 14, 14, 1, 14, 14, 14, 1, 14, 14, 14, 1, 14, 14, 14, 1, 14, 14, 14, 1, 1, 14, 14, 14, 14, 1, 1, 14, 14, 14, 14, 4, 4, 4, 4, 4, 1, 1, 1, 4, 4, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 29, 14, 4, 4, 4, 14, 29, 14, 4, 4, 4, 1, 1, 1, 1, 1, 14, 29, 14, 1, 1, 1, 1, 1, 1, 1, 1, 14, 14, 14, 1, 14, 14, 14, 1, 14, 14, 14, 1, 14, 14, 14, 1, 14, 14, 14, 1, 1, 14, 14, 14, 14, 1, 1, 14, 14, 14, 14, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 14, 4, 4, 4, 14, 29, 14, 4, 4, 4, 1, 4, 11, 3, 1, 14, 29, 14, 1, 1, 20, 1, 1, 1, 1, 1, 14, 14, 14, 1, 14, 14, 14, 1, 14, 14, 14, 1, 14, 14, 14, 1, 14, 14, 14, 1, 1, 14, 14, 14, 14, 1, 1, 14, 14, 14, 14, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 29, 3, 29, 3, 29, 3, 29, 11, 11, 11, 14, 29, 14, 4, 4, 21, 14, 29, 14, 21, 4, 4, 1, 1, 1, 1, 1, 14, 29, 14, 1, 1, 1, 1, 1, 1, 1, 1, 14, 14, 14, 25, 14, 14, 14, 25, 14, 14, 14, 25, 14, 14, 14, 25, 14, 14, 14, 25, 25, 14, 14, 14, 14, 25, 25, 14, 14, 14, 14, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 14, 29, 14, 4, 4, 4, 14, 29, 14, 4, 4, 4, 1, 4, 11, 3, 1, 14, 29, 14, 1, 1, 1, 1, 1, 1, 1, 1, 4, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 4, 1, 20, 1, 20, 1, 4, 4, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 14, 29, 14, 4, 4, 4, 14, 29, 14, 4, 4, 4, 1, 1, 1, 1, 1, 14, 29, 14, 1, 20, 1, 1, 1, 1, 20, 1, 4, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 4, 1, 1, 1, 1, 1, 4, 4, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 14, 29, 14, 4, 4, 4, 14, 29, 14, 4, 4, 4, 1, 4, 11, 3, 1, 14, 29, 14, 1, 1, 1, 1, 1, 1, 1, 1, 11, 0, 11, 0, 11, 0, 11, 0, 11, 0, 11, 0, 11, 0, 11, 0, 11, 0, 11, 0, 0, 11, 0, 0, 11, 0, 0, 11, 0, 0, 11, 0, 0, 11, 1, 1, 1, 1, 1, 4, 4, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 14, 29, 14, 4, 4, 21, 14, 29, 14, 21, 4, 4, 1, 1, 1, 1, 1, 14, 29, 14, 1, 1, 1, 20, 1, 1, 1, 1, 29, 1, 29, 1, 29, 1, 29, 1, 29, 1, 29, 1, 29, 1, 29, 1, 29, 1, 29, 1, 1, 29, 1, 1, 29, 1, 1, 29, 1, 1, 29, 1, 1, 29, 1, 1, 1, 1, 1, 4, 4, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 14, 29, 14, 4, 4, 4, 14, 29, 14, 4, 4, 4, 1, 4, 11, 3, 1, 14, 29, 14, 1, 1, 1, 1, 1, 1, 1, 1, 29, 1, 29, 1, 29, 1, 29, 1, 29, 1, 29, 1, 29, 1, 29, 1, 29, 1, 29, 1, 1, 29, 1, 1, 29, 1, 1, 29, 1, 1, 29, 1, 1, 29, 1, 1, 1, 1, 1, 4, 4, 1, 20, 1, 1, 1, 20, 1, 4, 4, 4, 14, 29, 14, 4, 4, 4, 14, 29, 14, 4, 4, 4, 1, 1, 1, 1, 1, 14, 29, 14, 20, 1, 1, 1, 20, 1, 1, 1, 29, 1, 29, 1, 29, 1, 29, 1, 29, 1, 29, 1, 29, 1, 29, 1, 29, 1, 29, 1, 1, 29, 1, 1, 29, 1, 1, 29, 1, 1, 29, 1, 1, 29, 1, 1, 1, 1, 1, 4, 4, 1, 20, 1, 20, 1, 1, 1, 4, 4, 4, 14, 29, 14, 4, 4, 4, 14, 29, 14, 4, 4, 4, 1, 4, 11, 3, 1, 14, 29, 14, 1, 1, 1, 1, 1, 1, 1, 1, 29, 3, 29, 3, 29, 3, 29, 3, 29, 3, 29, 3, 29, 3, 29, 3, 29, 3, 29, 1, 1, 29, 1, 1, 29, 1, 1, 29, 1, 1, 29, 1, 1, 29, 1, 1, 1, 1, 1, 4, 4, 1, 1, 20, 1, 1, 1, 1, 4, 4, 4, 14, 29, 14, 4, 4, 21, 14, 29, 14, 21, 4, 4, 1, 1, 1, 1, 1, 14, 29, 14, 1, 1, 1, 1, 1, 1, 1, 1, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 4, 4, 29, 4, 4, 29, 4, 4, 29, 4, 4, 29, 4, 4, 29, 1, 1, 20, 1, 1, 4, 4, 1, 1, 20, 1, 1, 20, 1, 4, 4, 4, 14, 29, 14, 4, 4, 4, 14, 29, 14, 4, 4, 4, 1, 4, 11, 3, 1, 14, 29, 14, 1, 1, 1, 20, 1, 1, 1, 1, 29, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 29, 4, 4, 29, 4, 4, 29, 4, 4, 29, 4, 4, 29, 4, 4, 29, 1, 1, 1, 1, 1, 4, 12, 1, 20, 20, 1, 1, 1, 1, 4, 4, 4, 14, 29, 14, 4, 4, 4, 14, 29, 14, 4, 4, 4, 1, 1, 1, 1, 1, 14, 29, 14, 1, 1, 1, 1, 1, 1, 1, 1, 29, 1, 1, 1, 1, 1, 1, 1, 1, 20, 1, 1, 1, 1, 1, 1, 1, 14, 29, 4, 4, 29, 4, 4, 29, 4, 4, 29, 4, 4, 29, 4, 4, 29, 1, 1, 1, 1, 1, 4, 4, 1, 1, 1, 1, 20, 1, 1, 4, 4, 4, 14, 29, 14, 4, 4, 4, 14, 29, 14, 4, 4, 4, 1, 4, 11, 3, 1, 14, 29, 14, 1, 1, 1, 1, 1, 1, 1, 1, 29, 1, 1, 20, 1, 1, 20, 1, 1, 1, 1, 1, 1, 20, 1, 1, 1, 14, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 1, 20, 1, 1, 1, 4, 4, 1, 1, 1, 1, 1, 20, 1, 4, 4, 4, 14, 29, 14, 4, 4, 21, 14, 29, 14, 21, 4, 4, 1, 1, 1, 1, 1, 14, 29, 14, 1, 1, 1, 1, 1, 20, 1, 1, 29, 1, 20, 1, 1, 1, 1, 1, 1, 1, 20, 1, 1, 1, 1, 1, 1, 14, 29, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 1, 1, 1, 1, 1, 4, 4, 1, 20, 1, 1, 1, 20, 1, 4, 4, 4, 14, 29, 14, 4, 4, 4, 14, 29, 14, 4, 4, 4, 1, 4, 11, 3, 1, 14, 29, 14, 1, 1, 20, 1, 1, 1, 1, 1, 29, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 29, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 1, 1, 20, 1, 1, 12, 4, 1, 1, 1, 20, 1, 1, 1, 4, 4, 4, 14, 29, 14, 4, 4, 4, 14, 29, 14, 4, 4, 4, 1, 1, 1, 1, 1, 14, 29, 14, 1, 1, 1, 1, 1, 14, 14, 14, 29, 14, 14, 14, 1, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 14, 29, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 14, 29, 14, 14, 14, 14, 14, 29, 14, 4, 4, 4, 1, 4, 11, 3, 1, 14, 29, 14, 1, 1, 1, 1, 1, 14, 14, 14, 29, 14, 14, 14, 1, 4, 4, 4, 1, 1, 1, 1, 1, 20, 1, 1, 1, 14, 29, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 1, 1, 20, 1, 4, 4, 1, 20, 1, 1, 1, 1, 1, 4, 4, 4, 14, 29, 29, 29, 29, 29, 29, 29, 14, 4, 4, 4, 1, 1, 1, 1, 1, 14, 29, 14, 1, 1, 1, 20, 1, 14, 14, 14, 29, 14, 14, 14, 1, 4, 4, 4, 1, 1, 14, 1, 1, 1, 1, 20, 1, 14, 29, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 4, 4, 4, 4, 4, 4, 1, 1, 20, 1, 4, 4, 1, 1, 1, 1, 20, 20, 1, 4, 4, 4, 14, 14, 14, 14, 14, 14, 14, 29, 14, 4, 4, 4, 1, 1, 1, 1, 1, 14, 29, 14, 1, 1, 20, 1, 1, 14, 14, 14, 29, 14, 14, 14, 1, 4, 4, 1, 1, 14, 14, 14, 1, 1, 1, 1, 1, 14, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 3, 1, 1, 21, 4, 4, 1, 1, 20, 1, 4, 4, 1, 1, 1, 1, 20, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 14, 29, 14, 4, 4, 4, 14, 14, 14, 14, 14, 14, 29, 14, 14, 1, 1, 1, 1, 14, 14, 14, 29, 14, 14, 14, 1, 4, 1, 1, 14, 14, 14, 14, 14, 1, 1, 1, 1, 14, 1, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 4, 4, 1, 1, 20, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 14, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 14, 14, 1, 1, 1, 29, 29, 29, 29, 29, 29, 29, 1, 1, 1, 14, 14, 14, 14, 14, 14, 14, 1, 1, 1, 14, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 3, 1, 1, 21, 4, 4, 1, 1, 1, 1, 4, 4, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 14, 29, 14, 4, 4, 4, 14, 14, 14, 14, 14, 14, 29, 29, 29, 14, 29, 1, 1, 29, 29, 29, 29, 29, 29, 29, 1, 1, 29, 14, 14, 14, 14, 14, 14, 1, 1, 20, 1, 14, 29, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 4, 4, 1, 1, 1, 20, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 29, 14, 1, 1, 1, 1, 1, 1, 1, 1, 14, 14, 29, 29, 29, 29, 29, 1, 14, 14, 14, 14, 14, 14, 14, 1, 29, 29, 29, 14, 14, 14, 14, 1, 1, 1, 1, 1, 14, 29, 14, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 29, 29, 4, 4, 20, 1, 1, 1, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 29, 14, 1, 4, 4, 4, 4, 4, 4, 4, 1, 14, 14, 29, 29, 29, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 29, 29, 29, 14, 14, 1, 1, 1, 1, 1, 1, 14, 29, 14, 1, 11, 11, 14, 14, 14, 11, 11, 1, 14, 25, 29, 29, 1, 14, 1, 1, 1, 1, 4, 4, 1, 1, 20, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 29, 14, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 29, 29, 14, 14, 14, 14, 29, 29, 29, 29, 29, 14, 14, 14, 14, 29, 29, 29, 1, 20, 1, 1, 20, 1, 1, 14, 29, 14, 1, 14, 14, 14, 14, 14, 14, 14, 1, 14, 1, 29, 29, 1, 14, 1, 1, 20, 1, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 29, 14, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 14, 14, 14, 29, 29, 29, 29, 29, 29, 29, 29, 29, 14, 14, 14, 29, 1, 1, 20, 1, 1, 1, 1, 1, 14, 29, 14, 1, 11, 11, 14, 14, 14, 11, 11, 1, 14, 1, 29, 29, 1, 14, 1, 1, 1, 1, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 29, 14, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 14, 29, 29, 14, 14, 14, 14, 14, 14, 14, 29, 29, 14, 14, 1, 1, 1, 1, 1, 1, 1, 20, 1, 14, 29, 14, 1, 14, 14, 14, 14, 14, 14, 14, 1, 14, 1, 29, 29, 1, 14, 1, 1, 20, 1, 4, 4, 1, 1, 20, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 29, 14, 1, 4, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 14, 14, 29, 14, 14, 14, 14, 14, 14, 14, 14, 14, 29, 14, 14, 14, 29, 29, 14, 14, 14, 14, 14, 1, 14, 29, 14, 1, 11, 11, 14, 14, 14, 11, 11, 1, 14, 1, 29, 29, 9, 9, 1, 1, 1, 1, 4, 4, 4, 26, 14, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 29, 14, 1, 4, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 29, 29, 14, 14, 14, 29, 29, 29, 14, 14, 14, 29, 29, 14, 14, 29, 29, 14, 14, 14, 14, 14, 1, 14, 29, 14, 1, 14, 14, 14, 14, 14, 14, 14, 1, 14, 1, 29, 29, 29, 29, 29, 29, 9, 1, 4, 4, 4, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 29, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 29, 29, 14, 14, 29, 29, 29, 29, 29, 14, 14, 29, 29, 14, 14, 29, 29, 14, 14, 14, 14, 14, 14, 14, 29, 14, 1, 11, 11, 14, 14, 14, 11, 11, 1, 14, 9, 29, 29, 29, 29, 29, 29, 29, 29, 4, 4, 21, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 14, 14, 29, 29, 14, 14, 29, 29, 11, 29, 29, 14, 14, 29, 29, 14, 14, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 14, 1, 14, 14, 14, 14, 14, 14, 14, 1, 14, 1, 29, 29, 29, 29, 29, 29, 29, 29, 4, 4, 4, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 29, 29, 14, 14, 29, 29, 14, 14, 29, 29, 29, 29, 29, 14, 14, 29, 29, 14, 14, 29, 29, 14, 14, 14, 14, 14, 14, 14, 14, 14, 1, 11, 11, 14, 14, 14, 11, 11, 1, 14, 1, 29, 29, 29, 29, 29, 29, 29, 29, 4, 4, 4, 26, 14, 20, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 14, 14, 14, 14, 29, 29, 14, 14, 29, 29, 14, 14, 14, 29, 29, 29, 14, 14, 14, 29, 29, 14, 14, 29, 29, 14, 14, 14, 14, 14, 1, 1, 1, 1, 1, 14, 14, 14, 14, 14, 14, 14, 1, 14, 1, 29, 29, 29, 29, 29, 29, 29, 29, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 14, 14, 14, 14, 29, 29, 14, 14, 14, 29, 14, 14, 14, 14, 14, 14, 14, 14, 14, 29, 14, 14, 14, 29, 29, 14, 14, 14, 14, 14, 1, 1, 1, 1, 1, 11, 11, 14, 14, 14, 11, 11, 1, 14, 1, 29, 29, 29, 29, 29, 29, 29, 29, 4, 12, 1, 1, 1, 1, 1, 1, 1, 1, 1, 29, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 14, 29, 29, 14, 14, 14, 14, 14, 14, 14, 29, 29, 14, 14, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 14, 14, 14, 14, 14, 14, 1, 4, 4, 29, 29, 4, 4, 29, 29, 29, 29, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 4, 29, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 29, 14, 14, 14, 29, 29, 29, 29, 29, 29, 29, 29, 29, 14, 14, 14, 29, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 11, 11, 14, 14, 14, 11, 9, 9, 4, 4, 4, 4, 4, 4, 29, 29, 1, 9, 4, 4, 1, 1, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 29, 29, 29, 14, 14, 14, 14, 29, 29, 29, 29, 29, 14, 14, 14, 14, 29, 29, 29, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 14, 14, 14, 14, 14, 9, 9, 3, 1, 1, 21, 4, 4, 29, 1, 1, 1, 4, 4, 1, 1, 14, 14, 1, 11, 11, 11, 4, 29, 4, 4, 5, 4, 4, 4, 4, 4, 4, 25, 1, 1, 1, 1, 1, 1, 1, 1, 14, 14, 29, 29, 29, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 29, 29, 29, 14, 14, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 11, 11, 14, 14, 14, 9, 9, 1, 14, 29, 4, 4, 4, 29, 1, 1, 1, 1, 4, 4, 1, 1, 14, 14, 1, 11, 9, 11, 1, 29, 1, 4, 1, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 14, 14, 14, 29, 29, 29, 29, 1, 14, 14, 14, 14, 14, 14, 14, 1, 29, 29, 29, 29, 29, 14, 14, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 14, 14, 14, 14, 14, 9, 9, 29, 29, 29, 29, 29, 4, 1, 1, 1, 1, 4, 4, 1, 1, 14, 14, 1, 11, 9, 11, 1, 29, 1, 4, 1, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1, 14, 14, 14, 29, 14, 14, 29, 1, 1, 29, 29, 29, 29, 29, 29, 29, 1, 1, 29, 14, 29, 29, 29, 14, 14, 1, 1, 1, 1, 1, 1, 1, 1, 11, 11, 14, 14, 14, 11, 11, 9, 14, 9, 29, 29, 9, 4, 1, 1, 1, 1, 4, 4, 1, 1, 14, 14, 1, 11, 11, 11, 1, 29, 1, 4, 1, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 14, 14, 14, 29, 14, 14, 14, 1, 1, 1, 29, 29, 29, 29, 29, 29, 29, 1, 1, 1, 14, 14, 29, 29, 29, 14, 14, 1, 1, 1, 1, 1, 1, 1, 14, 14, 14, 14, 14, 14, 14, 9, 9, 4, 29, 29, 9, 9, 20, 1, 1, 1, 4, 4, 1, 1, 14, 14, 1, 1, 1, 1, 1, 29, 1, 4, 4, 4, 4, 4, 4, 1, 4, 25, 1, 1, 1, 1, 1, 1, 14, 29, 14, 14, 14, 1, 1, 1, 1, 14, 14, 14, 14, 14, 14, 14, 1, 1, 1, 1, 14, 14, 29, 29, 29, 14, 14, 1, 1, 1, 1, 1, 1, 11, 11, 14, 14, 14, 11, 11, 1, 14, 25, 29, 29, 1, 14, 20, 1, 1, 1, 4, 4, 1, 1, 14, 14, 1, 11, 11, 11, 1, 29, 1, 4, 1, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 29, 14, 14, 14, 1, 1, 1, 1, 1, 14, 14, 14, 14, 14, 14, 14, 1, 1, 1, 1, 1, 14, 14, 29, 29, 29, 14, 14, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 1, 29, 29, 1, 14, 1, 1, 1, 1, 4, 4, 1, 1, 14, 14, 1, 11, 9, 11, 1, 29, 1, 4, 1, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 29, 1, 1, 14, 1, 1, 1, 1, 1, 1, 14, 14, 14, 14, 14, 14, 14, 1, 1, 1, 1, 1, 1, 14, 14, 29, 29, 29, 14, 14, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 29, 29, 4, 4, 1, 1, 1, 1, 4, 4, 1, 1, 14, 14, 1, 11, 9, 11, 1, 29, 1, 4, 11, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 29, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 14, 14, 14, 14, 14, 14, 1, 1, 1, 1, 1, 1, 1, 14, 14, 29, 29, 29, 14, 14, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 4, 4, 1, 1, 14, 14, 1, 11, 11, 11, 1, 29, 1, 4, 4, 4, 4, 4, 4, 1, 4, 25, 14, 14, 14, 25, 1, 29, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 14, 14, 14, 14, 14, 14, 1, 1, 1, 1, 1, 1, 1, 1, 14, 14, 29, 29, 29, 14, 14, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 21, 4, 4, 1, 1, 1, 1, 4, 12, 1, 1, 14, 14, 1, 1, 1, 1, 1, 29, 1, 4, 1, 1, 1, 1, 1, 1, 4, 14, 14, 14, 14, 14, 1, 29, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 14, 29, 29, 29, 14, 14, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 1, 1, 20, 1, 12, 4, 1, 1, 14, 14, 1, 11, 11, 11, 1, 29, 1, 4, 1, 4, 4, 4, 4, 4, 4, 14, 14, 14, 14, 14, 1, 29, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 14, 29, 29, 29, 14, 14, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 21, 4, 4, 1, 1, 1, 1, 4, 4, 1, 1, 14, 14, 1, 11, 9, 11, 1, 29, 1, 4, 1, 1, 1, 1, 1, 1, 5, 14, 14, 14, 14, 14, 1, 29, 1, 1, 1, 1, 1, 20, 1, 1, 1, 20, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 14, 29, 29, 29, 14, 14, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 4, 4, 1, 1, 14, 14, 1, 11, 9, 11, 1, 29, 1, 4, 4, 4, 4, 4, 4, 4, 4, 25, 14, 14, 14, 25, 1, 29, 1, 1, 1, 20, 20, 1, 20, 1, 20, 1, 1, 1, 20, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 14, 29, 29, 29, 14, 14, 1, 1, 1, 1, 1, 1, 4, 4, 29, 29, 4, 4, 1, 20, 1, 1, 4, 4, 1, 1, 14, 14, 1, 11, 11, 11, 1, 29, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 14, 1, 1, 1, 29, 1, 1, 1, 20, 1, 4, 20, 20, 20, 1, 20, 20, 20, 1, 20, 20, 20, 20, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 14, 29, 29, 29, 14, 14, 1, 1, 1, 1, 1, 1, 1, 29, 29, 1, 1, 1, 1, 1, 1, 4, 4, 1, 1, 14, 14, 1, 1, 1, 1, 1, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 14, 14, 29, 29, 29, 29, 1, 4, 1, 20, 1, 20, 1, 20, 20, 1, 1, 1, 1, 1, 1, 20, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 14, 29, 29, 29, 14, 14, 1, 1, 1, 1, 1, 1, 29, 29, 1, 1, 1, 1, 1, 1, 4, 4, 1, 1, 14, 14, 1, 11, 11, 11, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 14, 1, 1, 1, 20, 1, 1, 1, 20, 1, 1, 20, 1, 12, 4, 20, 20, 20, 20, 20, 20, 1, 20, 20, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 14, 29, 29, 29, 14, 14, 1, 1, 1, 20, 1, 29, 29, 1, 1, 20, 1, 1, 1, 4, 4, 1, 1, 14, 14, 1, 11, 9, 11, 11, 1, 11, 11, 11, 11, 1, 11, 11, 11, 11, 1, 14, 14, 1, 1, 1, 1, 1, 20, 1, 1, 4, 1, 1, 12, 4, 12, 20, 9, 20, 9, 1, 20, 4, 20, 1, 20, 1, 1, 1, 20, 1, 1, 1, 1, 1, 1, 1, 1, 14, 14, 29, 29, 29, 14, 14, 1, 1, 1, 1, 29, 29, 1, 1, 1, 1, 1, 1, 4, 4, 1, 1, 14, 14, 1, 11, 9, 9, 11, 1, 11, 9, 9, 11, 1, 11, 2, 15, 11, 1, 14, 14, 1, 1, 1, 1, 1, 4, 20, 1, 20, 1, 1, 4, 4, 9, 9, 9, 9, 9, 20, 20, 1, 20, 20, 4, 1, 1, 20, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 14, 29, 29, 29, 14, 14, 1, 1, 1, 29, 29, 1, 1, 1, 1, 1, 1, 4, 4, 1, 1, 14, 14, 1, 11, 11, 11, 11, 1, 11, 11, 11, 11, 1, 11, 11, 11, 11, 1, 14, 14, 1, 1, 1, 20, 20, 20, 20, 1, 20, 1, 1, 12, 4, 9, 9, 9, 9, 20, 9, 4, 1, 1, 20, 1, 1, 1, 20, 1, 1, 1, 13, 1, 1, 1, 1, 1, 1, 1, 14, 14, 29, 29, 29, 14, 14, 1, 1, 29, 29, 1, 1, 20, 1, 14, 14, 4, 4, 1, 1, 14, 14, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 14, 14, 11, 11, 11, 11, 11, 11, 11, 1, 1, 1, 9, 9, 1, 9, 20, 9, 9, 9, 9, 12, 12, 12, 1, 1, 4, 1, 1, 1, 1, 1, 4, 13, 1, 1, 1, 1, 1, 1, 1, 14, 14, 29, 29, 29, 14, 14, 1, 29, 29, 1, 1, 1, 1, 14, 29, 4, 4, 1, 1, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 9, 9, 20, 9, 9, 9, 9, 20, 9, 9, 12, 12, 4, 1, 1, 1, 1, 1, 1, 20, 1, 1, 4, 13, 1, 1, 1, 1, 1, 1, 1, 14, 14, 29, 29, 29, 14, 14, 29, 29, 1, 20, 1, 1, 14, 29, 4, 12, 1, 1, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 9, 20, 20, 20, 9, 20, 9, 9, 9, 12, 12, 12, 1, 1, 1, 20, 20, 20, 20, 1, 1, 1, 4, 13, 1, 1, 1, 1, 1, 1, 1, 14, 14, 29, 29, 29, 14, 29, 29, 1, 1, 1, 1, 14, 29, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 11, 11, 11, 11, 11, 11, 11, 11, 1, 20, 1, 1, 9, 9, 20, 20, 9, 9, 9, 9, 4, 4, 4, 20, 20, 1, 1, 20, 20, 20, 1, 1, 1, 1, 4, 13, 1, 1, 1, 1, 1, 1, 1, 14, 14, 29, 29, 29, 29, 29, 1, 1, 20, 1, 14, 29, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 12, 12, 4, 9, 9, 9, 20, 20, 9, 9, 12, 1, 20, 1, 1, 4, 20, 4, 1, 20, 1, 1, 1, 1, 4, 13, 1, 1, 1, 1, 1, 1, 1, 14, 14, 29, 29, 29, 29, 14, 1, 1, 1, 14, 29, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 11, 11, 11, 4, 4, 1, 1, 1, 1, 1, 1, 20, 20, 20, 20, 1, 4, 4, 9, 9, 9, 20, 9, 9, 9, 1, 20, 1, 4, 1, 1, 20, 1, 1, 1, 1, 1, 1, 1, 1, 4, 13, 1, 1, 1, 1, 1, 1, 1, 14, 14, 29, 29, 29, 14, 14, 1, 1, 14, 29, 4, 4, 1, 1, 1, 4, 4, 4, 1, 1, 1, 1, 1, 31, 14, 14, 14, 14, 14, 14, 14, 14, 26, 4, 1, 1, 1, 1, 1, 4, 20, 1, 20, 20, 1, 12, 20, 20, 9, 20, 9, 9, 1, 20, 20, 1, 1, 20, 20, 20, 20, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 13, 1, 1, 1, 1, 1, 1, 1, 14, 14, 29, 29, 29, 14, 14, 1, 14, 29, 4, 4, 1, 1, 4, 4, 4, 4, 4, 4, 1, 1, 1, 4, 14, 14, 14, 14, 14, 14, 4, 4, 4, 4, 1, 1, 1, 20, 1, 20, 20, 4, 1, 20, 1, 1, 20, 20, 1, 20, 1, 20, 20, 20, 20, 4, 20, 20, 20, 20, 1, 1, 1, 20, 20, 1, 4, 1, 1, 1, 1, 4, 13, 1, 1, 1, 1, 1, 1, 1, 14, 14, 29, 29, 29, 14, 14, 14, 29, 4, 4, 1, 1, 4, 4, 4, 4, 4, 4, 1, 1, 1, 4, 14, 14, 14, 14, 14, 14, 4, 14, 5, 4, 1, 1, 1, 20, 1, 20, 20, 1, 1, 1, 20, 20, 20, 20, 20, 20, 20, 1, 20, 1, 1, 1, 1, 4, 20, 4, 1, 1, 1, 20, 20, 1, 1, 1, 1, 1, 1, 1, 4, 13, 1, 1, 1, 1, 1, 1, 1, 14, 14, 29, 29, 29, 14, 14, 29, 4, 4, 1, 1, 4, 4, 4, 4, 4, 4, 1, 1, 1, 4, 26, 27, 27, 27, 24, 14, 31, 14, 5, 4, 1, 1, 1, 1, 1, 1, 20, 1, 1, 20, 4, 20, 1, 1, 20, 20, 20, 1, 20, 1, 1, 4, 20, 20, 20, 1, 1, 1, 1, 20, 20, 1, 1, 1, 1, 1, 1, 1, 1, 4, 13, 1, 1, 1, 1, 1, 1, 1, 14, 14, 29, 29, 29, 14, 29, 4, 4, 1, 1, 1, 4, 4, 4, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 4, 1, 20, 4, 1, 20, 20, 20, 1, 1, 20, 20, 1, 20, 20, 20, 1, 20, 1, 1, 1, 20, 20, 20, 20, 20, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 13, 1, 1, 1, 1, 1, 1, 1, 14, 14, 29, 29, 29, 29, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 20, 1, 20, 20, 20, 20, 1, 1, 20, 1, 20, 1, 20, 20, 1, 20, 20, 1, 20, 20, 20, 1, 1, 20, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 29, 29, 29, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 20, 20, 20, 1, 20, 1, 1, 1, 20, 20, 20, 20, 1, 20, 20, 1, 20, 20, 20, 1, 1, 20, 20, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 14, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 4, 4, 4, 12, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 12, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 12, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 12, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 12, 4, 4};
+
+        buildFlagMaps();
+        LevelTransition exit = new LevelTransition(this, exitCell, LevelTransition.Type.REGULAR_EXIT);
+
+        transitions.add(exit);
+
+        this.map[exitCell] = Terrain.EXIT;
+        this.map[amuletCell] = Terrain.PEDESTAL;
+
+        return true;
+    }
+
+
+
+
+    @Override
+    public void initNpcs() {
+        Buff.affect(hero, WaveCooldownBuff.class, 30);
+        ArrayList<Integer> cands = new ArrayList<>();
+        cands.add(amuletCell+4);
+        cands.add(amuletCell-4);
+        cands.add(amuletCell+4*WIDTH);
+        cands.add(amuletCell-4*WIDTH);
+        for (int i : cands){
+            TowerPylonBroken pylon = new TowerPylonBroken();
+            pylon.pos = i;
+            GameScene.add(pylon);
+        }
+        super.initNpcs();
+    }
+
+
+    @Override
+    public String tileName( int tile ) {
+        switch (tile) {
+            case Terrain.GRASS:
+                return Messages.get(CavesLevel.class, "grass_name");
+            case Terrain.HIGH_GRASS:
+                return Messages.get(CavesLevel.class, "high_grass_name");
+            case Terrain.WATER:
+                return Messages.get(CavesLevel.class, "watertoxic_name");
+            default:
+                return super.tileName( tile );
+        }
+    }
+
+    @Override
+    public String tileDesc( int tile ) {
+        switch (tile) {
+            case Terrain.ENTRANCE:
+                return Messages.get(CavesLevel.class, "entrance_desc");
+            case Terrain.EXIT:
+                return Messages.get(CavesLevel.class, "exit_desc");
+            case Terrain.HIGH_GRASS:
+                return Messages.get(CavesLevel.class, "high_grass_desc");
+            case Terrain.WALL_DECO:
+                return Messages.get(CavesLevel.class, "wall_deco_desc");
+            case Terrain.BOOKSHELF:
+                return Messages.get(CavesLevel.class, "bookshelf_desc");
+            case Terrain.WATER:
+                return Messages.get(CavesLevel.class, "watertoxic_desc");
+            default:
+                return super.tileDesc( tile );
+        }
+    }
+
+    @Override
+    public String tilesTex() {
+        return "environment/worlds/tiles_towermines.png";
+    }
+
+    @Override
+    public String waterTex() {
+        return Assets.Environment.WATER_SEWERS;
+    }
+
+}

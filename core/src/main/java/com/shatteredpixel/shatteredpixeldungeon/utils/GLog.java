@@ -60,6 +60,10 @@ public class GLog {
 		i( NEGATIVE + text, args );
 	}
 	
+	public static void cursed( String text, Object... args ) {
+		w( text, args );
+	}
+
 	public static void w( String text, Object... args ) {
 		i( WARNING + text, args );
 	}

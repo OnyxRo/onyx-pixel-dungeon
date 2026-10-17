@@ -51,6 +51,11 @@ public abstract class ExoticScroll extends Scroll {
 		exoToReg.put(ScrollOfPetrification.class, ScrollOfTerror.class);
 		//Tower PD's Scroll of Discoveries, reverse lookup only
 		exoToReg.put(ScrollOfDiscoveries.class, ScrollOfMagicMapping.class);
+		//Tower PD's other exotic scrolls, reverse lookups only
+		exoToReg.put(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfGolems.class, com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfAnimation.class);
+		exoToReg.put(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfHolyNova.class, ScrollOfRemoveCurse.class);
+		exoToReg.put(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfRatLegion.class, ScrollOfTeleportation.class);
+		exoToReg.put(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfDemonicSkull.class, com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfSkulls.class);
 		exoToReg.put(ScrollOfAffection.class, ScrollOfLullaby.class);
 		exoToReg.put(ScrollOfConfusion.class, ScrollOfRage.class);
 		exoToReg.put(ScrollOfPolymorph.class, ScrollOfTransmutation.class);

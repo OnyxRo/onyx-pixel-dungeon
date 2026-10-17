@@ -430,6 +430,7 @@ public class DungeonTileSheet {
 		directVisuals.put(Terrain.EMPTY_SP,         FLOOR_SP);
 		directVisuals.put(Terrain.SP_RUNE,          PEDESTAL); //drawn as a pedestal so the ritual spots can be seen
 		directVisuals.put(Terrain.SIGN,             FLOOR_SP);
+		directVisuals.put(Terrain.ADDITIONALBARRIER, FLOOR);
 		directVisuals.put(Terrain.ENTRANCE_SP,      ENTRANCE_SP);
 
 		directVisuals.put(Terrain.SECRET_TRAP,      directVisuals.get(Terrain.EMPTY));

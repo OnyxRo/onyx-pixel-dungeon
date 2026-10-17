@@ -1,0 +1,526 @@
+package com.shatteredpixel.shatteredpixeldungeon.levels;
+
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.BossTroll;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Goblin;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GoblinFat;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GoblinGiant;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GoblinNinja;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GoblinSand;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GoblinShaman;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Rat;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NewShopKeeper;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.RatKing;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.towers.TowerCrossbow1;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.MeatPie;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMirrorImage;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
+import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.GoblinSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.TowerCrossbow2Sprite;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndDialogueWithPic;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndModes;
+import com.watabou.noosa.Game;
+import com.watabou.noosa.Group;
+import com.watabou.noosa.audio.Music;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.particles.PixelParticle;
+import com.watabou.utils.PointF;
+import com.watabou.utils.Random;
+
+import java.util.ArrayList;
+
+public class Arena14 extends ArenaCaves{
+    {
+
+        name = "Goblin outpost";
+        WIDTH = 100;
+        HEIGHT = 70;
+        color1 = 0x534f3e;
+        color2 = 0xb9d661;
+        viewDistance = 100;
+
+        startGold = 6000;
+        startLvl = 11;
+        arenaDepth = 14;
+        maxWaves = 15;
+
+        normalShopKeeper.vertical = NewShopKeeper.ShopDirection.RIGHT;
+        towerShopKeeper.vertical = NewShopKeeper.ShopDirection.RIGHT;
+
+        amuletCell = 9 + WIDTH*35;
+        exitCell = amuletCell;
+        towerShopKeeperCell = 2 + 30*WIDTH;
+        normalShopKeeperCell = 2 + 40*WIDTH;
+
+        waveCooldownNormal = 5;
+        waveCooldownBoss = 400;
+    }
+    @Override
+    public Mob chooseMob(int wave) {
+        Mob mob = new Rat();
+        switch (wave){
+            case 1:
+                mob = Random.oneOf(new Goblin()); break;
+            case 2:
+                mob = Random.oneOf(new GoblinFat()); break;
+            case 3:
+                if (!bossSpawned) {
+                    bossSpawned = true;
+                    mob = new GoblinShaman.ShamanShield();
+                } else mob = Random.oneOf(new Goblin(), new GoblinFat());
+                break;
+            case 4:
+                mob = Random.oneOf(new Goblin(),new GoblinFat(), new GoblinGiant(), new Goblin(),new Goblin()); break;
+            case 5:
+                mob = Random.oneOf(new GoblinGiant()); break;
+            case 6:
+                mob = Random.oneOf(new GoblinGiant(),new GoblinGiant(),new GoblinGiant(),new Goblin(), new GoblinFat(), new GoblinShaman.ShamanRegen()); break;
+            case 7:
+                mob = new GoblinNinja(); break;
+            case 8:
+                mob = Random.oneOf(new GoblinSand(), new Goblin()); break;
+            case 9:
+                mob = Random.oneOf(new GoblinGiant(), new GoblinGiant(), new GoblinGiant(), new GoblinGiant(), new GoblinGiant(), new GoblinGiant(), new GoblinGiant(), new GoblinGiant(), new GoblinGiant(), new GoblinGiant(), new GoblinShaman.ShamanStrength()); break;
+            case 10:
+                if (!bossSpawned) {
+                    bossSpawned = true;
+                    mob = new BossTroll();
+                } else mob = new GoblinGiant(); break;
+            case 11:
+                mob = new Goblin(); break;
+            case 12:
+                mob = Random.oneOf(new GoblinShaman.ShamanShield(), new Goblin(), new GoblinSand(),new GoblinFat()); break;
+            case 13:
+                mob = Random.oneOf(new GoblinGiant(), new GoblinGiant(), new GoblinGiant(), new GoblinGiant(), new GoblinGiant(), new GoblinShaman.ShamanStrength()); break;
+            case 14:
+                mob = Random.oneOf(new GoblinGiant(), new GoblinGiant(), new GoblinGiant(), new GoblinGiant(), new GoblinShaman.ShamanShield(),new GoblinShaman.ShamanStrength(),new GoblinShaman.ShamanRegen()); break;
+            case 15: {
+                mob = Random.oneOf(new BossTroll(), new BossTroll(), new BossTroll(), new BossTroll(), new BossTroll(), new BossTroll(), new BossTroll(), new BossTroll(), new BossTroll(), new BossTroll(), new BossTroll(),  new GoblinShaman.ShamanRegen());
+                break;
+            }
+        }
+        if (mode == WndModes.Modes.CHALLENGE){
+            affectMob(mob);
+        }
+        return mob;
+    }
+    @Override
+    public int mobsToDeploy(int wave) {
+        switch (wave){
+            case 1: return 10;//gobs
+            case 2: return 20;//gobs
+            case 3: return 20;//gobs and shaman
+            case 4: return 20;//gobs and gigas
+            case 5: return 11;//gigas
+            case 6: return 15;//shamans, gobs and gigas
+            case 7: return 20;//ninja gobs
+            case 8: return 41;//gobs and sand gobs
+            case 9: return 20;//shamans and gigas
+            case 10: return 15;//gigas and a troll
+            case 11: return 70;//gobs
+            case 12: return 75;//gobs and sand gobs
+            case 13: return 40;//gigas
+            case 14: return 50;//gigas and shamans
+            case 15: return 7;//trolls
+        }
+        return 1;
+    }
+
+    public void deploymobs(int wave, Direction direction, int group) {
+
+        if (wave == 10) super.deploymobs(wave, Direction.RIGHT, 6);
+        else if (wave == 7) {
+            super.deploymobs(wave, Direction.LEFT, 10);
+            Sample.INSTANCE.play(Assets.Sounds.ALERT);
+        } else super.deploymobs(wave, Direction.RIGHT, 1);
+    }
+
+    @Override
+    protected boolean build() {
+
+
+        setSize(WIDTH,HEIGHT);
+        //base room
+        Painter.fill(this, 0,0,100,70, Terrain.WALL);
+        Painter.fill(this, 1,1,98,68, Terrain.EMPTY);
+
+        Painter.fill(this, 0,0,32,20, Terrain.WALL);
+        Painter.fill(this, 0,50,32,20, Terrain.WALL);
+
+        Painter.fill(this, 6,32,7,7,Terrain.EMPTY_SP);
+        Painter.fill(this, 7,33,5,5,Terrain.WATER);
+        Painter.fill(this, 8,34,3,3,Terrain.EMPTY_SP);
+
+
+        for (int y = 1; y<HEIGHT-1;y++){
+            if (y % 2 == 0) Painter.fill(this, 30,y,3,1,Terrain.BARRICADE);
+            else Painter.fill(this, 30, y,3,1,Terrain.WALL);
+        }
+
+        for (int x1 = 33; x1 < WIDTH - 7; x1++)
+            for (int y1 = 1; y1 < HEIGHT - 7; y1++) {
+                //columns
+                if (Math.random()>0.99)Painter.fillEllipse(this,x1,y1,Random.Int(2,3), Random.Int(2,3), Terrain.WALL);
+            }
+        Painter.fill(this, 15,33,44,1,Terrain.EMPTY);
+        Painter.fill(this, 13,34,87,3,Terrain.EMPTY_SP);
+        Painter.fill(this, 15,37,44,1,Terrain.EMPTY);
+        Painter.fillEllipse(this,59,31,9,9,Terrain.EMPTY_SP);
+        Painter.fillEllipse(this,60,32,7,7,Terrain.WATER);
+
+        Painter.fill(this, 23,23,36,1,Terrain.EMPTY);
+        Painter.fill(this, 23,24,77,3,Terrain.EMPTY_SP);
+        Painter.fill(this, 23,27,36,1,Terrain.EMPTY);
+
+        Painter.fill(this, 23,43,36,1,Terrain.EMPTY);
+        Painter.fill(this, 23,44,77,3,Terrain.EMPTY_SP);
+        Painter.fill(this, 23,47,36,1,Terrain.EMPTY);
+
+
+        //the paths
+        int pathnum = 12;//VARIABLES YOU CAN CHANGE IF THE CAVES SEEM NOT BIG ENOUGH
+
+        int xcan = Random.Int(33, WIDTH - 10);
+        int ycan = Random.Int(5, HEIGHT - 5);
+
+        int pathnummax = pathnum;
+
+        int xcur;
+        int ycur;
+        xcur = Random.Int(34, WIDTH - 10);
+        ycur = Random.Int(5, HEIGHT - 5);
+        for (int i = 0; i < pathnummax; i++) {
+            pathnum--;
+
+            if (i<pathnummax/2){
+                xcur = 33 ;
+                ycur = 25;
+                xcan = 36 + Random.Int(6, 55);
+                ycan = Random.Int(6, 14);
+            } else {
+                xcur = 33;
+                ycur = 45;
+                xcan = 36 + Random.Int(6, 55);
+                ycan = Random.Int(52, 60);
+            }
+
+
+
+            while (!(xcur == xcan && ycur == ycan)) {
+
+                if (xcan > xcur && xcur < WIDTH - 7) xcur++;
+                else if (xcan < xcur && xcur > 34) xcur--;
+                else if (ycan < ycur && ycur > 5) ycur--;
+                else if (ycan > ycur && ycur < HEIGHT - 5) ycur++;
+
+
+
+                if (this.map[xcur+WIDTH*ycur]!=Terrain.BARRICADE && this.map[xcur-1+WIDTH*ycur]!=Terrain.BARRICADE && this.map[xcur+WIDTH*ycur-WIDTH]!=Terrain.BARRICADE && this.map[xcur+WIDTH*ycur-1-WIDTH]!=Terrain.BARRICADE)Painter.fill(this,xcur-1,ycur-1,2,2,Terrain.EMPTY_SP);
+                if (Math.random()>0.3){
+                    if (Math.random()>0.95)if (this.map[xcur+WIDTH*ycur+1]!=Terrain.EMPTY_SP && this.map[xcur+WIDTH*ycur+1]!=Terrain.BARRICADE) this.map[xcur+WIDTH*ycur+1] =Terrain.STATUE;
+                    if (Math.random()>0.95)if (this.map[xcur+WIDTH*ycur-2]!=Terrain.EMPTY_SP && this.map[xcur+WIDTH*ycur-2]!=Terrain.BARRICADE) this.map[xcur+WIDTH*ycur-2] =Terrain.STATUE;
+                    if (Math.random()>0.95)if (this.map[xcur+WIDTH*ycur+WIDTH+WIDTH]!=Terrain.EMPTY_SP && this.map[xcur+WIDTH*ycur+WIDTH+WIDTH]!=Terrain.BARRICADE) this.map[xcur+WIDTH*ycur+WIDTH+WIDTH] =Terrain.STATUE;
+                    if (Math.random()>0.95)if (this.map[xcur+WIDTH*ycur-WIDTH-WIDTH]!=Terrain.EMPTY_SP && this.map[xcur+WIDTH*ycur-WIDTH-WIDTH]!=Terrain.BARRICADE) this.map[xcur+WIDTH*ycur-WIDTH-WIDTH] =Terrain.STATUE;
+                }
+            }
+            int houseWidth = Random.IntRange(6,9);
+            int houseHeight = Random.IntRange(6,9);
+
+            Painter.fill(this, xcur-houseWidth/2,ycur-houseHeight/2,houseWidth,houseHeight,Terrain.BARRICADE);
+            Painter.fill(this, xcur-houseWidth/2+1,ycur-houseHeight/2+1,houseWidth-2,houseHeight-2,Terrain.EMPTY_SP);
+            if (Math.random()>0.8) Painter.fill(this, xcur-houseWidth/2+2,ycur-houseHeight/2+2,houseWidth-5,houseHeight-5,Terrain.WATER);
+            if (ycur>30){
+                Painter.fill(this, xcur-houseWidth/2+2,ycur-houseHeight/2,3,1,Terrain.EMPTY_SP);
+            } else Painter.fill(this, xcur-houseWidth/2+2,ycur+houseHeight/2,3,1,Terrain.EMPTY_SP);
+        }
+
+        for (int x1 = 30; x1 < WIDTH - 1; x1++)
+            for (int y1 = 1; y1 < HEIGHT - 1; y1++) {
+
+                int cell = x1 + WIDTH * y1;
+                //Random grass
+                if (Math.random() > 0.93) {
+                    if (this.map[cell] == Terrain.EMPTY) this.map[cell] = Terrain.GRASS;
+
+                }
+                //water
+                if (Math.random() > 0.96) {
+                    if (this.map[cell] == Terrain.EMPTY) this.map[cell] = Terrain.WATER;
+                }
+            }
+        for (int x1 = 3; x1 < WIDTH - 1; x1++)
+            for (int y1 = 1; y1 < HEIGHT - 1; y1++) {
+                int cell = x1 + WIDTH * y1;
+                //Random pebbles
+                if (Math.random() > 0.9) {
+                    if (this.map[cell] == Terrain.EMPTY) this.map[cell] = Terrain.EMPTY_DECO;
+
+                }
+            }
+        LevelTransition exit = new LevelTransition(this, exitCell, LevelTransition.Type.REGULAR_EXIT);
+
+        transitions.add(exit);
+
+        this.map[exitCell] = Terrain.EXIT;
+        this.map[amuletCell] = Terrain.PEDESTAL;
+
+        return true;
+    }
+
+    @Override
+    public void addDestinations() {
+        ArrayList<Integer> candidates = new ArrayList<>();
+        for (int m = 0; m<WIDTH*HEIGHT;m++){
+            if (this.map[m]==Terrain.EMPTY_SP) candidates.add(m);
+        }
+
+        dropMany(candidates,
+                new Honeypot(),
+                new PotionOfHealing(),
+                new ScrollOfMirrorImage(),
+                new MeatPie(),
+                new MysteryMeat(),
+                new Honeypot(),
+                new PotionOfHealing(),
+                new PotionOfToxicGas(),
+                new ScrollOfUpgrade(),
+                new MeatPie(),
+                new MysteryMeat(),
+                new SmallRation(),
+                new SmallRation(),
+                new SmallRation(),
+                new SmallRation(),
+                Generator.random(Generator.Category.POTION),
+                Generator.random(Generator.Category.STONE),
+                Generator.random(Generator.Category.SEED),
+                Generator.random(Generator.Category.SEED),
+                Generator.random(Generator.Category.SEED),
+                Generator.random(Generator.Category.SEED),
+                Generator.random(Generator.Category.SEED),
+                Generator.random(Generator.Category.SEED),
+                Generator.random(Generator.Category.SEED),
+                Generator.random(Generator.Category.SEED),
+                Generator.random(Generator.Category.SEED),
+                Generator.random(Generator.Category.SEED),
+                Generator.random(Generator.Category.SEED),
+                Generator.random(Generator.Category.SEED),
+                Generator.random(Generator.Category.RING),
+                Generator.random(Generator.Category.WAND),
+                Generator.random(Generator.Category.POTION),
+                Generator.random(Generator.Category.SCROLL),
+                Generator.random(Generator.Category.MIS_T3),
+                Generator.random(Generator.Category.MIS_T2),
+                Generator.random(Generator.Category.MIS_T1),
+                Generator.random(Generator.Category.ARMOR),
+                Generator.random(Generator.Category.RING),
+                Generator.random(Generator.Category.WAND),
+                Generator.random(Generator.Category.POTION),
+                Generator.random(Generator.Category.STONE),
+                Generator.random(Generator.Category.SEED),
+                Generator.random(Generator.Category.SEED),
+                Generator.random(Generator.Category.GOLD),
+                Generator.random(Generator.Category.GOLD),
+                Generator.random(Generator.Category.GOLD),
+                Generator.random(Generator.Category.GOLD),
+                Generator.random(Generator.Category.GOLD),
+                Generator.random(Generator.Category.GOLD),
+                Generator.random(Generator.Category.GOLD),
+                Generator.random(Generator.Category.GOLD),
+                Generator.random(Generator.Category.GOLD),
+                Generator.random(Generator.Category.GOLD),
+                Generator.random(Generator.Category.GOLD),
+                Generator.random(Generator.Category.GOLD),
+                Generator.random(Generator.Category.GOLD),
+                Generator.random(Generator.Category.GOLD),
+                Generator.random(Generator.Category.GOLD)
+                );
+
+        dropMany(Heap.Type.CHEST, candidates,
+                Generator.random(Generator.Category.ARMOR),
+                Generator.random(Generator.Category.ARTIFACT),
+                Generator.random(Generator.Category.RING),
+                Generator.random(Generator.Category.WAND),
+                Generator.random(Generator.Category.POTION),
+                Generator.random(Generator.Category.SCROLL),
+                Generator.random(Generator.Category.MIS_T3),
+                Generator.random(Generator.Category.MIS_T2),
+                Generator.random(Generator.Category.MIS_T1),
+                Generator.random(Generator.Category.ARMOR),
+                Generator.random(Generator.Category.RING),
+                Generator.random(Generator.Category.WAND),
+                Generator.random(Generator.Category.ARMOR),
+                Generator.random(Generator.Category.ARTIFACT),
+                Generator.random(Generator.Category.RING),
+                Generator.random(Generator.Category.WAND),
+                Generator.random(Generator.Category.POTION),
+                Generator.random(Generator.Category.SCROLL),
+                Generator.random(Generator.Category.MIS_T3),
+                Generator.random(Generator.Category.MIS_T2),
+                Generator.random(Generator.Category.MIS_T1),
+                Generator.random(Generator.Category.ARMOR),
+                Generator.random(Generator.Category.RING),
+                Generator.random(Generator.Category.WAND)
+                );
+
+
+
+
+
+
+        candidates = new ArrayList<>();
+        for (int m = 0; m<WIDTH*HEIGHT;m++){
+            if (this.map[m]==Terrain.EMPTY) candidates.add(m);
+        }
+
+        dropMany(Heap.Type.REMAINS,candidates,
+                new Honeypot(),
+                new PotionOfHealing(),
+                new ScrollOfMirrorImage(),
+                new MeatPie(),
+                new MysteryMeat(),
+                new Honeypot(),
+                new PotionOfHealing(),
+                new PotionOfToxicGas(),
+                new ScrollOfUpgrade(),
+                new MeatPie(),
+                new MysteryMeat(),
+                new SmallRation(),
+                new SmallRation(),
+                new SmallRation(),
+                new SmallRation()
+                );
+
+
+
+        for (int m = 0; m<WIDTH*HEIGHT- 5*WIDTH;m++){
+            if (this.map[m]==Terrain.EMPTY_SP && m % WIDTH > 40) {
+                GoblinCrossbow crossbow = new GoblinCrossbow();
+                crossbow.pos = m;
+                GameScene.add(crossbow);
+                m+=Random.Int(10, WIDTH*4);
+            }
+        }
+        super.addDestinations();
+    }
+
+    @Override
+    public void doStuffStartwave(int wave) {
+        super.doStuffStartwave(wave);
+        if (wave==1) {
+            WndDialogueWithPic.dialogue(new GoblinSprite(), Messages.get(RatKing.class, "goblin"),
+                    new String[]{
+                            Messages.get(RatKing.class, "l14w1start1"),
+                            Messages.get(RatKing.class, "l14w1start2")
+                    },
+                    new byte[]{
+                            WndDialogueWithPic.IDLE
+                    });
+
+        }
+        if (wave==10) {
+            WndDialogueWithPic.dialogue(new GoblinSprite(), Messages.get(RatKing.class, "goblin"),
+                    new String[]{
+                            Messages.get(RatKing.class, "l14w10start1"),
+                            Messages.get(RatKing.class, "l14w10start2")
+                    },
+                    new byte[]{
+                            WndDialogueWithPic.IDLE
+                    });
+
+        }
+        if (wave==15) {
+            WndDialogueWithPic.dialogue(new GoblinSprite(), Messages.get(RatKing.class, "goblin"),
+                    new String[]{
+                            Messages.get(RatKing.class, "l14w15start1"),
+                            Messages.get(RatKing.class, "l14w15start2")
+                    },
+                    new byte[]{
+                            WndDialogueWithPic.IDLE
+                    });
+        }
+    }
+
+    @Override
+    public void doStuffEndwave(int wave) {
+        int goldAdd = 700;
+        Dungeon.gold+=goldAdd;
+        GLog.w(Messages.get(Arena.class, "goldaddendwave", goldAdd));
+        super.doStuffEndwave(wave);
+    }
+
+    @Override
+    public void playLevelMusic() {
+        Music.INSTANCE.playTracks(
+                new String[]{Assets.Music.CAVES_BOSS},
+                new float[]{1},
+                false);
+    }
+
+    @Override
+    public String tilesTex() {
+        return "environment/worlds/tiles_towergoblingrotto.png";
+    }
+
+    @Override
+    public String waterTex() {
+        return Assets.Environment.WATER_SEWERS;
+    }
+
+    public static class GoblinCrossbow extends TowerCrossbow1 {
+
+        {
+            spriteClass = TowerCrossbow2Sprite.class;
+            state = HUNTING;
+            alignment = Alignment.ENEMY;
+
+            //no loot or exp
+            maxLvl = 0;
+
+            damageMin = 3;
+
+            //a bit more tough than those of a gnoll village
+            HT = HP = 35;
+        }
+
+        @Override
+        public CharSprite sprite() {
+            CharSprite sprite1 = super.sprite();
+            sprite1.rm = sprite1.bm = 0.7f;
+            return sprite1;
+        }
+
+        @Override
+        public void updateSpriteState() {
+            super.updateSpriteState();
+        }
+
+
+        @Override
+        public float spawningWeight() {
+            return 0;
+        }
+
+        @Override
+        public boolean interact(Char c) {
+            return false;
+        }
+    }
+
+}

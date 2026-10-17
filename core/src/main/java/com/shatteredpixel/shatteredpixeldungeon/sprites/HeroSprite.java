@@ -38,6 +38,12 @@ import com.watabou.utils.PointF;
 import com.watabou.utils.RectF;
 
 public class HeroSprite extends CharSprite {
+	//Tower PD, the cast animation of the hero spells
+	public void castSpell(com.watabou.utils.Callback callback){
+		animCallback = callback;
+		play(read);
+	}
+
 	
 	private static final int FRAME_WIDTH	= 12;
 	private static final int FRAME_HEIGHT	= 15;

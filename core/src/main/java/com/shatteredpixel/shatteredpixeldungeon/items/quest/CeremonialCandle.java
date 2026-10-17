@@ -46,6 +46,15 @@ import java.util.ArrayList;
 
 
 public class CeremonialCandle extends Item {
+	//Tower PD, true when all four cells around the cell hold a lit candle
+	public static boolean checkCellForSurroundingLitCandles(int cell){
+		for (int i : com.watabou.utils.PathFinder.NEIGHBOURS4){
+			com.shatteredpixel.shatteredpixeldungeon.items.Heap heap = Dungeon.level.heaps.get(cell + i);
+			if (heap == null || !(heap.peek() instanceof CeremonialCandle) || !((CeremonialCandle)heap.peek()).aflame) return false;
+		}
+		return true;
+	}
+
 
 	//generated with the wandmaker quest
 	public static int ritualPos;

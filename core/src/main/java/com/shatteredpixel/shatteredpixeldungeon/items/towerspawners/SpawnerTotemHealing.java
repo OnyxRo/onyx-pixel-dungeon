@@ -1,0 +1,22 @@
+package com.shatteredpixel.shatteredpixeldungeon.items.towerspawners;
+
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.towers.TowerTotem;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+
+public class SpawnerTotemHealing extends TowerSpawner {
+
+    {
+        image = ItemSpriteSheet.TOWERSPAWNER_TOTEMHEALING;
+        stackable = true;
+        defaultAction = AC_THROW;
+        instanceOfTower = new TowerTotem.TotemHealing();
+
+    }
+
+    @Override
+    public int value() {
+        return 180;
+    }
+
+
+}

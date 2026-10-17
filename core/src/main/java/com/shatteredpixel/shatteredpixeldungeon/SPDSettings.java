@@ -43,6 +43,11 @@ public class SPDSettings extends GameSettings {
 		put( KEY_VERSION, value );
 	}
 	
+	//Tower PD, every tower is unlocked here
+	public static int maxlevelunlocked() {
+		return 26;
+	}
+
 	public static int version() {
 		return getInt( KEY_VERSION, 0 );
 	}
