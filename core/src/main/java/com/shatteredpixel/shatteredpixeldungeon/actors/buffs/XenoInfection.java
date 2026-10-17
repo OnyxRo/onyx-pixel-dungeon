@@ -1,0 +1,114 @@
+/*
+ * Pixel Dungeon
+ * Copyright (C) 2012-2015  Oleg Dolya
+ *
+ * Shattered Pixel Dungeon
+ * Copyright (C) 2014-2016 Evan Debenham
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ */
+package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
+
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Xenomorph;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.EarthParticle;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.utils.Bundle;
+
+public class XenoInfection extends Buff {
+
+    private static final int WARN_TURN = 2;
+    private static final int BURST_TURN = 5;
+    private static final float STICKY_DURATION = 1f;
+    private static final int CHESTBURSTER_BLOOD = 0xFFBFE5B8;
+
+    private int turns;
+    private boolean strongSpawn;
+
+    public static boolean infect(Hero hero) {
+        return infect(hero, false);
+    }
+
+    public static boolean infectStrong(Hero hero) {
+        return infect(hero, true);
+    }
+
+    private static boolean infect(Hero hero, boolean strongSpawn) {
+        if (hero.buff(XenoInfection.class) == null) {
+            XenoInfection infection = Buff.affect(hero, XenoInfection.class);
+            infection.turns = 0;
+            infection.strongSpawn = strongSpawn;
+            infection.spend(TICK);
+            Buff.prolong(hero, LockedDown.class, STICKY_DURATION);
+            CellEmitter.bottom(hero.pos).start(EarthParticle.FACTORY, 0.05f, 8);
+            {
+                String message = Messages.get(XenoInfection.class, "start");
+                GLog.w(message);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean act() {
+        if (!(target instanceof Hero)) {
+            detach();
+            return true;
+        }
+
+        turns++;
+
+        if (turns == WARN_TURN) {
+            GLog.w(Messages.get(this, "warning"));
+        }
+
+        if (turns >= BURST_TURN) {
+            Hero hero = (Hero) target;
+            GLog.w(Messages.get(this, "burst"));
+            boolean spawned = strongSpawn
+                    ? Xenomorph.spawnAdjacent(hero.pos)
+                    : Xenomorph.spawnAdjacent(hero.pos);
+            if (spawned && hero.sprite != null) {
+                hero.sprite.burst(CHESTBURSTER_BLOOD, 12);
+            }
+            hero.damage(Math.max(hero.HT / 3, hero.HP * 3 / 4), this);
+            detach();
+        } else {
+            spend(TICK);
+        }
+
+        return true;
+    }
+
+    private static final String TURNS = "turns";
+    private static final String STRONG_SPAWN = "strong_spawn";
+
+    @Override
+    public void storeInBundle(Bundle bundle) {
+        super.storeInBundle(bundle);
+        bundle.put(TURNS, turns);
+        bundle.put(STRONG_SPAWN, strongSpawn);
+    }
+
+    @Override
+    public void restoreFromBundle(Bundle bundle) {
+        super.restoreFromBundle(bundle);
+        turns = bundle.getInt(TURNS);
+        strongSpawn = bundle.getBoolean(STRONG_SPAWN);
+    }
+}

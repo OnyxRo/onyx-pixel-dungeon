@@ -164,6 +164,20 @@ public class Dungeon {
 
 		//Experienced PD
 		OOF_DROP,
+		//Pixel Spacebase
+		SB_REPLICATOR_HP,
+		SB_SIPHON_HP,
+		SB_SCORPIO_HP,
+		SB_MAKING_HP,
+		SB_ALIEN_TECH,
+		SB_ARMBAND,
+		SB_AIR_TANK,
+		SB_ORDNANCE_KIT,
+		SB_UTILITY_KIT,
+		SB_PLASMID_KIT,
+		SB_BLASTER_HOLSTER,
+		SB_GUARD_HP,
+		SB_ALL_GEAR_UPGRADE,
 
 		//Transformation PD, the roast lamb warlock's wands
 		ROAST_LAMB_WAND;

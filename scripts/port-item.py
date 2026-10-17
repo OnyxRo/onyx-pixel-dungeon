@@ -111,10 +111,15 @@ if need:
     print('copying item pictures', ', '.join(sorted(need)))
     run([sys.executable, '-I', 'scripts/port-itemsprites.py', '.', MOD] + sorted(need))
 
-print('closing dependencies with port-copier (compiles several times, a few minutes) ...')
-run([sys.executable, '-I', 'scripts/port-copier.py', '.', MOD, MODNAME.lower()[:12], '12'], {'PORT_SKIP': SKIP})
-print('fixed drift in', fix_all(), 'more files')
-run([sys.executable, '-I', 'scripts/port-copier.py', '.', MOD, MODNAME.lower()[:12], '6'], {'PORT_SKIP': SKIP})
+if '--fast' in opts:
+    # no dependency closing, the caller compiles with scripts/fastjavac.sh and copies what is missing by hand (wanted when
+    # the mod's items lean on its own systems and the copier would drag them all in). ITEM_ROWS=a-b keeps pictures in own rows.
+    print('--fast, skipping the copier')
+else:
+    print('closing dependencies with port-copier (compiles several times, a few minutes) ...')
+    run([sys.executable, '-I', 'scripts/port-copier.py', '.', MOD, MODNAME.lower()[:12], '12'], {'PORT_SKIP': SKIP})
+    print('fixed drift in', fix_all(), 'more files')
+    run([sys.executable, '-I', 'scripts/port-copier.py', '.', MOD, MODNAME.lower()[:12], '6'], {'PORT_SKIP': SKIP})
 log = rd(LOG)
 tail = log[log.rfind('COPIED:'):] if 'COPIED:' in log else ''
 skipped = re.search(r'SKIPPED \(mod only systems\): (.*)', tail)
