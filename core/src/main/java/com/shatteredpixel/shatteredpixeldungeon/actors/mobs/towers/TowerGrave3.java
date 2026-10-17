@@ -1,0 +1,42 @@
+package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.towers;
+
+import com.shatteredpixel.shatteredpixeldungeon.sprites.SkeletonSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.TowerGrave3Sprite;
+
+public class TowerGrave3 extends TowerGrave2{
+
+
+    {
+        HP = HT = 180;
+
+        spriteClass = TowerGrave3Sprite.class;
+
+        maxMinions = 3;
+        minionCooldown = 20;
+        minionCooldownLeft = 1;
+
+        minionHP = 50;
+        minionDamageMax = 20;
+        minionDamageMin = 10;
+        minionAttackSkill = 10;
+        minionDefenseSkill = 5;
+        minionDR = 3;
+
+        cost = 1000;
+
+        upgrade1Cost = 1000;
+        upgrade2Cost = 1500;
+
+        upgradeLevel = 11;
+        upgCount = 2;
+    }
+    protected TowerCSpawningMinion minion(){
+        return new TowerGrave3.SkeletonMinion3();
+    }
+
+    public static class SkeletonMinion3 extends SkeletonMinion2 {
+        public SkeletonMinion3() {
+            super();
+        }
+    }
+}

@@ -42,6 +42,15 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 public abstract class ChampionEnemy extends Buff {
+	//Tower PD, arena waves give late enemies a random champion title
+	public static void giveRandomChampiontitle(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob mob){
+		Class<? extends ChampionEnemy> buff = com.watabou.utils.Random.oneOf(
+				Blazing.class, Projecting.class, AntiMagic.class,
+				Giant.class, Blessed.class, Growing.class,
+				Rejuvenating.class, Destructive.class, Copying.class);
+		Buff.affect(mob, buff);
+	}
+
 
 	{
 		type = buffType.POSITIVE;
@@ -236,6 +245,27 @@ public abstract class ChampionEnemy extends Buff {
 
 				return PathFinder.distance[target.pos] <= 2;
 			}
+		}
+	}
+
+	//Tower PD champions, the tower arenas use them by name
+	public static class Destructive extends ChampionEnemy {
+		{
+			color = 0xAA5500;
+		}
+		@Override
+		public void onAttackProc(Char enemy) {
+			if (enemy instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.towers.Tower) enemy.damage(enemy.HT/4, target);
+		}
+	}
+	public static class Copying extends ChampionEnemy {
+		{
+			color = 0x444400;
+		}
+	}
+	public static class Rejuvenating extends ChampionEnemy {
+		{
+			color = 0x00AA00;
 		}
 	}
 

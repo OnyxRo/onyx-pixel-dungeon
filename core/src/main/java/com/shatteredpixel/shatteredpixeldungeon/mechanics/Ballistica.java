@@ -50,6 +50,9 @@ public class Ballistica {
 
 	public static final int WONT_STOP =     0;
 
+	//Tower PD shim, a bolt that stops at its target or at the first char or solid in the way
+	public static final int TARGETING_BOLT = STOP_TARGET | STOP_CHARS | STOP_SOLID;
+
 
 	public Ballistica( int from, int to, int params ){
 		sourcePos = from;

@@ -1,0 +1,33 @@
+package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.towers;
+
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Animated;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.TowerWand1Sprite;
+
+public class TowerWand1 extends TowerCShooting {
+    {
+        HP = HT = 40;
+        spriteClass = TowerWand1Sprite.class;
+
+        attackRange = 7;//DPT/c = 0.0075
+        baseAttackDelay = 3f;
+
+        cost = 200;
+        upgrade1Cost = 250;
+        damageMin = 4;
+        damageMax = 5;
+        upgradeLevel = 3;
+    }
+    @Override
+    public int attackSkill(Char target) {
+        return 1000000;
+    }
+
+    @Override
+    protected boolean canAttack( Char enemy ) {
+        if (buff(Animated.class)!=null && (Dungeon.level.distance( pos, Dungeon.hero.pos )>2 || Dungeon.level.adjacent( pos, enemy.pos ))) return false;
+        return new Ballistica( pos, enemy.pos, Ballistica.TARGETING_BOLT).collisionPos == enemy.pos&&Dungeon.level.distance(enemy.pos, this.pos)<=attackRange;
+    }
+}

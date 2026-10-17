@@ -1244,6 +1244,22 @@ public abstract class Char extends Actor {
 		}
 	}
 
+	//Tower PD, this char is sucked into a portal at postp
+	public void damagePortal(int postp){
+		com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter.get(postp).burst(com.shatteredpixel.shatteredpixeldungeon.effects.particles.SacrificialParticle.FACTORY, 3);
+		com.watabou.noosa.Camera.main.panFollow(sprite,2f);
+
+		final CharSprite s = sprite;
+		destroy();
+
+		s.jump(this.pos, postp, 5,0.5f, new com.watabou.utils.Callback() {
+			@Override
+			public void call() {
+				s.killAndErase();
+			}
+		});
+	}
+
 	//we cache this info to prevent having to call buff(...) in isAlive.
 	//This is relevant because we call isAlive during drawing, which has both performance
 	//and thread coordination implications
@@ -1306,6 +1322,11 @@ public abstract class Char extends Actor {
 		}
 
 		super.spendConstant(time);
+	}
+
+	//Tower PD, lets a boss time another char
+	public void spendPublic( float time ) {
+		spend( time );
 	}
 
 	@Override

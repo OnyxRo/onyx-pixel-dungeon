@@ -66,7 +66,12 @@ public class WndSpecialFloors extends Window {
 				public boolean onClick( float x, float y ) {
 					if (!inside( x, y )) return false;
 					WndSpecialFloors.this.hide();
-					SpecialFloors.travel( entry.make );
+					if (entry.mod.equals( "Tower PD" )) {
+						//the tower defense arenas first ask for a mode
+						com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene.show( new WndModes( mode -> SpecialFloors.travel( entry.make ) ) );
+					} else {
+						SpecialFloors.travel( entry.make );
+					}
 					return true;
 				}
 			} );

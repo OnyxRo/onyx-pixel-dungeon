@@ -144,6 +144,14 @@ public class Assets {
 	}
 
 	public static class Music {
+		public static final String BOSS_LOOP = "music/tower/track_boss_loop.ogg"; //ported, tower
+		public static final String DESCENT = "music/tower/descent.ogg"; //ported, tower
+		public static final String METROPOLIS = "music/tower/metropolis_track.ogg"; //ported, tower
+		public static final String RAT_PUNCHER_SPEDUP = "music/tower/rat_puncher.ogg"; //ported, tower
+		public static final String BOSS_TRIAL = "music/tower/boss_trial.ogg"; //ported, tower
+		public static final String GOBLIN_GROTTO = "music/tower/goblin_grotto.ogg"; //ported, tower
+		public static final String GNOLL_GROTTO = "music/tower/gnoll_grotto.ogg"; //ported, tower
+		public static final String CITY_BOSS_SPEDUP = "music/tower/city_boss_spedup.ogg"; //ported, tower
 		public static final String TWINGO_TANGO = "music/player/shittened/twingo_tango.ogg"; //ported, shittened
 		public static final String TWINGO_TURBO = "music/player/shittened/twingo_turbo.ogg"; //ported, shittened
 		public static final String TWIGIGIGI = "music/player/shittened/twigigigi.ogg"; //ported, shittened
@@ -398,6 +406,62 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String FIX = "sprites/tower/fix.png"; //ported, tower
+		public static final String NECROHERO = "sprites/tower/necrohero.png"; //ported, tower
+		public static final String TANK = "sprites/tower/tank.png"; //ported, tower
+		public static final String PRIEST = "sprites/tower/priest.png"; //ported, tower
+		public static final String BOSSRATKING = "sprites/tower/bossratking.png"; //ported, tower
+		public static final String RATKINGAVATAR = "sprites/tower/ratkingavatar.png"; //ported, tower
+		public static final String BOSSOOZE = "sprites/tower/bossooze.png"; //ported, tower
+		public static final String BOSSTROLL = "sprites/tower/bosstroll.png"; //ported, tower
+		public static final String DRILL = "sprites/tower/drill.png"; //ported, tower
+		public static final String DRILLBIG = "sprites/tower/drill_big.png"; //ported, tower
+		public static final String GNOLLSHOPKEEPER = "sprites/tower/gnollshopkeeper.png"; //ported, tower
+		public static final String IT = "sprites/tower/it.png"; //ported, tower
+		public static final String SHARD = "sprites/tower/shard.png"; //ported, tower
+		public static final String MINER = "sprites/tower/miner.png"; //ported, tower
+		public static final String SIGN = "sprites/tower/sign.png"; //ported, tower
+		public static final String SKULLS = "sprites/tower/skulls.png"; //ported, tower
+		public static final String TARGET = "sprites/tower/target.png"; //ported, tower
+		public static final String LICTERIA = "sprites/tower/licteriaflower.png"; //ported, tower
+		public static final String SHINOBIFACELESS = "sprites/tower/shinobifaceless.png"; //ported, tower
+		public static final String SHINOBINORMAL = "sprites/tower/shinobinormal.png"; //ported, tower
+		public static final String SHINOBISMILING = "sprites/tower/shinobismiling.png"; //ported, tower
+		public static final String SHINOBIKNIGHT = "sprites/tower/shinobiknight.png"; //ported, tower
+		public static final String EMPTY = "sprites/tower/empty.png"; //ported, tower
+		public static final String BOSSNECRO = "sprites/tower/bossnecromancer.png"; //ported, tower
+		public static final String PORTAL = "sprites/tower/portal.png"; //ported, tower
+		public static final String PORTALENEMY = "sprites/tower/portalenemy.png"; //ported, tower
+		public static final String PORTALBOSSENEMY = "sprites/tower/portalbossenemy.png"; //ported, tower
+		public static final String PORTALUNSTABLE = "sprites/tower/portalunstable.png"; //ported, tower
+		public static final String RED_SENTRY = "sprites/tower/red_sentry.png"; //ported, tower
+		public static final String SPINNINGAMULET = "sprites/tower/spinningamulet.png"; //ported, tower
+		public static final String TOWERCROSSBOW = "sprites/tower/towercrossbow.png"; //ported, tower
+		public static final String TOWERWALL = "sprites/tower/towerwall.png"; //ported, tower
+		public static final String TOWERWALLRUNIC = "sprites/tower/towerwallrunic.png"; //ported, tower
+		public static final String TOWERWALLSPIKED = "sprites/tower/towerwallspiked.png"; //ported, tower
+		public static final String TOWERWAND = "sprites/tower/towerwand.png"; //ported, tower
+		public static final String TOWERGRAVE = "sprites/tower/towergrave.png"; //ported, tower
+		public static final String TOWERCANNON = "sprites/tower/towercannon.png"; //ported, tower
+		public static final String ROCKET = "sprites/tower/rocket.png"; //ported, tower
+		public static final String TOWERTOTEM = "sprites/tower/towertotem.png"; //ported, tower
+		public static final String TOWERGUARD = "sprites/tower/towerguard.png"; //ported, tower
+		public static final String TOWERGUARDSPEARMAN = "sprites/tower/towerguardspearman.png"; //ported, tower
+		public static final String TOWERLIGHTNING = "sprites/tower/towerlightning.png"; //ported, tower
+		public static final String TOWERDISINTEGRATION = "sprites/tower/towerdisintegration.png"; //ported, tower
+		public static final String TOWERDARTGUN = "sprites/tower/towerdartgun.png"; //ported, tower
+		public static final String TOWERTNTLOG = "sprites/tower/towertntlog.png"; //ported, tower
+		public static final String TOWERRATCAMP = "sprites/tower/towercamptent.png"; //ported, tower
+		public static final String OBSERVER = "sprites/tower/observer.png"; //ported, tower
+		public static final String ROSEBUSH = "sprites/tower/rosebush.png"; //ported, tower
+		public static final String OBELISK_BLOODSTONE = "sprites/tower/obeliskbloodstone.png"; //ported, tower
+		public static final String OBELISK_NECROTIC = "sprites/tower/obelisknecrotic.png"; //ported, tower
+		public static final String OBELISK_PERMAFROST = "sprites/tower/obeliskpermafrost.png"; //ported, tower
+		public static final String ICE_WALL = "sprites/tower/icewall.png"; //ported, tower
+		public static final String UNSPEAKABLEHORROR = "sprites/tower/unspeakablehorror.png"; //ported, tower
+		public static final String FLAGENEMY = "sprites/tower/enemyflag.png"; //ported, tower
+		public static final String FLAGFRIEND = "sprites/tower/friendflag.png"; //ported, tower
+		public static final String BLOODFOUNTAIN = "sprites/tower/bloodfountain.png"; //ported, tower
 		public static final String TILES_LAIR = "sprites/dragonic/tiles_lair.png"; //ported, dragonic
 		public static final String STATUE_ARMOR = "sprites/dragonic/statuearmor.png"; //ported, dragonic
 		public static final String SMALLDRAKE = "sprites/dragonic/drake.png"; //ported, dragonic

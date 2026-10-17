@@ -75,6 +75,17 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 		reset(from.center(), to.center(), item, listener );
 	}
 
+	//Tower PD, a missile with its own flight speed and spin (arena spells and the amulet use these)
+	private float customSpeed = -1f;
+	private float customAngle = Float.NaN;
+	public void reset( PointF from, PointF to, Item item, Callback listener, float speed, float anglespeed) {
+		customSpeed = speed;
+		customAngle = anglespeed;
+		reset( from, to, item, listener );
+		customSpeed = -1f;
+		customAngle = Float.NaN;
+	}
+
 	public void reset( PointF from, PointF to, Item item, Callback listener) {
 		revive();
 
@@ -161,7 +172,10 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 		}
 		
 		float speed = SPEED;
-		if (item instanceof Dart
+		if (customSpeed > 0){
+			speed = customSpeed;
+			if (!Float.isNaN(customAngle)) angularSpeed = d.x >= 0 ? customAngle : -customAngle;
+		} else if (item instanceof Dart
 				&& (Dungeon.hero.belongings.weapon() instanceof Crossbow
 				|| Dungeon.hero.belongings.secondWep() instanceof Crossbow)){
 			speed *= 3f;

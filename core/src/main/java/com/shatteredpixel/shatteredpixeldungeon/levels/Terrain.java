@@ -60,6 +60,8 @@ public class Terrain {
 	//(removed from Shattered) marks special arena floor. Both are walkable floor that looks like special floor here.
 	public static final int SP_RUNE         = 40;
 	public static final int SIGN            = 41;
+	//Tower PD's arena border, solid for everyone but see through, drawn as plain floor
+	public static final int ADDITIONALBARRIER = 42;
 
 	public static final int CUSTOM_DECO_EMPTY = 32; //regular empty tile that can't be overridden, used for custom visuals mainly
 	//solid environment decorations
@@ -107,6 +109,7 @@ public class Terrain {
 		flags[EMPTY_SP]		= flags[EMPTY];
 		flags[SP_RUNE]		= flags[EMPTY];
 		flags[SIGN]			= PASSABLE | FLAMABLE;
+		flags[ADDITIONALBARRIER] = SOLID;
 		flags[HIGH_GRASS]	= PASSABLE | LOS_BLOCKING | FLAMABLE;
 		flags[FURROWED_GRASS]= flags[HIGH_GRASS];
 

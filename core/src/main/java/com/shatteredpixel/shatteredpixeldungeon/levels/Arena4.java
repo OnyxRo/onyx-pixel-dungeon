@@ -1,0 +1,508 @@
+package com.shatteredpixel.shatteredpixeldungeon.levels;
+
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.level;
+
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Highlighted;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.BossRatKing;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CausticSlime;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Crab;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Goo;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GreatCrab;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.HermitCrab;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.MagiCrab;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Piranha;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Rat;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RotLasher;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Slime;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Snake;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.RatKing;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.towers.EnemyPortal;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.towers.TowerCrossbow1;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Ripple;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfAquaticRejuvenation;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfToxicEssence;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfAnimation;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfRatLegion;
+import com.shatteredpixel.shatteredpixeldungeon.items.towerspawners.SpawnerCannon;
+import com.shatteredpixel.shatteredpixeldungeon.items.towerspawners.SpawnerWand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingStone;
+import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
+import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.AlmostEmptySprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.BossRatKingSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.RatKingSprite;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndDialogueWithPic;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndModes;
+import com.watabou.noosa.Camera;
+import com.watabou.noosa.Game;
+import com.watabou.noosa.Group;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.particles.Emitter;
+import com.watabou.noosa.particles.PixelParticle;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.ColorMath;
+import com.watabou.utils.PathFinder;
+import com.watabou.utils.PointF;
+import com.watabou.utils.Random;
+
+import java.util.ArrayList;
+
+public class Arena4 extends ArenaSewers {
+    /**
+     * Introduces portals and monster lairs, in a manner that allows for killing them easy (summons snek).
+     * Introduces a new tower: cannon, after that the tower menu is unlocked, with 2 towers appearing: Rat camp and Cannon
+     */
+
+    {
+        name = "Crab lake";
+
+        color1 = 0x48763c;
+        color2 = 0x59994a;
+        viewDistance = 15;
+        WIDTH = 61;
+        HEIGHT = 61;
+
+        startGold = 1000;
+        startLvl = 3;
+        arenaDepth = 4;
+        maxWaves = 15;
+
+        amuletCell = 31 + WIDTH * 4;
+        exitCell = amuletCell;
+        towerShopKeeperCell = amuletCell - 3 * WIDTH - 4;
+        normalShopKeeperCell = amuletCell - 3 * WIDTH + 2;
+
+        waveCooldownNormal = 5;
+        waveCooldownBoss = 200;
+    }
+
+    public int crabpoint = Random.oneOf(WIDTH* 30 + 4, WIDTH * 30 + WIDTH-4);
+
+
+    @Override
+    public Mob chooseMob(int wave) {
+        Mob mob = new Rat();
+        switch (wave){
+            case 1:
+                mob = Random.oneOf(new Snake()); break;
+            case 2:
+                mob = Random.oneOf(new Crab()); break;
+            case 3:
+                mob = Random.oneOf(new Crab(), new Slime()); break;
+            case 4:
+                mob = new Slime(); break;
+            case 5:
+                mob = new HermitCrab(); break;
+            case 6:
+                if (!bossSpawned) {
+                    bossSpawned = true;
+                    mob = new HermitCrab();
+                } else mob = new Crab();
+                break;
+            case 7:
+                mob = new Slime(); break;
+            case 8:
+                mob = Random.oneOf(new Snake(), new Rat()); break;
+            case 9:
+                mob = Random.oneOf(new Crab(), new Slime()); break;
+            case 10:
+                if (!bossSpawned) {
+                    bossSpawned = true;
+                    mob = new GreatCrab();
+                } else mob = new Crab();
+                break;
+            case 11:
+                mob = new Crab(); break;
+            case 12:
+                if (!bossSpawned) {
+                    bossSpawned = true;
+                    mob = new HermitCrab();
+                } else mob = new Slime();
+                break;
+            case 13:
+                if (!bossSpawned) {
+                    bossSpawned = true;
+                    mob = new Crab();
+                } else mob = new MagiCrab();
+                break;
+            case 14:
+                mob = new Crab();
+                break;
+            case 15: {
+                if (!bossSpawned) {
+                    bossSpawned = true;
+                    mob = new Goo();
+                } else mob = new CausticSlime();
+                break;
+            }
+        }
+        if (mode == WndModes.Modes.CHALLENGE){
+            affectMob(mob);
+            if (mob instanceof Crab) {
+                MagiCrab cr = new MagiCrab();
+                cr.buffs().addAll(mob.buffs());
+                return cr;
+            }
+        }
+        return mob;
+    }
+
+
+    @Override
+    public int mobsToDeploy(int wave) {
+        switch (wave){
+            case 1: return 3;
+            case 2: return 3;
+            case 3: return 5;
+            case 4: return 6;
+            case 5: return 6;
+            case 6: return 7;
+            case 7: return 9;
+            case 8: return 25;
+            case 9: return 14;
+            case 10: return 15;
+            case 11: return 16;
+            case 12: return 17;
+            case 13: return 9;
+            case 14: return 20;
+            case 15: return 18;
+        } return 1;
+    }
+    protected void lakeExpand() {
+        ArrayList<Integer> candidates = new ArrayList<>();
+        for (int x = 2; x<WIDTH-2;x++) for (int y = 2; y<HEIGHT-2;y++){
+            int cell = x+WIDTH*y;
+            if (this.map[cell] == Terrain.WATER) candidates.add(cell);
+        }
+        int[] cells;
+        if (Math.random()>0.5) cells = PathFinder.NEIGHBOURS8; else cells = PathFinder.NEIGHBOURS4;
+        for (int cellchosen : candidates) for (int i : cells) if (Math.random()>0.4f) this.map[cellchosen+i] = Terrain.WATER;
+    }
+    protected void createIslands(){
+        ArrayList<Integer> candidates = new ArrayList<>();
+        for (int x = 2; x<WIDTH-2;x++) for (int y = 2; y<HEIGHT-2;y++){
+            int cell = x+WIDTH*y;
+            if (this.map[cell] == Terrain.WATER) candidates.add(cell);
+        }
+        for (int cellchosen : candidates) if (Math.random()>0.98f) for (int i : PathFinder.NEIGHBOURS8) if (Math.random()>0.7f) this.map[cellchosen+i] = Terrain.HIGH_GRASS;
+    }
+    @Override
+    protected boolean build() {
+
+        setSize(WIDTH,HEIGHT);
+        //base room
+        Painter.fill(this,0,0,61,61, Terrain.WALL);
+        Painter.fillEllipse(this,1,1,59,59,Terrain.EMPTY);
+
+        //lake
+        this.map[30+30*WIDTH]=Terrain.WATER;
+        for (int times = 0;times < 26; times++) try {
+            lakeExpand();
+        } catch (ArrayIndexOutOfBoundsException ignored) {};
+        createIslands();
+
+        for (int x = 1;x<WIDTH-1;x++) for (int y = 1;y<HEIGHT-1;y++){
+            //Random grass
+            int cell = x+WIDTH*y;
+
+            if (Math.random()>0.9) {
+                if (this.map[cell]==Terrain.EMPTY) this.map[cell]=Terrain.GRASS;
+                if (this.map[cell+1]==Terrain.EMPTY) this.map[cell+1]=Terrain.GRASS;
+                if (this.map[cell-1]==Terrain.EMPTY) this.map[cell-1]=Terrain.GRASS;
+                if (this.map[cell+WIDTH]==Terrain.EMPTY) this.map[cell+WIDTH]=Terrain.GRASS;
+                if (this.map[cell-WIDTH]==Terrain.EMPTY) this.map[cell-WIDTH]=Terrain.GRASS;
+            }
+            //tall grass
+            if (Math.random()>0.9) {
+                if (this.map[cell]==Terrain.EMPTY) this.map[cell]=Terrain.HIGH_GRASS;
+                if (this.map[cell+1]==Terrain.EMPTY) this.map[cell+1]=Terrain.HIGH_GRASS;
+                if (this.map[cell-1]==Terrain.EMPTY) this.map[cell-1]=Terrain.HIGH_GRASS;
+                if (this.map[cell+WIDTH]==Terrain.EMPTY) this.map[cell+WIDTH]=Terrain.HIGH_GRASS;
+                if (this.map[cell-WIDTH]==Terrain.EMPTY) this.map[cell-WIDTH]=Terrain.HIGH_GRASS;
+            }
+
+        }
+
+        Painter.fillEllipse(this, 24, 1,15,9,Terrain.EMPTY);
+        Painter.fill(this, 25, 1,11,1,Terrain.EMPTY_SP);
+        Painter.fill(this, 25, 2,11,1,Terrain.PEDESTAL);
+        LevelTransition exit = new LevelTransition(this, exitCell, LevelTransition.Type.REGULAR_EXIT);
+        transitions.add(exit);
+
+        this.map[exitCell] = Terrain.EXIT;
+        this.map[amuletCell] = Terrain.PEDESTAL;
+
+        return true;
+    }
+
+
+    @Override
+    public void addDestinations() {
+        ArrayList<Integer> candidates = new ArrayList<>();
+        for (int m = 0; m<WIDTH*HEIGHT;m++) {
+            if (this.passable[m] && this.map[m] != Terrain.WATER && this.map[m] != Terrain.EMPTY && this.map[m] != Terrain.PEDESTAL)
+                candidates.add(m);
+        }
+        dropMany(candidates,
+                Generator.random(Generator.Category.ARTIFACT),
+                Generator.random(Generator.Category.RING),
+                Generator.random(Generator.Category.WAND),
+                Generator.random(Generator.Category.WAND),
+                Generator.random(Generator.Category.SCROLL),
+                Generator.random(Generator.Category.SCROLL),
+                Generator.random(Generator.Category.SCROLL),
+                new ElixirOfToxicEssence(),
+                new ElixirOfToxicEssence(),
+                new ElixirOfToxicEssence(),
+                Generator.random(Generator.Category.SCROLL),
+                Generator.random(Generator.Category.SCROLL),
+                Generator.random(Generator.Category.SCROLL),
+                Generator.random(Generator.Category.SCROLL),
+                Generator.random(Generator.Category.MIS_T3),
+                Generator.random(Generator.Category.MIS_T2),
+                new ThrowingStone(),
+                new ThrowingStone(),
+                new ThrowingStone(),
+                new ThrowingStone(),
+                new ThrowingStone(),
+                new ThrowingStone(),
+                new ThrowingStone(),
+                new ThrowingStone(),
+                new ThrowingStone(),
+                new ThrowingStone(),
+                new ThrowingStone(),
+                new ThrowingStone(),
+                new ThrowingStone(),
+                new SpawnerCannon(),
+                new SpawnerWand(),
+                new SpawnerWand(),
+                new SpawnerCannon(),
+                new SpawnerWand(),
+                new SpawnerWand(),
+                new ThrowingStone()
+        );
+
+        candidates.clear();
+        for (int m = 0; m<WIDTH*HEIGHT;m++){
+            if (this.map[m]==Terrain.WATER) candidates.add(m);
+        }
+        for (int i = 0; i < 15; i++){
+            dropMany(candidates,
+                    Generator.random(Generator.Category.SEED),
+                    new MysteryMeat()
+                    );
+        }
+
+
+        for (int m = 61*15; m<WIDTH*HEIGHT- WIDTH;m++){
+            if (this.map[m]==Terrain.GRASS) {
+                RotLasher rotLasher = new RotLasher();
+                rotLasher.pos = m;
+                GameScene.add(rotLasher);
+                m+=2*WIDTH+Random.Int(2,10);
+            }
+        }
+        for (int m = 61*20; m<WIDTH*HEIGHT- WIDTH;m++){
+            if (this.map[m]==Terrain.WATER) {
+                Piranha piranha = new Piranha();
+                piranha.pos = m;
+                GameScene.add(piranha);
+                piranha.state = piranha.SLEEPING;
+                m+=WIDTH*6+Random.Int(1,36);
+            }
+        }
+
+        ArrayList<Integer> cells = new ArrayList<>();
+        for (int i : PathFinder.NEIGHBOURS25) if (level.passable[crabpoint+i] && Char.findChar(crabpoint+i)==null){
+            cells.add(crabpoint + i);
+        }
+        for (int i = 0;i < 4; i++) {
+            HermitCrab hermit = new HermitCrab();
+            int cell = Random.element(cells);
+            cells.remove((Integer) cell);
+            hermit.pos = cell;
+            hermit.mapGuard = true;
+            hermit.state = hermit.HUNTING;
+            Buff.affect(hermit, Highlighted.class, 10000);
+            GameScene.add(hermit);
+            int chestcell = Random.element(cells);
+            Dungeon.level.drop(new Gold(Random.Int(100, 200)), chestcell).type = Heap.Type.CHEST;
+            Dungeon.level.drop(new ElixirOfAquaticRejuvenation(), chestcell).type = Heap.Type.CHEST;
+            cells.remove((Integer) chestcell);
+        }
+
+
+        TowerCrossbow1 tower1 = new TowerCrossbow1();
+        tower1.pos = amuletCell+1;
+        GameScene.add(tower1);
+
+        TowerCrossbow1 tower2 = new TowerCrossbow1();
+        tower2.pos = amuletCell-1;
+        GameScene.add(tower2);
+
+        super.addDestinations();
+    }
+
+    @Override
+    public void doStuffEndwave(int wave) {
+        int goldAdd = 100;
+        Dungeon.gold+=goldAdd;
+        GLog.w(Messages.get(Arena.class, "goldaddendwave", goldAdd));
+        super.doStuffEndwave(wave);
+
+        if (wave == 4){
+
+
+            EnemyPortal.createEnemyPortal(WIDTH*HEIGHT/2, 30);
+            Camera.main.panFollow(Char.findChar(WIDTH*HEIGHT/2).sprite,1f);
+            GameScene.updateFog(WIDTH*HEIGHT/2, 5);
+
+            WndDialogueWithPic.dialogue(new AlmostEmptySprite(), " ",
+                    new String[]{
+                            Messages.get(RatKing.class, "l4w4end1"),
+                            Messages.get(RatKing.class, "l4w4end2")
+                    },
+                    new byte[]{
+                            WndDialogueWithPic.IDLE,
+                    });
+        }
+        if (wave == 7){
+            ArrayList<Runnable> r = new ArrayList<>();
+            for (int i = 0; i < 4;i++)r.add(null);
+            r.add(4, new Runnable() {
+                @Override
+                public void run() {
+                    new ScrollOfRatLegion().collect();
+                    new ScrollOfAnimation().collect();
+                    Sample.INSTANCE.play(Assets.Sounds.DEWDROP);
+                }
+            });
+            ArrayList<Runnable> r2 = new ArrayList<>();
+            for (int i = 0; i < 6;i++)r2.add(null);
+            r2.add(6, new Runnable() {
+                @Override
+                public void run() {
+                    new ScrollOfRatLegion().collect();
+                    new ScrollOfAnimation().collect();
+                    Sample.INSTANCE.play(Assets.Sounds.DEWDROP);
+                }
+            });
+            boolean theresaportal = false;
+            for (Mob mob : mobs){
+                if (mob instanceof EnemyPortal) theresaportal = true;
+            }
+
+            if (theresaportal) WndDialogueWithPic.dialogue(new BossRatKingSprite(), Messages.get(BossRatKing.class, "name"),
+                    new String[]{
+                            Messages.get(RatKing.class, "l4w7end1"),
+                            Messages.get(RatKing.class, "l4w7end2"),
+                            Messages.get(RatKing.class, "l4w7end3"),
+                            Messages.get(RatKing.class, "l4w7end4"),
+                            Messages.get(RatKing.class, "l4w7end5"),
+                            Messages.get(RatKing.class, "l4w7end6"),
+                            Messages.get(RatKing.class, "l4w7end7")
+                    },
+                    new byte[]{
+                            WndDialogueWithPic.RUN,
+                            WndDialogueWithPic.IDLE,
+                    }, WndDialogueWithPic.WndType.NORMAL, r);
+            else WndDialogueWithPic.dialogue(new BossRatKingSprite(), Messages.get(BossRatKing.class, "name"),
+                    new String[]{
+                            Messages.get(RatKing.class, "l4w7end1"),
+                            Messages.get(RatKing.class, "l4w7end2noportal"),
+                            Messages.get(RatKing.class, "l4w7end3noportal"),
+                            Messages.get(RatKing.class, "l4w7end4noportal"),
+                            Messages.get(RatKing.class, "l4w7end5noportal"),
+                            Messages.get(RatKing.class, "l4w7end6noportal"),
+                            Messages.get(RatKing.class, "l4w7end7noportal"),
+                            Messages.get(RatKing.class, "l4w7end8noportal")
+                    },
+                    new byte[]{
+                            WndDialogueWithPic.RUN,
+                            WndDialogueWithPic.IDLE,
+                    }, WndDialogueWithPic.WndType.NORMAL, r2);
+        }
+
+    }
+
+    @Override
+    public void doStuffStartwave(int wave) {
+        super.doStuffStartwave(wave);
+        if (wave == 1) {
+            ArrayList<Runnable> runnables = new ArrayList<>();
+            for (int i = 0; i<4;i++) runnables.add(null);
+            runnables.add(new Runnable() {
+                @Override
+                public void run() {
+                    Camera.main.panTo(DungeonTilemap.tileCenterToWorld(crabpoint), 2f);
+                }
+            });
+            runnables.add(new Runnable() {
+                @Override
+                public void run() {
+                    Camera.main.panTo(DungeonTilemap.tileCenterToWorld(Dungeon.hero.pos), 2f);
+                }
+            });
+            WndDialogueWithPic.dialogue(new RatKingSprite(), Messages.get(RatKing.class, "name"),
+                    new String[]{
+                            Messages.get(RatKing.class, "l4w1start1"),
+                            Messages.get(RatKing.class, "l4w1start2"),
+                            Messages.get(RatKing.class, "l4w1start3"),
+                            Messages.get(RatKing.class, "l4w1start4"),
+                            Messages.get(RatKing.class, "l4w1start5"),
+                            Messages.get(RatKing.class, "l4w1start6")
+                    },
+                    new byte[]{
+                            WndDialogueWithPic.IDLE,
+                            WndDialogueWithPic.IDLE,
+                            WndDialogueWithPic.RUN,
+                            WndDialogueWithPic.IDLE,
+                            WndDialogueWithPic.IDLE,
+                            WndDialogueWithPic.RUN
+                    }, WndDialogueWithPic.WndType.NORMAL, runnables);
+        }
+    }
+
+    private static final String CRABPOINT = "crab_point";
+
+    @Override
+    public void storeInBundle(Bundle bundle) {
+        super.storeInBundle(bundle);
+        bundle.put(CRABPOINT, crabpoint);
+    }
+
+    @Override
+    public void restoreFromBundle(Bundle bundle) {
+        super.restoreFromBundle(bundle);
+        crabpoint = bundle.getInt(CRABPOINT);
+    }
+
+    public void deployMobs(int wave) {
+        deploymobs(wave, Direction.DOWN, 1);
+    }
+
+    @Override
+    public String waterTex() {
+        return Assets.Environment.WATER_CAVES;
+    }
+
+    @Override
+    public Group addVisuals() {
+        super.addVisuals();
+        addSewerVisuals(this, visuals);
+        return visuals;
+    }
+}

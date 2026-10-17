@@ -30,6 +30,10 @@ import java.util.HashSet;
 public class Statistics {
 
 	public static int goldCollected;
+	//Tower PD, saved only when above 0
+	public static int wallsdestroyed;
+	public static int notwallsdestroyed;
+	public static int towersbuilt;
 	public static int deepestFloor;
 	public static int highestAscent;
 	public static int enemiesSlain;
@@ -90,6 +94,7 @@ public class Statistics {
 		FirstActive = SecondActive = ThirdActive = FourthActive = false;
 		
 		goldCollected	= 0;
+		wallsdestroyed = notwallsdestroyed = towersbuilt = 0;
 		deepestFloor	= 0;
 		highestAscent	= 0;
 		enemiesSlain	= 0;
@@ -188,6 +193,9 @@ public class Statistics {
 		bundle.put( "septiumthird", ThirdActive );
 		bundle.put( "septiumfourth", FourthActive );
 		bundle.put( GOLD,		goldCollected );
+		if (wallsdestroyed > 0) bundle.put( "tower_walls", wallsdestroyed );
+		if (notwallsdestroyed > 0) bundle.put( "tower_notwalls", notwallsdestroyed );
+		if (towersbuilt > 0) bundle.put( "tower_built", towersbuilt );
 		bundle.put( DEEPEST,	deepestFloor );
 		bundle.put( HIGHEST,	highestAscent );
 		bundle.put( SLAIN,		enemiesSlain );
@@ -243,6 +251,9 @@ public class Statistics {
 		ThirdActive = bundle.getBoolean( "septiumthird" );
 		FourthActive = bundle.getBoolean( "septiumfourth" );
 		goldCollected	= bundle.getInt( GOLD );
+		wallsdestroyed = bundle.getInt( "tower_walls" );
+		notwallsdestroyed = bundle.getInt( "tower_notwalls" );
+		towersbuilt = bundle.getInt( "tower_built" );
 		deepestFloor	= bundle.getInt( DEEPEST );
 		highestAscent   = bundle.getInt( HIGHEST );
 		enemiesSlain	= bundle.getInt( SLAIN );

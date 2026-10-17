@@ -116,6 +116,10 @@ Left out, and why.
 - Art credits and licence for this mod are not checked.
 
 Tools learned here. `mod-report.py --all` was broken (it checked `'all'` instead of `'--all'`), fixed. The copier follows references into whole systems, so a mod with a core system needs a patched copy. Copy the mod to the scratchpad, cut the references to the system from the few normal classes, then point `MOD_SOURCES` at that copy. `port-skip.txt` has the Tower names.
+### Tower defense systems (2026-10-17)
+
+The arenas are in. All 26 Arena floors and 5 endless arenas (`levels/Arena*.java`, `levels/endlessarenas/`), about 60 towers, 15 tower spawner items, the hero spells (`items/herospells`, AbTr*), the three exotic scrolls and the bosses they need are ported. They are listed under Tower PD in `SpecialFloors` and open from the sandbox Floors panel, which first asks for a mode (`WndModes`). `SpecialFloors.towerArena` sets the floor number each arena expects. Arenas are not part of the shuffle. Winning an arena no longer deletes the run (`Arena.completeStage` clears the wave buffs and stalls the portal instead). Left out. Unlock and badge messages, the hero compass, the swap places button, `Statistics` saved only when above 0. Items drawn in rows 106 to 113 of items.png (`ITEM_ROWS` in `scripts/port-itemsprites.py`). `scripts/test/TowerArenaTest.java` builds every arena in both modes, plays four waves with every mob acting and checks every tower (text, save, upgrades). Headless limits are many, read the LIMIT lines. Not played on screen yet.
+
 ## Lovecraft PD (2026-10-16, repo Sadsaltan/LovecraftPixelDungeon, key `lovecraft`)
 
 Ported in full in one run. The mod is on a very old base (the 0.5 and 0.6 era, assets under `tiles/`, `mobs/`, `ui/items.png`), so most of the work was drift.

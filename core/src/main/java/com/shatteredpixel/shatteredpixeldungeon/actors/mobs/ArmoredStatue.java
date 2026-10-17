@@ -47,6 +47,18 @@ public class ArmoredStatue extends Statue {
 		HP = HT = 30 + Dungeon.depth * 10;
 	}
 
+	//Tower PD, a statue made from a given armor (Scroll of Golems)
+	public ArmoredStatue( Armor armorc ){
+		this();
+		armor = armorc;
+		HP = HT = 150;
+	}
+
+	public ArmoredStatue( Armor armorc, Armor.Glyph glyph ){
+		this( armorc );
+		armor.inscribe( glyph );
+	}
+
 	@Override
 	public void createWeapon(boolean useDecks) {
 		super.createWeapon(useDecks);

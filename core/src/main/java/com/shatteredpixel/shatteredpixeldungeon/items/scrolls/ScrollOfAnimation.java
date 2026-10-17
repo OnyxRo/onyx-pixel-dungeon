@@ -1,0 +1,106 @@
+/*
+ * Pixel Dungeon
+ * Copyright (C) 2012-2015 Oleg Dolya
+ *
+ * Shattered Pixel Dungeon
+ * Copyright (C) 2014-2025 Evan Debenham
+ *
+ * Pixel Towers / Towers Pixel Dungeon
+ * Copyright (C) 2024-2025 FixAkaTheFix (initials R. A. A.)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ */
+
+package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
+
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Animated;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Healing;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.towers.Tower;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.towers.TowerCShooting;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.towers.TowerCTotem;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.towers.TowerCWall;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfSirensSong;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
+
+public class ScrollOfAnimation extends Scroll {
+
+	{
+		icon = ItemSpriteSheet.Icons.SCROLL_LULLABY;
+		image = ItemSpriteSheet.SCROLL_ANIMATION;
+	}
+
+	@Override
+	public void doRead() {
+		if (!anonymous) curItem.collect(); //we detach it later
+		GameScene.selectCell(targeter);
+	}
+
+	private CellSelector.Listener targeter = new CellSelector.Listener() {
+
+		@Override
+		public void onSelect(Integer cell) {
+			if (cell == null){
+				return;
+			}
+
+			Mob target = null;
+			if (cell != null){
+				Char ch = Actor.findChar(cell);
+				if (ch != null && ch.alignment == Char.Alignment.ALLY && (ch instanceof TowerCShooting || ch instanceof TowerCWall || ch instanceof TowerCTotem) && ch.buff(Animated.class)==null){
+					target = (Mob)ch;
+				}
+			}
+
+			if (target == null  && !anonymous){
+				return;
+			} else {
+
+				detach(curUser.belongings.backpack);
+
+				Sample.INSTANCE.play( Assets.Sounds.READ, 1f, 1.4f );
+
+
+				if (target != null){
+					if (!target.isImmune(Animated.class)){
+						Buff.affect(target, Animated.class);
+						Buff.affect(target, Healing.class).setHeal(target.HT, 0.1f, 5);
+						((Tower)target).sellable = false;
+					}
+					target.sprite.centerEmitter().burst( Speck.factory( Speck.HEART ), 10 );
+				} else {
+					GLog.w(Messages.get(ScrollOfAnimation.class, "notatower"));
+				}
+				readAnimation();
+
+			}
+		}
+
+		@Override
+		public String prompt() {
+			return Messages.get(ScrollOfSirensSong.class, "prompt");
+		}
+
+	};
+}

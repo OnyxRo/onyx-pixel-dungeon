@@ -59,3 +59,5 @@ ElderThing crashed during its own turns
 Pepe crashed during its own turns
 Deflection crashed when it was hit by a rat
 BlindingDart crashed the test
+Statue crashed the test
+ArmoredStatue crashed the test

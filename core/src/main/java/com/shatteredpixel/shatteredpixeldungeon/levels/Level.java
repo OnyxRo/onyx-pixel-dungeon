@@ -122,6 +122,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public abstract class Level implements Bundlable {
+	//Tower PD, passable but not on the border ring of the map
+	public boolean passableChecked(int cell) {
+		if (cellAdjacentToBorderCells(cell)) return false;
+		return passable[cell];
+	}
+
 	
 	public static enum Feeling {
 		NONE,
@@ -149,6 +155,21 @@ public abstract class Level implements Bundlable {
 	protected static final float TIME_TO_RESPAWN	= 50;
 
 	public int version;
+
+	//Tower PD shims. Normal floors never touch these, the tower defense arenas read and write them.
+	public com.shatteredpixel.shatteredpixeldungeon.windows.WndModes.Modes mode = com.shatteredpixel.shatteredpixeldungeon.windows.WndModes.Modes.NORMAL;
+	public int wave = 0;
+	public void initNpcs(){
+	}
+	public com.shatteredpixel.shatteredpixeldungeon.windows.WndDialogueWithPic lastSavedWndDialogueWithPic;
+	public com.shatteredpixel.shatteredpixeldungeon.ui.towerlist.TowerInfo.AllTowers slot1 = com.shatteredpixel.shatteredpixeldungeon.ui.towerlist.TowerInfo.AllTowers.WALL;
+	public com.shatteredpixel.shatteredpixeldungeon.ui.towerlist.TowerInfo.AllTowers slot2 = com.shatteredpixel.shatteredpixeldungeon.ui.towerlist.TowerInfo.AllTowers.CROSSBOW;
+	public com.shatteredpixel.shatteredpixeldungeon.ui.towerlist.TowerInfo.AllTowers slot3 = com.shatteredpixel.shatteredpixeldungeon.ui.towerlist.TowerInfo.AllTowers.GUARD;
+	public com.shatteredpixel.shatteredpixeldungeon.ui.towerlist.TowerInfo.AllTowers slot4 = com.shatteredpixel.shatteredpixeldungeon.ui.towerlist.TowerInfo.AllTowers.MAGICMISSILE;
+
+	public boolean cellAdjacentToBorderCells(int cell){
+		return (cell / width() <= 1 || cell / width() >= height()-1 || cell % width() <= 1 || cell % width() >= width()-1 ) ;
+	}
 	
 	public int[] map;
 	public boolean[] visited;
@@ -226,6 +247,7 @@ public abstract class Level implements Bundlable {
 
 	public void create() {
 
+		mode = com.shatteredpixel.shatteredpixeldungeon.windows.WndModes.current;
 		TargetedCell.cells.clear();
 		Random.pushGenerator( Dungeon.seedCurDepth() );
 
@@ -422,6 +444,8 @@ public abstract class Level implements Bundlable {
 	public void restoreFromBundle( Bundle bundle ) {
 
 		version = bundle.getInt( VERSION );
+		wave = bundle.getInt( "tower_wave" );
+		mode = com.shatteredpixel.shatteredpixeldungeon.windows.WndModes.Modes.values()[bundle.getInt( "tower_mode" )];
 		
 		//saves from before v3.1.1 are not supported
 		if (version < ShatteredPixelDungeon.v3_1_1){
@@ -536,6 +560,8 @@ public abstract class Level implements Bundlable {
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		bundle.put( VERSION, Game.versionCode );
+		if (wave != 0) bundle.put( "tower_wave", wave );
+		if (mode != com.shatteredpixel.shatteredpixeldungeon.windows.WndModes.Modes.NORMAL) bundle.put( "tower_mode", mode.ordinal() );
 		bundle.put( WIDTH, width );
 		bundle.put( HEIGHT, height );
 		bundle.put( MAP, map );
@@ -1106,6 +1132,16 @@ public abstract class Level implements Bundlable {
 		updateOpenSpace(cell);
 	}
 	
+	//Tower PD, drops each item on a random cell of the list
+	public void dropMany(ArrayList<Integer> candidates, Item... items ) {
+		dropMany(Heap.Type.HEAP, candidates, items);
+	}
+	public void dropMany(Heap.Type heaptype, ArrayList<Integer> candidates, Item... items ) {
+		if (!candidates.isEmpty()) for (Item item : items){
+			drop(item, Random.element(candidates)).type = heaptype;
+		}
+	}
+
 	public Heap drop( Item item, int cell ) {
 
 		if (item == null || Challenges.isItemBlocked(item)){
@@ -1146,7 +1182,7 @@ public abstract class Level implements Bundlable {
 			heap.drop(item);
 		}
 		
-		if (Dungeon.level != null && ShatteredPixelDungeon.scene() instanceof GameScene) {
+		if (Dungeon.level != null && com.watabou.noosa.Game.instance != null && ShatteredPixelDungeon.scene() instanceof GameScene) {
 			pressCell( cell );
 		}
 		

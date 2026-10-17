@@ -140,7 +140,9 @@ public abstract class Mob extends Char {
 	//Tower PD shims. Marks a monster that attacks from range, and which targets it would rather skip
 	//(the preference is kept for the ported monsters and does not change target choice here).
 	public boolean ranged = false;
-	public enum TargetingPreference { NONE, NOT_AMULET, NOT_WALLS, NOT_HERO }
+	//Tower PD, an arena mob that stays on its guard cell, read by the arena's wave code
+	public boolean mapGuard = false;
+	public enum TargetingPreference { NONE, NOT_AMULET, NOT_WALLS, NOT_HERO, ONLY_AMULET }
 	public TargetingPreference targetingPreference = TargetingPreference.NONE;
 	protected boolean alerted = false;
 
