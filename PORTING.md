@@ -136,3 +136,12 @@ Left out, and why.
 - Not seen on screen yet. The sanity bar, the three new rooms, living plants waking up, guns firing, the herb and tincture windows. The arena picture showed the new monsters and living plants fine.
 
 Tool changes made. `port-itemsprites.py` reads `ui/items.png` for 0.5 and 0.6 mods. `port-skip.txt` has the mod launcher and the scenes it drags in.
+
+## Pixel Spacebase (2026-10-17, repo codefitz/Pixel-Spacebase, key `spacebase`)
+
+Partial port, monsters and melee gear only. 22 monsters on `ModRoster` at weight 0 (sandbox and tests only, no worlds yet since the art is for the old 4x tile layout), 21 sprite sheets shrunk to 1x under `sprites/spacebase/`, about 30 weapons, enchantments, curses and items with pictures in rows 146 to 147 of the item sheet (grown to 2416 px).
+- Left out because they rest on the mod's own systems. Plasmids, modules, upgrades, blasters, containers, the space suits and HoverPod, Parts currency (is plain Gold here), keycards, the Loader and hero classes, WndContainer, EnergyBeam and ForcePull, Plasma blob, the escape pod, AlienPod, TrainingManual, EnhancementChip, Clone, TorchBattery, Medigel, Camoflage, JetPack, Shapeshifted. Mobs that used them had those lines edited out (Siren's hover pod check, Leech plasma, Acolyte pull).
+- No worlds. Its levels and NPCs (Survivor, MakerBot, StationCat) are not ported.
+- Drone crashes in the headless test only (it calls GameScene emoicons), listed in mob-baseline.txt, not seen on screen.
+- Seven monsters had no text in the mod, plain strings were written at the end of `actors.properties`.
+- Tool changes. `scripts/fastjavac.sh` compiles only changed files against a built checkout (about a minute, no Gradle). `scripts/port-assets.py` adds Assets constants from a compile log. `port-item.py --fast` skips the copier. `ITEM_ROWS` can now grow the item sheet. `renames.py` got Spacebase rules (resistance and immunity sets become Char fields, doPickUp, cost, malfunction to curse, loot categories).

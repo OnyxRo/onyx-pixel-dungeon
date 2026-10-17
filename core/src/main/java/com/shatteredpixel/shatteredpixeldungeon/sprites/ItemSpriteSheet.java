@@ -29,7 +29,7 @@ public class ItemSpriteSheet {
 	public static final int SIZE = 16;
 
 	private static final int TX_WIDTH = 256;
-	private static final int TX_HEIGHT = 960;
+	private static final int TX_HEIGHT = 2416;
 
 	private static final int WIDTH = TX_WIDTH / SIZE;
 
@@ -374,6 +374,37 @@ public class ItemSpriteSheet {
 
 	public static final int WARPICK = MOD_ITEMS+0;
 	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;
+	public static final int ALIENPOD = xy(9, 147);
+	public static final int ARMOR_UNIFORM = xy(10, 147);
+	public static final int CLONE = xy(11, 147);
+	public static final int ENHANCEMENTCHIP = xy(12, 147);
+	public static final int ESCAPE_POD_OVERRIDE = xy(13, 147);
+	public static final int HOLOBATTERY = xy(14, 147);
+	public static final int PLASMID_KIT = xy(15, 147);
+	public static final int BRIGHT_HAMMER = xy(1, 146);
+	public static final int BRIGHT_SABER = xy(2, 146);
+	public static final int DARK_SABER = xy(3, 146);
+	public static final int DEADDRONECONT = xy(4, 146);
+	public static final int DRILL = xy(5, 146);
+	public static final int DRONECONTROLLER = xy(6, 146);
+	public static final int DUALBLADE = xy(7, 146);
+	public static final int GNOLLSHIELD = xy(8, 146);
+	public static final int GNOLL_SWORD = xy(9, 146);
+	public static final int HOLO_AXE = xy(10, 146);
+	public static final int HOLO_SCIMITAR = xy(11, 146);
+	public static final int HUNTERDISC = xy(12, 146);
+	public static final int HUNTERJAVELIN = xy(13, 146);
+	public static final int LAZER_SWORD = xy(14, 146);
+	public static final int LAZER_WHIP = xy(15, 146);
+	public static final int NANOBOTS = xy(16, 146);
+	public static final int ORB_MELDER = xy(1, 147);
+	public static final int PICK_AXE = xy(2, 147);
+	public static final int SKULL = xy(3, 147);
+	public static final int SPADE = xy(4, 147);
+	public static final int SPANNER = xy(5, 147);
+	public static final int ULTONAXE = xy(6, 147);
+	public static final int ULTON_SHIELD = xy(7, 147);
+	public static final int WRENCH = xy(8, 147);
 	public static final int ARMOR_DRAGON_KNIGHT = xy(7, 49);
 	public static final int ARMOR_VIKING = xy(1, 49);
 	public static final int CURARE_DART = xy(2, 49);
@@ -750,6 +781,37 @@ public class ItemSpriteSheet {
 	static{
 		assignItemRect(WARPICK, 15, 14);
 		assignItemRect(WOODEN_BOOMERANG, 12, 12);
+		assignItemRect(ALIENPOD, 16, 14);
+		assignItemRect(ARMOR_UNIFORM, 14, 13);
+		assignItemRect(CLONE, 15, 14);
+		assignItemRect(ENHANCEMENTCHIP, 15, 14);
+		assignItemRect(ESCAPE_POD_OVERRIDE, 16, 16);
+		assignItemRect(HOLOBATTERY, 14, 11);
+		assignItemRect(PLASMID_KIT, 14, 15);
+		assignItemRect(BRIGHT_HAMMER, 16, 15);
+		assignItemRect(BRIGHT_SABER, 15, 15);
+		assignItemRect(DARK_SABER, 15, 15);
+		assignItemRect(DEADDRONECONT, 15, 14);
+		assignItemRect(DRILL, 14, 14);
+		assignItemRect(DRONECONTROLLER, 15, 14);
+		assignItemRect(DUALBLADE, 16, 16);
+		assignItemRect(GNOLLSHIELD, 13, 14);
+		assignItemRect(GNOLL_SWORD, 15, 15);
+		assignItemRect(HOLO_AXE, 16, 15);
+		assignItemRect(HOLO_SCIMITAR, 14, 15);
+		assignItemRect(HUNTERDISC, 14, 14);
+		assignItemRect(HUNTERJAVELIN, 15, 15);
+		assignItemRect(LAZER_SWORD, 14, 14);
+		assignItemRect(LAZER_WHIP, 15, 15);
+		assignItemRect(NANOBOTS, 13, 12);
+		assignItemRect(ORB_MELDER, 15, 14);
+		assignItemRect(PICK_AXE, 14, 15);
+		assignItemRect(SKULL, 15, 14);
+		assignItemRect(SPADE, 14, 15);
+		assignItemRect(SPANNER, 14, 14);
+		assignItemRect(ULTONAXE, 13, 15);
+		assignItemRect(ULTON_SHIELD, 14, 16);
+		assignItemRect(WRENCH, 15, 14);
 		assignItemRect(ARMOR_DRAGON_KNIGHT, 15, 13);
 		assignItemRect(ARMOR_VIKING, 11, 13);
 		assignItemRect(CURARE_DART, 15, 15);

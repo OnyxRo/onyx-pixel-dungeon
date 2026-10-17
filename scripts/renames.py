@@ -94,7 +94,53 @@ RENAMES = [
     ('3.x heavyBlowAbility and cleaveAbility have a damage boost argument', r'\b(Mace\.heavyBlowAbility|Sword\.cleaveAbility)\(\s*hero\s*,\s*target\s*,\s*([\d.]+f?)\s*,\s*this\s*\)', r'\1(hero, target, \2, 0, this)'),
     ('3.x sneakAbility has target and invisibility turns', r'Dagger\.sneakAbility\(\s*hero\s*,\s*(\d+)\s*,\s*this\s*\)', r'Dagger.sneakAbility(hero, target, \1, 2, this)'),
     ('3.x beforeAbilityUsed(hero) takes the target', r'\bbeforeAbilityUsed\(\s*hero\s*\)', 'beforeAbilityUsed(hero, null)'),
+    # Pixel Spacebase calls Dungeon SpacebaseRun and the app class PixelSpacebase
+    ('Spacebase, SpacebaseRun.visible is the hero field of view', r'SpacebaseRun\.visible\b', 'Dungeon.level.heroFOV'),
+    ('Spacebase, SpacebaseRun is Dungeon', r'\bSpacebaseRun\b', 'Dungeon'),
+    ('Spacebase, PixelSpacebase is the app class', r'\bPixelSpacebase\b', 'ShatteredPixelDungeon'),
+    ('Spacebase, old static Level arrays are instance fields now', r'\bLevel\.(passable|solid|avoid|water|pit|losBlocking|flamable|secret|discoverable)\b', r'Dungeon.level.\1'),
+    ('Spacebase, old static Level.fieldOfView is the hero field of view', r'\bLevel\.fieldOfView\b', 'Dungeon.level.heroFOV'),
+    ('Spacebase, MACHINE property is INORGANIC', r'Property\.MACHINE\b', 'Property.INORGANIC'),
+    ('Spacebase, weapon enhancements are enchantments', r'weapon\.enhancements\b', 'weapon.enchantments'),
+    ('Spacebase, levels.Room moved to levels.rooms.Room', r'shatteredpixeldungeon\.levels\.Room;', 'shatteredpixeldungeon.levels.rooms.Room;'),
+    ('Spacebase, its hero classes do not exist here, a class that is never the hero', r'HeroClass\.(?:DM3000|SHAPESHIFTER|HUNTER|LOADER|CAPTAIN)\b', '((HeroClass) null)'),
+    ('Spacebase, DungeonTilemap lives in tiles', r'shatteredpixeldungeon\.DungeonTilemap;', 'shatteredpixeldungeon.tiles.DungeonTilemap;'),
+    ('Spacebase, healing plasmid is the potion of healing', r'items\.plasmids\.HealingPlasmid\b', 'items.potions.PotionOfHealing'),
+    ('Spacebase, healing plasmid is the potion of healing 2', r'\bHealingPlasmid\b', 'PotionOfHealing'),
+    ('Spacebase, loot category PLASMID', r'Category\.PLASMID\b', 'Category.POTION'),
+    ('Spacebase, loot category UPGRADE', r'Category\.UPGRADE\b', 'Category.SCROLL'),
+    ('Spacebase, loot category MODULE', r'Category\.MODULE\b', 'Category.RING'),
+    ('Spacebase, Parts is plain gold here', r'\bParts\b', 'Gold'),
+    ('Spacebase, doPickUp(Hero) is final, override the one with a position', r'public boolean doPickUp\(\s*Hero hero\s*\)', 'public boolean doPickUp(Hero hero, int pos)'),
+    ('Spacebase, super.doPickUp(hero)', r'super\.doPickUp\(\s*hero\s*\)', 'super.doPickUp(hero, pos)'),
+    ('Spacebase, Item.cost() is value()', r'public int cost\(\)', 'public int value()'),
+    ('Spacebase, weapon defenseFactor takes a Char', r'public int defenseFactor\(\s*Hero \w+\s*\)', 'public int defenseFactor(Char owner)'),
+    ('Spacebase, weapon convert is augment', r'\bconvert\.damageFactor\b', 'augment.damageFactor'),
+    ('Spacebase, weapon.enhancement is enchantment', r'\.enhancement\b', '.enchantment'),
+    ('Spacebase, result.convert is augment', r'\.convert\b', '.augment'),
+    ('Spacebase, malfunction() is curse()', r'public boolean malfunction\(\)', 'public boolean curse()'),
+    ('Spacebase, immunities().contains is isImmune', r'(\w+)\.immunities\(\)\.contains\((\w+)\.class\)', r'\1.isImmune(\2.class)'),
+    ('Spacebase, buff icon TIRED', r'BuffIndicator\.TIRED', 'BuffIndicator.WEAKNESS'),
+    ('Spacebase, SpacebaseTilemap is DungeonTilemap', r'\bSpacebaseTilemap\b', 'DungeonTilemap'),
+    ('Spacebase, buff icon CAMOFLAGE', r'BuffIndicator\.CAMOFLAGE', 'BuffIndicator.INVISIBLE'),
+    ('Spacebase, buff icon DOMINATION', r'BuffIndicator\.DOMINATION', 'BuffIndicator.AMOK'),
+    ('Spacebase, buff icon JETPACK', r'BuffIndicator\.JETPACK', 'BuffIndicator.LEVITATION'),
+    ('Spacebase, buff icon KNOCKOUT', r'BuffIndicator\.KNOCKOUT', 'BuffIndicator.DROWSY'),
+    ('Spacebase, buff icon LOCKDOWN', r'BuffIndicator\.LOCKDOWN', 'BuffIndicator.ROOTS'),
+    ('Spacebase, Mob.hostile read is alignment ENEMY', r'(\b\w+(?:\.\w+)*)\.hostile\b(?!\s*=[^=])', r'(\1.alignment == Char.Alignment.ENEMY)'),
+    ('Spacebase, Mob.ally read is alignment ALLY', r'(\b\w+(?:\.\w+)*)\.ally\b(?!\s*=[^=])', r'(\1.alignment == Char.Alignment.ALLY)'),
+    ('Spacebase, Weapon.Enhancement is Weapon.Enchantment', r'\bWeapon\.Enhancement\b', 'Weapon.Enchantment'),
+    ('Spacebase, any other package of the mod is ours', r'com\.wafitz\.pixelspacebase\.', PKG + '.'),
 ]
+
+# Pixel Spacebase keeps its limited drops in the lower case enum Dungeon.limitedDrops, ours is Dungeon.LimitedDrops
+for _n, _o in [('strengthTech', 'STRENGTH_POTIONS'), ('upgradeDrops', 'UPGRADE_SCROLLS'), ('arcaneStyli', 'ARCANE_STYLI'),
+               ('warlockHP', 'WARLOCK_HP'), ('replicatorSwarmHP', 'SB_REPLICATOR_HP'), ('siphonDroneHP', 'SB_SIPHON_HP'),
+               ('scorpioHP', 'SB_SCORPIO_HP'), ('makingHP', 'SB_MAKING_HP'), ('alienTechDevice', 'SB_ALIEN_TECH'),
+               ('armband', 'SB_ARMBAND'), ('airTank', 'SB_AIR_TANK'), ('ordnanceKit', 'SB_ORDNANCE_KIT'),
+               ('utilityKit', 'SB_UTILITY_KIT'), ('plasmidKit', 'SB_PLASMID_KIT'), ('blasterHolster', 'SB_BLASTER_HOLSTER'),
+               ('guardHP', 'SB_GUARD_HP'), ('allGearUpgrade', 'SB_ALL_GEAR_UPGRADE')]:
+    RENAMES.append(('Spacebase, limitedDrops.' + _n, r'\bDungeon\.limitedDrops\.' + _n + r'\b', 'Dungeon.LimitedDrops.' + _o))
 
 def convert_long(s):
     """Mods built for huge numbers (Experienced) use long for damage. This game uses int."""
@@ -112,6 +158,17 @@ def apply(s):
     for why, pat, rep in RENAMES:
         t2 = re.sub(pat, rep, t)
         if t2 != t: fired.append(why); t = t2
+    # old style resistance and immunity sets (Pixel Spacebase) become the fields of this game's Char
+    for _kind, _field in (('RESISTANCES', 'resistances'), ('IMMUNITIES', 'immunities')):
+        _m = re.search(r'private static final HashSet<Class<\?>> ' + _kind + r' = new HashSet<>\(\);\s*static \{(.*?)\n    \}', t, re.S)
+        if _m:
+            body = _m.group(1).replace(_kind + '.add(', _field + '.add(')
+            t = t.replace(_m.group(0), '{' + body + '\n    }')
+            t = re.sub(r'\n\s*@Override\s*public HashSet<Class<\?>> ' + _field + r'\(\)\s*\{\s*return ' + _kind + r';\s*\}', '', t)
+            fired.append('old ' + _kind + ' set became the ' + _field + ' field')
+    if re.search(r'\bDungeon\.', t) and not re.search(r'import [\w.]*\.Dungeon;', t) and 'package ' + PKG + ';' not in t:
+        t = re.sub(r'(package [\w.]+;\r?\n)', r'\1\nimport ' + PKG + '.Dungeon;', t, count=1)
+        fired.append('added the Dungeon import')
     # the old Skeleton Key that boss levels dropped is the Worn Key now
     if 'items.keys.SkeletonKey' in t:
         t = re.sub(r'\bSkeletonKey\b', 'WornKey', t)

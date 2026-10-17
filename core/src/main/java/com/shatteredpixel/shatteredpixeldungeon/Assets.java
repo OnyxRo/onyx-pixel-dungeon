@@ -398,6 +398,27 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String XENOMORPH = "sprites/spacebase/xenomorph.png"; //ported, spacebase
+		public static final String WAR_MACHINE = "sprites/spacebase/war_machine.png"; //ported, spacebase
+		public static final String TURRET = "sprites/spacebase/turret.png"; //ported, spacebase
+		public static final String SIPHON_DRONE = "sprites/spacebase/siphon_drone.png"; //ported, spacebase
+		public static final String SIGNAL_SIREN = "sprites/spacebase/signal_siren.png"; //ported, spacebase
+		public static final String SIGNAL_LEECH = "sprites/spacebase/signal_leech.png"; //ported, spacebase
+		public static final String RUPTURED_CREW_SUIT = "sprites/spacebase/ruptured_crew_suit.png"; //ported, spacebase
+		public static final String REPLICATOR_SWARM = "sprites/spacebase/replicator_swarm.png"; //ported, spacebase
+		public static final String OUTER_COLONY_SHOCK_TROOPER = "sprites/spacebase/outer_colony_shock_trooper.png"; //ported, spacebase
+		public static final String OUTER_COLONY_SCOUT = "sprites/spacebase/outer_colony_scout.png"; //ported, spacebase
+		public static final String OUTER_COLONY_PSION = "sprites/spacebase/outer_colony_psion.png"; //ported, spacebase
+		public static final String OLDWARBOT = "sprites/spacebase/old_war_bot.png"; //ported, spacebase
+		public static final String MAINTENANCE_CRAWLER = "sprites/spacebase/maintenance_crawler.png"; //ported, spacebase
+		public static final String JEDA_KNIGHT = "sprites/spacebase/jeda_knight.png"; //ported, spacebase
+		public static final String JAWAR = "sprites/spacebase/jawar.png"; //ported, spacebase
+		public static final String HOLODECK_MONARCH = "sprites/spacebase/holodeck_monarch.png"; //ported, spacebase
+		public static final String HOLODECK_LEGIONARY = "sprites/spacebase/holodeck_legionary.png"; //ported, spacebase
+		public static final String FACEHUGGER = "sprites/spacebase/facehugger.png"; //ported, spacebase
+		public static final String DRONE = "sprites/spacebase/drone.png"; //ported, spacebase
+		public static final String CONFUSEDSHAPESHIFTER = "sprites/spacebase/confused_shapeshifter.png"; //ported, spacebase
+		public static final String BITH_ACOLYTE = "sprites/spacebase/bith_acolyte.png"; //ported, spacebase
 		public static final String TILES_LAIR = "sprites/dragonic/tiles_lair.png"; //ported, dragonic
 		public static final String STATUE_ARMOR = "sprites/dragonic/statuearmor.png"; //ported, dragonic
 		public static final String SMALLDRAKE = "sprites/dragonic/drake.png"; //ported, dragonic

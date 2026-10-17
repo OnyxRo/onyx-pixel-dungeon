@@ -68,6 +68,14 @@ def add_asset(const, section):
     newpath = d + '/' + TAG + '/' + f if '/' + TAG not in d else path
     os.makedirs(os.path.dirname(ASSETS + newpath), exist_ok=True)
     shutil.copy(LP(MASSETS + path), ASSETS + newpath)
+    # art kept at 4x (Pixel Spacebase) comes down to our 16 px grid, nearest neighbour
+    _sc = LP(MASSETS + 'asset_pixel_scale.txt')
+    if path.endswith('.png') and os.path.exists(_sc):
+        _n = int(io.open(_sc).read().strip() or 1)
+        if _n > 1:
+            from PIL import Image
+            _im = Image.open(ASSETS + newpath).convert('RGBA')
+            _im.resize((max(1, _im.width // _n), max(1, _im.height // _n)), Image.NEAREST).save(ASSETS + newpath)
     p = B + 'Assets.java'
     s = rd(p); nl = '\r\n' if '\r\n' in s else '\n'
     m2 = re.search(r'public static class ' + section + r'\s*\{', s)

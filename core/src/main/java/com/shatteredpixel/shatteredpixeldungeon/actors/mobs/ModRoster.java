@@ -218,6 +218,29 @@ public class ModRoster {
 		add( "lovecraft", Pepe.class, 0, 1, 99 );
 		add( "lovecraft", BanditLord.class, 0, 1, 99 );
 		add( "lovecraft", LivingPlantFadeLeaf.class, 0, 1, 99 );
+		//Pixel Spacebase. No worlds yet (its art is being redrawn), so weight 0, sandbox and tests only
+		add( "spacebase", BithAcolyte.class, 0, 1, 99 );
+		add( "spacebase", ConfusedShapeshifter.class, 0, 1, 99 );
+		add( "spacebase", Drone.class, 0, 1, 99 );
+		add( "spacebase", Facehugger.class, 0, 1, 99 );
+		add( "spacebase", HolodeckLegionary.class, 0, 1, 99 );
+		add( "spacebase", Jawar.class, 0, 1, 99 );
+		add( "spacebase", JedaKnight.class, 0, 1, 99 );
+		add( "spacebase", MaintenanceCrawler.class, 0, 1, 99 );
+		add( "spacebase", NewbornElemental.class, 0, 1, 99 );
+		add( "spacebase", OldWarBot.class, 0, 1, 99 );
+		add( "spacebase", OuterColonyPsion.class, 0, 1, 99 );
+		add( "spacebase", OuterColonyScout.class, 0, 1, 99 );
+		add( "spacebase", OuterColonyShockTrooper.class, 0, 1, 99 );
+		add( "spacebase", ReplicatorSwarm.class, 0, 1, 99 );
+		add( "spacebase", RupturedCrewSuit.class, 0, 1, 99 );
+		add( "spacebase", SignalLeech.class, 0, 1, 99 );
+		add( "spacebase", SignalSiren.class, 0, 1, 99 );
+		add( "spacebase", SiphonDrone.class, 0, 1, 99 );
+		add( "spacebase", Turret.class, 0, 1, 99 );
+		add( "spacebase", WarMachine.class, 0, 1, 99 );
+		add( "spacebase", Xenomorph.class, 0, 1, 99 );
+		add( "spacebase", ArmoredCrawler.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

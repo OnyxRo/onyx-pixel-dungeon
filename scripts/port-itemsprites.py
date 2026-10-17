@@ -16,6 +16,10 @@ PK = 'core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/'
 # rows 13 and 19 (zero based 12 and 18) and every row from 33 down are kept for other mods' items.
 # The sheet grows by itself when they run out, see free_cell.
 def mod_rows(height):
+    # ITEM_ROWS=146-151 (one based, inclusive) limits a parallel run to its own rows
+    if os.environ.get('ITEM_ROWS'):
+        a, b = os.environ['ITEM_ROWS'].split('-')
+        return list(range(int(a) - 1, int(b)))
     return [12, 18] + list(range(32, height // 16))
 
 def LP(p):
@@ -45,6 +49,11 @@ sheet_path = LP(MOD + 'core/src/main/assets/sprites/items.png')
 if not os.path.exists(sheet_path): sheet_path = LP(MOD + 'core/src/main/assets/items.png')   # pre 0.8 mods keep it flat
 if not os.path.exists(sheet_path): sheet_path = LP(MOD + 'core/src/main/assets/ui/items.png')   # 0.5 and 0.6 mods keep it under ui
 src = Image.open(sheet_path).convert('RGBA')
+# art kept at a multiple of 16 px a cell (Pixel Spacebase is 4x, see assets/asset_pixel_scale.txt), shrink it with nearest neighbour
+_sc = LP(MOD + 'core/src/main/assets/asset_pixel_scale.txt')
+if os.path.exists(_sc):
+    _n = int(io.open(_sc).read().strip() or 1)
+    if _n > 1: src = src.resize((src.width // _n, src.height // _n), Image.NEAREST)
 dstp = ROOT + 'core/src/main/assets/sprites/items.png'
 dst = Image.open(dstp).convert('RGBA')
 p = ROOT + PK + 'sprites/ItemSpriteSheet.java'
@@ -54,6 +63,14 @@ s = s.replace('\r\n', '\n')
 
 def free_cell():
     global dst
+    # ITEM_ROWS can name rows below the end of the sheet, grow it to hold them
+    if os.environ.get('ITEM_ROWS'):
+        need = int(os.environ['ITEM_ROWS'].split('-')[1]) * 16
+        if dst.height < need:
+            grown = Image.new('RGBA', (dst.width, need), (0, 0, 0, 0))
+            grown.paste(dst, (0, 0))
+            dst = grown
+            print('item sheet grown to', dst.height, 'px high')
     while True:
         for r in mod_rows(dst.height):
             for c in range(16):
