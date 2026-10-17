@@ -20,7 +20,7 @@ import importlib.util
 _spec = importlib.util.spec_from_file_location('renames', os.path.join(os.path.dirname(os.path.abspath(__file__)), 'renames.py'))
 renames = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(renames)
 MB = MOD + renames.mod_package_dir(MOD)
-MASSETS = MOD + 'core/src/main/assets/'
+MASSETS = MOD + ('core/src/main/assets/' if os.path.isdir(MOD + 'core') else 'src/main/assets/')
 ASSETS = ROOT + 'core/src/main/assets/'
 
 def LP(p):

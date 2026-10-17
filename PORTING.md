@@ -24,7 +24,7 @@ Update this at the end of every task. Details live in CLAUDE.md.
 - Monsters and weapons from Magic Ling (about 350 monster files, 74 weapons) and Transformation (59, 35).
 - Monsters, weapons and items for the other ten mods (counts in CLAUDE.md).
 - Mods not started: Tower PD, Lovecraft, SPS, Goblins, Unleashed, Deep, Pixel Spacebase.
-- Mods not started: Tower PD, Dragonic, SPS, Goblins, Unleashed, Deep, Pixel Spacebase.
+- Mods not started: Tower PD, Dragonic, SPS, Goblins, Deep, Pixel Spacebase. Unleashed is ported except its worlds (see its section).
 - Sandbox: forcing a single mod by one click (toggling the rest off works today).
 
 ## Known issues
@@ -137,6 +137,7 @@ Left out, and why.
 
 Tool changes made. `port-itemsprites.py` reads `ui/items.png` for 0.5 and 0.6 mods. `port-skip.txt` has the mod launcher and the scenes it drags in.
 
+<<<<<<< HEAD
 ## Lovecraft and Dragonic, finishing pass (2026-10-16, branch onyx/p2-lovedrag)
 
 Lovecraft.
@@ -151,3 +152,17 @@ Dragonic.
 - Nilheim (`NilheimLevel`, Prison region, 56 worlds in total). The mod's own sheet is missing from its repo, so the tiles are Shattered's Prison sheet shifted to an icy blue, with the Prison water, music and ambience.
 - Seed Pouch, Wand Holster, Newborn Elemental and Tamahawk were compared with what this game has (same sizes and stats), nothing to add. Boomerang is the new Lovecraft one.
 - Dragon boss test. `BossArenaTest.dragonPhases` drives the level's own `progress()` through all four phases and fails if the floor is still sealed after the last. A step that stops at a headless limit is moved on by hand and shown as forced. Still worth playing the fight in the sandbox.
+=======
+## Unleashed PD (2026-10-16, repo FthrNature/unleashed-pixel-dungeon, key `unleashed`)
+Base is Shattered 0.3, so everything is written on the old API. Worlds are NOT ported on purpose, Onyx is redrawing that art. Only code and sprites came over.
+
+- 23 monsters in `actors/mobs`, all on a new base class `UMob` that gives back the old fields (`atkSkill`, `dmgMin`, `dmgMax`, `dmgRed`, `mobType`, `TYPE_` flags, `name`) and turns them into current `Mob` methods. Green Snake, Velocirooster, Sewer Fly, Brown Slime, Red Slime, Zombie, Assassin, Clay Golem, Spider Bot, Brown Wolf, Gray Wolf, Yeti, Ice Demon, Lost Soul (all with depth ranges mapped from the mod's 36 floors to our 26), and weight 0 ones for the sandbox. Squid (water vault monster), Tinkerer, Minotaur, Chaos Mage, Demon Lord, Burning Fist, Rotting Fist, Larva and Undead (parts of the mod's boss fights). Roster key `unleashed`, so they spawn once the redrawn Unleashed worlds exist.
+- The mod has no message files, `scripts/port-unleashed-strings.py` reads each name and description out of the class.
+- 10 sprite sheets under `sprites/unleashed/`. Burning Fist, Rotting Fist, Larva and Undead use Shattered's own sprites that were already here.
+- Items. Ancient (artifact weapon enchantment that attunes and levels up with kills), Resistance armor glyph, Overpriced Ration, Ankh Chain (bag for ankhs and rings, picture in row 128 of the item sheet). Rewritten by hand on the current item API.
+- Left out, duplicates of what Shattered has. Death (Grim), Luck (Lucky), Instability (Unstable), Shock (Shocking), Bounce (Repulsion), Boomerang (Wooden Boomerang), Seed Pouch (Velvet Pouch), Wand Holster (Magical Holster), Potion of Speed (Haste), Short Sword.
+- Left out, no free label. Potion of Slowness, Ring of Magic, Ring of Sating, Ring of Searching need a new potion colour or ring gem, and the ring effects need the mod's magic and hunger systems.
+- Left out, need the mod's own systems. Donations altar, Weightstone, Horror enchantment, difficulty levels (`Dungeon.difficultyLevel`), the infinite levels, the Frozen boss level and the old painters (all built on the 0.3 level code and its frozen tile sheet).
+- Worlds the mod would add, for later when the art is redrawn. Sheets are 256x64 in the old layout. Unleashed Sewers (tiles0, water0, stage sewers), Prison (tiles1, water1, stage prison), Caves (tiles2, water2, stage caves), City (tiles3, water3, stage city), Frozen Caves (tiles4, water4, an extra ice stage on floors 25 to 29 of the mod, closest here to floors 14 to 18), Halls (tiles5, water5, stage halls).
+- Tool changes. `renames.py` now handles 0.3 static `Level.` fields and methods, set style `resistances()` and `immunities()`, old enchantment names, `Dungeon.limitedDrops`, imports of Dungeon and PathFinder added by themselves. `mod_package_dir` and `port-copier.py` find single module mods (`src/main/java`). `port-itemsprites.py` takes `ITEM_ROWS=128-133` to stay inside a parallel agent's rows. New `scripts/apply-renames.py`, `scripts/errsum.py`, `scripts/port-unleashed-copy.py`.
+>>>>>>> onyx/p2-unleashed
