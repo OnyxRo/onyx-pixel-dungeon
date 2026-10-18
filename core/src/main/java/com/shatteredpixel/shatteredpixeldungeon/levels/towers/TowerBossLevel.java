@@ -54,6 +54,8 @@ public class TowerBossLevel extends TowerLevel {
 	public static final int FLOORS_PER_BOSS = 5;
 	private static final String PESTILENCE_ARENA = "pestilence_arena";
 	private static final String GENTLEMAN_PRELUDE = "gentleman_elf_prelude";
+	//the branch the arena's stairs lead to, the tower's own branch unless a normal run uses the arena
+	protected int transitionBranch = TowerLevel.BRANCH;
 	private final TowerBossEncounter encounter = new TowerBossEncounter();
 	private PestilenceArenaController pestilenceArena;
 	private transient boolean purifierClearingMiasma;
@@ -99,10 +101,10 @@ public class TowerBossLevel extends TowerLevel {
 
 		transitions.add(new LevelTransition(this, TowerBossLayout.ENTRANCE,
 				LevelTransition.Type.REGULAR_ENTRANCE,
-				Dungeon.depth - 1, TowerLevel.BRANCH, LevelTransition.Type.REGULAR_EXIT));
+				Dungeon.depth - 1, transitionBranch, LevelTransition.Type.REGULAR_EXIT));
 		transitions.add(new LevelTransition(this, TowerBossLayout.EXIT,
 				LevelTransition.Type.REGULAR_EXIT,
-				Dungeon.depth + 1, TowerLevel.BRANCH, LevelTransition.Type.REGULAR_ENTRANCE));
+				Dungeon.depth + 1, transitionBranch, LevelTransition.Type.REGULAR_ENTRANCE));
 		encounter.ensureSelected(Dungeon.seed, Dungeon.depth, Dungeon.branch);
 		return true;
 	}

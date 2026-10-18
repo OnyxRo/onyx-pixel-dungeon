@@ -395,6 +395,10 @@ public class WorldShuffle {
 				default: return new Level[0];
 			}
 		}
+		if (world >= 0 && world < LOGOS.length && TRANSFORMATION.equals(LOGOS[world])) {
+			//Transformation PD's tower bosses, one for each floor from 10 down. Floor 5 keeps Shattered's Goo.
+			return depth >= 10 && depth % 5 == 0 ? new Level[]{ new com.shatteredpixel.shatteredpixeldungeon.levels.towers.TransformationRunBossLevel() } : new Level[0];
+		}
 		Level single = world >= 0 && world < LOGOS.length ? modBossLevel( world, depth ) : null;
 		return single == null ? new Level[0] : new Level[]{ single };
 	}
@@ -427,6 +431,10 @@ public class WorldShuffle {
 		if (world >= 0 && world < LOGOS.length && DRAGONIC.equals(LOGOS[world])) {
 			//Dragonic's Dragon guards the floor 25 gate in place of Yog, it was the last floor of its own game
 			return depth == 25 ? new DragonBossLevel() : null;
+		}
+		if (world >= 0 && world < LOGOS.length && TRANSFORMATION.equals(LOGOS[world])) {
+			Level[] run = modBossVariants( world, depth );
+			return run.length == 0 ? null : run[0];
 		}
 		if (world < 0 || world >= LOGOS.length || !DEVOTED.equals(LOGOS[world])) return null;
 		switch (depth) {
