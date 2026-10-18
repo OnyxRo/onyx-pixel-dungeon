@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions;
 
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -103,5 +105,17 @@ public class PotionOfHealing extends Potion {
 			outQuantity = 1;
 		}
 
+	}
+
+	//rearranged, what this potion does on an arrow dipped in it
+	@Override
+	public ItemSprite.Glowing potionGlowing() {
+		return new ItemSprite.Glowing( 0x00FF00 );
+	}
+	@Override
+	public void potionProc(Hero hero, Char enemy, float damage) {
+		if (!Dungeon.isChallenged(Challenges.NO_HEALING)){
+			hero.heal(Math.round(1+damage*0.4f));
+		}
 	}
 }

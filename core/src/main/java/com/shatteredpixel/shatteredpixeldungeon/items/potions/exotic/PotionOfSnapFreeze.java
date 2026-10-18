@@ -21,6 +21,11 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -60,5 +65,24 @@ public class PotionOfSnapFreeze extends ExoticPotion {
 				
 			}
 		}
+	}
+
+	//rearranged, what this potion does on an arrow dipped in it
+	@Override
+	public ItemSprite.Glowing potionGlowing() {
+		return new ItemSprite.Glowing( 0xB4E6BC );
+	}
+	@Override
+	public void potionProc(Hero hero, Char enemy, float damage) {
+		new FlavourBuff() {
+			{
+				actPriority = VFX_PRIO;
+			}
+
+			public boolean act() {
+				Buff.affect(target, Frost.class, Math.round(Frost.DURATION/2));
+				return super.act();
+			}
+		}.attachTo(enemy);
 	}
 }

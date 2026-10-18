@@ -21,6 +21,12 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -188,5 +194,17 @@ public class PotionOfDivineInspiration extends ExoticPotion {
 		}
 
 	}
-	
+
+	//rearranged, what this potion does on an arrow dipped in it
+	@Override
+	public ItemSprite.Glowing potionGlowing() {
+		return new ItemSprite.Glowing( 0xFFFF00, 0.5f );
+	}
+	@Override
+	public void potionProc(Hero hero, Char enemy, float damage) {
+		if (enemy instanceof Mob && ((Mob)enemy).EXP > 0 && ((Mob)enemy).maxLvl > hero.lvl) {
+			hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(((Mob)enemy).EXP), FloatingText.EXPERIENCE);
+			hero.earnExp(((Mob)enemy).EXP, PotionOfExperience.class);
+		}
+	}
 }
