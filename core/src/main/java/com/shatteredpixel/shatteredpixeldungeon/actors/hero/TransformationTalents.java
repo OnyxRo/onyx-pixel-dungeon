@@ -307,6 +307,7 @@ public class TransformationTalents {
 		if (h.hasTalent(Talent.SHARP_HEAD)) acc *= 1f - h.pointsInTalent(Talent.SHARP_HEAD)/6f;
 		if (h.pointsNegative(Talent.MYOPIA) > 0) acc *= 1f - 0.2f*h.pointsNegative(Talent.MYOPIA);
 		acc *= TransformationBossTalents.accuracy(h);
+		acc *= comboFocusAccuracy(h);
 		return acc;
 	}
 
@@ -342,6 +343,10 @@ public class TransformationTalents {
 
 	public static int reachBonus(Char owner){
 		return owner instanceof Hero && ((Hero) owner).pointsInTalent(Talent.ACCUMULATE_STEADILY) == 3 ? 1 : 0;
+	}
+
+	public static int reachBonus(Char owner, Item weapon){
+		return reachBonus(owner) + longArm(owner, weapon);
 	}
 
 	public static int itemLevelBonus(Item item){
@@ -654,6 +659,8 @@ public class TransformationTalents {
 			}
 		}
 		dmg = TransformationBossTalents.onAttackProc(h, enemy, dmg);
+		dmg += comboFocusDamage(h);
+		onSoulMarkedHit(h, enemy);
 		if (h.pointsNegative(Talent.STEAM_BEAN) > 0 && enemy.buff(SteamBeanMark.class) == null){
 			Buff.affect(h, Daze.class, 4*h.pointsNegative(Talent.STEAM_BEAN));
 			Buff.affect(enemy, SteamBeanMark.class);
@@ -925,6 +932,7 @@ public class TransformationTalents {
 
 	public static void onWandZap(Wand wand, int target){
 		Hero h = hero();
+		if (h != null) onAnyZap(h);
 		if (h == null || Dungeon.level == null || target < 0 || target >= Dungeon.level.length()) return;
 		if (h.hasTalent(Talent.GAS_SPURT) && h.buff(GasCooldown.class) == null && Dungeon.level.distance(h.pos, target) > 2){
 			if (h.pointsInTalent(Talent.GAS_SPURT) == 2) GameScene.add(Blob.seed(target, 100, CorrosiveGas.class).setStrength(2 + Dungeon.scalingDepth()/5));
@@ -1345,6 +1353,137 @@ public class TransformationTalents {
 				//a kind must be chosen, the scroll is already spent
 			}
 		});
+	}
+
+	//---- the extra subclass talents, taken through a metamorphosis prism ------------------------
+
+	public static class SkilledParry extends FlavourBuff {}
+	public static class SkilledParryCooldown extends TimedCooldown {}
+	public static class ArcaneConfluence extends FlavourBuff {
+		public boolean zapped = false;
+		@Override
+		public void detach(){
+			super.detach();
+			if (!zapped && target instanceof Hero) restoreStaffCharge((Hero) target);
+		}
+	}
+
+	//the extra talents each subclass can swap in, the subclass's own three come first
+	public static Talent[] subclassExtras(HeroSubClass sub){
+		switch (sub){
+			case GLADIATOR: return new Talent[]{Talent.COMBO_FOCUS, Talent.RELENTLESS_COMBAT};
+			case BATTLEMAGE: return new Talent[]{Talent.LONG_ARM, Talent.ARCANE_CONFLUENCE};
+			case WARLOCK: return new Talent[]{Talent.FINE_TASTING};
+			case CHAMPION: return new Talent[]{Talent.WEAPON_ABILITY_MASTER, Talent.SKILLED_PARRY};
+			case MONK: return new Talent[]{Talent.INNER_PEACE};
+			default: return new Talent[0];
+		}
+	}
+
+	//the subclass talents a prism can swap between, the native three and the extras
+	public static ArrayList<Talent> subclassGroup(Hero h){
+		ArrayList<Talent> group = new ArrayList<>();
+		if (h.subClass == null || subclassExtras(h.subClass).length == 0) return group;
+		ArrayList<java.util.LinkedHashMap<Talent, Integer>> lists = new ArrayList<>();
+		Talent.initSubclassTalents(h.subClass, lists);
+		for (java.util.LinkedHashMap<Talent, Integer> m : lists) group.addAll(m.keySet());
+		java.util.Collections.addAll(group, subclassExtras(h.subClass));
+		return group;
+	}
+
+	public static boolean skilledParry(Hero h){
+		return h.buff(SkilledParry.class) != null;
+	}
+
+	public static void onWeaponAbility(Hero h){
+		if (h.hasTalent(Talent.SKILLED_PARRY) && h.buff(SkilledParryCooldown.class) == null){
+			Buff.prolong(h, SkilledParry.class, 1 + h.pointsInTalent(Talent.SKILLED_PARRY));
+			Buff.affect(h, SkilledParryCooldown.class, 30);
+		}
+	}
+
+	public static int championChargeBonus(Hero h){
+		return h.pointsInTalent(Talent.WEAPON_ABILITY_MASTER);
+	}
+
+	public static float championRechargeBonus(Hero h){
+		return 1.5f + h.pointsInTalent(Talent.WEAPON_ABILITY_MASTER)/6f;
+	}
+
+	public static float attackDelayFactor(Hero h){
+		com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo c = h.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo.class);
+		if (h.hasTalent(Talent.RELENTLESS_COMBAT) && c != null && c.getComboCount() >= 8){
+			return 1f / (1f + 0.5f*h.pointsInTalent(Talent.RELENTLESS_COMBAT));
+		}
+		return 1f;
+	}
+
+	private static int comboStep(Hero h){ return 5 - h.pointsInTalent(Talent.COMBO_FOCUS); }
+
+	public static int comboFocusDamage(Hero h){
+		com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo c = h.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo.class);
+		if (!h.hasTalent(Talent.COMBO_FOCUS) || c == null) return 0;
+		return Math.min(20, c.getComboCount() / comboStep(h));
+	}
+
+	public static float comboFocusAccuracy(Hero h){
+		com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo c = h.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo.class);
+		if (!h.hasTalent(Talent.COMBO_FOCUS) || c == null) return 1f;
+		int pts = h.pointsInTalent(Talent.COMBO_FOCUS);
+		float per = 0.025f + 0.025f*pts;
+		return 1f + Math.min(per*20, per*(c.getComboCount() / comboStep(h)));
+	}
+
+	public static float innerPeace(Hero h){
+		if (!h.hasTalent(Talent.INNER_PEACE)) return 1f;
+		com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy e = h.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy.class);
+		if (e == null) return 1f;
+		return 1f + (0.125f + 0.025f*h.pointsInTalent(Talent.INNER_PEACE))*(int) e.energy;
+	}
+
+	public static int longArm(Char owner, Item weapon){
+		if (!(owner instanceof Hero) || !(weapon instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff)) return 0;
+		Hero h = (Hero) owner;
+		if (!h.hasTalent(Talent.LONG_ARM)) return 0;
+		int extra = h.STR() - ((com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff) weapon).STRReq();
+		return Math.max(0, extra / (9 - h.pointsInTalent(Talent.LONG_ARM)));
+	}
+
+	public static void onStaffMeleeHit(Hero h){
+		if (h.hasTalent(Talent.ARCANE_CONFLUENCE)){
+			ArcaneConfluence a = h.buff(ArcaneConfluence.class);
+			if (a != null){ a.zapped = true; a.detach(); }
+			Buff.affect(h, ArcaneConfluence.class, 10f);
+		}
+	}
+
+	public static void onAnyZap(Hero h){
+		ArcaneConfluence a = h.buff(ArcaneConfluence.class);
+		if (a != null){ a.zapped = true; a.detach(); }
+	}
+
+	private static void restoreStaffCharge(Hero h){
+		com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff staff = h.belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff.class);
+		if (staff == null || !h.hasTalent(Talent.ARCANE_CONFLUENCE)) return;
+		int pts = h.pointsInTalent(Talent.ARCANE_CONFLUENCE);
+		float charge = 0.5f + 0.5f*pts;
+		Wand w = staff.wand();
+		if (w == null) return;
+		float room = w.maxCharges - w.curCharges - w.partialCharge;
+		float give = Math.min(room, charge);
+		w.partialCharge += give;
+		while (w.partialCharge >= 1){ w.curCharges++; w.partialCharge--; }
+		float overflow = (charge - give) * (0.75f + 0.25f*pts);
+		if (overflow > 0){
+			for (Wand.Charger c : h.buffs(Wand.Charger.class)) c.gainCharge(overflow);
+		}
+		staff.updateQuickslot();
+	}
+
+	public static void onSoulMarkedHit(Hero h, Char enemy){
+		if (h.hasTalent(Talent.FINE_TASTING) && enemy.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulMark.class) != null){
+			h.heal(h.pointsInTalent(Talent.FINE_TASTING));
+		}
 	}
 
 	public static int landSwimming(){ return n(Talent.LAND_SWIMMING); }

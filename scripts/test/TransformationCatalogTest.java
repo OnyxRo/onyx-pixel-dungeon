@@ -193,6 +193,23 @@ public class TransformationCatalogTest {
 			hero.talents.get( ti ).remove( st );
 		}
 
+		//subclass prism swap, a Gladiator trades Cleave for Combo Focus and keeps it after a reload
+		{
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass keepSub = hero.subClass;
+			hero.subClass = com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.GLADIATOR;
+			Talent.initSubclassTalents( hero );
+			check( TransformationTalents.subclassGroup( hero ).contains( Talent.COMBO_FOCUS ), "gladiator prism group" );
+			TransformationTalents.replaceTalent( hero, Talent.CLEAVE, Talent.COMBO_FOCUS );
+			hero.talents.get( 2 ).clear();
+			Talent.initSubclassTalents( hero );
+			check( hero.talents.get( 2 ).containsKey( Talent.COMBO_FOCUS ) && !hero.talents.get( 2 ).containsKey( Talent.CLEAVE ), "swapped subclass talent rebuilds" );
+			hero.metamorphedTalents.remove( Talent.CLEAVE );
+			hero.talents.get( 2 ).remove( Talent.COMBO_FOCUS );
+			hero.talents.get( 2 ).remove( Talent.LETHAL_DEFENSE );
+			hero.talents.get( 2 ).remove( Talent.ENHANCED_COMBO );
+			hero.subClass = keepSub;
+		}
+
 		//the transformation trap swaps one talent
 		hook( "transformation trap", () -> {
 			com.shatteredpixel.shatteredpixeldungeon.levels.traps.TransformationTrap trap = new com.shatteredpixel.shatteredpixeldungeon.levels.traps.TransformationTrap();

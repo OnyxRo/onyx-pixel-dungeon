@@ -38,6 +38,10 @@ public class MetamorphosisPrism extends Spell {
 		for (LinkedHashMap<Talent, Integer> tier : hero.talents){
 			for (Talent t : tier.keySet()) if (Talent.isBossTalent(t)) owned.add(t);
 		}
+		//the subclass talents too, the prism trades them for the subclass's other talents
+		for (Talent t : com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.subclassGroup(hero)){
+			for (LinkedHashMap<Talent, Integer> tier : hero.talents) if (tier.containsKey(t) && !owned.contains(t)) owned.add(t);
+		}
 		if (owned.isEmpty()){
 			GLog.w(Messages.get(this, "no_boss_talent"));
 			return;
@@ -54,7 +58,10 @@ public class MetamorphosisPrism extends Spell {
 
 	private void chooseNew(final Hero hero, final Talent old){
 		final ArrayList<Talent> options = new ArrayList<>();
-		for (Talent t : TransformationBossTalents.groupOf(old)){
+		ArrayList<Talent> group = new ArrayList<>();
+		java.util.Collections.addAll(group, TransformationBossTalents.groupOf(old));
+		if (group.isEmpty()) group.addAll(com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.subclassGroup(hero));
+		for (Talent t : group){
 			boolean have = false;
 			for (LinkedHashMap<Talent, Integer> tier : hero.talents) have |= tier.containsKey(t);
 			if (!have) options.add(t);
@@ -68,7 +75,11 @@ public class MetamorphosisPrism extends Spell {
 		GameScene.show(new WndOptions(new TalentIcon(old), Messages.titleCase(name()), Messages.get(this, "choose_new"), names){
 			@Override
 			protected void onSelect(int index){
-				TransformationBossTalents.replaceBossTalent(hero, old, options.get(index));
+				if (TransformationBossTalents.groupOf(old).length > 0){
+					TransformationBossTalents.replaceBossTalent(hero, old, options.get(index));
+				} else {
+					com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.replaceTalent(hero, old, options.get(index));
+				}
 				detach(hero.belongings.backpack);
 				updateQuickslot();
 				hero.spendAndNext(1f);

@@ -407,7 +407,9 @@ public enum Talent {
 	FOCUS_LIGHT(4489, 2, 1, TalentType.SPELL), GENESIS(4439, 2, 2, TalentType.SPELL), HOLY_GRENADE(4496, 3, 3, TalentType.SPELL), HOTLIGHT(4500, 2, 2, TalentType.SPELL),
 	INDULGENCE(4440, 2, 2, TalentType.SPELL), PURIFYING_EVIL(4437, 3, 3, TalentType.SPELL), RESURRECTION(4442, 3, 3, TalentType.SPELL), REVELATION(4495, 2, 2, TalentType.SPELL),
 	SACRED_BLADE(4498, 3, 3, TalentType.SPELL), SHEPHERD_INTENTION(4435, 2, 1, TalentType.SPELL), SILVER_LANGUAGE(4441, 2, 1, TalentType.SPELL), SPRINT_SPELL(4488, 2, 2, TalentType.SPELL),
-	STRENGTHEN_CHALICE(4318, 2, 2, TalentType.SPELL), THORN_WHIP(4491, 2, 2, TalentType.SPELL), TRAITOROUS_SPELL(4487, 2, 1, TalentType.SPELL), ZHUANYU_SPELL(4490, 3, 3, TalentType.SPELL);
+	STRENGTHEN_CHALICE(4318, 2, 2, TalentType.SPELL), THORN_WHIP(4491, 2, 2, TalentType.SPELL), TRAITOROUS_SPELL(4487, 2, 1, TalentType.SPELL), ZHUANYU_SPELL(4490, 3, 3, TalentType.SPELL),
+	ARCANE_CONFLUENCE(4775, 3, 3, TalentType.SUBCLASS), COMBO_FOCUS(4771, 3, 3, TalentType.SUBCLASS), FINE_TASTING(4777, 3, 3, TalentType.SUBCLASS), INNER_PEACE(4796, 3, 3, TalentType.SUBCLASS),
+	LONG_ARM(4774, 3, 3, TalentType.SUBCLASS), RELENTLESS_COMBAT(4772, 3, 3, TalentType.SUBCLASS), SKILLED_PARRY(4793, 3, 3, TalentType.SUBCLASS), WEAPON_ABILITY_MASTER(4792, 3, 3, TalentType.SUBCLASS);
 
 	public static class ImprovisedProjectileCooldown extends FlavourBuff{
 		public int icon() { return BuffIndicator.TIME; }
@@ -2453,6 +2455,19 @@ public enum Talent {
 
 	public static void initSubclassTalents( Hero hero ){
 		initSubclassTalents( hero.subClass, hero.talents );
+		//transformation, subclass talents swapped by a metamorphosis prism
+		if (hero.talents.size() > 2){
+			LinkedHashMap<Talent, Integer> tier = hero.talents.get(2);
+			for (Talent k : hero.metamorphedTalents.keySet()){
+				Talent v = hero.metamorphedTalents.get(k);
+				if (tier.containsKey(k) && !tier.containsKey(v)){
+					LinkedHashMap<Talent, Integer> newTier = new LinkedHashMap<>();
+					for (Talent t : tier.keySet()) newTier.put(t == k ? v : t, tier.get(t));
+					hero.talents.set(2, newTier);
+					tier = newTier;
+				}
+			}
+		}
 	}
 
 	public static void initSubclassTalents( HeroSubClass cls, ArrayList<LinkedHashMap<Talent, Integer>> talents ){

@@ -864,6 +864,7 @@ public class Hero extends Char {
 		}
 
 		if (TransformationBossTalents.phantomDodge(this)) return INFINITE_EVASION; //transformation, Phantom Step
+		if (TransformationTalents.skilledParry(this)) return INFINITE_EVASION; //transformation, Skilled Parry
 		
 		//Reforged's Quick Calibration, eating makes the next hits easy to dodge
 		if (buff(Talent.ArtificerFoodEvasionBonus.class) != null){
@@ -903,6 +904,7 @@ public class Hero extends Char {
 			evasion *= 1f + 0.1f * pointsInTalent(Talent.HUMAN_GLORY);
 		}
 		
+		evasion *= TransformationTalents.innerPeace(this); //transformation, Inner Peace
 		evasion += TransformationTalents.evasionBonus(this); //Transformation PD talent catalog
 
 		if (paralysed > 0) {
@@ -1170,7 +1172,7 @@ public class Hero extends Char {
 			return 0;
 		}
 
-		float delay = 1f;
+		float delay = TransformationTalents.attackDelayFactor(this); //transformation, Relentless Combat
 		//Dragonic PD, Fortify also speeds up attacks
 		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Fortify.class) != null) delay *= 0.75f;
 
