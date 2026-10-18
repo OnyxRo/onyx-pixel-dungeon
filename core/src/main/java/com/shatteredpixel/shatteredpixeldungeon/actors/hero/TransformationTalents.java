@@ -295,7 +295,7 @@ public class TransformationTalents {
 	}
 
 	public static float accuracy(Hero h, Char target){
-		if (target == null) return 1f;
+		if (target == null || Dungeon.level == null) return 1f;
 		float acc = 1f;
 		KindOfWeapon wep = h.belongings.attackingWeapon();
 		int dist = Dungeon.level.distance(h.pos, target.pos);
