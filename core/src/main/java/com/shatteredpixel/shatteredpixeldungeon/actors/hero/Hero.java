@@ -377,6 +377,8 @@ public class Hero extends Char {
 		if (heroClass == HeroClass.SLIMEGIRL){
 			//Transformation PD, the Slime Girl is sturdier to start and gains more a level
 			HT = 25 + 6*(lvl-1) + HTBoost;
+		} else if (heroClass == HeroClass.DM400) {
+			HT = 15 + 5*(lvl-1) + HTBoost;
 		} else {
 			HT = 20 + 5*(lvl-1) + HTBoost;
 		}

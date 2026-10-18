@@ -945,6 +945,10 @@ public enum Catalog {
 		//items ported from transformation
 		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Shuriken_Box.class);
 
+		//items ported from transformation
+		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.InstructionTool.class);
+		THROWN_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.DamageGear.class);
+
 
 	}
 

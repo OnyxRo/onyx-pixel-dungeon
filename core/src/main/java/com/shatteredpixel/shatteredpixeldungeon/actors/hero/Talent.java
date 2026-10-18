@@ -295,6 +295,23 @@ public enum Talent {
 	//One Sword T4
 	OFFENSIVE(471, 4), GLIMPSE(472, 4), KILL_CONTINUE(473, 4),
 
+	//DM400 T1, from Transformation PD
+	MARK_MEAL(480), OVER_CODE(481), TARGET_TARGETING(482), TBM(483),
+	//DM400 T2
+	OVER_MEAL(484), RECOVER_CHARGE(485), BODY_REINFORCE(486), EFFICIENT_ORDER(487), ROCKET_FIST(488),
+	//DM400 T3
+	BIG_FIST(489, 3), QUICK_TOOL(490, 3),
+	//AT400 T3
+	SUSTAIN_MARK(491, 3), BATTLE_UPGRADE(492, 3), FLY_DRONE(493, 3),
+	//AU400 T3
+	SPECIAL_MARK(494, 3), ASSIST_UPGRADE(495, 3), FAST_CRUISE(496, 3),
+	//Routine T4
+	OVER_EXTEND(497, 4), TERROR_MACH(498, 4), STRONG_PERSERVE(499, 4),
+	//Discharge Gas T4
+	OVER_TIME(500, 4), DEADLY_GAS(501, 4), DISCHARGE_HAPPY(502, 4),
+	//Honey Comb T4
+	PROCESS_EXTEND(503, 4), GLORIOUS_DEAD(504, 4), UPON_WAVE(505, 4),
+
 	//universal T4
 	HEROIC_ENERGY(26, 4), //See icon() and title() for special logic for this one
 	//Ratmogrify T4
@@ -609,6 +626,8 @@ public enum Talent {
 					return 442;
 				case NINJA:
 					return 474;
+				case DM400:
+					return 506;
 			}
 		} else {
 			return icon;
@@ -835,6 +854,7 @@ public enum Talent {
 		if (hero.hasTalent(BULWARK_GREATSHIELD) && src instanceof Char && hasBlockingWeapon(hero)){
 			dmg = Math.round(dmg * (hero.pointsInTalent(BULWARK_GREATSHIELD) == 1 ? 0.90f : 0.85f));
 		}
+		dmg = onDMDamage(hero, dmg);
 		AlchemyShield shield = hero.buff(AlchemyShield.class);
 		if (shield != null) dmg = shield.absorb(dmg, src);
 		if (hero.subClass.is(HeroSubClass.WATERSLIME)){
@@ -1197,6 +1217,88 @@ public enum Talent {
 		}
 	}
 
+	//---- Transformation PD, the DM400 ---------------------------------------------------------
+
+	public static class MarkMeal extends Buff {
+		{ type = buffType.POSITIVE; }
+		public int left;
+		private static final String LEFT = "left";
+		@Override public int icon() { return BuffIndicator.WEAPON; }
+		@Override public void tintIcon(Image icon) { icon.hardlight(0.5f, 0.5f, 1f); }
+		@Override public String iconTextDisplay() { return Integer.toString(left); }
+		@Override public String desc() { return Messages.get(this, "desc", left); }
+		@Override public void storeInBundle( Bundle bundle ) { super.storeInBundle(bundle); bundle.put(LEFT, left); }
+		@Override public void restoreFromBundle( Bundle bundle ) { super.restoreFromBundle(bundle); left = bundle.getInt(LEFT); }
+	}
+
+	private static void onDMFoodEaten( Hero hero ){
+		if (hero.hasTalent(MARK_MEAL)){
+			Buff.affect( hero, MarkMeal.class).left = 3;
+		}
+	}
+
+	//the DM400's marks and fists, and the Overload state of Routine. Returns the damage.
+	private static int onDMAttack( Hero hero, Char enemy, int dmg ){
+		MarkMeal b = hero.buff(MarkMeal.class);
+		if (hero.heroClass == HeroClass.DM400){
+			int turn = 3;
+			if (b != null){
+				turn += 1 + hero.pointsInTalent(MARK_MEAL);
+				b.left -= 1;
+				if (b.left <= 0) b.detach();
+			}
+			if (enemy.alignment != Char.Alignment.ALLY){
+				Buff.affect(enemy, com.shatteredpixel.shatteredpixeldungeon.items.artifacts.InstructionTool.InstructionMark.class).reset(turn);
+			}
+		} else if (b != null){
+			Buff.affect(enemy, Vertigo.class, 1 + hero.pointsInTalent(MARK_MEAL));
+			b.left -= 1;
+			if (b.left <= 0) b.detach();
+		}
+		if (enemy.buff(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.InstructionTool.InstructionMark.class) != null && hero.pointsInTalent(SPECIAL_MARK) > Random.Int(6)){
+			Buff.affect(enemy, com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression.Aggression.class, 3);
+		}
+		if (hero.hasTalent(TARGET_TARGETING)){
+			if (enemy.buff(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.InstructionTool.InstructionMark.class) != null){
+				dmg += hero.pointsInTalent(TARGET_TARGETING);
+			} else if (hero.heroClass != HeroClass.DM400){
+				dmg += hero.pointsInTalent(TARGET_TARGETING);
+			}
+		}
+		if (hero.hasTalent(ROCKET_FIST) && hero.belongings.attackingWeapon() == null && Random.Int(10) < 6){
+			com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica trajectory = new com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica(hero.pos, enemy.pos, com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica.STOP_TARGET);
+			trajectory = new com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size()-1), com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica.PROJECTILE);
+			com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave.throwChar(enemy, trajectory, hero.pointsInTalent(ROCKET_FIST), false, true, hero);
+		}
+		if (hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.dm400.Routine.preOverLoad.class) != null){
+			dmg *= 0.5f;
+		}
+		if (hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.dm400.Routine.OverLoad.class) != null){
+			if (hero.hasTalent(STRONG_PERSERVE)){
+				dmg *= 1-0.05f*hero.pointsInTalent(STRONG_PERSERVE);
+			} else if (hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.dm400.Routine.preOverLoad.class) == null){
+				dmg *= 1.5f;
+			}
+		}
+		return dmg;
+	}
+
+	//damage the hero takes, for the DM400's talents and its Overload
+	private static int onDMDamage( Hero hero, int dmg ){
+		if (hero.hasTalent(BODY_REINFORCE) && hero.heroClass != HeroClass.DM400 && dmg > 0){
+			dmg *= 1f-0.05f*hero.pointsInTalent(BODY_REINFORCE);
+		}
+		if (hero.hasTalent(TBM) && hero.buff(TBMCooldown.class) == null){
+			Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier.class).incShield(1+2*hero.pointsInTalent(TBM));
+			Buff.affect(hero, TBMCooldown.class, 60);
+		}
+		return dmg;
+	}
+
+	public static class TBMCooldown extends FlavourBuff {
+		@Override public int icon() { return BuffIndicator.NONE; }
+	}
+
 	public static void onTalentUpgraded( Hero hero, Talent talent ){
 		if (talent == MIDAS_TOUCH && hero.hasTalent(MIDAS_TOUCH)){
 			Dungeon.level.drop(new com.shatteredpixel.shatteredpixeldungeon.items.LiquidMetal().quantity(20 * hero.pointsInTalent(MIDAS_TOUCH)), hero.pos).sprite.drop(hero.pos);
@@ -1310,6 +1412,7 @@ public enum Talent {
 	public static void onFoodEaten( Hero hero, float foodVal, Item foodSource ){
 		onSlimeFoodEaten(hero);
 		onNinjaFoodEaten(hero, foodSource);
+		onDMFoodEaten(hero);
 		if (hero.hasTalent(WHISPERING_MEAL)){
 			float duration = hero.pointsInTalent(WHISPERING_MEAL) == 1 ? 2f : 4f;
 			for (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob mob : Dungeon.level.mobs.toArray(new com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob[0])){
@@ -1666,6 +1769,7 @@ public enum Talent {
 	public static int onAttackProc( Hero hero, Char enemy, int dmg ){
 		dmg = onSlimeAttack(hero, enemy, dmg);
 		dmg = onNinjaAttack(hero, enemy, dmg);
+		dmg = onDMAttack(hero, enemy, dmg);
 
 		//Transformation PD, the Friar's Crystal Gunpowder and Bullseye
 		if (hero.hasTalent(CRYSTAL_GUNPOWDER)){
@@ -1847,6 +1951,9 @@ public enum Talent {
 			case NINJA:
 				Collections.addAll(tierTalents, NINJA_MEAL, HUNTING_INTUITION);
 				break;
+			case DM400:
+				Collections.addAll(tierTalents, MARK_MEAL, TARGET_TARGETING);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -1900,6 +2007,9 @@ public enum Talent {
 			case NINJA:
 				Collections.addAll(tierTalents, YUNYING_MEAL, XIA, FEINT);
 				break;
+			case DM400:
+				Collections.addAll(tierTalents, OVER_MEAL, RECOVER_CHARGE, BODY_REINFORCE);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -1950,6 +2060,9 @@ public enum Talent {
 				break;
 			case NINJA:
 				Collections.addAll(tierTalents, LIGHT_BOX);
+				break;
+			case DM400:
+				Collections.addAll(tierTalents, QUICK_TOOL);
 				break;
 		}
 		for (Talent talent : tierTalents){
@@ -2062,6 +2175,12 @@ public enum Talent {
 				break;
 			case NINJA_MASTER:
 				Collections.addAll(tierTalents, SOUL_HUNTING, USE_ENVIRONMENT, MIND_WATER);
+				break;
+			case AT400:
+				Collections.addAll(tierTalents, SUSTAIN_MARK, BATTLE_UPGRADE, FLY_DRONE);
+				break;
+			case AU400:
+				Collections.addAll(tierTalents, SPECIAL_MARK, ASSIST_UPGRADE, FAST_CRUISE);
 				break;
 		}
 		for (Talent talent : tierTalents){

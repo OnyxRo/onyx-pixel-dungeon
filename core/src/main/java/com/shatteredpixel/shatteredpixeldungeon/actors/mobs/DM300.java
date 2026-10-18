@@ -575,6 +575,7 @@ public class DM300 extends Mob {
 		super.die( cause );
 
 		GameScene.bossSlain();
+		Badges.validateDM400Unlock(); //Transformation PD
 		Dungeon.level.unseal();
 
 		//60% chance of 2 shards, 30% chance of 3, 10% chance for 4. Average of 2.5

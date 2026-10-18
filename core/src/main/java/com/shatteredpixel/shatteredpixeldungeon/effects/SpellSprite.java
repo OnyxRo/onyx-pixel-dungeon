@@ -42,6 +42,9 @@ public class SpellSprite extends Image {
 	public static final int VISION      = 6;
 	public static final int PURITY      = 7;
 	public static final int ACCELERATION= 8; //Shittened PD
+	public static final int HONEYCOMB   = 9; //Transformation PD
+	public static final int SUFFER      = 10;
+	public static final int VIRTUE      = 11;
 	
 	private static final int SIZE	= 16;
 	

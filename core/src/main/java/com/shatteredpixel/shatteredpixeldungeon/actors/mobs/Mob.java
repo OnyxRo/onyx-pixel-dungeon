@@ -334,6 +334,15 @@ public abstract class Mob extends Char {
 			return true;
 		}
 
+		//Transformation PD, the DM400's Routine scares what it sees
+		if (Dungeon.hero != null && alignment != Char.Alignment.ALLY && fieldOfView[Dungeon.hero.pos]
+				&& Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.dm400.Routine.OverLoad.class) != null
+				&& buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.dm400.Routine.TerrorCd.class) == null
+				&& Dungeon.hero.hasTalent(Talent.TERROR_MACH) && state != SLEEPING){
+			Buff.affect(this, Terror.class, 2*Dungeon.hero.pointsInTalent(Talent.TERROR_MACH)).object = Dungeon.hero.id();
+			Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.dm400.Routine.TerrorCd.class);
+		}
+
 		if (buff(Terror.class) != null || buff(Dread.class) != null ){
 			state = FLEEING;
 		}
@@ -974,7 +983,11 @@ public abstract class Mob extends Char {
 
 	@Override
 	public float speed() {
-		return super.speed() * AscensionChallenge.enemySpeedModifier(this);
+		float speed = super.speed();
+		if (Dungeon.hero != null && alignment == Char.Alignment.ALLY && Dungeon.hero.hasTalent(Talent.EFFICIENT_ORDER)){
+			speed *= 1.15f+0.15f*Dungeon.hero.pointsInTalent(Talent.EFFICIENT_ORDER); //Transformation PD, the DM400
+		}
+		return speed * AscensionChallenge.enemySpeedModifier(this);
 	}
 
 	public final boolean surprisedBy( Char enemy ){

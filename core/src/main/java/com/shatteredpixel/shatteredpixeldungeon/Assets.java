@@ -262,6 +262,17 @@ public class Assets {
 		public static final String PANIC = "sounds/transformati/panic.mp3"; //ported, transformati
 		public static final String SQUIRT = "sounds/transformati/squirt.mp3"; //ported, transformati
 		public static final String DEATHSDOOR = "sounds/transformati/deathsdoor.mp3"; //ported, transformati
+		public static final String CONTROLM = "sounds/transformati/controlM.ogg"; //ported, transformati
+		public static final String CONTROLU = "sounds/transformati/controlU.ogg"; //ported, transformati
+		public static final String CONTROLA = "sounds/transformati/controlA.ogg"; //ported, transformati
+		public static final String CONTROL = "sounds/transformati/control.ogg"; //ported, transformati
+		public static final String RECYCLE = "sounds/transformati/recycle.ogg"; //ported, transformati
+		public static final String INTERCOM = "sounds/transformati/intercom.ogg"; //ported, transformati
+		public static final String DRONEDIED = "sounds/transformati/died.ogg"; //ported, transformati
+		public static final String ENTRY = "sounds/transformati/entry.ogg"; //ported, transformati
+		public static final String HIVE_CLUSTER = "sounds/transformati/hive_cluster.ogg"; //ported, transformati
+		public static final String HIVE_CLUSTER_DIED = "sounds/transformati/hive_cluster_died.ogg"; //ported, transformati
+		public static final String MANUFACTURING = "sounds/transformati/manufacturing.ogg"; //ported, transformati
 		public static final String WIN_SMALL = "sounds/shittened/win_small.mp3"; //ported, shittened
 		public static final String WIN_MEDIUM = "sounds/shittened/win_medium.mp3"; //ported, shittened
 		public static final String WIN_LARGE = "sounds/shittened/win_large.mp3"; //ported, shittened
@@ -397,6 +408,7 @@ public class Assets {
 		public static final String FRIAR = "splashes/friar.png"; //ported, transformation
 		public static final String SLIMEGIRL = "splashes/slime.png"; //ported, transformation
 		public static final String NINJA = "splashes/ninja.png"; //ported, transformation
+		public static final String DM400 = "splashes/dm400.png"; //ported, transformation
 		public static final String SUMMONER = "splashes/summoner.jpg"; //ported, ryuse
 		public static final String SORCERESS = "splashes/sorceress.png"; //ported, ryuse, the Summoner's other picture
 
@@ -754,8 +766,10 @@ public class Assets {
 		public static final String ARTIFICER = "sprites/artificer.png"; //ported, reforged
 		public static final String FRIAR = "sprites/friar.png"; //ported, transformation
 		public static final String DECOY = "sprites/transformation/decoy.png"; //ported, transformation
+		public static final String DRONES = "sprites/transformation/drones.png"; //ported, transformation
 		public static final String SLIMEGIRL = "sprites/slimegirl.png"; //ported, transformation
 		public static final String NINJA = "sprites/ninja.png"; //ported, transformation
+		public static final String DM400 = "sprites/dm400.png"; //ported, transformation
 		public static final String SUMMONER = "sprites/summoner.png"; //ported, ryuse
 		public static final String VIKING = "sprites/viking.png"; //ported, dragonic
 		public static final String DRAGONKNIGHT = "sprites/dragonknight.png"; //ported, dragonic

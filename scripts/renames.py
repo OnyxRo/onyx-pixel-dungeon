@@ -150,7 +150,7 @@ RENAMES = [
     ('Spacebase, buff icon KNOCKOUT', r'BuffIndicator\.KNOCKOUT', 'BuffIndicator.DROWSY'),
     ('Spacebase, buff icon LOCKDOWN', r'BuffIndicator\.LOCKDOWN', 'BuffIndicator.ROOTS'),
     ('Spacebase, Mob.hostile read is alignment ENEMY', r'(\b\w+(?:\.\w+)*)\.hostile\b(?!\s*=[^=])', r'(\1.alignment == Char.Alignment.ENEMY)'),
-    ('Spacebase, Mob.ally read is alignment ALLY', r'(\b\w+(?:\.\w+)*)\.ally\b(?!\s*=[^=])', r'(\1.alignment == Char.Alignment.ALLY)'),
+    ('Spacebase, Mob.ally read is alignment ALLY', r'(?<![\w.])(?!com\.)(\b\w+(?:\.\w+)*)\.ally\b(?!\s*=[^=])', r'(\1.alignment == Char.Alignment.ALLY)'),
     ('Spacebase, Weapon.Enhancement is Weapon.Enchantment', r'\bWeapon\.Enhancement\b', 'Weapon.Enchantment'),
     ('Spacebase, any other package of the mod is ours', r'com\.wafitz\.pixelspacebase\.', PKG + '.'),
 ]

@@ -1248,6 +1248,8 @@ public abstract class Char extends Actor {
 	}
 
 	protected boolean attackIgnoresArmor(Char enemy) {
+		//Transformation PD, the DM400's Big Fist
+		if (this instanceof Hero && ((Hero) this).hasTalent(Talent.BIG_FIST) && ((Hero) this).belongings.attackingWeapon() == null) return true;
 		return false;
 	}
 
@@ -1612,6 +1614,11 @@ public abstract class Char extends Actor {
 	}
 
 	protected HashSet<Property> properties = new HashSet<>();
+
+	//Transformation PD
+	public void addProperties(Property... added) {
+		for (Property p : added) properties.add(p);
+	}
 
 	public HashSet<Property> properties() {
 		HashSet<Property> props = new HashSet<>(properties);
