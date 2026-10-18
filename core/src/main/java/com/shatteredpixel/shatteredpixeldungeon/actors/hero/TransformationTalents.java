@@ -306,6 +306,7 @@ public class TransformationTalents {
 		if (h.hasTalent(Talent.AMAZING_EYESIGHT) && wep instanceof MeleeWeapon && dist >= 4 - h.pointsInTalent(Talent.AMAZING_EYESIGHT)) acc *= 1.35f;
 		if (h.hasTalent(Talent.SHARP_HEAD)) acc *= 1f - h.pointsInTalent(Talent.SHARP_HEAD)/6f;
 		if (h.pointsNegative(Talent.MYOPIA) > 0) acc *= 1f - 0.2f*h.pointsNegative(Talent.MYOPIA);
+		acc *= TransformationBossTalents.accuracy(h);
 		return acc;
 	}
 
@@ -319,7 +320,7 @@ public class TransformationTalents {
 		if (h.pointsNegative(Talent.SHELL_CRY) > 0 && h.HT > 0){
 			dr = (int)(dr*(1f - ((float)(h.HT-h.HP)/h.HT/2f)*h.pointsNegative(Talent.SHELL_CRY)));
 		}
-		return dr;
+		return TransformationBossTalents.armor(h, dr);
 	}
 
 	public static int armorMax(Armor a){
@@ -336,7 +337,7 @@ public class TransformationTalents {
 		if (h.HP < h.HT*0.3f && h.hasTalent(Talent.AFRAID_DEATH)) s *= 1.2f + 0.1f*h.pointsInTalent(Talent.AFRAID_DEATH);
 		if (h.hasTalent(Talent.HOMETOWN_CLOUD) && h.belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.Amulet.class) != null) s *= 1f + 0.2f*h.pointsInTalent(Talent.HOMETOWN_CLOUD);
 		if (h.hasTalent(Talent.SEA_WIND) && Dungeon.level != null && h.pos >= 0 && Dungeon.level.water[h.pos]) s *= 1f + 0.2f*h.pointsInTalent(Talent.SEA_WIND);
-		return s;
+		return s * TransformationBossTalents.speed(h);
 	}
 
 	public static int reachBonus(Char owner){
@@ -379,6 +380,7 @@ public class TransformationTalents {
 		if (h.pointsNegative(Talent.WINTER_SWIMMING) > Random.Int(20) && Dungeon.level.water[h.pos]) Buff.affect(h, Chill.class, 3);
 		if (h.pointsNegative(Talent.BURNOUT_CHAMPION) > Random.Int(50)) Buff.affect(h, Burning.class).reignite(h, 3);
 		if (h.pointsNegative(Talent.HAND_SLIP) > 0) Buff.prolong(h, HandSlipVulnerability.class, 1f);
+		TransformationBossTalents.onMove(h);
 	}
 
 	public static void onLevelUp(Hero h){
@@ -514,6 +516,10 @@ public class TransformationTalents {
 	}
 
 	public static void onScrollUsed(Hero h){
+		if (h.hasTalent(Talent.MAGIC_GIRL)){
+			Buff.affect(h, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HeroDisguise.class, 15 + 15*h.pointsInTalent(Talent.MAGIC_GIRL));
+			if (h.pointsInTalent(Talent.MAGIC_GIRL) == 2) Buff.affect(h, Light.class, 10);
+		}
 		if (h.hasTalent(Talent.SECRET_LIGHTING)) Buff.affect(h, Light.class, 20*h.pointsInTalent(Talent.SECRET_LIGHTING));
 		if (h.hasTalent(Talent.READ_PROFITABLE)){
 			switch (Random.Int(h.pointsInTalent(Talent.READ_PROFITABLE) + 2)){
@@ -641,6 +647,7 @@ public class TransformationTalents {
 				if (!item.doPickUp(h, enemy.pos)) Dungeon.level.drop(item, enemy.pos).sprite.drop();
 			}
 		}
+		dmg = TransformationBossTalents.onAttackProc(h, enemy, dmg);
 		if (h.pointsNegative(Talent.STEAM_BEAN) > 0 && enemy.buff(SteamBeanMark.class) == null){
 			Buff.affect(h, Daze.class, 4*h.pointsNegative(Talent.STEAM_BEAN));
 			Buff.affect(enemy, SteamBeanMark.class);
@@ -651,6 +658,7 @@ public class TransformationTalents {
 	//the hero is hit, after armor, as Hero.defenseProc
 	public static int onDefenseProc(Hero h, Char enemy, int damage){
 		if (h.hasTalent(Talent.RAGE_ATTACK)) damage = Math.round(damage*(1f + 0.1f*h.pointsInTalent(Talent.RAGE_ATTACK)));
+		damage = TransformationBossTalents.onDefenseProc(h, enemy, damage);
 		if (h.hasTalent(Talent.SURVIVAL_VOLITION) && h.HP < h.HT*0.3f && h.buff(SurVolCooldown.class) == null){
 			int duration = 1 + h.pointsInTalent(Talent.SURVIVAL_VOLITION);
 			Buff.affect(h, Haste.class, duration);
@@ -701,7 +709,7 @@ public class TransformationTalents {
 		if (h.pointsNegative(Talent.HAND_SLIP) > 0 && h.buff(HandSlipVulnerability.class) != null){
 			dmg = Math.round(dmg*(1f + 0.25f*h.pointsNegative(Talent.HAND_SLIP)));
 		}
-		return dmg;
+		return TransformationBossTalents.onHeroDamage(h, dmg, src);
 	}
 
 	public static void onHeroDodged(Hero h, Char attacker){
@@ -798,6 +806,7 @@ public class TransformationTalents {
 				Buff.affect(h, Invisibility.class, 1 + h.pointsInTalent(Talent.CICADA_DANCE));
 				Buff.affect(h, EnemyDies.class, 1f);
 			}
+			if (heroKill) TransformationBossTalents.onKill(h, mob);
 			if (h.hasTalent(Talent.INVINCIBLE)) Buff.affect(h, Adrenaline.class, 2*h.pointsInTalent(Talent.INVINCIBLE) + 1);
 			if (h.hasTalent(Talent.JUSTICE_PUNISH) && (mob.properties().contains(Char.Property.UNDEAD) || mob.properties().contains(Char.Property.DEMONIC))){
 				Buff.affect(h, Bless.class, h.pointsInTalent(Talent.JUSTICE_PUNISH));
@@ -894,6 +903,7 @@ public class TransformationTalents {
 			}
 		}
 		if (h.hasTalent(Talent.QUANTUM_HACKING) && !(target instanceof NPC)) Buff.affect(target, Vertigo.class, h.pointsInTalent(Talent.QUANTUM_HACKING));
+		TransformationBossTalents.onWandProc(h, target);
 	}
 
 	public static void onWandZap(Wand wand, int target){
@@ -928,6 +938,9 @@ public class TransformationTalents {
 				if (b.type == Buff.buffType.NEGATIVE && !(b instanceof com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom)){ b.detach(); removed++; }
 			}
 			if (removed > 0) dmg = Math.round(dmg*(1f + removed*0.1f*h.pointsInTalent(Talent.PENETRATING_CAST)));
+		}
+		if (h.hasTalent(Talent.MAGIC_GIRL) && h.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HeroDisguise.class) != null){
+			dmg = Math.round(dmg*(1f + 0.2f*h.pointsInTalent(Talent.MAGIC_GIRL)));
 		}
 		if (h.hasTalent(Talent.EXTREME_CASTING)) dmg = Math.round(dmg*(1f + 0.2f*h.pointsInTalent(Talent.EXTREME_CASTING)));
 		if (h.hasTalent(Talent.STATIC_LIGHT)){
@@ -1113,6 +1126,7 @@ public class TransformationTalents {
 	}
 
 	public static float hungerRate(Hero h){
+		if (TransformationBossTalents.fasting(h)) return 0f;
 		return 1f + 0.15f*h.pointsNegative(Talent.EATER);
 	}
 

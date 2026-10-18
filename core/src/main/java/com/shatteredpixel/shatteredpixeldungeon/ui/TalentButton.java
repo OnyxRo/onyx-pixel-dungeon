@@ -118,7 +118,8 @@ public class TalentButton extends Button {
 				&& Dungeon.hero != null
 				&& Dungeon.hero.isAlive()
 				&& Dungeon.hero.talentPointsAvailable(tier) > 0
-				&& Dungeon.hero.pointsInTalent(talent) < talent.maxPoints()){
+				&& Dungeon.hero.pointsInTalent(talent) < talent.maxPoints()
+				&& !com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationBossTalents.isSlot(talent)){
 			toAdd = new WndInfoTalent(talent, pointsInTalent, new WndInfoTalent.TalentButtonCallback() {
 
 				@Override
@@ -132,7 +133,8 @@ public class TalentButton extends Button {
 					Statistics.qualifiedForRandomVictoryBadge = false;
 				}
 			});
-		} else if (mode == Mode.METAMORPH_CHOOSE && Dungeon.hero != null && Dungeon.hero.isAlive()) {
+		} else if (mode == Mode.METAMORPH_CHOOSE && Dungeon.hero != null && Dungeon.hero.isAlive()
+				&& !com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationBossTalents.isSlot(talent)) {
 			toAdd = new WndInfoTalent(talent, pointsInTalent, new WndInfoTalent.TalentButtonCallback() {
 
 				@Override

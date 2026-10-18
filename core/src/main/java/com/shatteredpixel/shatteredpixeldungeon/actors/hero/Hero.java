@@ -854,6 +854,8 @@ public class Hero extends Char {
 		if (buff(RoundShield.GuardTracker.class) != null){
 			return INFINITE_EVASION;
 		}
+
+		if (TransformationBossTalents.phantomDodge(this)) return INFINITE_EVASION; //transformation, Phantom Step
 		
 		//Reforged's Quick Calibration, eating makes the next hits easy to dodge
 		if (buff(Talent.ArtificerFoodEvasionBonus.class) != null){
@@ -1231,6 +1233,8 @@ public class Hero extends Char {
 	
 	@Override
 	public boolean act() {
+
+		TransformationBossTalents.onHeroTurn(this); //transformation, Aquatic Recover
 
 		//Shittened PD, now and then a friend request pops up
 		if (Random.Int(8000) == 0) {

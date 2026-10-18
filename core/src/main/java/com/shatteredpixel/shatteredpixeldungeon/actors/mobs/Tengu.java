@@ -214,6 +214,7 @@ public class Tengu extends Mob {
 		if (Dungeon.hero.subClass == HeroSubClass.NONE) {
 			Dungeon.level.drop( new TengusMask(), pos ).sprite.drop();
 		}
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationBossTalents.dropSublimation("TENGU", pos); //transformation
 		
 		GameScene.bossSlain();
 		Badges.validateNinjaUnlock(); //Transformation PD

@@ -91,7 +91,7 @@ public class TransformationCatalogTest {
 			check( hasText( t.desc() ), t + " description" );
 			check( t.icon() >= 4096 && t.icon() < 4096 + 1024, t + " icon " + t.icon() );
 			check( t.tier() >= 0 && t.tier() <= 4, t + " tier " + t.tier() );
-			check( t.maxPoints() >= 2 && t.maxPoints() <= 4, t + " max points" );
+			check( t.maxPoints() >= (com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationBossTalents.isSlot( t ) ? 1 : 2) && t.maxPoints() <= 4, t + " max points" );
 		}
 		check( count > 150, "catalog has " + count + " talents" );
 		for (int tier = 1; tier <= 3; tier++) {
@@ -179,6 +179,14 @@ public class TransformationCatalogTest {
 			hero.talents.set( ti, keep );
 		}
 
+		//a scroll of sublimation fills the Freeman's boss slot, and it survives a save
+		check( com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationBossTalents.canSublimate( hero, "GOO" ), "Freeman has the Goo slot" );
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationBossTalents.fillSlot( hero, "GOO", Talent.PUMP_ATTACK );
+		check( hero.talents.get( 0 ).containsKey( Talent.PUMP_ATTACK ) && !com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationBossTalents.canSublimate( hero, "GOO" ), "Goo slot filled" );
+		for (String type : new String[]{"GOO", "WARRIOR", "TENGU", "ROGUE", "DM300", "DWARFKING", "YOG"}) {
+			for (Talent t : com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationBossTalents.talentsFor( type )) check( t.isCatalogTalent() && hasText( t.title() ), type + " boss talent " + t );
+		}
+
 		//negative talents are saved with their tier
 		WndNegative.addNegative( hero, Talent.FEEBLE, 1 );
 		com.watabou.utils.Bundle b = new com.watabou.utils.Bundle();
@@ -187,6 +195,7 @@ public class TransformationCatalogTest {
 		back.restoreFromBundle( b );
 		check( back.talents.get( 0 ).containsKey( Talent.FEEBLE ) && back.pointsNegative( Talent.FEEBLE ) == 2, "negative talent saves and loads" );
 		check( back.heroClass == HeroClass.FREEMAN, "Freeman saves and loads" );
+		check( back.talents.get( 0 ).containsKey( Talent.PUMP_ATTACK ), "filled boss slot saves and loads" );
 
 		System.out.println( "SUMMARY Transformation talent catalog: " + checks + " checks, failures: " + failures );
 		System.exit( failures == 0 ? 0 : 1 );

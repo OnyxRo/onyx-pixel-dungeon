@@ -64,6 +64,7 @@ public class Invisibility extends FlavourBuff {
 		if (target.invisible > 0)
 			target.invisible--;
 		super.detach();
+		if (target instanceof com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero) com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationBossTalents.onInvisibilityEnded((com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero) target); //transformation
 	}
 	
 	@Override
