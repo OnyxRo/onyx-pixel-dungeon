@@ -85,7 +85,7 @@ public abstract class ClericSpell {
 			hero.buff(Talent.SatiatedSpellsTracker.class).detach();
 		}
 		tome.spendCharge(chargeUse(hero));
-		Talent.onArtifactUsed(hero);
+		if (tome.triggersArtifactTalents()) Talent.onArtifactUsed(hero); //transformation, not for the rubbings tome
 		if (hero.subClass == HeroSubClass.PALADIN){
 			if (this != HolyWeapon.INSTANCE && hero.buff(HolyWeapon.HolyWepBuff.class) != null){
 				hero.buff(HolyWeapon.HolyWepBuff.class).extend(10*chargeUse(hero));

@@ -982,6 +982,7 @@ public enum Catalog {
 		//transformation
 		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.TransformSpell.class);
 		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.MetamorphosisPrism.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.RubbingsTome.class);
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.ScrollOfSublimation.class);
 
 

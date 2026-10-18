@@ -263,6 +263,8 @@ public abstract class Recipe {
 		new com.shatteredpixel.shatteredpixeldungeon.items.food.DanishPastry.Recipe(),
 		new com.shatteredpixel.shatteredpixeldungeon.items.food.CakeBase.Recipe(),
 		new com.shatteredpixel.shatteredpixeldungeon.items.food.ChocolateCake.Recipe(),
+		//transformation, two scrolls and a stylus
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.RubbingsTome.Recipe(),
 	};
 	
 	public static ArrayList<Recipe> findRecipes(ArrayList<Item> ingredients){
