@@ -308,15 +308,23 @@ public class TalentsPane extends ScrollPane {
 				random.setRect(width - 16, y-2, 16, 14);
 			}
 
-			float gap = (width - buttons.size()*TalentButton.WIDTH)/(buttons.size()+1);
-			left = x + gap;
-			for (TalentButton btn : buttons){
-				btn.setPos(left, title.bottom() + 4);
-				PixelScene.align(btn);
-				left += btn.width() + gap;
+			//transformation, tiers with many talents (the Freeman, cursed talents) wrap into more rows
+			int perRow = Math.max(1, Math.min(buttons.size(), (int)(width / (TalentButton.WIDTH + 2))));
+			float rowTop = title.bottom() + 4;
+			for (int start = 0; start < buttons.size(); start += perRow){
+				int inRow = Math.min(perRow, buttons.size() - start);
+				float gap = (width - inRow*TalentButton.WIDTH)/(inRow+1);
+				left = x + gap;
+				for (int i = start; i < start + inRow; i++){
+					TalentButton btn = buttons.get(i);
+					btn.setPos(left, rowTop);
+					PixelScene.align(btn);
+					left += btn.width() + gap;
+				}
+				rowTop += TalentButton.HEIGHT + 2;
 			}
 
-			height = buttons.get(0).bottom() - y;
+			height = buttons.get(buttons.size()-1).bottom() - y;
 
 		}
 

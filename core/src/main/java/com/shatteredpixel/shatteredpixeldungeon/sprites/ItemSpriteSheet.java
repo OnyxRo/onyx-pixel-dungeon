@@ -29,7 +29,7 @@ public class ItemSpriteSheet {
 	public static final int SIZE = 16;
 
 	private static final int TX_WIDTH = 256;
-	private static final int TX_HEIGHT = 3040;
+	private static final int TX_HEIGHT = 4224;
 
 	private static final int WIDTH = TX_WIDTH / SIZE;
 
@@ -2060,6 +2060,13 @@ public class ItemSpriteSheet {
 		assignItemRect(CAVES_PAGE,  10, 11);
 		assignItemRect(CITY_PAGE,   10, 11);
 		assignItemRect(HALLS_PAGE,  10, 11);
+	}
+
+	//transformation, Transformation PD items, rows 192 to 207 of items.png
+	private static final int TRANSFORMATION_ITEMS = xy(1, 193);
+	public static final int METAMORPH_PRISM = TRANSFORMATION_ITEMS+0;
+	static{
+		assignItemRect(METAMORPH_PRISM, 10, 15);
 	}
 
 	//for smaller 8x8 icons that often accompany an item sprite

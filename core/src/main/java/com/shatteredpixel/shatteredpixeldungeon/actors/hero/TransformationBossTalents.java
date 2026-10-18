@@ -100,6 +100,30 @@ public class TransformationBossTalents {
 		}
 	}
 
+	public static final String[] TYPES = {"GOO", "WARRIOR", "TENGU", "ROGUE", "DM300", "DWARFKING", "YOG"};
+
+	//the other talents of the boss this talent came from
+	public static Talent[] groupOf(Talent t){
+		for (String type : TYPES){
+			for (Talent o : talentsFor(type)) if (o == t) return talentsFor(type);
+		}
+		return new Talent[0];
+	}
+
+	public static void replaceBossTalent(Hero h, Talent old, Talent replacement){
+		for (int i = 0; i < h.talents.size(); i++){
+			LinkedHashMap<Talent, Integer> tier = h.talents.get(i);
+			if (!tier.containsKey(old)) continue;
+			LinkedHashMap<Talent, Integer> newTier = new LinkedHashMap<>();
+			for (Talent t : tier.keySet()) newTier.put(t == old ? replacement : t, tier.get(t));
+			h.talents.set(i, newTier);
+			break;
+		}
+		for (Talent slot : new ArrayList<>(h.metamorphedTalents.keySet())){
+			if (h.metamorphedTalents.get(slot) == old) h.metamorphedTalents.put(slot, replacement);
+		}
+	}
+
 	public static void dropSublimation(String type, int pos){
 		Hero h = Dungeon.hero;
 		if (h == null || Dungeon.level == null || !canSublimate(h, type)) return;

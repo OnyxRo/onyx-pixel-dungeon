@@ -979,6 +979,10 @@ public enum Catalog {
 		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCursedFlame.class);
 		//items ported from ryuse
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.bags.EquipmentPage.class);
+		//transformation
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.TransformSpell.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.MetamorphosisPrism.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.ScrollOfSublimation.class);
 
 
 	}

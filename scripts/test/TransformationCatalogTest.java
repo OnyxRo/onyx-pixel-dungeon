@@ -179,6 +179,15 @@ public class TransformationCatalogTest {
 			hero.talents.set( ti, keep );
 		}
 
+		//the transformation trap swaps one talent
+		hook( "transformation trap", () -> {
+			com.shatteredpixel.shatteredpixeldungeon.levels.traps.TransformationTrap trap = new com.shatteredpixel.shatteredpixeldungeon.levels.traps.TransformationTrap();
+			trap.pos = hero.pos;
+			Talent[] change = TransformationTalents.randomTransformation( hero );
+			check( change != null && change[0] != change[1], "transformation trap changes a talent" );
+			trap.activate();
+		} );
+
 		//a scroll of sublimation fills the Freeman's boss slot, and it survives a save
 		check( com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationBossTalents.canSublimate( hero, "GOO" ), "Freeman has the Goo slot" );
 		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationBossTalents.fillSlot( hero, "GOO", Talent.PUMP_ATTACK );

@@ -115,6 +115,8 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 			super();
 
 			INSTANCE = this;
+			//transformation, a directed metamorphosis only from the metamorphosis crystal
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.directed = curItem instanceof com.shatteredpixel.shatteredpixeldungeon.items.spells.TransformSpell;
 
 			float top = 0;
 
@@ -201,6 +203,10 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 			super();
 
 			if (!identifiedByUse && curItem instanceof ScrollOfMetamorphosis && !com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.moreChance()) {
+				curItem.detach(curUser.belongings.backpack);
+			}
+			//transformation, the metamorphosis crystal is used up here too
+			if (curItem instanceof com.shatteredpixel.shatteredpixeldungeon.items.spells.TransformSpell && !com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.moreChance()) {
 				curItem.detach(curUser.belongings.backpack);
 			}
 			identifiedByUse = false;

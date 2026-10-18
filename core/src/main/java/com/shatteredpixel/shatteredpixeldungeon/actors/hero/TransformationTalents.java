@@ -1205,8 +1205,11 @@ public class TransformationTalents {
 
 	//---- metamorphosis from the catalog -------------------------------------------------------
 
+	//set by the metamorphosis crystal, the next catalog metamorphosis shows every talent of the chosen kind
+	public static boolean directed = false;
+
 	public static boolean usesCatalog(Hero h, Talent t){
-		return h != null && (h.heroClass == HeroClass.FREEMAN || t.isCatalogTalent());
+		return h != null && (directed || h.heroClass == HeroClass.FREEMAN || t.isCatalogTalent());
 	}
 
 	public static boolean moreChance(){
@@ -1237,6 +1240,12 @@ public class TransformationTalents {
 			if (!strict && t.type() == preferred) for (int i = 0; i < 5; i++) pool.add(t);
 		}
 		if (pool.isEmpty() && strict) return metamorphChoices(h, tier, Talent.TalentType.OTHER);
+		if (directed){
+			directed = false;
+			ArrayList<Talent> all = new ArrayList<>();
+			for (Talent t : pool) if (!all.contains(t) && t.type() == preferred) all.add(t);
+			if (!all.isEmpty()) return all;
+		}
 		int count = 4;
 		if (h.pointsInTalent(Talent.MORE_TALENT) > Random.Int(2)) count++;
 		count -= h.pointsNegative(Talent.FATE_DECISION);
@@ -1247,6 +1256,48 @@ public class TransformationTalents {
 			out.add(t);
 		}
 		return out;
+	}
+
+	//swaps one talent of the hero for another, the way a scroll of metamorphosis does, so a save keeps it
+	public static void replaceTalent(Hero h, Talent replacing, Talent talent){
+		for (int i = 0; i < h.talents.size(); i++){
+			java.util.LinkedHashMap<Talent, Integer> tier = h.talents.get(i);
+			if (!tier.containsKey(replacing)) continue;
+			java.util.LinkedHashMap<Talent, Integer> newTier = new java.util.LinkedHashMap<>();
+			for (Talent t : tier.keySet()) newTier.put(t == replacing ? talent : t, tier.get(t));
+			h.talents.set(i, newTier);
+			break;
+		}
+		if (!h.metamorphedTalents.containsValue(replacing)){
+			h.metamorphedTalents.put(replacing, talent);
+		} else {
+			for (Talent t2 : new ArrayList<>(h.metamorphedTalents.keySet())){
+				if (h.metamorphedTalents.get(t2) == replacing){
+					if (t2 == talent) h.metamorphedTalents.remove(t2);
+					else h.metamorphedTalents.put(t2, talent);
+				}
+			}
+		}
+	}
+
+	//the transformation trap, one common talent of tier 1 to 3 becomes another of the same tier
+	public static Talent[] randomTransformation(Hero h){
+		ArrayList<Talent> from = new ArrayList<>();
+		for (int i = 0; i < Math.min(3, h.talents.size()); i++){
+			for (Talent t : h.talents.get(i).keySet()){
+				if (!TransformationBossTalents.isSlot(t) && t.type().isCommon() && t.type() != Talent.TalentType.SUBCLASS) from.add(t);
+			}
+		}
+		if (from.isEmpty()) return null;
+		Talent old = Random.element(from);
+		int tier = 1;
+		for (int i = 0; i < h.talents.size(); i++) if (h.talents.get(i).containsKey(old)) tier = i + 1;
+		ArrayList<Talent> to = metamorphChoices(h, tier, Talent.TalentType.OTHER);
+		if (to.isEmpty()) return null;
+		Talent neu = to.get(0);
+		replaceTalent(h, old, neu);
+		if (h.hasTalent(neu)) Talent.onTalentUpgraded(h, neu);
+		return new Talent[]{old, neu};
 	}
 
 	public static final Talent.TalentType[] KINDS = {Talent.TalentType.ATTACK, Talent.TalentType.MAGIC, Talent.TalentType.EFFECT,
@@ -1265,6 +1316,12 @@ public class TransformationTalents {
 			@Override
 			protected void onSelect(int index){
 				GameScene.show(new ScrollOfMetamorphosis.WndMetamorphReplace(replacing, tier, KINDS[index]));
+			}
+			@Override
+			protected boolean hasInfo(int index){ return true; }
+			@Override
+			protected void onInfo(int index){
+				GameScene.show(new com.shatteredpixel.shatteredpixeldungeon.windows.WndTalentCatalog(tier, KINDS[index]));
 			}
 			@Override
 			public void onBackPressed(){

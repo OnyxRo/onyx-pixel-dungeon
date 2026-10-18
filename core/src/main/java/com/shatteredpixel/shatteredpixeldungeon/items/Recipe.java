@@ -207,6 +207,9 @@ public abstract class Recipe {
 		new com.shatteredpixel.shatteredpixeldungeon.items.food.CheeseSlice.Recipe(),
 		new com.shatteredpixel.shatteredpixeldungeon.items.food.UntaxedFood.TaxedRecipe(),
 		new com.shatteredpixel.shatteredpixeldungeon.items.food.CookedWarrior.Recipe(),
+		//transformation
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.TransformSpell.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.MetamorphosisPrism.Recipe(),
 	};
 	
 	private static Recipe[] twoIngredientRecipes = new Recipe[]{
