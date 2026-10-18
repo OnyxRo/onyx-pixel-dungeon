@@ -38,6 +38,9 @@ import java.util.ArrayList;
 
 public abstract class EquipableItem extends Item {
 
+	//Transformation PD, told when the hero's inventory space changes
+	public void onInventoryAvailabilityChanged( Hero hero ){}
+
 	public static final String AC_EQUIP		= "EQUIP";
 	public static final String AC_UNEQUIP	= "UNEQUIP";
 

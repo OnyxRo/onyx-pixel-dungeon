@@ -167,6 +167,16 @@ public class MeleeWeapon extends Weapon {
 		//do nothing by default
 	}
 
+	public static boolean canUseWeaponAbility( Hero hero ) {
+		return hero != null
+				&& (hero.heroClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.DUELIST
+				|| hero.subClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.CHAMPION);
+	}
+
+	protected String abilityName() {
+		return Messages.titleCase(Messages.get(this, "ability_name"));
+	}
+
 	public boolean canUseWeaponAbilityAction( Hero hero ){
 		return hero != null;
 	}

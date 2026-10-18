@@ -103,7 +103,8 @@ public enum HeroClass {
 	FRIAR( HeroSubClass.ALCHEMIST, HeroSubClass.PIOUS ),
 	SLIMEGIRL( HeroSubClass.WATERSLIME, HeroSubClass.DARKSLIME ),
 	NINJA( HeroSubClass.TATTEKI_NINJA, HeroSubClass.NINJA_MASTER ),
-	DM400( HeroSubClass.AT400, HeroSubClass.AU400 );
+	DM400( HeroSubClass.AT400, HeroSubClass.AU400 ),
+	PRINCESS( HeroSubClass.RUNEMAGE, HeroSubClass.COMBATMASTER );
 
 	//the Summoner has two pictures, one is chosen each time the game starts
 	private static final String SUMMONER_SPLASH = Math.random() < 0.5 ? Assets.Splashes.SUMMONER : Assets.Splashes.SORCERESS;
@@ -193,6 +194,10 @@ public enum HeroClass {
 			case DM400:
 				initDM400( hero );
 				break;
+
+			case PRINCESS:
+				initPrincess( hero );
+				break;
 		}
 
 		//Shittened PD's prefixes never land on a hero's starting weapon
@@ -243,6 +248,8 @@ public enum HeroClass {
 				return Badges.Badge.MASTERY_NINJA;
 			case DM400:
 				return Badges.Badge.MASTERY_DM400;
+			case PRINCESS:
+				return Badges.Badge.MASTERY_PRINCESS;
 		}
 		return null;
 	}
@@ -418,6 +425,21 @@ public enum HeroClass {
 		new com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging().identify();
 	}
 
+	private static void initPrincess( Hero hero ) {
+		//Transformation PD. A bracer, the ring of the king she wears as her own, a rune string and a levitation potion
+		hero.updateHT(true);
+		(hero.belongings.weapon = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Bracer()).identify();
+		hero.belongings.weapon.activate(hero);
+		com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfKing ring = new com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfKing();
+		(hero.belongings.ring = ring).identify();
+		hero.belongings.ring.activate(hero);
+		com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.RuneString r = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.RuneString();
+		r.quantity(1).identify().collect();
+		Dungeon.quickslot.setSlot(0, r);
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation().identify();
+		new com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution().identify();
+	}
+
 	private static void initSummoner( Hero hero ) {
 		//Ryuse's PD. Summoner stats, 15 health that grows by 3 a level, a training whip and a dried rose that holds her lover's ghost
 		(hero.belongings.weapon = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.TrainingWhip()).identify();
@@ -531,6 +553,10 @@ public enum HeroClass {
 				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ninja.Decoy(),
 						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ninja.SpiderJar(),
 						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ninja.OneSword()};
+			case PRINCESS:
+				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.princess.MarchForward(),
+						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.princess.TabooMagic(),
+						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.princess.KingBlade()};
 			case DM400:
 				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.dm400.Routine(),
 						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.dm400.Discharge_Gas(),
@@ -570,6 +596,8 @@ public enum HeroClass {
 				return Assets.Sprites.NINJA;
 			case DM400:
 				return Assets.Sprites.DM400;
+			case PRINCESS:
+				return Assets.Sprites.PRINCESS;
 		}
 	}
 
@@ -606,6 +634,8 @@ public enum HeroClass {
 				return Assets.Splashes.NINJA;
 			case DM400:
 				return Assets.Splashes.DM400;
+			case PRINCESS:
+				return Assets.Splashes.PRINCESS;
 		}
 	}
 	
@@ -646,6 +676,8 @@ public enum HeroClass {
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_NINJA);
 			case DM400:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_DM400);
+			case PRINCESS:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_PRINCESS);
 		}
 	}
 	

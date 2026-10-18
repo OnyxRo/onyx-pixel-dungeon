@@ -167,6 +167,10 @@ abstract public class MissileWeapon extends Weapon {
 	}
 
 	//use the parent item if this has been thrown from a parent
+	public boolean benefitsFromSharpshooting() {
+		return true;
+	}
+
 	public int buffedLvl(){
 		if (parent != null) {
 			return parent.buffedLvl();

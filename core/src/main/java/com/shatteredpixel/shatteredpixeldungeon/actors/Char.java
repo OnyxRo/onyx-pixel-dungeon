@@ -432,6 +432,11 @@ public abstract class Char extends Actor {
 		return attack( enemy, dmgMulti, dmgBonus, accMulti );
 	}
 
+	//Transformation PD, chars that do not block shots (a decoy, a spirit)
+	public boolean blocksBallistica() {
+		return true;
+	}
+
 	public boolean attack( Char enemy, float dmgMulti, float dmgBonus, float accMulti ) {
 
 		if (enemy == null) return false;

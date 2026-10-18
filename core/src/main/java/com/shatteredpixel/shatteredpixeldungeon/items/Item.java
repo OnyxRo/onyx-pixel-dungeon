@@ -133,6 +133,10 @@ public class Item implements Bundlable {
 		return actions;
 	}
 
+	//Transformation PD, the item gets a clean slate when a new cycle starts (not used here)
+	public void resetUpgradeStateForNewCycle() {
+	}
+
 	public String actionName(String action, Hero hero){
 		return Messages.get(this, "ac_" + action);
 	}

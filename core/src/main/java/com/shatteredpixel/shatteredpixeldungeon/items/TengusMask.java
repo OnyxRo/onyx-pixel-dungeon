@@ -110,6 +110,12 @@ public class TengusMask extends Item {
 		
 		//Transformation PD, the Friar's two subclasses
 		curUser.ensureSubclassBuffs();
+		if ((way == HeroSubClass.RUNEMAGE || way == HeroSubClass.COMBATMASTER)
+				&& curUser.belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfKing.class) == null) {
+			com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfKing king = new com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfKing();
+			king.identify();
+			if (!king.collect(curUser.belongings.backpack)) Dungeon.level.drop(king, curUser.pos).sprite.drop();
+		}
 		if (way == HeroSubClass.TATTEKI_NINJA && curUser.belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.weapon.Tatteki.class) == null) {
 			com.shatteredpixel.shatteredpixeldungeon.items.weapon.Tatteki t = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.Tatteki();
 			t.identify();

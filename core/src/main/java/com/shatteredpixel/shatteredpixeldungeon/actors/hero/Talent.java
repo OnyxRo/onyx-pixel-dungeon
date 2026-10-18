@@ -315,6 +315,26 @@ public enum Talent {
 	//Talents of Transformation PD's common pool that its Friar items lean on. Icons that clash with our cells sit at 1024 plus the mod's cell.
 	VEGETARIANISM(1086), STRENGTH_GREATEST(1053), FALSEHOOD_POWER(413),
 
+	//Princess T1, from Transformation PD
+	ENCHANT_MEAL(544), MANA_SENSE(545), RUNE_BLADE(546), ARCANE_SHIELD(547),
+	//Princess T2
+	ROYAL_MEAL(548), RUNE_EXPERT(549), MORE_RING(550), MANA_WREATH(551), MAGIC_ARROW(552),
+	//Princess T3
+	STR_RUNE(553, 3), RING_BOND(554, 3),
+	//Rune Mage T3
+	DARKMARK(555, 3), RUNE_BLAST(556, 3), RUNE_SURGE(557, 3),
+	//Combat Master T3
+	FLUENT(558, 3), STANCE_MASTERY(559, 3), INELEMENT(560, 3),
+	//March Forward T4
+	SPEEDUP(561, 4), RUN_ATTACK(562, 4), DELAY_TACTIC(563, 4),
+	//Taboo Magic T4
+	ELEMENT_CURSE(564, 4), AFFLICTED_ILLNESS(565, 4), SPREAD_PAIN(566, 4),
+	//King Blade T4
+	KING_GAZE(567, 4), KING_POWER(568, 4), KING_MIGHT(569, 4),
+
+	//Talents of Transformation PD's negative pool that its Princess items mention
+	CURSEDMAN(511),
+
 	//universal T4
 	HEROIC_ENERGY(26, 4), //See icon() and title() for special logic for this one
 	//Ratmogrify T4
@@ -631,6 +651,8 @@ public enum Talent {
 					return 474;
 				case DM400:
 					return 506;
+				case PRINCESS:
+					return 570;
 			}
 		} else {
 			return icon;
@@ -918,6 +940,7 @@ public enum Talent {
 			dmg = Math.round(dmg * (hero.pointsInTalent(BULWARK_GREATSHIELD) == 1 ? 0.90f : 0.85f));
 		}
 		dmg = onDMDamage(hero, dmg);
+		dmg = onPrincessDamage(hero, dmg, src);
 		AlchemyShield shield = hero.buff(AlchemyShield.class);
 		if (shield != null) dmg = shield.absorb(dmg, src);
 		if (hero.subClass.is(HeroSubClass.WATERSLIME)){
@@ -1362,6 +1385,160 @@ public enum Talent {
 		@Override public int icon() { return BuffIndicator.NONE; }
 	}
 
+	//---- Transformation PD, the Princess --------------------------------------------------------
+
+	public static class ManaWreath extends Buff {
+		{ type = buffType.NEGATIVE; }
+		@Override public int icon() { return BuffIndicator.NONE; }
+		@Override public boolean act() { detach(); return super.act(); }
+	}
+
+	public static class EnchantMeal extends Buff {
+		{ type = buffType.POSITIVE; }
+		public int left;
+		private static final String LEFT = "left";
+		@Override public int icon() { return BuffIndicator.UPGRADE; }
+		@Override public void tintIcon(Image icon) { icon.hardlight(0.537f, 0.0f, 1.0f); }
+		@Override public float iconFadePercent() { return Math.max(0, (5-left) / 5f); }
+		@Override public String iconTextDisplay() { return Integer.toString(left); }
+		@Override public String desc() { return Messages.get(this, "desc", left); }
+		public void set(int shots){ left = Math.max(left, shots); }
+		@Override public void storeInBundle( Bundle bundle ) { super.storeInBundle(bundle); bundle.put(LEFT, left); }
+		@Override public void restoreFromBundle( Bundle bundle ) { super.restoreFromBundle(bundle); left = bundle.getInt(LEFT); }
+	}
+
+	public static class RoyalMeal extends FlavourBuff {
+		@Override public int icon() { return BuffIndicator.UPGRADE; }
+		@Override public void tintIcon(Image icon) { icon.hardlight(1.0f, 0.604f, 0.012f); }
+	}
+
+	public static class RoyalMeal2 extends RoyalMeal {
+	}
+
+	public static class ArcaneShieldCooldown extends FlavourBuff {
+		@Override public int icon() { return BuffIndicator.TIME; }
+		@Override public void tintIcon(Image icon) { icon.hardlight(0.5f, 0.3f, 1f); }
+		@Override public float iconFadePercent() { return Math.max(0, visualcooldown() / 20); }
+	}
+
+	private static com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfKing kingRing( Hero hero ){
+		com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfKing ring = hero.belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfKing.class);
+		return ring != null && ring.isEquipped(hero) && !ring.cursed ? ring : null;
+	}
+
+	private static void onPrincessFoodEaten( Hero hero ){
+		if (hero.hasTalent(ENCHANT_MEAL)){
+			Buff.affect( hero, EnchantMeal.class).left = 1 + 2*hero.pointsInTalent(ENCHANT_MEAL);
+		}
+		if (hero.hasTalent(ROYAL_MEAL)){
+			if (hero.belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfKing.class) != null){
+				Buff.affect( hero, RoyalMeal.class, 10);
+			} else {
+				Buff.affect( hero, RoyalMeal2.class, 5*hero.pointsInTalent(ROYAL_MEAL));
+			}
+		}
+	}
+
+	//items with a rune or glyph are understood quicker (Mana Sense)
+	public static float manaSenseFactor( Hero hero, Item item ){
+		float f = 1f;
+		if (hero.pointsInTalent(MANA_SENSE) > 0){
+			if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon && ((com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon) item).enchantment != null){
+				f *= 1.0f + 4.0f*hero.pointsInTalent(MANA_SENSE);
+			}
+			if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor && ((com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor) item).glyph != null){
+				f *= 1.0f + 4.0f*hero.pointsInTalent(MANA_SENSE);
+			}
+		}
+		return f;
+	}
+
+	//the stances of the Combat Master. kind is 0 accuracy, 1 evasion, 2 armor, 3 damage, 4 speed
+	public static float stanceFactor( Hero hero, int kind ){
+		com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FightStance s = hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FightStance.class);
+		if (s == null) return 1f;
+		int p = hero.pointsInTalent(STANCE_MASTERY);
+		switch (kind){
+			case 0:
+				if (s.stance == s.balance) return 1.1f + Math.min(1, p)*0.05f;
+				if (s.stance == s.parry) return 0.7f + (p/3)*0.15f;
+				break;
+			case 1:
+				if (s.stance == s.balance) return 1.1f + Math.min(1, p)*0.05f;
+				if (s.stance == s.invasion) return 0.7f + (p/3)*0.15f;
+				break;
+			case 2:
+				if (s.stance == s.balance) return 1.1f + Math.min(1, p)*0.05f;
+				if (s.stance == s.parry) return 1.2f + (p/2)*0.1f;
+				break;
+			case 3:
+				if (s.stance == s.balance) return 1.1f + Math.min(1, p)*0.05f;
+				if (s.stance == s.invasion) return 1.2f + (p/2)*0.1f;
+				break;
+			case 4:
+				if (s.stance == s.balance && p > 2) return 1.15f;
+				break;
+		}
+		return 1f;
+	}
+
+	private static int onPrincessAttack( Hero hero, Char enemy, int dmg ){
+		dmg = Math.round(dmg * stanceFactor(hero, 3));
+		com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfKing ring = kingRing(hero);
+		com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon weapon = hero.belongings.attackingWeapon();
+		boolean enchanted = (weapon instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon
+				&& ((com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon) weapon).enchantment != null) || (ring != null && ring.enchantment != null);
+		boolean ranged = weapon instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon
+				&& !(weapon instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon);
+		if (hero.hasTalent(MAGIC_ARROW) && ((ranged && enchanted) || (ring != null && ring.enchantment != null))){
+			dmg *= 1.0f + 0.15f*hero.pointsInTalent(MAGIC_ARROW);
+		}
+		if (hero.hasTalent(RUNE_BLADE) && enemy.isAlive() && enchanted){
+			enemy.damage(hero.pointsInTalent(RUNE_BLADE), new com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile());
+		}
+		if (hero.hasTalent(MANA_WREATH) && enchanted){
+			Buff.affect(enemy, ManaWreath.class);
+		}
+		return dmg;
+	}
+
+	//the Rune Mage marks what she hits with the runes on her weapon and ring
+	public static void princessRuneMark( Hero hero, Char defender, Weapon.Enchantment... enchants ){
+		if (!hero.subClass.is(HeroSubClass.RUNEMAGE)) return;
+		com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RuneMark runeMark = defender.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RuneMark.class);
+		if (runeMark == null) runeMark = Buff.affect(defender, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RuneMark.class);
+		for (Weapon.Enchantment e : enchants) if (e != null) runeMark.addEnchantment(e);
+		if (runeMark.enchantments.isEmpty()){
+			runeMark.detach();
+		} else {
+			if (hero.pointsInTalent(DARKMARK) > 2) Buff.affect(defender, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness.class, 3);
+			if (hero.pointsInTalent(DARKMARK) > 1) Buff.affect(defender, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable.class, 3);
+			if (hero.pointsInTalent(DARKMARK) > 0) Buff.affect(defender, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex.class, 3);
+		}
+	}
+
+	//a hit on the Princess, the shielding of Arcane Shield and the slow of Delay Tactic
+	private static int onPrincessDamage( Hero hero, int dmg, Object src ){
+		if (hero.hasTalent(ARCANE_SHIELD) && src instanceof Char){
+			com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor a = hero.belongings.armor();
+			com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfKing ring = kingRing(hero);
+			if (((a != null && a.glyph != null) || (ring != null && ring.glyph != null))
+					&& hero.buff(ArcaneShieldCooldown.class) == null){
+				Buff.affect(hero, ArcaneShieldCooldown.class, 20);
+				Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier.class).incShield(1 + hero.pointsInTalent(ARCANE_SHIELD));
+			}
+		}
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.princess.MarchForward.Forward f = hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.princess.MarchForward.Forward.class);
+		if (f != null && dmg > 0){
+			f.left -= 1;
+			if (f.left <= 0) f.detach();
+			if (hero.hasTalent(DELAY_TACTIC) && src instanceof Char){
+				Buff.affect((Char) src, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow.class, 2*hero.pointsInTalent(DELAY_TACTIC));
+			}
+		}
+		return dmg;
+	}
+
 	public static void onTalentUpgraded( Hero hero, Talent talent ){
 		if (talent == MIDAS_TOUCH && hero.hasTalent(MIDAS_TOUCH)){
 			Dungeon.level.drop(new com.shatteredpixel.shatteredpixeldungeon.items.LiquidMetal().quantity(20 * hero.pointsInTalent(MIDAS_TOUCH)), hero.pos).sprite.drop(hero.pos);
@@ -1476,6 +1653,7 @@ public enum Talent {
 		onSlimeFoodEaten(hero);
 		onNinjaFoodEaten(hero, foodSource);
 		onDMFoodEaten(hero);
+		onPrincessFoodEaten(hero);
 		if (hero.hasTalent(WHISPERING_MEAL)){
 			float duration = hero.pointsInTalent(WHISPERING_MEAL) == 1 ? 2f : 4f;
 			for (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob mob : Dungeon.level.mobs.toArray(new com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob[0])){
@@ -1613,6 +1791,12 @@ public enum Talent {
 	}
 
 	public static float itemIDSpeedFactor( Hero hero, Item item ){
+		float manaSense = manaSenseFactor(hero, item);
+		if (manaSense != 1f) return manaSense * itemIDSpeedFactorBase(hero, item);
+		return itemIDSpeedFactorBase(hero, item);
+	}
+
+	private static float itemIDSpeedFactorBase( Hero hero, Item item ){
 		float factor = 1f;
 
 		// Affected by both Warrior(1.75x/2.5x) and Duelist(2.5x/inst.) talents
@@ -1836,6 +2020,7 @@ public enum Talent {
 		dmg = onSlimeAttack(hero, enemy, dmg);
 		dmg = onNinjaAttack(hero, enemy, dmg);
 		dmg = onDMAttack(hero, enemy, dmg);
+		dmg = onPrincessAttack(hero, enemy, dmg);
 
 		//Transformation PD, the Friar's Crystal Gunpowder and Bullseye
 		if (hero.hasTalent(CRYSTAL_GUNPOWDER)){
@@ -2020,6 +2205,9 @@ public enum Talent {
 			case DM400:
 				Collections.addAll(tierTalents, MARK_MEAL, TARGET_TARGETING);
 				break;
+			case PRINCESS:
+				Collections.addAll(tierTalents, ENCHANT_MEAL, RUNE_BLADE);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -2076,6 +2264,9 @@ public enum Talent {
 			case DM400:
 				Collections.addAll(tierTalents, OVER_MEAL, RECOVER_CHARGE, BODY_REINFORCE);
 				break;
+			case PRINCESS:
+				Collections.addAll(tierTalents, ROYAL_MEAL, RUNE_EXPERT, MORE_RING);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -2129,6 +2320,9 @@ public enum Talent {
 				break;
 			case DM400:
 				Collections.addAll(tierTalents, QUICK_TOOL);
+				break;
+			case PRINCESS:
+				Collections.addAll(tierTalents, RING_BOND);
 				break;
 		}
 		for (Talent talent : tierTalents){
@@ -2247,6 +2441,12 @@ public enum Talent {
 				break;
 			case AU400:
 				Collections.addAll(tierTalents, SPECIAL_MARK, ASSIST_UPGRADE, FAST_CRUISE);
+				break;
+			case RUNEMAGE:
+				Collections.addAll(tierTalents, DARKMARK, RUNE_BLAST, RUNE_SURGE);
+				break;
+			case COMBATMASTER:
+				Collections.addAll(tierTalents, FLUENT, STANCE_MASTERY, INELEMENT);
 				break;
 		}
 		for (Talent talent : tierTalents){

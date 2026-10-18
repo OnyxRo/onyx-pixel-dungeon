@@ -146,6 +146,12 @@ abstract public class Weapon extends KindOfWeapon {
 		extraIcon = prefix != null && prefix != com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix.NONE ? prefix.icon() : -1;
 	}
 	
+	//Transformation PD's Falsehood Power makes heavy weapons easier to carry
+	protected int falsehoodPowerEncumbranceReduction(Hero owner) {
+		return owner.hasTalent(Talent.FALSEHOOD_POWER)
+				? owner.pointsInTalent(Talent.FALSEHOOD_POWER) + 2 : 0;
+	}
+
 	@Override
 	public int proc( Char attacker, Char defender, int damage ) {
 
@@ -164,8 +170,21 @@ abstract public class Weapon extends KindOfWeapon {
 				}
 			}
 
+			//Transformation PD, the Ring of the King carries an enchantment of its own
+			Enchantment ringEnchant = null;
+			com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfKing kingRing = Dungeon.hero == null ? null : Dungeon.hero.belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfKing.class);
+			if (kingRing != null && kingRing.enchantment != null && !kingRing.cursed && kingRing.isEquipped(Dungeon.hero)
+					&& (attacker == Dungeon.hero || attacker instanceof MirrorImage || attacker instanceof ShadowClone.ShadowAlly)){
+				ringEnchant = kingRing.enchantment;
+			}
+			if (attacker == Dungeon.hero && defender != Dungeon.hero) {
+				com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.princessRuneMark(Dungeon.hero, defender, enchantment, ringEnchant, trinityEnchant);
+			}
 			if (attacker instanceof Hero && isEquipped((Hero) attacker)
 					&& attacker.buff(HolyWeapon.HolyWepBuff.class) != null){
+				if (defender.isAlive() && ringEnchant != null){
+					damage = ringEnchant.proc(kingRing.getWeapon(), attacker, defender, damage);
+				}
 				if (enchantment != null &&
 						(((Hero) attacker).subClass == HeroSubClass.PALADIN || hasCurseEnchant())){
 					damage = enchantment.proc(this, attacker, defender, damage);
@@ -185,6 +204,9 @@ abstract public class Weapon extends KindOfWeapon {
 
 				if (defender.isAlive() && trinityEnchant != null){
 					damage = trinityEnchant.proc(this, attacker, defender, damage);
+				}
+				if (defender.isAlive() && ringEnchant != null){
+					damage = ringEnchant.proc(kingRing.getWeapon(), attacker, defender, damage);
 				}
 			}
 
@@ -586,6 +608,12 @@ abstract public class Weapon extends KindOfWeapon {
 		} else if (owner.buff(BodyForm.BodyFormBuff.class) != null
 				&& owner.buff(BodyForm.BodyFormBuff.class).enchant() != null
 				&& owner.buff(BodyForm.BodyFormBuff.class).enchant().getClass().equals(type)){
+			return true;
+		} else if (owner instanceof Hero && ((Hero) owner).belongings != null
+				&& ((Hero) owner).belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfKing.class) != null
+				&& ((Hero) owner).belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfKing.class).enchantment != null
+				&& ((Hero) owner).belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfKing.class).enchantment.getClass() == type
+				&& ((Hero) owner).belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfKing.class).isEquipped((Hero) owner)){
 			return true;
 		} else if (enchantment != null) {
 			return enchantment.getClass() == type;

@@ -76,7 +76,9 @@ public enum HeroSubClass {
 	TATTEKI_NINJA(HeroIcon.TATTEKI),
 	NINJA_MASTER(HeroIcon.NINJAMASTER),
 	AT400(HeroIcon.AT400),
-	AU400(HeroIcon.AU400);
+	AU400(HeroIcon.AU400),
+	RUNEMAGE(HeroIcon.RUNEMAGE),
+	COMBATMASTER(HeroIcon.COMBATMASTER);
 
 	//Transformation PD asks this of subclasses (its Rat King hero shares them all)
 	public boolean is(HeroSubClass sub) {

@@ -953,6 +953,20 @@ public enum Catalog {
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.SourWineAroma.class);
 		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.GreenGlowFruit.class);
 
+		//items ported from transformation
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.tier6.ChainMace.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.tier6.HundredTonHammer.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.tier6.LakeSword.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.tier6.MercuryBlade.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.tier6.MountainGuard.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.tier6.OracleTerminal.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.tier6.RadiantGoldHalberd.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.tier6.SoulBlade.class);
+
+		//items ported from transformation
+		RINGS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfKing.class);
+		THROWN_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.RuneString.class);
+
 
 	}
 

@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.DamageTag;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.SacrificialFire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AdrenalineSurge;
@@ -410,6 +411,8 @@ public class Hero extends Char {
 		int strBonus = 0;
 
 		strBonus += RingOfMight.strengthBonus( this );
+		//Transformation PD's Falsehood Power, heavy gear is easier to carry
+		if (hasTalent(Talent.FALSEHOOD_POWER)) strBonus += pointsInTalent(Talent.FALSEHOOD_POWER) + 2;
 		
 		AdrenalineSurge buff = buff(AdrenalineSurge.class);
 		if (buff != null){
@@ -545,6 +548,11 @@ public class Hero extends Char {
 	}
 
 	//Transformation PD, the points put in without counting anything that borrows them
+	//Transformation PD's negative talents (a pool a hero can be cursed with) are not here, so nobody has any
+	public int pointsNegative( Talent talent ){
+		return 0;
+	}
+
 	public int rawTalentPoints( Talent talent ){
 		return pointsInTalent( talent );
 	}
@@ -648,11 +656,28 @@ public class Hero extends Char {
 				com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator.clearAction(darkHook);
 			}
 		}
+		if (subClass.is(HeroSubClass.COMBATMASTER)) {
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FightStance fightStance = Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FightStance.class);
+			com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator.setAction(fightStance);
+		}
 		if (subClass.is(HeroSubClass.NINJA_MASTER)) {
 			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ninja_Energy ninjaEnergy = Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ninja_Energy.class);
 			com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator.setAction(ninjaEnergy);
 		}
 	}
+
+	@Override
+	protected void onAttackResolved( Char target, boolean hit, int damageDealt, DamageTag... damageTags ) {
+		super.onAttackResolved( target, hit, damageDealt, damageTags );
+		KindOfWeapon wep = belongings.attackingWeapon();
+		if (wep != null) wep.onAttackResolved( this, target, hit, damageDealt, damageTags );
+	}
+
+	private boolean directAttackDamageInProgress;
+
+	public void beginDirectAttackDamage() { directAttackDamageInProgress = true; }
+	public void endDirectAttackDamage() { directAttackDamageInProgress = false; }
+	public boolean directAttackDamageInProgress() { return directAttackDamageInProgress; }
 
 	public void live() {
 		for (Buff b : buffs()){
@@ -778,6 +803,7 @@ public class Hero extends Char {
 		if (buff(Scimitar.SwordDance.class) != null){
 			accuracy *= 1.50f;
 		}
+		accuracy *= Talent.stanceFactor(this, 0);
 		//Transformation PD, the Friar
 		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.friar.HolyPrayer.HolyPrayerBlessing.class) != null){
 			accuracy *= buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.friar.HolyPrayer.HolyPrayerBlessing.class).accuracyAndEvasionFactor();
@@ -833,6 +859,7 @@ public class Hero extends Char {
 			evasion *= 3;
 		}
 
+		evasion *= Talent.stanceFactor(this, 1);
 		//Transformation PD, the Friar
 		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Suffering.Ecstasy.class) != null){
 			evasion *= 0.5f;
@@ -934,6 +961,8 @@ public class Hero extends Char {
 			}
 		}
 
+		dr = Math.round(dr * Talent.stanceFactor(this, 2));
+
 		if (buff(HoldFast.class) != null){
 			dr += buff(HoldFast.class).armorBonus();
 		}
@@ -999,6 +1028,9 @@ public class Hero extends Char {
 			speed *= 0.8f;
 		}
 
+		speed *= Talent.stanceFactor(this, 4);
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.princess.MarchForward.Forward forward = buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.princess.MarchForward.Forward.class);
+		if (forward != null) speed *= 1 + forward.speed;
 		//Transformation PD, the One Sword stance
 		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ninja.OneSword.OKU_OneSword.class) != null){
 			float onespd = 2f;

@@ -564,8 +564,21 @@ public class Armor extends EquipableItem {
 				}
 			}
 
+			//Transformation PD, the Ring of the King carries a glyph of its own
+			Glyph ringGlyph = null;
+			com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfKing kingRing = null;
+			if (defender instanceof Hero) {
+				kingRing = ((Hero) defender).belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfKing.class);
+				if (kingRing != null && kingRing.glyph != null && !kingRing.cursed && kingRing.isEquipped((Hero) defender)) {
+					ringGlyph = kingRing.glyph;
+				}
+			}
+
 			if (defender instanceof Hero && isEquipped((Hero) defender)
 					&& defender.buff(HolyWard.HolyArmBuff.class) != null){
+				if (ringGlyph != null){
+					damage = ringGlyph.proc( kingRing.getArmor(), attacker, defender, damage );
+				}
 				if (glyph != null &&
 						(((Hero) defender).subClass == HeroSubClass.PALADIN || hasCurseGlyph())){
 					damage = glyph.proc( this, attacker, defender, damage );
@@ -582,6 +595,9 @@ public class Armor extends EquipableItem {
 				}
 				if (trinityGlyph != null){
 					damage = trinityGlyph.proc( this, attacker, defender, damage );
+				}
+				if (ringGlyph != null){
+					damage = ringGlyph.proc( kingRing.getArmor(), attacker, defender, damage );
 				}
 				//so that this effect procs for allies using this armor via aura of protection
 				if (defender.alignment == Dungeon.hero.alignment
@@ -817,8 +833,17 @@ public class Armor extends EquipableItem {
 				&& owner.buff(BodyForm.BodyFormBuff.class).glyph() != null
 				&& owner.buff(BodyForm.BodyFormBuff.class).glyph().getClass().equals(type)){
 			return true;
+		} else if (glyph != null && glyph.getClass() == type) {
+			return true;
+		} else if (owner instanceof Hero && ((Hero) owner).belongings != null
+				&& ((Hero) owner).belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfKing.class) != null
+				&& ((Hero) owner).belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfKing.class).isEquipped((Hero) owner)
+				&& ((Hero) owner).belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfKing.class).glyph != null
+				&& ((Hero) owner).belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfKing.class).glyph.getClass() == type
+				&& !((Hero) owner).belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfKing.class).cursed) {
+			return true;
 		} else if (glyph != null) {
-			return glyph.getClass() == type;
+			return false;
 		} else {
 			return false;
 		}

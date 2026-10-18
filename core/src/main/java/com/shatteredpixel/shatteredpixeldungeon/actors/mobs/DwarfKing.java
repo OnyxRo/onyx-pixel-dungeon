@@ -548,6 +548,7 @@ public class DwarfKing extends Mob {
 	public void die(Object cause) {
 
 		GameScene.bossSlain();
+		Badges.validatePrincessUnlock(); //Transformation PD
 
 		super.die( cause );
 

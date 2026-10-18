@@ -79,6 +79,7 @@ public class SPDAction extends GameAction {
 
 	public static final GameAction TAG_ATTACK   = new SPDAction("tag_attack");
 	public static final GameAction TAG_ACTION   = new SPDAction("tag_action");
+	public static final GameAction TAG_ACTION1  = new SPDAction("tag_action1"); //Transformation PD
 	public static final GameAction TAG_LOOT     = new SPDAction("tag_loot");
 	public static final GameAction TAG_RESUME   = new SPDAction("tag_resume");
 
@@ -137,6 +138,7 @@ public class SPDAction extends GameAction {
 		defaultBindings.put( Input.Keys.Q,              SPDAction.TAG_ATTACK );
 		defaultBindings.put( Input.Keys.TAB,            SPDAction.CYCLE);
 		defaultBindings.put( Input.Keys.X,              SPDAction.TAG_ACTION );
+		defaultBindings.put( Input.Keys.V,              SPDAction.TAG_ACTION1 );
 		defaultBindings.put( Input.Keys.C,              SPDAction.TAG_LOOT );
 		defaultBindings.put( Input.Keys.ENTER,          SPDAction.TAG_LOOT );
 		defaultBindings.put( Input.Keys.R,              SPDAction.TAG_RESUME );

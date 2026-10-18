@@ -416,6 +416,7 @@ public class Assets {
 		public static final String SLIMEGIRL = "splashes/slime.png"; //ported, transformation
 		public static final String NINJA = "splashes/ninja.png"; //ported, transformation
 		public static final String DM400 = "splashes/dm400.png"; //ported, transformation
+		public static final String PRINCESS = "splashes/princess.png"; //ported, transformation
 		public static final String SUMMONER = "splashes/summoner.jpg"; //ported, ryuse
 		public static final String SORCERESS = "splashes/sorceress.png"; //ported, ryuse, the Summoner's other picture
 
@@ -781,6 +782,7 @@ public class Assets {
 		public static final String SLIMEGIRL = "sprites/slimegirl.png"; //ported, transformation
 		public static final String NINJA = "sprites/ninja.png"; //ported, transformation
 		public static final String DM400 = "sprites/dm400.png"; //ported, transformation
+		public static final String PRINCESS = "sprites/princess.png"; //ported, transformation
 		public static final String SUMMONER = "sprites/summoner.png"; //ported, ryuse
 		public static final String VIKING = "sprites/viking.png"; //ported, dragonic
 		public static final String DRAGONKNIGHT = "sprites/dragonknight.png"; //ported, dragonic

@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.DamageTag;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
@@ -292,6 +293,10 @@ abstract public class KindOfWeapon extends EquipableItem {
 	
 	public int proc( Char attacker, Char defender, int damage ) {
 		return damage;
+	}
+
+	//Transformation PD, called after the hero's attack with this weapon is fully resolved
+	public void onAttackResolved( Hero attacker, Char defender, boolean hit, int damageDealt, DamageTag... damageTags ) {
 	}
 
 	public void hitSound( float pitch ){
