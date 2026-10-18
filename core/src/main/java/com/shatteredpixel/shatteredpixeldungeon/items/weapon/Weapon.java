@@ -397,6 +397,7 @@ abstract public class Weapon extends KindOfWeapon {
 		if ( owner.buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Acceleration.class ) != null) multi *= com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Acceleration.multiplier(owner);
 		if ( owner.buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Furor.class ) != null) multi *= 2f;
 		multi *= 1 + prefix.speed();
+		multi *= com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RearrangedWeapons.speedFactor(owner); //rearranged
 
 		if (owner.buff(Scimitar.SwordDance.class) != null){
 			multi += 0.6f;
@@ -420,6 +421,7 @@ abstract public class Weapon extends KindOfWeapon {
 		if (owner instanceof Hero && owner.buff(AscendedForm.AscendBuff.class) != null){
 			reach += 2;
 		}
+		reach += com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RearrangedWeapons.bonusReach(owner); //rearranged
 		if (hasEnchant(Projecting.class, owner)){
 			return reach + Math.round(Enchantment.genericProcChanceMultiplier(owner));
 		} else {
@@ -447,6 +449,12 @@ abstract public class Weapon extends KindOfWeapon {
 		return level;
 	}
 	
+	//rearranged, the Knight's Smithing Spell lends a held weapon extra levels
+	@Override
+	public int buffedLvl() {
+		return com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RearrangedWeapons.enhancedLevel(this, super.buffedLvl());
+	}
+
 	@Override
 	public Item upgrade() {
 		return upgrade(false);
@@ -743,6 +751,7 @@ abstract public class Weapon extends KindOfWeapon {
 			if (rage != null) {
 				multi = rage.enchantFactor(multi);
 			}
+			multi = com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RearrangedWeapons.procChance(attacker, multi); //rearranged
 
 			if (attacker.buff(RunicBlade.RunicSlashTracker.class) != null){
 				multi += attacker.buff(RunicBlade.RunicSlashTracker.class).boost;

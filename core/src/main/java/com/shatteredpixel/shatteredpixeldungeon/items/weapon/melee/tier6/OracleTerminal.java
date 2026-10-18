@@ -439,7 +439,7 @@ public class OracleTerminal extends MeleeWeapon {
 	}
 
 	@Override
-	protected String abilityName() {
+	public String abilityName() {
 		return Messages.titleCase(Messages.get(this,
 				abilityNameKey(currentFormType(
 						com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero))));

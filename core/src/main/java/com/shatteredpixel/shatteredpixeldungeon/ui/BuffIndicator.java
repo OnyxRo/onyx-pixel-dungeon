@@ -219,6 +219,39 @@ public class BuffIndicator extends Component {
 	public static final int DM400MARK = MARK;
 	public static final int WEAKMARK = MARK;
 
+	//rearranged, Re-ARranged PD's buff icons, drawn from its own sheets (see BuffIcon)
+	public static final int DUEL_BOW       = 10136;
+	public static final int DUEL_ANGEL     = 10137;
+	public static final int DUEL_EVIL      = 10138;
+	public static final int DUEL_DAGGER    = 10139;
+	public static final int BULLET         = 10140;
+	public static final int PLATE          = 10141;
+	public static final int ROULETTE_1     = 10142;
+	public static final int ROULETTE_2     = 10143;
+	public static final int ROULETTE_3     = 10144;
+	public static final int ROULETTE_4     = 10145;
+	public static final int ROULETTE_5     = 10146;
+	public static final int ROULETTE_6     = 10147;
+	public static final int CLOAKING       = 10148;
+	public static final int AWAKE          = 10149;
+	public static final int SHADOWBLADE    = 10150;
+	public static final int CRITICAL       = 10151;
+	public static final int AURA           = 10152;
+	public static final int SHEATHING      = 10153;
+	public static final int DEMON_ON       = 10154;
+	public static final int DEMON_OFF      = 10155;
+	public static final int LUCK           = 10156;
+	public static final int JUDGEMENT      = 10157;
+	public static final int HORSE_RIDING   = 10158;
+	public static final int RADIOACTIVE    = 10159;
+	public static final int STIMPACK       = 10160;
+	public static final int REGEN          = 10161;
+	public static final int RESSURRECT     = 10162;
+	public static final int HOLY_MANTLE    = 10163;
+	public static final int ARROW_ATTACHED = 10164;
+	public static final int ARROW_EMPOWER  = 10165;
+	public static final int JUGGLING       = 10166;
+
 	public static final int SIZE_SMALL  = 7;
 	public static final int SIZE_LARGE  = 16;
 	

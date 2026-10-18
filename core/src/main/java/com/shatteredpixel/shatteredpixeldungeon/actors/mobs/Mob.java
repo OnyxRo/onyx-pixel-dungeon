@@ -143,6 +143,10 @@ public abstract class Mob extends Char {
 	public int maxLvl = Hero.MAX_LEVEL-1;
 	
 	public Char enemy;
+	//rearranged, Re-ARranged PD's buildings ask a monster who it is after
+	public Char targetingChar() {
+		return enemy;
+	}
 	protected int enemyID = -1; //used for save/restore
 	protected boolean enemySeen;
 

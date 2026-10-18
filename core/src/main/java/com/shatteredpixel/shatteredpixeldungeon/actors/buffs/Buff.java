@@ -232,4 +232,11 @@ public class Buff extends Actor {
 	public interface DOTbuff {
 		int totalIncomingDMG();
 	}
+
+	//rearranged, a harmful buff that is not an ally effect or lost inventory
+	public static boolean isDebuff(Buff b) {
+		return b.type == buffType.NEGATIVE
+				&& !(b instanceof AllyBuff)
+				&& !(b instanceof LostInventory);
+	}
 }

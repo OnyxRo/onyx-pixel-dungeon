@@ -100,6 +100,14 @@ public class Healing extends Buff {
 		flatHealPerTick = Math.max(flatHealPerTick, flatPerTick);
 	}
 	
+	//rearranged, Re-ARranged PD calls this after setHeal, as Shattered 3.2 did
+	public void applyVialEffect(){
+		if (VialOfBlood.delayBurstHealing()){
+			healingLeft = Math.round(healingLeft*VialOfBlood.totalHealMultiplier());
+			bloodVialLimitingLevel = VialOfBlood.bloodVialLevel();
+		}
+	}
+
 	public void increaseHeal( int amount ){
 		healingLeft += amount;
 	}

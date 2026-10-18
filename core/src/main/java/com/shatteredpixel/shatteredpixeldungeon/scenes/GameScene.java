@@ -1824,6 +1824,11 @@ public class GameScene extends PixelScene {
 		}
 	}
 	
+	//rearranged
+	public static boolean isCellSelecterActive( CellSelector.Listener listener ) {
+		return cellSelector != null && cellSelector.listener == listener;
+	}
+
 	public static WndBag selectItem( WndBag.ItemSelector listener ) {
 		cancel();
 

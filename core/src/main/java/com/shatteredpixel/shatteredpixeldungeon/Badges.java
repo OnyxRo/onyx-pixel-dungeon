@@ -81,6 +81,13 @@ public class Badges {
 		MASTERY_NINJA,
 		MASTERY_DM400,
 		MASTERY_PRINCESS,
+		//rearranged
+		MASTERY_GUNNER,
+		MASTERY_SAMURAI,
+		MASTERY_ADVENTURER,
+		MASTERY_KNIGHT,
+		MASTERY_MEDIC,
+		MASTERY_ARCHER,
 		FOUND_RATMOGRIFY,
 
 		//bronze
@@ -99,6 +106,13 @@ public class Badges {
 		UNLOCK_NINJA                ( 4 ),
 		UNLOCK_DM400                ( 3 ),
 		UNLOCK_PRINCESS             ( 5 ),
+		//rearranged, Re-ARranged PD's heroes, drawn with the existing unlock pictures
+		UNLOCK_GUNNER               ( 1 ),
+		UNLOCK_SAMURAI              ( 2 ),
+		UNLOCK_ADVENTURER           ( 3 ),
+		UNLOCK_KNIGHT               ( 4 ),
+		UNLOCK_MEDIC                ( 5 ),
+		UNLOCK_ARCHER               ( 6 ),
 		MONSTERS_SLAIN_1            ( 6 ),
 		MONSTERS_SLAIN_2            ( 7 ),
 		GOLD_COLLECTED_1            ( 8 ),
@@ -156,6 +170,12 @@ public class Badges {
 		BOSS_SLAIN_1_NINJA,
 		BOSS_SLAIN_1_DM400,
 		BOSS_SLAIN_1_PRINCESS,
+		BOSS_SLAIN_1_GUNNER, //rearranged
+		BOSS_SLAIN_1_SAMURAI,
+		BOSS_SLAIN_1_ADVENTURER,
+		BOSS_SLAIN_1_KNIGHT,
+		BOSS_SLAIN_1_MEDIC,
+		BOSS_SLAIN_1_ARCHER,
 		BOSS_SLAIN_1_VIKING,
 		BOSS_SLAIN_1_DRAGONKNIGHT,
 		BOSS_SLAIN_1_ALL_CLASSES    ( 54, BadgeType.GLOBAL ),
@@ -215,6 +235,12 @@ public class Badges {
 		VICTORY_NINJA,
 		VICTORY_DM400,
 		VICTORY_PRINCESS,
+		VICTORY_GUNNER, //rearranged
+		VICTORY_SAMURAI,
+		VICTORY_ADVENTURER,
+		VICTORY_KNIGHT,
+		VICTORY_MEDIC,
+		VICTORY_ARCHER,
 		VICTORY_VIKING,
 		VICTORY_DRAGONKNIGHT,
 		VICTORY_ALL_CLASSES         ( 103, BadgeType.GLOBAL ),
@@ -880,6 +906,13 @@ public class Badges {
 		firstBossClassBadges.put(HeroClass.PRINCESS, Badge.BOSS_SLAIN_1_PRINCESS);
 		firstBossClassBadges.put(HeroClass.VIKING, Badge.BOSS_SLAIN_1_VIKING);
 		firstBossClassBadges.put(HeroClass.DRAGONKNIGHT, Badge.BOSS_SLAIN_1_DRAGONKNIGHT);
+		//rearranged
+		firstBossClassBadges.put(HeroClass.GUNNER, Badge.BOSS_SLAIN_1_GUNNER);
+		firstBossClassBadges.put(HeroClass.SAMURAI, Badge.BOSS_SLAIN_1_SAMURAI);
+		firstBossClassBadges.put(HeroClass.ADVENTURER, Badge.BOSS_SLAIN_1_ADVENTURER);
+		firstBossClassBadges.put(HeroClass.KNIGHT, Badge.BOSS_SLAIN_1_KNIGHT);
+		firstBossClassBadges.put(HeroClass.MEDIC, Badge.BOSS_SLAIN_1_MEDIC);
+		firstBossClassBadges.put(HeroClass.ARCHER, Badge.BOSS_SLAIN_1_ARCHER);
 	}
 
 	private static LinkedHashMap<HeroClass, Badge> victoryClassBadges = new LinkedHashMap<>();
@@ -900,6 +933,13 @@ public class Badges {
 		victoryClassBadges.put(HeroClass.PRINCESS, Badge.VICTORY_PRINCESS);
 		victoryClassBadges.put(HeroClass.VIKING, Badge.VICTORY_VIKING);
 		victoryClassBadges.put(HeroClass.DRAGONKNIGHT, Badge.VICTORY_DRAGONKNIGHT);
+		//rearranged
+		victoryClassBadges.put(HeroClass.GUNNER, Badge.VICTORY_GUNNER);
+		victoryClassBadges.put(HeroClass.SAMURAI, Badge.VICTORY_SAMURAI);
+		victoryClassBadges.put(HeroClass.ADVENTURER, Badge.VICTORY_ADVENTURER);
+		victoryClassBadges.put(HeroClass.KNIGHT, Badge.VICTORY_KNIGHT);
+		victoryClassBadges.put(HeroClass.MEDIC, Badge.VICTORY_MEDIC);
+		victoryClassBadges.put(HeroClass.ARCHER, Badge.VICTORY_ARCHER);
 	}
 
 	private static LinkedHashMap<HeroSubClass, Badge> thirdBossSubclassBadges = new LinkedHashMap<>();
@@ -1064,6 +1104,25 @@ public class Badges {
 				break;
 			case PRINCESS:
 				badge = Badge.MASTERY_PRINCESS;
+				break;
+			//rearranged
+			case GUNNER:
+				badge = Badge.MASTERY_GUNNER;
+				break;
+			case SAMURAI:
+				badge = Badge.MASTERY_SAMURAI;
+				break;
+			case ADVENTURER:
+				badge = Badge.MASTERY_ADVENTURER;
+				break;
+			case KNIGHT:
+				badge = Badge.MASTERY_KNIGHT;
+				break;
+			case MEDIC:
+				badge = Badge.MASTERY_MEDIC;
+				break;
+			case ARCHER:
+				badge = Badge.MASTERY_ARCHER;
 				break;
 			case VIKING:
 				badge = Badge.MASTERY_VIKING;
@@ -1286,6 +1345,30 @@ public class Badges {
 	}
 
 	public static void validateChainMaceSixTargets(){
+	}
+
+	//rearranged, Re-ARranged PD's unlocks. Modify a gun, find a katana, trigger ten plants, find plate armor,
+	//brew five pills, find a bow
+	public static void validateGunnerUnlock() {
+		if (Statistics.gunModified && !isUnlocked(Badge.UNLOCK_GUNNER)) displayBadge(Badge.UNLOCK_GUNNER);
+	}
+	public static void validateSamuraiUnlock() {
+		if (Statistics.katanaObtained && !isUnlocked(Badge.UNLOCK_SAMURAI)) displayBadge(Badge.UNLOCK_SAMURAI);
+	}
+	public static void validateAdventurerUnlock() {
+		if (Statistics.plantTriggered >= 10 && !isUnlocked(Badge.UNLOCK_ADVENTURER)) displayBadge(Badge.UNLOCK_ADVENTURER);
+	}
+	public static void validateKnightUnlock() {
+		if (Statistics.plateObtained && !isUnlocked(Badge.UNLOCK_KNIGHT)) displayBadge(Badge.UNLOCK_KNIGHT);
+	}
+	public static void validateMedicUnlock() {
+		if (Statistics.pillsMade > 4 && !isUnlocked(Badge.UNLOCK_MEDIC)) displayBadge(Badge.UNLOCK_MEDIC);
+	}
+	public static void validateArcherUnlock() {
+		if (Statistics.bowObtained && !isUnlocked(Badge.UNLOCK_ARCHER)) displayBadge(Badge.UNLOCK_ARCHER);
+	}
+	//Re-ARranged's Hedgehog badge, for pinning ten arrows in one enemy, is not here
+	public static void validateHedgehog() {
 	}
 
 	//Transformation PD, defeat the Dwarf King to unlock the Princess

@@ -75,6 +75,14 @@ public class Corrosion extends Buff implements Hero.Doom, Buff.DOTbuff {
 		if (target != null) target.needsIncomingDOTUpdate = true;
 	}
 
+	//rearranged, the corrosive bow stacks corrosion
+	public void add(float duration, int damage) {
+		this.left += duration;
+		if (this.damage < damage) this.damage = damage;
+		this.damage++;
+		if (target != null) target.needsIncomingDOTUpdate = true;
+	}
+
 	public void extend( float duration ) {
 		left += duration;
 		if (target != null) target.needsIncomingDOTUpdate = true;

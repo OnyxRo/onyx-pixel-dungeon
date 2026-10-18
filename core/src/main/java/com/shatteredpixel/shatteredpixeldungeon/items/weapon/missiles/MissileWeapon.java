@@ -212,10 +212,46 @@ abstract public class MissileWeapon extends Weapon {
 		return super.upgrade();
 	}
 
+	//rearranged, the Juggler keeps thrown weapons in the air
+	public static final String AC_JUGGLE = "JUGGLE";
+
+	private boolean canJuggle(){
+		return Dungeon.hero != null && Dungeon.hero.subClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.JUGGLER
+				&& this.STRReq() <= Dungeon.hero.STR();
+	}
+
+	@Override
+	public String defaultAction() {
+		if (canJuggle()) {
+			usesTargeting = false;
+			return AC_JUGGLE;
+		} else {
+			usesTargeting = true;
+			return super.defaultAction();
+		}
+	}
+
+	@Override
+	public void execute(Hero hero, String action) {
+		super.execute(hero, action);
+		if (action.equals(AC_JUGGLE)) {
+			Item i = this.split(1);
+			if (i == null) {
+				i = this;
+				this.detach(hero.belongings.backpack);
+			}
+			if (i instanceof MissileWeapon) {
+				Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Juggling.class).juggle(hero, (MissileWeapon) i, true);
+			}
+			updateQuickslot();
+		}
+	}
+
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
 		actions.remove( AC_EQUIP );
+		if (canJuggle()) actions.add(AC_JUGGLE); //rearranged
 		return actions;
 	}
 	
@@ -243,6 +279,26 @@ abstract public class MissileWeapon extends Weapon {
 			}
 		}
 
+		//rearranged, laser bullets go straight to the cell, gun bullets pass walls near the hero with Street Battle,
+		//the Slasher's sword aura flies like a dash
+		if (this instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.LG.LG.LGBullet) {
+			return dst;
+		}
+		if (this instanceof com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SwordAura.Aura) {
+			com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica aim = new com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica(user.pos, dst, com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica.DASH);
+			if (Random.Float() < user.pointsInTalent(Talent.ARCANE_POWER)/3f &&
+					user.belongings.weapon instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon &&
+					((com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon)user.belongings.weapon).hasEnchant(Projecting.class, user)) {
+				projecting += 3;
+			} else {
+				return aim.collisionPos;
+			}
+		}
+		if (this instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.Gun.Bullet && (Dungeon.level.passable[dst] || Dungeon.level.avoid[dst])
+				&& Dungeon.level.distance(user.pos, dst) <= 1+user.pointsInTalent(Talent.STREET_BATTLE)) {
+			return dst;
+		}
+
 		if (projecting > 0
 				&& (Dungeon.level.passable[dst] || Dungeon.level.avoid[dst] || Actor.findChar(dst) != null)
 				&& Dungeon.level.distance(user.pos, dst) <= Math.round(projecting * Enchantment.genericProcChanceMultiplier(user))){
@@ -255,6 +311,10 @@ abstract public class MissileWeapon extends Weapon {
 	@Override
 	public float accuracyFactor(Char owner, Char target) {
 		float accFactor = super.accuracyFactor(owner, target);
+		//rearranged, Makeshift Bow for heroes other than the Archer
+		if (owner instanceof Hero && ((Hero) owner).heroClass != com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.ARCHER && ((Hero) owner).hasTalent(Talent.MAKESHIFT_BOW)) {
+			accFactor *= 1f + 0.2f*((Hero) owner).pointsInTalent(Talent.MAKESHIFT_BOW);
+		}
 
 		accFactor *= adjacentAccFactor(owner, target);
 
@@ -386,6 +446,10 @@ abstract public class MissileWeapon extends Weapon {
 		if (attacker == Dungeon.hero && !isIdentified() && ShardOfOblivion.passiveIDDisabled()){
 			Buff.prolong(Dungeon.hero, ShardOfOblivion.ThrownUseTracker.class, 50f);
 		}
+
+		//rearranged, the Sharpshooter's focus and channeling
+		com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SharpShooterBuff.SharpShootingCoolDown.missileHit(attacker);
+		com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SharpShooterBuff.channel(attacker, defender, damage);
 
 		return result;
 	}
@@ -762,7 +826,12 @@ abstract public class MissileWeapon extends Weapon {
 				info += "\n\n" + Messages.get(this, "unlimited_uses");
 			}
 		}
-		
+
+		//rearranged, critical hit chance
+		if (Dungeon.hero != null && Dungeon.hero.critChance(this) > 0) {
+			info += "\n\n" + Messages.get(Weapon.class, "critchance", Messages.decimalFormat("#.##", 100*Dungeon.hero.critChance(this)));
+		}
+
 		return info;
 	}
 

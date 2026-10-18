@@ -90,7 +90,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	public boolean visibleOutOfFFOV = false;
 
 	public enum State {
-		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED, HEALING, SHIELDED, HEARTS, GLOWING, AURA
+		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED, HEALING, SHIELDED, HEARTS, GLOWING, AURA,
+		JUDGED, ELECTRIC //rearranged
 	}
 	
 	public Animation idle;
@@ -507,7 +508,28 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 					aura.show(this, 0);
 				}
 				break;
+			//rearranged
+			case JUDGED:
+				judged = emitter();
+				judged.pour(com.shatteredpixel.shatteredpixeldungeon.effects.particles.LightParticle.UP, 0.1f);
+				break;
+			case ELECTRIC:
+				electric = emitter();
+				electric.pour( com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle.STATIC, 0.06f );
+				break;
 		}
+	}
+
+	//rearranged, Re-ARranged PD's judged and electric marks
+	protected Emitter judged;
+	protected Emitter electric;
+
+	//rearranged, the Medic's stim pack speeds up an ally's attack animation
+	private float raBaseAttackDelay = -1;
+	public void attackAcceleration( float speed ) {
+		if (attack == null) return;
+		if (raBaseAttackDelay < 0) raBaseAttackDelay = attack.delay;
+		attack.delay = raBaseAttackDelay / speed;
 	}
 
 	private final HashSet<State> stateRemovals = new HashSet<>();
@@ -610,6 +632,19 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				if (aura != null){
 					aura.killAndErase();
 					aura = null;
+				}
+				break;
+			//rearranged
+			case JUDGED:
+				if (judged != null){
+					judged.on = false;
+					judged = null;
+				}
+				break;
+			case ELECTRIC:
+				if (electric != null){
+					electric.on = false;
+					electric = null;
 				}
 				break;
 		}

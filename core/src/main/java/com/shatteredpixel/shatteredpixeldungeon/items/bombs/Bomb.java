@@ -65,6 +65,10 @@ import java.util.LinkedHashMap;
 
 public class Bomb extends Item {
 
+	//rearranged, Re-ARranged PD's air support bombs set their own damage, -1 keeps the normal roll
+	public int minDamage = -1;
+	public int maxDamage = -1;
+
 	//Transformation PD's bomb talents (Bomb Maniac, Shock Bomb) live in its common talent pool, which is not here yet.
 	//Its abilities call these, so they pass the damage through.
 	public static int damageWithBombTalents(Hero hero, int damage) {
@@ -211,7 +215,7 @@ public class Bomb extends Item {
 					continue;
 				}
 
-				int dmg = Random.NormalIntRange(4 + Dungeon.scalingDepth(), 12 + 3*Dungeon.scalingDepth());
+				int dmg = minDamage >= 0 ? Random.NormalIntRange(minDamage, maxDamage) : Random.NormalIntRange(4 + Dungeon.scalingDepth(), 12 + 3*Dungeon.scalingDepth());
 				dmg -= ch.drRoll();
 
 				if (subBomb) dmg = (int)(dmg * 0.33f);

@@ -524,6 +524,19 @@ public enum Icons {
 				return new ItemSprite(ItemSpriteSheet.ARTIFACT_TOOL);
 			case PRINCESS:
 				return new ItemSprite(ItemSpriteSheet.RING_KING);
+			//rearranged
+			case GUNNER:
+				return new ItemSprite(ItemSpriteSheet.AR_T1);
+			case SAMURAI:
+				return new ItemSprite(ItemSpriteSheet.WORN_KATANA);
+			case ADVENTURER:
+				return new ItemSprite(ItemSpriteSheet.ADVENTURER_SHOVEL);
+			case KNIGHT:
+				return new ItemSprite(ItemSpriteSheet.ARMOR_KNIGHT);
+			case MEDIC:
+				return new ItemSprite(ItemSpriteSheet.SCALPEL);
+			case ARCHER:
+				return new ItemSprite(ItemSpriteSheet.WORN_SHORTBOW);
 			default:
 				return null;
 		}

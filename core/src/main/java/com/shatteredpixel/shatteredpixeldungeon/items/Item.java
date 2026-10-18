@@ -700,6 +700,70 @@ public class Item implements Bundlable {
 		Sample.INSTANCE.play(Assets.Sounds.MISS, 0.6f, 0.6f, 1.5f);
 	}
 	
+	//rearranged, Re-ARranged PD's guns, bows and juggling throw with a set delay, choose whether the item leaves
+	//the pack, and run a callback when it lands
+	public void cast( final Hero user, final int dst, final boolean detach, float turnsUse, final Callback callback ) {
+
+		final int cell = throwPos( user, dst );
+		user.sprite.zap( cell );
+		user.busy();
+
+		throwSound();
+
+		final Char enemy = Actor.findChar( cell );
+		QuickSlotButton.target(enemy);
+
+		final float delay = turnsUse;
+
+		if (enemy != null) {
+			((MissileSprite) user.sprite.parent.recycle(MissileSprite.class)).
+					reset(user.sprite,
+							enemy.sprite,
+							this,
+							new Callback() {
+						@Override
+						public void call() {
+							curUser = user;
+							Item i = detach ? Item.this.detach(user.belongings.backpack) : Item.this;
+							if (i != null) i.onThrow(cell);
+							if (curUser.hasTalent(Talent.IMPROVISED_PROJECTILES)
+									&& !(Item.this instanceof MissileWeapon)
+									&& curUser.buff(Talent.ImprovisedProjectileCooldown.class) == null){
+								if (enemy.alignment != curUser.alignment){
+									Sample.INSTANCE.play(Assets.Sounds.HIT);
+									Buff.affect(enemy, Blindness.class, 1f + curUser.pointsInTalent(Talent.IMPROVISED_PROJECTILES));
+									Buff.affect(curUser, Talent.ImprovisedProjectileCooldown.class, 50f);
+								}
+							}
+							if (user.buff(Talent.LethalMomentumTracker.class) != null){
+								user.buff(Talent.LethalMomentumTracker.class).detach();
+								user.next();
+							} else {
+								user.spendAndNext(delay);
+							}
+							if (callback != null) callback.call();
+						}
+					});
+		} else {
+			((MissileSprite) user.sprite.parent.recycle(MissileSprite.class)).
+					reset(user.sprite,
+							cell,
+							this,
+							new Callback() {
+						@Override
+						public void call() {
+							curUser = user;
+							Item i = detach ? Item.this.detach(user.belongings.backpack) : Item.this;
+							user.spend(delay);
+							if (i != null) i.onThrow(cell);
+							user.next();
+							if (callback != null) callback.call();
+						}
+					});
+		}
+		updateQuickslot();
+	}
+
 	public void cast( final Hero user, final int dst ) {
 		
 		final int cell = throwPos( user, dst );
@@ -786,4 +850,10 @@ public class Item implements Bundlable {
 			return Messages.get(Item.class, "prompt");
 		}
 	};
+
+	//rearranged, Re-ARranged PD's hint for finding an item, its alchemy weapons name their recipe
+	public String discoverHint() {
+		String hint = Messages.get(this, "discover_hint");
+		return hint.equals(Messages.NO_TEXT_FOUND) ? "" : hint;
+	}
 }

@@ -48,6 +48,14 @@ public class CellEmitter {
 		return emitter;
 	}
 	
+	//rearranged, the middle of a character standing in the cell rather than of the cell
+	public static Emitter heroCenter( int cell ) {
+		PointF p = DungeonTilemap.tileToWorld( cell );
+		Emitter emitter = GameScene.emitter();
+		emitter.pos( p.x + DungeonTilemap.SIZE / 2, p.y + DungeonTilemap.SIZE / 2 - 5f );
+		return emitter;
+	}
+
 	public static Emitter center( int cell ) {
 		
 		PointF p = DungeonTilemap.tileToWorld( cell );

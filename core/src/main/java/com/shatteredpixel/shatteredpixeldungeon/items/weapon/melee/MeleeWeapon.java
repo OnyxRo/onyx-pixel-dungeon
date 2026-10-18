@@ -63,6 +63,7 @@ import java.util.ArrayList;
 public class MeleeWeapon extends Weapon {
 
 	public static String AC_ABILITY = "ABILITY";
+	public static String AC_SCRAP = "SCRAP"; //rearranged, the Gunner and the Archer take weapons apart
 
 	@Override
 	public void activate(Char ch) {
@@ -75,7 +76,9 @@ public class MeleeWeapon extends Weapon {
 	@Override
 	public String defaultAction() {
 		if (Dungeon.hero != null && (Dungeon.hero.heroClass == HeroClass.DUELIST
-			|| Dungeon.hero.hasTalent(Talent.SWIFT_EQUIP))){
+			|| Dungeon.hero.hasTalent(Talent.SWIFT_EQUIP))
+			&& !(this instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.Gun)
+			&& !(this instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.bow.BowWeapon)){
 			return AC_ABILITY;
 		} else {
 			return super.defaultAction();
@@ -87,6 +90,11 @@ public class MeleeWeapon extends Weapon {
 		ArrayList<String> actions = super.actions(hero);
 		if (isEquipped(hero) && hero.heroClass == HeroClass.DUELIST){
 			actions.add(AC_ABILITY);
+		}
+		//rearranged
+		if (!isEquipped(hero) && (hero.heroClass == HeroClass.GUNNER || hero.heroClass == HeroClass.ARCHER)
+				&& !(this instanceof com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe)) {
+			actions.add(AC_SCRAP);
 		}
 		return actions;
 	}
@@ -103,6 +111,14 @@ public class MeleeWeapon extends Weapon {
 	@Override
 	public void execute(Hero hero, String action) {
 		super.execute(hero, action);
+
+		//rearranged
+		if (action.equals(AC_UNEQUIP) && hero.buff(com.shatteredpixel.shatteredpixeldungeon.items.Sheath.Sheathing.class) != null) {
+			hero.buff(com.shatteredpixel.shatteredpixeldungeon.items.Sheath.Sheathing.class).detach();
+		}
+		if (action.equals(AC_SCRAP)) {
+			RearrangedWeapons.scrap(this, hero);
+		}
 
 		if (action.equals(AC_ABILITY)){
 			usesTargeting = false;
@@ -174,8 +190,18 @@ public class MeleeWeapon extends Weapon {
 				|| hero.hasMartialMastery());
 	}
 
-	protected String abilityName() {
+	public String abilityName() {
 		return Messages.titleCase(Messages.get(this, "ability_name"));
+	}
+
+	//rearranged, Re-ARranged PD's weapons describe their abilities through these
+	public String abilityDesc() {
+		return Messages.get(this, "ability_desc");
+	}
+
+	//rearranged, its guns and bows change the tier shown and saved
+	public int tier() {
+		return this.tier;
 	}
 
 	public boolean canUseWeaponAbilityAction( Hero hero ){
@@ -261,7 +287,7 @@ public class MeleeWeapon extends Weapon {
 		return new ArrayList<>();
 	}
 
-	protected void beforeAbilityUsed(Hero hero, Char target){
+	public void beforeAbilityUsed(Hero hero, Char target){
 		hero.belongings.abilityWeapon = this;
 		Charger charger = Buff.affect(hero, Charger.class);
 
@@ -282,7 +308,7 @@ public class MeleeWeapon extends Weapon {
 		updateQuickslot();
 	}
 
-	protected void afterAbilityUsed( Hero hero ){
+	public void afterAbilityUsed( Hero hero ){
 		hero.belongings.abilityWeapon = null;
 		if (hero.hasTalent(Talent.PRECISE_ASSAULT)){
 			Buff.prolong(hero, Talent.PreciseAssaultTracker.class, hero.cooldown()+4f);
@@ -433,7 +459,7 @@ public class MeleeWeapon extends Weapon {
 		String info = super.info();
 
 		if (levelKnown) {
-			info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_known", tier, augment.damageFactor(min()), augment.damageFactor(max()), STRReq());
+			info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_known", tier(), augment.damageFactor(min()), augment.damageFactor(max()), STRReq());
 			if (Dungeon.hero != null) {
 				if (STRReq() > Dungeon.hero.STR()) {
 					info += " " + Messages.get(Weapon.class, "too_heavy");
@@ -442,7 +468,7 @@ public class MeleeWeapon extends Weapon {
 				}
 			}
 		} else {
-			info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_unknown", tier, min(0), max(0), STRReq(0));
+			info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_unknown", tier(), min(0), max(0), STRReq(0));
 			if (Dungeon.hero != null && STRReq(0) > Dungeon.hero.STR()) {
 				info += " " + Messages.get(MeleeWeapon.class, "probably_too_heavy");
 			}
@@ -488,6 +514,11 @@ public class MeleeWeapon extends Weapon {
 		//the mage's staff has no ability as it can only be gained by the mage
 		if (Dungeon.hero != null && Dungeon.hero.heroClass == HeroClass.DUELIST && !(this instanceof MagesStaff)){
 			info += "\n\n" + abilityInfo();
+		}
+
+		//rearranged, critical hit chance for the Samurai and the Archer
+		if (Dungeon.hero != null && isEquipped(Dungeon.hero) && Dungeon.hero.critChance(this) > 0) {
+			info += "\n\n" + Messages.get(Weapon.class, "critchance", Messages.decimalFormat("#.##", 100*Dungeon.hero.critChance(this)));
 		}
 		
 		return info;

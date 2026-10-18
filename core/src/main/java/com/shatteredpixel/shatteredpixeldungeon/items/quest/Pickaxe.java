@@ -70,7 +70,22 @@ public class Pickaxe extends MeleeWeapon {
 			actions.remove(AC_DROP);
 			actions.remove(AC_THROW);
 		}
+		//rearranged, the Adventurer melts the pickaxe into a battle shovel to make the miner's tool
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith.Quest.completed()
+				&& hero.heroClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.ADVENTURER) {
+			actions.add(AC_INFUSE);
+		}
 		return actions;
+	}
+
+	public static final String AC_INFUSE = "INFUSE"; //rearranged
+
+	@Override
+	public void execute( Hero hero, String action ) {
+		super.execute( hero, action );
+		if (action.equals(AC_INFUSE)) {
+			com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RearrangedWeapons.infuseShovel(this, hero);
+		}
 	}
 
 	@Override

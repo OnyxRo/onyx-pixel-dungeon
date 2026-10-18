@@ -78,7 +78,27 @@ public enum HeroSubClass {
 	AT400(HeroIcon.AT400),
 	AU400(HeroIcon.AU400),
 	RUNEMAGE(HeroIcon.RUNEMAGE),
-	COMBATMASTER(HeroIcon.COMBATMASTER);
+	COMBATMASTER(HeroIcon.COMBATMASTER),
+
+	//rearranged, the subclasses of Re-ARranged PD's six heroes
+	OUTLAW(HeroIcon.OUTLAW),
+	GUNSLINGER(HeroIcon.GUNSLINGER),
+	SPECIALIST(HeroIcon.SPECIALIST),
+	SLASHER(HeroIcon.SLASHER),
+	MASTER(HeroIcon.MASTER),
+	SLAYER(HeroIcon.SLAYER),
+	ENGINEER(HeroIcon.ENGINEER),
+	EXPLORER(HeroIcon.EXPLORER),
+	RESEARCHER(HeroIcon.RESEARCHER),
+	DEATHKNIGHT(HeroIcon.DEATHKNIGHT),
+	HORSEMAN(HeroIcon.HORSEMAN),
+	CRUSADER(HeroIcon.CRUSADER),
+	SAVIOR(HeroIcon.SAVIOR),
+	THERAPIST(HeroIcon.THERAPIST),
+	MEDICALOFFICER(HeroIcon.MEDICALOFFICER),
+	BOWMASTER(HeroIcon.BOWMASTER),
+	JUGGLER(HeroIcon.JUGGLER),
+	SHARPSHOOTER(HeroIcon.SHARPSHOOTER);
 
 	//Transformation PD asks this of subclasses (its Rat King hero shares them all)
 	public boolean is(HeroSubClass sub) {

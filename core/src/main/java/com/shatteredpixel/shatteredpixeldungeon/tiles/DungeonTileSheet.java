@@ -94,6 +94,7 @@ public class DungeonTileSheet {
 		chasmStitcheable.put( Terrain.HIGH_GRASS,   CHASM_FLOOR );
 		chasmStitcheable.put( Terrain.FURROWED_GRASS,CHASM_FLOOR );
 		chasmStitcheable.put( Terrain.EMPTY_DECO,   CHASM_FLOOR );
+		chasmStitcheable.put( Terrain.WIRE,         CHASM_FLOOR ); //rearranged
 		chasmStitcheable.put( Terrain.CUSTOM_DECO,  CHASM_FLOOR );
 		chasmStitcheable.put( Terrain.EMPTY_WELL,   CHASM_FLOOR );
 		chasmStitcheable.put( Terrain.WELL,         CHASM_FLOOR );
@@ -152,7 +153,7 @@ public class DungeonTileSheet {
 			Terrain.EMPTY, Terrain.GRASS, Terrain.EMPTY_WELL,
 			Terrain.ENTRANCE, Terrain.EXIT, Terrain.EMBERS,
 			Terrain.BARRICADE, Terrain.HIGH_GRASS, Terrain.FURROWED_GRASS, Terrain.SECRET_TRAP,
-			Terrain.TRAP, Terrain.INACTIVE_TRAP, Terrain.EMPTY_DECO,
+			Terrain.TRAP, Terrain.INACTIVE_TRAP, Terrain.EMPTY_DECO, Terrain.WIRE,
 			Terrain.CUSTOM_DECO, Terrain.WELL, Terrain.STATUE, Terrain.REGION_DECO, Terrain.ALCHEMY,
 			Terrain.CUSTOM_DECO_EMPTY, Terrain.MINE_CRYSTAL, Terrain.MINE_BOULDER,
 			Terrain.DOOR, Terrain.OPEN_DOOR, Terrain.LOCKED_DOOR, Terrain.HERO_LKD_DR, Terrain.CRYSTAL_DOOR
@@ -431,6 +432,8 @@ public class DungeonTileSheet {
 		directVisuals.put(Terrain.SP_RUNE,          PEDESTAL); //drawn as a pedestal so the ritual spots can be seen
 		directVisuals.put(Terrain.SIGN,             FLOOR_SP);
 		directVisuals.put(Terrain.ADDITIONALBARRIER, FLOOR);
+		//rearranged, the world sheets have no wire tile, the decorated floor stands in
+		directVisuals.put(Terrain.WIRE, FLOOR_DECO);
 		directVisuals.put(Terrain.ENTRANCE_SP,      ENTRANCE_SP);
 
 		directVisuals.put(Terrain.SECRET_TRAP,      directVisuals.get(Terrain.EMPTY));

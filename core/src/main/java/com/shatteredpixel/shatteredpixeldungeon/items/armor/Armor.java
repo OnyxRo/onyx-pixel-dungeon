@@ -960,6 +960,11 @@ public class Armor extends EquipableItem {
 			return genericProcChanceMultiplier( defender );
 		}
 
+		//rearranged, for glyphs on the Knight's shield
+		public float raProcChance( Char defender ){
+			return procChanceMultiplier( defender );
+		}
+
 		public static float genericProcChanceMultiplier( Char defender ){
 			float multi = RingOfArcana.enchantPowerMultiplier(defender);
 

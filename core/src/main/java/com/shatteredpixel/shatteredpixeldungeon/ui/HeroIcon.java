@@ -168,12 +168,77 @@ public class HeroIcon extends Image {
 	public static final int CONPOTION = 206 + MODCELL;
 	public static final int HOLY_PRAYER = 207 + MODCELL;
 
+	//rearranged, Re-ARranged PD's icons, drawn from its own sheet (interfaces/rearranged/hero_icons.png)
+	public static final int RA = 10000;
+	public static final int OUTLAW          = RA + 24;
+	public static final int GUNSLINGER      = RA + 25;
+	public static final int SPECIALIST      = RA + 26;
+	public static final int SLASHER         = RA + 28;
+	public static final int MASTER          = RA + 29;
+	public static final int SLAYER          = RA + 30;
+	public static final int ENGINEER        = RA + 32;
+	public static final int EXPLORER        = RA + 33;
+	public static final int RESEARCHER      = RA + 34;
+	public static final int DEATHKNIGHT     = RA + 36;
+	public static final int HORSEMAN        = RA + 37;
+	public static final int CRUSADER        = RA + 38;
+	public static final int SAVIOR          = RA + 40;
+	public static final int THERAPIST       = RA + 41;
+	public static final int MEDICALOFFICER  = RA + 42;
+	public static final int BOWMASTER       = RA + 44;
+	public static final int JUGGLER         = RA + 45;
+	public static final int SHARPSHOOTER    = RA + 46;
+	public static final int RIOT            = RA + 72;
+	public static final int REINFORCEDARMOR = RA + 73;
+	public static final int FIRSTAIDKIT     = RA + 74;
+	public static final int AWAKE           = RA + 76;
+	public static final int SHADOW_BLADE    = RA + 77;
+	public static final int KUNAI           = RA + 78;
+	public static final int SPROUT          = RA + 80;
+	public static final int TREASUREMAP     = RA + 81;
+	public static final int ROOT            = RA + 82;
+	public static final int HOLY_SHIELD     = RA + 84;
+	public static final int STIMPACK        = RA + 85;
+	public static final int UNSTABLE_ANKH   = RA + 86;
+	public static final int HEAL_GENERATOR  = RA + 88;
+	public static final int ANGEL_WING      = RA + 89;
+	public static final int GAMMA_EMMIT     = RA + 90;
+	public static final int DASH            = RA + 92;
+	public static final int HUNT            = RA + 93;
+	public static final int SNIPE           = RA + 94;
+	public static final int SWORD_AURA      = RA + 128;
+	public static final int AWAKEN_OFF      = RA + 129;
+	public static final int AWAKEN_ON       = RA + 130;
+	public static final int BUILD           = RA + 132;
+	public static final int RIDE            = RA + 137;
+	public static final int PRAY            = RA + 138;
+	public static final int FIRST_AID       = RA + 140;
+	public static final int COMMAND         = RA + 142;
+	public static final int POWER_SHOT      = RA + 144;
+	public static final int JUGGLING        = RA + 145;
+	public static final int SHARPSHOOTING   = RA + 146;
+
+	private static TextureFilm raFilm;
+
+	private void pick( int icon ){
+		if (icon >= RA){
+			texture( Assets.Interfaces.RA_HERO_ICONS );
+			if (raFilm == null) raFilm = new TextureFilm(texture, SIZE, SIZE);
+			frame(raFilm.get(icon - RA));
+			return;
+		}
+		if (film == null){
+			film = new TextureFilm(texture, SIZE, SIZE);
+		}
+		frame(film.get(icon));
+	}
+
 	public HeroIcon(HeroSubClass subCls){
 		super( Assets.Interfaces.HERO_ICONS );
 		if (film == null){
 			film = new TextureFilm(texture, SIZE, SIZE);
 		}
-		frame(film.get(subCls.icon()));
+		pick(subCls.icon());
 	}
 
 	public HeroIcon(ArmorAbility abil){
@@ -181,7 +246,7 @@ public class HeroIcon extends Image {
 		if (film == null){
 			film = new TextureFilm(texture, SIZE, SIZE);
 		}
-		frame(film.get(abil.icon()));
+		pick(abil.icon());
 	}
 
 	public HeroIcon(ActionIndicator.Action action){
@@ -189,7 +254,7 @@ public class HeroIcon extends Image {
 		if (film == null){
 			film = new TextureFilm(texture, SIZE, SIZE);
 		}
-		frame(film.get(action.actionIcon()));
+		pick(action.actionIcon());
 	}
 
 	public HeroIcon(ActionIndicator1.Action action){
@@ -197,7 +262,7 @@ public class HeroIcon extends Image {
 		if (film == null){
 			film = new TextureFilm(texture, SIZE, SIZE);
 		}
-		frame(film.get(action.actionIcon()));
+		pick(action.actionIcon());
 	}
 
 	public HeroIcon(ClericSpell spell){
@@ -205,7 +270,7 @@ public class HeroIcon extends Image {
 		if (film == null){
 			film = new TextureFilm(texture, SIZE, SIZE);
 		}
-		frame(film.get(spell.icon()));
+		pick(spell.icon());
 	}
 
 }

@@ -338,7 +338,309 @@ public enum Talent {
 	//universal T4
 	HEROIC_ENERGY(26, 4), //See icon() and title() for special logic for this one
 	//Ratmogrify T4
-	RATSISTANCE(247, 4), RATLOMACY(248, 4), RATFORCEMENTS(249, 4);
+	RATSISTANCE(247, 4), RATLOMACY(248, 4), RATFORCEMENTS(249, 4),
+
+	//rearranged, the talents of Re-ARranged PD's six heroes. Icons are 10000 plus the cell on its own sheet
+	//Gunner T1
+	RELOADING_MEAL(10264),
+	GUNNERS_INTUITION(10265),
+	SPEEDY_MOVE(10266),
+	SAFE_RELOAD(10267),
+	CLOSE_COMBAT(10268),
+	//Gunner T2
+	INFINITE_BULLET_MEAL(10269),
+	INSCRIBED_BULLET(10270),
+	MIND_VISION(10271),
+	CAMOUFLAGE(10272),
+	LARGER_MAGAZINE(10273),
+	BULLET_COLLECT(10274),
+	//Gunner T3
+	STREET_BATTLE(10275, 3),
+	RA_FAST_RELOAD(10276, 3),
+	//Outlaw T3
+	ROLLING(10277, 3),
+	PERFECT_FOCUSING(10278, 3),
+	HONORABLE_SHOT(10279, 3),
+	BULLET_TIME(10280, 3),
+	INEVITABLE_DEATH(10281, 3),
+	HEADSHOT(10282, 3),
+	//Gunslinger T3
+	QUICK_RELOAD(10283, 3),
+	MOVING_SHOT(10284, 3),
+	ELEMENTAL_BULLET(10285, 3),
+	IMPROVISATION(10286, 3),
+	SOUL_BULLET(10287, 3),
+	LIGHT_MOVEMENT(10288, 3),
+	//Specialist T3
+	STEALTH_MASTER(10289, 3),
+	SKILLFUL_RUNNER(10290, 3),
+	STEALTH(10291, 3),
+	INTO_THE_SHADOW(10292, 3),
+	RANGED_SNIPING(10293, 3),
+	TELESCOPE(10294, 3),
+	//Riot T4
+	HASTE_MOVE(10295, 4),
+	SHOT_CONCENTRATION(10296, 4),
+	ROUND_PRESERVE(10297, 4),
+	//ReinforcedArmor T4
+	BAYONET(10298, 4),
+	TACTICAL_SIGHT(10299, 4),
+	PLATE_ADD(10300, 4),
+	//FirstAidKit T4
+	ADDITIONAL_MEDS(10301, 4),
+	THERAPEUTIC_BANDAGE(10302, 4),
+	FASTER_HEALING(10303, 4),
+	//Samurai T1
+	BASIC_PRACTICE(10308),
+	MASTERS_INTUITION(10309),
+	DRAWING_ENHANCE(10310),
+	PARRING(10311),
+	ADRENALINE_SURGE(10312),
+	//Samurai T2
+	CRITICAL_MEAL(10313),
+	INSCRIBED_LETHALITY(10314),
+	UNEXPECTED_SLASH(10315),
+	DRAGONS_EYE(10316),
+	WEAPON_MASTERY(10317),
+	CRITICAL_THROW(10318),
+	//Samurai T3
+	QUICK_SHEATHING(10319, 3),
+	LETHAL_POWER(10320, 3),
+	//Slasher T3
+	MIND_FOCUSING(10321, 3),
+	STORED_POWER(10322, 3),
+	ARCANE_POWER(10323, 3),
+	ENERGY_COLLECT(10324, 3),
+	ENERGY_SAVING(10325, 3),
+	WIND_BLAST(10326, 3),
+	//Master T3
+	ENHANCED_CRIT(10327, 3),
+	POWERFUL_SLASH(10328, 3),
+	STATIC_PREPARATION(10329, 3),
+	ACCELERATION(10330, 3),
+	INNER_EYE(10331, 3),
+	DYNAMIC_PREPARATION(10332, 3),
+	//Slayer T3
+	FASTER_THAN_LIGHT(10333, 3),
+	AFTERIMAGE(10334, 3),
+	QUICK_RECOVER(10335, 3),
+	HASTE_EVASION(10336, 3),
+	ACCELERATED_LETHALITY(10337, 3),
+	STABLE_BARRIER(10338, 3),
+	//Awake T4
+	AWAKE_LIMIT(10339, 4),
+	AWAKE_DURATION(10340, 4),
+	INSURANCE(10341, 4),
+	//ShadowBlade T4
+	DOUBLE_BLADE_PRACTICE(10342, 4),
+	CRITICAL_SHADOW(10343, 4),
+	HERBAL_SHADOW(10344, 4),
+	//Kunai T4
+	KUNAI_OF_DOOM(10345, 4),
+	MYSTICAL_KUNAI(10346, 4),
+	CORROSIVE_KUNAI(10347, 4),
+	//Adventurer T1
+	HARVEST_BERRY(10352),
+	SAFE_POTION(10353),
+	ROOT(10354),
+	PROTECTIVE_SLASH(10355),
+	KINETIC_ATTACK(10356),
+	//Adventurer T2
+	NATURES_MEAL(10357),
+	PHARMACEUTICS(10358),
+	HERB_EXTRACTION(10359),
+	FIREWATCH(10360),
+	ROPE_REBOUND(10361),
+	WEAKENING_POISON(10362),
+	//Adventurer T3
+	LONG_MACHETE(10363, 3),
+	BLOOMING_WEAPON(10364, 3),
+	//Engineer T3
+	BARRICADE(10365, 3),
+	WIRE(10366, 3),
+	WATCHTOWER(10367, 3),
+	CANNON(10368, 3),
+	MACHINEGUN(10369, 3),
+	MORTAR(10370, 3),
+	//Explorer T3
+	JUNGLE_EXPLORE(10371, 3),
+	DURABLE_ROPE(10372, 3),
+	LASSO(10373, 3),
+	ROPE_COLLECTOR(10374, 3),
+	ROPE_MASTER(10375, 3),
+	VINE_BIND(10376, 3),
+	//Researcher T3
+	BIOLOGY_PROJECT(10377, 3),
+	RAPID_GROWTH(10378, 3),
+	BIO_ENERGY(10379, 3),
+	WATER_ABSORB(10380, 3),
+	POWERFUL_ACID(10381, 3),
+	STICKY_OOZE(10382, 3),
+	//Sprout T4
+	JUNGLE(10383, 4),
+	FOREST(10384, 4),
+	REGROWTH(10385, 4),
+	//TreasureMap T4
+	LONG_LUCK(10386, 4),
+	FORESIGHT(10387, 4),
+	GOLD_HUNTER(10388, 4),
+	//Root T4
+	POISONOUS_ROOT(10389, 4),
+	ROOT_SPREAD(10390, 4),
+	ROOT_ARMOR(10391, 4),
+	//Knight T1
+	RA_TOUGH_MEAL(10396),
+	KNIGHTS_INTUITION(10397),
+	KINETIC_BATTLE(10398),
+	HARD_SHIELD(10399),
+	WAR_CRY(10400),
+	//Knight T2
+	IMPREGNABLE_MEAL(10401),
+	SMITHING_SPELL(10402),
+	ARMOR_ADAPTION(10403),
+	CHIVALRY(10404),
+	PROTECTION(10405),
+	FLAG_OF_CONQUEST(10406),
+	//Knight T3
+	CRAFTMANS_SKILLS(10407, 3),
+	TACKLE(10408, 3),
+	//DeathKnight T3
+	ARMY_OF_DEATH(10409, 3),
+	DEATHS_CHILL(10410, 3),
+	OVERCOME(10411, 3),
+	RESENTMENT(10412, 3),
+	UNDEAD(10413, 3),
+	DEATHS_FEAR(10414, 3),
+	//Horseman T3
+	SHOCKWAVE(10415, 3),
+	ARMORED_HORSE(10416, 3),
+	DASH_ENHANCE(10417, 3),
+	BUFFER(10418, 3),
+	PARKOUR(10419, 3),
+	PILOTING(10420, 3),
+	//Crusader T3
+	HOLY_SHIELD(10421, 3),
+	PRAY_FOR_DEAD(10422, 3),
+	GODS_JUDGEMENT(10423, 3),
+	CLEANSING_PRAY(10424, 3),
+	PUNISHMENT(10425, 3),
+	ANTI_DEMON(10426, 3),
+	//HolyShield T4
+	BUFFER_BARRIER(10427, 4),
+	HOLY_LIGHT(10428, 4),
+	BLESSING(10429, 4),
+	//StimPack T4
+	BURDEN_RELIEF(10430, 4),
+	LASTING_PACK(10431, 4),
+	TIME_STOP(10432, 4),
+	//UnstableAnkh T4
+	BLESSED_ANKH(10433, 4),
+	ANKH_ENHANCE(10434, 4),
+	COMPLETE_ANKH(10435, 4),
+	//Medic T1
+	SCAR_ATTACK(10440),
+	DOCTORS_INTUITION(10441),
+	FINISH_ATTACK(10442),
+	FIRST_AID_TREAT(10443),
+	BREAKTHROUGH(10444),
+	//Medic T2
+	HEALING_MEAL(10445),
+	RECYCLING(10446),
+	HIGH_POWER(10447),
+	RADIATION(10448),
+	STRONG_HEALPOWER(10449),
+	DIET(10450),
+	//Medic T3
+	STRONG_NEXUS(10451, 3),
+	TARGET_SET(10452, 3),
+	//Savior T3
+	RECRUIT(10453, 3),
+	DELAYED_HEALING(10454, 3),
+	APPEASE(10455, 3),
+	RA_ADRENALINE(10456, 3),
+	STIMPACK(10457, 3),
+	MEDICAL_RAY(10458, 3),
+	//Therapist T3
+	OINTMENT(10459, 3),
+	COMPRESS_BANDAGE(10460, 3),
+	ANTIBIOTICS(10461, 3),
+	QUICK_PREPARE(10462, 3),
+	SPLINT(10463, 3),
+	DEFIBRILLATOR(10464, 3),
+	//MedicalOfficer T3
+	MOVE_CMD(10465, 3),
+	STIMPACK_CMD(10466, 3),
+	ENGINEER_CMD(10467, 3),
+	PROMOTE_CMD(10468, 3),
+	EXPLOSION_CMD(10469, 3),
+	CAS_CMD(10470, 3),
+	//HealGenerator T4
+	HEALING_AMP(10471, 4),
+	SHIELD_GEN(10472, 4),
+	DURABLE_GEN(10473, 4),
+	//AngelWing T4
+	LIGHT_LIKE_FEATHER(10474, 4),
+	ANGELS_BLESS(10475, 4),
+	HEALING_WING(10476, 4),
+	//GammaRayEmmit T4
+	TRANSMOG_BIAS(10477, 4),
+	IMPRINTING_EFFECT(10478, 4),
+	SHEEP_TRANSMOG(10479, 4),
+	//Archer T1
+	FORCE_SAVING(10484),
+	ARCHERS_INTUITION(10485),
+	LEG_SWEEP(10486),
+	SURVIVAL_TECHNIQUE(10487),
+	DEXTERITY(10488),
+	//Archer T2
+	FIGHTING_MEAL(10489),
+	FULLY_POTION(10490),
+	NATURE_FRIENDLY(10491),
+	PUSHBACK(10492),
+	ARCHERS_FORESIGHT(10493),
+	POWERFUL_CRIT(10494),
+	//Archer T3
+	MAKESHIFT_BOW(10495, 3),
+	FOLLOWUP_SHOOT(10496, 3),
+	//BowMaster T3
+	FASTSHOT(10497, 3),
+	EXPANDED_POWER(10498, 3),
+	MOVING_FOCUS(10499, 3),
+	BOTTLE_EXPANSION(10500, 3),
+	SPECTRE_ARROW(10501, 3),
+	UNENCUMBERED_STEP(10502, 3),
+	//Juggler T3
+	HABITUAL_HAND(10503, 3),
+	SWIFT_JUGGLING(10504, 3),
+	SKILLFUL_JUGGLING(10505, 3),
+	FOCUS_MAINTAIN(10506, 3),
+	FANCY_PERFORMANCE(10507, 3),
+	TOUR_PERFORMANCE(10508, 3),
+	//SharpShooter T3
+	HURRICANE(10509, 3),
+	PERFECT_SHOT(10510, 3),
+	FOCUS_SHOT(10511, 3),
+	RA_BULLSEYE(10512, 3),
+	RANGED_LETHALITY(10513, 3),
+	CHANNELING(10514, 3),
+	//Dash T4
+	LONGRANGE_DASH(10515, 4),
+	DUST_SPREAD(10516, 4),
+	KINETIC_DASH(10517, 4),
+	//Hunt T4
+	CHASE(10518, 4),
+	CHILL_BACK(10519, 4),
+	CANNOT_ESCAPE(10520, 4),
+	//Snipe T4
+	ENHANCED_ARROW(10521, 4),
+	ACCURATE_SNIPE(10522, 4),
+	KNOCKING_ARROW(10523, 4),
+	//universal T3
+	ATK_SPEED_ENHANCE(10528, 4),
+	ACC_ENHANCE(10529, 4),
+	EVA_ENHANCE(10530, 4),
+	BETTER_CHOICE(10531, 3),
+	;
 
 	public static class ImprovisedProjectileCooldown extends FlavourBuff{
 		public int icon() { return BuffIndicator.TIME; }
@@ -653,6 +955,13 @@ public enum Talent {
 					return 506;
 				case PRINCESS:
 					return 570;
+				//rearranged, cell 43 of each hero's row on Re-ARranged PD's sheet
+				case GUNNER:     return 10000 + 43 + 44*6;
+				case SAMURAI:    return 10000 + 43 + 44*7;
+				case ADVENTURER: return 10000 + 43 + 44*8;
+				case KNIGHT:     return 10000 + 43 + 44*9;
+				case MEDIC:      return 10000 + 43 + 44*10;
+				case ARCHER:     return 10000 + 43 + 44*11;
 			}
 		} else {
 			return icon;
@@ -1540,6 +1849,7 @@ public enum Talent {
 	}
 
 	public static void onTalentUpgraded( Hero hero, Talent talent ){
+		RearrangedTalents.onTalentUpgraded(hero, talent); //rearranged
 		if (talent == MIDAS_TOUCH && hero.hasTalent(MIDAS_TOUCH)){
 			Dungeon.level.drop(new com.shatteredpixel.shatteredpixeldungeon.items.LiquidMetal().quantity(20 * hero.pointsInTalent(MIDAS_TOUCH)), hero.pos).sprite.drop(hero.pos);
 		}
@@ -1653,6 +1963,7 @@ public enum Talent {
 	public static class NatureBerriesDropped extends CounterBuff{{revivePersists = true;}};
 
 	public static void onFoodEaten( Hero hero, float foodVal, Item foodSource ){
+		RearrangedTalents.onFoodEaten(hero, foodVal, foodSource); //rearranged
 		onSlimeFoodEaten(hero);
 		onNinjaFoodEaten(hero, foodSource);
 		onDMFoodEaten(hero);
@@ -1828,6 +2139,7 @@ public enum Talent {
 	}
 
 	public static void onPotionUsed( Hero hero, int cell, float factor ){
+		RearrangedTalents.onPotionUsed(hero, cell, factor); //rearranged
 		onSlimePotionUsed(hero, factor);
 		if (hero.hasTalent(LIQUID_BARRIER)){
 			float duration = hero.pointsInTalent(LIQUID_BARRIER) == 1 ? 5f : 10f;
@@ -1911,6 +2223,7 @@ public enum Talent {
 	}
 
 	public static void onScrollUsed( Hero hero, int pos, float factor, Class<?extends Item> cls ){
+		RearrangedTalents.onScrollUsed(hero, pos, factor); //rearranged
 		if (hero.hasTalent(INSCRIBED_POWER)){
 			// 2/3 empowered wand zaps
 			Buff.affect(hero, ScrollEmpower.class).reset((int) (factor * (1 + hero.pointsInTalent(INSCRIBED_POWER))));
@@ -1981,6 +2294,7 @@ public enum Talent {
 	}
 
 	public static void onItemEquipped( Hero hero, Item item ){
+		RearrangedTalents.onItemEquipped(hero, item); //rearranged
 		boolean identify = false;
 		if (hero.pointsInTalent(VETERANS_INTUITION) == 2 && item instanceof Armor){
 			identify = true;
@@ -2011,6 +2325,7 @@ public enum Talent {
 	}
 
 	public static void onItemCollected( Hero hero, Item item ){
+		RearrangedTalents.onItemCollected(hero, item); //rearranged
 		if (hero.pointsInTalent(THIEFS_INTUITION) == 2){
 			if (item instanceof Ring) ((Ring) item).setKnown();
 		}
@@ -2106,6 +2421,8 @@ public enum Talent {
 				dmg = Math.round(dmg * (1.0f + .1f*hero.pointsInTalent(DEADLY_FOLLOWUP)));
 			}
 		}
+
+		dmg = RearrangedTalents.onAttackProc(hero, enemy, dmg); //rearranged
 
 		return dmg;
 	}
@@ -2211,6 +2528,10 @@ public enum Talent {
 			case PRINCESS:
 				Collections.addAll(tierTalents, ENCHANT_MEAL, RUNE_BLADE);
 				break;
+			//rearranged
+			case GUNNER: case SAMURAI: case ADVENTURER: case KNIGHT: case MEDIC: case ARCHER:
+				RearrangedTalents.addClassTalents(cls, 1, tierTalents);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -2270,6 +2591,10 @@ public enum Talent {
 			case PRINCESS:
 				Collections.addAll(tierTalents, ROYAL_MEAL, RUNE_EXPERT, MORE_RING);
 				break;
+			//rearranged
+			case GUNNER: case SAMURAI: case ADVENTURER: case KNIGHT: case MEDIC: case ARCHER:
+				RearrangedTalents.addClassTalents(cls, 2, tierTalents);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -2326,6 +2651,10 @@ public enum Talent {
 				break;
 			case PRINCESS:
 				Collections.addAll(tierTalents, RING_BOND);
+				break;
+			//rearranged
+			case GUNNER: case SAMURAI: case ADVENTURER: case KNIGHT: case MEDIC: case ARCHER:
+				RearrangedTalents.addClassTalents(cls, 3, tierTalents);
 				break;
 		}
 		for (Talent talent : tierTalents){
@@ -2451,6 +2780,12 @@ public enum Talent {
 			case COMBATMASTER:
 				Collections.addAll(tierTalents, FLUENT, STANCE_MASTERY, INELEMENT);
 				break;
+			//rearranged
+			case OUTLAW: case GUNSLINGER: case SPECIALIST: case SLASHER: case MASTER: case SLAYER:
+			case ENGINEER: case EXPLORER: case RESEARCHER: case DEATHKNIGHT: case HORSEMAN: case CRUSADER:
+			case SAVIOR: case THERAPIST: case MEDICALOFFICER: case BOWMASTER: case JUGGLER: case SHARPSHOOTER:
+				RearrangedTalents.addSubclassTalents(cls, tierTalents);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			talents.get(2).put(talent, 0);
@@ -2553,5 +2888,267 @@ public enum Talent {
 			}
 		}
 	}
+
+
+	//rearranged, Re-ARranged PD's talent buffs
+	public static class HarvestBerriesDropped extends CounterBuff{{revivePersists = true;}};
+	//gunner talent's buff
+	public static class SpeedyMoveTracker extends Buff{};
+	public static class RollingTracker extends FlavourBuff{};
+	public static class HonorableShotTracker extends FlavourBuff{};
+	public static class SkillfulRunnerCooldown extends FlavourBuff{
+		public int icon() { return BuffIndicator.TIME; }
+		public void tintIcon(Image icon) { icon.hardlight( 0xFFFF00 ); }
+		public float iconFadePercent() { return Math.max(0, 1-visualcooldown() / 30); }
+		public String toString() { return Messages.get(this, "name"); }
+		public String desc() { return Messages.get(this, "desc", dispTurns(visualcooldown())); }
+	};
+	public static class IntoTheShadowCooldown extends FlavourBuff{
+		public int icon() { return BuffIndicator.TIME; }
+		public void tintIcon(Image icon) { icon.hardlight( 0x7FA9D2 ); }
+		public float iconFadePercent() { return Math.max(0, 1-visualcooldown() / 15); }
+		public String toString() { return Messages.get(this, "name"); }
+		public String desc() { return Messages.get(this, "desc", dispTurns(visualcooldown())); }
+	};
+
+
+	//adventurer talent buff
+	//1-4
+	public static class ProtectiveSlashCooldown extends FlavourBuff{
+		public int icon() { return BuffIndicator.TIME; }
+		public void tintIcon(Image icon) { icon.hardlight(0.8f, 0.8f, 0.8f); }
+		public float iconFadePercent() { return Math.max(0, 1f - (visualcooldown() / 10)); }
+		public String toString() { return Messages.get(this, "name"); }
+		public String desc() { return Messages.get(this, "desc", dispTurns(visualcooldown())); }
+	};
+	//1-5
+	public static class KineticAttackTracker extends FlavourBuff {
+		{ type = buffType.POSITIVE; }
+		public int icon() { return BuffIndicator.INVERT_MARK; }
+		public void tintIcon(Image icon) { icon.hardlight(0f, 0.75f, 0f); }
+		public float iconFadePercent() { return Math.max(0, 1f - (visualcooldown() / 5)); }
+	};
+
+	//Samurai 1-3 meta
+	public static class DrawEnhanceMetaTracker extends Buff {}
+
+	//Knight 1-1
+	public static class ArmorEmpower extends Buff {
+
+		{
+			type = buffType.POSITIVE;
+		}
+
+		@Override
+		public int icon() {
+			return BuffIndicator.ARMOR;
+		}
+
+		@Override
+		public void tintIcon(Image icon) {
+			icon.hardlight(1, 0.5f, 0);
+		}
+
+		@Override
+		public float iconFadePercent() {
+			float max = 1 + Dungeon.hero.pointsInTalent(Talent.RA_TOUGH_MEAL);
+			return Math.max(0, (max-left) / max);
+		}
+
+		@Override
+		public String iconTextDisplay() {
+			return Integer.toString(left);
+		}
+
+		@Override
+		public String desc() {
+			return Messages.get(this, "desc", armorBoost, left);
+		}
+
+		public int armorBoost;
+		public int left;
+
+		public void set(int armor, int hits){
+			if (armor*hits > armorBoost*left) {
+				armorBoost = armor;
+				left = hits;
+			}
+		}
+
+		public int proc(int damage) {
+			damage = Math.max(0, damage-armorBoost);
+			left--;
+			if (left <= 0) detach();
+			return damage;
+		}
+
+		private static final String BOOST = "boost";
+		private static final String LEFT = "left";
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put( BOOST, armorBoost);
+			bundle.put( LEFT, left );
+		}
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			armorBoost = bundle.getInt( BOOST );
+			left = bundle.getInt( LEFT );
+		}
+
+	}
+
+	public static class KineticBattle extends Buff {
+
+		{
+			type = buffType.POSITIVE;
+		}
+
+		public float duration = 0f;
+		public float maxDuration = 0f;
+		public int dmgBoost = 0;
+
+		@Override
+		public int icon() {
+			return BuffIndicator.WEAPON;
+		}
+
+		@Override
+		public void tintIcon(Image icon) {
+			icon.hardlight(0, 1f, 0);
+		}
+
+		public void set() {
+			dmgBoost = Math.min(5, ++dmgBoost);
+			maxDuration = 1+2*Dungeon.hero.pointsInTalent(Talent.KINETIC_BATTLE);
+			duration = maxDuration;
+		}
+
+		public int proc(int damage) {
+			damage += this.dmgBoost;
+			return damage;
+		}
+
+		@Override
+		public boolean act() {
+			if (--duration <= 0) {
+				detach();
+			} else {
+				spend(TICK);
+			}
+			return true;
+		}
+
+		@Override
+		public String iconTextDisplay() {
+			return Integer.toString((int)duration);
+		}
+
+		@Override
+		public String desc() {
+			return Messages.get(this, "desc", dmgBoost, duration);
+		}
+
+		@Override
+		public float iconFadePercent() {
+			return Math.max(0, (maxDuration-duration) / maxDuration);
+		}
+
+		private static final String DURATION = "duration";
+		private static final String MAX_DURATION = "maxDuration";
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put( DURATION, duration );
+			bundle.put( MAX_DURATION, maxDuration );
+		}
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			duration = bundle.getFloat( DURATION );
+			maxDuration = bundle.getFloat( MAX_DURATION );
+		}
+	}
+
+	public static class WarCryTracker extends Buff {}
+
+	public static class PrayForDeadTracker extends FlavourBuff {
+		public static final float DURATION = 1f;
+	}
+
+	public static class JudgementTracker extends FlavourBuff {
+
+		public static final float DURATION = 5f;
+
+		{
+			type = buffType.NEUTRAL;
+			announced = true;
+		}
+
+		@Override
+		public int icon() {
+			return BuffIndicator.JUDGEMENT;
+		}
+
+		@Override
+		public void tintIcon(Image icon) {
+			icon.hardlight(0xFFFF66);
+		}
+
+		@Override
+		public float iconFadePercent() {
+			return Math.max(0, (DURATION - visualcooldown()) / DURATION);
+		}
+
+		@Override
+		public void fx(boolean on) {
+			if (on) target.sprite.add(CharSprite.State.JUDGED);
+			else target.sprite.remove(CharSprite.State.JUDGED);
+		}
+
+	}
+
+	public static class FirstAidTreatCooldown extends FlavourBuff{
+		public int icon() { return BuffIndicator.TIME; }
+		public void tintIcon(Image icon) { icon.hardlight(0.2f, 1f, 0.2f); }
+		public float iconFadePercent() { return Math.max(0, visualcooldown() / (50)); }
+		public String toString() { return Messages.get(this, "name"); }
+		public String desc() { return Messages.get(this, "desc", dispTurns(visualcooldown())); }
+	};
+
+	//Archer T1
+	public static class ForceSavingTracker extends Buff {
+		public int icon() { return BuffIndicator.WEAPON; }
+		public void tintIcon(Image icon) { icon.hardlight(1f, 1f, 0); }
+		public String toString() { return Messages.get(this, "name"); }
+		public String desc() { return Messages.get(this, "desc", dispTurns(visualcooldown())); }
+	}
+
+	//Archer 3-2
+	public static class FollowupShootTracker extends FlavourBuff{
+		public int object;
+		{ type = buffType.POSITIVE; }
+		public int icon() { return BuffIndicator.INVERT_MARK; }
+		public void tintIcon(Image icon) { icon.hardlight(1f, 0f, 0.5f); }
+		public float iconFadePercent() { return Math.max(0, 1f - (visualcooldown() / 5)); }
+		private static final String OBJECT    = "object";
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(OBJECT, object);
+		}
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			object = bundle.getInt(OBJECT);
+		}
+	}
+
+	public static class SurprisePanicTracker extends Buff {}
 
 }
