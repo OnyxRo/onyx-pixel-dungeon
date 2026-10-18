@@ -223,6 +223,7 @@ public abstract class Scroll extends Item {
 			Catalog.countUse(getClass());
 		}
 		if (Random.Float() < talentChance) {
+			Dungeon.level.onHeroConsumableUsed(curUser, this);
 			Talent.onScrollUsed(curUser, curUser.pos, talentFactor, getClass());
 		}
 

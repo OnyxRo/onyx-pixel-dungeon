@@ -210,9 +210,14 @@ public abstract class Char extends Actor {
 	//from Transformation PD, healing returns what was gained, the tags on damage are dropped
 	public int heal( int h ){
 		for (Buff b : buffs()) if (b instanceof HealingBlocker && ((HealingBlocker)b).blocksIncomingHealing()) return 0;
+		float reduction = 0f;
+		for (Buff b : buffs()) if (b instanceof HealingModifier) reduction += ((HealingModifier) b).incomingHealingReduction();
+		int modified = Math.max(0, (int)(h * (1f - Math.min(0.95f, reduction))));
 		int before = HP;
-		Heal( h );
-		return HP - before;
+		Heal( modified );
+		int gained = HP - before;
+		for (Buff b : buffs()) if (b instanceof HealingModifier) ((HealingModifier) b).afterIncomingHealing(h, gained);
+		return gained;
 	}
 
 	public int heal( int h, boolean visual ){
@@ -410,6 +415,23 @@ public abstract class Char extends Actor {
 		return attack(enemy, 1f, 0f, 1f);
 	}
 	
+	//Transformation PD. Specialised attacks can skip the accuracy roll, and name how their physical hits are delivered.
+	protected boolean attackAlwaysHits( Char enemy, DamageTag... damageTags ) {
+		return false;
+	}
+
+	protected DamageTag physicalAttackDeliveryTag() {
+		return DamageTag.MELEE;
+	}
+
+	protected int modifyPreShieldDamage( int damage, Object source, DamageTag... damageTags ) {
+		return damage;
+	}
+
+	public boolean attack( Char enemy, float dmgMulti, float dmgBonus, float accMulti, DamageTag... damageTags ) {
+		return attack( enemy, dmgMulti, dmgBonus, accMulti );
+	}
+
 	public boolean attack( Char enemy, float dmgMulti, float dmgBonus, float accMulti ) {
 
 		if (enemy == null) return false;
@@ -426,7 +448,7 @@ public abstract class Char extends Actor {
 
 			return false;
 
-		} else if (hit( this, enemy, accMulti, false )) {
+		} else if (attackAlwaysHits( enemy ) || hit( this, enemy, accMulti, false )) {
 			
 			int dr = Math.round(enemy.drRoll() * AscensionChallenge.statModifier(enemy));
 			dr = modifyEnemyArmor(enemy, dr);
@@ -1073,9 +1095,11 @@ public abstract class Char extends Actor {
 			return;
 		}
 
+		dmg = Math.max(0, modifyPreShieldDamage(dmg, src)); //Transformation PD
 		int shielded = dmg;
 		dmg = ShieldBuff.processDamage(this, dmg, src);
 		shielded -= dmg;
+		dmg = Math.max(0, modifyFinalDamage(dmg, src)); //Transformation PD
 		HP -= dmg;
 
 		if (HP > 0 && src instanceof Char && ((Char) src).buff(Grim.GrimTracker.class) != null){
@@ -1241,6 +1265,34 @@ public abstract class Char extends Actor {
 
 	//from Transformation PD, a buff that stops healing
 	public interface HealingBlocker { boolean blocksIncomingHealing(); }
+
+	//Transformation PD, buffs that scale damage a char deals or takes, and that cut the healing it gets
+	public interface DamageMultiplier {
+		default float outgoingDamageMultiplier(Object source, DamageTag... tags) { return 1f; }
+		default float incomingDamageMultiplier(Object source, DamageTag... tags) { return 1f; }
+	}
+
+	public interface HealingModifier {
+		float incomingHealingReduction();
+		default void afterIncomingHealing(int requested, int actual) {}
+	}
+
+	protected int modifyFinalDamage( int damage, Object source, DamageTag... damageTags ) {
+		float multiplier = 1f;
+		if (source instanceof Char) {
+			for (Buff buff : ((Char) source).buffs()) {
+				if (buff instanceof DamageMultiplier) {
+					multiplier *= Math.max(0f, ((DamageMultiplier) buff).outgoingDamageMultiplier(source, damageTags));
+				}
+			}
+		}
+		for (Buff buff : buffs()) {
+			if (buff instanceof DamageMultiplier) {
+				multiplier *= Math.max(0f, ((DamageMultiplier) buff).incomingDamageMultiplier(source, damageTags));
+			}
+		}
+		return Math.round(damage * multiplier);
+	}
 
 	//from Transformation PD, lets an attack change or skip the armor of its target
 	protected int modifyEnemyArmor(Char enemy, int armor) {

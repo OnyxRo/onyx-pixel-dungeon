@@ -544,6 +544,11 @@ public class Hero extends Char {
 		return pointsInTalent(talent) > 0;
 	}
 
+	//Transformation PD, the points put in without counting anything that borrows them
+	public int rawTalentPoints( Talent talent ){
+		return pointsInTalent( talent );
+	}
+
 	public int pointsInTalent( Talent talent ){
 		for (LinkedHashMap<Talent, Integer> tier : talents){
 			for (Talent f : tier.keySet()){
@@ -1154,6 +1159,7 @@ public class Hero extends Char {
 		
 		//calls to dungeon.observe will also update hero's local FOV.
 		fieldOfView = Dungeon.level.heroFOV;
+		Dungeon.level.onHeroTurnStarted(this);
 
 		if (buff(Endure.EndureTracker.class) != null){
 			buff(Endure.EndureTracker.class).endEnduring();
@@ -1917,6 +1923,7 @@ public class Hero extends Char {
 	}
 	
 	public void rest( boolean fullRest ) {
+		Dungeon.level.onHeroWaited(this);
 		spendAndNextConstant( TIME_TO_REST );
 		if (perks.contains(Perks.Perk.HOLD_FAST)){
 			Buff.affect(this, Perks.PerkHoldFast.class).pos = pos;

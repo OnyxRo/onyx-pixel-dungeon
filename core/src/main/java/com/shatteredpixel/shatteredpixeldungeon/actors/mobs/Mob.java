@@ -981,6 +981,26 @@ public abstract class Mob extends Char {
 		return super.defenseProc(enemy, damage);
 	}
 
+	//Transformation PD hooks
+	protected boolean soulMarkBlocksRangedAttack( Char enemy ) {
+		return false;
+	}
+
+	protected int phaseClawReachBonus() {
+		return 0;
+	}
+
+	/** Removes a mob without applying normal death rewards or kill-side effects. */
+	public void destroyWithoutRewards() {
+		super.destroy();
+		if (Dungeon.level != null) {
+			Dungeon.level.mobs.remove(this);
+		}
+		if (sprite != null) {
+			sprite.killAndErase();
+		}
+	}
+
 	@Override
 	public float speed() {
 		float speed = super.speed();

@@ -143,6 +143,18 @@ public class Hunger extends Buff implements Hero.Doom {
 		affectHunger( energy, false );
 	}
 
+	//Transformation PD's Hunger Knight drains satiety, the result is the share that came out of the red (starving) part
+	public float drainForHungerKnight(float amount) {
+		if (amount <= 0) return 0f;
+		if (target.buff(WellFed.class) != null) {
+			affectHunger(-amount);
+			return 0f;
+		}
+		float oldLevel = level;
+		affectHunger(-amount, true);
+		return Math.max(0f, Math.min(1f, (oldLevel + amount - STARVING) / amount));
+	}
+
 	public void affectHunger(float energy ){
 		affectHunger( energy, false );
 	}

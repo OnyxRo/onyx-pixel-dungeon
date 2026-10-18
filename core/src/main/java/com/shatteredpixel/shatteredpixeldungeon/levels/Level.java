@@ -137,7 +137,11 @@ public abstract class Level implements Bundlable {
 		DARK,
 		LARGE,
 		TRAPS,
-		SECRETS;
+		SECRETS,
+		//Transformation PD's tower floors
+		SKY_ISLAND,
+		BARREN,
+		CHAOS;
 
 		public String title(){
 			return Messages.get(this, name()+"_title");
@@ -287,46 +291,8 @@ public abstract class Level implements Bundlable {
 				addItemToSpawn( new TrinketCatalyst());
 			}
 			
-			if (Dungeon.depth > 1) {
-				//50% chance of getting a level feeling
-				//~7.15% chance for each feeling
-				switch (Random.Int( 14 )) {
-					case 0:
-						feeling = Feeling.CHASM;
-						break;
-					case 1:
-						feeling = Feeling.WATER;
-						break;
-					case 2:
-						feeling = Feeling.GRASS;
-						break;
-					case 3:
-						feeling = Feeling.DARK;
-						viewDistance = Math.round(5*viewDistance/8f);
-						break;
-					case 4:
-						feeling = Feeling.LARGE;
-						addItemToSpawn(Generator.random(Generator.Category.FOOD));
-						break;
-					case 5:
-						feeling = Feeling.TRAPS;
-						break;
-					case 6:
-						feeling = Feeling.SECRETS;
-						break;
-					default:
-						//if-else statements are fine here as only one chance can be above 0 at a time
-						// we pre-generate the floats to ensure Random is called consistently
-						float mossyChance = Random.Float();
-						float trapMechChance = Random.Float();
-						if (mossyChance < MossyClump.overrideNormalLevelChance()){
-							feeling = MossyClump.getNextFeeling();
-						} else if (trapMechChance < TrapMechanism.overrideNormalLevelChance()) {
-							feeling = TrapMechanism.getNextFeeling();
-						} else {
-							feeling = Feeling.NONE;
-						}
-				}
+			if (shouldGenerateLevelFeeling()) {
+				feeling = withLevelFeelingEffects( randomLevelFeeling() );
 			}
 		}
 		
@@ -434,6 +400,88 @@ public abstract class Level implements Bundlable {
 			}
 		}
 		createMobs();
+	}
+
+	//Transformation PD split the level feeling roll into hooks so its tower floors can use their own
+	protected boolean shouldGenerateLevelFeeling(){
+		return Dungeon.depth > 1;
+	}
+
+	protected Feeling randomLevelFeeling(){
+		//50% chance of getting a level feeling
+		//~7.15% chance for each feeling
+		switch (Random.Int( 14 )) {
+			case 0:
+				return Feeling.CHASM;
+			case 1:
+				return Feeling.WATER;
+			case 2:
+				return Feeling.GRASS;
+			case 3:
+				return Feeling.DARK;
+			case 4:
+				return Feeling.LARGE;
+			case 5:
+				return Feeling.TRAPS;
+			case 6:
+				return Feeling.SECRETS;
+			default:
+				//if-else statements are fine here as only one chance can be above 0 at a time
+				// we pre-generate the floats to ensure Random is called consistently
+				float mossyChance = Random.Float();
+				float trapMechChance = Random.Float();
+				if (mossyChance < MossyClump.overrideNormalLevelChance()){
+					return MossyClump.getNextFeeling();
+				} else if (trapMechChance < TrapMechanism.overrideNormalLevelChance()) {
+					return TrapMechanism.getNextFeeling();
+				} else {
+					return Feeling.NONE;
+				}
+		}
+	}
+
+	protected Feeling withLevelFeelingEffects( Feeling f ){
+		if (f == Feeling.DARK){
+			viewDistance = Math.round(5*viewDistance/8f);
+		} else if (f == Feeling.LARGE){
+			addItemToSpawn(Generator.random(Generator.Category.FOOD));
+		}
+		return f;
+	}
+
+	//called once at the start of each hero turn, and when the hero uses a potion, scroll or food (Transformation PD boss arenas)
+	public void onHeroTurnStarted( Hero hero ){
+	}
+
+	public void onHeroWaited( Hero hero ){
+	}
+
+	/**
+	 * Selects a safe landing cell for arrivals from another level. Combat respawns
+	 * and teleports should continue to use randomRespawnCell. (Transformation PD)
+	 */
+	public int safeArrivalCell( Char ch ){
+		return randomRespawnCell(ch);
+	}
+
+	public boolean shouldResetForSafeArrival(){
+		return false;
+	}
+
+	public int unblessedAnkhSafeRespawnCell( Char ch ){
+		return -1;
+	}
+
+	public void onSealedResurrectionReset(){
+	}
+
+	public void onBeforeSealedResurrectionReset(){
+	}
+
+	public void onHeroConsumableUsed( Hero hero, Item item ){
+	}
+
+	public void updateLevelMusic( float elapsed ){
 	}
 
 	public void playLevelMusic(){

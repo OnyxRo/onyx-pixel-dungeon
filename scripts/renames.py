@@ -57,7 +57,6 @@ RENAMES = [
     ('Hero.givenName is name', r'\.givenName\(\)', '.name()'),
     ('randomRespawnCell takes the character, call', r'(?<!int )randomRespawnCell\(\s*\)', 'randomRespawnCell( null )'),
     ('setHauntedIfCursed has no chance argument', r'setHauntedIfCursed\(\s*[\d.]+f?\s*\)', 'setHauntedIfCursed()'),
-    ('old weapon tier 6 category', r'Generator\.Category\.WEP_T6', 'Generator.Category.WEAPON'),
     ('old multiline text class', r'RenderedTextMultiline', 'RenderedTextBlock'),
     ('old renderMultiline is renderTextBlock', r'PixelScene\.renderMultiline\(', 'PixelScene.renderTextBlock('),
     ('Bones.get returns a list now, take the first item', r'Item\s+(\w+)\s*=\s*Bones\.get\(\)\s*;', r'java.util.ArrayList<Item> \1List = Bones.get(); Item \1 = (\1List == null || \1List.isEmpty()) ? null : \1List.get(0);'),
@@ -231,7 +230,7 @@ SPS_RULES = [
 
 def convert_long(s):
     """Mods built for huge numbers (Experienced) use long for damage. This game uses int."""
-    if not re.search(r'\blong\s+(?:min|max|damageRoll|proc|value|STRReq|defenseFactor)\b|long\s+damage\b', s):
+    if not re.search(r'\blong\s+(?:min|max|damageRoll|proc|STRReq|defenseFactor)\b|long\s+damage\b', s):
         return s
     s = re.sub(r'\blong\b', 'int', s)
     s = re.sub(r'\bLong\b', 'Integer', s)

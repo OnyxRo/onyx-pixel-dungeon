@@ -244,6 +244,19 @@ public class Dungeon {
 
 	//Experienced PD boosters, set by its respawn and fire boosting spells
 	public static float respawnBoost = 1f;
+	//Transformation PD tower floors. The tower run mode is not here, so any floor can reach any other and tiles follow the level class.
+	public static String towerTilesTexForLocation( int depth, int branch ){
+		return null;
+	}
+
+	public static String towerWaterTexForLocation( int depth, int branch ){
+		return null;
+	}
+
+	public static boolean towerTransitionAllowed( int fromDepth, int fromBranch, int toDepth, int toBranch ){
+		return true;
+	}
+
 	public static boolean droneVison = true; //Transformation PD, the DM400's drones share their sight
 	public static int vitalityPotionsUsed = 0; //Matt Edition's Potion of Vitality, each one used gives less
 	public static int additionalMobs = 0;

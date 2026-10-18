@@ -106,6 +106,7 @@ public class Food extends Item {
 			
 			hero.spend( eatingTime() );
 
+			Dungeon.level.onHeroConsumableUsed(hero, this);
 			Talent.onFoodEaten(hero, energy, this);
 			hero.lastEaten = this;
 			if (hero.subClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.DEVOTEE) {
@@ -157,8 +158,26 @@ public class Food extends Item {
 		if (inf != null && clean > 0) inf.cureinfc( clean );
 	}
 
+	//Transformation PD's Vegetarianism, plant foods feed twice as much, anything else a bit less
+	protected boolean isVegetarianFood(){
+		return this instanceof Berry || this instanceof SmallRation || this instanceof SupplyRation
+				|| this instanceof Blandfruit || this instanceof Pasty || this instanceof Tincture
+				|| this instanceof GreenGlowFruit;
+	}
+
 	protected void satisfy( Hero hero ){
 		float foodVal = energy;
+		if (hero.hasTalent(Talent.VEGETARIANISM)){
+			if (isVegetarianFood()){
+				foodVal *= 2f;
+				Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WellFed.class).reset();
+				if (hero.pointsInTalent(Talent.VEGETARIANISM) == 2){
+					Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Healing.class).setHeal(hero.HT/4, 0.25f, 0);
+				}
+			} else {
+				foodVal *= 0.7f;
+			}
+		}
 		if (Dungeon.isChallenged(Challenges.NO_FOOD)){
 			foodVal /= 3f;
 		}

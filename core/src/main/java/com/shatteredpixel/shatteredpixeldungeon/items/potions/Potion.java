@@ -326,6 +326,7 @@ public class Potion extends Item {
 		if (!anonymous) {
 			Catalog.countUse(getClass());
 			if (Random.Float() < talentChance) {
+				Dungeon.level.onHeroConsumableUsed(curUser, this);
 				Talent.onPotionUsed(curUser, curUser.pos, talentFactor);
 			}
 		}

@@ -229,6 +229,8 @@ public class Generator {
 		WEP_T3	( 0, 0, MeleeWeapon.class),
 		WEP_T4	( 0, 0, MeleeWeapon.class),
 		WEP_T5	( 0, 0, MeleeWeapon.class),
+		//from Transformation PD, the tier 6 weapons its Hunger Knight picks from. Not in normal drops.
+		WEP_T6	( 0, 0, MeleeWeapon.class),
 		
 		ARMOR	( 2, 1, Armor.class ),
 		
@@ -498,6 +500,17 @@ public class Generator {
 			};
 			WEP_T5.defaultProbs = new float[]{ 2, 2, 2, 2, 2, 2, 2, 2 };
 			WEP_T5.probs = WEP_T5.defaultProbs.clone();
+
+			WEP_T6.classes = new Class<?>[]{
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.tier6.PalermoSword.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.tier6.SakuraBlossomBlade.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.tier6.TwoHandedGreatsword.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.tier6.VenomousSickle.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.tier6.GreatGreatGreatsword.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.tier6.DemonTailWhip.class
+			};
+			WEP_T6.defaultProbs = new float[]{ 2, 2, 2, 2, 2, 2 };
+			WEP_T6.probs = WEP_T6.defaultProbs.clone();
 			
 			//see Generator.randomArmor
 			ARMOR.classes = new Class<?>[]{

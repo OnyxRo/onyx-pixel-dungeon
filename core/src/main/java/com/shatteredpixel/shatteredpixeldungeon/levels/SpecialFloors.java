@@ -71,6 +71,12 @@ public class SpecialFloors {
 		add( "Cursed PD", "Earth challenge", EarthChallengeLevel::new );
 		add( "Cursed PD", "Earth challenge, lore floor", EarthChallengeLoreLevel::new );
 
+		//Transformation PD, the boss arenas of its tower
+		add( "Transformation PD", "Tower boss, Pestilence Knight", towerBoss( com.shatteredpixel.shatteredpixeldungeon.levels.towers.TowerBossGenerator.PESTILENCE_KNIGHT_ID ) );
+		add( "Transformation PD", "Tower boss, Death Knight", towerBoss( com.shatteredpixel.shatteredpixeldungeon.levels.towers.TowerBossGenerator.DEATH_KNIGHT_ID ) );
+		add( "Transformation PD", "Tower boss, Gentleman Elf", towerBoss( com.shatteredpixel.shatteredpixeldungeon.levels.towers.TowerBossGenerator.GENTLEMAN_ELF_ID ) );
+		add( "Transformation PD", "Tower boss, Hunger Knight", towerBoss( com.shatteredpixel.shatteredpixeldungeon.levels.towers.TowerBossGenerator.HUNGER_KNIGHT_ID ) );
+
 		//Tower PD, the tower defense arenas. Each one expects the floor number it had in the mod, see towerArena
 		add( "Tower PD", "Arena 0, Testing pathway", towerArena( Arena0::new ) );
 		add( "Tower PD", "Arena 1, Sewer entrance", towerArena( Arena1::new ) );
@@ -103,6 +109,15 @@ public class SpecialFloors {
 		add( "Tower PD", "Endless arena 3, Sector 95", towerArena( com.shatteredpixel.shatteredpixeldungeon.levels.endlessarenas.EndlessArena3::new ) );
 		add( "Tower PD", "Endless arena 4, Gnolls and Goblins", towerArena( com.shatteredpixel.shatteredpixeldungeon.levels.endlessarenas.EndlessArena4::new ) );
 		add( "Tower PD", "Endless arena 5, Bot factory", towerArena( com.shatteredpixel.shatteredpixeldungeon.levels.endlessarenas.EndlessArena5::new ) );
+	}
+
+	/** A Transformation PD tower boss arena for one chosen boss. The tower puts its bosses on floors 5, 10 and so on, so the floor is set to 10. */
+	private static Supplier<Level> towerBoss( String bossId ){
+		return () -> {
+			com.shatteredpixel.shatteredpixeldungeon.levels.towers.TowerBossGenerator.forcedId = bossId;
+			Dungeon.depth = 10;
+			return new com.shatteredpixel.shatteredpixeldungeon.levels.towers.TowerBossLevel();
+		};
 	}
 
 	/** Tower PD's arenas read Dungeon.depth for their own rules, so the floor number is set to the arena's before it is built. */

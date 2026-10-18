@@ -29,6 +29,7 @@ public class Assets {
 		public static final String SPECKS       = "effects/specks.png";
 		public static final String SPELL_ICONS  = "effects/spell_icons.png";
 		public static final String TEXT_ICONS   = "effects/text_icons.png";
+		public static final String DEATH_KNIGHT_SLASH = "effects/death_knight_slash.png"; //Transformation PD
 	}
 
 	public static class Environment {
@@ -144,6 +145,12 @@ public class Assets {
 	}
 
 	public static class Music {
+		public static final String PESTILENCE_BOSS = "music/transformation/pestilence_boss.ogg"; //ported, transformation
+		public static final String DEATH_KNIGHT_BOSS = "music/transformation/death_knight_boss.ogg"; //ported, transformation
+		public static final String TOWER = "music/transformation/tower.ogg"; //ported, transformation
+		public static final String TOWER_2 = "music/transformation/tower2.ogg"; //ported, transformation
+		public static final String TOWER_3 = "music/transformation/tower3.ogg"; //ported, transformation
+		public static final String TOWER_BUSY = "music/transformation/tower_busy.ogg"; //ported, transformation
 		public static final String BACKS1_2 = "music/transformation/chuboss.ogg"; //ported, transformation
 		public static final String BACKS1_1 = "music/transformati/combat_area.ogg"; //ported, transformati
 		public static final String BOSS_LOOP = "music/tower/track_boss_loop.ogg"; //ported, tower
@@ -445,6 +452,10 @@ public class Assets {
 		public static final String DARK_MECHANICAL_FIST = "sprites/transformation/dark_mechanical_fist.png"; //ported, transformation
 		public static final String CORPSE = "sprites/transformation/corpse.png"; //ported, transformation
 		public static final String ELF_WINE_CUP = "sprites/transformation/elf_wine_cup.png"; //ported, transformation
+		public static final String PESTILENCE_KNIGHT = "sprites/transformation/pestilence_knight.png"; //ported, transformation
+		public static final String DEATH_KNIGHT = "sprites/transformation/death_knight.png"; //ported, transformation
+		public static final String GENTLEMAN_ELF = "sprites/transformation/gentleman_elf.png"; //ported, transformation
+		public static final String HUNGER_KNIGHT = "sprites/transformation/hunger_knight.png"; //ported, transformation
 		public static final String SLIMEMUCUS = "sprites/transformati/slimemucus.png"; //ported, transformati
 		public static final String SLIMEMUCUS4 = "sprites/transformati/slimemucus4.png"; //ported, transformati
 		public static final String SLIMEMUCUS3 = "sprites/transformati/slimemucus3.png"; //ported, transformati

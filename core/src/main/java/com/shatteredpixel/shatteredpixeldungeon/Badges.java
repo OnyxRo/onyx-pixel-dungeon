@@ -1150,6 +1150,10 @@ public class Badges {
 		}
 	}
 
+	//Transformation PD, tower boss badges are not here
+	public static void validateTowerBossSlain(String bossId, HeroClass heroClass){
+	}
+
 	public static void validateZealotUnlock(){
 		if (!isUnlocked(Badge.UNLOCK_ZEALOT)){
 			displayBadge( Badge.UNLOCK_ZEALOT );

@@ -31,6 +31,10 @@ public class Statistics {
 
 	//from Transformation PD, which hero boss reward scrolls were already handed out
 	public static boolean[] subLimation = new boolean[3];
+	public static int towerBossesDefeated; //Transformation PD
+	public static void recordTowerBossDefeated(int depth){
+		towerBossesDefeated++;
+	}
 
 
 	public static int goldCollected;

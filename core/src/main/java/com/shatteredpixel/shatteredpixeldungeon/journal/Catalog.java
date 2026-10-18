@@ -949,6 +949,10 @@ public enum Catalog {
 		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.InstructionTool.class);
 		THROWN_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.DamageGear.class);
 
+		//items ported from transformation
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.SourWineAroma.class);
+		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.GreenGlowFruit.class);
+
 
 	}
 

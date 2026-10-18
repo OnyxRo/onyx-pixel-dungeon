@@ -75,6 +75,22 @@ public enum Music {
 		}
 	}
 
+	//Transformation PD. Plays a track at a set loudness, and swaps tracks with a fade out
+	public synchronized void play( String assetName, boolean looping, float gain ) {
+		play( assetName, looping );
+		volume( gain );
+	}
+
+	public synchronized void transitionTo( final String assetName, final boolean looping, final float gain, float fadeOut, float fadeIn ) {
+		final Music self = this;
+		fadeOut( fadeOut, new Callback() {
+			@Override
+			public void call() {
+				self.play( assetName, looping, gain );
+			}
+		});
+	}
+
 	public synchronized void play( String assetName, boolean looping ) {
 		if (musicPlayerActive && !musicPlayerCall) return;
 

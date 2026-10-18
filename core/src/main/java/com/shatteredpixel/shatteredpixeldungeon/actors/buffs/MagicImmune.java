@@ -30,6 +30,11 @@ import com.watabou.noosa.Image;
 public class MagicImmune extends FlavourBuff {
 
 	public static final float DURATION = 20f;
+
+	//Transformation PD, sets a minimum already adjusted duration
+	public void postponeUnadjusted(float duration) {
+		postpone(duration);
+	}
 	
 	{
 		type = buffType.POSITIVE;

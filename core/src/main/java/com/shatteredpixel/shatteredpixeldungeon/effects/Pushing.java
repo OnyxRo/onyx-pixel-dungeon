@@ -64,6 +64,11 @@ public class Pushing extends Actor {
 		this.callback = callback;
 	}
 	
+	//Transformation PD asks for an immediate start, here it simply joins the actors
+	public void startImmediately() {
+		Actor.add( this );
+	}
+
 	@Override
 	protected boolean act() {
 		Actor.remove( Pushing.this );

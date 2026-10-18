@@ -312,6 +312,9 @@ public enum Talent {
 	//Honey Comb T4
 	PROCESS_EXTEND(503, 4), GLORIOUS_DEAD(504, 4), UPON_WAVE(505, 4),
 
+	//Talents of Transformation PD's common pool that its Friar items lean on. Icons that clash with our cells sit at 1024 plus the mod's cell.
+	VEGETARIANISM(1086), STRENGTH_GREATEST(1053), FALSEHOOD_POWER(413),
+
 	//universal T4
 	HEROIC_ENERGY(26, 4), //See icon() and title() for special logic for this one
 	//Ratmogrify T4
@@ -637,6 +640,66 @@ public enum Talent {
 	public int maxPoints(){
 		return maxPoints;
 	}
+
+	//---- Transformation PD asks every talent for its tier and kind (the Hunger Knight swallows talents by tier)
+	public enum TalentType {
+		EFFECT, ASSIST, ATTACK, RESOURCE, MAGIC, SPELL, SUBCLASS, ARMOR, BOSS, OTHER, NEGATIVE;
+		public boolean isCommon(){
+			return this != SUBCLASS && this != ARMOR && this != BOSS && this != NEGATIVE;
+		}
+	}
+
+	private static java.util.HashMap<Talent, Integer> tierMap;
+	private static java.util.HashSet<Talent> subclassTalentSet;
+
+	private static void buildTierMap(){
+		tierMap = new java.util.HashMap<>();
+		subclassTalentSet = new java.util.HashSet<>();
+		for (HeroClass cls : HeroClass.values()){
+			ArrayList<LinkedHashMap<Talent, Integer>> lists = new ArrayList<>();
+			initClassTalents(cls, lists);
+			for (int i = 0; i < lists.size(); i++){
+				for (Talent t : lists.get(i).keySet()) if (!tierMap.containsKey(t)) tierMap.put(t, i + 1);
+			}
+			for (HeroSubClass sub : cls.subClasses()){
+				ArrayList<LinkedHashMap<Talent, Integer>> subLists = new ArrayList<>();
+				initSubclassTalents(sub, subLists);
+				for (LinkedHashMap<Talent, Integer> m : subLists){
+					for (Talent t : m.keySet()){
+						if (!tierMap.containsKey(t)) tierMap.put(t, 3);
+						subclassTalentSet.add(t);
+					}
+				}
+			}
+			for (ArmorAbility a : cls.armorAbilities()){
+				for (Talent t : a.talents()) if (!tierMap.containsKey(t)) tierMap.put(t, 4);
+			}
+		}
+	}
+
+	public int tier(){
+		if (tierMap == null) buildTierMap();
+		Integer v = tierMap.get(this);
+		return v == null ? 2 : v;
+	}
+
+	public TalentType type(){
+		if (tierMap == null) buildTierMap();
+		if (tier() == 4) return TalentType.ARMOR;
+		if (subclassTalentSet.contains(this)) return TalentType.SUBCLASS;
+		String n = name();
+		if (n.endsWith("_MEAL")) return TalentType.EFFECT;
+		if (n.endsWith("_INTUITION")) return TalentType.ASSIST;
+		return TalentType.OTHER;
+	}
+
+	public boolean isCommonTalentType(){
+		return type().isCommon();
+	}
+
+	//boss talents (the mod's sublimation slots) are not here
+	public static boolean isBossTalent( Talent t ){ return false; }
+	public static boolean isBossTalentPlaceholder( Talent t ){ return false; }
 
 	public String title(){
 		if (this == HEROIC_ENERGY && Ratmogrify.useRatroicEnergy){
@@ -1767,6 +1830,9 @@ public enum Talent {
 	}
 
 	public static int onAttackProc( Hero hero, Char enemy, int dmg ){
+		if (hero.hasTalent(STRENGTH_GREATEST)){
+			dmg += Hero.heroDamageIntRange( 0, hero.pointsInTalent(STRENGTH_GREATEST) );
+		}
 		dmg = onSlimeAttack(hero, enemy, dmg);
 		dmg = onNinjaAttack(hero, enemy, dmg);
 		dmg = onDMAttack(hero, enemy, dmg);

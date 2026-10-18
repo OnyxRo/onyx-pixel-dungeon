@@ -189,6 +189,9 @@ public class BuffIndicator extends Component {
 	public static final int WATER_SMOOTH = HASTE;
 	public static final int DECOY = MIND_VISION;
 	public static final int ONESWORD = WEAPON;
+	public static final int DRUNKENNESS = HEX;
+	public static final int RAID_OVERBURDEN = HEX;
+	public static final int EXHILARATION = HASTE;
 	public static final int HIVE_CLUSTER = MIND_VISION;
 	public static final int HONEYCOMB = HEALING;
 	public static final int OVERLOAD = HASTE;

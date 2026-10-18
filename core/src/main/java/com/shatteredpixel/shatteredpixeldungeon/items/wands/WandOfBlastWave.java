@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -117,8 +118,47 @@ public class WandOfBlastWave extends DamageWand {
 		
 	}
 
+	public interface KnockbackCallback {
+		void call(boolean resolvedByThisPush, int actualDistance);
+	}
+
 	public static void throwChar(final Char ch, final Ballistica trajectory, int power,
 	                             boolean closeDoors, boolean collideDmg, Object cause){
+		throwChar(ch, trajectory, power, closeDoors, collideDmg, cause,
+				null, null, false);
+	}
+
+	public static void throwChar(final Char ch, final Ballistica trajectory, int power,
+	                             boolean closeDoors, boolean collideDmg, Object cause, final Callback callback){
+		throwChar(ch, trajectory, power, closeDoors, collideDmg, cause,
+				callback, null, false);
+	}
+
+	/**
+	 * Resolves knockback through a render-driven pushing effect. Unlike the normal
+	 * Actor-backed path, this can safely be awaited while the current actor is busy.
+	 */
+	public static void throwCharImmediately(final Char ch, final Ballistica trajectory, int power,
+	                                        boolean closeDoors, boolean collideDmg, Object cause,
+	                                        final Callback callback){
+		throwChar(ch, trajectory, power, closeDoors, collideDmg, cause,
+				callback, null, true);
+	}
+
+	public static void throwCharImmediatelyWithResult(final Char ch,
+	                                                  final Ballistica trajectory, int power,
+	                                                  boolean closeDoors, boolean collideDmg,
+	                                                  Object cause,
+	                                                  final KnockbackCallback callback){
+		throwChar(ch, trajectory, power, closeDoors, collideDmg, cause,
+				null, callback, true);
+	}
+
+	private static void throwChar(final Char ch, final Ballistica trajectory, int power,
+	                              boolean closeDoors, boolean collideDmg, Object cause,
+	                              final Callback callback,
+	                              final KnockbackCallback knockbackCallback,
+	                              boolean startImmediately){
 		if (ch.properties().contains(Char.Property.BOSS)) {
 			power = (power+1)/2;
 		}
@@ -129,7 +169,10 @@ public class WandOfBlastWave extends DamageWand {
 
 		if (dist <= 0
 				|| ch.rooted
-				|| ch.properties().contains(Char.Property.IMMOVABLE)) return;
+				|| ch.properties().contains(Char.Property.IMMOVABLE)) {
+			completeKnockback(callback, knockbackCallback, true, 0);
+			return;
+		}
 
 		//large characters cannot be moved into non-open space
 		if (Char.hasProp(ch, Char.Property.LARGE)) {
@@ -147,21 +190,34 @@ public class WandOfBlastWave extends DamageWand {
 			collided = true;
 		}
 
-		if (dist < 0) return;
+		if (dist < 0) {
+			completeKnockback(callback, knockbackCallback, true, 0);
+			return;
+		}
 
 		final int newPos = trajectory.path.get(dist);
 
-		if (newPos == ch.pos) return;
+		if (newPos == ch.pos) {
+			completeKnockback(callback, knockbackCallback, true, 0);
+			return;
+		}
 
 		final int finalDist = dist;
 		final boolean finalCollided = collided && collideDmg;
 		final int initialpos = ch.pos;
+		final CharSprite pushingSprite = ch.sprite;
 
-		Actor.add(new Pushing(ch, ch.pos, newPos, new Callback() {
+		Pushing pushing = new Pushing(ch, ch.pos, newPos, new Callback() {
 			public void call() {
-				if (initialpos != ch.pos || Actor.findChar(newPos) != null) {
+				boolean pushSpriteInvalid = pushingSprite == null
+						|| ch.sprite != pushingSprite || pushingSprite.parent == null;
+				boolean resultTargetInvalid = knockbackCallback != null
+						&& (!ch.isAlive() || Actor.findById(ch.id()) != ch);
+				if (pushSpriteInvalid || resultTargetInvalid || initialpos != ch.pos
+						|| Actor.findChar(newPos) != null) {
 					//something caused movement or added chars before pushing resolved, cancel to be safe.
-					ch.sprite.place(ch.pos);
+					if (!pushSpriteInvalid) pushingSprite.place(ch.pos);
+					completeKnockback(callback, knockbackCallback, false, 0);
 					return;
 				}
 				int oldPos = ch.pos;
@@ -171,7 +227,7 @@ public class WandOfBlastWave extends DamageWand {
 					if (ch.isActive()) {
 						Paralysis.prolong(ch, Paralysis.class, 1 + finalDist/2f);
 					} else if (ch == Dungeon.hero){
-						if (cause instanceof Wand || cause instanceof Weapon.Enchantment){
+						if (cause instanceof WandOfBlastWave){
 							Badges.validateDeathFromFriendlyMagic();
 						}
 						GLog.n(Messages.get(WandOfBlastWave.class, "knockback_ondeath"));
@@ -182,14 +238,32 @@ public class WandOfBlastWave extends DamageWand {
 					Door.leave(oldPos);
 				}
 				Dungeon.level.occupyCell(ch);
+				if (ch.sprite == pushingSprite && pushingSprite.parent != null) {
+					pushingSprite.place(ch.pos);
+				}
 				if (ch == Dungeon.hero){
 					Dungeon.observe();
 					GameScene.updateFog();
 				} else if (Dungeon.level.heroFOV[initialpos] != Dungeon.level.heroFOV[newPos]){
 					Dungeon.observe();
 				}
+				completeKnockback(callback, knockbackCallback, true, finalDist);
 			}
-		}));
+		});
+		if (startImmediately) {
+			pushing.startImmediately();
+		} else {
+			Actor.add(pushing);
+		}
+	}
+
+	private static void completeKnockback(Callback callback,
+	                                       KnockbackCallback knockbackCallback,
+	                                       boolean resolvedByThisPush, int actualDistance) {
+		if (callback != null) callback.call();
+		if (knockbackCallback != null) {
+			knockbackCallback.call(resolvedByThisPush, actualDistance);
+		}
 	}
 
 	public static class Knockback{}
