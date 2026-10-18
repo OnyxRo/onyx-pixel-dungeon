@@ -302,6 +302,26 @@ public class Hero extends Char {
 		if (sprite != null) sprite.showStatus( com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite.MENTAL, Messages.get(this, "knowlminus", amount) );
 	}
 
+	//summoning, what a level up gives in Summoning PD. Every hero gets one more attunement at level 6,
+	//the Conjurer gets half a point every third level, 5 more mana and a new spell at levels 5, 7, 9, 11 and 15
+	private void summoningLevelUp(){
+		if (heroClass == HeroClass.CONJURER) {
+			if (lvl % 3 == 0) attunement += 0.5f;
+			maxMana += 5;
+			com.shatteredpixel.shatteredpixeldungeon.items.Item spell = null;
+			switch (lvl) {
+				case 5: spell = new com.shatteredpixel.shatteredpixeldungeon.items.magic.Barrier(); break;
+				case 7: spell = new com.shatteredpixel.shatteredpixeldungeon.items.magic.Wave(); break;
+				case 9: spell = new com.shatteredpixel.shatteredpixeldungeon.items.magic.Shocker(); break;
+				case 11: spell = new com.shatteredpixel.shatteredpixeldungeon.items.magic.Necro(); break;
+				case 15: spell = new com.shatteredpixel.shatteredpixeldungeon.items.magic.Field(); break;
+			}
+			if (spell != null) spell.identify().collect();
+		} else if (lvl == 6) {
+			attunement++;
+		}
+	}
+
 	//summoning, Summoning PD attunement (room for staff minions) and the Conjurer's mana for spells
 	public float attunement = 1;
 	public int mana = 0;
@@ -403,6 +423,9 @@ public class Hero extends Char {
 			HT = 25 + 6*(lvl-1) + HTBoost;
 		} else if (heroClass == HeroClass.DM400) {
 			HT = 15 + 5*(lvl-1) + HTBoost;
+		} else if (heroClass == HeroClass.CONJURER) {
+			//summoning, the Conjurer is frail, 13 health and 3 more a level
+			HT = 13 + 3*(lvl-1) + HTBoost;
 		} else {
 			HT = 20 + 5*(lvl-1) + HTBoost;
 		}
@@ -1076,6 +1099,10 @@ public class Hero extends Char {
 			dmg = Math.round(dmg * (1.025f + .025f*pointsInTalent(Talent.WEAPON_RECHARGING)));
 		}
 
+		//summoning, Summoning PD's soul weakness and the Soul Reaver hit softer, their minions do the work
+		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SoulWeakness.class) != null) dmg /= 4;
+		if (subClass == HeroSubClass.SOUL_REAVER) dmg = Math.round(dmg * 0.75f);
+
 		if (dmg < 0) dmg = 0;
 		return dmg;
 	}
@@ -1276,7 +1303,20 @@ public class Hero extends Char {
 		if (buff(Endure.EndureTracker.class) != null){
 			buff(Endure.EndureTracker.class).endEnduring();
 		}
-		
+
+		//summoning, the Conjurer's minions grow stronger while she is below half health, and the Occultist's goat clone follows her
+		if (heroClass == HeroClass.CONJURER) {
+			if (HP <= HT / 2) {
+				Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Attunement.class);
+			} else if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Attunement.class) != null) {
+				buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Attunement.class).detach();
+			}
+		}
+		if (subClass == HeroSubClass.OCCULTIST && Dungeon.level != null
+				&& com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.GoatClone.findClone() == null){
+			com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.GoatClone.spawnClone();
+		}
+
 		if (!ready) {
 			//do a full observe (including fog update) if not resting.
 			if (!resting || buff(MindVision.class) != null || buff(Awareness.class) != null) {
@@ -2762,6 +2802,7 @@ public class Hero extends Char {
 				attackSkill++;
 				defenseSkill++;
 				Perks.earnPerk(this);
+				summoningLevelUp();
 
 			} else {
 				Buff.prolong(this, Bless.class, Bless.DURATION);

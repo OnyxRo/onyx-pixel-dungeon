@@ -205,6 +205,11 @@ public enum HeroClass {
 			case PRINCESS:
 				initPrincess( hero );
 				break;
+
+			//summoning
+			case CONJURER:
+				initConjurer( hero );
+				break;
 		}
 
 		//Pixel Dungeon Reforged, Trinket Madness starts the hero with three upgraded trinkets that stick
@@ -303,8 +308,42 @@ public enum HeroClass {
 				return Badges.Badge.MASTERY_DM400;
 			case PRINCESS:
 				return Badges.Badge.MASTERY_PRINCESS;
+			//summoning
+			case CONJURER:
+				return Badges.Badge.MASTERY_CONJURER;
 		}
 		return null;
+	}
+
+	//summoning, Summoning PD's Conjurer. A toy knife, a spellbook with three spells, the froggit staff,
+	//a magical holster and the robe she cannot take off. Mana fills when her minions kill.
+	private static void initConjurer( Hero hero ) {
+		(hero.belongings.weapon = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knife()).identify();
+		hero.belongings.weapon.activate(hero);
+
+		com.shatteredpixel.shatteredpixeldungeon.items.bags.ConjurerBook book = new com.shatteredpixel.shatteredpixeldungeon.items.bags.ConjurerBook();
+		book.collect();
+		com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.FroggitStaff staff = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.FroggitStaff();
+		staff.identify().collect();
+		new com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster().collect();
+		Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
+
+		(hero.belongings.armor = new com.shatteredpixel.shatteredpixeldungeon.items.armor.ConjurerArmor()).identify();
+		hero.belongings.armor.activate(hero);
+
+		new com.shatteredpixel.shatteredpixeldungeon.items.magic.Stars().identify().collect();
+		new com.shatteredpixel.shatteredpixeldungeon.items.magic.Heal().identify().collect();
+		new com.shatteredpixel.shatteredpixeldungeon.items.magic.Zap().identify().collect();
+		Dungeon.quickslot.setSlot(0, staff);
+		Dungeon.quickslot.setSlot(1, book);
+
+		hero.attunement = 1;
+		hero.mana = 0;
+		hero.maxMana = 20;
+		hero.HT = hero.HP = 13;
+
+		new com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfAttunement().identify();
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength().identify();
 	}
 
 	private static void initWarrior( Hero hero ) {
@@ -610,6 +649,11 @@ public enum HeroClass {
 				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.princess.MarchForward(),
 						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.princess.TabooMagic(),
 						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.princess.KingBlade()};
+			//summoning, Summoning PD had one ability. The Summoner's phase shift and the Huntress's spirit hawk join it
+			case CONJURER:
+				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.conjurer.SoulParalysisAbility(),
+						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.summoner.PhaseShift(),
+						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.SpiritHawk()};
 			case DM400:
 				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.dm400.Routine(),
 						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.dm400.Discharge_Gas(),
@@ -651,6 +695,9 @@ public enum HeroClass {
 				return Assets.Sprites.DM400;
 			case PRINCESS:
 				return Assets.Sprites.PRINCESS;
+			//summoning
+			case CONJURER:
+				return Assets.Sprites.CONJURER;
 		}
 	}
 
@@ -689,6 +736,9 @@ public enum HeroClass {
 				return Assets.Splashes.DM400;
 			case PRINCESS:
 				return Assets.Splashes.PRINCESS;
+			//summoning
+			case CONJURER:
+				return Assets.Splashes.CONJURER;
 		}
 	}
 	
@@ -731,6 +781,9 @@ public enum HeroClass {
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_DM400);
 			case PRINCESS:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_PRINCESS);
+			//summoning, open from the start as in Summoning PD
+			case CONJURER:
+				return true;
 		}
 	}
 	

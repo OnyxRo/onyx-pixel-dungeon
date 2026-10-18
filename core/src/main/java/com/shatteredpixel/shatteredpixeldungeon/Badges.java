@@ -81,6 +81,8 @@ public class Badges {
 		MASTERY_NINJA,
 		MASTERY_DM400,
 		MASTERY_PRINCESS,
+		//summoning
+		MASTERY_CONJURER,
 		FOUND_RATMOGRIFY,
 
 		//bronze
@@ -156,6 +158,8 @@ public class Badges {
 		BOSS_SLAIN_1_NINJA,
 		BOSS_SLAIN_1_DM400,
 		BOSS_SLAIN_1_PRINCESS,
+		//summoning
+		BOSS_SLAIN_1_CONJURER,
 		BOSS_SLAIN_1_VIKING,
 		BOSS_SLAIN_1_DRAGONKNIGHT,
 		BOSS_SLAIN_1_ALL_CLASSES    ( 54, BadgeType.GLOBAL ),
@@ -215,6 +219,8 @@ public class Badges {
 		VICTORY_NINJA,
 		VICTORY_DM400,
 		VICTORY_PRINCESS,
+		//summoning
+		VICTORY_CONJURER,
 		VICTORY_VIKING,
 		VICTORY_DRAGONKNIGHT,
 		VICTORY_ALL_CLASSES         ( 103, BadgeType.GLOBAL ),
@@ -882,6 +888,8 @@ public class Badges {
 		firstBossClassBadges.put(HeroClass.NINJA, Badge.BOSS_SLAIN_1_NINJA);
 		firstBossClassBadges.put(HeroClass.DM400, Badge.BOSS_SLAIN_1_DM400);
 		firstBossClassBadges.put(HeroClass.PRINCESS, Badge.BOSS_SLAIN_1_PRINCESS);
+		//summoning
+		firstBossClassBadges.put(HeroClass.CONJURER, Badge.BOSS_SLAIN_1_CONJURER);
 		firstBossClassBadges.put(HeroClass.VIKING, Badge.BOSS_SLAIN_1_VIKING);
 		firstBossClassBadges.put(HeroClass.DRAGONKNIGHT, Badge.BOSS_SLAIN_1_DRAGONKNIGHT);
 	}
@@ -902,6 +910,8 @@ public class Badges {
 		victoryClassBadges.put(HeroClass.NINJA, Badge.VICTORY_NINJA);
 		victoryClassBadges.put(HeroClass.DM400, Badge.VICTORY_DM400);
 		victoryClassBadges.put(HeroClass.PRINCESS, Badge.VICTORY_PRINCESS);
+		//summoning
+		victoryClassBadges.put(HeroClass.CONJURER, Badge.VICTORY_CONJURER);
 		victoryClassBadges.put(HeroClass.VIKING, Badge.VICTORY_VIKING);
 		victoryClassBadges.put(HeroClass.DRAGONKNIGHT, Badge.VICTORY_DRAGONKNIGHT);
 	}
@@ -1068,6 +1078,10 @@ public class Badges {
 				break;
 			case PRINCESS:
 				badge = Badge.MASTERY_PRINCESS;
+				break;
+			//summoning
+			case CONJURER:
+				badge = Badge.MASTERY_CONJURER;
 				break;
 			case VIKING:
 				badge = Badge.MASTERY_VIKING;

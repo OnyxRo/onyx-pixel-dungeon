@@ -448,6 +448,49 @@ public class ModRoster {
 		add( "deep", Mandrake.class, 1, 2, 8 );
 		add( "deep", ShamanLeader.class, 0, 1, 99 );
 		add( "deep", GnollNinja2.class, 0, 1, 99 );
+		//summoning, Summoning PD Reincarnated. Its Abyss world spawns the abyss chapter monsters on floors 21 to 24.
+		//Dog, the exploding mouse and the dwarf guard are on the floors the mod used, the rest come from rooms, staffs or bosses
+		add( "summoning", Dog.class, 2, 2, 4 );
+		add( "summoning", ExplodingTNT.class, 1, 11, 12 );
+		add( "summoning", DwarfGuardMob.class, 1, 15, 16 );
+		add( "summoning", SpectreRat.class, 2, 21, 99 );
+		add( "summoning", DarkestElf.class, 2, 21, 99 );
+		add( "summoning", GhostChicken.class, 2, 21, 99 );
+		add( "summoning", Phantom.class, 2, 21, 99 );
+		add( "summoning", BlinkingMan.class, 2, 21, 99 );
+		add( "summoning", Trappet.class, 2, 21, 99 );
+		add( "summoning", MajesticGuard.class, 0, 1, 99 );
+		add( "summoning", Wolf.class, 0, 1, 99 );
+		add( "summoning", TribeGnoll.class, 0, 1, 99 );
+		add( "summoning", SpectralShaman.class, 0, 1, 99 );
+		add( "summoning", WardingWraith.class, 0, 1, 99 );
+		add( "summoning", FinalFroggit.class, 0, 1, 99 );
+		add( "summoning", AbyssalSpawner.class, 0, 1, 99 );
+		add( "summoning", LostSpirit.class, 0, 1, 99 );
+		add( "summoning", AbyssalNightmare.class, 0, 1, 99 );
+		//summoning, staff minions and the Knight's stand, allies of the hero
+		add( "summoning", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Chicken.class, 0, 1, 99 );
+		add( "summoning", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Froggit.class, 0, 1, 99 );
+		add( "summoning", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.FrostElemental.class, 0, 1, 99 );
+		add( "summoning", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.GnollHunter.class, 0, 1, 99 );
+		add( "summoning", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.GooMinion.class, 0, 1, 99 );
+		add( "summoning", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.GrayRat.class, 0, 1, 99 );
+		add( "summoning", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Hacatu.class, 0, 1, 99 );
+		add( "summoning", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Imp.class, 0, 1, 99 );
+		add( "summoning", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.ImpQueen.class, 0, 1, 99 );
+		add( "summoning", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Mimic.class, 0, 1, 99 );
+		add( "summoning", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Robo.class, 0, 1, 99 );
+		add( "summoning", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Sheep.class, 0, 1, 99 );
+		add( "summoning", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Skele.class, 0, 1, 99 );
+		add( "summoning", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Slime.class, 0, 1, 99 );
+		add( "summoning", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.SoulFlame.class, 0, 1, 99 );
+		add( "summoning", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Wizard.class, 0, 1, 99 );
+		add( "summoning", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.stationary.GasterBlaster.class, 0, 1, 99 );
+		add( "summoning", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.stationary.MagicMissileMinion.class, 0, 1, 99 );
+		add( "summoning", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.stationary.RoseWraith.class, 0, 1, 99 );
+		add( "summoning", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.GoatClone.class, 0, 1, 99 );
+		add( "summoning", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.ChaosSaber.class, 0, 1, 99 );
+		add( "summoning", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Stenchy.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

@@ -1218,6 +1218,16 @@ public abstract class Mob extends Char {
 			EXP /= 2;
 		}
 
+		//summoning, the Conjurer gains mana when her minions or spells kill, the Soul Reaver gains more
+		if (Dungeon.hero != null && Dungeon.hero.maxMana > 0 && alignment == Alignment.ENEMY
+				&& (cause instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion
+					|| cause instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.GoatClone
+					|| cause instanceof com.shatteredpixel.shatteredpixeldungeon.items.magic.ConjurerSpell)){
+			int gain = (int) Math.floor(EXP * (Dungeon.hero.subClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.SOUL_REAVER ? 2.25f : 1.5f));
+			if (cause instanceof com.shatteredpixel.shatteredpixeldungeon.items.magic.ConjurerSpell) gain /= 2;
+			Dungeon.hero.mana = Math.min(Dungeon.hero.mana + gain, Dungeon.hero.maxMana);
+		}
+
 		if (alignment == Alignment.ENEMY){
 			if (buff(Trap.HazardAssistTracker.class) != null){
 				Statistics.hazardAssistedKills++;

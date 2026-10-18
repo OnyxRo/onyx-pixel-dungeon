@@ -366,7 +366,11 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 	}
 	
 	//whether or not a character can be placed here (usually via spawn, tele, or wander)
+	//summoning, Summoning PD rooms that hold their own monster keep others from spawning in them
+	public boolean noMobs = false;
+
 	public boolean canPlaceCharacter(Point p, Level l){
+		if (noMobs) return false;
 		return inside(p);
 	}
 	

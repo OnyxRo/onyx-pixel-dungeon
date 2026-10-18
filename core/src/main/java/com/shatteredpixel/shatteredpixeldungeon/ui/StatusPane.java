@@ -350,6 +350,11 @@ public class StatusPane extends Component {
 		if (mhBar.visible) mhBar.size( Math.max( 0f, hp.width * mpHero.MHP / (float)mpHero.MHT ), 2 );
 		mpBar.visible = usesMana;
 		if (usesMana) mpBar.size( Math.max( 0f, hp.width * Math.min( 1f, mpHero.MP / (float)mpHero.MAX_MP ) ), 2 );
+		//summoning, the Conjurer's mana from Summoning PD uses the same thin blue bar
+		if (mpHero.maxMana > 0) {
+			mpBar.visible = true;
+			mpBar.size( Math.max( 0f, hp.width * Math.min( 1f, mpHero.mana / (float)mpHero.maxMana ) ), 2 );
+		}
 
 		hp.scale.x = healthPercent;
 		shieldHP.scale.x = healthPercent + shieldPercent;

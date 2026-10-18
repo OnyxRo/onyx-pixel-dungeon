@@ -246,6 +246,8 @@ public class Generator {
 		ARTIFACT( 0, 1, Artifact.class),
 		//from Ryuse's PD
 		HELMET	( 1, 1, com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.class ),
+		//summoning, Summoning PD's staffs that summon minions, picked by floor like weapon tiers
+		STAFF	( 1, 1, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.Staff.class ),
 		
 		FOOD	( 0, 0, Food.class ),
 		//from Shittened PD. The new foods are not in normal drops, only in loot bags and the like.
@@ -330,6 +332,26 @@ public class Generator {
 			//items without a category-defined order are sorted based on the spritesheet
 			return Short.MAX_VALUE+item.image();
 		}
+
+		//summoning, Summoning PD's staff tiers. Tier one is the Conjurer's froggit staff, the mimic staff only comes from mimics
+		static final Class<?>[][] STAFF_TIERS = new Class<?>[][]{
+				{ com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.FroggitStaff.class },
+				{ com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.GreyRatStaff.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.SlimeStaff.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.SheepStaff.class },
+				{ com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.SkeletonStaff.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.GnollHunterStaff.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.ChickenStaff.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.MagicMissileStaff.class },
+				{ com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.FrostElementalStaff.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.WizardStaff.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.RoboStaff.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.RoseStaff.class },
+				{ com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.GooStaff.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.BlasterStaff.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.ImpQueenStaff.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.HacatuStaff.class }
+		};
 
 		static {
 			GOLD.classes = new Class<?>[]{
@@ -704,6 +726,17 @@ public class Generator {
 			HELMET.defaultProbs = new float[]{ 1, 0, 0.1f, 1, 1, 1, 1, 1, 1, 1, 0.1f, 0, 0.2f, 0.1f, 1, 1 };
 			HELMET.probs = HELMET.defaultProbs.clone();
 
+			//summoning
+			STAFF.classes = new Class<?>[]{};
+			for (Class<?>[] tier : STAFF_TIERS) {
+				Class<?>[] grown = java.util.Arrays.copyOf(STAFF.classes, STAFF.classes.length + tier.length);
+				System.arraycopy(tier, 0, grown, STAFF.classes.length, tier.length);
+				STAFF.classes = grown;
+			}
+			STAFF.defaultProbs = new float[STAFF.classes.length];
+			java.util.Arrays.fill(STAFF.defaultProbs, 1);
+			STAFF.probs = STAFF.defaultProbs.clone();
+
 			//Trinkets are unique like artifacts, but unlike them you can only have one at once
 			//So we don't need the same enforcement of uniqueness
 			TRINKET.classes = new Class<?>[]{
@@ -830,6 +863,9 @@ public class Generator {
 				return randomArmor();
 			case WEAPON:
 				return randomWeapon();
+			//summoning
+			case STAFF:
+				return randomStaff();
 			case MISSILE:
 				return randomMissile();
 			case ARTIFACT:
@@ -925,6 +961,16 @@ public class Generator {
 
 	public static MeleeWeapon randomWeapon(){
 		return randomWeapon(Dungeon.depth / 5);
+	}
+
+	public static Item randomStaff(){
+		int floorSet = (int)GameMath.gate(0, Dungeon.depth / 5, floorSetTierProbs.length-1);
+		int tier = Random.chances(floorSetTierProbs[floorSet]);
+		//the froggit staff tier is the Conjurer's own, a found staff is one tier up
+		tier = Math.max(1, tier);
+		Class<?>[] choices = Category.STAFF_TIERS[Math.min(tier, Category.STAFF_TIERS.length - 1)];
+		Item staff = (Item) Reflection.newInstance(choices[Random.Int(choices.length)]);
+		return staff == null ? null : staff.random();
 	}
 
 	public static MeleeWeapon randomWeapon(int floorSet) {

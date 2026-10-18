@@ -653,6 +653,9 @@ public enum Talent {
 					return 506;
 				case PRINCESS:
 					return 570;
+				//summoning
+				case CONJURER:
+					return 26;
 			}
 		} else {
 			return icon;
@@ -2211,6 +2214,10 @@ public enum Talent {
 			case PRINCESS:
 				Collections.addAll(tierTalents, ENCHANT_MEAL, RUNE_BLADE);
 				break;
+			//summoning, Summoning PD gave the Conjurer no talents of her own, these are Shattered's picked to suit her
+			case CONJURER:
+				Collections.addAll(tierTalents, HEARTY_MEAL, EMPOWERING_MEAL, SCHOLARS_INTUITION, NATURES_BOUNTY);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -2270,6 +2277,10 @@ public enum Talent {
 			case PRINCESS:
 				Collections.addAll(tierTalents, ROYAL_MEAL, RUNE_EXPERT, MORE_RING);
 				break;
+			//summoning
+			case CONJURER:
+				Collections.addAll(tierTalents, INVIGORATING_MEAL, LIQUID_NATURE, ARCANE_VISION, HEIGHTENED_SENSES, SHIELD_BATTERY);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -2326,6 +2337,10 @@ public enum Talent {
 				break;
 			case PRINCESS:
 				Collections.addAll(tierTalents, RING_BOND);
+				break;
+			//summoning
+			case CONJURER:
+				Collections.addAll(tierTalents, ALLY_WARP, HOLD_FAST);
 				break;
 		}
 		for (Talent talent : tierTalents){
@@ -2450,6 +2465,13 @@ public enum Talent {
 				break;
 			case COMBATMASTER:
 				Collections.addAll(tierTalents, FLUENT, STANCE_MASTERY, INELEMENT);
+				break;
+			//summoning, Shattered talents picked for Summoning PD's Conjurer subclasses
+			case SOUL_REAVER:
+				Collections.addAll(tierTalents, NECROMANCERS_MINIONS, SOUL_SIPHON, SHARED_UPGRADES);
+				break;
+			case OCCULTIST:
+				Collections.addAll(tierTalents, ENHANCED_LETHALITY, ASSASSINS_REACH, BOUNTY_HUNTER);
 				break;
 		}
 		for (Talent talent : tierTalents){

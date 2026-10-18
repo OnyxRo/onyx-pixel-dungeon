@@ -385,14 +385,7 @@ public class ItemSpriteSheet {
 	public static final int CURSED_KEY = xy(9, 114);
 	public static final int ELVEN_KEY = xy(10, 114);
 	public static final int ROUGH_KEY = xy(11, 114);
-	public static final int SpiritsChalice = xy(12, 114);
-	public static final int WARPICK = MOD_ITEMS+0;
-	public static final int BONE_KNIFE = xy(1, 60);
-	public static final int SWORD_BAG = xy(2, 60);
-	public static final int GraveMeat = xy(3, 60);
-	public static final int DOGSTICK = xy(4, 60);
-	public static final int FISHSKELETON = xy(5, 60);
-	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;
+	//summoning, Summoning PD Reincarnated, rows 209 to 224 of items.png
 	public static final int RANGE_POWER = xy(5, 214);
 	public static final int ARCANE_ELEMENT = xy(1, 209);
 	public static final int ARMOR_ADVENTURER = xy(2, 209);
@@ -478,6 +471,14 @@ public class ItemSpriteSheet {
 	public static final int WIZARD_STAFF = xy(2, 214);
 	public static final int WOOLY_STAFF = xy(3, 214);
 	public static final int ZAP = xy(4, 214);
+	public static final int SpiritsChalice = xy(12, 114);
+	public static final int WARPICK = MOD_ITEMS+0;
+	public static final int BONE_KNIFE = xy(1, 60);
+	public static final int SWORD_BAG = xy(2, 60);
+	public static final int GraveMeat = xy(3, 60);
+	public static final int DOGSTICK = xy(4, 60);
+	public static final int FISHSKELETON = xy(5, 60);
+	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;
 	public static final int SPECIAL_PACKAGE = xy(16, 53);
 	public static final int TRANSFORM_SPELL = xy(3, 54);
 	public static final int RING_KING = xy(13, 53);
@@ -1088,14 +1089,7 @@ public class ItemSpriteSheet {
 		assignItemRect(CURSED_KEY, 16, 16);
 		assignItemRect(ELVEN_KEY, 16, 16);
 		assignItemRect(ROUGH_KEY, 16, 16);
-		assignItemRect(SpiritsChalice, 16, 16);
-		assignItemRect(WARPICK, 15, 14);
-		assignItemRect(BONE_KNIFE, 16, 13);
-		assignItemRect(SWORD_BAG, 16, 16);
-		assignItemRect(GraveMeat, 14, 13);
-		assignItemRect(DOGSTICK, 11, 15);
-		assignItemRect(FISHSKELETON, 16, 16);
-		assignItemRect(WOODEN_BOOMERANG, 12, 12);
+		//summoning
 		assignItemRect(RANGE_POWER, 14, 14);
 		assignItemRect(ARCANE_ELEMENT, 14, 14);
 		assignItemRect(ARMOR_ADVENTURER, 14, 13);
@@ -1181,6 +1175,14 @@ public class ItemSpriteSheet {
 		assignItemRect(WIZARD_STAFF, 16, 16);
 		assignItemRect(WOOLY_STAFF, 16, 16);
 		assignItemRect(ZAP, 10, 7);
+		assignItemRect(SpiritsChalice, 16, 16);
+		assignItemRect(WARPICK, 15, 14);
+		assignItemRect(BONE_KNIFE, 16, 13);
+		assignItemRect(SWORD_BAG, 16, 16);
+		assignItemRect(GraveMeat, 14, 13);
+		assignItemRect(DOGSTICK, 11, 15);
+		assignItemRect(FISHSKELETON, 16, 16);
+		assignItemRect(WOODEN_BOOMERANG, 12, 12);
 		assignItemRect(SPECIAL_PACKAGE, 16, 14);
 		assignItemRect(TRANSFORM_SPELL, 12, 13);
 		assignItemRect(RING_KING, 10, 10);

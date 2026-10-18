@@ -140,6 +140,8 @@ public class Regeneration extends Buff {
 	}
 
 	public static boolean regenOn(){
+		//summoning, the Occultist from Summoning PD does not regenerate
+		if (Dungeon.hero != null && Dungeon.hero.subClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.OCCULTIST) return false;
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
 		if (lock != null && !lock.regenOn()){
 			return false;

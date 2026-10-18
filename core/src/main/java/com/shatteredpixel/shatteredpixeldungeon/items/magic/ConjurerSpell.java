@@ -49,6 +49,23 @@ import java.util.ArrayList;
 
 public abstract class ConjurerSpell extends Item implements Tierable {
 
+    //the spells each Conjurer subclass gets when it is chosen
+    public static void giveSubclassSpells(Hero hero){
+        if (hero.subClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.OCCULTIST){
+            new com.shatteredpixel.shatteredpixeldungeon.items.magic.knight.Boom().identify().collect();
+            new com.shatteredpixel.shatteredpixeldungeon.items.magic.knight.Flower().identify().collect();
+            new com.shatteredpixel.shatteredpixeldungeon.items.magic.knight.KiHealing().identify().collect();
+            new com.shatteredpixel.shatteredpixeldungeon.items.magic.knight.Punch().identify().collect();
+            new com.shatteredpixel.shatteredpixeldungeon.items.magic.knight.Shards().identify().collect();
+        } else if (hero.subClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.SOUL_REAVER){
+            new com.shatteredpixel.shatteredpixeldungeon.items.magic.soulreaver.Offense().identify().collect();
+            new com.shatteredpixel.shatteredpixeldungeon.items.magic.soulreaver.Defense().identify().collect();
+            new com.shatteredpixel.shatteredpixeldungeon.items.magic.soulreaver.Magical().identify().collect();
+            new com.shatteredpixel.shatteredpixeldungeon.items.magic.soulreaver.Ranged().identify().collect();
+            new com.shatteredpixel.shatteredpixeldungeon.items.magic.soulreaver.Support().identify().collect();
+        }
+    }
+
     public static final String AC_ZAP	= "ZAP";
     public static final String AC_DOWNGRADE = "DOWNGRADE";
     public static final String AC_TIERINFO = "TIERINFO";
