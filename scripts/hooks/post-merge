@@ -1,5 +1,6 @@
 #!/bin/sh
 # After a pull or merge that brought in game code, rebuild the desktop app in the background.
+[ "$(git rev-parse --git-dir)" != "$(git rev-parse --git-common-dir)" ] && exit 0
 changed=$(git diff --name-only ORIG_HEAD HEAD 2>/dev/null | grep -E '^(core|desktop|SPD-classes|services)/' | head -n 1)
 [ -z "$changed" ] && exit 0
 root=$(git rev-parse --show-toplevel)

@@ -1,7 +1,10 @@
 #!/bin/sh
 # After a commit that changed game code, rebuild the desktop app in the background.
 # It never starts the game, and it skips if the game is open. See scripts/auto-update-desktop.ps1.
-changed=$(git diff-tree --no-commit-id --name-only -r HEAD | grep -E '^(core|desktop|SPD-classes|services)/' | head -n 1)
+# Commits in a linked worktree (agent branches) never update the app, only the main clone does.
+[ "$(git rev-parse --git-dir)" != "$(git rev-parse --git-common-dir)" ] && exit 0
+# -m --first-parent so a merge commit counts what it brought in
+changed=$(git diff-tree -m --first-parent --no-commit-id --name-only -r HEAD | grep -E '^(core|desktop|SPD-classes|services)/' | head -n 1)
 [ -z "$changed" ] && exit 0
 root=$(git rev-parse --show-toplevel)
 ( powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$root/scripts/auto-update-desktop.ps1" >/dev/null 2>&1 & )
