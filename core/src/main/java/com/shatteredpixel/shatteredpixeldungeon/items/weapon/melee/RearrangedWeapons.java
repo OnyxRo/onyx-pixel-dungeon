@@ -128,6 +128,73 @@ public class RearrangedWeapons {
 		return multi;
 	}
 
+	//Armor.DRMax, each afterimage glyph (on the armor or the Knight's shield) lowers the armor's tier by one
+	public static int armorUpgradeFactor( com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor armor, int tier ){
+		Hero hero = Dungeon.hero;
+		if (hero == null) return tier;
+		if (armor.hasGlyph(com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Afterimage.class, hero)) tier--;
+		com.shatteredpixel.shatteredpixeldungeon.items.KnightsShield shield = hero.belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.KnightsShield.class);
+		if (shield != null && shield.hasGlyph(com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Afterimage.class, hero)) tier--;
+		return tier;
+	}
+
+	public static int armorAdaption( com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor armor ){
+		Hero hero = Dungeon.hero;
+		if (hero != null && hero.hasTalent(Talent.ARMOR_ADAPTION) && armor.STRReq() < hero.STR()) {
+			return Math.round((hero.STR() - armor.STRReq())*(0.5f+0.5f*hero.pointsInTalent(Talent.ARMOR_ADAPTION)));
+		}
+		return 0;
+	}
+
+	//Armor AC_SCRAP, the Gunner melts armor into liquid metal, half for cursed or unknown armor
+	public static void scrapArmor( final com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor armor, final Hero hero ){
+		Game.runOnRenderThread(new Callback() {
+			@Override
+			public void call() {
+				int level = armor.isIdentified() ? armor.level() : 0;
+				final int amount = Math.round(5 * (armor.tier+1) * (float)Math.pow(2, Math.min(3, level)));
+				GameScene.show(
+						new WndOptions( new ItemSprite(armor),
+								Messages.get(MeleeWeapon.class, "scrap_title"),
+								Messages.get(MeleeWeapon.class, "scrap_desc", amount),
+								Messages.get(MeleeWeapon.class, "scrap_yes"),
+								Messages.get(MeleeWeapon.class, "scrap_no") ) {
+							private float elapsed = 0f;
+							@Override
+							public synchronized void update() {
+								super.update();
+								elapsed += Game.elapsed;
+							}
+							@Override
+							public void hide() {
+								if (elapsed > 0.2f) super.hide();
+							}
+							@Override
+							protected void onSelect( int index ) {
+								if (index == 0 && elapsed > 0.2f) {
+									LiquidMetal metal = new LiquidMetal();
+									int q = amount;
+									if (armor.cursed || !armor.isIdentified()) q /= 2;
+									metal.quantity(q);
+									if (!metal.doPickUp(hero)) {
+										Dungeon.level.drop( metal, hero.pos ).sprite.drop();
+									}
+									EnergyCrystal crystal = new EnergyCrystal();
+									crystal.quantity(Random.IntRange(1, 2));
+									crystal.doPickUp(hero);
+									armor.detach(hero.belongings.backpack);
+									hero.sprite.operate(hero.pos);
+									GLog.p(Messages.get(MeleeWeapon.class, "scrap", q));
+									Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
+									Item.updateQuickslot();
+								}
+							}
+						}
+				);
+			}
+		});
+	}
+
 	//Pickaxe AC_INFUSE, a battle shovel and the pickaxe become the miner's tool
 	public static void infuseShovel( final com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe pickaxe, final Hero hero ){
 

@@ -533,6 +533,11 @@ public class RearrangedHero {
 			Buff.affect(hero, Undead.class, hero.pointsInTalent(Talent.UNDEAD));
 			return true;
 		}
+		//the Death Knight spends collected souls to stay alive
+		com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulCollect souls = hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulCollect.class);
+		if (souls != null && souls.soulUsed(hero)) {
+			return true;
+		}
 		return false;
 	}
 

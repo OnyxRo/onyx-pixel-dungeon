@@ -42,7 +42,8 @@ RULES = [
 #never copied, see PORTING.md
 SKIP = {
     'GooglePlayGames.java', 'SeedFinder.java', 'scenes/SeedAnalysisScene.java', 'scenes/SeedFindScene.java',
-    'items/weapon/bow/SpiritBow.java', 'levels/LabsLevel.java', 'items/weapon/melee/Spade.java',
+    'items/weapon/bow/SpiritBow.java', 'levels/LabsLevel.java', 'items/weapon/melee/Spade.java', 'items/WeaponCatalyst.java', #an unused stub in the mod
+   
     #classes this game already had from other mods under the same path, never touched
     'items/weapon/enchantments/Eldritch.java', 'items/weapon/enchantments/Stunning.java',
     'items/weapon/enchantments/Venomous.java', 'items/weapon/enchantments/Vorpal.java',
@@ -53,7 +54,7 @@ REWORK = [
     'actors/hero/spells/' + n + '.java' for n in ('ArcaneArmorSpell', 'DivineBlast', 'DivineRay', 'Enchant', 'HolyBombSpell',
         'HolyMantle', 'InduceAggro', 'PowerOfLife', 'Resurrection', 'SpellBurst', 'Stun', 'ThunderImbueSpell', 'TimeAmp', 'WeakeningHex')
 ] + [
-    'actors/buffs/' + n + '.java' for n in ('Tackle', 'SoulCollect', 'EnhancedRingsCombo', 'MagicalCombo',
+    'actors/buffs/' + n + '.java' for n in ('Tackle', 'EnhancedRingsCombo', 'MagicalCombo',
         'MagicalEmpower', 'MagicalCircle', 'Fatigue', 'GhostSpawner', 'chargearea/RechargeArea', 'chargearea/WandRechargeArea',
         'chargearea/ArtifactRechargeArea', 'chargearea/BarrierRechargeArea', 'chargearea/Judgement', 'chargearea/MutationBuff')
 ] + ['windows/WndMagicalCombo.java']

@@ -29,7 +29,7 @@ public class HeroSword extends MeleeWeapon {
         bones = false;
     }
 
-    public MeleeWeapon usedWep;
+    public MeleeWeapon usedWep = new WornShortsword(); //rearranged, a plain sword until one is chosen
 
     int ability = -1;
 

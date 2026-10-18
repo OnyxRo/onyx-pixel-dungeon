@@ -58,6 +58,7 @@ public class LiquidMetal extends Item {
 	}
 
 	private static final String AC_APPLY = "APPLY";
+	public static final String AC_MAKE = "MAKE"; //rearranged
 	private static final String AC_TRANSMUTE = "TRANSMUTE"; //Transformation PD, the Friar's Midas Touch
 	private static final int TRANSMUTE_COST = 20;
 
@@ -65,6 +66,10 @@ public class LiquidMetal extends Item {
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
 		actions.add( AC_APPLY );
+		//rearranged, the Gunner can cast a new gun from liquid metal
+		if (hero.heroClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.GUNNER) {
+			actions.add( AC_MAKE );
+		}
 		if (hero.hasTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.MIDAS_TOUCH)){
 			actions.add( AC_TRANSMUTE );
 		}
@@ -75,6 +80,10 @@ public class LiquidMetal extends Item {
 	public void execute( Hero hero, String action ) {
 
 		super.execute( hero, action );
+
+		if (action.equals(AC_MAKE)) {
+			RearrangedItems.makeGun(this, hero); //rearranged
+		}
 
 		if (action.equals(AC_APPLY)) {
 

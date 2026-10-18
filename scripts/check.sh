@@ -35,7 +35,16 @@ say() { echo "$@" | tee -a "$LOG"; }
 
 # 1. compile
 say "== compile"
-if [ -n "${SHATTERED_JAR:-}" ]; then
+if [ -n "${FAST:-}" ]; then
+  #FAST=1 scripts/check.sh uses the classes scripts/cyc.sh (plain javac) built in build/fast, no Gradle.
+  #Use it when Gradle's daemon is busy or stuck, or several worktrees compile at once.
+  bash scripts/fastjavac.sh > build/fast.log 2>&1
+  grep -q "error:" build/fast.log && { say "compile FAILED, see build/fast.log"; grep -m8 "error:" -A2 build/fast.log; exit 1; }
+  JARS=""
+  while IFS= read -r j; do JARS="$JARS$(W "$j")${SEP}"; done < <(find ~/.gradle/caches/modules-2/files-2.1 -name '*.jar' ! -name '*sources*' 2>/dev/null | grep -v -F 1.9.10)
+  CP="$(W "$ROOT/build/fast")${SEP}${JARS}"
+  ASSETS="$ROOT/core/src/main/assets"
+elif [ -n "${SHATTERED_JAR:-}" ]; then
   scripts/compile.sh "$SHATTERED_JAR" build/javac >> "$LOG" 2>&1 || { say "compile FAILED, see build/check.log"; grep -m5 "error:" "$LOG"; exit 1; }
   CLASSES="$ROOT/build/javac/classes"; LIBS="$ROOT/build/javac/lib/libs.jar"; ASSETS="$CLASSES"
   CP="$(W "$CLASSES")${SEP}$(W "$LIBS")"

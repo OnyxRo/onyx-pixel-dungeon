@@ -1017,7 +1017,6 @@ public enum Catalog {
 				com.shatteredpixel.shatteredpixeldungeon.items.Sheath.class,
 				com.shatteredpixel.shatteredpixeldungeon.items.GammaRayGun.class,
 				com.shatteredpixel.shatteredpixeldungeon.items.ArrowBag.class,
-				com.shatteredpixel.shatteredpixeldungeon.items.WeaponCatalyst.class,
 				com.shatteredpixel.shatteredpixeldungeon.items.changer.OldAmulet.class,
 				com.shatteredpixel.shatteredpixeldungeon.items.Teleporter.class);
 		POTIONS.addItems(Generator.Category.PILL.classes);
