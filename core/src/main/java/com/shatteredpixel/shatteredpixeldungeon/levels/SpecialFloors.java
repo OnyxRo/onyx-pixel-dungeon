@@ -76,6 +76,8 @@ public class SpecialFloors {
 		add( "Transformation PD", "Tower boss, Death Knight", towerBoss( com.shatteredpixel.shatteredpixeldungeon.levels.towers.TowerBossGenerator.DEATH_KNIGHT_ID ) );
 		add( "Transformation PD", "Tower boss, Gentleman Elf", towerBoss( com.shatteredpixel.shatteredpixeldungeon.levels.towers.TowerBossGenerator.GENTLEMAN_ELF_ID ) );
 		add( "Transformation PD", "Tower boss, Hunger Knight", towerBoss( com.shatteredpixel.shatteredpixeldungeon.levels.towers.TowerBossGenerator.HUNGER_KNIGHT_ID ) );
+		//transformation, the village above the dungeon with its shop, the treasure hunt and the dungeon doctor
+		add( "Transformation PD", "Surface town", SurfaceTownLevel::new );
 
 		//Tower PD, the tower defense arenas. Each one expects the floor number it had in the mod, see towerArena
 		add( "Tower PD", "Arena 0, Testing pathway", towerArena( Arena0::new ) );

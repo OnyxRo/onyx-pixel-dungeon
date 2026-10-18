@@ -276,6 +276,12 @@ public class ModRoster {
 		add( "transformation", GoldBoss.class, 0, 1, 99 );
 		add( "transformation", GreatShoper.class, 0, 1, 99 );
 		add( "transformation", MyriadBlackShadow.class, 0, 1, 99 );
+		//transformation, the surface town folk and the two heralds of the mod's last fights, sandbox only
+		add( "transformation", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.GreatImp.class, 0, 1, 99 );
+		add( "transformation", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.ShopBoss.class, 0, 1, 99 );
+		add( "transformation", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Dongyusangyu.class, 0, 1, 99 );
+		add( "transformation", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.DungeonDoctor.class, 0, 1, 99 );
+		add( "transformation", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.SurfaceShopkeeper.class, 0, 1, 99 );
 		//Pixel Spacebase. No worlds yet (its art is being redrawn), so weight 0, sandbox and tests only
 		add( "spacebase", BithAcolyte.class, 0, 1, 99 );
 		add( "spacebase", ConfusedShapeshifter.class, 0, 1, 99 );

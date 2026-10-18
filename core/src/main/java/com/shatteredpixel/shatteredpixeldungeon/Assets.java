@@ -125,6 +125,11 @@ public class Assets {
 		public static final String TALENT_ICONS     = "interfaces/talent_icons.png";
 		//transformation
 		public static final String TALENT_ICONS_TRANSFORMATION = "interfaces/transformation/talent_icons.png";
+		public static final String TILES_SURFACE_LUSH   = "environment/transformation/tiles_surface_lush.png";
+		public static final String TILES_SURFACE_WINTER = "environment/transformation/tiles_surface_winter.png";
+		public static final String WATER_SURFACE_LUSH   = "environment/transformation/water_surface_lush.png";
+		public static final String WATER_SURFACE_WINTER = "environment/transformation/water_surface_winter.png";
+		public static final String DONGYUSANGYU = "sprites/transformation/dongyusangyu.png";
 		public static final String TALENT_BUTTON    = "interfaces/talent_button.png";
 
 		public static final String HERO_ICONS       = "interfaces/hero_icons.png";
