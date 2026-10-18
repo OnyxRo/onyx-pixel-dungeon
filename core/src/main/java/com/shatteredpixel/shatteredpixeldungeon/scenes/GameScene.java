@@ -852,6 +852,9 @@ public class GameScene extends PixelScene {
 		if (!invVisible) toggleInvPane();
 		fadeIn();
 
+		//transformation, the Cursed talents challenge offers a negative talent on some floors
+		com.shatteredpixel.shatteredpixeldungeon.windows.WndNegative.showIfNeeded();
+
 		//re-show WndResurrect if needed
 		if (!Dungeon.hero.isAlive()){
 			//check if hero has an unblessed ankh

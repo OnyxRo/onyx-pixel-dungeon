@@ -90,8 +90,10 @@ public class PoolRoom extends SpecialRoom {
 		
 		level.addItemToSpawn( new PotionOfInvisibility() );
 		
-		for (int i=0; i < NPIRANHAS; i++) {
-			Piranha piranha = Piranha.random();
+		//Transformation PD, Fishing Time +2 adds a fish, Land Swimming changes them
+		int fish = NPIRANHAS + (com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.fishingTime() == 2 ? 1 : 0);
+		for (int i=0; i < fish; i++) {
+			com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob piranha = com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.poolFish();
 			do {
 				piranha.pos = level.pointToCell(random());
 			} while (level.map[piranha.pos] != Terrain.WATER|| level.findMob( piranha.pos ) != null);

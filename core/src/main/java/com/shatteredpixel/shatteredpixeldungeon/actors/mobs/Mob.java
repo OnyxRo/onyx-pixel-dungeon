@@ -1018,6 +1018,7 @@ public abstract class Mob extends Char {
 		if (Dungeon.hero != null && alignment == Char.Alignment.ALLY && Dungeon.hero.hasTalent(Talent.EFFICIENT_ORDER)){
 			speed *= 1.15f+0.15f*Dungeon.hero.pointsInTalent(Talent.EFFICIENT_ORDER); //Transformation PD, the DM400
 		}
+		speed *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.mobSpeed(this);
 		return speed * AscensionChallenge.enemySpeedModifier(this);
 	}
 
@@ -1103,7 +1104,7 @@ public abstract class Mob extends Char {
 
 				AscensionChallenge.processEnemyKill(this);
 				
-				int exp = Dungeon.hero.lvl <= maxLvl ? EXP : 0;
+				int exp = Dungeon.hero.lvl <= maxLvl + com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.fastBreak() ? com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.bonusExp(EXP) : 0;
 
 				//during ascent, under-levelled enemies grant 10 xp each until level 30
 				// after this enemy kills which reduce the amulet curse still grant 10 effective xp
@@ -1159,6 +1160,10 @@ public abstract class Mob extends Char {
 			Dungeon.hero.HP = com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfLife.lifeStealVal(HT);
 			Dungeon.hero.sprite.emitter().burst( com.shatteredpixel.shatteredpixeldungeon.effects.Speck.factory(com.shatteredpixel.shatteredpixeldungeon.effects.Speck.HEALING), 1 );
 		}
+
+		//Transformation PD talent catalog, undead and demons may refuse to die
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.preventsDeath(this, cause)) return;
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onMobDie(this, cause);
 
 		//Transformation PD, the Friar's rewards and kill talents
 		if (cause == Dungeon.hero && alignment == Alignment.ENEMY){
@@ -1288,7 +1293,7 @@ public abstract class Mob extends Char {
 			gold.doPickUp(Dungeon.hero);
 		}
 
-		if (Dungeon.hero.lvl > maxLvl + 2) return;
+		if (Dungeon.hero.lvl > maxLvl + 2 + com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.fastBreak()) return;
 
 		MasterThievesArmband.StolenTracker stolen = buff(MasterThievesArmband.StolenTracker.class);
 		if (stolen == null || !stolen.itemWasStolen()) {
@@ -1516,6 +1521,7 @@ public abstract class Mob extends Char {
 		}
 
 		protected void awaken( boolean enemyInFOV ){
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onMobAwaken(Mob.this);
 			if (enemyInFOV) {
 				enemySeen = true;
 				notice();

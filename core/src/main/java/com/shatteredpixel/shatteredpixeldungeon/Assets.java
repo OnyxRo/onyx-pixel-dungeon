@@ -123,6 +123,8 @@ public class Assets {
 		public static final String BUFFS_LARGE      = "interfaces/large_buffs.png";
 
 		public static final String TALENT_ICONS     = "interfaces/talent_icons.png";
+		//transformation
+		public static final String TALENT_ICONS_TRANSFORMATION = "interfaces/transformation/talent_icons.png";
 		public static final String TALENT_BUTTON    = "interfaces/talent_button.png";
 
 		public static final String HERO_ICONS       = "interfaces/hero_icons.png";
@@ -479,6 +481,7 @@ public class Assets {
 		public static final String NINJA = "splashes/ninja.png"; //ported, transformation
 		public static final String DM400 = "splashes/dm400.png"; //ported, transformation
 		public static final String PRINCESS = "splashes/princess.png"; //ported, transformation
+		public static final String FREEMAN = "splashes/freeman.png"; //transformation
 		public static final String SUMMONER = "splashes/summoner.jpg"; //ported, ryuse
 		public static final String SORCERESS = "splashes/sorceress.png"; //ported, ryuse, the Summoner's other picture
 
@@ -845,6 +848,7 @@ public class Assets {
 		public static final String NINJA = "sprites/ninja.png"; //ported, transformation
 		public static final String DM400 = "sprites/dm400.png"; //ported, transformation
 		public static final String PRINCESS = "sprites/princess.png"; //ported, transformation
+		public static final String FREEMAN = "sprites/freeman.png"; //transformation
 		public static final String SUMMONER = "sprites/summoner.png"; //ported, ryuse
 		public static final String VIKING = "sprites/viking.png"; //ported, dragonic
 		public static final String DRAGONKNIGHT = "sprites/dragonknight.png"; //ported, dragonic

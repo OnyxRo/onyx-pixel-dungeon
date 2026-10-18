@@ -75,6 +75,7 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 		}
 		curUser.sprite.emitter().start(Speck.factory(Speck.CHANGE), 0.2f, 10);
 		Transmuting.show(curUser, oldTalent, newTalent);
+		com.shatteredpixel.shatteredpixeldungeon.Badges.validateFreemanUnlock(); //transformation
 
 		if (Dungeon.hero.hasTalent(newTalent)) {
 			Talent.onTalentUpgraded(Dungeon.hero, newTalent);
@@ -192,6 +193,29 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 			} else {
 				hide();
 			}
+		}
+
+		//Transformation PD, the talent catalog. A few talents of this tier from the common pool, the kind the
+		//player asked for shows up six times as often
+		public WndMetamorphReplace(Talent replacing, int tier, Talent.TalentType preferred){
+			super();
+
+			if (!identifiedByUse && curItem instanceof ScrollOfMetamorphosis && !com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.moreChance()) {
+				curItem.detach(curUser.belongings.backpack);
+			}
+			identifiedByUse = false;
+
+			INSTANCE = this;
+
+			this.replacing = replacing;
+			this.tier = tier;
+
+			LinkedHashMap<Talent, Integer> options = new LinkedHashMap<>();
+			for (Talent t : com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.metamorphChoices(Dungeon.hero, tier, preferred)){
+				options.put(t, Dungeon.hero.pointsInTalent(replacing));
+			}
+			replaceOptions = options;
+			setup(replacing, tier, options);
 		}
 
 		public WndMetamorphReplace(Talent replacing, int tier){

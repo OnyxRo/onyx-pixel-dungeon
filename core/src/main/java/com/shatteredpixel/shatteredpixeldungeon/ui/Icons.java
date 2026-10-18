@@ -524,6 +524,8 @@ public enum Icons {
 				return new ItemSprite(ItemSpriteSheet.ARTIFACT_TOOL);
 			case PRINCESS:
 				return new ItemSprite(ItemSpriteSheet.RING_KING);
+			case FREEMAN:
+				return new ItemSprite(ItemSpriteSheet.SPECIAL_PACKAGE);
 			default:
 				return null;
 		}

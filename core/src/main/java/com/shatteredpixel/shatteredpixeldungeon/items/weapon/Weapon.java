@@ -407,7 +407,7 @@ abstract public class Weapon extends KindOfWeapon {
 
 	@Override
 	public int reachFactor(Char owner) {
-		int reach = RCH + (prefix == com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix.LONG ? 1 : 0);
+		int reach = RCH + (prefix == com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix.LONG ? 1 : 0) + com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.reachBonus(owner);
 		if (augment == Augment.MAGIC) {
 			reach += magicReachBonus(RCH);
 		}

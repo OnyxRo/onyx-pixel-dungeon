@@ -35,8 +35,18 @@ public class TalentIcon extends Image {
 		this(talent.icon());
 	}
 
+	//Transformation PD's talent catalog, icons from 4096 up come from the mod's own sheet
+	public static final int TRANSFORMATION_BASE = 4096;
+	private static TextureFilm transFilm;
+
 	public TalentIcon(int icon){
-		super( Assets.Interfaces.TALENT_ICONS );
+		super( icon >= TRANSFORMATION_BASE ? Assets.Interfaces.TALENT_ICONS_TRANSFORMATION : Assets.Interfaces.TALENT_ICONS );
+
+		if (icon >= TRANSFORMATION_BASE){
+			if (transFilm == null) transFilm = new TextureFilm(texture, SIZE, SIZE);
+			frame(transFilm.get(icon - TRANSFORMATION_BASE));
+			return;
+		}
 
 		if (film == null) film = new TextureFilm(texture, SIZE, SIZE);
 

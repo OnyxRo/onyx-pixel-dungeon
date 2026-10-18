@@ -401,6 +401,7 @@ public class Hero extends Char {
 		if (subClass.is(HeroSubClass.DARKSLIME)){
 			HT *= 0.8f;
 		}
+		HT = TransformationTalents.maxHP(this, HT); //Transformation PD talent catalog
 		if (HT < 1) HT = 1;
 
 		if (boostHP){
@@ -424,6 +425,7 @@ public class Hero extends Char {
 		if (hasTalent(Talent.STRONGMAN)){
 			strBonus += (int)Math.floor(STR * (0.03f + 0.05f*pointsInTalent(Talent.STRONGMAN)));
 		}
+		strBonus += TransformationTalents.strBonus(this); //Transformation PD talent catalog
 
 		return STR + strBonus;
 	}
@@ -509,6 +511,7 @@ public class Hero extends Char {
 		subClass = bundle.getEnum( SUBCLASS, HeroSubClass.class );
 		armorAbility = (ArmorAbility)bundle.get( ABILITY );
 		Talent.restoreTalentsFromBundle( bundle, this );
+		TransformationTalents.onRestore( this );
 		
 		attackSkill = bundle.getInt( ATTACK );
 		defenseSkill = bundle.getInt( DEFENSE );
@@ -550,8 +553,13 @@ public class Hero extends Char {
 	}
 
 	//Transformation PD, the points put in without counting anything that borrows them
-	//Transformation PD's negative talents (a pool a hero can be cursed with) are not here, so nobody has any
+	//Transformation PD's negative talents, the fewer points put in, the stronger the curse (2 points cancel it)
 	public int pointsNegative( Talent talent ){
+		if (talent == null) return 0;
+		for (LinkedHashMap<Talent, Integer> tier : talents){
+			Integer pts = tier.get(talent);
+			if (pts != null) return Math.max(0, talent.maxPoints() - pts);
+		}
 		return 0;
 	}
 
@@ -598,7 +606,7 @@ public class Hero extends Char {
 
 	public int talentPointsAvailable(int tier){
 		if (lvl < (Talent.tierLevelThresholds[tier] - 1)
-			|| (tier == 3 && subClass == HeroSubClass.NONE)
+			|| (tier == 3 && subClass == HeroSubClass.NONE && heroClass != HeroClass.FREEMAN)
 			|| (tier == 4 && armorAbility == null)) {
 			return 0;
 		} else if (lvl >= Talent.tierLevelThresholds[tier+1]){
@@ -610,7 +618,7 @@ public class Hero extends Char {
 
 	public int bonusTalentPoints(int tier){
 		if (lvl < (Talent.tierLevelThresholds[tier]-1)
-				|| (tier == 3 && subClass == HeroSubClass.NONE)
+				|| (tier == 3 && subClass == HeroSubClass.NONE && heroClass != HeroClass.FREEMAN)
 				|| (tier == 4 && armorAbility == null)) {
 			return 0;
 		} else if (buff(PotionOfDivineInspiration.DivineInspirationTracker.class) != null
@@ -826,9 +834,10 @@ public class Hero extends Char {
 		}
 		
 		if (!RingOfForce.fightingUnarmed(this)) {
+			accuracy *= TransformationTalents.accuracy(this, target); //Transformation PD talent catalog
 			return Math.max(1, Math.round(attackSkill * accuracy * wep.accuracyFactor( this, target )));
 		} else {
-			return Math.max(1, Math.round(attackSkill * accuracy));
+			return Math.max(1, Math.round(attackSkill * accuracy * TransformationTalents.accuracy(this, target)));
 		}
 	}
 	
@@ -884,6 +893,8 @@ public class Hero extends Char {
 			evasion *= 1f + 0.1f * pointsInTalent(Talent.HUMAN_GLORY);
 		}
 		
+		evasion += TransformationTalents.evasionBonus(this); //Transformation PD talent catalog
+
 		if (paralysed > 0) {
 			evasion /= 2;
 		}
@@ -995,6 +1006,7 @@ public class Hero extends Char {
 		if (buff(Perks.PerkHoldFast.class) != null){
 			dr += buff(Perks.PerkHoldFast.class).armorBonus();
 		}
+		dr = TransformationTalents.armor(this, dr); //Transformation PD talent catalog
 		
 		return dr;
 	}
@@ -1094,6 +1106,7 @@ public class Hero extends Char {
 			speed *= (2f + 0.25f*pointsInTalent(Talent.GROWING_POWER));
 		}
 
+		speed *= TransformationTalents.speed(this); //Transformation PD talent catalog
 		speed = AscensionChallenge.modifyHeroSpeed(speed);
 		
 		return speed;
@@ -1447,6 +1460,7 @@ public class Hero extends Char {
 
 		if (getCloser( action.dst )) {
 			canSelfTrample = false;
+			TransformationTalents.onMove(this); //Transformation PD talent catalog
 			return true;
 
 		//Hero moves in place if there is grass to trample
@@ -2000,6 +2014,7 @@ public class Hero extends Char {
 	
 	public void rest( boolean fullRest ) {
 		Dungeon.level.onHeroWaited(this);
+		TransformationTalents.onRest(this); //Transformation PD talent catalog
 		spendAndNextConstant( TIME_TO_REST );
 		if (perks.contains(Perks.Perk.HOLD_FAST)){
 			Buff.affect(this, Perks.PerkHoldFast.class).pos = pos;
@@ -2113,6 +2128,7 @@ public class Hero extends Char {
 
 		//Transformation PD, the Slime Girl
 		damage = Talent.onSlimeDefense( this, enemy, damage );
+		damage = TransformationTalents.onDefenseProc( this, enemy, damage );
 		
 		if (damage > 0 && subClass == HeroSubClass.BERSERKER){
 			Berserk berserk = Buff.affect(this, Berserk.class);
@@ -2678,6 +2694,7 @@ public class Hero extends Char {
 			if (lvl < MAX_LEVEL) {
 				lvl++;
 				levelUp = true;
+				TransformationTalents.onLevelUp(this); //Transformation PD talent catalog
 				
 				if (buff(ElixirOfMight.HTBoost.class) != null){
 					buff(ElixirOfMight.HTBoost.class).onLevelUp();

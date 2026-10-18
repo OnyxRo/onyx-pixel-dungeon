@@ -59,7 +59,9 @@ public class TalentButton extends Button {
 		INFO,
 		UPGRADE,
 		METAMORPH_CHOOSE,
-		METAMORPH_REPLACE
+		METAMORPH_REPLACE,
+		//transformation, picking a negative talent for the Cursed talents challenge
+		NEGATIVE
 	}
 
 	public TalentButton(int tier, Talent talent, int points, Mode mode){
@@ -148,7 +150,12 @@ public class TalentButton extends Button {
 					if (ScrollOfMetamorphosis.WndMetamorphChoose.INSTANCE != null){
 						ScrollOfMetamorphosis.WndMetamorphChoose.INSTANCE.hide();
 					}
-					GameScene.show(new ScrollOfMetamorphosis.WndMetamorphReplace(talent, tier));
+					//Transformation PD, the Freeman and catalog talents draw from the talent catalog
+					if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.usesCatalog(Dungeon.hero, talent)){
+						com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.chooseKind(talent, tier);
+					} else {
+						GameScene.show(new ScrollOfMetamorphosis.WndMetamorphReplace(talent, tier));
+					}
 				}
 			});
 		} else if (mode == Mode.METAMORPH_REPLACE && Dungeon.hero != null && Dungeon.hero.isAlive()) {
@@ -209,6 +216,19 @@ public class TalentButton extends Button {
 						ScrollOfMetamorphosis.WndMetamorphReplace.INSTANCE.hide();
 					}
 
+				}
+			});
+		} else if (mode == Mode.NEGATIVE && Dungeon.hero != null && Dungeon.hero.isAlive()) {
+			toAdd = new WndInfoTalent(talent, pointsInTalent, new WndInfoTalent.TalentButtonCallback() {
+				@Override
+				public String prompt() {
+					return Messages.titleCase(Messages.get(com.shatteredpixel.shatteredpixeldungeon.windows.WndNegative.class, "choose"));
+				}
+				@Override
+				public void call() {
+					if (com.shatteredpixel.shatteredpixeldungeon.windows.WndNegative.INSTANCE != null){
+						com.shatteredpixel.shatteredpixeldungeon.windows.WndNegative.INSTANCE.select(talent);
+					}
 				}
 			});
 		} else {
