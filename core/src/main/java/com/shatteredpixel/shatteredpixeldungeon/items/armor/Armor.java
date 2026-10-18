@@ -473,10 +473,11 @@ public class Armor extends EquipableItem {
 		}
 
 		int max = tier * (2 + lvl) + augment.defenseFactor(lvl);
+		int extra = com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.armorMax(this); //transformation, Heavy Application and Thickened Armor
 		if (lvl > max){
-			return ((lvl - max)+1)/2;
+			return ((lvl - max)+1)/2 + extra;
 		} else {
-			return max;
+			return max + extra;
 		}
 	}
 

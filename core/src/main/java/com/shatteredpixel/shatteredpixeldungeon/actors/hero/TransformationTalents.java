@@ -145,7 +145,8 @@ public class TransformationTalents {
 	private static void dropAtHero(Item item){
 		Hero h = Dungeon.hero;
 		if (h == null || Dungeon.level == null || item == null) return;
-		Dungeon.level.drop(item, h.pos).sprite.drop();
+		com.shatteredpixel.shatteredpixeldungeon.items.Heap heap = Dungeon.level.drop(item, h.pos);
+		if (heap.sprite != null) heap.sprite.drop();
 	}
 
 	private static boolean negativeDebuff(Buff b){
@@ -231,9 +232,6 @@ public class TransformationTalents {
 		if (talent == Talent.MARTIAL_TRAIN){
 			Buff.affect(hero, MeleeWeapon.Charger.class);
 		}
-		if (talent == Talent.TRAP_MASTER){
-			new ReclaimTrap().collect();
-		}
 		if (talent == Talent.EXP_SOLID && pts > 0 && hero.lvl > 1){
 			int down = Math.min(1, hero.lvl - 1);
 			hero.lvl -= down;
@@ -265,10 +263,6 @@ public class TransformationTalents {
 				else if (pts == 2) give = new InfernalBrew().quantity(2);
 				else give = new PotionOfDragonsBreath().quantity(3);
 				break;
-			case WULEI_ZHENGFA: if (pts == 1) give = new WandOfLightning().identify(); break;
-			case ERODING_SOUL: if (pts == 1) give = new WandOfCorruption().identify(); break;
-			case LIGHT_SHOCK: if (pts == 1) give = new WandOfPrismaticLight().identify(); break;
-			case SWIFT_CHURCH: if (pts == 1) give = new WandOfRegrowth().identify(); break;
 			case PERSONAL_ATTACK: give = new ScrollOfRage(); break;
 			case FLASH_GENIUS: give = new StoneOfIntuition(); break;
 			case COLLECT_PLANTS: times = pts + 2; break;
@@ -381,7 +375,7 @@ public class TransformationTalents {
 	public static void onMove(Hero h){
 		NoSleep ns = h.buff(NoSleep.class);
 		if (ns != null) ns.detach();
-		if (h.pointsInTalent(Talent.EXPLORATION_INTUITION) > Random.Int(2)) h.search(false);
+		if (h.fieldOfView != null && h.pointsInTalent(Talent.EXPLORATION_INTUITION) > Random.Int(2)) h.search(false);
 		if (h.pointsNegative(Talent.WINTER_SWIMMING) > Random.Int(20) && Dungeon.level.water[h.pos]) Buff.affect(h, Chill.class, 3);
 		if (h.pointsNegative(Talent.BURNOUT_CHAMPION) > Random.Int(50)) Buff.affect(h, Burning.class).reignite(h, 3);
 		if (h.pointsNegative(Talent.HAND_SLIP) > 0) Buff.prolong(h, HandSlipVulnerability.class, 1f);
@@ -726,7 +720,6 @@ public class TransformationTalents {
 		if (h == null || mob instanceof NPC) return damage;
 		if (h.pointsNegative(Talent.BAT_SERUM) > 0 && mob.alignment == Char.Alignment.ENEMY) mob.HP = Math.min(mob.HT, mob.HP + (int)(damage*0.2f*h.pointsNegative(Talent.BAT_SERUM)));
 		if (h.pointsNegative(Talent.DUMP_TRUCK) > 0 && mob.properties().contains(Char.Property.LARGE)) damage = Math.round(damage*(1f + 0.5f*h.pointsNegative(Talent.DUMP_TRUCK)));
-		if (h.pointsNegative(Talent.PHASECLAW) == 2 && Random.Int(10) == 1) Buff.affect(enemy, Vulnerable.class, 3);
 		if (enemy == h && h.pointsNegative(Talent.DISASTER_CURSE) > Random.Int(4)){
 			Buff.affect(enemy, Slow.class, 1);
 			Buff.affect(enemy, Weakness.class, 1);
@@ -942,7 +935,6 @@ public class TransformationTalents {
 			int turns = (int)(dmg*(0.025f + 0.025f*h.pointsInTalent(Talent.STATIC_LIGHT)));
 			if (turns > 0) Buff.affect(target, Paralysis.class, turns);
 		}
-		if (h.pointsInTalent(Talent.MARKSMAN) > 1 && wand instanceof WandOfMagicMissile) dmg += 3;
 		if (h.hasTalent(Talent.EAT_MIND) && h.buff(Hunger.class) != null) h.buff(Hunger.class).satisfy((0.1f + 0.1f*h.pointsInTalent(Talent.EAT_MIND))*dmg);
 		return dmg;
 	}
@@ -1064,10 +1056,6 @@ public class TransformationTalents {
 		if (h.hasTalent(Talent.WEIRD_THROW) && enemy.isAlive()) Buff.affect(enemy, Terror.class, h.pointsInTalent(Talent.WEIRD_THROW));
 	}
 
-	public static boolean equipOnPickup(Hero h){
-		return h.pointsNegative(Talent.BE_INCONSTANT) > Random.Int(10) && h.subClass != HeroSubClass.CHAMPION;
-	}
-
 	public static void onRageRead(Mob mob){
 		Hero h = hero();
 		if (h == null || !h.hasTalent(Talent.PERSONAL_ATTACK)) return;
@@ -1100,12 +1088,6 @@ public class TransformationTalents {
 	public static void onBombHit(Char ch){
 		Hero h = hero();
 		if (h != null && ch != h && h.hasTalent(Talent.SHOCK_BOMB) && ch.isAlive()) Buff.affect(ch, Paralysis.class, h.pointsInTalent(Talent.SHOCK_BOMB));
-	}
-
-	//0 normal, 1 needs two scrolls, 2 keeps the curse enchantment
-	public static int eternalCurse(){
-		int e = n(Talent.ETERNAL_CURSE);
-		return e == 2 ? 1 : e == 1 ? 2 : 0;
 	}
 
 	public static int extraDivination(){
@@ -1207,20 +1189,6 @@ public class TransformationTalents {
 		return p(Talent.MIRACLE_ALCHEMY) > Random.Int(5);
 	}
 
-	public static int reclaimBonus(){
-		int t = p(Talent.TRAP_MASTER);
-		return t > 0 && Random.Int(2 + t) != 0 ? 1 : 0;
-	}
-
-	public static float artifactChargeFactor(Talent t){
-		Hero h = hero();
-		if (h == null) return 1f;
-		if (t == Talent.STRENGTH_ARMBAND) return h.hasTalent(t) ? 1.2f : 1f;
-		if (t == Talent.STRENGTH_CLOAK || t == Talent.TIME_SAND) return h.pointsInTalent(t) == 3 ? 1.2f : 1f;
-		if (t == Talent.STRENGTH_BOOK) return h.pointsInTalent(t) == 2 ? 1.2f : 1f;
-		return 1f;
-	}
-
 	//---- metamorphosis from the catalog -------------------------------------------------------
 
 	public static boolean usesCatalog(Hero h, Talent t){
@@ -1254,6 +1222,7 @@ public class TransformationTalents {
 			pool.add(t);
 			if (!strict && t.type() == preferred) for (int i = 0; i < 5; i++) pool.add(t);
 		}
+		if (pool.isEmpty() && strict) return metamorphChoices(h, tier, Talent.TalentType.OTHER);
 		int count = 4;
 		if (h.pointsInTalent(Talent.MORE_TALENT) > Random.Int(2)) count++;
 		count -= h.pointsNegative(Talent.FATE_DECISION);

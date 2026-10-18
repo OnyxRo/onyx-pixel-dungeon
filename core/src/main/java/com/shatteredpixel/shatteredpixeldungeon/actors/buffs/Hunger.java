@@ -81,7 +81,10 @@ public class Hunger extends Buff implements Hero.Doom {
 				partialDamage += target.HT/1000f;
 
 				if (partialDamage > 1){
-					target.damage( (int)partialDamage, this);
+					//transformation, Chocolate Coins, Unbear Hunger and the hunger curses
+					if (!com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onStarveDamage(hero)) {
+						target.damage( com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.starveDamage(hero, (int)partialDamage), this);
+					}
 					partialDamage -= (int)partialDamage;
 				}
 				
@@ -97,14 +100,14 @@ public class Hunger extends Buff implements Hero.Doom {
 				}
 				hungerDelay *= com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.hungerDelay(target);
 
-				float newLevel = level + (1f/hungerDelay);
+				float newLevel = level + (1f/hungerDelay) * com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.hungerRate(hero); //transformation, Eater
 				//Shittened PD's Acceleration and Lavage make the stomach run
 				if (target.buff(Acceleration.class) != null) newLevel += 4f / hungerDelay;
 				if (target.buff(Lavage.class) != null) newLevel += 20f / hungerDelay;
 				if (newLevel >= STARVING) {
 
 					GLog.n( Messages.get(this, "onstarving") );
-					hero.damage( 1, this );
+					if (!com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onStarveDamage(hero)) hero.damage( com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.starveDamage(hero, 1), this );
 					if (hero.heroClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.FRIAR) Reason.loseReason(target, 2);
 
 					hero.interrupt();

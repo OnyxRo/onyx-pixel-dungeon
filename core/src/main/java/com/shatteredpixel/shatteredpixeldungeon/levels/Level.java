@@ -1581,6 +1581,7 @@ public abstract class Level implements Bundlable {
 					viewDist *= 1.25f;
 				}
 				viewDist *= EyeOfNewt.visionRangeMultiplier();
+				viewDist *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.viewDistanceFactor((Hero) c); //transformation, Shortsighted
 				viewDist = Math.max(1, viewDist + com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.viewDelta((Hero) c));
 			}
 			

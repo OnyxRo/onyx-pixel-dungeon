@@ -65,6 +65,7 @@ public class Gold extends Item {
 		Dungeon.gold += quantity;
 		Statistics.goldCollected += quantity;
 		Badges.validateGoldCollected();
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onGoldPickedUp(hero); //transformation
 
 		GameScene.pickUp( this, pos );
 		hero.sprite.showStatusWithIcon( CharSprite.NEUTRAL, Integer.toString(quantity), FloatingText.GOLD );

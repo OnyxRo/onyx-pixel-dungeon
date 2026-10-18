@@ -46,6 +46,7 @@ public class Invisibility extends FlavourBuff {
 	public boolean attachTo( Char target ) {
 		if (super.attachTo( target )) {
 			target.invisible++;
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onInvisible(target); //transformation, Invisibility Shadows
 			if (target instanceof Hero && ((Hero) target).subClass == HeroSubClass.ASSASSIN){
 				Buff.affect(target, Preparation.class);
 			}
@@ -90,6 +91,7 @@ public class Invisibility extends FlavourBuff {
 	public static void dispel(Char ch){
 
 		for ( Buff invis : ch.buffs( Invisibility.class )){
+			if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.keepsInvisibility(ch)) break; //transformation, Cicada Dance
 			invis.detach();
 		}
 		CloakOfShadows.cloakStealth cloakBuff = ch.buff( CloakOfShadows.cloakStealth.class );

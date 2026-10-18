@@ -169,6 +169,7 @@ public class Statue extends Mob {
 	
 	@Override
 	public void die( Object cause ) {
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onStatueDie(this, this instanceof com.shatteredpixel.shatteredpixeldungeon.levels.traps.GuardianTrap.Guardian); //transformation, Wealth Statue
 		//silently duplicated in this case, so don't drop original weapon
 		if (buff(Corrupting.CorruptingTracker.class) == null) {
 			weapon.identify(false);

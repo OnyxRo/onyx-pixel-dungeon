@@ -246,6 +246,7 @@ public class CrystalPathRoom extends SpecialRoom {
 		level.addItemToSpawn( new CrystalKey( Dungeon.depth ) );
 		level.addItemToSpawn( new CrystalKey( Dungeon.depth ) );
 		level.addItemToSpawn( new CrystalKey( Dungeon.depth ) );
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.wantAll(1)) level.addItemToSpawn( new CrystalKey( Dungeon.depth ) ); //transformation, Want All
 
 		entrance().set( Door.Type.REGULAR );
 

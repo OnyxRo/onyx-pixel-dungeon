@@ -147,6 +147,7 @@ public class Item implements Bundlable {
 
 	public boolean doPickUp(Hero hero, int pos) {
 		if (collect( hero.belongings.backpack )) {
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onItemPickedUp(hero); //transformation
 			
 			GameScene.pickUp( this, pos );
 			Sample.INSTANCE.play( Assets.Sounds.ITEM );
@@ -217,6 +218,12 @@ public class Item implements Bundlable {
 	}
 	
 	protected void onThrow( int cell ) {
+		//transformation, Strong Throw, Weird Throw and Word Stun
+		if (curUser != null && this instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon){
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onMeleeThrown(curUser, (com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon) this, cell);
+		} else if (curUser != null && this instanceof com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll){
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onScrollThrown(curUser, cell);
+		}
 		Heap heap = Dungeon.level.drop( this, cell );
 		if (!heap.isEmpty()) {
 			heap.sprite.drop( cell );
@@ -426,9 +433,9 @@ public class Item implements Bundlable {
 		//only the hero can be affected by Degradation
 		if (Dungeon.hero != null && Dungeon.hero.buff( Degrade.class ) != null
 			&& (isEquipped( Dungeon.hero ) || Dungeon.hero.belongings.contains( this ))) {
-			return Dungeon.hero.buff(Degrade.class).reduceLevelFor(level());
+			return Dungeon.hero.buff(Degrade.class).reduceLevelFor(level()) + com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.itemLevelBonus(this);
 		} else {
-			return level();
+			return level() + com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.itemLevelBonus(this); //transformation, Protect Curse and Mal Curse
 		}
 	}
 
@@ -764,7 +771,7 @@ public class Item implements Bundlable {
 	}
 
 	public float pickupDelay(){
-		return TIME_TO_PICK_UP;
+		return com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.pickupDelay(TIME_TO_PICK_UP); //transformation, Auto Pick
 	}
 	
 	protected static Hero curUser = null;

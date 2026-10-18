@@ -118,8 +118,9 @@ public class Imp extends NPC {
 	
 	@Override
 	public boolean interact(Char c) {
-		
+
 		sprite.turnTo( pos, Dungeon.hero.pos );
+		if (c == Dungeon.hero) com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onNpcInteract(this); //transformation, Dungeon Hero
 
 		if (c != Dungeon.hero){
 			return true;

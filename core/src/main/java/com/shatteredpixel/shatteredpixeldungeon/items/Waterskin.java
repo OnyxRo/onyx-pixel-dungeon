@@ -40,6 +40,11 @@ public class Waterskin extends Item {
 
 	private static final int MAX_VOLUME	= 20;
 
+	//transformation, Military Waterskin
+	private static int maxVolume(){
+		return MAX_VOLUME + com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.waterskinBonus();
+	}
+
 	private static final String AC_DRINK	= "DRINK";
 
 	private static final float TIME_TO_DRINK = 1f;
@@ -117,6 +122,7 @@ public class Waterskin extends Item {
 				if (Dewdrop.consumeDew(dropsToConsume, hero, true)){
 					volume -= dropsToConsume;
 					Catalog.countUses(Dewdrop.class, dropsToConsume);
+					com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onDewDrunk(hero, dropsToConsume); //transformation
 
 					hero.spend(TIME_TO_DRINK);
 					hero.busy();
@@ -168,15 +174,15 @@ public class Waterskin extends Item {
 	}
 
 	public boolean isFull() {
-		return volume >= MAX_VOLUME;
+		return volume >= maxVolume();
 	}
 
 	public void collectDew( Dewdrop dew ) {
 
 		GLog.i( Messages.get(this, "collected") );
 		volume += dew.quantity;
-		if (volume >= MAX_VOLUME) {
-			volume = MAX_VOLUME;
+		if (volume >= maxVolume()) {
+			volume = maxVolume();
 			GLog.p( Messages.get(this, "full") );
 		}
 
@@ -184,13 +190,13 @@ public class Waterskin extends Item {
 	}
 
 	public void fill() {
-		volume = MAX_VOLUME;
+		volume = maxVolume();
 		updateQuickslot();
 	}
 
 	@Override
 	public String status() {
-		return Messages.format( TXT_STATUS, volume, MAX_VOLUME );
+		return Messages.format( TXT_STATUS, volume, maxVolume() );
 	}
 
 }

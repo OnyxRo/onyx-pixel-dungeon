@@ -64,7 +64,7 @@ public class ScrollOfDivination extends ExoticScroll {
 		int total = potions.size() + scrolls.size() + rings.size();
 		
 		ArrayList<Item> IDed = new ArrayList<>();
-		int left = 4;
+		int left = 4 + com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.extraDivination(); //transformation, Predictive Lover
 		
 		float[] baseProbs = new float[]{3, 3, 3};
 		float[] probs = baseProbs.clone();

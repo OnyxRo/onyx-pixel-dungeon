@@ -211,7 +211,7 @@ public class Bomb extends Item {
 					continue;
 				}
 
-				int dmg = Random.NormalIntRange(4 + Dungeon.scalingDepth(), 12 + 3*Dungeon.scalingDepth());
+				int dmg = com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.bombDamage(Random.NormalIntRange(4 + Dungeon.scalingDepth(), 12 + 3*Dungeon.scalingDepth()));
 				dmg -= ch.drRoll();
 
 				if (subBomb) dmg = (int)(dmg * 0.33f);
@@ -220,6 +220,7 @@ public class Bomb extends Item {
 					//the Void trap bombs only hurt the hero, so they cannot kill the wraiths
 					if (subBomb && ch.alignment != Dungeon.hero.alignment) {}
 					else ch.damage(dmg, this);
+					com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onBombHit(ch); //transformation, Shock Bomb
 
 					//the Zealot's Demolitionist (Devoted PD) turns the damage a bomb does into shielding
 					if (Dungeon.hero.hasTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.DEMOLITIONIST)

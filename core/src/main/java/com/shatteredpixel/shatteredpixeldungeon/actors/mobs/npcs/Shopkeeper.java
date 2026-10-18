@@ -269,6 +269,7 @@ public class Shopkeeper extends NPC {
 		if (c != Dungeon.hero) {
 			return true;
 		}
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onNpcInteract(this); //transformation, Dungeon Hero
 		Game.runOnRenderThread(new Callback() {
 			@Override
 			public void call() {

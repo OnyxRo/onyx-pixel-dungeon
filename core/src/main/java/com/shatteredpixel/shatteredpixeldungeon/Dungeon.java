@@ -427,7 +427,8 @@ public class Dungeon {
 	}
 	
 	public static Level newLevel() {
-		
+
+		if (hero != null) com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onNewFloor(hero); //transformation, Usury and Treasure Sense
 		Dungeon.level = null;
 		Actor.clear();
 		

@@ -134,6 +134,7 @@ public class Ghost extends NPC {
 	@Override
 	public boolean interact(Char c) {
 		sprite.turnTo( pos, c.pos );
+		if (c == Dungeon.hero) com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onNpcInteract(this); //transformation, Dungeon Hero
 		
 		Sample.INSTANCE.play( Assets.Sounds.GHOST );
 

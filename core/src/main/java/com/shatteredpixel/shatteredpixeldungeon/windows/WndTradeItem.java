@@ -295,8 +295,14 @@ public class WndTradeItem extends WndInfoItem {
 		if (item == null) return;
 		
 		int price = Shopkeeper.sellPrice( item );
-		Dungeon.gold -= price;
-		Catalog.countUses(Gold.class, price);
+		//transformation, Third Hand steals it and Cowboy swaps it for a stone
+		if (!com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.freePurchase()){
+			Dungeon.gold -= price;
+			Catalog.countUses(Gold.class, price);
+		}
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.purchaseBecomesStone()){
+			item = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingStone();
+		}
 		
 		if (!item.doPickUp( Dungeon.hero )) {
 			Dungeon.level.drop( item, heap.pos ).sprite.drop();

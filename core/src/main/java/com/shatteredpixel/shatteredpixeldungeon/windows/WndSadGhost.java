@@ -120,6 +120,14 @@ public class WndSadGhost extends Window {
 			((Armor) reward).inscribe(Ghost.Quest.glyph);
 		}
 		
+		//transformation, Ghost Gift hands over the weapon as well
+		if (reward instanceof Armor && Ghost.Quest.weapon != null && com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.ghostGivesBoth()){
+			Weapon w = Ghost.Quest.weapon;
+			if (Ghost.Quest.enchant != null) w.enchant(Ghost.Quest.enchant);
+			w.identify(false);
+			Dungeon.level.drop( w, ghost.pos ).sprite.drop();
+		}
+
 		reward.identify(false);
 		if (reward.doPickUp( Dungeon.hero )) {
 			GLog.i( Messages.capitalize(Messages.get(Dungeon.hero, "you_now_have", reward.name())) );

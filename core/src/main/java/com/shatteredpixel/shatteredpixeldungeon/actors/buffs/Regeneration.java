@@ -82,6 +82,8 @@ public class Regeneration extends Buff {
 
 				//Ryuse's PD helmets
 				delay *= com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.regenDelay(target);
+				//transformation, Strengthen Chalice and Weaken Chalice
+				if (chaliceLevel >= 0 && target instanceof com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero) delay *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.chaliceFactor((com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero) target);
 
 				//salt cube is turned off while regen is disabled.
 				if (target.buff(LockedFloor.class) == null) {
