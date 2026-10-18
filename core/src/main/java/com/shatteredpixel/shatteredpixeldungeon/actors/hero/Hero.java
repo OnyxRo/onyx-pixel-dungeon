@@ -553,6 +553,17 @@ public class Hero extends Char {
 		return 0;
 	}
 
+	//Transformation PD, the Duelist's weapon abilities for everyone (a package from its Dongyusangyu gives it)
+	private boolean martialMastery = false;
+
+	public void grantMartialMastery() {
+		martialMastery = true;
+	}
+
+	public boolean hasMartialMastery() {
+		return martialMastery;
+	}
+
 	public int rawTalentPoints( Talent talent ){
 		return pointsInTalent( talent );
 	}

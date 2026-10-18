@@ -170,7 +170,8 @@ public class MeleeWeapon extends Weapon {
 	public static boolean canUseWeaponAbility( Hero hero ) {
 		return hero != null
 				&& (hero.heroClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.DUELIST
-				|| hero.subClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.CHAMPION);
+				|| hero.subClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.CHAMPION
+				|| hero.hasMartialMastery());
 	}
 
 	protected String abilityName() {

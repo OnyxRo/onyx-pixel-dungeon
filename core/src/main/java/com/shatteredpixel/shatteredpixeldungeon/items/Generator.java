@@ -1005,6 +1005,10 @@ public class Generator {
 
 	}
 
+	public static boolean claimArtifact(Class<?extends Artifact> artifact) {
+		return removeArtifact(artifact);
+	}
+
 	public static boolean removeArtifact(Class<?extends Artifact> artifact) {
 		Category cat = Category.ARTIFACT;
 		for (int i = 0; i < cat.classes.length; i++){

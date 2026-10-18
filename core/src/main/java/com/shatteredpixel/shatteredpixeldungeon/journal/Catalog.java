@@ -967,6 +967,13 @@ public enum Catalog {
 		RINGS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfKing.class);
 		THROWN_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.RuneString.class);
 
+		//items ported from transformation
+		TRINKETS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TwinDemonEyes.class);
+		RINGS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.rings.ElementalResistance.class);
+		EXOTIC_SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfUpTier.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.SpecialPackage.class);
+		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCursedFlame.class);
+
 
 	}
 

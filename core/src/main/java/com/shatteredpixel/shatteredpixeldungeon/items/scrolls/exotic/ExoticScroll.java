@@ -61,6 +61,7 @@ public abstract class ExoticScroll extends Scroll {
 		exoToReg.put(ScrollOfPolymorph.class, ScrollOfTransmutation.class);
 		exoToReg.put(ScrollOfDetermination.class, ScrollOfRage.class);
 		exoToReg.put(ScrollOfMidas.class, ScrollOfTransmutation.class);
+		exoToReg.put(ScrollOfUpTier.class, ScrollOfUpgrade.class); //Transformation PD, reverse lookup only
 		regToExo.put(ScrollOfUpgrade.class, ScrollOfEnchantment.class);
 		exoToReg.put(ScrollOfEnchantment.class, ScrollOfUpgrade.class);
 

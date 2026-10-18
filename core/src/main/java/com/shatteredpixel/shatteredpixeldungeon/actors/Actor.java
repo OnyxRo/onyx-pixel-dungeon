@@ -158,6 +158,10 @@ public abstract class Actor implements Bundlable {
 
 	private static float now = 0;
 	
+	public static float absoluteTime(){
+		return now;
+	}
+
 	public static float now(){
 		return now;
 	}

@@ -190,6 +190,8 @@ public class BuffIndicator extends Component {
 	public static final int DECOY = MIND_VISION;
 	public static final int ONESWORD = WEAPON;
 	public static final int DRUNKENNESS = HEX;
+	public static final int PRECISE_LOCK = MARK;
+	public static final int CURSED_FLAME = FIRE;
 	public static final int BALANCE = BLESS;
 	public static final int INVASION = RECHARGING;
 	public static final int PARRY = ARMOR;

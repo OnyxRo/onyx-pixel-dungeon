@@ -391,6 +391,8 @@ public class ItemSpriteSheet {
 	public static final int DOGSTICK = xy(4, 60);
 	public static final int FISHSKELETON = xy(5, 60);
 	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;
+	public static final int SPECIAL_PACKAGE = xy(16, 53);
+	public static final int TRANSFORM_SPELL = xy(3, 54);
 	public static final int RING_KING = xy(13, 53);
 	public static final int RUNESTRING = xy(14, 53);
 	public static final int RUNESTRING1 = xy(15, 53);
@@ -1005,6 +1007,8 @@ public class ItemSpriteSheet {
 		assignItemRect(DOGSTICK, 11, 15);
 		assignItemRect(FISHSKELETON, 16, 16);
 		assignItemRect(WOODEN_BOOMERANG, 12, 12);
+		assignItemRect(SPECIAL_PACKAGE, 16, 14);
+		assignItemRect(TRANSFORM_SPELL, 12, 13);
 		assignItemRect(RING_KING, 10, 10);
 		assignItemRect(RUNESTRING, 15, 16);
 		assignItemRect(RUNESTRING1, 15, 16);
@@ -2077,6 +2081,7 @@ public class ItemSpriteSheet {
 		public static final int RING_EVASION    = RINGS+4;
 		public static final int RING_FORCE      = RINGS+5;
 		public static final int RING_KING       = RINGS+5; //Transformation PD, borrows the Force icon
+		public static final int WAND_CURSED_FLAME = WANDS+1; //borrows the Firebolt icon
 		public static final int RING_FUROR      = RINGS+6;
 		public static final int RING_HASTE      = RINGS+7;
 		public static final int RING_MIGHT      = RINGS+8;

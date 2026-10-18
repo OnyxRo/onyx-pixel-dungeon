@@ -63,6 +63,10 @@ public class MagesStaff extends MeleeWeapon {
 
 	public Wand wand;
 
+	public Wand wand() {
+		return wand;
+	}
+
 	public static final String AC_IMBUE = "IMBUE";
 	public static final String AC_ZAP	= "ZAP";
 

@@ -74,6 +74,7 @@ public class MagicMissile extends Emitter {
 	public static final int ELMO            = 15;
 	public static final int POISON          = 16;
 	public static final int LIGHT_MISSILE   = 17;
+	public static final int CURSED_FLAME    = FIRE; //Transformation PD, its own bolt colour
 	//Transformation PD, the alchemy spray gun
 	public static final int HEAL_MISSILE    = 18;
 	public static final int SPRAY_BASE      = 19;
