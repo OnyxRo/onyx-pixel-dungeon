@@ -23,3 +23,4 @@ spacebase|https://github.com/codefitz/Pixel-Spacebase|Pixel Spacebase, sci-fi st
 sps|https://github.com/hmdzl001/SPS-PD|SPecial Surprise PD, ported without tile sheets|0.4.1
 goblins|https://github.com/locastan/GoblinsPixelDungeonGradle|Goblins PD, ported in full except tile art|0.3.0
 deep|https://github.com/Mochiee/deep-pixel-dungeon|Deep PD, monsters and items ported, worlds waiting for art|0.4.3c
+rearranged|https://github.com/Hoto-Mocha/Re-ARranged-Pixel-Dungeon|Re-ARranged PD, port in progress|

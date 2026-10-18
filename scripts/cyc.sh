@@ -4,6 +4,6 @@
 cd "$(dirname "$0")/.."
 rm -f build/fc.sum
 bash scripts/fastjavac.sh > build/fc.log 2>&1
-python -I scripts/errsum.py build/fc.log > build/fc.tmp 2>&1
+python -I scripts/errsum.py '' build/fc.log > build/fc.tmp 2>&1
 echo done >> build/fc.tmp
 mv build/fc.tmp build/fc.sum

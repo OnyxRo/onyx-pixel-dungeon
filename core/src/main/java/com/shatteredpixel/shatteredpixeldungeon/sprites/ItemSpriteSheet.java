@@ -29,7 +29,7 @@ public class ItemSpriteSheet {
 	public static final int SIZE = 16;
 
 	private static final int TX_WIDTH = 256;
-	private static final int TX_HEIGHT = 3040;
+	private static final int TX_HEIGHT = 4224;
 
 	private static final int WIDTH = TX_WIDTH / SIZE;
 
