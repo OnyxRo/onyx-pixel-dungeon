@@ -897,6 +897,11 @@ public class Hero extends Char {
 			}
 		}
 
+		//Ryuse's PD, armor worn in extra slots
+		for (Armor extra : belongings.extraArmorsWorn()) {
+			evasion = extra.evasionFactor(this, evasion);
+		}
+
 		if (perks.contains(Perks.Perk.PROTEIN_INFUSION) && buff(Hunger.class) != null){
 			//Experienced PD. Up to 1.5x evasion depending on how well fed the hero is
 			float hunger = buff(Hunger.class).hunger();
@@ -945,6 +950,14 @@ public class Hero extends Char {
 			int armDr = Random.NormalIntRange( belongings.armor().DRMin(), belongings.armor().DRMax());
 			if (STR() < belongings.armor().STRReq()){
 				armDr -= 2*(belongings.armor().STRReq() - STR());
+			}
+			if (armDr > 0) dr += armDr;
+		}
+		//Ryuse's PD, armor worn in extra slots
+		for (Armor extra : belongings.extraArmorsWorn()) {
+			int armDr = Random.NormalIntRange( extra.DRMin(), extra.DRMax());
+			if (STR() < extra.STRReq()){
+				armDr -= 2*(extra.STRReq() - STR());
 			}
 			if (armDr > 0) dr += armDr;
 		}
@@ -1056,6 +1069,10 @@ public class Hero extends Char {
 
 		if (belongings.armor() != null) {
 			speed = belongings.armor().speedFactor(this, speed);
+		}
+		//Ryuse's PD, armor worn in extra slots
+		for (Armor extra : belongings.extraArmorsWorn()) {
+			speed = extra.speedFactor(this, speed);
 		}
 		
 		Momentum momentum = buff(Momentum.class);
@@ -2115,16 +2132,31 @@ public class Hero extends Char {
 			}
 		}
 
+		//Ryuse's PD, armor worn in extra slots
+		for (Armor extra : belongings.extraArmorsWorn()) {
+			damage = extra.proc( enemy, this, damage );
+		}
+
 		WandOfLivingEarth.RockArmor rockArmor = buff(WandOfLivingEarth.RockArmor.class);
 		if (rockArmor != null) {
 			damage = rockArmor.absorb(damage);
 		}
-		
+
 		return super.defenseProc( enemy, damage );
 	}
 
 	@Override
 	public int glyphLevel(Class<? extends Armor.Glyph> cls) {
+		//Ryuse's PD, a glyph on armor worn in an extra slot counts too
+		for (Armor extra : belongings.extraArmorsWorn()) {
+			if (extra.hasGlyph(cls, this)) {
+				int lvl = Math.max(super.glyphLevel(cls), extra.buffedLvl());
+				if (belongings.armor() != null && belongings.armor().hasGlyph(cls, this)) {
+					lvl = Math.max(lvl, belongings.armor.buffedLvl());
+				}
+				return lvl;
+			}
+		}
 		if (belongings.armor() != null && belongings.armor().hasGlyph(cls, this)){
 			return Math.max(super.glyphLevel(cls), belongings.armor.buffedLvl());
 		} else if (buff(BodyForm.BodyFormBuff.class) != null

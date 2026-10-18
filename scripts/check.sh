@@ -92,6 +92,10 @@ if [ $QUICK -eq 0 ]; then
   run "ReasonTest" ReasonTest; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY reason)" | tail -12 | sed 's/^/  /'
   [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
+  #Ryuse's extra equipment slots, saving, old saves, rings, artifacts and armor in them
+  run "ExtraSlotsTest" ExtraSlotsTest; rc=$?
+  tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY extraslots)" | tail -8 | sed 's/^/  /'
+  [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
   #side branches (Thieves Guild, Ice Caves), every transition must lead somewhere and back
   run "BranchLevelTest" BranchLevelTest 12; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY branch)" | tail -8 | sed 's/^/  /'

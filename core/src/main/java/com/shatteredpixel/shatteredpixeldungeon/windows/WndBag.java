@@ -26,6 +26,9 @@ import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
@@ -253,6 +256,17 @@ public class WndBag extends WndTabbed {
 		placeItem( stuff.helmet != null ? stuff.helmet : new Placeholder( ItemSpriteSheet.HELMET_HOLDER ) );
 
 		int equipped = 6;
+
+		//Ryuse's PD, extra slots show on the main backpack only. Worn items always show
+		// and one empty slot is shown per kind while there is room for more
+		if (container == Dungeon.hero.belongings.backpack) {
+			for (Armor a : stuff.extraArmors) if (a != null) { placeItem(a); equipped++; }
+			if (stuff.freeExtraArmor() >= 0) { placeItem( new Placeholder( ItemSpriteSheet.ARMOR_HOLDER ) ); equipped++; }
+			for (Artifact a : stuff.extraArtifacts) if (a != null) { placeItem(a); equipped++; }
+			if (stuff.freeExtraArtifact() >= 0) { placeItem( new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) ); equipped++; }
+			for (Ring r : stuff.extraRings) if (r != null) { placeItem(r); equipped++; }
+			if (stuff.freeExtraRing() >= 0) { placeItem( new Placeholder( ItemSpriteSheet.RING_HOLDER ) ); equipped++; }
+		}
 
 		//the container itself if it's not the root backpack
 		if (container != Dungeon.hero.belongings.backpack){

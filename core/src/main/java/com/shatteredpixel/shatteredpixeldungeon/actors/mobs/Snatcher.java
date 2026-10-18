@@ -161,6 +161,9 @@ public class Snatcher extends Thief {
                 hero.belongings.misc = null;
             } else if (hero.belongings.ring == toSteal) {
                 hero.belongings.ring = null;
+            } else {
+                //Ryuse's PD extra slots
+                hero.belongings.clearExtraSlot(toSteal);
             }
 
             // Now detach from wherever it actually is
