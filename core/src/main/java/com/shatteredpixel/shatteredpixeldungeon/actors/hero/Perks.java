@@ -57,7 +57,7 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 
 //From Experienced PD. A random perk is earned at hero levels 5, 11, 18, 26 and so on, see nextPerkLevel.
-//Left out on purpose, Efficient Bartering, because Experienced's Rat King barter shop does not exist here.
+//Efficient Bartering is last in the list so older saves and seeds keep their order. It works with the Rat King barter, see RatKing.barterAct.
 public class Perks {
 	public enum Perk {
 		SUCKER_PUNCH,
@@ -80,7 +80,8 @@ public class Perks {
 		COLLECT_EVERYTHING,
 		RAT_SUMMONS,
 		GRASS_HEALING,
-		FRIENDLY_BEES;
+		FRIENDLY_BEES,
+		BETTER_BARTERING;
 
 		public String desc() {
 			return Messages.get(Perks.class, name() + ".desc");

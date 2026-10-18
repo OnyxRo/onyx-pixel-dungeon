@@ -68,6 +68,7 @@ public class RatKing extends NPC {
 
 	@Override
 	public boolean add( Buff buff ) {
+		if (buff instanceof Barter) return super.add( buff );
 		return false;
 	}
 	
@@ -108,7 +109,85 @@ public class RatKing extends NPC {
 				target = Dungeon.level.entrance();
 			}
 		}
+		if (Dungeon.cyclesOn() || Dungeon.hero.perks.contains(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Perks.Perk.BETTER_BARTERING)) {
+			barterAct();
+		}
 		return super.act();
+	}
+
+	//Experienced PD's Rat King barter. Items thrown onto the Rat King are traded for random items thrown
+	//back, more of them the further he has been fed. Only open in an Endless Cycles run or with the
+	//Efficient Bartering perk, so a normal run keeps the quiet Rat King.
+	public int counter = 0;
+	public int level = 1;
+
+	private void barterAct(){
+		java.util.ArrayList<com.shatteredpixel.shatteredpixeldungeon.items.Item> unused = null;
+		com.shatteredpixel.shatteredpixeldungeon.items.Heap heap = Dungeon.level.heaps.get( pos );
+		Barter barter = Buff.affect( this, Barter.class );
+		if (heap != null && !(heap.peek() instanceof com.shatteredpixel.shatteredpixeldungeon.items.Amulet)){
+			com.shatteredpixel.shatteredpixeldungeon.items.Item item = heap.pickUp();
+			barter.stick( item );
+			com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter.get( pos ).burst( com.shatteredpixel.shatteredpixeldungeon.effects.Speck.factory( com.shatteredpixel.shatteredpixeldungeon.effects.Speck.WOOL ), 6 );
+			com.watabou.noosa.audio.Sample.INSTANCE.play( com.shatteredpixel.shatteredpixeldungeon.Assets.Sounds.PUFF );
+		}
+		if (!barter.items.isEmpty()){
+			if (!Dungeon.hero.perks.contains(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Perks.Perk.BETTER_BARTERING) || com.watabou.utils.Random.Int(3) != 0) {
+				barter.items.remove( barter.items.size() - 1 );
+			}
+			for (int i = 0; i < level * (Dungeon.cycle + 1); i++) {
+				com.shatteredpixel.shatteredpixeldungeon.items.Item item;
+				do {
+					item = com.shatteredpixel.shatteredpixeldungeon.items.Generator.random();
+				} while (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.Gold);
+				if (++counter >= 30 * level) {
+					counter = 0;
+					level = Math.min( level + 1, 15 );
+					item = new com.shatteredpixel.shatteredpixeldungeon.items.food.Cheese();
+				}
+				//the Rat King tosses the trade to the hero's feet
+				Dungeon.level.drop( item, Dungeon.hero.pos ).sprite.drop( pos );
+			}
+			spend( 2f );
+		}
+	}
+
+	public static class Barter extends Buff {
+
+		public java.util.ArrayList<com.shatteredpixel.shatteredpixeldungeon.items.Item> items = new java.util.ArrayList<>();
+
+		public void stick( com.shatteredpixel.shatteredpixeldungeon.items.Item heh ){
+			for (com.shatteredpixel.shatteredpixeldungeon.items.Item item : items){
+				if (item.isSimilar( heh )){
+					item.merge( heh );
+					return;
+				}
+			}
+			items.add( heh );
+		}
+
+		@Override
+		public void detach() {
+			for (com.shatteredpixel.shatteredpixeldungeon.items.Item item : items) {
+				Dungeon.level.drop( item, target.pos ).sprite.drop();
+			}
+			super.detach();
+		}
+
+		@Override
+		public void storeInBundle( com.watabou.utils.Bundle bundle ) {
+			bundle.put( "items", items );
+			super.storeInBundle( bundle );
+		}
+
+		@Override
+		public void restoreFromBundle( com.watabou.utils.Bundle bundle ) {
+			items = new java.util.ArrayList<>();
+			for (com.watabou.utils.Bundlable b : bundle.getCollection( "items" )) {
+				items.add( (com.shatteredpixel.shatteredpixeldungeon.items.Item)b );
+			}
+			super.restoreFromBundle( bundle );
+		}
 	}
 
 	//***

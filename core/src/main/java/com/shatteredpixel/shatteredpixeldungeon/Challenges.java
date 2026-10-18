@@ -55,9 +55,11 @@ public class Challenges {
 	public static final int ADAPTIVE			= 1 << 13;
 	public static final int CUBE				= 1 << 14;
 	public static final int BARRIER_BREAKER		= 1 << 15;
+	//Experienced PD, opt in to its cycles after the Amulet
+	public static final int ENDLESS_CYCLES		= 1 << 16;
 
-	public static final int MAX_VALUE           = (1 << 16) - 1;
-	public static final int MAX_CHALS           = 16;
+	public static final int MAX_VALUE           = (1 << 17) - 1;
+	public static final int MAX_CHALS           = 17;
 
 	public static final String[] NAME_IDS = {
 			"champion_enemies",
@@ -75,17 +77,18 @@ public class Challenges {
 			"randomizer",
 			"adaptive",
 			"cube",
-			"barrier_breaker"
+			"barrier_breaker",
+			"endless_cycles"
 	};
 
 	public static final int[] MASKS = {
 			CHAMPION_ENEMIES, STRONGER_BOSSES, NO_FOOD, NO_ARMOR, NO_HEALING, NO_HERBALISM, SWARM_INTELLIGENCE, DARKNESS, NO_SCROLLS,
-			HORDE, MONSTER_UNKNOWN, TRINKET_MADNESS, RANDOMIZER, ADAPTIVE, CUBE, BARRIER_BREAKER
+			HORDE, MONSTER_UNKNOWN, TRINKET_MADNESS, RANDOMIZER, ADAPTIVE, CUBE, BARRIER_BREAKER, ENDLESS_CYCLES
 	};
 
-	//the nine challenges Shattered always has, the rest have to be unlocked
+	//the nine challenges Shattered always has and Experienced's cycles, the rest have to be unlocked
 	private static final int ALWAYS_UNLOCKED = NO_FOOD | NO_ARMOR | NO_HEALING | NO_HERBALISM | SWARM_INTELLIGENCE
-			| DARKNESS | NO_SCROLLS | CHAMPION_ENEMIES | STRONGER_BOSSES;
+			| DARKNESS | NO_SCROLLS | CHAMPION_ENEMIES | STRONGER_BOSSES | ENDLESS_CYCLES;
 
 	public static int activeChallenges(){
 		return activeChallenges(Dungeon.challenges);

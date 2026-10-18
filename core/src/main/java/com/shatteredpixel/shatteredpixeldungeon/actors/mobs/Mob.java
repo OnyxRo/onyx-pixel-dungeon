@@ -138,6 +138,8 @@ public abstract class Mob extends Char {
 	protected float lootChanceOther = 0;
 	
 	public int EXP = 1;
+	//Experienced PD cycles, see mechanics/Cycles. A monster is scaled once.
+	public boolean cycleScaled = false;
 	public int maxLvl = Hero.MAX_LEVEL-1;
 	
 	public Char enemy;
@@ -222,6 +224,7 @@ public abstract class Mob extends Char {
 	public void storeInBundle( Bundle bundle ) {
 		
 		super.storeInBundle( bundle );
+		if (cycleScaled) bundle.put( "cyclescaled", true );
 
 		if (state == SLEEPING) {
 			bundle.put( STATE, Sleeping.TAG );
@@ -260,6 +263,7 @@ public abstract class Mob extends Char {
 	public void restoreFromBundle( Bundle bundle ) {
 		
 		super.restoreFromBundle( bundle );
+		cycleScaled = bundle.getBoolean( "cyclescaled" );
 
 		if (bundle.getBoolean(USING_STEALTH)) {
 			activateSteathGameplayBehaviour();
@@ -316,6 +320,7 @@ public abstract class Mob extends Char {
 		
 		super.act();
 		
+		com.shatteredpixel.shatteredpixeldungeon.mechanics.Cycles.scale( this );
 		boolean justAlerted = alerted;
 		alerted = false;
 		

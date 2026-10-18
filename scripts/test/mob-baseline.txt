@@ -79,3 +79,4 @@ Ghoul crashed when it died
 Necromancer crashed during its own turns
 Spinner crashed during its own turns
 DwarfKing crashed during its own turns
+RatKing crashed during its own turns

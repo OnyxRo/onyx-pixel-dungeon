@@ -63,6 +63,7 @@ public class AmuletScene extends PixelScene {
 	StyledButton btnExit = null;
 	StyledButton btnStay = null;
 	StyledButton btnExitWithSaul = null;
+	StyledButton btnCycle = null;
 	
 	@Override
 	public void create() {
@@ -151,6 +152,22 @@ public class AmuletScene extends PixelScene {
 		btnStay.setSize( WIDTH, BTN_HEIGHT );
 		add( btnStay );
 
+		//Experienced PD's cycles. With the Endless Cycles challenge the dungeon can be walked again, harder.
+		if (Dungeon.cyclesOn() && Dungeon.cycle < com.shatteredpixel.shatteredpixeldungeon.mechanics.Cycles.MAX_CYCLE) {
+			btnCycle = new StyledButton(Chrome.Type.GREY_BUTTON_TR, Messages.get(this, "cycle") ) {
+				@Override
+				protected void onClick() {
+					btnExit.enable(false);
+					btnStay.enable(false);
+					btnCycle.enable(false);
+					Dungeon.goForNewCycle();
+				}
+			};
+			btnCycle.icon(Icons.STAIRS.get());
+			btnCycle.setSize( WIDTH, BTN_HEIGHT );
+			add( btnCycle );
+		}
+
 		RectF insets = getCommonInsets();
 		int w = (int) (Camera.main.width - insets.left + insets.right);
 		int h = (int) (Camera.main.height - insets.top + insets.bottom);
@@ -166,6 +183,7 @@ public class AmuletScene extends PixelScene {
 			btnExit.setPos( insets.left + (w - btnExit.width()) / 2, amulet.y + amulet.height + LARGE_GAP );
 			btnExitWithSaul.setPos( btnExit.left(), btnExit.bottom() + SMALL_GAP );
 			btnStay.setPos( btnExit.left(), btnExitWithSaul.bottom() + SMALL_GAP );
+			if (btnCycle != null) btnCycle.setPos( btnExit.left(), btnStay.bottom() + SMALL_GAP );
 			
 		} else {
 			height = amulet.height + LARGE_GAP + text.height() + LARGE_GAP + btnExit.height() + SMALL_GAP + btnExitWithSaul.height() + SMALL_GAP + btnStay.height();
@@ -181,6 +199,7 @@ public class AmuletScene extends PixelScene {
 			btnExit.setPos( insets.left + (w - btnExit.width()) / 2, text.top() + text.height() + LARGE_GAP );
 			btnExitWithSaul.setPos( btnExit.left(), btnExit.bottom() + SMALL_GAP );
 			btnStay.setPos( btnExit.left(), btnExitWithSaul.bottom() + SMALL_GAP );
+			if (btnCycle != null) btnCycle.setPos( btnExit.left(), btnStay.bottom() + SMALL_GAP );
 		}
 
 		new Flare( 8, 48 ).color( 0xFFDDBB, true ).show( amulet, 0 ).angularSpeed = +30;
