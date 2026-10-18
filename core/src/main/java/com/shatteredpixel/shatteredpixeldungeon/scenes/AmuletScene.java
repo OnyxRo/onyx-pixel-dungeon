@@ -40,6 +40,7 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Music;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.Delayer;
 import com.watabou.utils.Random;
 import com.watabou.utils.RectF;
@@ -61,6 +62,7 @@ public class AmuletScene extends PixelScene {
 
 	StyledButton btnExit = null;
 	StyledButton btnStay = null;
+	StyledButton btnExitWithSaul = null;
 	
 	@Override
 	public void create() {
@@ -81,6 +83,7 @@ public class AmuletScene extends PixelScene {
 				Dungeon.win( Amulet.class );
 				Dungeon.deleteGame( GamesInProgress.curSlot, true );
 				Badges.saveGlobal();
+				btnExitWithSaul.enable(false);
 				btnExit.enable(false);
 				btnStay.enable(false);
 
@@ -108,12 +111,39 @@ public class AmuletScene extends PixelScene {
 		btnExit.icon(new ItemSprite(ItemSpriteSheet.AMULET));
 		btnExit.setSize( WIDTH, BTN_HEIGHT );
 		add( btnExit );
+
+		//Shittened PD, better call Saul
+		btnExitWithSaul = new StyledButton(Chrome.Type.GREY_BUTTON_TR, Messages.get(this, "saul") ) {
+			@Override
+			protected void onClick() {
+				Music.INSTANCE.stop();
+				Sample.INSTANCE.play(Assets.Sounds.SAUL);
+				Dungeon.win( Amulet.class, true );
+				Dungeon.deleteGame( GamesInProgress.curSlot, true );
+				btnExitWithSaul.enable(false);
+				btnExit.enable(false);
+				btnStay.enable(false);
+				Badges.validateVictoryWithSaul();
+				Badges.saveGlobal();
+
+				AmuletScene.this.add(new Delayer(5.5f){
+					@Override
+					protected void onComplete() {
+						Game.switchScene( RankingsScene.class );
+					}
+				});
+			}
+		};
+		btnExitWithSaul.icon(new ItemSprite(ItemSpriteSheet.AMULET));
+		btnExitWithSaul.setSize( WIDTH, BTN_HEIGHT );
+		add( btnExitWithSaul );
 		
 		btnStay = new StyledButton(Chrome.Type.GREY_BUTTON_TR, Messages.get(this, "stay") ) {
 			@Override
 			protected void onClick() {
 				onBackPressed();
 				btnExit.enable(false);
+				btnExitWithSaul.enable(false);
 				btnStay.enable(false);
 			}
 		};
@@ -127,17 +157,18 @@ public class AmuletScene extends PixelScene {
 
 		float height;
 		if (noText) {
-			height = amulet.height + LARGE_GAP + btnExit.height() + SMALL_GAP + btnStay.height();
+			height = amulet.height + LARGE_GAP + btnExit.height() + SMALL_GAP + btnExitWithSaul.height() + SMALL_GAP + btnStay.height();
 			
 			amulet.x = insets.left + (w - amulet.width) / 2;
 			amulet.y = insets.top + (h - height) / 2;
 			align(amulet);
 
 			btnExit.setPos( insets.left + (w - btnExit.width()) / 2, amulet.y + amulet.height + LARGE_GAP );
-			btnStay.setPos( btnExit.left(), btnExit.bottom() + SMALL_GAP );
+			btnExitWithSaul.setPos( btnExit.left(), btnExit.bottom() + SMALL_GAP );
+			btnStay.setPos( btnExit.left(), btnExitWithSaul.bottom() + SMALL_GAP );
 			
 		} else {
-			height = amulet.height + LARGE_GAP + text.height() + LARGE_GAP + btnExit.height() + SMALL_GAP + btnStay.height();
+			height = amulet.height + LARGE_GAP + text.height() + LARGE_GAP + btnExit.height() + SMALL_GAP + btnExitWithSaul.height() + SMALL_GAP + btnStay.height();
 
 			amulet.x = insets.left + (w - amulet.width) / 2;
 			amulet.y = insets.top + (h - height) / 2;
@@ -148,7 +179,8 @@ public class AmuletScene extends PixelScene {
 			add(text);
 
 			btnExit.setPos( insets.left + (w - btnExit.width()) / 2, text.top() + text.height() + LARGE_GAP );
-			btnStay.setPos( btnExit.left(), btnExit.bottom() + SMALL_GAP );
+			btnExitWithSaul.setPos( btnExit.left(), btnExit.bottom() + SMALL_GAP );
+			btnStay.setPos( btnExit.left(), btnExitWithSaul.bottom() + SMALL_GAP );
 		}
 
 		new Flare( 8, 48 ).color( 0xFFDDBB, true ).show( amulet, 0 ).angularSpeed = +30;

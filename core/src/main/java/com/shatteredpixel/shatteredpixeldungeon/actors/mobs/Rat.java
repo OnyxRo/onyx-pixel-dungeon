@@ -49,7 +49,32 @@ public class Rat extends Mob {
 			if (enemy == Dungeon.hero) enemy = null;
 			if (state == SLEEPING) state = WANDERING;
 		}
+		//Shittened PD, a rat that has seen you may squeal and speed up
+		if (Dungeon.level.heroFOV[pos] && Random.Int(90) == 1 && state == HUNTING) {
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(this,
+					com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste.class, 1f);
+			com.watabou.noosa.audio.Sample.INSTANCE.playForDuration( com.shatteredpixel.shatteredpixeldungeon.Assets.Sounds.FREE_RAT,
+					Random.NormalFloat(0.2f, Random.Float(1f,4f)) );
+		}
 		return super.act();
+	}
+
+	//Shittened PD, counting rats for the rat killer badges, the odd banner, and the rat album for a music player
+	@Override
+	public void die(Object cause) {
+		super.die(cause);
+		if (alignment == Alignment.ALLY) return;
+		com.shatteredpixel.shatteredpixeldungeon.Statistics.ratsSlain++;
+		com.shatteredpixel.shatteredpixeldungeon.Badges.validateRats();
+		if (Random.Int(0,18) == 2) {
+			com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene.ratSlain();
+		}
+		com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MusicPlayer player =
+				Dungeon.hero.belongings.getItem( com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MusicPlayer.class );
+		if (player != null && Dungeon.LimitedDrops.RAT_ALBUM.count == 0 && Random.Int(10) == 5) {
+			Dungeon.level.drop( new com.shatteredpixel.shatteredpixeldungeon.items.albums.RatAlbum(), pos ).sprite.drop();
+			Dungeon.LimitedDrops.RAT_ALBUM.count++;
+		}
 	}
 
 	@Override

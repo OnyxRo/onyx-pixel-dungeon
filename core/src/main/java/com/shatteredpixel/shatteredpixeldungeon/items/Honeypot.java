@@ -259,4 +259,27 @@ public class Honeypot extends Item {
 			return 5 * quantity;
 		}
 	}
+
+	//Shittened PD, the bee in the pot has moods
+	private String mood() {
+		int hour = java.util.Calendar.getInstance().get(java.util.Calendar.HOUR_OF_DAY);
+		if (hour > 7 && hour < 22) {
+			return com.shatteredpixel.shatteredpixeldungeon.messages.Messages.get(this, "sleeping");
+		}
+		int items = 0;
+		if (Dungeon.hero != null) {
+			for (Item item : Dungeon.hero.belongings) {
+				items++;
+			}
+		}
+		if (items > 20) {
+			return com.shatteredpixel.shatteredpixeldungeon.messages.Messages.get(this, "nospace");
+		}
+		return com.shatteredpixel.shatteredpixeldungeon.messages.Messages.get(this, "happy");
+	}
+
+	@Override
+	public String desc() {
+		return com.shatteredpixel.shatteredpixeldungeon.messages.Messages.get(this, "desc", mood());
+	}
 }

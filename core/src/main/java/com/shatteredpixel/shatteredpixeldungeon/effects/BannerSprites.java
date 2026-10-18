@@ -33,6 +33,22 @@ public class BannerSprites {
 		TITLE_GLOW_LAND,
 		BOSS_SLAIN,
 		GAME_OVER,
+		//Shittened PD, kept below Shattered's banners (every row is 256 lower than in its own sheet)
+		RAT_SLAIN,
+		TOURIST_FART,
+		FUCK_THE_HERO,
+		AMBULANCE,
+		SSHHIITT,
+		I_NEED_BEANS,
+		BEANS_SPILLED,
+		LEGO,
+		FRIEND_REQUEST,
+		SASS_SLAIN,
+		SAAB_SLAIN,
+		ASS_SLAIN,
+		AAAAA_SLAIN,
+		ENEMY_FELLED,
+		YASS_SLAY,
 	}
 
 	public static Image get( Type type ) {
@@ -55,6 +71,51 @@ public class BannerSprites {
 				break;
 			case GAME_OVER:
 				icon.frame( icon.texture.uvRect( 128, 157, 256, 192 ) );
+				break;
+			case RAT_SLAIN:
+				icon.frame( icon.texture.uvRect( 23, 454, 100, 475 ) );
+				break;
+			case TOURIST_FART:
+				icon.frame( icon.texture.uvRect( 0, 484, 88, 504 ) );
+				break;
+			case FUCK_THE_HERO:
+				icon.frame( icon.texture.uvRect( 0, 512, 96, 532 ) );
+				break;
+			case AMBULANCE:
+				icon.frame( icon.texture.uvRect( 0, 538, 74, 554 ) );
+				break;
+			case SSHHIITT:
+				icon.frame( icon.texture.uvRect( 0, 557, 96, 575 ) );
+				break;
+			case I_NEED_BEANS:
+				icon.frame( icon.texture.uvRect( 0, 579, 81, 594 ) );
+				break;
+			case BEANS_SPILLED:
+				icon.frame( icon.texture.uvRect( 0, 600, 92, 615 ) );
+				break;
+			case LEGO:
+				icon.frame( icon.texture.uvRect( 143, 488, 231, 548 ) );
+				break;
+			case FRIEND_REQUEST:
+				icon.frame( icon.texture.uvRect( 0, 624, 46, 639 ) );
+				break;
+			case SASS_SLAIN:
+				icon.frame( icon.texture.uvRect( 0, 640, 84, 660 ) );
+				break;
+			case SAAB_SLAIN:
+				icon.frame( icon.texture.uvRect( 0, 662, 84, 683 ) );
+				break;
+			case ASS_SLAIN:
+				icon.frame( icon.texture.uvRect( 0, 685, 71, 705 ) );
+				break;
+			case AAAAA_SLAIN:
+				icon.frame( icon.texture.uvRect( 0, 710, 113, 730 ) );
+				break;
+			case ENEMY_FELLED:
+				icon.frame( icon.texture.uvRect( 0, 732, 92, 750 ) );
+				break;
+			case YASS_SLAY:
+				icon.frame( icon.texture.uvRect( 0, 752, 77, 772 ) );
 				break;
 		}
 		return icon;

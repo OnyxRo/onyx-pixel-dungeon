@@ -81,6 +81,10 @@ public enum Rankings {
 	public LinkedHashMap<Long, Integer> dailyScoreHistory = new LinkedHashMap<>();
 
 	public void submit( boolean win, Object cause ) {
+		submit( win, cause, false );
+	}
+
+	public void submit( boolean win, Object cause, boolean saul ) {
 
 		//sandbox runs are never ranked
 		if (Dungeon.sandbox) return;
@@ -112,6 +116,7 @@ public enum Rankings {
 
 		rec.cause = cause instanceof Class ? (Class)cause : cause.getClass();
 		rec.win		= win;
+		rec.saul	= saul;
 		rec.heroClass	= Dungeon.hero.heroClass;
 		rec.armorTier	= Dungeon.hero.tier();
 		rec.herolevel	= Dungeon.hero.lvl;
@@ -492,12 +497,14 @@ public enum Rankings {
 		private static final String ID      = "gameID";
 		private static final String SEED    = "custom_seed";
 		private static final String DAILY   = "daily";
+		private static final String SAUL    = "saul";
 
 		private static final String DATE    = "date";
 		private static final String VERSION = "version";
 
 		public Class cause;
 		public boolean win;
+		public boolean saul; //Shittened PD, won by calling Saul
 
 		public HeroClass heroClass;
 		public int armorTier;
@@ -521,6 +528,8 @@ public enum Rankings {
 			if (win){
 				if (ascending){
 					return Messages.get(this, "ascended");
+				} else if (saul) {
+					return Messages.get(this, "wonsaul");
 				} else {
 					return Messages.get(this, "won");
 				}
@@ -555,6 +564,7 @@ public enum Rankings {
 			herolevel   = bundle.getInt( LEVEL );
 			depth       = bundle.getInt( DEPTH );
 			ascending   = bundle.getBoolean( ASCEND );
+			saul        = bundle.getBoolean( SAUL );
 
 			if (bundle.contains( DATE )){
 				date = bundle.getString( DATE );
@@ -585,6 +595,7 @@ public enum Rankings {
 			bundle.put( LEVEL, herolevel );
 			bundle.put( DEPTH, depth );
 			bundle.put( ASCEND, ascending );
+			bundle.put( SAUL, saul );
 
 			bundle.put( DATE, date );
 			bundle.put( VERSION, version );

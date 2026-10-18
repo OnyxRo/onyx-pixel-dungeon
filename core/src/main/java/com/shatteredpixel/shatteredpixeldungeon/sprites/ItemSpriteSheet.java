@@ -29,7 +29,7 @@ public class ItemSpriteSheet {
 	public static final int SIZE = 16;
 
 	private static final int TX_WIDTH = 256;
-	private static final int TX_HEIGHT = 2416;
+	private static final int TX_HEIGHT = 3040;
 
 	private static final int WIDTH = TX_WIDTH / SIZE;
 
@@ -417,6 +417,7 @@ public class ItemSpriteSheet {
 	public static final int SPRAYGUN_STRENGTH = xy(6, 53);
 	public static final int SPRAYGUN_TOXIC_GAS = xy(7, 53);
 	public static final int BAT_MEMBRANE = xy(4, 54);
+	public static final int MILK_CHEESE = xy(1, 150);
 	public static final int HOWARD_CHEST = xy(2, 100);
 	public static final int EVAN_CHEST = xy(3, 100);
 	public static final int GOLD_CHEST = xy(4, 100);
@@ -1034,6 +1035,7 @@ public class ItemSpriteSheet {
 		assignItemRect(SPRAYGUN_STRENGTH, 14, 16);
 		assignItemRect(SPRAYGUN_TOXIC_GAS, 14, 16);
 		assignItemRect(BAT_MEMBRANE, 16, 16);
+		assignItemRect(MILK_CHEESE, 15, 11);
 		assignItemRect(HOWARD_CHEST, 16, 14);
 		assignItemRect(EVAN_CHEST, 16, 14);
 		assignItemRect(GOLD_CHEST, 16, 14);

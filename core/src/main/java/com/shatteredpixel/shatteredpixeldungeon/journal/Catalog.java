@@ -511,6 +511,7 @@ public enum Catalog {
 		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.Omelet.class);
 		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.Pancakes.class);
 		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.PancakesWithCheese.class);
+		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.MilkCheese.class);
 		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.Piethon.class);
 		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.Pizza.class);
 		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.Potato.class);

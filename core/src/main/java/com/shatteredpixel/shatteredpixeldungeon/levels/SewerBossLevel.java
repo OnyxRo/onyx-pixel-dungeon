@@ -67,7 +67,7 @@ public class SewerBossLevel extends SewerLevel {
 
 		boolean gooAlive = false;
 		for (Mob m : mobs){
-			if (m instanceof Goo) {
+			if (m instanceof Goo || m instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GreenGoo) {
 				gooAlive = true;
 				break;
 			}

@@ -1248,8 +1248,15 @@ public class GameScene extends PixelScene {
 		addToFront( banner );
 	}
 	
+	//Shittened PD, banner left where it is (the top left corner) instead of centred
+	private void showBannerUncentered( Banner banner ) {
+		banner.camera = uiCamera;
+
+		addToFront( banner );
+	}
+
 	// -------------------------------------------------------
-	
+
 	public static void add( Blob gas ) {
 		Actor.add( gas );
 		if (scene != null) {
@@ -1715,11 +1722,80 @@ public class GameScene extends PixelScene {
 	public static void bossSlain() {
 		if (scene == null) return; //headless tests
 		if (Dungeon.hero.isAlive()) {
-			Banner bossSlain = new Banner( BannerSprites.get( BannerSprites.Type.BOSS_SLAIN ) );
+			//Shittened PD, the banner is sometimes a joke
+			BannerSprites.Type type;
+			switch (Random.Int(7)) {
+				case 0:  type = BannerSprites.Type.SASS_SLAIN;      break;
+				case 1:  type = BannerSprites.Type.SAAB_SLAIN;      break;
+				case 2:  type = BannerSprites.Type.ASS_SLAIN;       break;
+				case 3:  type = BannerSprites.Type.AAAAA_SLAIN;     break;
+				case 4:  type = BannerSprites.Type.ENEMY_FELLED;    break;
+				case 5:  type = BannerSprites.Type.YASS_SLAY;       break;
+				default: type = BannerSprites.Type.BOSS_SLAIN;      break;
+			}
+			Banner bossSlain = new Banner( BannerSprites.get( type ) );
 			bossSlain.show( 0xFFFFFF, 0.3f, 5f );
 			scene.showBanner( bossSlain );
-			
-			Sample.INSTANCE.play( Assets.Sounds.BOSS );
+
+			if (Random.Float() < 0.1f) Sample.INSTANCE.play( Assets.Sounds.BOSSOB );
+			else Sample.INSTANCE.play( Assets.Sounds.BOSS );
+		}
+	}
+
+	//Shittened PD banners
+	public static void ratSlain() {
+		if (scene == null) return; //headless tests
+		if (Dungeon.hero.isAlive()) {
+			Banner ratSlain = new Banner( BannerSprites.get( BannerSprites.Type.RAT_SLAIN ) );
+			ratSlain.show( 0xFFFFFF, 0.3f, 1.5f );
+			scene.showBanner( ratSlain );
+
+			Sample.INSTANCE.play( Assets.Sounds.CAPYBARA );
+		}
+	}
+
+	public static void legoBanner() {
+		if (scene == null) return;
+		if (Dungeon.hero.isAlive()) {
+			Banner lego = new Banner( BannerSprites.get( BannerSprites.Type.LEGO ) );
+			lego.show( 0xFFFFFF, 0.7f, 5f );
+			scene.showBanner( lego );
+
+			Sample.INSTANCE.play( Assets.Sounds.DEATH_11, 2.5f );
+		}
+	}
+
+	public static void friendRequest() {
+		if (scene == null) return;
+		if (Dungeon.hero.isAlive()) {
+			Banner request = new Banner( BannerSprites.get( BannerSprites.Type.FRIEND_REQUEST ) );
+			request.show( 0xFFFFFF, 0.3f, 4f );
+			scene.showBannerUncentered( request );
+
+			Sample.INSTANCE.play( Assets.Sounds.POPUP );
+		}
+	}
+
+	public static void weirdBanner() {
+		if (scene == null) return;
+		if (Dungeon.hero.isAlive()) {
+			BannerSprites.Type type;
+			switch (Random.Int(5)) {
+				case 0:
+					Sample.INSTANCE.play( Assets.Sounds.INCEPTION );
+					type = BannerSprites.Type.I_NEED_BEANS;
+					break;
+				case 1:  type = BannerSprites.Type.TOURIST_FART;   break;
+				case 2:  type = BannerSprites.Type.FUCK_THE_HERO;  break;
+				case 3:  type = BannerSprites.Type.AMBULANCE;      break;
+				case 4:  type = BannerSprites.Type.SSHHIITT;       break;
+				default: type = BannerSprites.Type.GAME_OVER;      break;
+			}
+			Banner banner = new Banner( BannerSprites.get( type ) );
+			banner.show( 0xFFFFFF, 0.3f, 2f );
+			scene.showBanner( banner );
+
+			Sample.INSTANCE.play( Assets.Sounds.CAPYBARA );
 		}
 	}
 	

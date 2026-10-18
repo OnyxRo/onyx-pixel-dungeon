@@ -42,7 +42,7 @@ public class Pizza extends TastyFood {
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 
 		{
-			inputs =  new Class[]{Flour.class, Tomato.class, Cheese.class};
+			inputs =  new Class[]{Flour.class, Tomato.class, MilkCheese.class};
 			inQuantity = new int[]{1, 1, 1};
 
 			cost = 2;

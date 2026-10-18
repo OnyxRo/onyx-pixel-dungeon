@@ -59,7 +59,7 @@ public class WalledGooRoom extends GooBossRoom {
 		
 		setupGooNest(level);
 		
-		Goo boss = new Goo();
+		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob boss = GooBossRoom.newBoss();
 		boss.pos = level.pointToCell(center());
 		level.mobs.add( boss );
 	}
