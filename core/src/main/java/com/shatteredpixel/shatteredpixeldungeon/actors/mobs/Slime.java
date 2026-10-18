@@ -58,9 +58,13 @@ public class Slime extends Mob {
 	public void damage(int dmg, Object src) {
 		float scaleFactor = AscensionChallenge.statModifier(this);
 		float scaledDmg = dmg/scaleFactor;
-		if (scaledDmg >= 5){
+		//Pixel Dungeon Reforged Randomizer, Slashing weapons do three times the damage (Blade Weakness)
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Slime.class) == 3 && com.shatteredpixel.shatteredpixeldungeon.Randomizer.isSlashing(src)) scaledDmg *= 3;
+		//the damage cap starts at 5 normally. Enhanced Resilience brings it to 4, Softened Membrane to 10
+		int threshold = com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Slime.class) == 1 ? 4 : (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Slime.class) == 2 ? 10 : 5);
+		if (scaledDmg >= threshold){
 			//takes 5/6/7/8/9/10 dmg at 5/7/10/14/19/25 incoming dmg
-			scaledDmg = 4 + (float)(Math.sqrt(8*(scaledDmg - 4) + 1) - 1)/2;
+			scaledDmg = (threshold - 1) + (float)(Math.sqrt(8*(scaledDmg - (threshold - 1)) + 1) - 1)/2;
 		}
 		dmg = (int)(scaledDmg*AscensionChallenge.statModifier(this));
 		super.damage(dmg, src);
@@ -80,5 +84,35 @@ public class Slime extends Mob {
 		MeleeWeapon w = (MeleeWeapon)Generator.randomUsingDefaults(Generator.Category.WEP_T2);
 		w.level(0);
 		return w;
+	}
+
+	//Pixel Dungeon Reforged Randomizer. Enhanced Resilience, Sticky Coating, Chameleon Ooze, Caustic Carriers,
+	//Softened Membrane, Blade Weakness (all above, or in the mob spawner and the attack proc below)
+	@Override
+	public int attackProc( Char enemy, int damage ) {
+		damage = super.attackProc( enemy, damage );
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Slime.class) == 2 && Random.Int(2) == 0) {
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(enemy, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow.class, 3f);
+		}
+		return damage;
+	}
+
+	@Override
+	protected void onAdd() {
+		boolean first = firstAdded;
+		super.onAdd();
+		//Chameleon Ooze, slimes stay nearly invisible until they attack
+		if (first && com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Slime.class) == 3) {
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.prolong(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility.class, 10000f);
+		}
+	}
+
+	@Override
+	public void rollToDropLoot() {
+		super.rollToDropLoot();
+		//Caustic Carriers, every slime drops a goo blob
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Slime.class) == 1 && Dungeon.hero.lvl <= maxLvl + 2) {
+			Dungeon.level.drop(new com.shatteredpixel.shatteredpixeldungeon.items.quest.GooBlob(), pos).sprite.drop();
+		}
 	}
 }

@@ -68,14 +68,15 @@ public class Guard extends Mob {
 	}
 
 	private boolean chain(int target){
-		if (chainsUsed || enemy.properties().contains(Property.IMMOVABLE))
+		//Pixel Dungeon Reforged Randomizer, Chain Master uses the chain as often as it likes
+		if ((chainsUsed && !(com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Guard.class) == 3)) || enemy.properties().contains(Property.IMMOVABLE))
 			return false;
 
 		Ballistica chain = new Ballistica(pos, target, Ballistica.PROJECTILE);
 
 		if (chain.collisionPos != enemy.pos
 				|| chain.path.size() < 2
-				|| Dungeon.level.pit[chain.path.get(1)])
+				|| (Dungeon.level.pit[chain.path.get(1)] && !(com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Guard.class) == 1)))
 			return false;
 		else {
 			int newPos = -1;
@@ -103,11 +104,18 @@ public class Guard extends Mob {
 							Effects.Type.CHAIN,
 							new Callback() {
 						public void call() {
+							//Rusty Aim, the chain can be dodged
+							if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Guard.class) == 3 && !hit( Guard.this, enemy, false )) {
+								Sample.INSTANCE.play(Assets.Sounds.MISS);
+								spend(1f);
+								if (enemy.sprite != null) enemy.sprite.showStatus(com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite.NEUTRAL, enemy.defenseVerb());
+							} else {
 							Actor.add(new Pushing(enemy, enemy.pos, newPosFinal, new Callback() {
 								public void call() {
 									pullEnemy(enemy, newPosFinal);
 								}
 							}));
+							}
 							next();
 						}
 					}));
@@ -124,7 +132,10 @@ public class Guard extends Mob {
 		enemy.pos = pullPos;
 		enemy.sprite.place(pullPos);
 		Dungeon.level.occupyCell(enemy);
-		Cripple.prolong(enemy, Cripple.class, 4f);
+		//Gentle Chain does not cripple, Extended Cripple does it for three times as long
+		if (!(com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Guard.class) == 1)) {
+			Cripple.prolong(enemy, Cripple.class, com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Guard.class) == 2 ? 12f : 4f);
+		}
 		if (enemy == Dungeon.hero) {
 			Dungeon.hero.interrupt();
 			Dungeon.observe();
@@ -176,11 +187,11 @@ public class Guard extends Mob {
 		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
 			enemySeen = enemyInFOV;
 			
-			if (!chainsUsed
+			if ((!chainsUsed || com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Guard.class) == 3)
 					&& enemyInFOV
 					&& !isCharmedBy( enemy )
 					&& !canAttack( enemy )
-					&& Dungeon.level.distance( pos, enemy.pos ) < 5
+					&& Dungeon.level.distance( pos, enemy.pos ) < (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Guard.class) == 2 ? 3 : 5)
 					&& chain(enemy.pos)){
 				return !(sprite.visible || enemy.sprite.visible);
 			} else {

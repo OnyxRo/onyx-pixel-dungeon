@@ -56,8 +56,9 @@ public class Brute extends Mob {
 	
 	@Override
 	public int damageRoll() {
+		//Pixel Dungeon Reforged Randomizer, Dying Breath makes the fury hit for 0-15 instead of 15-40
 		return buff(BruteRage.class) != null ?
-				Random.NormalIntRange( 15, 40 ) :
+				(com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Brute.class) == 2 ? Random.NormalIntRange( 0, 15 ) : Random.NormalIntRange( 15, 40 )) :
 				Random.NormalIntRange( 5, 25 );
 	}
 	
@@ -101,6 +102,8 @@ public class Brute extends Mob {
 	}
 	
 	protected void triggerEnrage(){
+		//Stand Your Ground, the enraged brute cannot move
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Brute.class) == 1) rooted = true;
 		rage = Buff.affect(this, BruteRage.class);
 		rage.setShield(HT/2 + 4);
 		sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(HT/2), FloatingText.SHIELDING );
@@ -139,13 +142,15 @@ public class Brute extends Mob {
 				return true;
 			}
 			
+			if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Brute.class) == 1) target.rooted = true;
 			absorbDamage( Math.round(4*AscensionChallenge.statModifier(target)));
 			
 			if (shielding() <= 0){
 				target.die(null);
 			}
 			
-			spend( TICK );
+			//Extended Fury drains the shield half as fast
+			spend( com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Brute.class) == 1 ? 2 * TICK : TICK );
 			
 			return true;
 		}
@@ -166,5 +171,30 @@ public class Brute extends Mob {
 			return Messages.get(this, "desc", shielding());
 		}
 
+	}
+
+	//Pixel Dungeon Reforged Randomizer. Berserker Speed, Armored Drops. Armored Legion is in the mob spawner and the rest above.
+	@Override
+	public float speed() {
+		float speed = super.speed();
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Brute.class) == 2 && buff(BruteRage.class) != null) speed *= 3;
+		return speed;
+	}
+
+	@Override
+	public float lootChance() {
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Brute.class) == 3) return 1f;
+		return super.lootChance();
+	}
+
+	@Override
+	public com.shatteredpixel.shatteredpixeldungeon.items.Item createLoot() {
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Brute.class) == 3) {
+			if (Random.Int(4) == 0) {
+				return new com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor().random();
+			}
+			return new com.shatteredpixel.shatteredpixeldungeon.items.armor.ScaleArmor().random();
+		}
+		return super.createLoot();
 	}
 }

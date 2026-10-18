@@ -271,6 +271,11 @@ public class SPDSettings extends GameSettings {
 		return getInt( KEY_LAST_CLASS, 0, 0, 3 );
 	}
 	
+	//Pixel Dungeon Reforged, 1 easy to 4 impossible, 2 is how Shattered plays
+	public static final String KEY_DIFFICULTY	= "difficulty";
+	public static void difficulty( int value ) { put( KEY_DIFFICULTY, value ); }
+	public static int difficulty() { return getInt( KEY_DIFFICULTY, 2, 1, 4 ); }
+
 	public static void challenges( int value ) {
 		put( KEY_CHALLENGES, value );
 	}

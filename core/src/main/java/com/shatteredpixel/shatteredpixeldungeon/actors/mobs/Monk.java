@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
@@ -91,7 +92,8 @@ public class Monk extends Mob {
 	
 	@Override
 	protected void spend( float time ) {
-		focusCooldown -= time;
+		//Pixel Dungeon Reforged Randomizer, Distracted Mind gains focus a third as fast
+		focusCooldown -= com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Monk.class) == 1 ? time / 3f : time;
 		super.spend( time );
 	}
 	
@@ -100,12 +102,16 @@ public class Monk extends Mob {
 		// moving reduces cooldown by an additional 0.67, giving a total reduction of 1.67f.
 		// basically monks will become focused notably faster if you kite them.
 		if (travelling) focusCooldown -= 0.67f;
+		//Rapid Meditation doubles what moving gives
+		if (travelling && com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Monk.class) == 1) focusCooldown -= 1.67f;
 		super.move( step, travelling);
 	}
 	
 	@Override
 	public int defenseSkill( Char enemy ) {
 		if (buff(Focus.class) != null && paralysed == 0 && state != SLEEPING){
+			//Unfocused Defense, focus cannot block a surprise attack
+			if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Monk.class) == 2 && surprisedBy( enemy )) return super.defenseSkill( enemy );
 			return INFINITE_EVASION;
 		}
 		return super.defenseSkill( enemy );
@@ -155,6 +161,26 @@ public class Monk extends Mob {
 		@Override
 		public void tintIcon(Image icon) {
 			icon.hardlight(0.25f, 1.5f, 1f);
+		}
+	}
+
+	//Pixel Dungeon Reforged Randomizer. Senior Presence (in the mob spawner), Stunning Strikes, Scholar Monks
+	@Override
+	public int attackProc( Char enemy, int damage ) {
+		damage = super.attackProc( enemy, damage );
+		//1 in 20, but a monk strikes twice a turn so each blow is half of that
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Monk.class) == 3 && enemy.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis.class) == null && Random.Int(40) == 0) {
+			Buff.affect(enemy, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis.class, 1f);
+		}
+		return damage;
+	}
+
+	@Override
+	public void die( Object cause ) {
+		super.die( cause );
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Monk.class) == 3 && Random.Int(4) == 0) {
+			com.shatteredpixel.shatteredpixeldungeon.items.Item toDrop = com.shatteredpixel.shatteredpixeldungeon.items.Generator.random(com.shatteredpixel.shatteredpixeldungeon.items.Generator.Category.SCROLL);
+			Dungeon.level.drop(toDrop, pos).sprite.drop(pos);
 		}
 	}
 }

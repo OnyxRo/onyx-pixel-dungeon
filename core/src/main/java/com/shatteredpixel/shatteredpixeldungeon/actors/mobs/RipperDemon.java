@@ -70,6 +70,8 @@ public class RipperDemon extends Mob {
 
 	@Override
 	public int damageRoll() {
+		//Pixel Dungeon Reforged Randomizer, Dull Claws
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(RipperDemon.class) == 2) return Random.NormalIntRange( 5, 20 );
 		return Random.NormalIntRange( 15, 25 );
 	}
 
@@ -258,7 +260,9 @@ public class RipperDemon extends Mob {
 						//get ready to leap
 						leapPos = targetPos;
 						//don't want to overly punish players with slow move or attack speed
-						float delay = GameMath.gate(attackDelay(), (int)Math.ceil(enemy.cooldown()), 3*attackDelay());
+						//Sluggish Leap takes twice as long to get ready
+						float delay = com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(RipperDemon.class) == 1 ? GameMath.gate(attackDelay() * 2, (int)Math.ceil(enemy.cooldown()) * 2, 6*attackDelay())
+								: GameMath.gate(attackDelay(), (int)Math.ceil(enemy.cooldown()), 3*attackDelay());
 						spend(delay);
 						if (Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[leapPos]){
 							GLog.w(Messages.get(RipperDemon.this, "leap"));
@@ -290,4 +294,17 @@ public class RipperDemon extends Mob {
 
 	}
 
+	//Pixel Dungeon Reforged Randomizer. Rapid Deployment and Lazy Spawners (in the demon spawner), Sluggish Leap
+	//and Dull Claws (above), Hemorrhage, Toxic Claws
+	@Override
+	public int attackProc( Char enemy, int damage ) {
+		damage = super.attackProc( enemy, damage );
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(RipperDemon.class) == 2 && Random.Int(4) != 0) {
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(enemy, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding.class).set( Random.IntRange(10, 20) );
+		}
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(RipperDemon.class) == 3 && Random.Int(3) == 0) {
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(enemy, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison.class).set( Random.IntRange(10, 20) );
+		}
+		return damage;
+	}
 }

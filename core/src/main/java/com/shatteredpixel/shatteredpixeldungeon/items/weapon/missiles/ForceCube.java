@@ -52,6 +52,31 @@ public class ForceCube extends MissileWeapon {
 	}
 
 	@Override
+	public int STRReq(int lvl) {
+		if (Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.CUBE)) {
+			return 10;
+		}
+		return super.STRReq(lvl);
+	}
+
+	@Override
+	protected void decrementDurability() {
+		//Pixel Dungeon Reforged, the cube is eternal
+		if (Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.CUBE)) {
+			return;
+		}
+		super.decrementDurability();
+	}
+
+	@Override
+	public String desc() {
+		if (Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.CUBE)) {
+			return Messages.get(this, "desc_challenge");
+		}
+		return super.desc();
+	}
+
+	@Override
 	public int max(int lvl) {
 		return  6 * tier +                  //30 base, up from 25
 				(tier) * lvl;               //scaling unchanged
@@ -112,7 +137,11 @@ public class ForceCube extends MissileWeapon {
 			if (target == Dungeon.hero && !target.isAlive()){
 				Badges.validateDeathFromFriendlyMagic();
 				Dungeon.fail(this);
-				GLog.n(Messages.get(this, "ondeath"));
+				if (Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.CUBE)) {
+					GLog.p(Messages.get(this, "ondeath_challenge"));
+				} else {
+					GLog.n(Messages.get(this, "ondeath"));
+				}
 			}
 		}
 

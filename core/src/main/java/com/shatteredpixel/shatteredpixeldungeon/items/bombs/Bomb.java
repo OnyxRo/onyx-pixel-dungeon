@@ -106,7 +106,9 @@ public class Bomb extends Item {
 	@Override
 	public ArrayList<String> actions(Hero hero) {
 		ArrayList<String> actions = super.actions( hero );
-		actions.add ( AC_LIGHTTHROW );
+		if (!Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.CUBE)) {
+			actions.add ( AC_LIGHTTHROW );
+		}
 		return actions;
 	}
 

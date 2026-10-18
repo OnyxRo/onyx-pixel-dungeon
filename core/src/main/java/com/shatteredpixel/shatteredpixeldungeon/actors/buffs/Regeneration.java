@@ -67,6 +67,9 @@ public class Regeneration extends Buff {
 				}
 
 				float delay = REGENERATION_DELAY;
+				//Pixel Dungeon Reforged, one health every 7.5 turns on easy and 12.5 on impossible
+				if (Dungeon.difficulty == 1) delay = 7.5f;
+				else if (Dungeon.difficulty == 4) delay = 12.5f;
 				if (chaliceLevel != -1 && target.buff(MagicImmune.class) == null) {
 					if (chaliceCursed) {
 						delay *= 1.5f;

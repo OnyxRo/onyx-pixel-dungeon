@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
@@ -116,14 +117,24 @@ public class DM200 extends Mob {
 
 	private void zap( ){
 		spend( TICK );
+		//Concussion Cannon, half of the time it fires a blast wave instead of gas
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(DM200.class) == 3 && Random.Int(2) == 0) {
+			ventCooldown = Random.Int(10, 20);
+			blastWave();
+			return;
+		}
 		ventCooldown = 30;
 
 		Ballistica trajectory = new Ballistica(pos, enemy.pos, Ballistica.STOP_TARGET);
 
+		boolean dual = com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(DM200.class) == 1;
 		for (int i : trajectory.subPath(0, trajectory.dist)){
 			GameScene.add(Blob.seed(i, 20, ToxicGas.class));
+			//Dual Payload, corrosive gas along with the toxic
+			if (dual) GameScene.add(Blob.seed(i, 15, com.shatteredpixel.shatteredpixeldungeon.actors.blobs.CorrosiveGas.class).setStrength(6));
 		}
 		GameScene.add(Blob.seed(trajectory.collisionPos, 100, ToxicGas.class));
+		if (dual) GameScene.add(Blob.seed(trajectory.collisionPos, 100, com.shatteredpixel.shatteredpixeldungeon.actors.blobs.CorrosiveGas.class).setStrength(8));
 
 	}
 
@@ -134,6 +145,8 @@ public class DM200 extends Mob {
 		if (PathFinder.distance[pos] == Integer.MAX_VALUE){
 			return false;
 		}
+		//Short Range, it will not vent at anything further than five cells away
+		if (PathFinder.distance[pos] > 5 && com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(DM200.class) == 3) return false;
 		return true;
 	}
 
@@ -185,4 +198,50 @@ public class DM200 extends Mob {
 		}
 	}
 
+	//Pixel Dungeon Reforged Randomizer. Dual Payload and Short Range (above), Production Halt (in the mob spawner),
+	//Compact Design, Concussion Cannon, Rusted Gears
+	{
+		//Compact Design, it fits through narrow spaces
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(DM200.class) == 2) properties.remove(Property.LARGE);
+	}
+
+	@Override
+	public float speed() {
+		return super.speed() * (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(DM200.class) == 1 ? 0.25f : 1f);
+	}
+
+	private void blastWave() {
+		spend( TICK );
+		final Ballistica shot = new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE );
+		com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave.BlastWave.blast( shot.collisionPos );
+		com.watabou.noosa.audio.Sample.INSTANCE.play( com.shatteredpixel.shatteredpixeldungeon.Assets.Sounds.BLAST );
+
+		for (int i : PathFinder.NEIGHBOURS9) {
+			if (!(Dungeon.level.traps.get( shot.collisionPos + i ) instanceof com.shatteredpixel.shatteredpixeldungeon.levels.traps.TenguDartTrap)) {
+				Dungeon.level.pressCell( shot.collisionPos + i );
+			}
+		}
+
+		for (int i : PathFinder.NEIGHBOURS8) {
+			Char ch = Actor.findChar( shot.collisionPos + i );
+			if (ch != null) {
+				if (ch.alignment != Char.Alignment.ALLY) ch.damage( Random.Int( 2, 8 ), this );
+				if ((ch.isAlive() || ch.flying || !Dungeon.level.pit[ch.pos]) && ch.pos == shot.collisionPos + i) {
+					Ballistica trajectory = new Ballistica( ch.pos, ch.pos + i, Ballistica.MAGIC_BOLT );
+					com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave.throwChar( ch, trajectory, Random.Int( 2, 3 ), false, true, this );
+					com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.prolong( ch, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo.class, 4 );
+				}
+			}
+		}
+
+		Char ch = Actor.findChar( shot.collisionPos );
+		if (ch != null) {
+			ch.damage( Random.Int( 2, 8 ), this );
+			if ((ch.isAlive() || ch.flying || !Dungeon.level.pit[ch.pos]) && shot.path.size() > shot.dist + 1 && ch.pos == shot.collisionPos) {
+				Ballistica trajectory = new Ballistica( ch.pos, shot.path.get( shot.dist + 1 ), Ballistica.MAGIC_BOLT );
+				com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave.throwChar( ch, trajectory, Random.Int( 2, 3 ), false, true, this );
+				com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.prolong( ch, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo.class, 10 );
+			}
+		}
+	}
 }

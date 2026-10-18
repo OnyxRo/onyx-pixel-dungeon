@@ -44,6 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndChallenges;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndDifficulty;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndHeroInfo;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndKeyBindings;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
@@ -407,7 +408,7 @@ public class HeroSelectScene extends PixelScene {
 			btnOptions.icon().hardlight(1f, 1.5f, 0.67f);
 		} else if (!Dungeon.singleMod.isEmpty()){
 			btnOptions.icon().hardlight(0.67f, 1f, 1.5f);
-		} else if (SPDSettings.challenges() != 0){
+		} else if (SPDSettings.challenges() != 0 || SPDSettings.difficulty() != 2){
 			btnOptions.icon().hardlight(2f, 1.33f, 0.5f);
 		} else {
 			btnOptions.icon().resetColor();
@@ -630,6 +631,7 @@ public class HeroSelectScene extends PixelScene {
 		private ArrayList<ColorBlock> spacers;
 
 		protected StyledButton challengeButton;
+		protected StyledButton difficultyButton;
 
 		@Override
 		protected void createChildren() {
@@ -823,6 +825,24 @@ public class HeroSelectScene extends PixelScene {
 			challengeButton.icon(Icons.get(SPDSettings.challenges() > 0 ? Icons.CHALLENGE_COLOR : Icons.CHALLENGE_GREY));
 			add(challengeButton);
 			buttons.add(challengeButton);
+
+			//Pixel Dungeon Reforged, easy, medium, hard or impossible
+			difficultyButton = new StyledButton(Chrome.Type.BLANK, Messages.get(WndDifficulty.class, "difficulty"), 6){
+				@Override
+				protected void onClick() {
+					ShatteredPixelDungeon.scene().addToFront(new WndDifficulty(SPDSettings.difficulty(), true, new WndDifficulty.Listener() {
+						@Override
+						public void onDifficultyChanged() {
+							difficultyButton.icon(WndDifficulty.iconFor(SPDSettings.difficulty()));
+							updateOptionsColor();
+						}
+					}));
+				}
+			};
+			difficultyButton.leftJustify = true;
+			difficultyButton.icon(WndDifficulty.iconFor(SPDSettings.difficulty()));
+			add(difficultyButton);
+			buttons.add(difficultyButton);
 
 			//Shuffle mixes every mod floor by floor, Single mod builds the whole run from one mod
 			final java.util.ArrayList<String> modNames = WorldShuffle.mods();

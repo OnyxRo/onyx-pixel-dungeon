@@ -5,6 +5,9 @@
  * Shattered Pixel Dungeon
  * Copyright (C) 2014-2026 Evan Debenham
  *
+ * Onyx's Pixel Dungeon, the scrolling list and the locked challenges come from Pixel Dungeon Reforged
+ * by nathanlink169
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -30,7 +33,10 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.CheckBox;
 import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.watabou.noosa.Camera;
+import com.watabou.noosa.ui.Component;
 
 import java.util.ArrayList;
 
@@ -43,12 +49,26 @@ public class WndChallenges extends Window {
 
 	private boolean editable;
 	private ArrayList<CheckBox> boxes;
+	//the mask each box stands for, locked challenges have no box
+	private ArrayList<Integer> masks = new ArrayList<>();
 
 	public WndChallenges( int checked, boolean editable ) {
 
 		super();
 
 		this.editable = editable;
+
+		boxes = new ArrayList<>();
+
+		//the list is now long enough to need scrolling, 80% of the screen at most
+		int maxHeight = (int)(Camera.main.height * 0.8f);
+		resize(WIDTH, maxHeight);
+
+		ScrollPane pane = new ScrollPane( new Component() );
+		add(pane);
+		pane.setRect(0, 0, WIDTH, maxHeight);
+
+		Component content = pane.content();
 
 		RenderedTextBlock title = PixelScene.renderTextBlock( Messages.get(this, "title"), 12 );
 		title.hardlight( TITLE_COLOR );
@@ -57,15 +77,21 @@ public class WndChallenges extends Window {
 				(TTL_HEIGHT - title.height()) / 2
 		);
 		PixelScene.align(title);
-		add( title );
+		content.add( title );
 
-		boxes = new ArrayList<>();
+		int lockedCount = 0;
 
 		float pos = TTL_HEIGHT;
 		for (int i=0; i < Challenges.NAME_IDS.length; i++) {
 
+			if (!Challenges.IsChallengeUnlocked(Challenges.MASKS[i])) {
+				lockedCount++;
+				continue;
+			}
+
 			final String challenge = Challenges.NAME_IDS[i];
-			
+			masks.add(Challenges.MASKS[i]);
+
 			CheckBox cb = new CheckBox( Messages.titleCase(Messages.get(Challenges.class, challenge)) );
 			cb.checked( (checked & Challenges.MASKS[i]) != 0 );
 			cb.active = editable;
@@ -75,9 +101,9 @@ public class WndChallenges extends Window {
 			}
 			cb.setRect( 0, pos, WIDTH-16, BTN_HEIGHT );
 
-			add( cb );
+			content.add( cb );
 			boxes.add( cb );
-			
+
 			IconButton info = new IconButton(Icons.get(Icons.INFO)){
 				@Override
 				protected void onClick() {
@@ -88,12 +114,24 @@ public class WndChallenges extends Window {
 				}
 			};
 			info.setRect(cb.right(), pos, 16, BTN_HEIGHT);
-			add(info);
-			
+			content.add(info);
+
 			pos = cb.bottom();
 		}
 
-		resize( WIDTH, (int)pos );
+		if (lockedCount > 0) {
+			pos += GAP * 2;
+			RenderedTextBlock locked = PixelScene.renderTextBlock(Messages.get(this, "locked", lockedCount), 6);
+			locked.maxWidth(WIDTH);
+			locked.setPos(0, pos);
+			content.add(locked);
+			pos = locked.bottom() + GAP;
+		}
+
+		int height = (int)Math.min(maxHeight, pos);
+		resize( WIDTH, height );
+		content.setSize( WIDTH, pos );
+		pane.setRect( 0, 0, WIDTH, height );
 	}
 
 	@Override
@@ -103,7 +141,7 @@ public class WndChallenges extends Window {
 			int value = 0;
 			for (int i=0; i < boxes.size(); i++) {
 				if (boxes.get( i ).checked()) {
-					value |= Challenges.MASKS[i];
+					value |= masks.get(i);
 				}
 			}
 			SPDSettings.challenges( value );

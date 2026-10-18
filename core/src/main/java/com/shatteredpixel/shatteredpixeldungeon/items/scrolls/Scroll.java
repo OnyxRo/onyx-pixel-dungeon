@@ -85,6 +85,7 @@ public abstract class Scroll extends Item {
 			put("ODAL",ItemSpriteSheet.SCROLL_ODAL);
 			put("TIWAZ",ItemSpriteSheet.SCROLL_TIWAZ);
 			put("EIHWAZ",ItemSpriteSheet.SCROLL_EIHWAZ); //Shittened PD
+			put("JERA",ItemSpriteSheet.SCROLL_JERA); //Pixel Dungeon Reforged
 		}
 	};
 	
@@ -342,6 +343,7 @@ public abstract class Scroll extends Item {
 			stones.put(ScrollOfTerror.class,        StoneOfFear.class);
 			stones.put(ScrollOfTransmutation.class, StoneOfAugmentation.class);
 			stones.put(ScrollOfUpgrade.class,       StoneOfEnchantment.class);
+			stones.put(ScrollOfDecay.class,         com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfBlight.class);
 		}
 		
 		@Override

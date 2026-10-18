@@ -104,6 +104,10 @@ if [ $QUICK -eq 0 ]; then
   run "DevotedLeftoversTest" DevotedLeftoversTest; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY devoted)" | tail -12 | sed 's/^/  /'
   [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
+  #Reforged's seven challenges, trial rooms, difficulty, Randomizer and Scroll of Decay
+  run "ReforgedChallengeTest" ReforgedChallengeTest; rc=$?
+  tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|info|SUMMARY reforged)" | tail -14 | sed 's/^/  /'
+  [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
 fi
 
 # mod boss fights, walked through headless. Skipped in --quick runs.
@@ -118,6 +122,14 @@ fi
 run "MobArenaTest ${MOBS[*]}" MobArenaTest "${MOBS[@]}"; rc=$?
 tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|WARN|SUMMARY)" | sed 's/^/  /' | tail -40
 [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
+
+#the Randomizer, every one of its 150 changes switched on in turn for the 25 creatures it covers
+RZ=(Rat Snake Gnoll Crab Swarm Slime Skeleton Thief DM100 Guard Necromancer Bat Brute RedShaman Spinner DM200 Ghoul FireElemental FrostElemental ShockElemental Warlock Monk Golem RipperDemon Succubus Eye Scorpio)
+for RT in buff:1 buff:2 buff:3 nerf:1 nerf:2 nerf:3; do
+  JAVA_TOOL_OPTIONS="-Drandomizer.test=$RT" run "MobArenaTest randomizer $RT" MobArenaTest "${RZ[@]}"; rc=$?
+  tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY)" | sed 's/^/  /' | tail -6
+  [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
+done
 
 #items: --new checks changed ones, otherwise every catalog item (slow, mostly Shattered's own), so a full run uses --new too
 if [ "${MOBS[0]}" = "--all" ]; then ITEMS=(--all); elif [ "${MOBS[0]}" = "--new" ]; then ITEMS=(--new); else ITEMS=("${MOBS[@]}"); fi

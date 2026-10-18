@@ -66,7 +66,8 @@ public class Web extends Blob {
 
 	//affects characters as they step on it. See Level.OccupyCell and Level.PressCell
 	public static void affectChar( Char ch ){
-		Buff.prolong( ch, Roots.class, Roots.DURATION );
+		//Pixel Dungeon Reforged Randomizer, Lasting Webs keep the victim stuck three times as long
+		Buff.prolong( ch, Roots.class, Roots.DURATION * (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Spinner.class) == 1 ? 3 : 1) );
 	}
 	
 	@Override

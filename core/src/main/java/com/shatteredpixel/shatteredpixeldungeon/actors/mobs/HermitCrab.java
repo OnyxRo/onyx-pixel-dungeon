@@ -51,4 +51,9 @@ public class HermitCrab extends Crab {
 		return super.drRoll() + 2; //2-6 DR total, up from 0-4
 	}
 
+	//Pixel Dungeon Reforged Randomizer, Hermit Invasion
+	@Override
+	public float speed() {
+		return super.speed() * (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Crab.class) == 1 ? 2f : 1f);
+	}
 }

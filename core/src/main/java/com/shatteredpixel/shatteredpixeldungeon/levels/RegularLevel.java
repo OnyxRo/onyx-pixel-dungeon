@@ -179,6 +179,11 @@ public abstract class RegularLevel extends Level {
 		for (int i = 0; i < secrets; i++) {
 			initRooms.add(SecretRoom.createRoom());
 		}
+
+		//Pixel Dungeon Reforged, a trial room that holds a Challenge Cup, on one floor a run while modifiers are locked
+		if (com.shatteredpixel.shatteredpixeldungeon.levels.rooms.modifierunlocks.ModifierUnlockRoom.GetDepth() == Dungeon.depth) {
+			initRooms.add(com.shatteredpixel.shatteredpixeldungeon.levels.rooms.modifierunlocks.ModifierUnlockRoom.createRoom());
+		}
 		
 		return initRooms;
 	}
@@ -230,6 +235,10 @@ public abstract class RegularLevel extends Level {
 		int mobs = 3 + Dungeon.depth % 5 + Random.Int(3);
 		if (feeling == Feeling.LARGE){
 			mobs = (int)Math.ceil(mobs * 1.33f);
+		}
+		//Pixel Dungeon Reforged, the Horde challenge doubles the monsters on every floor
+		if (Dungeon.isChallenged(Challenges.HORDE)) {
+			mobs *= 2;
 		}
 		return mobs;
 	}
@@ -422,10 +431,12 @@ public abstract class RegularLevel extends Level {
 			for (int i = 0; i < n; i++) slots.add(Generator.Category.ARTIFACT);
 		} else {
 			// drops 3/4/5 items 60%/30%/10% of the time
-			nItems = 3 + Random.chances(new float[]{6, 3, 1});
+			//Pixel Dungeon Reforged, one more item on easy and one less on impossible
+			int difficultyOffset = Dungeon.difficulty == 1 ? 1 : (Dungeon.difficulty == 4 ? -1 : 0);
+			nItems = 3 + Random.chances(new float[]{6, 3, 1}) + difficultyOffset;
 
 			if (feeling == Feeling.LARGE){
-				nItems += 2;
+				nItems += 2 + difficultyOffset;
 			}
 		}
 

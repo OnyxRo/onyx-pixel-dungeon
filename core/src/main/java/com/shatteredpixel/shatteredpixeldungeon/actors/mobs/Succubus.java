@@ -94,7 +94,7 @@ public class Succubus extends Mob {
 			if (Dungeon.level.heroFOV[pos]) {
 				Sample.INSTANCE.play( Assets.Sounds.CHARMS );
 			}
-		} else if (Random.Int( 3 ) == 0) {
+		} else if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Succubus.class) == 2 ? Random.Int( 3 ) <= 1 : (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Succubus.class) == 2 ? Random.Int( 10 ) == 0 : Random.Int( 3 ) == 0)) {
 			Charm c = Buff.affect( enemy, Charm.class, Charm.DURATION/2f );
 			c.object = id();
 			c.ignoreNextHit = true; //so that the -5 duration from succubus hit is ignored
@@ -109,7 +109,8 @@ public class Succubus extends Mob {
 	
 	@Override
 	protected boolean getCloser( int target ) {
-		if (fieldOfView[target] && Dungeon.level.distance( pos, target ) > 2 && blinkCooldown <= 0 && !rooted) {
+		//Pixel Dungeon Reforged Randomizer, Earthbound cannot blink
+		if (fieldOfView[target] && Dungeon.level.distance( pos, target ) > 2 && blinkCooldown <= 0 && !rooted && !(com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Succubus.class) == 1)) {
 			
 			if (blink( target )) {
 				spend(-1 / speed());
@@ -195,5 +196,29 @@ public class Succubus extends Mob {
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
 		blinkCooldown = bundle.getInt(BLINK_CD);
+	}
+
+	//Pixel Dungeon Reforged Randomizer. Regenerative Allure, Persistent Charm (in Charm), Partial Resistance
+	@Override
+	protected boolean act() {
+		//Regenerative Allure
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Succubus.class) == 1 && HP > 0 && HP < HT && isAlive()) {
+			int oldHP = HP;
+			HP = Math.min( HT, HP + 2 );
+			sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString( HP - oldHP ), FloatingText.HEALING );
+		}
+		return super.act();
+	}
+
+	@Override
+	public void damage( int dmg, Object src ) {
+		//Partial Resistance, a charmed attacker still hits back, for half
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Succubus.class) == 3 && src instanceof Char) {
+			Charm charm = ((Char) src).buff( Charm.class );
+			if (charm != null && charm.object == id()) {
+				dmg /= 2;
+			}
+		}
+		super.damage( dmg, src );
 	}
 }

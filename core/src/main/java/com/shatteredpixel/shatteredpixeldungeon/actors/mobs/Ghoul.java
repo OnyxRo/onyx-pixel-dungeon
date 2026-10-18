@@ -104,6 +104,10 @@ public class Ghoul extends Mob {
 	@Override
 	protected boolean act() {
 		//create a child
+		//Pixel Dungeon Reforged Randomizer, Lone Wanderer, half of the ghouls come without a partner
+		if (partnerID == -1 && com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Ghoul.class) == 1 && Random.Float() < 0.5f) {
+			partnerID = -2;
+		}
 		if (partnerID == -1){
 			
 			ArrayList<Integer> candidates = new ArrayList<>();
@@ -158,7 +162,9 @@ public class Ghoul extends Mob {
 				timesDowned++;
 				Actor.remove(this);
 				Dungeon.level.mobs.remove( this );
-				Buff.append(nearby, GhoulLifeLink.class).set(timesDowned*5, this);
+				//Rapid Revival and Sluggish Revival
+				int reviveFactor = com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Ghoul.class) == 1 ? 3 : (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Ghoul.class) == 2 ? 15 : 5);
+				Buff.append(nearby, GhoulLifeLink.class).set(timesDowned*reviveFactor, this);
 				((GhoulSprite)sprite).crumple();
 				return;
 			}
@@ -286,14 +292,15 @@ public class Ghoul extends Mob {
 						return true;
 					}
 				}
-				ghoul.HP = Math.round(ghoul.HT/10f);
+				//Full Resurrection
+				ghoul.HP = com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Ghoul.class) == 2 ? ghoul.HT : Math.round(ghoul.HT/10f);
 				ghoul.beingLifeLinked = false;
 				Actor.add(ghoul);
 				ghoul.timeToNow();
 				Dungeon.level.mobs.add(ghoul);
 				Dungeon.level.occupyCell( ghoul );
 				ghoul.sprite.idle();
-				ghoul.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(Math.round(ghoul.HT/10f)), FloatingText.HEALING);
+				ghoul.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Ghoul.class) == 2 ? ghoul.HT : Math.round(ghoul.HT/10f)), FloatingText.HEALING);
 				if (ghoul.enemy != null && ghoul.enemy.alignment == ghoul.alignment){
 					ghoul.enemy = null; //reset enemy
 				}
@@ -373,5 +380,29 @@ public class Ghoul extends Mob {
 			}
 			return null;
 		}
+	}
+
+	//Pixel Dungeon Reforged Randomizer. Rapid Revival, Full Resurrection, Lone Wanderer, Sluggish Revival (all above),
+	//Draining Claws and Shared Pain
+	@Override
+	public int attackProc( Char enemy, int damage ) {
+		damage = super.attackProc( enemy, damage );
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Ghoul.class) == 3 && Random.Int(10) == 0) {
+			Buff.affect(enemy, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness.class);
+			Buff.affect(enemy, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable.class);
+		}
+		return damage;
+	}
+
+	@Override
+	public void damage( int dmg, Object src ) {
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Ghoul.class) == 3 && !(src instanceof Ghoul)) {
+			for (Mob m : Dungeon.level.mobs.toArray(new Mob[0])) {
+				if (m instanceof Ghoul && m != this && m.isAlive() && distance(m) < 10) {
+					m.damage( dmg / 10, this );
+				}
+			}
+		}
+		super.damage( dmg, src );
 	}
 }

@@ -43,6 +43,15 @@ public abstract class Trinket extends Item {
 		return false;
 	}
 
+	//Pixel Dungeon Reforged, in Trinket Madness the trinkets cannot be dropped, thrown or otherwise got rid of
+	@Override
+	public java.util.ArrayList<String> actions(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero hero) {
+		if (Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.TRINKET_MADNESS)) {
+			return new java.util.ArrayList<>();
+		}
+		return super.actions(hero);
+	}
+
 	protected abstract int upgradeEnergyCost();
 
 	protected static int trinketLevel(Class<? extends Trinket> trinketType ){

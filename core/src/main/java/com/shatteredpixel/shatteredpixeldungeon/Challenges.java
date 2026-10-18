@@ -5,6 +5,9 @@
  * Shattered Pixel Dungeon
  * Copyright (C) 2014-2026 Evan Debenham
  *
+ * Onyx's Pixel Dungeon, the seven extra challenges and the unlocking of them come from Pixel Dungeon Reforged
+ * by nathanlink169
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -23,6 +26,12 @@ package com.shatteredpixel.shatteredpixeldungeon;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.FileUtils;
+import com.watabou.utils.Random;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class Challenges {
 
@@ -37,8 +46,18 @@ public class Challenges {
 	public static final int CHAMPION_ENEMIES	= 128;
 	public static final int STRONGER_BOSSES 	= 256;
 
-	public static final int MAX_VALUE           = 511;
-	public static final int MAX_CHALS           = 9;
+	//Pixel Dungeon Reforged calls challenges modifiers, these seven are its own. They start locked, a Challenge Cup
+	//from a trial room unlocks them one at a time (see ChallengeCup and the rooms in levels/rooms/modifierunlocks)
+	public static final int HORDE				= 1 << 9;
+	public static final int MONSTER_UNKNOWN		= 1 << 10;
+	public static final int TRINKET_MADNESS		= 1 << 11;
+	public static final int RANDOMIZER			= 1 << 12;
+	public static final int ADAPTIVE			= 1 << 13;
+	public static final int CUBE				= 1 << 14;
+	public static final int BARRIER_BREAKER		= 1 << 15;
+
+	public static final int MAX_VALUE           = (1 << 16) - 1;
+	public static final int MAX_CHALS           = 16;
 
 	public static final String[] NAME_IDS = {
 			"champion_enemies",
@@ -49,12 +68,24 @@ public class Challenges {
 			"no_herbalism",
 			"swarm_intelligence",
 			"darkness",
-			"no_scrolls"
+			"no_scrolls",
+			"horde",
+			"monster_unknown",
+			"trinket_madness",
+			"randomizer",
+			"adaptive",
+			"cube",
+			"barrier_breaker"
 	};
 
 	public static final int[] MASKS = {
-			CHAMPION_ENEMIES, STRONGER_BOSSES, NO_FOOD, NO_ARMOR, NO_HEALING, NO_HERBALISM, SWARM_INTELLIGENCE, DARKNESS, NO_SCROLLS
+			CHAMPION_ENEMIES, STRONGER_BOSSES, NO_FOOD, NO_ARMOR, NO_HEALING, NO_HERBALISM, SWARM_INTELLIGENCE, DARKNESS, NO_SCROLLS,
+			HORDE, MONSTER_UNKNOWN, TRINKET_MADNESS, RANDOMIZER, ADAPTIVE, CUBE, BARRIER_BREAKER
 	};
+
+	//the nine challenges Shattered always has, the rest have to be unlocked
+	private static final int ALWAYS_UNLOCKED = NO_FOOD | NO_ARMOR | NO_HEALING | NO_HERBALISM | SWARM_INTELLIGENCE
+			| DARKNESS | NO_SCROLLS | CHAMPION_ENEMIES | STRONGER_BOSSES;
 
 	public static int activeChallenges(){
 		return activeChallenges(Dungeon.challenges);
@@ -78,4 +109,82 @@ public class Challenges {
 
 	}
 
+	/*****************************************************************
+	 * Unlocking, kept in challenges.dat next to the other save files.
+	 * Sandbox runs have everything unlocked.
+	 *****************************************************************/
+
+	private static int m_UnlockedChallenges = ALWAYS_UNLOCKED;
+
+	private static int allMasks() {
+		int all = 0;
+		for (int ch : MASKS) all |= ch;
+		return all;
+	}
+
+	public static boolean HasAnyChallengesToUnlock() {
+		if (Dungeon.sandbox) return false;
+		load();
+		return (allMasks() & ~m_UnlockedChallenges) != 0;
+	}
+
+	//unlocks one random locked challenge and returns its index in NAME_IDS, or -1 if nothing was locked
+	public static int UnlockRandomChallenge() {
+		load();
+		ArrayList<Integer> locked = new ArrayList<>();
+		for (int i = 0; i < MASKS.length; i++) {
+			if ((m_UnlockedChallenges & MASKS[i]) == 0) locked.add(i);
+		}
+		if (locked.isEmpty()) return -1;
+		int index = Random.element(locked);
+		m_UnlockedChallenges |= MASKS[index];
+		Save();
+		return index;
+	}
+
+	// Debug
+	public static void UnlockAllChallenges() {
+		load();
+		m_UnlockedChallenges |= allMasks();
+		Save();
+	}
+
+	public static boolean IsChallengeUnlocked(int mask) {
+		if (Dungeon.sandbox) return true;
+		load();
+		return (m_UnlockedChallenges & mask) == mask;
+	}
+
+	public static int LockedCount() {
+		int n = 0;
+		for (int ch : MASKS) if (!IsChallengeUnlocked(ch)) n++;
+		return n;
+	}
+
+	public static final String UNLOCKED_CHALLENGES_KEY = "unlocked_challenges_key";
+	public static final String CHALLENGES_FILE	= "challenges.dat";
+
+	public static void Save() {
+		Bundle bundle = new Bundle();
+		store( bundle );
+
+		try {
+			FileUtils.bundleToFile(CHALLENGES_FILE, bundle);
+		} catch (IOException e) {
+			ShatteredPixelDungeon.reportException(e);
+		}
+	}
+
+	public static void store( Bundle bundle ) {
+		bundle.put( UNLOCKED_CHALLENGES_KEY, m_UnlockedChallenges );
+	}
+
+	public static void load() {
+		try {
+			Bundle bundle = FileUtils.bundleFromFile( CHALLENGES_FILE );
+			m_UnlockedChallenges = bundle.getInt(UNLOCKED_CHALLENGES_KEY) | ALWAYS_UNLOCKED;
+		} catch (IOException e) {
+			m_UnlockedChallenges = ALWAYS_UNLOCKED;
+		}
+	}
 }

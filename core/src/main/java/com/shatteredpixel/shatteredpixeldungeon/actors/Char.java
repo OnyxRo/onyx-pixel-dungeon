@@ -483,6 +483,12 @@ public abstract class Char extends Actor {
 				}
 			} else {
 				dmg = damageRoll();
+				//Pixel Dungeon Reforged, on easy a surprise attack always rolls the most damage the weapon can
+				if (this == Dungeon.hero && Dungeon.difficulty == 1 && enemy instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob
+						&& ((com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob) enemy).surprisedBy(this)) {
+					com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon surpriseWep = Dungeon.hero.belongings.attackingWeapon();
+					dmg = Math.max(dmg, surpriseWep != null ? surpriseWep.max() : Math.max(1, Dungeon.hero.STR() - 8));
+				}
 			}
 
 			dmg = dmg*dmgMulti;

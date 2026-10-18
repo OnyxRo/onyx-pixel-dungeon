@@ -415,6 +415,9 @@ public abstract class Mob extends Char {
 	//FIXME this is sort of a band-aid correction for allies needing more intelligent behaviour
 	protected boolean intelligentAlly = false;
 	
+	//Pixel Dungeon Reforged Randomizer, does nothing unless a creature overrides it
+	protected void extraAttackTargets( java.util.HashSet<Char> enemies ) {}
+
 	protected Char chooseEnemy() {
 
 		Dread dread = buff( Dread.class );
@@ -527,6 +530,9 @@ public abstract class Mob extends Char {
 				}
 				
 			}
+
+			//Pixel Dungeon Reforged Randomizer, some creatures go after more than the usual targets
+			extraAttackTargets( enemies );
 
 			//do not target anything that's charming us
 			Charm charm = buff( Charm.class );
@@ -1181,6 +1187,11 @@ public abstract class Mob extends Char {
 				}
 			}
 
+			//Pixel Dungeon Reforged, the Adaptive challenge swaps all of the hero's gear every time an enemy dies
+			if (Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.ADAPTIVE) && Dungeon.hero.isAlive()) {
+				Dungeon.hero.belongings.TriggerAdaptive();
+			}
+
 		}
 
 		if (Dungeon.hero.isAlive() && !Dungeon.level.heroFOV[pos]) {
@@ -1374,7 +1385,27 @@ public abstract class Mob extends Char {
 		target = cell;
 	}
 	
+	//Pixel Dungeon Reforged, in the Monster Unknown challenge the hero cannot tell what a hostile monster is
+	//while it is out on the floor. Entries in the journal still show the real thing.
+	public boolean monsterUnknown() {
+		return Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.MONSTER_UNKNOWN)
+				&& Dungeon.level != null && Dungeon.level.mobs.contains(this)
+				&& alignment == Alignment.ENEMY
+				&& !properties().contains(Char.Property.BOSS) && !properties().contains(Char.Property.MINIBOSS);
+	}
+
+	@Override
+	public String name() {
+		if (monsterUnknown()) {
+			return Messages.get(Mob.class, "name_unknown");
+		}
+		return super.name();
+	}
+
 	public String description() {
+		if (monsterUnknown()) {
+			return Messages.get(Mob.class, "desc_unknown");
+		}
 		return Messages.get(this, "desc");
 	}
 

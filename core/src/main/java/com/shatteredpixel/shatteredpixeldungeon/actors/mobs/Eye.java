@@ -93,8 +93,10 @@ public class Eye extends Mob {
 		if (beamCooldown == 0) {
 			Ballistica aim = new Ballistica(pos, enemy.pos, Ballistica.STOP_SOLID);
 
+			//Pixel Dungeon Reforged Randomizer, Myopic Vision only sees three cells
 			if (enemy.invisible == 0 && !isCharmedBy(enemy) && fieldOfView[enemy.pos]
-					&& (super.canAttack(enemy) || aim.subPath(1, aim.dist).contains(enemy.pos))){
+					&& (super.canAttack(enemy) || aim.subPath(1, aim.dist).contains(enemy.pos))
+					&& !(com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Eye.class) == 1 && distance(enemy) > 3)){
 				beam = aim;
 				beamTarget = enemy.pos;
 				return true;
@@ -130,7 +132,8 @@ public class Eye extends Mob {
 			return super.doAttack(enemy);
 		} else if (!beamCharged){
 			((EyeSprite)sprite).charge( enemy.pos );
-			spend( attackDelay()*2f );
+			//Rapid Charge and Sluggish Charge
+			spend( attackDelay() * (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Eye.class) == 2 ? 1f : (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Eye.class) == 2 ? 4f : 2f)) );
 			beamCharged = true;
 			return true;
 		} else {
@@ -189,7 +192,8 @@ public class Eye extends Mob {
 				continue;
 			}
 
-			if (hit( this, ch, true )) {
+			//Undodgeable Beam always lands, Predictable Beam misses a third more often
+			if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Eye.class) == 1 || (hit( this, ch, true ) && !(com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Eye.class) == 3 && Random.Int(3) == 0))) {
 				int dmg = Random.NormalIntRange( 30, 50 );
 				dmg = Math.round(dmg * AscensionChallenge.statModifier(this));
 
@@ -282,5 +286,10 @@ public class Eye extends Mob {
 			}
 			return super.act(enemyInFOV, justAlerted);
 		}
+	}
+
+	//Pixel Dungeon Reforged Randomizer. Durable Eye (health 100 to 150)
+	{
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Eye.class) == 3) HP = HT = (int) (HT * 1.5f);
 	}
 }

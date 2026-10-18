@@ -63,6 +63,13 @@ public enum Icons {
 	CALENDAR,
 	CHEVRON,
 	SHUFFLE,
+	//from Pixel Dungeon Reforged
+	RANDOMIZER,
+	DIFFICULTY,
+	EASY,
+	MEDIUM,
+	HARD,
+	IMPOSSIBLE,
 
 	//misc larger icons, mainly used for buttons, tabs, and journal, spacing for 16x16
 	TARGET,
@@ -230,6 +237,24 @@ public enum Icons {
 				break;
 			case SHUFFLE:
 				icon.frame(icon.texture.uvRectBySize( 240, 32, 15, 12 ) );
+				break;
+			case RANDOMIZER:
+				icon.frame( icon.texture.uvRectBySize( 128, 48, 16, 16 ) );
+				break;
+			case DIFFICULTY:
+				icon.frame( icon.texture.uvRectBySize( 144, 48, 14, 14 ) );
+				break;
+			case EASY:
+				icon.frame( icon.texture.uvRectBySize( 160, 48, 16, 14 ) );
+				break;
+			case MEDIUM:
+				icon.frame( icon.texture.uvRectBySize( 176, 48, 16, 14 ) );
+				break;
+			case HARD:
+				icon.frame( icon.texture.uvRectBySize( 192, 48, 16, 14 ) );
+				break;
+			case IMPOSSIBLE:
+				icon.frame( icon.texture.uvRectBySize( 208, 48, 16, 14 ) );
 				break;
 
 			case TARGET:

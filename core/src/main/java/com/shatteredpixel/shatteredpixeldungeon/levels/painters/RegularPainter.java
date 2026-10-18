@@ -124,9 +124,12 @@ public abstract class RegularPainter extends Painter {
 		for (Room r : rooms.toArray(new Room[0])) {
 			if (r.connected.isEmpty()){
 				Game.reportException( new RuntimeException("Painting a room with no connections! Room:" + r.getClass().getSimpleName() + " Seed:" + Dungeon.seed + " Depth:" + Dungeon.depth));
-				if (r instanceof SpecialRoom) return false;
+				//Pixel Dungeon Reforged's trial rooms now and then leave a standard room cut off, which crashes its painter, so build the floor again
+				if (r instanceof SpecialRoom || r instanceof com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom
+						|| r instanceof com.shatteredpixel.shatteredpixeldungeon.levels.rooms.modifierunlocks.ModifierUnlockRoom) return false;
 			}
-			placeDoors( r );
+			//a pair of rooms with nowhere for a door (Reforged's trial rooms can cause it now and then) means build the floor again
+			if (!placeDoors( r )) return false;
 			r.paint( level );
 		}
 		
@@ -157,7 +160,7 @@ public abstract class RegularPainter extends Painter {
 	
 	protected abstract void decorate(Level level, ArrayList<Room> rooms);
 	
-	private void placeDoors( Room r ) {
+	private boolean placeDoors( Room r ) {
 		for (Room n : r.connected.keySet()) {
 			Room.Door door = r.connected.get( n );
 			if (door == null) {
@@ -173,7 +176,7 @@ public abstract class RegularPainter extends Painter {
 							new RuntimeException("Could not place a door! " +
 									"r=" + r.getClass().getSimpleName() +
 									" n=" + n.getClass().getSimpleName()));
-					continue;
+					return false;
 				}
 				door = new Room.Door(Random.element(doorSpots));
 				
@@ -181,6 +184,7 @@ public abstract class RegularPainter extends Painter {
 				n.connected.put( r, door );
 			}
 		}
+		return true;
 	}
 
 	public float hiddenDoorChance( Level l ){

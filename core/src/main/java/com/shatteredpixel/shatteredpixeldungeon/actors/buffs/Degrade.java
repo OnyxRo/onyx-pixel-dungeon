@@ -53,6 +53,27 @@ public class Degrade extends FlavourBuff {
 		Item.updateQuickslot();
 	}
 
+	//Pixel Dungeon Reforged Randomizer, Arcane Mastery from a warlock applies the reduction twice
+	public boolean poweredUp = false;
+
+	@Override
+	public void storeInBundle( com.watabou.utils.Bundle bundle ) {
+		super.storeInBundle( bundle );
+		bundle.put( "powered_up", poweredUp );
+	}
+
+	@Override
+	public void restoreFromBundle( com.watabou.utils.Bundle bundle ) {
+		super.restoreFromBundle( bundle );
+		poweredUp = bundle.getBoolean( "powered_up" );
+	}
+
+	public int reduceLevelFor( int level ) {
+		int newLevel = reduceLevel( level );
+		if (poweredUp && newLevel > 0) newLevel = reduceLevel( newLevel );
+		return newLevel;
+	}
+
 	//called in Item.buffedLevel()
 	public static int reduceLevel( int level ){
 		if (level <= 0){

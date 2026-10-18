@@ -163,6 +163,11 @@ public abstract class Wand extends Item {
 
 	public boolean tryToZap( Hero owner, int target ){
 
+		if (Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.CUBE)) {
+			GLog.w(Messages.get(com.shatteredpixel.shatteredpixeldungeon.Challenges.class, "cube.wand_zap"));
+			return false;
+		}
+
 		if (owner.buff(WildMagic.WildMagicTracker.class) == null && owner.buff(MagicImmune.class) != null){
 			GLog.w( Messages.get(this, "no_magic") );
 			return false;
@@ -432,7 +437,7 @@ public abstract class Wand extends Item {
 			if (charger.target == Dungeon.hero
 					&& !Dungeon.hero.belongings.contains(this)
 					&& Dungeon.hero.buff( Degrade.class ) != null){
-				lvl = Degrade.reduceLevel(lvl);
+				lvl = Dungeon.hero.buff(Degrade.class) != null ? Dungeon.hero.buff(Degrade.class).reduceLevelFor(lvl) : Degrade.reduceLevel(lvl);
 			}
 
 			if (charger.target.buff(ScrollEmpower.class) != null){

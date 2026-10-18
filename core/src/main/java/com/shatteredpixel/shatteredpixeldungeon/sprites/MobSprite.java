@@ -34,6 +34,39 @@ public class MobSprite extends CharSprite {
 	private static final float FADE_TIME	= 3f;
 	private static final float FALL_TIME	= 1f;
 	
+	//Pixel Dungeon Reforged, the Monster Unknown challenge draws every hostile monster as the same shape
+	@Override
+	public void link( com.shatteredpixel.shatteredpixeldungeon.actors.Char ch ) {
+		if (ch instanceof Mob && ((Mob) ch).monsterUnknown()) {
+			setupMonsterUnknown();
+		}
+		super.link( ch );
+	}
+
+	protected void setupMonsterUnknown() {
+		texture( com.shatteredpixel.shatteredpixeldungeon.Assets.Sprites.MONSTER_UNKNOWN );
+
+		com.watabou.noosa.TextureFilm frames = new com.watabou.noosa.TextureFilm( texture, 16, 16 );
+
+		idle = new Animation( 1, true );
+		idle.frames( frames, 0, 0, 0, 1, 0, 0, 1, 1 );
+
+		run = new Animation( 20, true );
+		run.frames( frames, 2, 3, 4, 5, 6, 7 );
+
+		die = new Animation( 20, false );
+		die.frames( frames, 8, 9, 10, 11, 12, 11 );
+
+		attack = new Animation( 15, false );
+		attack.frames( frames, 13, 14, 15, 0 );
+
+		//ranged and special attacks use the same shape, so nothing else gives away what it is
+		zap = attack;
+		operate = attack;
+
+		play( idle );
+	}
+
 	@Override
 	public void update() {
 		sleeping = ch != null && ch.isAlive() && ((Mob)ch).state == ((Mob)ch).SLEEPING;

@@ -244,7 +244,20 @@ public class MobSpawner extends Actor {
 	private static void swapMobAlts(ArrayList<Class<?extends Mob>> rotation) {
 		float altChance = 1 / 50f * RatSkull.exoticChanceMultiplier();
 		for (int i = 0; i < rotation.size(); i++) {
-			if (Random.Float() < altChance) {
+			Class<? extends Mob> clBefore = rotation.get(i);
+			float currentAltChance = altChance;
+			//Pixel Dungeon Reforged Randomizer, the Albino, Hermit, Bandit, Armored Brute, Acidic and Senior buffs
+			if ((clBefore == Rat.class && com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Rat.class) == 1) ||
+					(clBefore == Crab.class && com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Crab.class) == 1) ||
+					(clBefore == Thief.class && com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Thief.class) == 2) ||
+					(clBefore == Brute.class && com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Brute.class) == 3) ||
+					(clBefore == Scorpio.class && com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Scorpio.class) == 1) ||
+					(clBefore == Monk.class && com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Monk.class) == 2)) {
+				currentAltChance = 0.5f;
+			}
+			//DM-201s do not turn up at all while Production Halt is on
+			if (clBefore == DM200.class && com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(DM200.class) == 2) continue;
+			if (Random.Float() < currentAltChance) {
 				Class<? extends Mob> cl = rotation.get(i);
 				Class<? extends Mob> alt = RARE_ALTS.get(cl);
 				if (alt != null) {

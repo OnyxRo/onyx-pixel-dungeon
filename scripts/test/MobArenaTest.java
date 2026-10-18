@@ -56,6 +56,14 @@ public class MobArenaTest {
 		Dungeon.seed = 424242L;
 		Dungeon.sandbox = true;
 		Dungeon.init();
+		//-Drandomizer.test=buff:2 or nerf:3 runs the monsters with that Randomizer change switched on for all of them
+		String rt = System.getProperty( "randomizer.test" );
+		if (rt != null) {
+			Dungeon.challenges |= com.shatteredpixel.shatteredpixeldungeon.Challenges.RANDOMIZER;
+			int n = Integer.parseInt( rt.substring( rt.indexOf( ':' ) + 1 ) );
+			if (rt.startsWith( "buff" )) com.shatteredpixel.shatteredpixeldungeon.Randomizer.testBuff = n;
+			else com.shatteredpixel.shatteredpixeldungeon.Randomizer.testNerf = n;
+		}
 
 		int ok = 0;
 		for (Class<?> cls : mobs) {

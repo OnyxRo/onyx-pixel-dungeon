@@ -176,6 +176,7 @@ public abstract class Recipe {
 		new ExoticPotion.PotionToExotic(),
 		new ExoticScroll.ScrollToExotic(),
 		new ArcaneResin.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing.MembraneRecipe(),
 		new LiquidMetal.Recipe(),
 		new BlizzardBrew.Recipe(),
 		new InfernalBrew.Recipe(),

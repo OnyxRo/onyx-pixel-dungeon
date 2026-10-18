@@ -129,4 +129,34 @@ public class DM100Sprite extends MobSprite {
 		}
 
 	}
+
+	//Pixel Dungeon Reforged Randomizer, the sparks of Electrical Aura
+	private com.watabou.noosa.particles.Emitter auraParticles;
+
+	@Override
+	public void link( Char ch ) {
+		super.link( ch );
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM100.class) == 1) {
+			auraParticles = emitter();
+			auraParticles.autoKill = false;
+			auraParticles.on = true;
+			auraParticles.fillTarget = false;
+			auraParticles.pour( com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle.FACTORY, 0.05f );
+		}
+	}
+
+	@Override
+	public void update() {
+		super.update();
+		if (auraParticles != null) {
+			auraParticles.pos( this );
+			auraParticles.visible = visible;
+		}
+	}
+
+	@Override
+	public void kill() {
+		super.kill();
+		if (auraParticles != null) auraParticles.on = false;
+	}
 }

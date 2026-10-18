@@ -93,6 +93,8 @@ public class Swarm extends Mob {
 
 	//from Transformation PD, so its swarms can change when they split
 	protected boolean canSplit( int damage ) {
+		//Pixel Dungeon Reforged Randomizer, Depleted Numbers
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Swarm.class) == 3 && Random.Float() > 0.5f) return false;
 		return HP >= damage + 2;
 	}
 
@@ -165,5 +167,40 @@ public class Swarm extends Mob {
 	public Item createLoot(){
 		Dungeon.LimitedDrops.SWARM_HP.count++;
 		return super.createLoot();
+	}
+
+	//Pixel Dungeon Reforged Randomizer. Piercing and Slashing Resistance, Fast Swarm (the speed of a crab), Bloodsuckers,
+	//Weakened Swarm, Magic Vulnerability, Depleted Numbers (above)
+	@Override
+	protected void onAdd() {
+		boolean first = firstAdded;
+		super.onAdd();
+		if (first && generation == 0 && com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Swarm.class) == 1) {
+			HP = (int) (HT * Random.Float(0.5f, 1.0f));
+		}
+	}
+
+	@Override
+	public float speed() {
+		return super.speed() * (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Swarm.class) == 2 ? 2f : 1f);
+	}
+
+	@Override
+	public void damage( int dmg, Object src ) {
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Swarm.class) == 1 && (com.shatteredpixel.shatteredpixeldungeon.Randomizer.isSlashing(src) || com.shatteredpixel.shatteredpixeldungeon.Randomizer.isPiercing(src))) {
+			dmg = (int) Math.ceil(dmg / 2f);
+		} else if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Swarm.class) == 2 && com.shatteredpixel.shatteredpixeldungeon.Randomizer.isEnergy(src)) {
+			dmg *= 3;
+		}
+		super.damage( dmg, src );
+	}
+
+	@Override
+	public int attackProc( Char enemy, int damage ) {
+		damage = super.attackProc( enemy, damage );
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Swarm.class) == 3 && damage > 0 && Random.Int(2) == 0) {
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(enemy, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding.class).set(3);
+		}
+		return damage;
 	}
 }

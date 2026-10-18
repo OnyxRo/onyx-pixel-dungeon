@@ -78,4 +78,20 @@ public class WarlockSprite extends MobSprite {
 		}
 		super.onComplete( anim );
 	}
+
+	//Pixel Dungeon Reforged Randomizer, the dance of Dance Fever
+	private Animation dancing;
+
+	public boolean isDancing() {
+		return curAnim == dancing && dancing != null;
+	}
+
+	public void dance() {
+		if (dancing == null) {
+			TextureFilm frames = new TextureFilm( texture, 12, 15 );
+			dancing = new Animation( 5, true );
+			dancing.frames( frames, 11, 15, 17, 13, 14, 18, 11, 16, 17, 12, 14, 19 );
+		}
+		play( dancing );
+	}
 }

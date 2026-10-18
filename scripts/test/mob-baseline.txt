@@ -75,3 +75,6 @@ SugarplumFairy crashed during its own turns
 PetBee crashed during its own turns
 Scorpion crashed during its own turns
 PetVelocirooster crashed during its own turns
+Ghoul crashed when it died
+Necromancer crashed during its own turns
+Spinner crashed during its own turns

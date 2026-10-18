@@ -123,6 +123,8 @@ public abstract class Elemental extends Mob {
 	protected boolean act() {
 		if (state == HUNTING){
 			rangedCooldown--;
+			//Pixel Dungeon Reforged Randomizer, Ranged Mastery shoots whenever it is not in melee
+			if (randomBuff(2)) rangedCooldown = 0;
 		}
 		
 		return super.act();
@@ -245,7 +247,9 @@ public abstract class Elemental extends Mob {
 		
 		@Override
 		protected void meleeProc( Char enemy, int damage ) {
-			if (Random.Int( 2 ) == 0 && !Dungeon.level.water[enemy.pos]) {
+			//Insulation stops the effect, Elemental Overload makes it certain
+			if (randomNerf(3)) return;
+			if ((Random.Int( 2 ) == 0 && !Dungeon.level.water[enemy.pos]) || randomBuff(1)) {
 				Buff.affect( enemy, Burning.class ).reignite( enemy );
 				if (enemy.sprite.visible) Splash.at( enemy.sprite.center(), sprite.blood(), 5);
 			}
@@ -497,7 +501,8 @@ public abstract class Elemental extends Mob {
 		
 		@Override
 		protected void meleeProc( Char enemy, int damage ) {
-			if (Random.Int( 3 ) == 0 || Dungeon.level.water[enemy.pos]) {
+			if (randomNerf(3)) return;
+			if (Random.Int( 3 ) == 0 || Dungeon.level.water[enemy.pos] || randomBuff(1)) {
 				Freezing.freeze( enemy.pos );
 				if (enemy.sprite.visible) Splash.at( enemy.sprite.center(), sprite.blood(), 5);
 			}
@@ -695,4 +700,39 @@ public abstract class Elemental extends Mob {
         }
     }
 
+	//Pixel Dungeon Reforged Randomizer. Elemental Overload, Ranged Mastery and Insulation (above), Empowered Form,
+	//Generous Spirit and Chaotic Rampage. Newborn and coal elementals are left out, as in Reforged.
+	protected boolean randomBuff(int n) {
+		return !(this instanceof NewbornFireElemental) && !(this instanceof CoalElemental)
+				&& com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Elemental.class) == n;
+	}
+
+	protected boolean randomNerf(int n) {
+		return !(this instanceof NewbornFireElemental) && !(this instanceof CoalElemental)
+				&& com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Elemental.class) == n;
+	}
+
+	{
+		//Empowered Form, 60 health becomes 90
+		if (randomBuff(3)) HP = HT = (int) (HT * 1.5f);
+	}
+
+	@Override
+	public float lootChance() {
+		float chance = super.lootChance();
+		//Generous Spirit
+		if (randomNerf(1)) chance = Math.min( 1f, chance * (this instanceof ShockElemental ? 4f : 6f) );
+		return chance;
+	}
+
+	@Override
+	protected void extraAttackTargets( java.util.HashSet<Char> enemies ) {
+		//Chaotic Rampage, it goes for anything that is not neutral
+		if (!randomNerf(2) || alignment != Alignment.ENEMY) return;
+		for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
+			if (mob != this && mob.alignment != Alignment.NEUTRAL && fieldOfView[mob.pos] && mob.invisible <= 0) {
+				enemies.add( mob );
+			}
+		}
+	}
 }

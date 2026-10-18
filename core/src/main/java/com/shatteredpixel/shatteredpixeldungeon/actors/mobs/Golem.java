@@ -70,7 +70,8 @@ public class Golem extends Mob {
 	
 	@Override
 	public int drRoll() {
-		return super.drRoll() + Random.NormalIntRange(0, 12);
+		//Pixel Dungeon Reforged Randomizer, Immunity raises the lowest armour roll to 6
+		return super.drRoll() + Random.NormalIntRange(com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Golem.class) == 2 ? 6 : 0, 12);
 	}
 
 	@Override
@@ -124,6 +125,15 @@ public class Golem extends Mob {
 	protected boolean act() {
 		selfTeleCooldown--;
 		enemyTeleCooldown--;
+		//Spatial Lock and Projectile Blocking stop the teleporting
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Golem.class) == 1) selfTeleCooldown = 1000;
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Golem.class) == 2) enemyTeleCooldown = 1000;
+		//Rapid Regeneration
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Golem.class) == 1 && HP > 0 && HP < HT) {
+			int oldHP = HP;
+			HP = Math.min(HT, HP + 2);
+			sprite.showStatusWithIcon(com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite.POSITIVE, Integer.toString(HP - oldHP), com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText.HEALING);
+		}
 		if (teleporting){
 			((GolemSprite)sprite).teleParticles(false);
 			if (Actor.findChar(target) == null && Dungeon.level.openSpace[target]) {
@@ -254,4 +264,20 @@ public class Golem extends Mob {
 		}
 	}
 
+	//Pixel Dungeon Reforged Randomizer. Rapid Regeneration, Spatial Lock, Projectile Blocking (above), Immunity (above),
+	//Double Strike and Battle Worn
+	@Override
+	protected void onAdd() {
+		boolean first = firstAdded;
+		super.onAdd();
+		if (first && com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Golem.class) == 3) {
+			HP = (int) (HT * Random.Float(0.5f, 1.0f));
+		}
+	}
+
+	@Override
+	public float attackDelay() {
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Golem.class) == 3) return super.attackDelay() * 0.5f;
+		return super.attackDelay();
+	}
 }

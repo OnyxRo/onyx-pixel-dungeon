@@ -99,6 +99,7 @@ public class ItemSpriteSheet {
 	public static final int TENGU_BOMB      = UNCOLLECTIBLE+8;
 	public static final int TENGU_SHOCKER   = UNCOLLECTIBLE+9;
 	public static final int GEO_BOULDER     = UNCOLLECTIBLE+10;
+	public static final int CHALLENGE_CUP   = UNCOLLECTIBLE+11; //Pixel Dungeon Reforged
 	static{
 		assignItemRect(GOLD,        15, 13);
 		assignItemRect(ENERGY,      16, 16);
@@ -111,6 +112,7 @@ public class ItemSpriteSheet {
 		assignItemRect(TENGU_BOMB,      10, 10);
 		assignItemRect(TENGU_SHOCKER,   10, 10);
 		assignItemRect(GEO_BOULDER,     16, 15);
+		assignItemRect(CHALLENGE_CUP,   14, 12);
 	}
 
 	private static final int CONTAINERS     =                               xy(1, 3);   //16 slots
@@ -414,6 +416,7 @@ public class ItemSpriteSheet {
 	public static final int SPRAYGUN_PURITY = xy(5, 53);
 	public static final int SPRAYGUN_STRENGTH = xy(6, 53);
 	public static final int SPRAYGUN_TOXIC_GAS = xy(7, 53);
+	public static final int BAT_MEMBRANE = xy(4, 54);
 	public static final int HOWARD_CHEST = xy(2, 100);
 	public static final int EVAN_CHEST = xy(3, 100);
 	public static final int GOLD_CHEST = xy(4, 100);
@@ -1030,6 +1033,7 @@ public class ItemSpriteSheet {
 		assignItemRect(SPRAYGUN_PURITY, 14, 16);
 		assignItemRect(SPRAYGUN_STRENGTH, 14, 16);
 		assignItemRect(SPRAYGUN_TOXIC_GAS, 14, 16);
+		assignItemRect(BAT_MEMBRANE, 16, 16);
 		assignItemRect(HOWARD_CHEST, 16, 14);
 		assignItemRect(EVAN_CHEST, 16, 14);
 		assignItemRect(GOLD_CHEST, 16, 14);
@@ -1775,8 +1779,9 @@ public class ItemSpriteSheet {
 	public static final int SCROLL_BERKANAN = SCROLLS+9;
 	public static final int SCROLL_ODAL     = SCROLLS+10;
 	public static final int SCROLL_TIWAZ    = SCROLLS+11;
+	public static final int SCROLL_JERA     = SCROLLS+12; //Pixel Dungeon Reforged, the rune of the Scroll of Decay
 
-	public static final int ARCANE_RESIN    = SCROLLS+13;
+	public static final int ARCANE_RESIN   = SCROLLS+13;
 	static {
 		for (int i = SCROLLS; i < SCROLLS+16; i++)
 			assignItemRect(i, 15, 14);
@@ -1796,6 +1801,7 @@ public class ItemSpriteSheet {
 	public static final int EXOTIC_BERKANAN = EXOTIC_SCROLLS+9;
 	public static final int EXOTIC_ODAL     = EXOTIC_SCROLLS+10;
 	public static final int EXOTIC_TIWAZ    = EXOTIC_SCROLLS+11;
+	public static final int EXOTIC_JERA     = EXOTIC_SCROLLS+12;
 	static {
 		for (int i = EXOTIC_SCROLLS; i < EXOTIC_SCROLLS+16; i++)
 			assignItemRect(i, 15, 14);
@@ -2208,12 +2214,17 @@ public class ItemSpriteSheet {
 		//from Shittened PD
 		public static final int SCROLL_SHIT = SCROLLS+12;
 		public static final int SCROLL_ENSHIT = EXOTIC_SCROLLS+12;
+		//from Pixel Dungeon Reforged
+		public static final int SCROLL_DECAY = SCROLLS+13;
+		public static final int SCROLL_GROWTH = EXOTIC_SCROLLS+13;
 		public static final int POTION_ACC = POTIONS+12;
 		public static final int POTION_KET = POTIONS+13;
 		public static final int POTION_FUEL = POTIONS+14;
 		public static final int POTION_FUROR = EXOTIC_POTIONS+12;
 		public static final int POTION_KET_STORM = EXOTIC_POTIONS+13;
 		static {
+			assignIconRect( SCROLL_DECAY, 5, 6 );
+			assignIconRect( SCROLL_GROWTH, 5, 6 );
 			assignIconRect( SCROLL_SHIT, 7, 4 );
 			assignIconRect( SCROLL_ENSHIT, 8, 8 );
 			assignIconRect( POTION_ACC, 7, 6 );

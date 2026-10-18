@@ -75,10 +75,23 @@ public class Skeleton extends Mob {
 		if (cause == Chasm.class) return;
 		
 		boolean heroKilled = false;
-		for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-			Char ch = findChar( pos + PathFinder.NEIGHBOURS8[i] );
+		//Pixel Dungeon Reforged Randomizer, Bone Bomb blows up everything within three cells instead of one
+		int[] boneNeighbours = PathFinder.NEIGHBOURS8;
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Skeleton.class) == 1) {
+			boneNeighbours = new int[48];
+			int n = 0;
+			for (int dy = -3; dy <= 3; dy++) for (int dx = -3; dx <= 3; dx++) {
+				if (dx != 0 || dy != 0) boneNeighbours[n++] = dx + dy * Dungeon.level.width();
+			}
+		}
+		for (int i = 0; i < boneNeighbours.length; i++) {
+			if (pos + boneNeighbours[i] < 0 || pos + boneNeighbours[i] >= Dungeon.level.length()) continue;
+			Char ch = findChar( pos + boneNeighbours[i] );
 			if (ch != null && ch.isAlive()) {
 				int damage = Math.round(Random.NormalIntRange(6, 12));
+				//Kamikaze Bones hit three times as hard, Fizzled Explosion a quarter as hard
+				if (cause == this && com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Skeleton.class) == 3) damage *= 3;
+				if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Skeleton.class) == 1) damage /= 4;
 				damage = Math.round( damage * AscensionChallenge.statModifier(this));
 
 				//all sources of DR are 2x effective vs. bone explosion
@@ -155,6 +168,8 @@ public class Skeleton extends Mob {
 
 	@Override
 	public int attackSkill( Char target ) {
+		//Pixel Dungeon Reforged Randomizer, Brittle Joints
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Skeleton.class) == 3) return 2;
 		return 12;
 	}
 	
@@ -163,4 +178,24 @@ public class Skeleton extends Mob {
 		return super.drRoll() + Random.NormalIntRange(0, 5);
 	}
 
+	//Pixel Dungeon Reforged Randomizer. Bone Bomb, Kamikaze Bones and Fizzled Explosion are in die() above.
+	//Draining Touch, Hollow Sockets (the level's field of view) and Brittle Joints (above)
+	@Override
+	protected boolean doAttack( Char enemy ) {
+		//Kamikaze Bones, a skeleton does not attack, it blows up
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Skeleton.class) == 3) {
+			die( this );
+			return true;
+		}
+		return super.doAttack( enemy );
+	}
+
+	@Override
+	public int attackProc( Char enemy, int damage ) {
+		damage = super.attackProc( enemy, damage );
+		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureBuff(Skeleton.class) == 2 && Random.Int(2) == 0) {
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.prolong(enemy, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness.class, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness.DURATION);
+		}
+		return damage;
+	}
 }
