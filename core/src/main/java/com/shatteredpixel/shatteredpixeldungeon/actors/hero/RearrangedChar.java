@@ -131,6 +131,62 @@ public class RearrangedChar {
 		}
 	}
 
+	//GameScene on a new floor, the Archer's Archer's Foresight may show every trap on the floor
+	public static void archersForesight(){
+		Hero hero = Dungeon.hero;
+		if (hero == null || !hero.hasTalent(Talent.ARCHERS_FORESIGHT)
+				|| !(Dungeon.level instanceof com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel) || Dungeon.branch != 0) return;
+		com.watabou.utils.Random.pushGenerator(Dungeon.seedCurDepth()+1);
+		if (com.watabou.utils.Random.Float() < 0.2f+0.3f*hero.pointsInTalent(Talent.ARCHERS_FORESIGHT)){
+			int length = Dungeon.level.length();
+			for (int i=0; i < length; i++) {
+				if (Dungeon.level.traps.get( i ) != null) {
+					Dungeon.level.mapped[i] = true;
+					Dungeon.level.discover( i );
+				}
+			}
+			com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene.updateFog();
+			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.p(Messages.get(com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene.class, "trap_discover"));
+		}
+		com.watabou.utils.Random.popGenerator();
+	}
+
+	//HighGrass.trample, the Gunner's Camouflage, the Researcher's Bio Energy, the Archer's Nature Friendly
+	public static void onGrassTrampled( Hero hero ){
+		if (hero.hasTalent(Talent.CAMOUFLAGE)) {
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.prolong(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility.class, 1+hero.pointsInTalent(Talent.CAMOUFLAGE));
+			com.watabou.noosa.audio.Sample.INSTANCE.play( com.shatteredpixel.shatteredpixeldungeon.Assets.Sounds.MELD );
+		}
+		if (hero.hasTalent(Talent.BIO_ENERGY)) {
+			for (com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff b : hero.buffs()){
+				if (b instanceof com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact.ArtifactBuff
+						&& !((com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact.ArtifactBuff) b).isCursed() ) {
+					((com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact.ArtifactBuff) b).charge(hero, 0.2f*hero.pointsInTalent(Talent.BIO_ENERGY));
+				}
+			}
+		}
+		if (hero.hasTalent(Talent.NATURE_FRIENDLY)) {
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin.conditionallyAppend(hero, 1+2*hero.pointsInTalent(Talent.NATURE_FRIENDLY), 3);
+		}
+	}
+
+	//Level.updateFieldOfView, the Samurai's Dragon's Eye and Inner Eye, the Gunner's Tactical Sight
+	public static int mindVisionRange( Hero h, int range ){
+		if (h.hasTalent(Talent.DRAGONS_EYE) && h.heroClass != HeroClass.SAMURAI){
+			range = Math.max(range, 1+h.pointsInTalent(Talent.DRAGONS_EYE));
+		}
+		if (h.hasTalent(Talent.DRAGONS_EYE) && h.buff(com.shatteredpixel.shatteredpixeldungeon.items.Sheath.Sheathing.class) != null) {
+			range += 2+h.pointsInTalent(Talent.DRAGONS_EYE);
+		}
+		if (h.hasTalent(Talent.TACTICAL_SIGHT) && h.buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.gunner.ReinforcedArmor.ReinforcedArmorTracker.class) != null) {
+			range += 1+h.pointsInTalent(Talent.TACTICAL_SIGHT);
+		}
+		if (h.hasTalent(Talent.INNER_EYE) && h.buff(com.shatteredpixel.shatteredpixeldungeon.items.Sheath.DashAttackVision.class) != null) {
+			range += 3*h.pointsInTalent(Talent.INNER_EYE);
+		}
+		return range;
+	}
+
 	//the Crusader's judgement executes a marked enemy that is low on health
 	public static void judgement( Char attacker, Char enemy ){
 		Talent.JudgementTracker judgement = enemy.buff(Talent.JudgementTracker.class);

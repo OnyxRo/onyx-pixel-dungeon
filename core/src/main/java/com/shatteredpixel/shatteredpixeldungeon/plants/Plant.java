@@ -73,6 +73,14 @@ public abstract class Plant implements Bundlable {
 			Barkskin.conditionallyAppend(Dungeon.hero, 2, 1 + 2*(Dungeon.hero.pointsInTalent(Talent.NATURES_AID)));
 		}
 
+		//rearranged, the Adventurer's Weakening Poison, and plants count towards unlocking the Adventurer
+		if (ch instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob && Dungeon.hero != null && Dungeon.hero.hasTalent(Talent.WEAKENING_POISON)) {
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(ch, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness.class, 1f+2*Dungeon.hero.pointsInTalent(Talent.WEAKENING_POISON));
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(ch, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable.class, 1f+2*Dungeon.hero.pointsInTalent(Talent.WEAKENING_POISON));
+		}
+		com.shatteredpixel.shatteredpixeldungeon.Statistics.plantTriggered++;
+		com.shatteredpixel.shatteredpixeldungeon.Badges.validateAdventurerUnlock();
+
 		wither();
 		//Lovecraft PD, a plant may wake up as a monster instead
 		if (!LivingPlants.awaken( this )) activate( ch );

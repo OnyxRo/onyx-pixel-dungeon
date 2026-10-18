@@ -668,6 +668,14 @@ public class Hero extends Char {
 
 	//Transformation PD. The buffs and action buttons that come with a subclass. Called when the subclass is chosen and when a run loads.
 	public void ensureSubclassBuffs() {
+		//rearranged, the buffs that run Re-ARranged's subclasses
+		if (subClass == HeroSubClass.ENGINEER) Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Build.class);
+		if (subClass == HeroSubClass.HORSEMAN && buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HorseRiding.class) == null) {
+			Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HorseRiding.class).set();
+		}
+		if (subClass == HeroSubClass.CRUSADER) Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Pray.class);
+		if (subClass == HeroSubClass.MEDICALOFFICER) Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Command.class);
+		if (subClass == HeroSubClass.SHARPSHOOTER) Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SharpShooterBuff.class);
 		if (subClass.is(HeroSubClass.PIOUS)) {
 			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason reason = Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.class);
 			com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator.setAction(reason);

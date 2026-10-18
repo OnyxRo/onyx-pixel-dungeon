@@ -307,6 +307,27 @@ public class TalentsPane extends ScrollPane {
 				random.setRect(width - 16, y-2, 16, 14);
 			}
 
+			//rearranged, a tier with seven talents or more (Re-ARranged's subclasses have ten) takes two rows
+			if (buttons.size() >= 7) {
+				int placed = 0;
+				int firstRow = Math.round(buttons.size() / 2f);
+				boolean odd = (buttons.size() % 2 == 1);
+				float gap = (width - firstRow * TalentButton.WIDTH) / (firstRow + 1);
+				left = x + gap;
+				float secondLeft = odd ? x + 1.5f * gap + TalentButton.WIDTH / 2f : x + gap;
+				for (TalentButton btn : buttons) {
+					if (placed < firstRow) {
+						btn.setPos(left, title.bottom() + 4);
+						left += btn.width() + gap;
+					} else {
+						btn.setPos(secondLeft, title.bottom() + 4 + TalentButton.HEIGHT + 4);
+						secondLeft += btn.width() + gap;
+					}
+					PixelScene.align(btn);
+					placed++;
+				}
+				height = buttons.get(buttons.size()-1).bottom() - y;
+			} else {
 			float gap = (width - buttons.size()*TalentButton.WIDTH)/(buttons.size()+1);
 			left = x + gap;
 			for (TalentButton btn : buttons){
@@ -316,6 +337,7 @@ public class TalentsPane extends ScrollPane {
 			}
 
 			height = buttons.get(0).bottom() - y;
+			}
 
 		}
 

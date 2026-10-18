@@ -33,4 +33,12 @@ public class PlateArmor extends Armor {
 		super( 5 );
 	}
 
+	//rearranged, finding plate armor unlocks the Knight
+	@Override
+	public boolean doPickUp(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero hero, int pos) {
+		com.shatteredpixel.shatteredpixeldungeon.Statistics.plateObtained = true;
+		com.shatteredpixel.shatteredpixeldungeon.Badges.validateKnightUnlock();
+		return super.doPickUp(hero, pos);
+	}
+
 }
