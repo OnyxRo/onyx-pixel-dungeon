@@ -109,6 +109,20 @@ public class SpecialFloors {
 		add( "Tower PD", "Endless arena 3, Sector 95", towerArena( com.shatteredpixel.shatteredpixeldungeon.levels.endlessarenas.EndlessArena3::new ) );
 		add( "Tower PD", "Endless arena 4, Gnolls and Goblins", towerArena( com.shatteredpixel.shatteredpixeldungeon.levels.endlessarenas.EndlessArena4::new ) );
 		add( "Tower PD", "Endless arena 5, Bot factory", towerArena( com.shatteredpixel.shatteredpixeldungeon.levels.endlessarenas.EndlessArena5::new ) );
+		//rearranged, Re-ARranged PD's temple branch and the room past its labs. Built at floor 14 like the mod's temple
+		add( "Re-ARranged PD", "Temple entrance, chambers of trials", rearranged( TempleNewLevel::new, 14 ) );
+		add( "Re-ARranged PD", "Temple chasm", rearranged( TempleChasmLevel::new, 14 ) );
+		add( "Re-ARranged PD", "Temple, the deep halls", rearranged( TempleLevel::new, 14 ) );
+		add( "Re-ARranged PD", "Temple sanctum, the sentries", rearranged( TempleLastLevel::new, 14 ) );
+		add( "Re-ARranged PD", "Room past the labs, the old amulet", rearranged( NewLastLevel::new, 26 ) );
+	}
+
+	/** Re-ARranged PD's levels read the floor number, so it is set before they are built. */
+	private static Supplier<Level> rearranged( Supplier<? extends Level> make, int depth ){
+		return () -> {
+			Dungeon.depth = depth;
+			return make.get();
+		};
 	}
 
 	/** A Transformation PD tower boss arena for one chosen boss. The tower puts its bosses on floors 5, 10 and so on, so the floor is set to 10. */

@@ -436,6 +436,10 @@ public class WorldShuffle {
 			Level[] run = modBossVariants( world, depth );
 			return run.length == 0 ? null : run[0];
 		}
+		//rearranged, Re-ARranged PD's Rebel leader guards the labs, in place of Yog on floor 25 after a Labs world
+		if (world >= 0 && world < WORLDS.length && WORLDS[world] == LabsLevel.class) {
+			return depth == 25 ? new LabsBossLevel() : null;
+		}
 		if (world < 0 || world >= LOGOS.length || !DEVOTED.equals(LOGOS[world])) return null;
 		switch (depth) {
 			case 5:  return new GardenBossLevel();
