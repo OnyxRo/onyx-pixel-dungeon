@@ -581,7 +581,15 @@ public class Hero extends Char {
 	public int pointsInTalent( Talent talent ){
 		for (LinkedHashMap<Talent, Integer> tier : talents){
 			for (Talent f : tier.keySet()){
-				if (f == talent) return tier.get(f);
+				if (f == talent) {
+					int pts = tier.get(f);
+					//transformation, the Revelation spell lifts every positive talent by one point for a while
+					if (pts > 0 && buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.Revelation.RevelationBuff.class) != null
+							&& talent.type() != Talent.TalentType.NEGATIVE) {
+						pts = Math.min(pts + 1, talent.maxPoints());
+					}
+					return pts;
+				}
 			}
 		}
 		return 0;
@@ -2803,6 +2811,9 @@ public class Hero extends Char {
 
 	@Override
 	public void die( Object cause ) {
+
+		//transformation, the Resurrection spell brings the hero back once
+		if (TransformationTalents.revives(this)) return;
 
 		//catches anything that kills without dealing damage
 		if (Dungeon.godMode()) {

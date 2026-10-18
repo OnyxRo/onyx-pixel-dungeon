@@ -179,6 +179,20 @@ public class TransformationCatalogTest {
 			hero.talents.set( ti, keep );
 		}
 
+		//the spells the spell talents add to the holy tome
+		for (com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.ClericSpell sp : com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.ClericSpell.getAllSpells()) {
+			Talent st = com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.ClericSpell.transformationTalent( sp );
+			if (st == null) continue;
+			check( hasText( sp.name() ) && hasText( sp.desc() ) && hasText( sp.shortDesc() ), "spell " + sp.getClass().getSimpleName() + " text" );
+			check( sp.icon() >= 0, "spell " + sp.getClass().getSimpleName() + " icon" );
+			int ti = Math.max( 0, st.tier() - 1 );
+			hero.talents.get( ti ).put( st, 1 );
+			boolean listed = false;
+			for (int t = 1; t <= 4; t++) listed |= com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.ClericSpell.getSpellList( hero, t ).contains( sp );
+			check( listed, "spell list holds " + sp.getClass().getSimpleName() + " once its talent is taken" );
+			hero.talents.get( ti ).remove( st );
+		}
+
 		//the transformation trap swaps one talent
 		hook( "transformation trap", () -> {
 			com.shatteredpixel.shatteredpixeldungeon.levels.traps.TransformationTrap trap = new com.shatteredpixel.shatteredpixeldungeon.levels.traps.TransformationTrap();

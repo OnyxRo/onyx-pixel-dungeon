@@ -346,8 +346,14 @@ public class TransformationTalents {
 
 	public static int itemLevelBonus(Item item){
 		Hero h = hero();
-		if (h == null || !item.cursed) return 0;
+		if (h == null) return 0;
 		int b = 0;
+		//transformation, the Equipment Bless spell
+		if ((item instanceof Weapon || item instanceof Armor) && item.isEquipped(h)
+				&& h.buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.Equipment_Bless.Blessbuff.class) != null){
+			b += h.pointsInTalent(Talent.EQUIPMENT_BLESS);
+		}
+		if (!item.cursed) return b;
 		if ((item instanceof Weapon || item instanceof Armor) && h.hasTalent(Talent.PROTECT_CURSE)) b += h.pointsInTalent(Talent.PROTECT_CURSE);
 		b -= h.pointsNegative(Talent.MAL_CURSE);
 		return b;
@@ -772,8 +778,19 @@ public class TransformationTalents {
 		if (jf > 0 && mob.alignment == Char.Alignment.ENEMY) Buff.affect(mob, Swiftthistle.TimeBubble.class).reset(jf);
 	}
 
+	//the Resurrection spell, a creature with its buff comes back once
+	public static boolean revives(Char ch){
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.Resurrection.REsurrection b = ch.buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.Resurrection.REsurrection.class);
+		if (b == null || ch.properties().contains(Char.Property.BOSS) || ch.properties().contains(Char.Property.BOSS_MINION)) return false;
+		b.detach();
+		ch.HP = ch instanceof Hero ? 1 : ch.HT;
+		if (p(Talent.RESURRECTION) == 3) Buff.affect(ch, Bless.class, 20);
+		return true;
+	}
+
 	//true when the monster refuses to die (Unable Rest)
 	public static boolean preventsDeath(Mob mob, Object cause){
+		if (cause != com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm.class && revives(mob)) return true;
 		Hero h = hero();
 		if (h == null || h.pointsNegative(Talent.UNABLE_REST) <= 0 || mob.buff(UnableRest.class) != null) return false;
 		if (mob.alignment != Char.Alignment.ENEMY || mob.properties().contains(Char.Property.BOSS)) return false;
