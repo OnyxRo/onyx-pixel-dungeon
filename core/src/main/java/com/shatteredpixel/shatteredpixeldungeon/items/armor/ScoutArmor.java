@@ -48,8 +48,8 @@ public class ScoutArmor extends Armor {
     protected static SpiritBow bow;
 
     {
-        levelKnown = !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN);
-        cursedKnown = !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN);
+        levelKnown = !false;
+        cursedKnown = !false;
         defaultAction = AC_SPECIAL;
         image = ItemSpriteSheet.ARMOR_SCOUT;
 
@@ -108,7 +108,12 @@ public class ScoutArmor extends Armor {
         }
     }
 
+    //Summoning PD armor value, its three tiers weigh it differently
     @Override
+    public int DRMax(int lvl){
+        return Math.round(defenseValue(lvl) * defenseLevel(Math.min(level(), 2)));
+    }
+
     public float defenseLevel(int level) {
         switch (level){
             case 0: return 1.0f;
@@ -118,7 +123,6 @@ public class ScoutArmor extends Armor {
         return 0f;
     }
 
-    @Override
     public int defenseValue(int lvl){
         int val;
             int max = 3 + lvl + augment.defenseFactor(lvl);

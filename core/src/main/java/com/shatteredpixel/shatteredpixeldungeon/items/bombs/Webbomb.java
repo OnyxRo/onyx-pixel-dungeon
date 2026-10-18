@@ -41,7 +41,7 @@ public class Webbomb extends Bomb {
 	{
 		image = ItemSpriteSheet.WEB_BOMB;
 		harmless = true;
-		fuseDelay = 0;
+		finaldelay = 0;
 	}
 	
 	@Override

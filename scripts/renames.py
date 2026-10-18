@@ -25,6 +25,8 @@ def mod_package_dir(mod):
             best = best or rel
     return best or 'core/src/main/java/' + PKG.replace('.', '/') + '/'
 
+SUMMONING_TALENTS = ('SPECIAL_DELIVERY|COLD_FRONT|ACUTENESS|HYPERSPACE|PERDERE_CRIMEN|SCRAP_BRAIN|WELCOME_TO_EARTH|THE_SANDSTORM|TIME_TOGETHER|DIRECTIVE|GOOD_INTENTIONS|LIFE_ON_AXIOM|UNSIGHTED|PLAGUEBRINGER|WILD_SORCERY|TOXIC_RELATIONSHIP|DOG_BREEDING|NUCLEAR_RAGE|SNIPER_PATIENCE|ARCANE_CLOAK|ARMORED_ARMADA|TIMEBENDING|LUST_AND_DUST|TOWER_OF_POWER|JUST_ONE_MORE_TILE|NEVER_GONNA_GIVE_YOU_UP|ASSASSINATION|QUICK_HANDS|BREAD_AND_CIRCUSES|COMET_FALL|SUFFERING_AWAY|DETERMINED|MY_SUNSHINE|OLYMPIC_SKILLS|REAL_KNIFE_MASTER|BLOOD_DRIVE|UNSETTLING_GAZE|SUPPORT_POTION|WITCHING_STRIKE|SILENCE_OF_LAMBS|BLESSING_OF_SANITY|GUIDANCE_FLAME|THAUMATURGY|SHARP_VISION|CHEMISTRY_DEGREE')
+
 RENAMES = [
     ('mod package name is not ours', r'com\.(?!shatteredpixel\.shatteredpixeldungeon|badlogic|watabou)\w+\.\w+\.(?=' + OWN_AREAS + r')', PKG + '.'),
     # Shattered before 0.8 kept every asset name flat in Assets
@@ -152,6 +154,12 @@ RENAMES = [
     ('Spacebase, Mob.ally read is alignment ALLY', r'(?<![\w.])(?!com\.)(\b\w+(?:\.\w+)*)\.ally\b(?!\s*=[^=])', r'(\1.alignment == Char.Alignment.ALLY)'),
     ('Spacebase, Weapon.Enhancement is Weapon.Enchantment', r'\bWeapon\.Enhancement\b', 'Weapon.Enchantment'),
     ('Spacebase, any other package of the mod is ours', r'com\.wafitz\.pixelspacebase\.', PKG + '.'),
+    #summoning, Summoning PD's own talents (a shared Rogue pool) are not here, checks for them are off
+    ('Summoning, talent the mod added is never learned', r'(?:\(\(Hero\)\s*\w+\)|\b[\w.]+)\.hasTalent\(\s*Talent\.(?:' + SUMMONING_TALENTS + r')\s*\)', 'false'),
+    ('Summoning, points in a talent the mod added are 0', r'(?:\(\(Hero\)\s*\w+\)|\b[\w.]+)\.pointsInTalent\(\s*Talent\.(?:' + SUMMONING_TALENTS + r')\s*\)', '0'),
+    ('Summoning, Dungeon.mode is always NORMAL', r'Dungeon\.mode\s*==\s*Dungeon\.GameMode\.(?!NORMAL)\w+', 'false'),
+    ('Summoning, Dungeon.mode is never another mode', r'Dungeon\.mode\s*!=\s*Dungeon\.GameMode\.(?!NORMAL)\w+', 'true'),
+    ('Summoning, its conducts are never on', r'Dungeon\.isChallenged\(\s*Conducts\.Conduct\.(?!(?:NULL|EASY|NORMAL|HARD|DEV|SEED)\b)\w+\s*\)', 'false'),
 ]
 
 # Pixel Spacebase keeps its limited drops in the lower case enum Dungeon.limitedDrops, ours is Dungeon.LimitedDrops

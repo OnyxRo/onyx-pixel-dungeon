@@ -81,7 +81,7 @@ public class Cleaver extends MeleeWeapon {
         return super.damageRoll(owner);
     }
 
-    @Override
+    
     public int warriorAttack(int damage, Char enemy) {
 	    damage = new Grim().proc(this, Dungeon.hero, enemy, damage);
 	    damage = new Grim().proc(this, Dungeon.hero, enemy, damage);

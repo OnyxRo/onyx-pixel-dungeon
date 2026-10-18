@@ -44,10 +44,7 @@ public class WraithTrap extends Trap{
         for( int i : PathFinder.NEIGHBOURS9) {
             if (Dungeon.level.passable[pos+i] && Actor.findChar( pos+i ) == null) {
                 Wraith wraith = Wraith.spawnAt(pos+i);
-                if (wraith != null && Dungeon.hero.hasTalent(Talent.ARMORED_ARMADA)){
-                    Buff.affect(wraith, Talent.ArmoredArmadaArmor.class).hits =
-                            Dungeon.hero.pointsInTalent(Talent.ARMORED_ARMADA) > 2 ? 3 : 2;
-                }
+                
             }
         }
         Sample.INSTANCE.play(Assets.Sounds.CURSED);

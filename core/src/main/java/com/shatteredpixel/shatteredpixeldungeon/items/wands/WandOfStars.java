@@ -53,6 +53,17 @@ import com.watabou.utils.*;
 
 public class WandOfStars extends DamageWand {
 
+    //Summoning PD kept these on Level, the stars are items lying on the floor
+    public static SparseArray<Star> levelStars(){
+        SparseArray<Star> arr = new SparseArray<>();
+        for (com.shatteredpixel.shatteredpixeldungeon.items.Heap heap : Dungeon.level.heaps.valueList()) {
+            for (com.shatteredpixel.shatteredpixeldungeon.items.Item item : heap.items){
+                if (item instanceof Star) arr.put(heap.pos, (Star) item);
+            }
+        }
+        return arr;
+    }
+
     public static final String AC_UNLEASH = "UNLEASH";
 
 	{
@@ -88,20 +99,20 @@ public class WandOfStars extends DamageWand {
         if (action.equals(AC_UNLEASH)){
             if (level() != 1)
                 charger.gainCharge(1f);
-            SparseArray<Star> stars = Dungeon.level.stars();
+            SparseArray<Star> stars = levelStars();
             int[] pos = stars.keyArray();
             boolean effect = false;
             for (int p : pos){
                 if (Dungeon.level.heroFOV[p]){
                     effect = true;
                     Sample.INSTANCE.play(Assets.Sounds.ZAP);
-                    if (!Dungeon.isChallenged(Conducts.Conduct.PACIFIST)) {
+                    if (!false) {
                         for (int i : PathFinder.NEIGHBOURS9) {
                             CellEmitter.get(p + i).burst(FrostfireParticle.FACTORY, 8 + 4 * level());
                             Char ch = Actor.findChar(p + i);
                             if (ch != null) {
                                 ch.damage(damageRoll(), this);
-                                processSoulMark(ch, chargesPerCast());
+                                wandProc(ch, chargesPerCast());
                                 if (level() == 2) Buff.affect(ch, Vertigo.class, damageRoll());
                             }
                         }
@@ -121,7 +132,7 @@ public class WandOfStars extends DamageWand {
     @Override
     public boolean tryToZap( Hero owner, int target ){
 
-        if (owner.buff(MagicImmune.class) != null || Dungeon.isChallenged(Conducts.Conduct.NO_MAGIC)){
+        if (owner.buff(MagicImmune.class) != null || false){
             GLog.warning( Messages.get(this, "no_magic") );
             return false;
         }
@@ -130,7 +141,7 @@ public class WandOfStars extends DamageWand {
             return false;
         }
 
-        if (Dungeon.level.numberOfStars() > 0 && curCharges == 0){
+        if (levelStars().size > 0 && curCharges == 0){
                 Heap heap = Dungeon.level.heaps.get(target);
                 if (heap != null) {
                     for (Item item : heap.items) {
@@ -149,17 +160,17 @@ public class WandOfStars extends DamageWand {
     }
 
     @Override
-    public int magicalmin(int lvl){
+    public int min(int lvl){
 	    if (Dungeon.level == null) return (3+Dungeon.hero.lvl/2);
-	    int num = Dungeon.level.numberOfStars();
+	    int num = levelStars().size;
 	    if (num < 3) num = 0;
 		return (int) ((3+Dungeon.hero.lvl/2) * (Math.pow(0.93f, Math.max(0, num - 2))));
 	}
 
     @Override
-    public int magicalmax(int lvl){
+    public int max(int lvl){
         if (Dungeon.level == null) return (int) (9+Dungeon.hero.lvl*1.33f);
-        int num = Dungeon.level.numberOfStars();
+        int num = levelStars().size;
         if (num < 3) num = 0;
         return (int) ((9+Dungeon.hero.lvl*1.33f) * (Math.pow(0.93f, Math.max(0, num - 2))));
 	}
@@ -216,7 +227,7 @@ public class WandOfStars extends DamageWand {
     }
 
     @Override
-    public void staffFx(StaffParticle particle) {
+    public void staffFx(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff.StaffParticle particle) {
         particle.color(0x6de8e4);
         particle.am = 0.6f;
         particle.setLifespan(1.2f);
@@ -242,7 +253,7 @@ public class WandOfStars extends DamageWand {
     }
 
     @Override
-    public void onHit(Wand wand, Char attacker, Char defender, int damage) {
+    public void onHit(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff staff, Char attacker, Char defender, int damage) {
 
         if (Random.Int( Dungeon.hero.lvl/3 + 3 ) >= 2) {
 

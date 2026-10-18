@@ -134,7 +134,7 @@ public class SubtilitasSigil extends Artifact {
                 //cast to cells at the tip, rather than all cells, better performance.
                 for (Ballistica ray : cone.rays) {
                     curUser.sprite.parent.add(
-                            new Beam.RedRay(curUser.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(ray.collisionPos)));
+                            new Beam.DeathRay(curUser.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(ray.collisionPos)));
                 }
                 for (int c : cone.cells) {
                     Char ch = Actor.findChar(c);

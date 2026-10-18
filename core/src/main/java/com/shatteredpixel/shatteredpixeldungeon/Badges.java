@@ -616,6 +616,10 @@ public class Badges {
 		displayBadge( badge );
 	}
 	
+	//summoning, Summoning PD's badges for its two rare bosses are not here
+	public static void validateNightmare(){ }
+	public static void validateSpirit(){ }
+
 	public static void validateItemLevelAquired( Item item ) {
 		
 		// This method should be called:

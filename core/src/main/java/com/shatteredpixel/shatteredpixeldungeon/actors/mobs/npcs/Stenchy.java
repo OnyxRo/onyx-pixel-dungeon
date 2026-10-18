@@ -72,8 +72,8 @@ public class Stenchy extends NPC {
     }
 
     @Override
-    public int damage(int dmg, Object src) {
-        return 0;
+    public void damage(int dmg, Object src) {
+        return;
     }
 
     @Override

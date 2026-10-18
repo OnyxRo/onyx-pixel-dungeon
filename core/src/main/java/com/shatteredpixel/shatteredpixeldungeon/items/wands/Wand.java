@@ -82,6 +82,14 @@ public abstract class Wand extends Item {
 	
 	public int maxCharges = initialCharges();
 	public int curCharges = maxCharges;
+
+	//summoning, Summoning PD wands scale their effect and recharge with these, here they only read the numbers
+	public int chakraGain = 0;
+	public float powerLevel(int level){ return 1f; }
+	public float powerLevel(){ return powerLevel(buffedLvl()); }
+	public float rechargeModifier(int level){ return 1f; }
+	public float rechargeModifier(){ return rechargeModifier(level()); }
+	protected void afterWandUsed(Char target){ }
 	public float partialCharge = 0f;
 	
 	protected Charger charger;

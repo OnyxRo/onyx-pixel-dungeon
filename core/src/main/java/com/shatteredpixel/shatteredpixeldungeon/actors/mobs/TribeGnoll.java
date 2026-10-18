@@ -66,7 +66,7 @@ public class TribeGnoll extends Mob {
 
 	@Override
 	public int attackProc(Char enemy, int damage) {
-		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+		if (false){
 			Buff.affect(enemy, Cripple.class, 3f);
 		}
 		return super.attackProc(enemy, damage);

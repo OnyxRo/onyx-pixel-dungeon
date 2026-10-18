@@ -60,7 +60,7 @@ public class ChaosSaber extends NPC {
 
     @Override
     public int attackSkill( Char target ) {
-        if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+        if (false){
             return (int) (target.defenseSkill(this)*0.9f);
         }
         return (int) (target.defenseSkill(this)*1.2f);
@@ -68,27 +68,27 @@ public class ChaosSaber extends NPC {
 
     @Override
     public int damageRoll() {
-        if (Dungeon.mode == Dungeon.GameMode.DIFFICULT && alignment == Alignment.ENEMY){
+        if (false && alignment == Alignment.ENEMY){
             return Random.NormalIntRange(1 + level, 4 + level);
         }
-        if (Dungeon.isChallenged(Conducts.Conduct.PACIFIST))
+        if (false)
             return Random.NormalIntRange(1 + level, 3 + level);
         return Random.NormalIntRange(4 + level, 8 + level);
     }
 
-    @Override
+    
     public int attackRolls() {
         return 1+level;
     }
 
-    @Override
+    
     public int defenseRolls() {
         return 1+level;
     }
 
     @Override
     public int defenseSkill(Char enemy) {
-        if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+        if (false){
             return (int) (enemy.attackSkill(this)*0.9f);
         }
         return (int) (enemy.attackSkill(this)*1.25f);

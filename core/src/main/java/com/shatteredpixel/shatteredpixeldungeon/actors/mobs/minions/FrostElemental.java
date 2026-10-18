@@ -52,11 +52,12 @@ public class FrostElemental extends Minion {
     }
 
     @Override
-    public void add( Buff buff ) {
+    public boolean add( Buff buff ) { boolean summAdded = false;
         if (buff instanceof Burning) {
                 damage( Random.NormalIntRange( 1, HT * 2 / 3 ), buff );
         } else {
-            super.add( buff );
+            summAdded = super.add( buff );
         }
-    }
+    	return summAdded;
+	}
 }

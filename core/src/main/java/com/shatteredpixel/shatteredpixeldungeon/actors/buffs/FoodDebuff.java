@@ -58,11 +58,11 @@ public class FoodDebuff extends Buff implements Hero.Doom  {
 			partialHP += fullHP / 50f;
 			while (partialHP > 1){
 				target.damage(1, Dungeon.hero.buff(Hunger.class));
-				if (Dungeon.hero.pointsInTalent(Talent.SUFFERING_AWAY) > 1) {
+				if (0 > 1) {
 					for (Char ch : Dungeon.level.mobs) {
 						if (ch.alignment == Char.Alignment.ENEMY &&
 								Dungeon.hero.fieldOfView[ch.pos] &&
-								Random.Int(Dungeon.hero.pointsInTalent(Talent.SUFFERING_AWAY) > 2 ? 2 : 3) == 0) {
+								Random.Int(0 > 2 ? 2 : 3) == 0) {
 							ch.damage(1, Hunger.class);
 						}
 					}

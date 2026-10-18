@@ -122,6 +122,19 @@ public class WandOfBlastWave extends DamageWand {
 		void call(boolean resolvedByThisPush, int actualDistance);
 	}
 
+	//summoning, Summoning PD's shorter forms, the wand itself is the cause
+	public static void throwChar(final Char ch, final Ballistica trajectory, int power){
+		throwChar(ch, trajectory, power, true, true, new WandOfBlastWave());
+	}
+
+	public static void throwChar(final Char ch, final Ballistica trajectory, int power, boolean closeDoors){
+		throwChar(ch, trajectory, power, closeDoors, true, new WandOfBlastWave());
+	}
+
+	public static void throwChar(final Char ch, final Ballistica trajectory, int power, boolean closeDoors, boolean collideDmg){
+		throwChar(ch, trajectory, power, closeDoors, collideDmg, new WandOfBlastWave());
+	}
+
 	public static void throwChar(final Char ch, final Ballistica trajectory, int power,
 	                             boolean closeDoors, boolean collideDmg, Object cause){
 		throwChar(ch, trajectory, power, closeDoors, collideDmg, cause,

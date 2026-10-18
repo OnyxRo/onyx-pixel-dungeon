@@ -39,9 +39,18 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class RatBomb extends Bomb{
+
+    //Summoning PD let monsters cast items, here the exploding mouse throws its bomb with this
+    public void throwBy(com.shatteredpixel.shatteredpixeldungeon.actors.Char user, final int cell){
+        if (user.sprite == null || user.sprite.parent == null){ onThrow(cell); return; }
+        ((com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite) user.sprite.parent.recycle(com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite.class)).reset(user.sprite, cell, this, new com.watabou.utils.Callback() {
+            @Override
+            public void call() { onThrow(cell); }
+        });
+    }
     {
         image = ItemSpriteSheet.FLASHBANG;
-        fuseDelay = 2;
+        finaldelay = 2;
     }
 
     @Override
@@ -72,10 +81,10 @@ public class RatBomb extends Bomb{
     @Override
     public String desc() {
         String desc_fuse = Messages.get(this, "desc",
-                Math.round(minDamage()*0.8*0.4), Math.round(maxDamage()*0.8*0.4))+ "\n\n" + Messages.get(this, "desc_fuse");
+                Math.round((5 + Dungeon.scalingDepth())*0.8*0.4), Math.round((10 + Dungeon.scalingDepth()*2)*0.8*0.4))+ "\n\n" + Messages.get(this, "desc_fuse");
         if (fuse != null){
             desc_fuse = Messages.get(this, "desc",
-                    Math.round(minDamage()*0.8*0.4), Math.round(maxDamage()*0.8*0.4)) + "\n\n" + Messages.get(this, "desc_burning");
+                    Math.round((5 + Dungeon.scalingDepth())*0.8*0.4), Math.round((10 + Dungeon.scalingDepth()*2)*0.8*0.4)) + "\n\n" + Messages.get(this, "desc_burning");
         }
 
         return desc_fuse;

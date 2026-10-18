@@ -57,12 +57,12 @@ public class WandOfCrystalBullet extends DamageWand {
     private int collisionPos;
 
     @Override
-    public int magicalmin(int lvl){
+    public int min(int lvl){
 		return 2+Dungeon.hero.lvl/2;
 	}
 
     @Override
-    public int magicalmax(int lvl){
+    public int max(int lvl){
 		return (int) (7+Dungeon.hero.lvl*1.5f);
 	}
 
@@ -99,6 +99,7 @@ public class WandOfCrystalBullet extends DamageWand {
     public void onZap(Ballistica bolt) {
         Dungeon.level.pressCell(bolt.collisionPos);
         Splash.at(bolt.collisionPos, Random.Int(0xFFe380e3, 0xFF9485c9), level()*4);
+        afterWandUsed(null);
 
 	}
 
@@ -118,8 +119,8 @@ public class WandOfCrystalBullet extends DamageWand {
                             public void call() {
                                 Char ch = Actor.findChar( shardPositions.get(shardPositions.indexOf(dest) ));
                                 if (ch != null) {
-                                    if (!Dungeon.isChallenged(Conducts.Conduct.PACIFIST)) {
-                                        processSoulMark(ch, chargesPerCast());
+                                    if (!false) {
+                                        wandProc(ch, chargesPerCast());
                                         ch.damage(damageRoll(), new WandOfCrystalBullet());
                                         if (level() == 2) Buff.affect(ch, TimedShrink.class, 3f);
                                     }
@@ -159,7 +160,7 @@ public class WandOfCrystalBullet extends DamageWand {
     }
 
 	@Override
-	public void onHit(Wand wand, Char attacker, Char defender, int damage) {
+	public void onHit(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff staff, Char attacker, Char defender, int damage) {
 		for (int c : PathFinder.NEIGHBOURS8){
             Char ch = Actor.findChar(defender.pos + c);
             if (ch != null && ch != Dungeon.hero){
@@ -170,7 +171,7 @@ public class WandOfCrystalBullet extends DamageWand {
 	}
 
     @Override
-    public void staffFx(StaffParticle particle) {
+    public void staffFx(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff.StaffParticle particle) {
         particle.color( Random.Int(0xFFe380e3, 0xFF9485c9) );
         particle.am = 0.5f;
         particle.setLifespan(1f);
@@ -182,9 +183,9 @@ public class WandOfCrystalBullet extends DamageWand {
     @Override
     public String statsDesc() {
         if (!levelKnown)
-            return Messages.get(this, "stats_desc", magicalmin(0), magicalmax(0), 3);
+            return Messages.get(this, "stats_desc", min(0), max(0), 3);
         else
-            return Messages.get(this, "stats_desc", magicalmin(), magicalmax(),  shards(level()));
+            return Messages.get(this, "stats_desc", min(), max(),  shards(level()));
     }
 
     @Override

@@ -33,7 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.Silent;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knife;
@@ -63,7 +62,7 @@ public class GoatClone extends NPC {
     public Char chooseEnemy() {
 
         if ((Dungeon.hero.buff(CloakOfShadows.cloakStealth.class) != null &&
-                Dungeon.hero.buff(CloakOfShadows.cloakStealth.class).glyph() instanceof Silent)
+                false)
         )
             return null;
 
@@ -94,7 +93,7 @@ public class GoatClone extends NPC {
     @Override
     public int damageRoll() {
         int i = Random.NormalIntRange(Dungeon.hero.lvl / 3, Dungeon.hero.lvl);
-        if (Dungeon.isChallenged(Conducts.Conduct.PACIFIST)) i /= 3;
+        if (false) i /= 3;
         return i;
     }
 
@@ -115,7 +114,7 @@ public class GoatClone extends NPC {
 
     @Override
     public int attackProc(Char enemy, int damage) {
-        if (Dungeon.mode != Dungeon.GameMode.HELL)
+        if (true)
         Dungeon.hero.HP = Math.min(Dungeon.hero.HT, Dungeon.hero.HP+1);
         damage = super.attackProc(enemy, damage);
         if (Dungeon.hero.belongings.weapon != null){

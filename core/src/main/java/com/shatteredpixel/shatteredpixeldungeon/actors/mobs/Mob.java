@@ -144,7 +144,21 @@ public abstract class Mob extends Char {
 	
 	public Char enemy;
 	protected int enemyID = -1; //used for save/restore
-	protected boolean enemySeen;
+	public boolean enemySeen; //public for Summoning PD
+	//summoning, Summoning PD links clones and horde members to their leader
+	public int hordeHead = -1;
+	public boolean hordeSpawned = false;
+
+	//summoning, Summoning PD tags spells cast by monsters with this
+	public static class MagicalAttack {
+		public Mob caster;
+		public int damage;
+
+		public MagicalAttack(Mob attacker, int damage){
+			caster = attacker;
+			this.damage = damage;
+		}
+	}
 
 	//Tower PD shims. Marks a monster that attacks from range, and which targets it would rather skip
 	//(the preference is kept for the ported monsters and does not change target choice here).
@@ -422,6 +436,39 @@ public abstract class Mob extends Char {
 	
 	//Pixel Dungeon Reforged Randomizer, does nothing unless a creature overrides it
 	protected void extraAttackTargets( java.util.HashSet<Char> enemies ) {}
+
+	//summoning, small helpers Summoning PD's monsters and minions call
+	public int defenseSkillDesc(){
+		return defenseSkill;
+	}
+
+	public boolean canSee(int pos){
+		return fieldOfView != null && pos >= 0 && pos < fieldOfView.length && fieldOfView[pos];
+	}
+
+	public boolean canBeIgnored(Char ch){
+		return false;
+	}
+
+	public boolean following(Char follow) {
+		if (alignment == follow.alignment) {
+			return Actor.findChar(this.target) == follow;
+		}
+		return false;
+	}
+
+	protected Char chooseClosest(java.util.HashSet<Char> enemies){
+		PathFinder.buildDistanceMap(pos, Dungeon.findPassable(this, Dungeon.level.passable, fieldOfView, true));
+		Char closest = null;
+		for (Char curr : enemies){
+			if (closest == null || (PathFinder.distance[curr.pos] < PathFinder.distance[closest.pos])){
+				closest = curr;
+			} else if (curr == Dungeon.hero && PathFinder.distance[curr.pos] == PathFinder.distance[closest.pos]){
+				closest = curr;
+			}
+		}
+		return closest;
+	}
 
 	protected Char chooseEnemy() {
 

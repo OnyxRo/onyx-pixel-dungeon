@@ -108,12 +108,13 @@ public class MajesticGuard extends Mob {
 	}
 
 	@Override
-	public void add(Buff buff) {
+	public boolean add(Buff buff) { boolean summAdded = false;
 		if (buff instanceof Charm){
 			die(Dungeon.hero);
-			return;
+			return summAdded;
 		}
-		super.add(buff);
+		summAdded = super.add(buff);
+		return summAdded;
 	}
 
 	@Override

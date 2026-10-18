@@ -748,6 +748,18 @@ public class Hero extends Char {
 		}
 	}
 	
+	//summoning, Summoning PD's thrown knife hits with a melee weapon from range
+	public boolean shoot( Char enemy, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon weapon ) {
+		attackTarget = enemy;
+		KindOfWeapon equipped = belongings.weapon;
+		belongings.weapon = weapon;
+		boolean hit = enemy.alignment != Alignment.ALLY && attack( enemy );
+		Invisibility.dispel();
+		belongings.weapon = equipped;
+		attackTarget = null;
+		return hit;
+	}
+
 	public boolean shoot( Char enemy, MissileWeapon wep ) {
 
 		attackTarget = enemy;
@@ -2031,6 +2043,36 @@ public class Hero extends Char {
 		return attackTarget;
 	}
 	
+	//summoning, Summoning PD helpers
+	public int getAttackSkill(){
+		return attackSkill;
+	}
+
+	public void setEnemy(Char enemy){
+		this.attackTarget = enemy;
+	}
+
+	public static com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE arrangeBlast(int pos, com.watabou.noosa.Visual sprite, int type){
+		return arrangeBlast(pos, sprite, type, 1.5f);
+	}
+
+	public static com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE arrangeBlast(int pos, com.watabou.noosa.Visual sprite, int type, float range) {
+		com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica aim;
+		if (pos % Dungeon.level.width() > 10){
+			aim = new com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica(pos, pos - 1, com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica.WONT_STOP);
+		} else {
+			aim = new com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica(pos, pos + 1, com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica.WONT_STOP);
+		}
+		com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE aoe = new com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE(aim, range, 360, com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica.FRIENDLY_PROJECTILE);
+		if (sprite.visible) {
+			for (com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica ray : aoe.rays) {
+				((com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile) sprite.parent.recycle(com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile.class)).reset(
+						type, sprite, ray.path.get(ray.dist), null);
+			}
+		}
+		return aoe;
+	}
+
 	public void rest( boolean fullRest ) {
 		Dungeon.level.onHeroWaited(this);
 		spendAndNextConstant( TIME_TO_REST );

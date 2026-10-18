@@ -58,7 +58,7 @@ public class Boom extends AdHocSpell {
                 CellEmitter.get(pos).burst(MagicMissile.WhiteParticle.FACTORY, 12);
                 Char ch = Actor.findChar(pos);
                 if (ch != null && ch != Dungeon.hero){
-                    ch.damage((int) (Bomb.damageRoll()*damage()), clone);
+                    ch.damage((int) (Bomb.summoningDamageRoll()*damage()), clone);
                 }
             }
             return true;

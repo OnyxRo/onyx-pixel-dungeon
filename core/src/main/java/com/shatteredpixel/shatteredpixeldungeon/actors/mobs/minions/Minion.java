@@ -294,8 +294,6 @@ public abstract class Minion extends Mob {
         if (timer == -1) {
             if (cause == Chasm.class){
                 super.die( cause );
-            } else if (this instanceof Talent.DogBreedingMinion){
-                Buff.affect(this, Talent.DogBreedingDeathRefusal.class);
             } else if (buff(NecromancyStat.class) != null){
                 timer = buff(NecromancyStat.class).level+1;
                 sprite.add(CharSprite.State.SPIRIT);
@@ -331,14 +329,15 @@ public abstract class Minion extends Mob {
     }
 
     @Override
-    public void add(Buff buff) {
-        super.add(buff);
+    public boolean add(Buff buff) { boolean summAdded = false;
+        summAdded = super.add(buff);
         if (buff instanceof TankHeal && minionClass == MinionClass.DEFENSE){
             HP = HT;
             sprite.emitter().start( Speck.factory( Speck.HEALING ), 0.4f, 4 );
             buff.detach();
         }
-    }
+    	return summAdded;
+	}
 
     @Override
     public int attackSkill(Char target) {
@@ -357,7 +356,9 @@ public abstract class Minion extends Mob {
     @Override
     public int attackProc(Char enemy, int damage) {
         if (enchantment != null && buff(MagicImmune.class) == null) {
-            damage = enchantment.proc(  this, enemy, damage );
+            Weapon procWeapon = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword();
+            procWeapon.level(lvl);
+            damage = enchantment.proc( procWeapon, this, enemy, damage );
         }
         if (buff(RootingOnShots.class) != null && Random.Float() < 0.5) Buff.prolong(enemy, Roots.class, 5f);
         return super.attackProc(enemy, damage);
@@ -393,7 +394,7 @@ public abstract class Minion extends Mob {
     public float speed() {
         float speed = 1f / augmentOffense.delayFactor(super.speed()*Dungeon.hero.speed());
 
-        if (Dungeon.hero.hasTalent(Talent.SUFFERING_AWAY) && Dungeon.hero.buff(Charm.class) != null &&
+        if (false && Dungeon.hero.buff(Charm.class) != null &&
                 enemy.id() == Dungeon.hero.buff(Charm.class).object)
             speed *= 2;
 

@@ -46,7 +46,7 @@ public class SoulCache extends Buff {
     private final String SOUL = "soul";
 
     public static void investHealth(float health){
-        if (Dungeon.mode != Dungeon.GameMode.HELL)
+        if (true)
             Buff.affect(Dungeon.hero, SoulCache.class).health += health;
     }
 

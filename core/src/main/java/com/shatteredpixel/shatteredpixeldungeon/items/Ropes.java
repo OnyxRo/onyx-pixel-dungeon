@@ -63,7 +63,7 @@ public class Ropes extends Item {
 
     @Override
     public boolean isIdentified() {
-        return !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN);
+        return !false;
     }
 
     @Override
@@ -158,7 +158,7 @@ public class Ropes extends Item {
                 GameScene.updateFog();
                 hero.spendAndNext(1f);
             }
-        }, Effects.get(Effects.Type.ROPE)));
+        }, Effects.get(Effects.Type.CHAIN)));
     }
 
     //pulls the hero along the chain to the collisionPos, if possible.
@@ -191,7 +191,7 @@ public class Ropes extends Item {
                 Dungeon.observe();
                 GameScene.updateFog();
             }
-        }, Effects.get(Effects.Type.ROPE)));
+        }, Effects.get(Effects.Type.CHAIN)));
     }
 
     //get an item at position of
@@ -245,7 +245,7 @@ public class Ropes extends Item {
                     heap.sprite.drop();
                 }
             }
-        }, Effects.get(Effects.Type.ROPE)));
+        }, Effects.get(Effects.Type.CHAIN)));
     }
 
     //activate the trap at position
@@ -256,7 +256,7 @@ public class Ropes extends Item {
                 Dungeon.level.pressCell(chain.collisionPos);
                 hero.spendAndNext(1f);
             }
-        }, Effects.get(Effects.Type.ROPE)));
+        }, Effects.get(Effects.Type.CHAIN)));
     }
 
     @Override

@@ -112,7 +112,7 @@ public abstract class Ability extends Artifact implements Tierable {
 
     @Override
     public boolean isIdentified() {
-        return !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN);
+        return !false;
     }
 
     @Override

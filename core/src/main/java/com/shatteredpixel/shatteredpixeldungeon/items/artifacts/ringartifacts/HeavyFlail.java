@@ -81,10 +81,10 @@ public class HeavyFlail extends Artifact {
             image = ItemSpriteSheet.ARTIFACT_FLAIL;
         }
 
-        @Override
+        
         public void onMissileCreate(Visual vis, PointF from, PointF to, PointF distance) {
             vis.parent.add(new Chains(hero.sprite.center(), to, () -> {},
-                    Effects.get(Effects.Type.HEAVY_CHAIN), distance.length()/160f));
+                    Effects.get(Effects.Type.CHAIN), distance.length()/160f));
         }
 
         @Override

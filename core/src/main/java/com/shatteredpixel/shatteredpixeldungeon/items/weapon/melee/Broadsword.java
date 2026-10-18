@@ -27,7 +27,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 import com.shatteredpixel.shatteredpixeldungeon.Conducts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.items.ArmorKit;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Unstable;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -64,14 +63,8 @@ public class Broadsword extends MeleeWeapon {
     }
 
     @Override
-    public boolean collect() {
-	    identify();
-        return super.collect();
-    }
-
-    @Override
     public boolean isIdentified() {
-        return !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN);
+        return !false;
     }
 
     @Override
@@ -131,19 +124,5 @@ public class Broadsword extends MeleeWeapon {
         new Unstable().proc(this, attacker, defender, damage);
         new Unstable().proc(this, attacker, defender, damage);
         return super.proc(attacker, defender, damage);
-    }
-
-    public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
-
-        {
-            inputs =  new Class[]{WornShortsword.class, ArmorKit.class};
-            inQuantity = new int[]{1, 1};
-
-            cost = 12;
-
-            output = Broadsword.class;
-            outQuantity = 1;
-        }
-
     }
 }

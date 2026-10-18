@@ -35,9 +35,30 @@ def fix(s):
     out.append(s[pos:])
     return ''.join(out), n
 
+ADD = re.compile(r'public\s+void\s+add\s*\(\s*Buff\s+(\w+)\s*\)')
+
+def fix_add(s):
+    """Old `public void add(Buff b)` overrides return boolean now (whether the buff was added)."""
+    out, pos, n = [], 0, 0
+    for m in ADD.finditer(s):
+        if m.start() < pos: continue
+        a, b = body_span(s, m.end())
+        body = s[a+1:b]
+        body = re.sub(r'(?<![\w.])super\.add\s*\(([^;]*)\)\s*;', r'summAdded = super.add(\1);', body)
+        body = re.sub(r'\breturn\s*;', 'return summAdded;', body)
+        out.append(s[pos:m.start()])
+        out.append(m.group(0).replace('void', 'boolean', 1))
+        out.append(s[m.end():a] + '{ boolean summAdded = false;' + body + '\treturn summAdded;\n\t}')
+        pos = b + 1
+        n += 1
+    out.append(s[pos:])
+    return ''.join(out), n
+
 for f in sys.argv[1:]:
     s = io.open(f, encoding='utf-8', newline='').read()
     t, n = fix(s)
+    t, n2 = fix_add(t)
+    n += n2
     if n:
         io.open(f, 'w', encoding='utf-8', newline='').write(t)
         print(f, n)

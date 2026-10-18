@@ -47,7 +47,7 @@ public class ManaStealing extends Buff {
         if (target.buff(HolyAuraBuff.class) != null) {
             boolean[] FOV = new boolean[Dungeon.level.length()];
             Point c = Dungeon.level.cellToPoint(target.pos);
-            ShadowCaster.castShadow(c.x, c.y, FOV, Dungeon.level.losBlocking, 8);
+            ShadowCaster.castShadow(c.x, c.y, Dungeon.level.width(), FOV, Dungeon.level.losBlocking, 8);
             ArrayList<Char> affected = new ArrayList<>();
 
             for (int i = 0; i < FOV.length; i++) {

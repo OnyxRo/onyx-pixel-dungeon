@@ -184,7 +184,11 @@ public class Dungeon {
 		SB_ALL_GEAR_UPGRADE,
 
 		//Transformation PD, the roast lamb warlock's wands
-		ROAST_LAMB_WAND;
+		ROAST_LAMB_WAND,
+
+		//summoning, Summoning PD's phantom gear and spectre rat drops
+		PHANTOM_EQUIP,
+		SPECTRE_RAT;
 
 		public int count = 0;
 

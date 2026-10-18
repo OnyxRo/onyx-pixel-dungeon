@@ -107,6 +107,18 @@ public abstract class ShamanSprite extends MobSprite {
 		}
 	}
 	
+	//summoning, Summoning PD's spectral shaman
+	public static class Spectral extends ShamanSprite {
+		{
+			boltType = MagicMissile.BEACON;
+		}
+
+		@Override
+		protected int texOffset() {
+			return 63;
+		}
+	}
+
 	public static class Purple extends ShamanSprite {
 		{
 			boltType = MagicMissile.SHAMAN_PURPLE;

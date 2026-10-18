@@ -64,7 +64,7 @@ public class Contain extends TargetedSpell {
                     && !mob.properties().contains(Char.Property.BOSS)
                     && !mob.properties().contains(Char.Property.MINIBOSS)
                     && !mob.properties().contains(Char.Property.IMMOVABLE)) {
-                float resist = WandOfCorruption.getEnemyResist(mob, mob);
+                float resist = (1 + mob.EXP);
                 resist *= 1 + 2 * Math.pow(mob.HP / (float) mob.HT, 2);
                 if (resist < 5) {
                     Dungeon.level.mobs.remove(mob);

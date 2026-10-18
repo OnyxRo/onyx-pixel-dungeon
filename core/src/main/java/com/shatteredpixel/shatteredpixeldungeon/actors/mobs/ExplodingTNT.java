@@ -74,10 +74,6 @@ public class ExplodingTNT extends Mob {
     @Override
     public void die(Object cause) {
         super.die(cause);
-        if (Dungeon.mode == Dungeon.GameMode.DIFFICULT) {
-            Item.curUser = null;
-            new Noisemaker().cast(this, pos);
-        }
     }
 
     @Override
@@ -87,11 +83,10 @@ public class ExplodingTNT extends Mob {
             return super.doAttack(enemy);
         } else {
             final ExplodingTNT mouse = this;
-            Item.curUser = null;
-//            Callback call = new Callback() {
+            //            Callback call = new Callback() {
 //                @Override
 //                public void call() {
-                    new RatBomb().cast(mouse, enemy.pos);
+                    new RatBomb().throwBy(mouse, enemy.pos);
 //                }
 //            };
 //            ((MissileSprite)sprite.parent.recycle(MissileSprite.class)).reset(pos, enemy.pos, new RatBomb(), call);

@@ -43,7 +43,12 @@ public class ConjurerArmor extends Armor {
         super( 1 );
     }
 
+    //Summoning PD armor value, its three tiers weigh it differently
     @Override
+    public int DRMax(int lvl){
+        return Math.round(super.DRMax(lvl) * defenseLevel(Math.min(level(), 2)));
+    }
+
     public float defenseLevel(int level) {
         switch (level){
             case 0: return 1.0f;

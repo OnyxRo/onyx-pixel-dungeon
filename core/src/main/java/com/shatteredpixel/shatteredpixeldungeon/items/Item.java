@@ -209,6 +209,20 @@ public class Item implements Bundlable {
 		return defaultAction;
 	}
 	
+	//summoning, Summoning PD's tiered items (staffs and spells) can be taken down a tier or show their tiers
+	protected void tierableActions(String action) {
+		if (this instanceof com.shatteredpixel.shatteredpixeldungeon.utils.Tierable){
+			if (action.equals("DOWNGRADE")){
+				GameScene.flash(0xFFFFFF);
+				com.watabou.noosa.audio.Sample.INSTANCE.play( Assets.Sounds.HIT_STRONG );
+				level(level()-1);
+				com.shatteredpixel.shatteredpixeldungeon.utils.GLog.w( Messages.get(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.Staff.class, "lower_tier"));
+			} else if (action.equals("TIERINFO")) {
+				com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon.runOnRenderThread(() -> com.watabou.noosa.Game.scene().addToFront(new com.shatteredpixel.shatteredpixeldungeon.windows.WndTierInfo(Item.this)));
+			}
+		}
+	}
+
 	public void execute( Hero hero ) {
 		String action = defaultAction();
 		if (action != null) {

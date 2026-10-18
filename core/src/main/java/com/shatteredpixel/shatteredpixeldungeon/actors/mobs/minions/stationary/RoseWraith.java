@@ -65,7 +65,7 @@ public class RoseWraith extends StationaryMinion {
             }
             if (buff(MagicPower.class) != null) timing /= 3;
             if (timing != 0) Buff.affect(this, Timer.class, timing*attackDelay());
-            Wraith.summonAt(this);
+            RoseWraithSummon.summonAt(this);
             this.damage(1, this);
         }
 

@@ -51,7 +51,7 @@ public class RagingBrew extends Brew {
 			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 		}
 		
-		GameScene.add( Blob.seed( cell, 400+60*Dungeon.hero.pointsInTalent(Talent.TOXIC_RELATIONSHIP), AdrenalineGas.class ) );
+		GameScene.add( Blob.seed( cell, 400+60*0, AdrenalineGas.class ) );
 	}
 	
 	@Override

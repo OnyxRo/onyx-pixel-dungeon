@@ -52,7 +52,7 @@ public class Jjango extends MeleeWeapon {
         return super.proc(attacker, defender, damage);
     }
 
-    @Override
+    
     public int warriorAttack(int damage, Char enemy) {
         //steal health, if char is bleeding
         if (enemy.buff(Bleeding.class) != null){
@@ -60,11 +60,11 @@ public class Jjango extends MeleeWeapon {
             float bloodAmount = 0;
             while (Math.round(blood.level()) > 0){
                 float amt = Math.round(Random.NormalFloat(blood.level() * 0.5f, blood.level()*0.75f));
-                blood.setForcefully(amt);
+                blood.set(amt);
                 bloodAmount += amt;
             }
             blood.detach();
-            if (Dungeon.mode != Dungeon.GameMode.HELL) {
+            if (true) {
                 Regeneration.regenerate(Dungeon.hero, (int) bloodAmount);
                 Dungeon.hero.sprite.emitter().start(Speck.factory(Speck.HEALING), 0.4f, 1);
             }

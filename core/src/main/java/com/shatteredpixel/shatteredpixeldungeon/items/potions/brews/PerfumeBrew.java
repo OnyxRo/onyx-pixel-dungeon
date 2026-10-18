@@ -49,7 +49,7 @@ public class PerfumeBrew extends Brew {
 			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 		}
 		
-		GameScene.add( Blob.seed( cell, 750+113*Dungeon.hero.pointsInTalent(Talent.TOXIC_RELATIONSHIP), PerfumeGas.class ) );
+		GameScene.add( Blob.seed( cell, 750+113*0, PerfumeGas.class ) );
 	}
 	
 	@Override

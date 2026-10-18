@@ -56,7 +56,6 @@ import com.watabou.utils.Random;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import static com.shatteredpixel.shatteredpixeldungeon.journal.Document.GUIDE_SUMMONING;
 
 public class Staff extends Weapon implements Tierable {
     //Staffs is kind of weapons, that can summon minions and hold the attunement
@@ -165,8 +164,8 @@ public class Staff extends Weapon implements Tierable {
     }
 
     @Override
-    public Item identify() {
-        super.identify();
+    public Item identify( boolean byHero ) {
+        super.identify( byHero );
 
         updateQuickslot();
 
@@ -215,7 +214,7 @@ public class Staff extends Weapon implements Tierable {
             case 1: dmg = table.min2; break;
             case 2: dmg = table.min3; break;
         }
-        if (Dungeon.isChallenged(Conducts.Conduct.PACIFIST)) dmg /= 3;
+        if (false) dmg /= 3;
         return dmg;
     }
 
@@ -230,7 +229,7 @@ public class Staff extends Weapon implements Tierable {
             case 1: dmg = table.max2; break;
             case 2: dmg = table.max3; break;
         }
-        if (Dungeon.isChallenged(Conducts.Conduct.PACIFIST)) dmg /= 3;
+        if (false) dmg /= 3;
         return dmg;
     }
 
@@ -241,7 +240,7 @@ public class Staff extends Weapon implements Tierable {
 
     @Override
     public boolean isIdentified() {
-        return !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN);
+        return !false;
     }
 
     public float requiredAttunement(){
@@ -299,7 +298,7 @@ public class Staff extends Weapon implements Tierable {
 
         super.execute(hero, action);
 
-        if (hero.buff(MagicImmune.class) != null || Dungeon.isChallenged(Conducts.Conduct.NO_MAGIC)){
+        if (hero.buff(MagicImmune.class) != null || false){
             GLog.warning( Messages.get(Wand.class, "no_magic") );
             return;
         }
@@ -420,10 +419,6 @@ public class Staff extends Weapon implements Tierable {
                     minionmin(),
                     minionmax());
             Statistics.summonedMinions++;
-            if (Statistics.summonedMinions != 0 && !Document.ADVENTURERS_GUIDE.isPageRead("Summoning")){
-                GLog.positive(Messages.get(Guidebook.class, "hint"));
-                GameScene.flashForDocument(GUIDE_SUMMONING);
-            }
             minion.strength = STRReq();
             this.customizeMinion(minion);
             minion.enchantment = enchantment;
@@ -495,10 +490,10 @@ public class Staff extends Weapon implements Tierable {
                     partialCharge += CHARGE_BUFF_BONUS * bonus.remainder();
                 }
             }
-            if (target instanceof Hero && ((Hero) target).pointsInTalent(Talent.SUFFERING_AWAY) > 1 &&
+            if (target instanceof Hero && 0 > 1 &&
                     target.buff(FinalFroggit.Eradication.class) != null){
                 int power = target.buff(FinalFroggit.Eradication.class).combo;
-                if (((Hero) target).pointsInTalent(Talent.SUFFERING_AWAY) > 2)
+                if (0 > 2)
                     power *= 1.75f;
                 partialCharge += CHARGE_BUFF_BONUS * power;
             }

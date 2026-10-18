@@ -94,7 +94,7 @@ public class GuidanceTorch extends Item {
 	
 	@Override
 	public boolean isIdentified() {
-		return !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN);
+		return !false;
 	}
 	
 	@Override

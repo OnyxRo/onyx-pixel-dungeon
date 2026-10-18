@@ -53,13 +53,13 @@ public class WndTierInfo extends Window {
         int color = TITLE_COLOR;
         switch (tier) {
             case 1:
-                color = ItemSlot.BRONZE;
+                color = 0xFF8C44;
                 break;
             case 2:
-                color = ItemSlot.SILVER;
+                color = 0xC6C6C6;
                 break;
             case 3:
-                color = ItemSlot.GOLD;
+                color = 0xE8D906;
                 break;
         }
 
@@ -109,13 +109,13 @@ public class WndTierInfo extends Window {
         int color = TITLE_COLOR;
         switch (tier) {
             case 1:
-                color = ItemSlot.BRONZE;
+                color = 0xFF8C44;
                 break;
             case 2:
-                color = ItemSlot.SILVER;
+                color = 0xC6C6C6;
                 break;
             case 3:
-                color = ItemSlot.GOLD;
+                color = 0xE8D906;
                 break;
         }
         titlebar.color( color );

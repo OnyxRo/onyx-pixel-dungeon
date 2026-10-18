@@ -63,7 +63,7 @@ public abstract class ConjurerSpell extends Item implements Tierable {
 
     @Override
     public boolean isIdentified() {
-        return !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN);
+        return !false;
     }
 
     public abstract void effect(Ballistica trajectory);
@@ -109,7 +109,7 @@ public abstract class ConjurerSpell extends Item implements Tierable {
 
     public boolean tryToZap( Hero owner){
 
-        if (owner.buff(MagicImmune.class) != null || Dungeon.isChallenged(Conducts.Conduct.NO_MAGIC)){
+        if (owner.buff(MagicImmune.class) != null || false){
             GLog.warning( Messages.get(Wand.class, "no_magic") );
             return false;
         }

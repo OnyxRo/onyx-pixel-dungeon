@@ -104,7 +104,9 @@ public enum HeroClass {
 	SLIMEGIRL( HeroSubClass.WATERSLIME, HeroSubClass.DARKSLIME ),
 	NINJA( HeroSubClass.TATTEKI_NINJA, HeroSubClass.NINJA_MASTER ),
 	DM400( HeroSubClass.AT400, HeroSubClass.AU400 ),
-	PRINCESS( HeroSubClass.RUNEMAGE, HeroSubClass.COMBATMASTER );
+	PRINCESS( HeroSubClass.RUNEMAGE, HeroSubClass.COMBATMASTER ),
+	//summoning, Summoning PD Reincarnated
+	CONJURER( HeroSubClass.SOUL_REAVER, HeroSubClass.OCCULTIST );
 
 	//the Summoner has two pictures, one is chosen each time the game starts
 	private static final String SUMMONER_SPLASH = Math.random() < 0.5 ? Assets.Splashes.SUMMONER : Assets.Splashes.SORCERESS;

@@ -39,8 +39,13 @@ public class SyntheticArmor extends Armor {
 		super( 6 );
 	}
 
-	@Override
-	public float defenseLevel(int level) {
+	//Summoning PD armor value, its three tiers weigh it differently
+    @Override
+    public int DRMax(int lvl){
+        return Math.round(defenseValue(lvl) * defenseLevel(Math.min(level(), 2)));
+    }
+
+    public float defenseLevel(int level) {
 		switch (level){
 			case 0: return 1.0f;
 			case 1: return 1.5f;
@@ -70,7 +75,6 @@ public class SyntheticArmor extends Armor {
 		return evasionFactor;
 	}
 
-	@Override
 	public int defenseValue(int lvl){
 		int val;
 		int max = 5 + lvl + augment.defenseFactor(lvl);

@@ -39,7 +39,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.WarriorAbilityButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -248,22 +247,23 @@ public class Slingshot extends Weapon {
 
     @Override
     public boolean isIdentified() {
-        return !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN);
+        return !false;
     }
 
 
 
     public static class Stone extends MissileWeapon {
+        //public so the slingshot can drop it where it lands
+        @Override
+        public void onThrow( int cell ) { super.onThrow( cell ); }
+
         {
             image = ItemSpriteSheet.THROWING_STONE;
             sticky = false;
             unique = true;
         }
 
-        @Override
-        protected float durabilityPerUse() {
-            return 0;
-        }
+        { baseUses = 1000000; }
 
         @Override
         public String info() {
@@ -336,13 +336,6 @@ public class Slingshot extends Weapon {
         @Override
         public void rangedHit(Char enemy, int cell) {
             super.rangedHit(enemy, cell);
-            Hunger hunger = Dungeon.hero.buff(Hunger.class);
-            if (Dungeon.hero.subClass == HeroSubClass.BERSERKER &&
-                !(hunger == null) && !hunger.isHungry() &&
-                    Dungeon.hero.belongings.weapon != null &&
-                    ((MeleeWeapon)Dungeon.hero.belongings.weapon).checkSeal() != null){
-                WarriorAbilityButton.doAttack(enemy);
-            }
         }
     }
 }

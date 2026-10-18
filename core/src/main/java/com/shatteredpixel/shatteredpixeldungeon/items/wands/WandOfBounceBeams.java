@@ -62,12 +62,12 @@ public class WandOfBounceBeams extends DamageWand{
     }
 
     @Override
-    public int magicalmin(int lvl){
+    public int min(int lvl){
         return (int) ((4 + Dungeon.hero.lvl*0.75f));
     }
 
     @Override
-    public int magicalmax(int lvl) {
+    public int max(int lvl) {
         return (int) (8 + Dungeon.hero.lvl*1.5f);
     }
 
@@ -101,9 +101,9 @@ public class WandOfBounceBeams extends DamageWand{
     private void affectCell(int i) {
         Char ch = Actor.findChar(i);
         if (ch != null) {
-            processSoulMark(ch, chargesPerCast());
+            wandProc(ch, chargesPerCast());
             if (ch != Dungeon.hero) {
-                if (!Dungeon.isChallenged(Conducts.Conduct.PACIFIST))
+                if (!false)
                     ch.damage(damageRoll(), this);
                 int defenseDebuff = 3;
                 switch (level()){
@@ -138,20 +138,20 @@ public class WandOfBounceBeams extends DamageWand{
     }
 
     @Override
-    public void onHit(Wand wand, Char attacker, Char defender, int damage) {
+    public void onHit(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff staff, Char attacker, Char defender, int damage) {
 
     }
 
     @Override
     public String statsDesc() {
         if (!levelKnown)
-            return Messages.get(this, "stats_desc", magicalmin(0), magicalmax(0), 2);
+            return Messages.get(this, "stats_desc", min(0), max(0), 2);
         else
-            return Messages.get(this, "stats_desc", magicalmin(), magicalmax(),  bounceCount(level()));
+            return Messages.get(this, "stats_desc", min(), max(),  bounceCount(level()));
     }
 
     @Override
-    public void staffFx(StaffParticle particle) {
+    public void staffFx(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff.StaffParticle particle) {
         particle.color(0x220022);
         particle.am = 0.6f;
         particle.setLifespan(1f);

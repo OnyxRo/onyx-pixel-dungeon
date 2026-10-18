@@ -63,7 +63,7 @@ public class Gravery extends Blob implements Hero.Doom{
 	
 	public static void corrupt(int cell ){
 		Char ch = Actor.findChar( cell );
-		if (ch != null && ch.buff(Talent.ArmoredArmadaArmor.class) == null) {
+		if (ch != null) {
 			if (ch.properties().contains(Char.Property.UNDEAD)){
 				if (ch.isImmune(Corruption.class))
 					Buff.affect(ch, Doom.class);

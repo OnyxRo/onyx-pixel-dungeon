@@ -318,7 +318,6 @@ public class AbyssalNightmare extends AbyssalMob {
 		immunities.add( Warlock.DarkBolt.class );
 		immunities.add( Wizard.DarkBolt.class );
 		immunities.add( Eye.DeathGaze.class );
-		immunities.add( Yog.BurningFist.DarkBolt.class );
 		immunities.add( FinalFroggit.Bolt.class);
 		immunities.add( SpectreRat.DarkBolt.class);
 		immunities.add( WardingWraith.DarkBolt.class);

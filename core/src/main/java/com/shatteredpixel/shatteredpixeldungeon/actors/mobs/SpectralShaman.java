@@ -49,7 +49,7 @@ public class SpectralShaman extends Mob {
 		HP = HT = 125;
 		EXP = 12;
 		defenseSkill = 16;
-		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+		if (false){
 			defenseSkill = 22;
 		}
 		baseSpeed = 2f;
@@ -83,7 +83,7 @@ public class SpectralShaman extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+		if (false){
 			return Random.NormalIntRange( 7, 20 );
 		}
 		return Random.NormalIntRange( 4, 11 );
@@ -91,7 +91,7 @@ public class SpectralShaman extends Mob {
 	
 	@Override
 	public int attackSkill( Char target ) {
-		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+		if (false){
 			return 40;
 		}
 		return 20;
@@ -99,7 +99,7 @@ public class SpectralShaman extends Mob {
 
 	@Override
 	public int defenseValue() {
-		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+		if (false){
 			return 13;
 		}
 		return 8;
@@ -195,7 +195,7 @@ public class SpectralShaman extends Mob {
 				for (int j=0; j < Dungeon.level.length(); j++) {
 					if (PathFinder.distance[j] == dist) {
 						
-						Wraith undead = Wraith.spawnForcefullyAt(j);
+						Wraith undead = Wraith.spawnAt(j);
 						undead.alignment = alignment;
 						
 						ScrollOfTeleportation.appear( undead, j );

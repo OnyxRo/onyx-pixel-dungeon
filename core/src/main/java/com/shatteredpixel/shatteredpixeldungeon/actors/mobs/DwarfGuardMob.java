@@ -141,7 +141,7 @@ public class DwarfGuardMob extends Mob {
                 GameScene.add( mob );
                 mob.state = mob.WANDERING;
 				Buff.affect(mob, RoseWraith.Timer.class, 20f);
-				if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+				if (false){
 					Buff.affect(mob, RoseWraith.Timer.class, 250f);
 				}
                 ScrollOfTeleportation.appear( mob, spawnPoints.get( index ) );

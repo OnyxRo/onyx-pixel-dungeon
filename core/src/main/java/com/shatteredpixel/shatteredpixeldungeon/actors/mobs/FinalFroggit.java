@@ -43,7 +43,7 @@ import com.watabou.utils.Random;
 
 public class FinalFroggit extends AbyssalMob implements Callback {
 	
-	private static final float TIME_TO_ZAP	= Dungeon.mode == Dungeon.GameMode.DIFFICULT ? 0.5f : 1f;
+	private static final float TIME_TO_ZAP	= false ? 0.5f : 1f;
 	
 	{
 		spriteClass = FinalFroggitSprite.class;

@@ -45,8 +45,8 @@ public class SoulParalysisAbility extends ArmorAbility {
         baseChargeUse = 75f;
     }
 
-    @Override
-    protected void activate(Armor armor, Hero hero, Integer target) {
+    
+    protected void activate(com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor armor, Hero hero, Integer target) {
         for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
 			if (Dungeon.level.heroFOV[mob.pos]
 				&& mob.alignment != Char.Alignment.ALLY) {
@@ -54,7 +54,7 @@ public class SoulParalysisAbility extends ArmorAbility {
 			}
 		}
 
-		charge -= chargeUse(hero);
+		armor.charge -= chargeUse(hero);
 
 		hero.sprite.operate( hero.pos );
 		armor.updateQuickslot();
@@ -68,6 +68,12 @@ public class SoulParalysisAbility extends ArmorAbility {
 
 	@Override
 	public int icon() {
-		return HeroIcon.SOUL_PARALYSIS;
+		return HeroIcon.NATURES_POWER;
+	}
+
+	//the mod gave this ability no talents of its own
+	@Override
+	public com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent[] talents() {
+		return new com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent[]{com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.HEROIC_ENERGY};
 	}
 }

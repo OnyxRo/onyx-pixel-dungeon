@@ -174,7 +174,9 @@ public abstract class Char extends Actor {
 	public int HT;
 	public int HP;
 	
-	protected float baseSpeed	= 1;
+	public float baseSpeed	= 1; //public for Summoning PD
+	//summoning, set when a cleaver kills in one hit
+	public boolean oneShottedByCleaver;
 	protected PathFinder.Path path;
 
 	public int paralysed	    = 0;
@@ -1330,8 +1332,14 @@ public abstract class Char extends Actor {
 	protected boolean attackIgnoresArmor(Char enemy) {
 		//Transformation PD, the DM400's Big Fist
 		if (this instanceof Hero && ((Hero) this).hasTalent(Talent.BIG_FIST) && ((Hero) this).belongings.attackingWeapon() == null) return true;
+		//summoning, Summoning PD attackers that hit through armor
+		if (properties.contains(Property.IGNORE_ARMOR)) return true;
 		return false;
 	}
+
+	//summoning, Summoning PD changes properties while a buff lasts
+	public void addProperty(Property prop) { properties.add(prop); }
+	public void removeProperty(Property prop) { properties.remove(prop); }
 
 	public interface DeathListener {
 		void onCharDied( Char deceased );
@@ -1667,6 +1675,15 @@ public abstract class Char extends Actor {
 	
 	protected final HashSet<Class> immunities = new HashSet<>();
 	
+	//summoning, Summoning PD helpers
+	public boolean isWet(){
+		return Dungeon.level != null && Dungeon.level.water[pos] || buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Wet.class) != null;
+	}
+
+	public boolean isResist(Class effect){
+		return resist(effect) < 1f;
+	}
+
 	public boolean isImmune(Class effect ){
 		HashSet<Class> immunes = new HashSet<>(immunities);
 		for (Property p : properties()){
@@ -1750,6 +1767,9 @@ public abstract class Char extends Actor {
 		//summoning, Summoning PD's attackers from range and animals
 		RANGED,
 		ANIMAL,
+		IGNORE_ARMOR,
+		BLOB_IMMUNE ( new HashSet<Class>(),
+				new HashSet<Class>( Arrays.asList(com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob.class) )),
 		//Transformation PD, marsh slime and kin
 		DARKSLIME,
 		EVIL,

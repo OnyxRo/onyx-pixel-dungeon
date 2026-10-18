@@ -33,7 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.SoulFlame;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.stationary.RoseWraith;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.cloakglyphs.Silent;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfAttunement;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -50,7 +49,7 @@ import java.util.HashSet;
 
 public class WardingWraith extends Mob implements Callback {
 	
-	private static final float TIME_TO_ZAP	= Dungeon.mode == Dungeon.GameMode.DIFFICULT ? 0.33f : 0.5f;
+	private static final float TIME_TO_ZAP	= false ? 0.33f : 0.5f;
 	public boolean enraged = false;
 	
 	{
@@ -116,7 +115,7 @@ public class WardingWraith extends Mob implements Callback {
 			if (alignment == Alignment.ALLY) dmg = Random.Int(15, 20);
             if (buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) dmg *= 0.6f;
 			enemy.damage( dmg, new DarkBolt(this, dmg) );
-			if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+			if (false){
 			    Buff.affect(enemy, Chill.class, 5f);
             }
 			
@@ -148,7 +147,7 @@ public class WardingWraith extends Mob implements Callback {
 
     public Char chooseEnemy() {
         if ((Dungeon.hero.buff(CloakOfShadows.cloakStealth.class) != null &&
-                Dungeon.hero.buff(CloakOfShadows.cloakStealth.class).glyph() instanceof Silent)
+                false)
         )
             return null;
 	    if (alignment == Alignment.ALLY) return super.chooseEnemy();

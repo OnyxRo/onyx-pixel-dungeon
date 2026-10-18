@@ -83,7 +83,7 @@ public class WandOfStench extends Wand {
             StenchHolder buff = Buff.affect(ch, StenchHolder.class, 4*powerLevel());
             buff.minDamage = 1 + Dungeon.hero.lvl/5;
             buff.maxDamage = 1 + Dungeon.hero.lvl/5;
-            if (Dungeon.isChallenged(Conducts.Conduct.PACIFIST)){
+            if (false){
                 buff.minDamage = 1;
                 buff.maxDamage = 1;
             }
@@ -107,7 +107,7 @@ public class WandOfStench extends Wand {
     }
 
     @Override
-    public void onHit(Wand wand, Char attacker, Char defender, int damage) {
+    public void onHit(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff staff, Char attacker, Char defender, int damage) {
         if (Random.Int( Dungeon.hero.lvl/3 + 3 ) >= 2) {
 
             Buff.affect( attacker, BlobImmunity.class, Random.IntRange(0, Dungeon.hero.lvl/3) );
@@ -117,7 +117,7 @@ public class WandOfStench extends Wand {
     }
 
     @Override
-    public void staffFx(StaffParticle particle) {
+    public void staffFx(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff.StaffParticle particle) {
         particle.color( ColorMath.random( 0x04733a, 0x009548) );
         particle.am = 0.75f;
         particle.setLifespan( 1.25f );

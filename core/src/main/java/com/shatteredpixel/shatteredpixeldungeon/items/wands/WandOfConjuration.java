@@ -84,7 +84,7 @@ public class WandOfConjuration extends Wand {
 
 	@Override
 	public boolean tryToZap(Hero owner, int target) {
-		if (Dungeon.isChallenged(Conducts.Conduct.NO_MAGIC)){
+		if (false){
 			GLog.warning( Messages.get(this, "no_magic") );
 			return false;
 		}
@@ -105,7 +105,7 @@ public class WandOfConjuration extends Wand {
 	}
 
 	@Override
-	public void onHit(Wand wand, Char attacker, Char defender, int damage) {
+	public void onHit(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff staff, Char attacker, Char defender, int damage) {
 		SwordStorage swords = Buff.affect(Dungeon.hero, SwordStorage.class);
 		if (swords.count() - 1 < swordCount(buffedLvl())) {
 			Dungeon.hero.sprite.burst(0x007bdb, 10);
@@ -123,17 +123,17 @@ public class WandOfConjuration extends Wand {
 			return Messages.get(this, "stats_desc", 3, 4 + level(), 8 + level());
 	}
 
-	@Override
+	
 	public String getTierMessage(int tier){
 		return Messages.get(this, "tier" + tier,
-				new DecimalFormat("#.##").format(charger.getTurnsToCharge(tier-1)),
+				new DecimalFormat("#.##").format(40f * rechargeModifier(tier-1)),
 				3 + tier,
 				7 + tier
 		);
 	}
 
 	@Override
-	public void staffFx(StaffParticle particle) {
+	public void staffFx(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff.StaffParticle particle) {
 		particle.color( Random.element(Arrays.asList(0xff61ac, 0x007bdb, 0xffffff)));
 		particle.am = 1f;
 		particle.setLifespan(2f);

@@ -51,7 +51,7 @@ public class Artifact extends KindofMisc {
 	protected int levelCap = 0;
 
 	//the current artifact charge
-	protected int charge = 0;
+	public int charge = 0; //public for Summoning PD
 	//the build towards next charge, usually rolls over at 1.
 	//better to keep charge as an int and use a separate float than casting.
 	protected float partialCharge = 0;
@@ -253,6 +253,11 @@ public class Artifact extends KindofMisc {
 	public void charge(Hero target, float amount){
 		//do nothing by default;
 	}
+
+	//summoning, Summoning PD sorts its artifacts into three kinds, shown in their description
+	public enum ArtifactClass { OFFENSE, DEFENSE, UTILITY }
+	public ArtifactClass artifactClass;
+	public void setArtifactClass(ArtifactClass artifactClass) { this.artifactClass = artifactClass; }
 
 	public class ArtifactBuff extends Buff {
 

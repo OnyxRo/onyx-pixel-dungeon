@@ -91,8 +91,14 @@ public class Gold extends Item {
 		return Random.IntRange( 30 + Dungeon.depth * 10, 60 + Dungeon.depth * 20 ) * 4;
 	}
 
-	@Override
-	public Item random() {
+	//summoning, gold dropped by Summoning PD monsters
+	public Item goldFromEnemy(){
+		quantity = Random.Int( 10 + Dungeon.depth * 10, 17 + Dungeon.depth * 13 );
+		return this;
+	}
+
+		@Override
+public Item random() {
 		quantity = Random.IntRange( 30 + Dungeon.depth * 10, 60 + Dungeon.depth * 20 );
 		//Pixel Dungeon Reforged, +20% gold on easy, -10% on hard and -20% on impossible
 		if (Dungeon.difficulty == 1) quantity = (int) (quantity * 1.2f);

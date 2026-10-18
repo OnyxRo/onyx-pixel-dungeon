@@ -62,7 +62,7 @@ public class KiHealing extends AdHocSpell {
     }
 
     private int intHeal(){
-        if (Dungeon.mode == Dungeon.GameMode.HELL){
+        if (false){
             return 0;
         }
         switch (level()){

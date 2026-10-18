@@ -66,10 +66,10 @@ public class GuidanceLight extends FlavourBuff {
 			ArrayList<Char> visible = new ArrayList<>();
 			visible.add(target);
 			float chargeAmount = Math.min(0.5f, left);
-			if (((Hero) target).pointsInTalent(Talent.SUFFERING_AWAY) > 1 && ((Hero) target).hasTalent(Talent.SUFFERING_AWAY)){
+			if (0 > 1 && false){
 				int count = 0;
 				for (Buff b: target.buffs()){
-					if (Talent.canSufferAway((Hero) target, b)){
+					if (false){
 						count++;
 					}
 				}
@@ -141,7 +141,7 @@ public class GuidanceLight extends FlavourBuff {
 	}
 
 	public static int duration(){
-		return 100*Dungeon.hero.pointsInTalent(Talent.GUIDANCE_FLAME);
+		return 100*0;
 	}
 
 	@Override

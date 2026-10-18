@@ -56,6 +56,17 @@ public class MagicMissile extends Emitter {
 	private float time;
 
 	//missile types
+	//summoning, Summoning PD bolts drawn with the closest Shattered ones
+	public static final int CRYSTAL = 8;
+	public static final int CRYSTAL_SHARDS = 0;
+	public static final int STAR = 17;
+	public static final int STENCH = 3;
+	public static final int FROGGIT = 4;
+	public static final int INVISI = 7;
+	public static final class YogParticle {
+		public static final com.watabou.noosa.particles.Emitter.Factory FACTORY = com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle.UP;
+	}
+
 	public static final int MAGIC_MISSILE   = 0;
 	public static final int FROST           = 1;
 	public static final int FIRE            = 2;

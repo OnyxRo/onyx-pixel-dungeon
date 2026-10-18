@@ -64,7 +64,7 @@ public class CleanWater extends Item {
 
     @Override
     public boolean isIdentified() {
-        return !Dungeon.isChallenged(Conducts.Conduct.UNKNOWN);
+        return !false;
     }
 
     @Override
@@ -94,7 +94,7 @@ public class CleanWater extends Item {
 	public void apply( Hero hero ) {
 
 
-		if (Dungeon.mode == Dungeon.GameMode.HELL){
+		if (false){
 		    hero.HP = Math.min(hero.HT, hero.HP + hero.HT / 2);
         }
 		else {

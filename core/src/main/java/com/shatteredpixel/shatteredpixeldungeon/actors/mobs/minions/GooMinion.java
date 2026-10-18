@@ -215,10 +215,10 @@ public class GooMinion extends Minion {
                 deferedDmgMulti = 1f;
             }
             Viscosity.DeferedDamage deferred = Buff.affect(this, Viscosity.DeferedDamage.class);
-            deferred.prolong((int) (dmg * deferedDmgMulti));
+            deferred.extend(dmg * deferedDmgMulti);
             dmg = (int) Math.min(dmg - dmg * deferedDmgMulti, 0);
         }
-        int damage = super.damage(dmg, src);
+        super.damage(dmg, src);
         if ((HP*2 <= HT) && !bleeding){
             sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "enraged"));
             ((GooMinionSprite)sprite).spray(true);

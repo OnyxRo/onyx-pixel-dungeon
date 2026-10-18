@@ -218,6 +218,22 @@ public class BuffIndicator extends Component {
 	public static final int AU400MARK = MARK;
 	public static final int DM400MARK = MARK;
 	public static final int WEAKMARK = MARK;
+	//summoning, Summoning PD buff icons drawn with the closest Shattered ones
+	public static final int WAR = WEAPON;
+	public static final int HUN = MOMENTUM;
+	public static final int CON = RECHARGING;
+	public static final int ROG = PREPARATION;
+	public static final int MAG = IMBUE;
+	public static final int NECROMANCY = CORRUPT;
+	public static final int ARMOR_GEN = ARMOR;
+	public static final int ERADICATION = DEGRADE;
+	public static final int FOOD_DEBUFF = HUNGER;
+	public static final int FOOD_REGEN = HEALING;
+	public static final int FROSTBURN = FROST;
+	public static final int GUIDANCE = LIGHT;
+	public static final int MIRROR = INVERT_MARK;
+	public static final int SOUL_PARALYSIS = PARALYSIS;
+	public static final int SOUL_REFUSAL = SACRIFICE;
 
 	public static final int SIZE_SMALL  = 7;
 	public static final int SIZE_LARGE  = 16;

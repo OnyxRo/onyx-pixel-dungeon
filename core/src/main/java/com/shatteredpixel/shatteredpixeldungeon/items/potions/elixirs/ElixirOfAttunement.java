@@ -39,7 +39,7 @@ public class ElixirOfAttunement extends Elixir {
 		image = ItemSpriteSheet.ELIXIR_ATTUNEMENT;
 	}
 
-	@Override
+	
 	public void setAction() {
 		defaultAction = AC_DRINK;
 	}

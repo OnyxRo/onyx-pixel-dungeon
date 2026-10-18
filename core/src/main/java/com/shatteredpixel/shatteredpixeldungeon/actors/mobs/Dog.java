@@ -50,7 +50,6 @@ public class Dog extends Mob {
 
 	{
 		immunities.add(ChampionEnemy.Blazing.class);
-		immunities.add(ChampionEnemy.Swiftness.class);
 		immunities.add(ChampionEnemy.Blessed.class);
 	}
 
@@ -66,7 +65,7 @@ public class Dog extends Mob {
 
 	@Override
 	public float attackDelay() {
-		if (Dungeon.mode == Dungeon.GameMode.DIFFICULT){
+		if (false){
 			return 0.7f*super.attackDelay();
 		}
 		return super.attackDelay();

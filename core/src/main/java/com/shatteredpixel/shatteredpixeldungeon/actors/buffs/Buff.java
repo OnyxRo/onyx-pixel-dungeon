@@ -52,6 +52,16 @@ public class Buff extends Actor {
 
 	//whether a buff should persist through revive effects or similar (e.g. transmogrify)
 	public boolean revivePersists = false;
+
+	//summoning, Summoning PD marks how bad a debuff is and which effects elementals resist
+	public enum buffSeverity {NOTHING, HARMFUL, DAMAGING}
+	public buffSeverity severity = buffSeverity.NOTHING;
+	public static final java.util.HashSet<Class> ELEMENT_RESISTS = new java.util.HashSet<>(java.util.Arrays.asList(
+			Burning.class, Charm.class, Chill.class, Frost.class, Ooze.class, Paralysis.class, Poison.class,
+			Corrosion.class, Weakness.class, FrostBurn.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrimTrap.class,
+			com.shatteredpixel.shatteredpixeldungeon.items.bombs.ArcaneBomb.class));
 	
 	protected HashSet<Class> resistances = new HashSet<>();
 	
