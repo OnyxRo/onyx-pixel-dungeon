@@ -170,6 +170,11 @@ public class OldAmulet extends Item {
         }
     }
 
+    //rearranged, one of the eight bows a spirit bow can turn into (not the plain spirit bow)
+    public static boolean isBowVariant( Item item ){
+        return item instanceof SpiritBow && item.getClass() != SpiritBow.class;
+    }
+
     private static float[] bowDeck = {1, 1, 1, 1, 1, 1, 1, 1};
 
     public static SpiritBow changeBow(SpiritBow bow) {

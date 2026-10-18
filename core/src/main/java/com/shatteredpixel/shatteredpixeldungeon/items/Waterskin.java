@@ -86,8 +86,15 @@ public class Waterskin extends Item {
 
 		if (action.equals( AC_DRINK )) {
 
+			//rearranged, the Adventurer's Herb Extraction steeps a seed in the dew first
+			if (volume > 0 && hero.hasTalent(Talent.HERB_EXTRACTION) && !raSeedChosen) {
+				RearrangedItems.herbExtraction(this, hero);
+				return;
+			}
+			raSeedChosen = false;
+
 			if (volume > 0) {
-				
+
 				float missingHealthPercent = 1f - (hero.HP / (float)hero.HT);
 
 				//each drop is worth 5% of total health
@@ -133,6 +140,13 @@ public class Waterskin extends Item {
 			}
 
 		}
+	}
+
+	//rearranged, set once a seed was chosen for Herb Extraction so the drink goes ahead
+	public boolean raSeedChosen = false;
+
+	public int volume(){
+		return volume;
 	}
 
 	@Override

@@ -40,6 +40,63 @@ import com.watabou.utils.Random;
  */
 public class RearrangedItems {
 
+	//Waterskin, the Adventurer's Herb Extraction. A seed steeped in the dew gives its plant's effect, scaled by
+	//the dew used, and at +2 the seed is kept half the time
+	public static void herbExtraction( final Waterskin skin, final Hero hero ){
+		GameScene.selectItem( new com.shatteredpixel.shatteredpixeldungeon.windows.WndBag.ItemSelector() {
+			@Override
+			public String textPrompt() {
+				return Messages.get(Waterskin.class, "seed");
+			}
+			@Override
+			public Class<? extends com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag> preferredBag(){
+				return com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch.class;
+			}
+			@Override
+			public boolean itemSelectable(Item item) {
+				return item instanceof com.shatteredpixel.shatteredpixeldungeon.plants.Plant.Seed;
+			}
+			@Override
+			public void onSelect( Item item ) {
+				if (!(item instanceof com.shatteredpixel.shatteredpixeldungeon.plants.Plant.Seed)) return;
+				int volume = skin.volume();
+				boolean keep = hero.pointsInTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.HERB_EXTRACTION) == 2 && Random.Int(2) < 1;
+				boolean used = true;
+				if (item instanceof com.shatteredpixel.shatteredpixeldungeon.plants.Blindweed.Seed) {
+					com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility.class, volume*2);
+				} else if (item instanceof com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot.Seed) {
+					com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin.class).set(Math.round(((hero.lvl)*volume)/20f + (Dungeon.depth*volume)/4f), 1);
+				} else if (item instanceof com.shatteredpixel.shatteredpixeldungeon.plants.Fadeleaf.Seed) {
+					com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision.class, volume);
+				} else if (item instanceof com.shatteredpixel.shatteredpixeldungeon.plants.Firebloom.Seed) {
+					com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FireImbue.class).set(volume/4f);
+				} else if (item instanceof com.shatteredpixel.shatteredpixeldungeon.plants.Icecap.Seed) {
+					com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FrostImbue.class, Math.round(volume/2f));
+				} else if (item instanceof com.shatteredpixel.shatteredpixeldungeon.plants.Mageroyal.Seed) {
+					com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BlobImmunity.class, volume*2);
+				} else if (item instanceof com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry.Seed) {
+					com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AdrenalineSurge.class).reset(1, (com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AdrenalineSurge.DURATION/20)*volume);
+					used = false;
+				} else if (item instanceof com.shatteredpixel.shatteredpixeldungeon.plants.Sorrowmoss.Seed) {
+					com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ToxicImbue.class).set(volume/2f);
+				} else if (item instanceof com.shatteredpixel.shatteredpixeldungeon.plants.Starflower.Seed) {
+					com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless.class, volume*3);
+				} else if (item instanceof com.shatteredpixel.shatteredpixeldungeon.plants.Stormvine.Seed) {
+					com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Levitation.class, volume*2);
+				} else if (item instanceof com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass.Seed) {
+					com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Healing.class).setHeal((hero.HT/10)*volume, 0, 1);
+				} else if (item instanceof com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle.Seed) {
+					com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste.class, volume*2);
+				} else {
+					used = false;
+				}
+				if (used && !keep) item.detach(hero.belongings.backpack);
+				skin.raSeedChosen = true;
+				skin.execute(hero, "DRINK");
+			}
+		});
+	}
+
 	private static int gunCost(){
 		return 25 + 25 * (1+Dungeon.depth/5);
 	}

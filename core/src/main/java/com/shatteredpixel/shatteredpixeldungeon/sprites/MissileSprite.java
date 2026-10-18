@@ -114,6 +114,20 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 		ANGULAR_SPEEDS.put(SpiritBow.SpiritArrow.class,       0);
 		ANGULAR_SPEEDS.put(ScorpioSprite.ScorpioShot.class,   0);
 		ANGULAR_SPEEDS.put(HolyLance.HolyLanceVFX.class,      0);
+		//rearranged, bullets, arrows and shots fly straight
+		ANGULAR_SPEEDS.put(SoldierSprite.SoldierShot.class,   0);
+		ANGULAR_SPEEDS.put(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Command.SupportShot.class,   0);
+		ANGULAR_SPEEDS.put(TankSprite.TankShot.class,         0);
+		ANGULAR_SPEEDS.put(SWATSprite.SWATShot.class,         0);
+		ANGULAR_SPEEDS.put(RebelSprite.RebelShot.class,       0);
+		ANGULAR_SPEEDS.put(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.Gun.Bullet.class,   0);
+		ANGULAR_SPEEDS.put(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.bow.BowWeapon.Arrow.class,   0);
+		ANGULAR_SPEEDS.put(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.archer.Snipe.SnipeArrow.class,   0);
+		ANGULAR_SPEEDS.put(CannonSprite.CannonShot.class,     0);
+		ANGULAR_SPEEDS.put(MachineGunSprite.MachineGunBullet.class,   0);
+		ANGULAR_SPEEDS.put(MortarSprite.MineShot.class,       0);
+		ANGULAR_SPEEDS.put(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SwordAura.Aura.class,   0);
+		ANGULAR_SPEEDS.put(com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.alchemy.PotOThunder.class,   0);
 		
 		//720 is default
 
@@ -182,8 +196,32 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 			
 		} else if (item instanceof SpiritBow.SpiritArrow
 				|| item instanceof ScorpioSprite.ScorpioShot
-				|| item instanceof TenguSprite.TenguShuriken){
+				|| item instanceof TenguSprite.TenguShuriken
+				//rearranged
+				|| item instanceof SoldierSprite.SoldierShot
+				|| item instanceof com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Command.SupportShot
+				|| item instanceof TankSprite.TankShot
+				|| item instanceof SWATSprite.SWATShot
+				|| item instanceof RebelSprite.RebelShot){
 			speed *= 1.5f;
+		//rearranged, guns and bows of Re-ARranged PD
+		} else if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.Gun.Bullet
+				|| item instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.bow.BowWeapon.Arrow
+				|| item instanceof com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.archer.Snipe.SnipeArrow) {
+			if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.FT.FT.FTBullet
+					|| item instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.LG.LG.LGBullet) {
+				speed *= 1000f;
+			} else if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.GL.GL.GLBullet) {
+				speed *= 1.2f;
+			} else {
+				speed *= 3f;
+			}
+		} else if (item instanceof com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SwordAura.Aura) {
+			speed *= 5f;
+		} else if (item instanceof CannonSprite.CannonShot || item instanceof MachineGunSprite.MachineGunBullet) {
+			speed *= 3f;
+		} else if (item instanceof MortarSprite.MineShot) {
+			speed *= 0.7f;
 		}
 		
 		PosTweener tweener = new PosTweener( this, to, d.length() / speed );
