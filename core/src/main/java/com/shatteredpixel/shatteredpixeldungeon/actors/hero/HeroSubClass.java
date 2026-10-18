@@ -78,7 +78,11 @@ public enum HeroSubClass {
 	AT400(HeroIcon.AT400),
 	AU400(HeroIcon.AU400),
 	RUNEMAGE(HeroIcon.RUNEMAGE),
-	COMBATMASTER(HeroIcon.COMBATMASTER);
+	COMBATMASTER(HeroIcon.COMBATMASTER),
+
+	//summoning, Summoning PD Reincarnated, they reuse other subclasses' pictures
+	SOUL_REAVER(HeroIcon.CONJURER),
+	OCCULTIST(HeroIcon.DEVOTEE);
 
 	//Transformation PD asks this of subclasses (its Rat King hero shares them all)
 	public boolean is(HeroSubClass sub) {

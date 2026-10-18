@@ -422,6 +422,13 @@ public class Dungeon {
 		return (challenges & mask) != 0;
 	}
 
+	//summoning, Summoning PD's conducts and game modes are not here, so its checks are always off
+	public static boolean isChallenged( Conducts.Conduct conduct ) {
+		return false;
+	}
+	public enum GameMode { NORMAL, SMALL, BIGGER, CAVES, GAUNTLET, EXPLORE, LOL, NO_SOU, NO_EXP, HELL, DIFFICULT, REALTIME, CHAOS }
+	public static final GameMode mode = GameMode.NORMAL;
+
 	public static boolean levelHasBeenGenerated(int depth, int branch){
 		return generatedLevels.contains(depth + 1000*branch);
 	}
@@ -601,6 +608,11 @@ public class Dungeon {
 		return depth == 6 || depth == 11 || depth == 16;
 	}
 	
+	//summoning, Summoning PD can change the chapter length, here it is always 5
+	public static int chapterSize(){ return 5; }
+	public static int chapterNumber(){ return Math.max(depth / 5, 0); }
+	public static int scaledDepth(){ return depth; }
+
 	public static boolean bossLevel() {
 		return bossLevel( depth );
 	}

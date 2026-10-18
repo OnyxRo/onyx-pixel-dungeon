@@ -302,6 +302,29 @@ public class Hero extends Char {
 		if (sprite != null) sprite.showStatus( com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite.MENTAL, Messages.get(this, "knowlminus", amount) );
 	}
 
+	//summoning, Summoning PD attunement (room for staff minions) and the Conjurer's mana for spells
+	public float attunement = 1;
+	public int mana = 0;
+	public int maxMana = 0;
+
+	public float usedAttunement(){
+		float att = 0;
+		if (Dungeon.level == null) return 0;
+		for (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob mob : Dungeon.level.mobs){
+			if (mob instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion){
+				att += ((com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion) mob).attunement;
+			}
+		}
+		return att;
+	}
+
+	public float maxAttunement(){
+		float boost = 0f;
+		com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose.roseRecharge rose = buff(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose.roseRecharge.class);
+		if (rose != null) boost = 0.5f * rose.itemLevel();
+		return attunement + boost + (subClass == HeroSubClass.SOUL_REAVER ? 1 : 0);
+	}
+
 	//Cursed PD mana, spent by its Power items and refilled by MpRegen
 	public int magicSkill = 5;
 	public int MAX_MP = 10;
@@ -465,6 +488,10 @@ public class Hero extends Char {
 		bundle.put( GRINDING, grinding );
 		bundle.put( TOTAL_EXPERIENCE, totalExp );
 		bundle.put( MANA_MAX, MAX_MP );
+		//summoning
+		bundle.put( "summ_attunement", attunement );
+		bundle.put( "summ_mana", mana );
+		bundle.put( "summ_max_mana", maxMana );
 		bundle.put( MENTAL_HP, MHP );
 		bundle.put( MENTAL_HT, MHT );
 		bundle.put( KNOWLEDGE, knowl );
@@ -531,6 +558,12 @@ public class Hero extends Char {
 			magicSkill = bundle.getInt( MAGIC_SKILL );
 		}
 		if (buff( MpRegen.class ) == null) Buff.affect( this, MpRegen.class );
+		//summoning
+		if (bundle.contains( "summ_attunement" )) {
+			attunement = bundle.getFloat( "summ_attunement" );
+			mana = bundle.getInt( "summ_mana" );
+			maxMana = bundle.getInt( "summ_max_mana" );
+		}
 	}
 	
 	public static void preview( GamesInProgress.Info info, Bundle bundle ) {

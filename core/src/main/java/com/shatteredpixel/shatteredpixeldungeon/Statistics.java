@@ -80,6 +80,8 @@ public class Statistics {
 	public static int thrownAttacks;
 
 	public static int spawnersAlive;
+	//summoning, minions summoned with staffs this run
+	public static int summonedMinions;
 	
 	public static float duration;
 	
@@ -140,6 +142,7 @@ public class Statistics {
 		thrownAttacks   = 0;
 
 		spawnersAlive   = 0;
+		summonedMinions = 0;
 		
 		duration	    = 0;
 		
@@ -249,6 +252,7 @@ public class Statistics {
 		bundle.put( THROWN,     thrownAttacks);
 
 		bundle.put( SPAWNERS,	spawnersAlive );
+		bundle.put( "summonedMinions", summonedMinions );
 		
 		bundle.put( DURATION,	duration );
 
@@ -317,6 +321,7 @@ public class Statistics {
 		thrownAttacks   = bundle.getInt( THROWN );
 
 		spawnersAlive   = bundle.getInt( SPAWNERS );
+		summonedMinions = bundle.getInt( "summonedMinions" );
 		
 		duration		= bundle.getFloat( DURATION );
 

@@ -265,6 +265,19 @@ public abstract class Char extends Actor {
 		}
 	}
 
+	//summoning, Summoning PD names, fixed armor values and armor rolls
+	public String getName(){
+		return name();
+	}
+
+	public int defenseValue(){
+		return 0;
+	}
+
+	public int actualDrRoll(){
+		return drRoll();
+	}
+
 	public String name(){
 		//Ryuse's PD, the Summoner knows the ghost by another name
 		if (Dungeon.hero != null && Dungeon.hero.heroClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.SUMMONER
@@ -807,6 +820,9 @@ public abstract class Char extends Actor {
 		int dr = 0;
 
 		dr += Random.NormalIntRange( 0 , Barkskin.currentLevel(this) );
+		//summoning, monsters from Summoning PD give a fixed armor value, rolled from 20 to 80 percent
+		int fixedArmor = defenseValue();
+		if (fixedArmor > 0) dr += Random.NormalIntRange( Math.round(fixedArmor * 0.2f), Math.round(fixedArmor * 0.8f) );
 
 		return dr;
 	}
@@ -1731,6 +1747,9 @@ public abstract class Char extends Actor {
 		//Shittened PD, a character that is simply irritating
 		ANNOYING,
 		HUMAN,
+		//summoning, Summoning PD's attackers from range and animals
+		RANGED,
+		ANIMAL,
 		//Transformation PD, marsh slime and kin
 		DARKSLIME,
 		EVIL,
