@@ -68,6 +68,10 @@ public class SummoningTest {
 		if (HeroClass.CONJURER.armorAbilities().length != 3) fail( "Conjurer should have three armor abilities" );
 
 		//summoning, attunement accounting, a second minion does not fit
+		//the staff action sets the user before summoning, do the same
+		java.lang.reflect.Field user = Item.class.getDeclaredField( "curUser" );
+		user.setAccessible( true );
+		user.set( null, hero );
 		int before = Dungeon.level.mobs.size();
 		staff.curCharges = 1;
 		staff.summon( hero );

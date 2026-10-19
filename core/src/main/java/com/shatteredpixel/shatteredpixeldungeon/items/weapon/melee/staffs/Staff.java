@@ -414,7 +414,10 @@ public class Staff extends Weapon implements Tierable {
         if (strength == 1 || Random.Float() < 1 / (float) (strength * 2)) {
             Minion minion = minionType.newInstance();
             GameScene.add(minion);
-            ScrollOfTeleportation.appear(minion, spawnPoints.get(Random.index(spawnPoints)));
+            int spawnAt = spawnPoints.get(Random.index(spawnPoints));
+            //no sprite only happens in the headless tests
+            if (minion.sprite != null) ScrollOfTeleportation.appear(minion, spawnAt);
+            else minion.pos = spawnAt;
             minion.setDamage(
                     minionmin(),
                     minionmax());
