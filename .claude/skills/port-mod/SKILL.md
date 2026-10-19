@@ -179,3 +179,8 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **Monster spawning for a mod with few monsters** needs its own spawner (see LovecraftSpawner), because a mod with roster entries replaces the whole rotation otherwise. Give the roster lines weight 0.
 - **New potions need potion labels.** `Potion.colors` holds 17 now. Make two more by hue shifting an existing sprite pair (regular and exotic, 16 cells apart) with PIL.
 - **Floors that never shuffle** (1, 4, 9, 14, 19, 5k) cannot hold a mod room, add it from `WorldLevel.initRooms` to any floor of that mod instead.
+
+## Added after the Transformation final run (2026-10-18)
+
+- **A mod system scattered over many classes** (a talent catalog) ports fastest as one hooks class (TransformationTalents) with one line calls. Find every place first with scripts/talent-dossier.py, then write all hooks, then wire the calls with scripts/plib.py patch files.
+- **Never put an abstract class on ModRoster**, and run MobArenaTest on boss monsters before an NPC may spawn them away from their arena.
