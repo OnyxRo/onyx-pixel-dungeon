@@ -59,8 +59,12 @@ public abstract class Minion extends Mob {
 
     public MinionClass minionClass = MinionClass.MELEE;
 
-    public int minDamage = 0;
-    public int maxDamage = 0;
+    //a minion made outside a staff (the sandbox list) starts with these, a staff sets its own
+    public int minDamage = 2;
+    public int maxDamage = 6;
+    {
+        HP = HT = 15;
+    }
     private float partialHealing;
 
     public int baseDefense = 0;

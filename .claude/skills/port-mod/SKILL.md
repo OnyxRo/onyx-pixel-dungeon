@@ -179,3 +179,14 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **Monster spawning for a mod with few monsters** needs its own spawner (see LovecraftSpawner), because a mod with roster entries replaces the whole rotation otherwise. Give the roster lines weight 0.
 - **New potions need potion labels.** `Potion.colors` holds 17 now. Make two more by hue shifting an existing sprite pair (regular and exotic, 16 cells apart) with PIL.
 - **Floors that never shuffle** (1, 4, 9, 14, 19, 5k) cannot hold a mod room, add it from `WorldLevel.initRooms` to any floor of that mod instead.
+
+## Added after Summoning PD (2026-10-18)
+
+- **When port-mob.py or port-item.py go quiet, copy by folder.** A mod system that lives in its own packages (Summoning's `actors/mobs/minions`, `items/weapon/melee/staffs`, `items/magic`) is faster to copy whole, then close with `FASTJAVAC=1 python -I scripts/port-copier.py . ~/mod-sources/<key> <key> 10`, which compiles with `fastjavac.sh` instead of Gradle. Then `python -I scripts/apply-renames.py <files>` on what you copied by hand.
+- **Old signatures in bulk.** `python -I scripts/void-damage.py <files>` turns `public int damage(int, Object)` and `public void add(Buff)` overrides into this game's forms. `python -I scripts/drop-override.py build/fj.log` removes every @Override javac says overrides nothing (read its list, a hook that matters needs a shim instead).
+- **Classes that share a simple name with ours in another package** (Summoning's `minions.Imp`, `minions.Mimic`, `minions.Slime`) can be copied by hand under their own package, the tools skip them but Java does not mind.
+- **Message files.** `python -I scripts/check-props.py` lists lines whose trailing backslash swallows the next key (a monster then shows "has no name string"), `--fix` removes the backslash.
+- **Git Bash rewrites arguments that look like paths.** A replacement holding `; //` became `/ported` and `/n`. Put `export MSYS_NO_PATHCONV=1` in front of any command that passes code as an argument, or write the edit as a spec file for `edit.py`.
+- **The worktree guard** refuses lines with `$VAR` before sed or awk, `$(...)` command lists and python heredocs with regexes. Quote variables (`"$F"`), put python in a file in the scratchpad, and put long argument lists in a small wrapper script.
+- **New scroll or potion.** A rune needs a free cell for the regular picture and the cell 16 below it for the exotic one, an entry in `Scroll.runes`, the class appended to the Generator deck with a weight in both prob arrays, and both `regToExo` and `exoToReg`.
+- **Mod rooms with four size categories** (older Shattered) must drop the last weight, this game has three, or the level builder crashes on a null size.

@@ -386,6 +386,9 @@ public class ItemSpriteSheet {
 	public static final int ELVEN_KEY = xy(10, 114);
 	public static final int ROUGH_KEY = xy(11, 114);
 	//summoning, Summoning PD Reincarnated, rows 209 to 224 of items.png
+	//the rune WUNJO for the Scroll of Attunement, its exotic one sits one row lower like the other runes
+	public static final int SCROLL_WUNJO = xy(1, 215);
+	public static final int EXOTIC_WUNJO = xy(1, 216);
 	public static final int RANGE_POWER = xy(5, 214);
 	public static final int ARCANE_ELEMENT = xy(1, 209);
 	public static final int ARMOR_ADVENTURER = xy(2, 209);
@@ -1090,6 +1093,8 @@ public class ItemSpriteSheet {
 		assignItemRect(ELVEN_KEY, 16, 16);
 		assignItemRect(ROUGH_KEY, 16, 16);
 		//summoning
+		assignItemRect(SCROLL_WUNJO, 15, 14);
+		assignItemRect(EXOTIC_WUNJO, 15, 14);
 		assignItemRect(RANGE_POWER, 14, 14);
 		assignItemRect(ARCANE_ELEMENT, 14, 14);
 		assignItemRect(ARMOR_ADVENTURER, 14, 13);

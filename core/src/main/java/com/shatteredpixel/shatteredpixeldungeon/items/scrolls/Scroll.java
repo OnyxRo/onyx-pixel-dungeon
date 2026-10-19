@@ -86,6 +86,7 @@ public abstract class Scroll extends Item {
 			put("TIWAZ",ItemSpriteSheet.SCROLL_TIWAZ);
 			put("EIHWAZ",ItemSpriteSheet.SCROLL_EIHWAZ); //Shittened PD
 			put("JERA",ItemSpriteSheet.SCROLL_JERA); //Pixel Dungeon Reforged
+			put("WUNJO",ItemSpriteSheet.SCROLL_WUNJO); //summoning, Summoning PD's Scroll of Attunement
 		}
 	};
 	

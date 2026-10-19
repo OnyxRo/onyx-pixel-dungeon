@@ -422,10 +422,12 @@ public class Generator {
 					com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfShit.class,
 					//from Pixel Dungeon Reforged, appended so older saves keep their decks. It is in the deck
 					//with a small weight, Reforged's own deck gave it one in thirteen
-					com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfDecay.class
+					com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfDecay.class,
+					//summoning, Summoning PD's Scroll of Attunement, appended so older saves keep their decks
+					com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfAttunement.class
 			};
-			SCROLL.defaultProbs  = new float[]{ 0, 3, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 0, 1 };
-			SCROLL.defaultProbs2 = new float[]{ 0, 3, 2, 2, 1, 2, 1, 1, 1, 1, 1, 0, 0, 1 };
+			SCROLL.defaultProbs  = new float[]{ 0, 3, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1 };
+			SCROLL.defaultProbs2 = new float[]{ 0, 3, 2, 2, 1, 2, 1, 1, 1, 1, 1, 0, 0, 1, 1 };
 			SCROLL.probs = SCROLL.defaultProbs.clone();
 			
 			STONE.classes = new Class<?>[]{

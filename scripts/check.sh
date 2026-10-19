@@ -112,6 +112,10 @@ if [ $QUICK -eq 0 ]; then
   run "ReforgedChallengeTest" ReforgedChallengeTest; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|info|SUMMARY reforged)" | tail -14 | sed 's/^/  /'
   [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
+  #summoning, the Conjurer, staff minions and attunement, mana, soul spells, staffs in the loot
+  run "SummoningTest" SummoningTest; rc=$?
+  tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY summoning)" | tail -12 | sed 's/^/  /'
+  [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
 fi
 
 # mod boss fights, walked through headless. Skipped in --quick runs.

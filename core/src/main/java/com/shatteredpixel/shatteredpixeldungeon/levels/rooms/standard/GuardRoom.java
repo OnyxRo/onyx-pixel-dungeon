@@ -50,7 +50,7 @@ public class GuardRoom extends StandardRoom {
 
 	@Override
 	public float[] sizeCatProbs() {
-		return new float[]{8, 4, 2, 1};
+		return new float[]{8, 4, 2};
 	}
 
 	@Override
