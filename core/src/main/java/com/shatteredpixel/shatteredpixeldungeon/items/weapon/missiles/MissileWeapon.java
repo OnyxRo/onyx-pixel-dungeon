@@ -613,6 +613,7 @@ abstract public class MissileWeapon extends Weapon {
 	}
 
 	protected void decrementDurability(){
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.onMissileUsed(0.25f); //summoning, silky quiver
 		//if this weapon was thrown from a source stack, degrade that stack.
 		//unless a weapon is about to break, then break the one being thrown
 		if (parent != null){

@@ -69,7 +69,70 @@ public class SummoningLeftoversTest {
 			check( !Document.ADVENTURERS_GUIDE.pageBody( page ).contains( "!!!" ), "guide page body missing " + page );
 		}
 
+		ringArtifacts( hero );
+
 		finish();
+	}
+
+	//Momentum Boots, Fuel Container and Silky Quiver, and that nothing changes without them
+	static void ringArtifacts( Hero hero ) {
+		hero.subClass = com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.NONE;
+		float plain = 1f;
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.onStep( hero );
+		check( hero.buff( com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.BootsMomentum.class ) == null, "momentum without the boots" );
+
+		com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.MomentumBoots boots = new com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.MomentumBoots();
+		boots.level( 2 );
+		boots.activate( hero );
+		for (int i = 0; i < 4; i++) com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.onStep( hero );
+		com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.BootsMomentum m = hero.buff( com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.BootsMomentum.class );
+		check( m != null && m.momentumStacks > 0, "walking in the boots should build momentum" );
+		if (m != null) {
+			m.doAction();
+			check( m.freerunning(), "the boots should start freerunning" );
+			check( Math.abs( com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.speed( hero, 1f ) - plain * 1.5f ) < 0.01f, "freerunning should be 1.5x speed, " + com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.speed( hero, 1f ) + " vs " + plain );
+			check( com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.evasion( hero ) > 0, "freerunning should add evasion" );
+			m.detach();
+		}
+		boots.cursed = true;
+		check( com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.speed( hero, 3f ) <= 1f, "cursed boots should cap speed at normal, " + com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.speed( hero, 1f ) );
+		for (com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff b : hero.buffs( com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.MomentumBoots.momentumBuff.class )) b.detach();
+
+		//fuel container, a wand with no charge zaps from the container
+		com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile wand = new com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile();
+		wand.curCharges = 0;
+		check( !com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.fuelCanZap( hero, wand, 1 ), "a wand zaps without the container" );
+		com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.FuelContainer fuel = new com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.FuelContainer();
+		fuel.charge = 30;
+		fuel.activate( hero );
+		check( com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.fuelCanZap( hero, wand, 1 ), "the container should pay for an empty wand" );
+		wand.curCharges = -1;
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.fuelAfterZap( hero, wand );
+		check( wand.curCharges == 0 && fuel.charge == 20, "the container should spend 10 charge, has " + fuel.charge + ", wand " + wand.curCharges );
+		check( com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.wandCanRecharge( hero ), "an uncursed container stops recharging" );
+		fuel.cursed = true;
+		check( !com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.wandCanRecharge( hero ), "a cursed container should stop recharging" );
+		for (com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff b : hero.buffs( com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.FuelContainer.fuelBuff.class )) b.detach();
+
+		//silky quiver, thrown weapons charge it and the mark makes them hit
+		com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnife dart = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnife();
+		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Rat rat = new com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Rat();
+		check( com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.accuracy( hero, rat, dart, 1f ) == 1f, "accuracy changed without the quiver" );
+		com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SilkyQuiver quiver = new com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SilkyQuiver();
+		quiver.charge = 0;
+		quiver.activate( hero );
+		for (int i = 0; i < 4; i++) com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.onMissileUsed( 0.25f );
+		check( quiver.charge == 1, "four thrown weapons should give one quiver charge, has " + quiver.charge );
+		com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect( rat, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.QuiverMark.class, 5f );
+		check( com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.accuracy( hero, rat, dart, 1f ) == Float.POSITIVE_INFINITY, "the quiver mark should make thrown weapons hit" );
+		quiver.cursed = true;
+		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Rat rat2 = new com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Rat();
+		check( com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.accuracy( hero, rat2, dart, 1f ) < 0.5f, "a cursed quiver should spoil the aim" );
+		for (com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff b : hero.buffs( com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SilkyQuiver.quiverBuff.class )) b.detach();
+		for (Object o : new Object[]{boots, fuel, quiver}) {
+			com.shatteredpixel.shatteredpixeldungeon.items.Item it = (com.shatteredpixel.shatteredpixeldungeon.items.Item) o;
+			check( !it.name().contains( "!!!" ) && !it.desc().contains( "!!!" ), "text missing for " + it.getClass().getSimpleName() );
+		}
 	}
 
 	static void finish() {

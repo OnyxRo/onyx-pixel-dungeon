@@ -920,6 +920,7 @@ public class Hero extends Char {
 			accuracy *= 1.50f;
 		}
 		accuracy *= Talent.stanceFactor(this, 0);
+		accuracy = SummoningHooks.accuracy(this, target, wep, accuracy); //summoning
 		//Transformation PD, the Friar
 		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.friar.HolyPrayer.HolyPrayerBlessing.class) != null){
 			accuracy *= buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.friar.HolyPrayer.HolyPrayerBlessing.class).accuracyAndEvasionFactor();
@@ -999,6 +1000,7 @@ public class Hero extends Char {
 		
 		evasion *= TransformationTalents.innerPeace(this); //transformation, Inner Peace
 		evasion += TransformationTalents.evasionBonus(this); //Transformation PD talent catalog
+		evasion += SummoningHooks.evasion(this); //summoning
 
 		if (paralysed > 0) {
 			evasion /= 2;
@@ -1209,7 +1211,7 @@ public class Hero extends Char {
 			((HeroSprite)sprite).sprint( momentum.freerunning() ? 1.5f : 1f );
 			speed *= momentum.speedMultiplier();
 		} else {
-			((HeroSprite)sprite).sprint( 1f );
+			if (sprite instanceof HeroSprite) ((HeroSprite)sprite).sprint( 1f ); //summoning, safe for headless tests
 		}
 
 		if (perks.contains(Perks.Perk.PROTEIN_INFUSION) && buff(Hunger.class) != null){
@@ -1226,7 +1228,8 @@ public class Hero extends Char {
 
 		speed *= TransformationTalents.speed(this); //Transformation PD talent catalog
 		speed = AscensionChallenge.modifyHeroSpeed(speed);
-		
+		speed = SummoningHooks.speed(this, speed); //summoning
+
 		return speed;
 		
 	}
@@ -1238,6 +1241,7 @@ public class Hero extends Char {
 		if (RingOfForce.fightingUnarmed(this))  return true;
 		if (STR() < ((Weapon)w).STRReq())       return false;
 		if (w instanceof Flail)                 return false;
+		if (SummoningHooks.blocksSurpriseAttack(this)) return false; //summoning
 		if (w instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.alchemy.ChainFlail) return false; //rearranged
 		if (w instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon
 				&& ((com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon) w).forcesSurpriseAttack(this, null)) return true;
@@ -1284,6 +1288,7 @@ public class Hero extends Char {
 		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline.class) != null) delay /= 1.5f;
 		//Dragonic PD, Fortify also speeds up attacks
 		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Fortify.class) != null) delay *= 0.75f;
+		delay = SummoningHooks.attackDelay(this, delay); //summoning
 
 		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ninja.OneSword.OKU_OneSword.class) != null
 				&& belongings.attackingWeapon() instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon){
@@ -2733,6 +2738,7 @@ public class Hero extends Char {
 			if (subClass == HeroSubClass.FREERUNNER){
 				Buff.affect(this, Momentum.class).gainStack();
 			}
+			SummoningHooks.onStep(this); //summoning
 
 			RearrangedHero.onStep(this); //rearranged
 

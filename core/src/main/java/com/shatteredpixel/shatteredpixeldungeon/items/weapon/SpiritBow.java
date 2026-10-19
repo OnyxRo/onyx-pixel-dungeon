@@ -409,6 +409,7 @@ public class SpiritBow extends Weapon {
 				if (!curUser.shoot( enemy, this )) {
 					Splash.at(cell, 0xCC99FFFF, 1);
 				}
+				com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.onMissileUsed(0.125f); //summoning, silky quiver
 				if (sniperSpecial && SpiritBow.this.augment != Augment.SPEED) sniperSpecial = false;
 			}
 			superShot = false;

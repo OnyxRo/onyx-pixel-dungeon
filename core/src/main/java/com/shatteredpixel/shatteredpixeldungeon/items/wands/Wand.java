@@ -182,7 +182,8 @@ public abstract class Wand extends Item {
 		}
 
 		//if we're using wild magic, then assume we have charges
-		if ( owner.buff(WildMagic.WildMagicTracker.class) != null || curCharges >= chargesPerCast()){
+		if ( owner.buff(WildMagic.WildMagicTracker.class) != null || curCharges >= chargesPerCast()
+				|| com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.fuelCanZap(owner, this, chargesPerCast())){ //summoning
 			return true;
 		} else {
 			GLog.w(Messages.get(this, "fizzles"));
@@ -559,6 +560,8 @@ public abstract class Wand extends Item {
 			curCharges -= cursed ? 1 : chargesPerCast();
 		}
 
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.fuelAfterZap(curUser, this); //summoning
+
 		//remove magic charge at a higher priority, if we are benefiting from it are and not the
 		//wand that just applied it
 		WandOfMagicMissile.MagicCharge buff = curUser.buff(WandOfMagicMissile.MagicCharge.class);
@@ -894,7 +897,8 @@ public abstract class Wand extends Item {
 		
 		@Override
 		public boolean act() {
-			if (curCharges < maxCharges && target.buff(MagicImmune.class) == null)
+			if (curCharges < maxCharges && target.buff(MagicImmune.class) == null
+					&& com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.wandCanRecharge(target)) //summoning
 				recharge();
 			
 			while (partialCharge >= 1 && curCharges < maxCharges) {
