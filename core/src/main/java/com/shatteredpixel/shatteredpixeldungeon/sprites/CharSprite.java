@@ -91,7 +91,9 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 
 	public enum State {
 		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED, HEALING, SHIELDED, HEARTS, GLOWING, AURA,
-		JUDGED, ELECTRIC //rearranged
+		JUDGED, ELECTRIC, //rearranged
+		//summoning, from Summoning PD
+		FROSTBURNING, SPIRIT, SHRUNK, ALLURED, ENLARGENED, SWORDS
 	}
 	
 	public Animation idle;
@@ -111,6 +113,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected PosTweener motion;
 	
 	protected Emitter burning;
+	//summoning
+	protected Emitter summSpirit, summAllured, summFrostburning, summSwords;
 	protected Emitter chilled;
 	protected Emitter marked;
 	protected Emitter levitation;
@@ -495,6 +499,29 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				if (glowBlock != null) glowBlock.killAndErase();
 				glowBlock = GlowBlock.lighten(this);
 				break;
+			//summoning, Summoning PD states
+			case SPIRIT:
+				summSpirit = emitter();
+				summSpirit.pour(com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile.ForceParticle.FACTORY, 0.06f);
+				break;
+			case ALLURED:
+				summAllured = emitter();
+				summAllured.pour(Speck.factory(Speck.HEART), 0.08f);
+				break;
+			case FROSTBURNING:
+				summFrostburning = emitter();
+				summFrostburning.pour(com.shatteredpixel.shatteredpixeldungeon.effects.particles.SnowParticle.FACTORY, 0.04f);
+				break;
+			case SWORDS:
+				summSwords = emitter();
+				summSwords.pour(Speck.factory(Speck.STAR), 0.5f);
+				break;
+			case SHRUNK:
+				scale.set(0.75f);
+				break;
+			case ENLARGENED:
+				scale.set(1.5f);
+				break;
 			case AURA:
 				if (aura != null)   aura.killAndErase();
 				float size = Math.max(width(), height());
@@ -646,6 +673,23 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 					electric.on = false;
 					electric = null;
 				}
+				break;
+			//summoning
+			case SPIRIT:
+				if (summSpirit != null) { summSpirit.on = false; summSpirit = null; }
+				break;
+			case ALLURED:
+				if (summAllured != null) { summAllured.on = false; summAllured = null; }
+				break;
+			case FROSTBURNING:
+				if (summFrostburning != null) { summFrostburning.on = false; summFrostburning = null; }
+				break;
+			case SWORDS:
+				if (summSwords != null) { summSwords.on = false; summSwords = null; }
+				break;
+			case SHRUNK:
+			case ENLARGENED:
+				scale.set(1f);
 				break;
 		}
 	}

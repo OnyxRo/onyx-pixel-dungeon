@@ -537,6 +537,9 @@ public enum Icons {
 				return new ItemSprite(ItemSpriteSheet.SCALPEL);
 			case ARCHER:
 				return new ItemSprite(ItemSpriteSheet.WORN_SHORTBOW);
+			//summoning
+			case CONJURER:
+				return new ItemSprite(ItemSpriteSheet.FROGGIT_STAFF);
 			default:
 				return null;
 		}

@@ -71,4 +71,10 @@ public class GLog {
 	public static void h( String text, Object... args ) {
 		i( HIGHLIGHT + text, args );
 	}
+
+	//summoning, Summoning PD spells these out
+	public static void positive( String text, Object... args ) { p( text, args ); }
+	public static void negative( String text, Object... args ) { n( text, args ); }
+	public static void warning( String text, Object... args ) { w( text, args ); }
+	public static void highlight( String text, Object... args ) { h( text, args ); }
 }

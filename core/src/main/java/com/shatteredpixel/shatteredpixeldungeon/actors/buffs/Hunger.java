@@ -157,6 +157,12 @@ public class Hunger extends Buff implements Hero.Doom {
 		return Math.max(0f, Math.min(1f, (oldLevel + amount - STARVING) / amount));
 	}
 
+	//summoning, Summoning PD changes the hero's hunger from anywhere, positive energy feeds
+	public static void adjustHunger(float energy){
+		if (Dungeon.hero == null) return;
+		Buff.affect(Dungeon.hero, Hunger.class).affectHunger(energy);
+	}
+
 	public void affectHunger(float energy ){
 		affectHunger( energy, false );
 	}

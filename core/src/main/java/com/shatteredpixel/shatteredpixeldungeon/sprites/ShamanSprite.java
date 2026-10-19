@@ -107,6 +107,30 @@ public abstract class ShamanSprite extends MobSprite {
 		}
 	}
 	
+	//summoning, Summoning PD's spectral shaman
+	public static class Spectral extends ShamanSprite {
+		{
+			boltType = MagicMissile.BEACON;
+		}
+
+		//the spectral shaman is not a Shaman, it never zaps, but a zap must not cast it to one
+		@Override
+		public void zap( int cell ) {
+			if (ch instanceof Shaman) {
+				super.zap( cell );
+			} else {
+				turnTo( ch.pos, cell );
+				play( zap );
+				if (ch != null) ch.next();
+			}
+		}
+
+		@Override
+		protected int texOffset() {
+			return 63;
+		}
+	}
+
 	public static class Purple extends ShamanSprite {
 		{
 			boltType = MagicMissile.SHAMAN_PURPLE;

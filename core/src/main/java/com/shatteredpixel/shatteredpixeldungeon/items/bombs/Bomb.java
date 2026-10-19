@@ -68,6 +68,9 @@ public class Bomb extends Item {
 	//rearranged, Re-ARranged PD's air support bombs set their own damage, -1 keeps the normal roll
 	public int minDamage = -1;
 	public int maxDamage = -1;
+	//summoning, Summoning PD rolls bomb damage from anywhere, Shattered's numbers are used
+	public static int summoningDamageRoll(){ return com.watabou.utils.Random.NormalIntRange(5 + Dungeon.scalingDepth(), 10 + Dungeon.scalingDepth()*2); }
+	public static float nuclearBoost(){ return 1f; }
 
 	//Transformation PD's bomb talents (Bomb Maniac, Shock Bomb) live in its common talent pool, which is not here yet.
 	//Its abilities call these, so they pass the damage through.
@@ -100,7 +103,7 @@ public class Bomb extends Item {
 	}
 	
 	public boolean explodesDestructively(){
-		return true;
+		return !harmless;
 	}
 
 	protected int explosionRange(){
@@ -135,6 +138,12 @@ public class Bomb extends Item {
 	//Devoted PD's Void trap bombs. A sub bomb ignites on landing after finaldelay turns, hits for a third,
 	//leaves items alone and never hurts the hero's enemies. Not saved, they only exist for a few turns.
 	public int finaldelay = 2;
+	//summoning, Summoning PD bombs that only spread their effect, and ones that tell a buff where they landed
+	public boolean harmless = false;
+	public Class<? extends com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff> fuseTriggerClass = null;
+	public interface FuseBuff {
+		void set(int cell);
+	}
 	public boolean subBomb = false;
 
 	@Override
@@ -143,6 +152,7 @@ public class Bomb extends Item {
 			Actor.addDelayed(fuse = createFuse().ignite(this), finaldelay);
 		} else if (!Dungeon.level.pit[ cell ] && lightingFuse) {
 			Actor.addDelayed(fuse = createFuse().ignite(this), finaldelay);
+			if (fuseTriggerClass != null) ((FuseBuff) com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(Dungeon.hero, fuseTriggerClass)).set(cell);
 		}
 		super.onThrow( cell );
 	}

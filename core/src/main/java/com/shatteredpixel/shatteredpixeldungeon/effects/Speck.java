@@ -34,6 +34,13 @@ import com.watabou.utils.SparseArray;
 
 public class Speck extends Image {
 
+	//summoning, Summoning PD gas specks drawn with the closest Shattered ones
+	public static final int HASTE       = 106;
+	public static final int HEALGAS     = 115;
+	public static final int HONEY       = 13;
+	public static final int PERFUME     = 113;
+	public static final int STENCH_WAND = 111;
+
 	public static final int HEALING     = 0;
 	//Transformation PD stand in, the pheromone cloud reuses the healing speck
 	public static final int PHEROMONE   = 0;

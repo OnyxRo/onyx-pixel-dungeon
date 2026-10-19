@@ -384,6 +384,13 @@ public class ItemSprite extends MovieClip {
 			}
 			
 			float value = phase / glowing.period * 0.6f;
+			//summoning, Summoning PD's rainbow glow
+			if (glowing.isRainbow) {
+				glowing.tempColor.fromHsv(com.watabou.utils.Random.Float(360), com.watabou.utils.Random.Float(0.15f, 0.5f), 0.9f);
+				glowing.red = glowing.tempColor.r;
+				glowing.blue = glowing.tempColor.b;
+				glowing.green = glowing.tempColor.g;
+			}
 			
 			rm = gm = bm = 1 - value;
 			ra = glowing.red * value;
@@ -407,7 +414,16 @@ public class ItemSprite extends MovieClip {
 		public float green;
 		public float blue;
 		public float period;
-		
+		//summoning, Summoning PD's rainbow glow
+		public boolean isRainbow = false;
+		public com.badlogic.gdx.graphics.Color tempColor = new com.badlogic.gdx.graphics.Color();
+
+		public Glowing(){
+			this.color = 0x000000;
+			period = 0.33f;
+			isRainbow = true;
+		}
+
 		public Glowing( int color ) {
 			this( color, 1f );
 		}

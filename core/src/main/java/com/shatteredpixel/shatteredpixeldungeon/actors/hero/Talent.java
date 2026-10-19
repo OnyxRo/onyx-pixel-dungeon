@@ -962,6 +962,9 @@ public enum Talent {
 				case KNIGHT:     return 10000 + 43 + 44*9;
 				case MEDIC:      return 10000 + 43 + 44*10;
 				case ARCHER:     return 10000 + 43 + 44*11;
+				//summoning
+				case CONJURER:
+					return 26;
 			}
 		} else {
 			return icon;
@@ -2532,6 +2535,10 @@ public enum Talent {
 			case GUNNER: case SAMURAI: case ADVENTURER: case KNIGHT: case MEDIC: case ARCHER:
 				RearrangedTalents.addClassTalents(cls, 1, tierTalents);
 				break;
+			//summoning, Summoning PD gave the Conjurer no talents of her own, these are Shattered's picked to suit her
+			case CONJURER:
+				Collections.addAll(tierTalents, HEARTY_MEAL, EMPOWERING_MEAL, SCHOLARS_INTUITION, NATURES_BOUNTY);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -2595,6 +2602,10 @@ public enum Talent {
 			case GUNNER: case SAMURAI: case ADVENTURER: case KNIGHT: case MEDIC: case ARCHER:
 				RearrangedTalents.addClassTalents(cls, 2, tierTalents);
 				break;
+			//summoning
+			case CONJURER:
+				Collections.addAll(tierTalents, INVIGORATING_MEAL, LIQUID_NATURE, ARCANE_VISION, HEIGHTENED_SENSES, SHIELD_BATTERY);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -2655,6 +2666,10 @@ public enum Talent {
 			//rearranged
 			case GUNNER: case SAMURAI: case ADVENTURER: case KNIGHT: case MEDIC: case ARCHER:
 				RearrangedTalents.addClassTalents(cls, 3, tierTalents);
+				break;
+			//summoning
+			case CONJURER:
+				Collections.addAll(tierTalents, ALLY_WARP, HOLD_FAST);
 				break;
 		}
 		for (Talent talent : tierTalents){
@@ -2785,6 +2800,13 @@ public enum Talent {
 			case ENGINEER: case EXPLORER: case RESEARCHER: case DEATHKNIGHT: case HORSEMAN: case CRUSADER:
 			case SAVIOR: case THERAPIST: case MEDICALOFFICER: case BOWMASTER: case JUGGLER: case SHARPSHOOTER:
 				RearrangedTalents.addSubclassTalents(cls, tierTalents);
+				break;
+			//summoning, Shattered talents picked for Summoning PD's Conjurer subclasses
+			case SOUL_REAVER:
+				Collections.addAll(tierTalents, NECROMANCERS_MINIONS, SOUL_SIPHON, SHARED_UPGRADES);
+				break;
+			case OCCULTIST:
+				Collections.addAll(tierTalents, ENHANCED_LETHALITY, ASSASSINS_REACH, BOUNTY_HUNTER);
 				break;
 		}
 		for (Talent talent : tierTalents){

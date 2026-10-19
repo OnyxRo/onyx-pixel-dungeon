@@ -51,6 +51,19 @@ public class Chains extends Group {
 				callback);
 	}
 
+	//summoning, Summoning PD's chains carry no picture type
+	public Chains(PointF from, PointF to, Callback callback){
+		this(from, to, Effects.Type.CHAIN, callback);
+	}
+
+	public Chains(PointF from, PointF to, Callback callback, com.watabou.noosa.Image picture){
+		this(from, to, Effects.Type.CHAIN, callback);
+	}
+
+	public Chains(PointF from, PointF to, Callback callback, com.watabou.noosa.Image picture, float duration){
+		this(from, to, Effects.Type.CHAIN, callback);
+	}
+
 	public Chains(PointF from, PointF to, Effects.Type type, Callback callback){
 		super();
 

@@ -74,6 +74,21 @@ public abstract class Recipe {
 	public abstract Item sampleOutput(ArrayList<Item> ingredients);
 	
 	//subclass for the common situation of a recipe with static inputs and outputs
+	//summoning, Summoning PD prices its brews and parchments from their ingredients
+	public static int calculatePrice(Recipe recipe){
+		if (!(recipe instanceof SimpleRecipe)) return 0;
+		SimpleRecipe r = (SimpleRecipe) recipe;
+		int cost = 0;
+		for (int i = 0; i < r.inputs.length; i++){
+			try {
+				cost += com.watabou.utils.Reflection.newInstance(r.inputs[i]).quantity(r.inQuantity[i]).value();
+			} catch (Throwable e) {
+				return 0;
+			}
+		}
+		return cost / Math.max(1, r.outQuantity);
+	}
+
 	public static abstract class SimpleRecipe extends Recipe {
 		
 		//*** These elements must be filled in by subclasses

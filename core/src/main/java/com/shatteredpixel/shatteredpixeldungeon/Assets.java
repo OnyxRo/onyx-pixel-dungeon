@@ -99,6 +99,8 @@ public class Assets {
 		public static final String TILES_LABS       = "environment/worlds/tiles_labs.png";
 		public static final String WATER_LABS       = "environment/rearranged/water5.png";
 		public static final String TEMPLE_SP        = "environment/rearranged/temple_special.png";
+		//summoning
+		public static final String ABYSS_SP = "environment/summoning/abyss_special.png"; //ported, summoning
 	}
 	
 	//TODO include other font assets here? Some are platform specific though...
@@ -493,6 +495,8 @@ public class Assets {
 		public static final String PRINCESS = "splashes/princess.png"; //ported, transformation
 		public static final String SUMMONER = "splashes/summoner.jpg"; //ported, ryuse
 		public static final String SORCERESS = "splashes/sorceress.png"; //ported, ryuse, the Summoner's other picture
+		//summoning
+		public static final String CONJURER = "splashes/summoning/conjurer.png"; //ported, summoning
 
 		public static final String SEWERS   = "splashes/sewers.jpg";
 		public static final String PRISON   = "splashes/prison.jpg";
@@ -1034,5 +1038,25 @@ public class Assets {
 		public static final String MORTAR        = "sprites/rearranged/mortar.png";
 		public static final String SPIRIT_HORSE  = "sprites/rearranged/spirit_horse.png";
 		public static final String SUPPORT_FORCE = "sprites/rearranged/support_force.png";
+		//summoning, Summoning PD Reincarnated
+		public static final String CHAOS_SABER = "sprites/summoning/chaossaber.png"; //ported, summoning
+		public static final String CONJURER = "sprites/summoning/conjurer.png"; //ported, summoning
+		public static final String SLIME_MINION = "sprites/summoning/slime_minion.png"; //ported, summoning
+		public static final String IMP_QUEEN = "sprites/summoning/imp_queen.png"; //ported, summoning
+		public static final String IMP_MINION = "sprites/summoning/imp_minion.png"; //ported, summoning
+		public static final String FROGGIT = "sprites/summoning/froggit.png"; //ported, summoning
+		public static final String DM150 = "sprites/summoning/dm150.png"; //ported, summoning
+		public static final String WIZARD = "sprites/summoning/wizard.png"; //ported, summoning
+		public static final String SOUL_FLAME = "sprites/summoning/soulflame.png"; //ported, summoning
+		public static final String ROSE_WRAITH = "sprites/summoning/rose_wraith.png"; //ported, summoning
+		public static final String MAGIC_MISSILE = "sprites/summoning/magic_missile.png"; //ported, summoning
+		public static final String BLASTER = "sprites/summoning/blaster.png"; //ported, summoning
+		public static final String TRAPPET = "sprites/summoning/trappet.png"; //ported, summoning
+		public static final String ATTUNEMENT_SPIRIT = "sprites/summoning/attunement_spirit.png"; //ported, summoning
+		public static final String CHICKEN = "sprites/summoning/chicken.png"; //ported, summoning
+		public static final String FINAL_FROGGIT = "sprites/summoning/final_froggit.png"; //ported, summoning
+		public static final String EXPLODING_TNT_ARE_YOU_A_MOUSE = "sprites/summoning/explodingmouse.png"; //ported, summoning
+		public static final String DWARF_GUARD = "sprites/summoning/guardian_dwarf.png"; //ported, summoning
+		public static final String DOG = "sprites/summoning/doggy.png"; //ported, summoning
 	}
 }

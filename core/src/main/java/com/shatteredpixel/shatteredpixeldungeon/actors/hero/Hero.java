@@ -302,6 +302,49 @@ public class Hero extends Char {
 		if (sprite != null) sprite.showStatus( com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite.MENTAL, Messages.get(this, "knowlminus", amount) );
 	}
 
+	//summoning, what a level up gives in Summoning PD. Every hero gets one more attunement at level 6,
+	//the Conjurer gets half a point every third level, 5 more mana and a new spell at levels 5, 7, 9, 11 and 15
+	private void summoningLevelUp(){
+		if (heroClass == HeroClass.CONJURER) {
+			if (lvl % 3 == 0) attunement += 0.5f;
+			maxMana += 5;
+			com.shatteredpixel.shatteredpixeldungeon.items.Item spell = null;
+			switch (lvl) {
+				case 5: spell = new com.shatteredpixel.shatteredpixeldungeon.items.magic.Barrier(); break;
+				case 7: spell = new com.shatteredpixel.shatteredpixeldungeon.items.magic.Wave(); break;
+				case 9: spell = new com.shatteredpixel.shatteredpixeldungeon.items.magic.Shocker(); break;
+				case 11: spell = new com.shatteredpixel.shatteredpixeldungeon.items.magic.Necro(); break;
+				case 15: spell = new com.shatteredpixel.shatteredpixeldungeon.items.magic.Field(); break;
+			}
+			if (spell != null) spell.identify().collect();
+		} else if (lvl == 6) {
+			attunement++;
+		}
+	}
+
+	//summoning, Summoning PD attunement (room for staff minions) and the Conjurer's mana for spells
+	public float attunement = 1;
+	public int mana = 0;
+	public int maxMana = 0;
+
+	public float usedAttunement(){
+		float att = 0;
+		if (Dungeon.level == null) return 0;
+		for (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob mob : Dungeon.level.mobs){
+			if (mob instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion){
+				att += ((com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion) mob).attunement;
+			}
+		}
+		return att;
+	}
+
+	public float maxAttunement(){
+		float boost = 0f;
+		com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose.roseRecharge rose = buff(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose.roseRecharge.class);
+		if (rose != null) boost = 0.5f * rose.itemLevel();
+		return attunement + boost + (subClass == HeroSubClass.SOUL_REAVER ? 1 : 0);
+	}
+
 	//Cursed PD mana, spent by its Power items and refilled by MpRegen
 	public int magicSkill = 5;
 	public int MAX_MP = 10;
@@ -380,6 +423,9 @@ public class Hero extends Char {
 			HT = 25 + 6*(lvl-1) + HTBoost;
 		} else if (heroClass == HeroClass.DM400) {
 			HT = 15 + 5*(lvl-1) + HTBoost;
+		} else if (heroClass == HeroClass.CONJURER) {
+			//summoning, the Conjurer is frail, 13 health and 3 more a level
+			HT = 13 + 3*(lvl-1) + HTBoost;
 		} else {
 			HT = 20 + 5*(lvl-1) + HTBoost;
 		}
@@ -466,6 +512,10 @@ public class Hero extends Char {
 		bundle.put( GRINDING, grinding );
 		bundle.put( TOTAL_EXPERIENCE, totalExp );
 		bundle.put( MANA_MAX, MAX_MP );
+		//summoning
+		bundle.put( "summ_attunement", attunement );
+		bundle.put( "summ_mana", mana );
+		bundle.put( "summ_max_mana", maxMana );
 		bundle.put( MENTAL_HP, MHP );
 		bundle.put( MENTAL_HT, MHT );
 		bundle.put( KNOWLEDGE, knowl );
@@ -542,6 +592,12 @@ public class Hero extends Char {
 			magicSkill = bundle.getInt( MAGIC_SKILL );
 		}
 		if (buff( MpRegen.class ) == null) Buff.affect( this, MpRegen.class );
+		//summoning
+		if (bundle.contains( "summ_attunement" )) {
+			attunement = bundle.getFloat( "summ_attunement" );
+			mana = bundle.getInt( "summ_mana" );
+			maxMana = bundle.getInt( "summ_max_mana" );
+		}
 	}
 	
 	public static void preview( GamesInProgress.Info info, Bundle bundle ) {
@@ -734,6 +790,18 @@ public class Hero extends Char {
 		}
 	}
 	
+	//summoning, Summoning PD's thrown knife hits with a melee weapon from range
+	public boolean shoot( Char enemy, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon weapon ) {
+		attackTarget = enemy;
+		KindOfWeapon equipped = belongings.weapon;
+		belongings.weapon = weapon;
+		boolean hit = enemy.alignment != Alignment.ALLY && attack( enemy );
+		Invisibility.dispel();
+		belongings.weapon = equipped;
+		attackTarget = null;
+		return hit;
+	}
+
 	public boolean shoot( Char enemy, MissileWeapon wep ) {
 
 		attackTarget = enemy;
@@ -1063,6 +1131,10 @@ public class Hero extends Char {
 			dmg = Math.round(dmg * (1.025f + .025f*pointsInTalent(Talent.WEAPON_RECHARGING)));
 		}
 
+		//summoning, Summoning PD's soul weakness and the Soul Reaver hit softer, their minions do the work
+		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SoulWeakness.class) != null) dmg /= 4;
+		if (subClass == HeroSubClass.SOUL_REAVER) dmg = Math.round(dmg * 0.75f);
+
 		if (dmg < 0) dmg = 0;
 		return dmg;
 	}
@@ -1314,7 +1386,20 @@ public class Hero extends Char {
 		if (buff(Endure.EndureTracker.class) != null){
 			buff(Endure.EndureTracker.class).endEnduring();
 		}
-		
+
+		//summoning, the Conjurer's minions grow stronger while she is below half health, and the Occultist's goat clone follows her
+		if (heroClass == HeroClass.CONJURER) {
+			if (HP <= HT / 2) {
+				Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Attunement.class);
+			} else if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Attunement.class) != null) {
+				buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Attunement.class).detach();
+			}
+		}
+		if (subClass == HeroSubClass.OCCULTIST && Dungeon.level != null
+				&& com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.GoatClone.findClone() == null){
+			com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.GoatClone.spawnClone();
+		}
+
 		if (!ready) {
 			//do a full observe (including fog update) if not resting.
 			if (!resting || buff(MindVision.class) != null || buff(Awareness.class) != null) {
@@ -2083,6 +2168,36 @@ public class Hero extends Char {
 		return attackTarget;
 	}
 	
+	//summoning, Summoning PD helpers
+	public int getAttackSkill(){
+		return attackSkill;
+	}
+
+	public void setEnemy(Char enemy){
+		this.attackTarget = enemy;
+	}
+
+	public static com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE arrangeBlast(int pos, com.watabou.noosa.Visual sprite, int type){
+		return arrangeBlast(pos, sprite, type, 1.5f);
+	}
+
+	public static com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE arrangeBlast(int pos, com.watabou.noosa.Visual sprite, int type, float range) {
+		com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica aim;
+		if (pos % Dungeon.level.width() > 10){
+			aim = new com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica(pos, pos - 1, com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica.WONT_STOP);
+		} else {
+			aim = new com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica(pos, pos + 1, com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica.WONT_STOP);
+		}
+		com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE aoe = new com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE(aim, range, 360, com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica.FRIENDLY_PROJECTILE);
+		if (sprite.visible) {
+			for (com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica ray : aoe.rays) {
+				((com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile) sprite.parent.recycle(com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile.class)).reset(
+						type, sprite, ray.path.get(ray.dist), null);
+			}
+		}
+		return aoe;
+	}
+
 	public void rest( boolean fullRest ) {
 		Dungeon.level.onHeroWaited(this);
 		spendAndNextConstant( TIME_TO_REST );
@@ -2794,6 +2909,7 @@ public class Hero extends Char {
 				defenseSkill++;
 				Perks.earnPerk(this);
 				RearrangedTalents.onLevelUp(this); //rearranged
+				summoningLevelUp();
 
 			} else {
 				Buff.prolong(this, Bless.class, Bless.DURATION);

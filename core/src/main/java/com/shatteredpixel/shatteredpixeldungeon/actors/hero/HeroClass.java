@@ -111,7 +111,9 @@ public enum HeroClass {
 	ADVENTURER( HeroSubClass.ENGINEER, HeroSubClass.EXPLORER, HeroSubClass.RESEARCHER ),
 	KNIGHT( HeroSubClass.DEATHKNIGHT, HeroSubClass.HORSEMAN, HeroSubClass.CRUSADER ),
 	MEDIC( HeroSubClass.SAVIOR, HeroSubClass.THERAPIST, HeroSubClass.MEDICALOFFICER ),
-	ARCHER( HeroSubClass.BOWMASTER, HeroSubClass.JUGGLER, HeroSubClass.SHARPSHOOTER );
+	ARCHER( HeroSubClass.BOWMASTER, HeroSubClass.JUGGLER, HeroSubClass.SHARPSHOOTER ),
+	//summoning, Summoning PD Reincarnated
+	CONJURER( HeroSubClass.SOUL_REAVER, HeroSubClass.OCCULTIST );
 
 	//the Summoner has two pictures, one is chosen each time the game starts
 	private static final String SUMMONER_SPLASH = Math.random() < 0.5 ? Assets.Splashes.SUMMONER : Assets.Splashes.SORCERESS;
@@ -214,6 +216,10 @@ public enum HeroClass {
 			//rearranged
 			case GUNNER: case SAMURAI: case ADVENTURER: case KNIGHT: case MEDIC: case ARCHER:
 				RearrangedHeroes.init( this, hero );
+				break;
+			//summoning
+			case CONJURER:
+				initConjurer( hero );
 				break;
 		}
 
@@ -326,8 +332,42 @@ public enum HeroClass {
 				return Badges.Badge.MASTERY_MEDIC;
 			case ARCHER:
 				return Badges.Badge.MASTERY_ARCHER;
+			//summoning
+			case CONJURER:
+				return Badges.Badge.MASTERY_CONJURER;
 		}
 		return null;
+	}
+
+	//summoning, Summoning PD's Conjurer. A toy knife, a spellbook with three spells, the froggit staff,
+	//a magical holster and the robe she cannot take off. Mana fills when her minions kill.
+	private static void initConjurer( Hero hero ) {
+		(hero.belongings.weapon = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.ConjurerKnife()).identify();
+		hero.belongings.weapon.activate(hero);
+
+		com.shatteredpixel.shatteredpixeldungeon.items.bags.ConjurerBook book = new com.shatteredpixel.shatteredpixeldungeon.items.bags.ConjurerBook();
+		book.collect();
+		com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.FroggitStaff staff = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.FroggitStaff();
+		staff.identify().collect();
+		new com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster().collect();
+		Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
+
+		(hero.belongings.armor = new com.shatteredpixel.shatteredpixeldungeon.items.armor.ConjurerArmor()).identify();
+		hero.belongings.armor.activate(hero);
+
+		new com.shatteredpixel.shatteredpixeldungeon.items.magic.Stars().identify().collect();
+		new com.shatteredpixel.shatteredpixeldungeon.items.magic.Heal().identify().collect();
+		new com.shatteredpixel.shatteredpixeldungeon.items.magic.Zap().identify().collect();
+		Dungeon.quickslot.setSlot(0, staff);
+		Dungeon.quickslot.setSlot(1, book);
+
+		hero.attunement = 1;
+		hero.mana = 0;
+		hero.maxMana = 20;
+		hero.HT = hero.HP = 13;
+
+		new com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfAttunement().identify();
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength().identify();
 	}
 
 	private static void initWarrior( Hero hero ) {
@@ -633,6 +673,11 @@ public enum HeroClass {
 				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.princess.MarchForward(),
 						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.princess.TabooMagic(),
 						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.princess.KingBlade()};
+			//summoning, Summoning PD had one ability. The Summoner's phase shift and the Huntress's spirit hawk join it
+			case CONJURER:
+				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.conjurer.SoulParalysisAbility(),
+						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.summoner.PhaseShift(),
+						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.SpiritHawk()};
 			case DM400:
 				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.dm400.Routine(),
 						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.dm400.Discharge_Gas(),
@@ -690,6 +735,9 @@ public enum HeroClass {
 				return Assets.Sprites.MEDIC;
 			case ARCHER:
 				return Assets.Sprites.ARCHER;
+			//summoning
+			case CONJURER:
+				return Assets.Sprites.CONJURER;
 		}
 	}
 
@@ -741,6 +789,9 @@ public enum HeroClass {
 				return Assets.Splashes.MEDIC;
 			case ARCHER:
 				return Assets.Splashes.ARCHER;
+			//summoning
+			case CONJURER:
+				return Assets.Splashes.CONJURER;
 		}
 	}
 	
@@ -796,6 +847,9 @@ public enum HeroClass {
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_MEDIC);
 			case ARCHER:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_ARCHER);
+			//summoning, open from the start as in Summoning PD
+			case CONJURER:
+				return true;
 		}
 	}
 	

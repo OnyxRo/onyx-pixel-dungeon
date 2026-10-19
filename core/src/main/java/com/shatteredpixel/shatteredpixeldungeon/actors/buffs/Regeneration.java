@@ -32,6 +32,26 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
 import com.watabou.utils.Bundle;
 
 public class Regeneration extends Buff {
+
+	//summoning, Summoning PD's instant heal with a number shown over the character
+	public static void regenerate(com.shatteredpixel.shatteredpixeldungeon.actors.Char ch, int amount){
+		regenerate(ch, amount, true, false);
+	}
+
+	public static void regenerate(com.shatteredpixel.shatteredpixeldungeon.actors.Char ch, int amount, boolean visible){
+		regenerate(ch, amount, visible, false);
+	}
+
+	public static void regenerate(com.shatteredpixel.shatteredpixeldungeon.actors.Char ch, int amount, boolean visible, boolean showHPString){
+		int healAmt = Math.min( amount, ch.HT - ch.HP );
+		if (healAmt > 0 && ch.isAlive()) {
+			ch.HP += healAmt;
+			if (visible && ch.sprite != null){
+				if (showHPString) ch.sprite.showStatus(com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite.POSITIVE, "+%dHP", healAmt);
+				else ch.sprite.showStatus(com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite.POSITIVE, Integer.toString(healAmt));
+			}
+		}
+	}
 	
 	{
 		//unlike other buffs, this one acts after the hero and takes priority against other effects
@@ -126,6 +146,8 @@ public class Regeneration extends Buff {
 	}
 
 	public static boolean regenOn(){
+		//summoning, the Occultist from Summoning PD does not regenerate
+		if (Dungeon.hero != null && Dungeon.hero.subClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.OCCULTIST) return false;
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
 		if (lock != null && !lock.regenOn()){
 			return false;

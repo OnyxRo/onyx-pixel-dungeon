@@ -1,0 +1,58 @@
+/*
+ * Onyx's Pixel Dungeon
+ *
+ * Gnoll Camp world, ported from Deep Pixel Dungeon (https://github.com/Mochiee/deep-pixel-dungeon).
+ * Tileset and water from that mod, moved into this game's tile layout by scripts/convert-oldtiles.py.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ */
+
+package com.shatteredpixel.shatteredpixeldungeon.levels.worlds;
+
+import com.shatteredpixel.shatteredpixeldungeon.levels.painters.SewerPainter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.painters.RegularPainter;
+
+/** The Gnoll Camp, a gnoll area Deep Pixel Dungeon by Mochiee drew and built but never linked into its dungeon. */
+public class GnollCampLevel extends WorldLevel {
+
+	{
+		color1 = 0x6a5030;
+		color2 = 0x8a6a40;
+	}
+
+	@Override
+	public String tilesTex() {
+		return "environment/worlds/tiles_deep_gnoll.png";
+	}
+
+	@Override
+	public String waterTex() {
+		return "environment/worlds/water_deep_forest.png";
+	}
+
+	@Override
+	protected RegularPainter basePainter() {
+		return new SewerPainter();
+	}
+
+	@Override
+	protected MusicSet musicSet() {
+		return MusicSet.PRISON;
+	}
+
+	@Override
+	protected Ambience ambience() {
+		return Ambience.NONE;
+	}
+}

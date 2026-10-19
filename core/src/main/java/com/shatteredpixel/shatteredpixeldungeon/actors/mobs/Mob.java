@@ -148,7 +148,21 @@ public abstract class Mob extends Char {
 		return enemy;
 	}
 	protected int enemyID = -1; //used for save/restore
-	protected boolean enemySeen;
+	public boolean enemySeen; //public for Summoning PD
+	//summoning, Summoning PD links clones and horde members to their leader
+	public int hordeHead = -1;
+	public boolean hordeSpawned = false;
+
+	//summoning, Summoning PD tags spells cast by monsters with this
+	public static class MagicalAttack {
+		public Mob caster;
+		public int damage;
+
+		public MagicalAttack(Mob attacker, int damage){
+			caster = attacker;
+			this.damage = damage;
+		}
+	}
 
 	//Tower PD shims. Marks a monster that attacks from range, and which targets it would rather skip
 	//(the preference is kept for the ported monsters and does not change target choice here).
@@ -426,6 +440,39 @@ public abstract class Mob extends Char {
 	
 	//Pixel Dungeon Reforged Randomizer, does nothing unless a creature overrides it
 	protected void extraAttackTargets( java.util.HashSet<Char> enemies ) {}
+
+	//summoning, small helpers Summoning PD's monsters and minions call
+	public int defenseSkillDesc(){
+		return defenseSkill;
+	}
+
+	public boolean canSee(int pos){
+		return fieldOfView != null && pos >= 0 && pos < fieldOfView.length && fieldOfView[pos];
+	}
+
+	public boolean canBeIgnored(Char ch){
+		return false;
+	}
+
+	public boolean following(Char follow) {
+		if (alignment == follow.alignment) {
+			return Actor.findChar(this.target) == follow;
+		}
+		return false;
+	}
+
+	protected Char chooseClosest(java.util.HashSet<Char> enemies){
+		PathFinder.buildDistanceMap(pos, Dungeon.findPassable(this, Dungeon.level.passable, fieldOfView, true));
+		Char closest = null;
+		for (Char curr : enemies){
+			if (closest == null || (PathFinder.distance[curr.pos] < PathFinder.distance[closest.pos])){
+				closest = curr;
+			} else if (curr == Dungeon.hero && PathFinder.distance[curr.pos] == PathFinder.distance[closest.pos]){
+				closest = curr;
+			}
+		}
+		return closest;
+	}
 
 	protected Char chooseEnemy() {
 
@@ -1182,6 +1229,16 @@ public abstract class Mob extends Char {
 			//50% chance to round up, 50% to round down
 			if (EXP % 2 == 1) EXP += Random.Int(2);
 			EXP /= 2;
+		}
+
+		//summoning, the Conjurer gains mana when her minions or spells kill, the Soul Reaver gains more
+		if (Dungeon.hero != null && Dungeon.hero.maxMana > 0 && alignment == Alignment.ENEMY
+				&& (cause instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion
+					|| cause instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.GoatClone
+					|| cause instanceof com.shatteredpixel.shatteredpixeldungeon.items.magic.ConjurerSpell)){
+			int gain = (int) Math.floor(EXP * (Dungeon.hero.subClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.SOUL_REAVER ? 2.25f : 1.5f));
+			if (cause instanceof com.shatteredpixel.shatteredpixeldungeon.items.magic.ConjurerSpell) gain /= 2;
+			Dungeon.hero.mana = Math.min(Dungeon.hero.mana + gain, Dungeon.hero.maxMana);
 		}
 
 		if (alignment == Alignment.ENEMY){

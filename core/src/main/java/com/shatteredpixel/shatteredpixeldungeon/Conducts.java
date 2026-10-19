@@ -14,7 +14,11 @@ public class Conducts {
         NORMAL(1f),
         HARD(2.5f),
         DEV,
-        SEED;
+        SEED,
+        //summoning, Summoning PD's conducts. They can not be picked here, so checks for them are always false
+        NO_ARMOR, PACIFIST, CRIPPLED, NO_MAGIC, ZEN, BERSERK, WRAITH, SLEEPY, TRANSMUTATION, KING, EVERYTHING,
+        EXPLOSIONS, INVISIBLE, REGENERATION, UNKNOWN, NO_STR, CHAMPS, NO_REGEN, CURSE, ALLSIGHT, NO_LOOT,
+        LIMITED_MONSTERS, HUGE, DEBUG_SCROLL;
 
         public float scoreMod;
 

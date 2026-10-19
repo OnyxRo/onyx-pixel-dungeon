@@ -132,9 +132,12 @@ public class Assassin extends Mob {
 
         for (int i = 0; i < 4; i++) {
             int trapPos;
+            //a bounded search, a blind hero sees no cell and the old loop never ended
+            int tries = 0;
             do {
                 trapPos = Random.Int(Dungeon.level.length());
-            } while (!Dungeon.level.heroFOV[trapPos] || Dungeon.level.solid[trapPos]);
+            } while ((!Dungeon.level.heroFOV[trapPos] || Dungeon.level.solid[trapPos]) && ++tries < 500);
+            if (tries >= 500) break;
 
             if (Dungeon.level.map[trapPos] == Terrain.EMPTY) {
                 Dungeon.level.setTrap(new SpearTrap().reveal(), trapPos);

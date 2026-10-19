@@ -104,6 +104,9 @@ public class TengusMask extends Item {
 		curUser.subClass = way;
 		Talent.initSubclassTalents(curUser);
 
+		//summoning, each Conjurer subclass from Summoning PD brings five spells
+		com.shatteredpixel.shatteredpixeldungeon.items.magic.ConjurerSpell.giveSubclassSpells(curUser);
+
 		if (way == HeroSubClass.ASSASSIN && curUser.invisible > 0){
 			Buff.affect(curUser, Preparation.class);
 		}

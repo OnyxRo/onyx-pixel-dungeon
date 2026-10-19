@@ -205,8 +205,14 @@ public class SpiritBow extends Weapon {
 		return STRReq(1, lvl); //tier 1
 	}
 	
+	//summoning, Summoning PD's scout armor makes the next arrow a super shot with double minimum damage
+	public static boolean superShot = false;
+
 	@Override
 	public int min(int lvl) {
+		if (superShot) return 2 * Math.max(0, 1 + Dungeon.hero.lvl/5
+				+ RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
+				+ (curseInfusionBonus ? 1 + Dungeon.hero.lvl/30 : 0));
 		int dmg = 1 + Dungeon.hero.lvl/5
 				+ RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
 				+ (curseInfusionBonus ? 1 + Dungeon.hero.lvl/30 : 0);
@@ -405,6 +411,7 @@ public class SpiritBow extends Weapon {
 				}
 				if (sniperSpecial && SpiritBow.this.augment != Augment.SPEED) sniperSpecial = false;
 			}
+			superShot = false;
 		}
 
 		@Override

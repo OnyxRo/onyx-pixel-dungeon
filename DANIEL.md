@@ -10,7 +10,7 @@ Every run starts with triage. Run `python -I scripts/mod-report.py ~/mod-sources
 
 ## Cloud tasks, mechanical batches
 
-- [ ] Cloud. Batched. Port Summoning PD Reincarnated monsters and weapons (33 monsters, 12 weapons), about 15 per run.
+- [x] Cloud. Batched. Port Summoning PD Reincarnated monsters and weapons (33 monsters, 12 weapons), about 15 per run. Done 2026-10-18 in one run on branch onyx/p3-summoning, the whole mod as far as it ports (see PORTING.md).
 - [x] Cloud. Batched. Port Shittened PD monsters and weapons. Done 2026-10-15 night in a live session, all of it (see PORTING.md).
 - [x] Cloud. Batched. Port Re-ARranged PD monsters and weapons. Done 2026-10-18 in a live session on branch onyx/p3-rearranged, all of it except the parts listed in PORTING.md.
 - [x] Cloud. Small leftovers. Done 2026-10-15 in a live session. EarthImbue, WaterOfTransmutation, Defense, Resurrection, LuckyBadgeBuff and the guard, earth imbue and lucky badge hooks.

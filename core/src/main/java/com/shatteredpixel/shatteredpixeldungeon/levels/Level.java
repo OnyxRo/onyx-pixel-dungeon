@@ -1768,6 +1768,15 @@ public abstract class Level implements Bundlable {
 				}
 			}
 
+			//summoning, Summoning PD's Soul Wielder sees her minions everywhere
+			if (c instanceof Hero && ((Hero)c).subClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.SOUL_REAVER) {
+				for (Mob mob : mobs) {
+					if (!fieldOfView[mob.pos] && mob instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.minions.Minion) {
+						Dungeon.hero.mindVisionEnemies.add(mob);
+					}
+				}
+			}
+
 			BArray.or(heroMindFov, fieldOfView, fieldOfView);
 
 		}
@@ -1784,6 +1793,18 @@ public abstract class Level implements Bundlable {
 		return 0;
 	}
 	
+	//summoning, free cells next to pos that the hero is not on
+	public static java.util.ArrayList<Integer> getSpawningPoints( int pos ) {
+		java.util.ArrayList<Integer> points = new java.util.ArrayList<>();
+		for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
+			int p = pos + PathFinder.NEIGHBOURS8[i];
+			if (Actor.findChar(p) == null && Dungeon.level.passable[p] && Dungeon.hero.pos != p) {
+				points.add(p);
+			}
+		}
+		return points;
+	}
+
 	public int distance( int a, int b ) {
 		int ax = a % width();
 		int ay = a / width();

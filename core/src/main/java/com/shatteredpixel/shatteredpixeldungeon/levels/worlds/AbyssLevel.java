@@ -70,6 +70,23 @@ public class AbyssLevel extends WorldLevel {
 		return 2 + Random.chances(new float[]{1, 1});
 	}
 
+	//summoning, Summoning PD's abyss floors always hold a spawner room. Its other rooms, each from a different
+	//stage in the mod, are spread over the abyss floors here since only this world comes from it
+	@Override
+	protected java.util.ArrayList<com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room> initRooms() {
+		java.util.ArrayList<com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room> rooms = super.initRooms();
+		rooms.add(new com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.AbyssalSpawnerRoom());
+		switch (Random.Int(5)) {
+			case 0: rooms.add(new com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.GnollTribeRoom()); break;
+			case 1: rooms.add(new com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.GuardRoom()); break;
+			case 2: rooms.add(new com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.SpectralShamanRoom()); break;
+			case 3: rooms.add(new com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.WolfRoom()); break;
+			default: rooms.add(new com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.BoomRoom()); break;
+		}
+		if (Random.Int(2) == 0) rooms.add(new com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.CircleRoom());
+		return rooms;
+	}
+
 	@Override
 	protected MusicSet musicSet() {
 		return MusicSet.HALLS;

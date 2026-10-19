@@ -105,6 +105,9 @@ public abstract class ExoticScroll extends Scroll {
 		//from Pixel Dungeon Reforged
 		regToExo.put(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfDecay.class, ScrollOfGrowth.class);
 		exoToReg.put(ScrollOfGrowth.class, com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfDecay.class);
+		//summoning
+		regToExo.put(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfAttunement.class, ScrollOfSoulEnergy.class);
+		exoToReg.put(ScrollOfSoulEnergy.class, com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfAttunement.class);
 	}
 	
 	@Override
