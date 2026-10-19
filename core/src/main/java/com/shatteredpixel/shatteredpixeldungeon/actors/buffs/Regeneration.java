@@ -100,6 +100,7 @@ public class Regeneration extends Buff {
 					}
 				}
 
+				delay = com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.soulRegenDelay(target, delay); //summoning
 				//Ryuse's PD helmets
 				delay *= com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.regenDelay(target);
 				//transformation, Strengthen Chalice and Weaken Chalice

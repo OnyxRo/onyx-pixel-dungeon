@@ -70,6 +70,7 @@ public class SummoningLeftoversTest {
 		}
 
 		ringArtifacts( hero );
+		soulOfYendor( hero );
 
 		finish();
 	}
@@ -133,6 +134,27 @@ public class SummoningLeftoversTest {
 			com.shatteredpixel.shatteredpixeldungeon.items.Item it = (com.shatteredpixel.shatteredpixeldungeon.items.Item) o;
 			check( !it.name().contains( "!!!" ) && !it.desc().contains( "!!!" ), "text missing for " + it.getClass().getSimpleName() );
 		}
+	}
+
+	//the Soul of Yendor, its passive hooks only act while worn
+	static void soulOfYendor( Hero hero ) {
+		check( com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.soulRegenDelay( hero, 10f ) == 10f, "regen changed without the soul" );
+		check( com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.soulNaturalism( hero, 0 ) == 0, "grass changed without the soul" );
+		com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor soul = new com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor();
+		soul.level( 5 );
+		soul.activate( hero );
+		check( com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.soulRegenDelay( hero, 10f ) < 10f, "the soul should speed up regeneration" );
+		check( com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.soulNaturalism( hero, 0 ) > 0, "the soul should act like the sandals" );
+		int before = soul.availableEnergy();
+		int left = soul.consumeEnergy( 10 );
+		check( left == 0 && soul.availableEnergy() == before - 10, "the soul should pay alchemy energy" );
+		com.watabou.utils.Bundle b = new com.watabou.utils.Bundle();
+		soul.storeInBundle( b );
+		com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor copy = new com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor();
+		copy.restoreFromBundle( b );
+		check( copy.availableEnergy() == soul.availableEnergy() && copy.level() == 5, "the soul lost its charge or level on reload" );
+		check( !soul.name().contains( "!!!" ) && !soul.desc().contains( "!!!" ), "text missing for the soul" );
+		for (com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff bf : hero.buffs( com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor.omniBuff.class )) bf.detach();
 	}
 
 	static void finish() {

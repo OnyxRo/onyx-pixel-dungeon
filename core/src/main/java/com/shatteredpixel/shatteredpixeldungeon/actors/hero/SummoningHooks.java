@@ -124,6 +124,28 @@ public class SummoningHooks {
 		return f == null || !f.isCursed();
 	}
 
+	//==== the Soul of Yendor, only while it is worn ====
+
+	private static com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor.omniBuff soul( com.shatteredpixel.shatteredpixeldungeon.actors.Char ch ){
+		return ch == null ? null : ch.buff(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor.omniBuff.class);
+	}
+
+	//regenerates like the chalice, 9 percent faster for each level, slower when cursed
+	public static float soulRegenDelay( com.shatteredpixel.shatteredpixeldungeon.actors.Char target, float delay ){
+		com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor.omniBuff s = soul(target);
+		if (s == null || target.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune.class) != null) return delay;
+		if (s.isCursed()) return delay * 1.5f;
+		return delay * (1f - 0.09f * Math.min(10, s.itemLevel()));
+	}
+
+	//tramples grass like the sandals
+	public static int soulNaturalism( com.shatteredpixel.shatteredpixeldungeon.actors.Char ch, int level ){
+		com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor.omniBuff s = soul(ch);
+		if (s == null) return level;
+		if (s.isCursed()) return -1;
+		return Math.max(level, s.natureLevel() + 1);
+	}
+
 	//the Conjurer heals 5 health whenever she eats, as in the mod (not in the Hell mode)
 	public static void onFoodEaten( Hero hero ){
 		if (hero.heroClass == HeroClass.CONJURER && hero.HP < hero.HT && Dungeon.mode != Dungeon.GameMode.HELL) {
