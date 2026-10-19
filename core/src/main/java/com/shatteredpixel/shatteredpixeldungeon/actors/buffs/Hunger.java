@@ -67,7 +67,9 @@ public class Hunger extends Buff implements Hero.Doom {
 				|| target.buff(WellFed.class) != null
 				|| SPDSettings.intro()
 				|| Dungeon.godMode()
-				|| target.buff(ScrollOfChallenge.ChallengeArena.class) != null){
+				|| target.buff(ScrollOfChallenge.ChallengeArena.class) != null
+				//rearranged, the Specialist does not get hungry while hidden with Stealth Master
+				|| (Dungeon.hero != null && Dungeon.hero.pointsInTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.STEALTH_MASTER) > 2 && Dungeon.hero.buff(Cloaking.class) != null)){
 			spend(TICK);
 			return true;
 		}

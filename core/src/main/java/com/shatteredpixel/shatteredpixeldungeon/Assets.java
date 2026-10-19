@@ -25,6 +25,7 @@ public class Assets {
 
 	public static class Effects {
 		public static final String EFFECTS      = "effects/effects.png";
+		public static final String RA_EFFECTS   = "effects/rearranged_effects.png"; //rearranged
 		public static final String FIREBALL     = "effects/fireball.png";
 		public static final String SPECKS       = "effects/specks.png";
 		public static final String SPELL_ICONS  = "effects/spell_icons.png";
@@ -92,6 +93,12 @@ public class Assets {
 		public static final String CITY_QUEST       = "environment/custom_tiles/city_quest.png";
 		public static final String CITY_BOSS        = "environment/custom_tiles/city_boss.png";
 		public static final String HALLS_SP         = "environment/custom_tiles/halls_special.png";
+		//rearranged, Re-ARranged PD's temple and labs (the tile sheets are the ones its worlds already use)
+		public static final String TILES_TEMPLE     = "environment/worlds/tiles_arrangedtemple.png";
+		public static final String WATER_TEMPLE     = "environment/worlds/water_arrangedtemple.png";
+		public static final String TILES_LABS       = "environment/worlds/tiles_labs.png";
+		public static final String WATER_LABS       = "environment/rearranged/water5.png";
+		public static final String TEMPLE_SP        = "environment/rearranged/temple_special.png";
 	}
 	
 	//TODO include other font assets here? Some are platform specific though...
@@ -130,6 +137,11 @@ public class Assets {
 		public static final String RADIAL_MENU      = "interfaces/radial_menu.png";
 
 		public static final String CHANGE_ICONS    = "interfaces/change_icons.png";
+		//rearranged, its own icon sheets, picked by an icon number of 10000 or more
+		public static final String RA_TALENT_ICONS = "interfaces/rearranged/talent_icons.png";
+		public static final String RA_HERO_ICONS   = "interfaces/rearranged/hero_icons.png";
+		public static final String RA_BUFFS_SMALL  = "interfaces/rearranged/buffs.png";
+		public static final String RA_BUFFS_LARGE  = "interfaces/rearranged/large_buffs.png";
 	}
 
 	//these points to resource bundles, not raw asset files
@@ -494,6 +506,13 @@ public class Assets {
 			public static final String MID_MIXED     = "splashes/title/mid_mixed.png";
 			public static final String FRONT_SMALL   = "splashes/title/front_small.png";
 		}
+		//rearranged
+		public static final String GUNNER     = "splashes/rearranged/gunner.jpg";
+		public static final String SAMURAI    = "splashes/rearranged/samurai.jpg";
+		public static final String ADVENTURER = "splashes/rearranged/adventurer.jpg";
+		public static final String KNIGHT     = "splashes/rearranged/knight.jpg";
+		public static final String MEDIC      = "splashes/rearranged/medic.jpg";
+		public static final String ARCHER     = "splashes/rearranged/archer.jpg";
 	}
 
 	public static class Sprites {
@@ -994,5 +1013,26 @@ public class Assets {
 		public static final String GOB_BUNNY = "sprites/goblins/rabbit.png"; //ported, goblins
 		public static final String GOB_FAIRY = "sprites/goblins/fairy.png"; //ported, goblins
 		public static final String GOB_KLIKS = "sprites/goblins/kliks.png"; //ported, goblins
+		//rearranged
+		public static final String GUNNER        = "sprites/rearranged/gunner.png";
+		public static final String SAMURAI       = "sprites/rearranged/samurai.png";
+		public static final String RA_ADVENTURER = "sprites/rearranged/adventurer.png";
+		public static final String KNIGHT        = "sprites/rearranged/knight.png";
+		public static final String MEDIC         = "sprites/rearranged/medic.png";
+		public static final String ARCHER        = "sprites/rearranged/archer.png";
+		public static final String NEW_SENTRY    = "sprites/rearranged/new_sentry.png";
+		public static final String SOLDIER       = "sprites/rearranged/soldier.png";
+		public static final String RESEARCHER    = "sprites/rearranged/researcher.png";
+		public static final String RA_TANK       = "sprites/rearranged/tank.png";
+		public static final String SUPPRESSION   = "sprites/rearranged/suppression.png";
+		public static final String MEDIC_ENEMY   = "sprites/rearranged/medic_enemy.png";
+		public static final String REBEL         = "sprites/rearranged/rebel.png";
+		public static final String BARRICADE     = "sprites/rearranged/barricade.png";
+		public static final String WATCHTOWER    = "sprites/rearranged/watchtower.png";
+		public static final String CANNON        = "sprites/rearranged/cannon.png";
+		public static final String MACHINEGUN    = "sprites/rearranged/machinegun.png";
+		public static final String MORTAR        = "sprites/rearranged/mortar.png";
+		public static final String SPIRIT_HORSE  = "sprites/rearranged/spirit_horse.png";
+		public static final String SUPPORT_FORCE = "sprites/rearranged/support_force.png";
 	}
 }

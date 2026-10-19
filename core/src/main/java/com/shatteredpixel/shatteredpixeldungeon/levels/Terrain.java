@@ -66,6 +66,8 @@ public class Terrain {
 	public static final int SIGN            = 41;
 	//Tower PD's arena border, solid for everyone but see through, drawn as plain floor
 	public static final int ADDITIONALBARRIER = 42;
+	//rearranged, the Engineer's barbed wire, walks like floor
+	public static final int WIRE = 63;
 
 	public static final int CUSTOM_DECO_EMPTY = 32; //regular empty tile that can't be overridden, used for custom visuals mainly
 	//solid environment decorations
@@ -139,6 +141,7 @@ public class Terrain {
 		flags[REGION_DECO_ALT] = flags[STATUE_SP];
 		flags[MINE_CRYSTAL] = SOLID;
 		flags[MINE_BOULDER] = SOLID;
+		flags[WIRE] = flags[EMPTY]; //rearranged
 
 	}
 

@@ -184,7 +184,12 @@ public class Dungeon {
 		SB_ALL_GEAR_UPGRADE,
 
 		//Transformation PD, the roast lamb warlock's wands
-		ROAST_LAMB_WAND;
+		ROAST_LAMB_WAND,
+
+		//rearranged, Re-ARranged PD's bullet belts, soldier weapons and medic healing potions
+		BULLET_BELT,
+		SOLDIER_WEP,
+		MEDIC_HP;
 
 		public int count = 0;
 
@@ -290,6 +295,18 @@ public class Dungeon {
 	//set from the title screen before a run starts, then kept in the save
 	public static boolean sandbox;
 
+	//rearranged, Re-ARranged PD's spare bullets for guns, and whether its temple was cleared
+	public static int bullet;
+	public static boolean templeCompleted;
+
+	//rearranged, one bullet belt for each set of five floors, like the mod
+	public static boolean beltNeeded() {
+		int leftThisSet = 1 - (LimitedDrops.BULLET_BELT.count - (depth / 5));
+		if (leftThisSet <= 0) return false;
+		int floorThisSet = (depth % 5);
+		return com.watabou.utils.Random.Int(5 - floorThisSet) < leftThisSet;
+	}
+
 	//Single mod mode. The name of the one mod every shuffled floor is built from, or "" for the normal Shuffle mode.
 	//Set on the hero select screen, so init() leaves it alone
 	public static String singleMod = "";
@@ -346,6 +363,8 @@ public class Dungeon {
 		challenges = SPDSettings.challenges();
 		difficulty = SPDSettings.difficulty();
 		mobsToChampion = 1;
+		bullet = 0; //rearranged
+		templeCompleted = false;
 		Randomizer.initialize();
 
 		Actor.clear();
@@ -822,6 +841,8 @@ public class Dungeon {
 			bundle.put( DAILY, daily );
 			bundle.put( DAILY_REPLAY, dailyReplay );
 			bundle.put( SANDBOX, sandbox );
+			bundle.put( "bullet", bullet ); //rearranged
+			bundle.put( "templeCompleted", templeCompleted );
 			bundle.put( SANDBOX_WORLD, sandboxWorld );
 			bundle.put( SANDBOX_GOD, sandboxGod );
 			bundle.put( SANDBOX_SIGHT, sandboxSight );
@@ -943,6 +964,8 @@ public class Dungeon {
 		daily = bundle.getBoolean( DAILY );
 		dailyReplay = bundle.getBoolean( DAILY_REPLAY );
 		sandbox = bundle.getBoolean( SANDBOX );
+		bullet = bundle.getInt( "bullet" ); //rearranged
+		templeCompleted = bundle.getBoolean( "templeCompleted" );
 		sandboxWorld = bundle.contains( SANDBOX_WORLD ) ? bundle.getInt( SANDBOX_WORLD ) : -1;
 		sandboxGod = !bundle.contains( SANDBOX_GOD ) || bundle.getBoolean( SANDBOX_GOD );
 		sandboxSight = !bundle.contains( SANDBOX_SIGHT ) || bundle.getBoolean( SANDBOX_SIGHT );

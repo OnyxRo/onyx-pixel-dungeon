@@ -53,7 +53,22 @@ public class BuffIcon extends Image {
 		buff.tintIcon(this);
 	}
 
+	private static TextureFilm raSmallFilm, raLargeFilm;
+
 	public void refresh(int icon){
+		//rearranged, icons of 10000 and up come from Re-ARranged PD's own sheets
+		if (icon >= 10000){
+			texture( large ? Assets.Interfaces.RA_BUFFS_LARGE : Assets.Interfaces.RA_BUFFS_SMALL );
+			if (large){
+				if (raLargeFilm == null) raLargeFilm = new TextureFilm(texture, LRG_SIZE, LRG_SIZE);
+				frame(raLargeFilm.get(icon - 10000));
+			} else {
+				if (raSmallFilm == null) raSmallFilm = new TextureFilm(texture, SML_SIZE, SML_SIZE);
+				frame(raSmallFilm.get(icon - 10000));
+			}
+			return;
+		}
+		texture( large ? Assets.Interfaces.BUFFS_LARGE : Assets.Interfaces.BUFFS_SMALL );
 		if (large){
 			if (largeFilm == null) largeFilm = new TextureFilm(texture, LRG_SIZE, LRG_SIZE);
 			frame(largeFilm.get(icon));

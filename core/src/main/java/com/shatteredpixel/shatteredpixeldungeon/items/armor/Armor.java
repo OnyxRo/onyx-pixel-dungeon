@@ -202,6 +202,10 @@ public class Armor extends EquipableItem {
 	public ArrayList<String> actions(Hero hero) {
 		ArrayList<String> actions = super.actions(hero);
 		if (seal != null) actions.add(AC_DETACH);
+		//rearranged, the Gunner melts armor down for liquid metal
+		if (!isEquipped(hero) && hero.heroClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.GUNNER) {
+			actions.add(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon.AC_SCRAP);
+		}
 		return actions;
 	}
 
@@ -209,6 +213,10 @@ public class Armor extends EquipableItem {
 	public void execute(Hero hero, String action) {
 
 		super.execute(hero, action);
+
+		if (action.equals(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon.AC_SCRAP)) {
+			com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RearrangedWeapons.scrapArmor(this, hero); //rearranged
+		}
 
 		if (action.equals(AC_DETACH) && seal != null){
 			BrokenSeal detaching = detachSeal();
@@ -472,12 +480,29 @@ public class Armor extends EquipableItem {
 			return 1 + tier + lvl + augment.defenseFactor(lvl);
 		}
 
-		int max = tier * (2 + lvl) + augment.defenseFactor(lvl);
+		//rearranged, the afterimage glyph trades armor for evasion, the Knight's Armor Adaption turns spare strength into armor
+		int max = com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RearrangedWeapons.armorUpgradeFactor(this, tier) * (2 + lvl) + augment.defenseFactor(lvl);
+		max += com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RearrangedWeapons.armorAdaption(this);
 		if (lvl > max){
 			return ((lvl - max)+1)/2;
 		} else {
 			return max;
 		}
+	}
+
+	//rearranged, the Knight's Smithing Spell and Craftman's Skills lend worn armor extra levels
+	@Override
+	public int buffedLvl() {
+		int lvl = super.buffedLvl();
+		Hero hero = Dungeon.hero;
+		if (hero != null && isEquipped( hero )) {
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArmorEnhance armorEnhance = hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArmorEnhance.class);
+			if (armorEnhance != null) {
+				lvl = armorEnhance.armorLevel(lvl);
+			}
+			lvl += hero.pointsInTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.CRAFTMANS_SKILLS);
+		}
+		return lvl;
 	}
 
 	public final int DRMin(){
@@ -515,6 +540,14 @@ public class Armor extends EquipableItem {
 			Momentum momentum = owner.buff(Momentum.class);
 			if (momentum != null){
 				evasion += momentum.evasionBonus(((Hero) owner).lvl, Math.max(0, -aEnc));
+			}
+			//rearranged, the Slayer while awake, and the afterimage glyph
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awakening awakening = owner.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awakening.class);
+			if (awakening != null) {
+				evasion += awakening.evasionBonus(((Hero) owner).lvl, Math.max(0, -aEnc));
+			}
+			if (hasGlyph(com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Afterimage.class, owner)){
+				evasion *= Math.pow(1.2f, this.buffedLvl());
 			}
 		}
 		
@@ -923,7 +956,9 @@ public class Armor extends EquipableItem {
 				Obfuscation.class, Swiftness.class, Viscosity.class, Potential.class,
 				//Lovecraft PD
 				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Deflection.class,
-				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Stealth.class };
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Stealth.class,
+				//rearranged
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Mirrorimage.class };
 
 		public static final Class<?>[] uncommon = new Class<?>[]{
 				Brimstone.class, Stone.class, Entanglement.class,
@@ -932,13 +967,17 @@ public class Armor extends EquipableItem {
 				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Cloning.class,
 				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Explosion.class,
 				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Weight.class,
-				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Chaotic.class };
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Chaotic.class,
+				//rearranged
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Afterimage.class };
 
 		public static final Class<?>[] rare = new Class<?>[]{
 				Affection.class, AntiMagic.class, Thorns.class,
 				//Lovecraft PD
 				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.FreezeTime.class,
-				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Teleport.class };
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Teleport.class,
+				//rearranged
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Satisfying.class };
 
 		public static final float[] typeChances = new float[]{
 				50, //12.5% each
@@ -958,6 +997,11 @@ public class Armor extends EquipableItem {
 
 		protected float procChanceMultiplier( Char defender ){
 			return genericProcChanceMultiplier( defender );
+		}
+
+		//rearranged, for glyphs on the Knight's shield
+		public float raProcChance( Char defender ){
+			return procChanceMultiplier( defender );
 		}
 
 		public static float genericProcChanceMultiplier( Char defender ){

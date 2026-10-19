@@ -21,6 +21,14 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
@@ -58,5 +66,23 @@ public class PotionOfShroudingFog extends ExoticPotion {
 
 		GameScene.add( Blob.seed( cell, centerVolume, SmokeScreen.class ) );
 	}
-	
+
+	//rearranged, what this potion does on an arrow dipped in it
+	@Override
+	public ItemSprite.Glowing potionGlowing() {
+		return new ItemSprite.Glowing( 0x000000 );
+	}
+	@Override
+	public void potionProc(Hero hero, Char enemy, float damage) {
+		new FlavourBuff() {
+			{
+				actPriority = VFX_PRIO;
+			}
+
+			public boolean act() {
+				Buff.affect(hero, Invisibility.class, 1f);
+				return super.act();
+			}
+		}.attachTo(hero);
+	}
 }

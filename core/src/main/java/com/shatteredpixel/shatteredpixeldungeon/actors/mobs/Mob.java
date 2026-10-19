@@ -143,6 +143,10 @@ public abstract class Mob extends Char {
 	public int maxLvl = Hero.MAX_LEVEL-1;
 	
 	public Char enemy;
+	//rearranged, Re-ARranged PD's buildings ask a monster who it is after
+	public Char targetingChar() {
+		return enemy;
+	}
 	protected int enemyID = -1; //used for save/restore
 	protected boolean enemySeen;
 
@@ -871,6 +875,9 @@ public abstract class Mob extends Char {
 
 	protected boolean doAttack( Char enemy ) {
 
+		//rearranged, the Medic's stim pack speeds up an ally's swing
+		if (sprite != null) sprite.attackAcceleration( buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.StimPack.class) != null ? 1.5f : 1f );
+
 		if (horrorlvl > 0 && enemy instanceof Hero && Random.Int( 3 ) == 0) {
 			((Hero) enemy).reduceMentalHealth( horrorlvl );
 		}
@@ -989,6 +996,10 @@ public abstract class Mob extends Char {
 			}
 		}
 
+		//rearranged, the book of transfusion's vampiric mark
+		if (buff(com.shatteredpixel.shatteredpixeldungeon.items.spellbook.BookOfTransfusion.VampiricMark.class) != null) {
+			com.shatteredpixel.shatteredpixeldungeon.items.spellbook.BookOfTransfusion.VampiricMark.proc(enemy, Math.min(damage, HP+shielding()));
+		}
 		return super.defenseProc(enemy, damage);
 	}
 
@@ -1147,6 +1158,8 @@ public abstract class Mob extends Char {
 	@Override
 	public void die( Object cause ) {
 
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedChar.onMobDeath(this, cause); //rearranged
+
 		//Dragonic PD, a Devorandum eats a little of what it kills
 		if (cause == Dungeon.hero && Dungeon.hero.subClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.DEVORANDUM
 				&& alignment == Alignment.ENEMY && Random.Int(100) < 40 && Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger.class) != null){
@@ -1250,7 +1263,8 @@ public abstract class Mob extends Char {
 
 		dropBonus += ShardOfOblivion.lootChanceMultiplier()-1f;
 
-		return lootChance * dropBonus;
+		//rearranged, the pink gem trinket
+		return lootChance * dropBonus * com.shatteredpixel.shatteredpixeldungeon.items.trinkets.PinkGem.dropChanceMultiplier();
 	}
 	
 	public void rollToDropLoot(){
@@ -1318,6 +1332,9 @@ public abstract class Mob extends Char {
 			Dungeon.level.drop(buff(Lucky.LuckProc.class).genLoot(), pos).sprite.drop();
 			Lucky.showFlare(sprite);
 		}
+
+		//rearranged, the pink gem trinket
+		com.shatteredpixel.shatteredpixeldungeon.items.trinkets.PinkGem.drop(this);
 
 		//soul eater talent
 		if (buff(SoulMark.class) != null &&

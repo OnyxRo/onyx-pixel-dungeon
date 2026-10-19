@@ -212,6 +212,15 @@ public class Ring extends KindofMisc {
 		return "";
 	}
 
+	//rearranged, Re-ARranged PD's necklace reads these from another package
+	public String raStatsInfo(){
+		return statsInfo();
+	}
+
+	public RingBuff raBuff(){
+		return buff();
+	}
+
 	public String upgradeStat1(int level){
 		return null;
 	}

@@ -50,6 +50,9 @@ public class Statistics {
 	public static int foodEaten;
 	public static int shitsTaken; //from Shittened PD
 	public static int ratsSlain; //Shittened PD
+	//rearranged, what unlocks Re-ARranged PD's heroes
+	public static boolean gunModified, katanaObtained, plateObtained, bowObtained;
+	public static int plantTriggered, pillsMade;
 	public static boolean audioDisabled = false; //Shittened PD, true once sound or music was switched off during the run
 	public static int mirrorImageScrollUsed; //from Ryuse's PD
 	public static int itemsCrafted;
@@ -114,6 +117,8 @@ public class Statistics {
 		foodEaten		= 0;
 		shitsTaken		= 0;
 		ratsSlain		= 0;
+		gunModified = katanaObtained = plateObtained = bowObtained = false; //rearranged
+		plantTriggered = pillsMade = 0;
 		audioDisabled	= false;
 		mirrorImageScrollUsed = 0;
 		itemsCrafted    = 0;
@@ -219,6 +224,12 @@ public class Statistics {
 		bundle.put( FOOD,		foodEaten );
 		bundle.put( TURDS,		shitsTaken );
 		bundle.put( RATS,		ratsSlain );
+		bundle.put( "gunModified", gunModified ); //rearranged
+		bundle.put( "katanaObtained", katanaObtained );
+		bundle.put( "plateObtained", plateObtained );
+		bundle.put( "bowObtained", bowObtained );
+		bundle.put( "plantTriggered", plantTriggered );
+		bundle.put( "pillsMade", pillsMade );
 		bundle.put( AUDIO_DISABLED,	audioDisabled );
 		bundle.put( MIRRORS,	mirrorImageScrollUsed );
 		bundle.put( ALCHEMY,    itemsCrafted );
@@ -279,6 +290,12 @@ public class Statistics {
 		foodEaten		= bundle.getInt( FOOD );
 		shitsTaken		= bundle.getInt( TURDS );
 		ratsSlain		= bundle.getInt( RATS );
+		gunModified		= bundle.getBoolean( "gunModified" ); //rearranged
+		katanaObtained	= bundle.getBoolean( "katanaObtained" );
+		plateObtained	= bundle.getBoolean( "plateObtained" );
+		bowObtained		= bundle.getBoolean( "bowObtained" );
+		plantTriggered	= bundle.getInt( "plantTriggered" );
+		pillsMade		= bundle.getInt( "pillsMade" );
 		audioDisabled	= bundle.getBoolean( AUDIO_DISABLED );
 		mirrorImageScrollUsed = bundle.getInt( MIRRORS );
 		itemsCrafted    = bundle.getInt( ALCHEMY );

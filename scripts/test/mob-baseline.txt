@@ -80,3 +80,4 @@ Necromancer crashed during its own turns
 Spinner crashed during its own turns
 DwarfKing crashed during its own turns
 RatKing crashed during its own turns
+TempleEbonyMimic has no health (HP 0, HT 0)

@@ -67,4 +67,16 @@ public class Elastic extends Weapon.Enchantment {
 		return PINK;
 	}
 
+	//rearranged, Re-ARranged PD's talents knock enemies back this way
+	public static void pushEnemy(com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon weapon, Char attacker, Char defender, int power) {
+		com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica trajectory = new com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica(attacker.pos, defender.pos, com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica.STOP_TARGET);
+		trajectory = new com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size()-1), com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica.PROJECTILE);
+		com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave.throwChar(defender,
+				trajectory,
+				power,
+				!(weapon instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon || weapon instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow),
+				true,
+				Elastic.class);
+	}
+
 }

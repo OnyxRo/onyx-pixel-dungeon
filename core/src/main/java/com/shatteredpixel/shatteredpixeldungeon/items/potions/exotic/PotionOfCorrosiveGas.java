@@ -21,6 +21,12 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corrosion;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
@@ -57,5 +63,15 @@ public class PotionOfCorrosiveGas extends ExoticPotion {
 		}
 
 		GameScene.add( Blob.seed( cell, centerVolume, CorrosiveGas.class ).setStrength( 2 + Dungeon.scalingDepth()/5));
+	}
+
+	//rearranged, what this potion does on an arrow dipped in it
+	@Override
+	public ItemSprite.Glowing potionGlowing() {
+		return new ItemSprite.Glowing( 0xFF8800 );
+	}
+	@Override
+	public void potionProc(Hero hero, Char enemy, float damage) {
+		Buff.affect(enemy, Corrosion.class).add(3, 2+Math.round(damage*0.15f));
 	}
 }

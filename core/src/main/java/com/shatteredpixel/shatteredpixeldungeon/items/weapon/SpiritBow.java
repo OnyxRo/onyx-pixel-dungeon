@@ -145,10 +145,15 @@ public class SpiritBow extends Weapon {
 		return super.proc(attacker, defender, damage);
 	}
 
+	//rearranged, Re-ARranged PD's spirit bow variants add a line of their own
+	public String additionalInfo() {
+		return "";
+	}
+
 	@Override
 	public String info() {
 		String info = super.info();
-		
+
 		info += "\n\n" + Messages.get( SpiritBow.class, "stats",
 				Math.round(augment.damageFactor(min())),
 				Math.round(augment.damageFactor(max())),
@@ -187,7 +192,11 @@ public class SpiritBow extends Weapon {
 		}
 		
 		info += "\n\n" + Messages.get(MissileWeapon.class, "distance");
-		
+
+		if (!additionalInfo().isEmpty()) {
+			info += "\n\n" + additionalInfo(); //rearranged
+		}
+
 		return info;
 	}
 	
@@ -301,8 +310,19 @@ public class SpiritBow extends Weapon {
 		return new SpiritArrow();
 	}
 	
-	public class SpiritArrow extends MissileWeapon {
-		
+	public class SpiritArrow extends com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.DisposableMissileWeapon {
+
+		//rearranged, Re-ARranged PD's critical hits read the bow's damage through the arrow
+		@Override
+		public int min() {
+			return SpiritBow.this.min(SpiritBow.this.buffedLvl());
+		}
+
+		@Override
+		public int max() {
+			return SpiritBow.this.max(SpiritBow.this.buffedLvl());
+		}
+
 		{
 			image = ItemSpriteSheet.SPIRIT_ARROW;
 

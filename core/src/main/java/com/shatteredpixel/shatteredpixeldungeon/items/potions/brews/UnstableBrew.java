@@ -21,6 +21,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions.brews;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -171,5 +174,19 @@ public class UnstableBrew extends Brew {
 			return new UnstableBrew();
 		}
 	}
-	
+
+	//rearranged, what this potion does on an arrow dipped in it
+	@Override
+	public ItemSprite.Glowing potionGlowing() {
+		return new ItemSprite.Glowing(0x999999);
+	}
+	@Override
+	public void potionProc(Hero hero, Char enemy, float damage) {
+		if (Dungeon.isChallenged(Challenges.NO_HEALING)){
+			potionChances.put(PotionOfHealing.class, 0f);
+		}
+
+		Potion randomPotion = Reflection.newInstance(Random.chances(potionChances));
+		if (randomPotion != null) randomPotion.potionProc(hero, enemy, damage);
+	}
 }

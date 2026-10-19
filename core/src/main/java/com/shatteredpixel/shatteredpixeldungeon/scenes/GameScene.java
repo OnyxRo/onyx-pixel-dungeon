@@ -810,6 +810,11 @@ public class GameScene extends PixelScene {
 				DimensionalSundial.sundialWarned = false;
 			}
 
+			//rearranged, its trinkets and the Archer's Archer's Foresight
+			com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MagicalCompass.onSwitchLevel();
+			com.shatteredpixel.shatteredpixeldungeon.items.trinkets.CrystalBall.onSwitchLevel();
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedChar.archersForesight();
+
 			//Pixel Dungeon Reforged, the Randomizer challenge shows what changed in each new region
 			Randomizer.showRandomizerWindowIfRequired();
 
@@ -1824,6 +1829,11 @@ public class GameScene extends PixelScene {
 		}
 	}
 	
+	//rearranged
+	public static boolean isCellSelecterActive( CellSelector.Listener listener ) {
+		return cellSelector != null && cellSelector.listener == listener;
+	}
+
 	public static WndBag selectItem( WndBag.ItemSelector listener ) {
 		cancel();
 

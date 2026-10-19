@@ -32,9 +32,48 @@ public class Beam extends Image {
 	
 	private static final double A = 180 / Math.PI;
 	
-	private  float duration;
-	
-	private float timeLeft;
+	public float duration;
+
+	public float timeLeft;
+
+	//rearranged, Re-ARranged PD's rays
+	public static class GreenRay extends Beam{
+		public GreenRay(PointF s, PointF e){
+			super(s, e, Effects.Type.GREEN_RAY, 1f);
+		}
+	}
+
+	public static class YellowRay extends Beam {
+		float multi;
+		public YellowRay(PointF s, PointF e, float multi){
+			super(s, e, Effects.Type.YELLOW_RAY, 2f);
+			this.multi = multi;
+		}
+
+		@Override
+		public void update() {
+			super.update();
+			float p = timeLeft*multi / duration;
+			alpha( p );
+			scale.set( scale.x, p );
+		}
+	}
+
+	public static class SuperNovaRay extends Beam {
+		float multi;
+		public SuperNovaRay(PointF s, PointF e, float multi){
+			super(s, e, Effects.Type.SUPERNOVA_RAY, 2f);
+			this.multi = multi;
+		}
+
+		@Override
+		public void update() {
+			super.update();
+			float p = timeLeft*multi / duration;
+			alpha( p );
+			scale.set( scale.x, p );
+		}
+	}
 
 	private Beam(PointF s, PointF e, Effects.Type asset, float duration) {
 		super( Effects.get( asset ) );

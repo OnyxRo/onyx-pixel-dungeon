@@ -148,6 +148,25 @@ abstract public class ClassArmor extends Armor {
 			case PRINCESS:
 				classArmor = new PrincessArmor();
 				break;
+			//rearranged
+			case GUNNER:
+				classArmor = new GunnerArmor();
+				break;
+			case SAMURAI:
+				classArmor = new SamuraiArmor();
+				break;
+			case ADVENTURER:
+				classArmor = new AdventurerArmor();
+				break;
+			case KNIGHT:
+				classArmor = new KnightArmor();
+				break;
+			case MEDIC:
+				classArmor = new MedicArmor();
+				break;
+			case ARCHER:
+				classArmor = new ArcherArmor();
+				break;
 		}
 		
 		classArmor.level(armor.trueLevel());

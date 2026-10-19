@@ -21,6 +21,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -114,5 +117,15 @@ public class PotionOfCleansing extends ExoticPotion {
 			return Math.max(0, (DURATION - visualcooldown()) / DURATION);
 		}
 
+	}
+
+	//rearranged, what this potion does on an arrow dipped in it
+	@Override
+	public ItemSprite.Glowing potionGlowing() {
+		return new ItemSprite.Glowing( 0xFF4CD2 );
+	}
+	@Override
+	public void potionProc(Hero hero, Char enemy, float damage) {
+		Buff.prolong(hero, MagicImmune.class, 4f);
 	}
 }

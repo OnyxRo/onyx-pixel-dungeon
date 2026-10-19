@@ -398,6 +398,7 @@ public class Hero extends Char {
 
 		HT += vitalityBonus;
 		HT += (int) (bountyhunterbuff * 3);
+		HT += RearrangedHero.bonusHT(this); //rearranged
 		if (subClass.is(HeroSubClass.DARKSLIME)){
 			HT *= 0.8f;
 		}
@@ -474,6 +475,8 @@ public class Hero extends Char {
 		bundle.put( EXPERIENCE, exp );
 		
 		bundle.put( HTBOOST, HTBoost );
+		if (necklaceRing != null) bundle.put( "necklaceBuff", necklaceRing ); //rearranged
+		bundle.put( "justMoved", justMoved );
 		bundle.put( "vitality_bonus", vitalityBonus );
 		bundle.put( "bountyhunterbuff", bountyhunterbuff );
 		bundle.put( "hair_color", hairColor );
@@ -492,6 +495,14 @@ public class Hero extends Char {
 		exp = bundle.getInt( EXPERIENCE );
 
 		HTBoost = bundle.getInt(HTBOOST);
+		//rearranged, the ring worn through the necklace trinket
+		necklaceRing = (com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring) bundle.get("necklaceBuff");
+		if (necklaceRing != null) {
+			com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring.RingBuff ringBuff = necklaceRing.raBuff();
+			ringBuff.attachTo( this );
+			com.shatteredpixel.shatteredpixeldungeon.items.trinkets.Necklace.buff = ringBuff;
+		}
+		justMoved = bundle.getBoolean("justMoved");
 		vitalityBonus = bundle.getInt("vitality_bonus");
 		bountyhunterbuff = bundle.getFloat("bountyhunterbuff");
 		hairColor = bundle.contains("hair_color") ? bundle.getEnum( "hair_color", com.shatteredpixel.shatteredpixeldungeon.mechanics.HairColor.class ) : com.shatteredpixel.shatteredpixeldungeon.mechanics.HairColor.DEFAULT;
@@ -615,9 +626,9 @@ public class Hero extends Char {
 			return 0;
 		} else if (buff(PotionOfDivineInspiration.DivineInspirationTracker.class) != null
 					&& buff(PotionOfDivineInspiration.DivineInspirationTracker.class).isBoosted(tier)) {
-			return 2;
+			return 2 + RearrangedHero.bonusTalentPoints(this, tier);
 		} else {
-			return 0;
+			return RearrangedHero.bonusTalentPoints(this, tier); //rearranged, the Elixir of Talent
 		}
 	}
 	
@@ -657,6 +668,14 @@ public class Hero extends Char {
 
 	//Transformation PD. The buffs and action buttons that come with a subclass. Called when the subclass is chosen and when a run loads.
 	public void ensureSubclassBuffs() {
+		//rearranged, the buffs that run Re-ARranged's subclasses
+		if (subClass == HeroSubClass.ENGINEER) Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Build.class);
+		if (subClass == HeroSubClass.HORSEMAN && buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HorseRiding.class) == null) {
+			Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HorseRiding.class).set();
+		}
+		if (subClass == HeroSubClass.CRUSADER) Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Pray.class);
+		if (subClass == HeroSubClass.MEDICALOFFICER) Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Command.class);
+		if (subClass == HeroSubClass.SHARPSHOOTER) Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SharpShooterBuff.class);
 		if (subClass.is(HeroSubClass.PIOUS)) {
 			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason reason = Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.class);
 			com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator.setAction(reason);
@@ -824,7 +843,9 @@ public class Hero extends Char {
 		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.class) != null && hasTalent(Talent.HUMAN_GLORY)){
 			accuracy *= 1f + 0.1f * pointsInTalent(Talent.HUMAN_GLORY);
 		}
-		
+		accuracy = RearrangedHero.accuracy(this, wep, accuracy); //rearranged
+		if (accuracy == Float.POSITIVE_INFINITY) return INFINITE_ACCURACY;
+
 		if (!RingOfForce.fightingUnarmed(this)) {
 			return Math.max(1, Math.round(attackSkill * accuracy * wep.accuracyFactor( this, target )));
 		} else {
@@ -845,7 +866,10 @@ public class Hero extends Char {
 		if (buff(RoundShield.GuardTracker.class) != null){
 			return INFINITE_EVASION;
 		}
-		
+
+		//rearranged, the nunchaku's parry and the Slayer's evasive move
+		if (RearrangedHero.dodgesEverything(this, enemy)) return INFINITE_EVASION;
+
 		//Reforged's Quick Calibration, eating makes the next hits easy to dodge
 		if (buff(Talent.ArtificerFoodEvasionBonus.class) != null){
 			if (pointsInTalent(Talent.QUICK_CALIBRATION) == 2 || Random.Int(4) == 0){
@@ -883,7 +907,8 @@ public class Hero extends Char {
 		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.class) != null && hasTalent(Talent.HUMAN_GLORY)){
 			evasion *= 1f + 0.1f * pointsInTalent(Talent.HUMAN_GLORY);
 		}
-		
+		evasion = RearrangedHero.evasion(this, evasion); //rearranged
+
 		if (paralysed > 0) {
 			evasion /= 2;
 		}
@@ -901,6 +926,7 @@ public class Hero extends Char {
 		for (Armor extra : belongings.extraArmorsWorn()) {
 			evasion = extra.evasionFactor(this, evasion);
 		}
+		evasion = RearrangedHero.evasionAfterArmor(this, evasion); //rearranged
 
 		if (perks.contains(Perks.Perk.PROTEIN_INFUSION) && buff(Hunger.class) != null){
 			//Experienced PD. Up to 1.5x evasion depending on how well fed the hero is
@@ -936,6 +962,10 @@ public class Hero extends Char {
 			}
 			return Messages.get(Monk.class, "parried");
 		}
+
+		//rearranged
+		String raVerb = RearrangedHero.defenseVerb(this);
+		if (raVerb != null) return raVerb;
 
 		return super.defenseVerb();
 	}
@@ -995,7 +1025,8 @@ public class Hero extends Char {
 		if (buff(Perks.PerkHoldFast.class) != null){
 			dr += buff(Perks.PerkHoldFast.class).armorBonus();
 		}
-		
+		dr += RearrangedHero.bonusDR(this); //rearranged
+
 		return dr;
 	}
 	
@@ -1006,6 +1037,7 @@ public class Hero extends Char {
 
 		if (!RingOfForce.fightingUnarmed(this)) {
 			dmg = wep.damageRoll( this );
+			dmg = RearrangedHero.rollCritical(this, wep, dmg); //rearranged
 
 			if (!(wep instanceof MissileWeapon)) dmg += RingOfForce.armedDamageBonus(this);
 		} else {
@@ -1093,6 +1125,7 @@ public class Hero extends Char {
 		if (natStrength != null){
 			speed *= (2f + 0.25f*pointsInTalent(Talent.GROWING_POWER));
 		}
+		speed = RearrangedHero.speed(this, speed); //rearranged
 
 		speed = AscensionChallenge.modifyHeroSpeed(speed);
 		
@@ -1107,6 +1140,7 @@ public class Hero extends Char {
 		if (RingOfForce.fightingUnarmed(this))  return true;
 		if (STR() < ((Weapon)w).STRReq())       return false;
 		if (w instanceof Flail)                 return false;
+		if (w instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.alchemy.ChainFlail) return false; //rearranged
 		if (w instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon
 				&& ((com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon) w).forcesSurpriseAttack(this, null)) return true;
 
@@ -1148,6 +1182,8 @@ public class Hero extends Char {
 		}
 
 		float delay = 1f;
+		//rearranged, Re-ARranged's talents give the hero adrenaline
+		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline.class) != null) delay /= 1.5f;
 		//Dragonic PD, Fortify also speeds up attacks
 		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Fortify.class) != null) delay *= 0.75f;
 
@@ -1201,7 +1237,54 @@ public class Hero extends Char {
 
 	@Override
 	public void spendConstant(float time) {
+		justMoved = false; //rearranged
 		super.spendConstant(time);
+	}
+
+	//rearranged, set by a step and cleared by the next action, for the Gunslinger's moving shot
+	public boolean justMoved = false;
+	//rearranged, the ring worn through Re-ARranged's necklace trinket
+	public com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring necklaceRing;
+
+	public void removeNecklaceRing() {
+		necklaceRing = null;
+	}
+
+	public void setNecklaceRing(com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring r) {
+		necklaceRing = r;
+	}
+
+	public void onSTRGained() {
+	}
+
+	public void onSTRLost() {
+	}
+
+	public boolean isHeroDebuffed() {
+		for (Buff b : this.buffs()) {
+			if (Buff.isDebuff(b)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean expUsed(int useExp) {
+		if (this.exp < useExp) {
+			return false;
+		} else {
+			this.exp = Math.max(this.exp - useExp, 0);
+			if (sprite != null) sprite.showStatus(CharSprite.NEGATIVE, Integer.toString(-useExp));
+			return true;
+		}
+	}
+
+	public float critChance( Weapon wep ){
+		return RearrangedHero.critChance(this, wep);
+	}
+
+	public int criticalDamage( int damage, Weapon wep ){
+		return RearrangedHero.criticalDamage(this, damage, wep);
 	}
 
 	public void spendAndNextConstant(float time ) {
@@ -1352,6 +1435,8 @@ public class Hero extends Char {
 			}
 		}
 
+		RearrangedHero.onAct(this); //rearranged
+
 		return actResult;
 	}
 
@@ -1438,7 +1523,7 @@ public class Hero extends Char {
 				//standing in high grass
 				(Dungeon.level.map[pos] == Terrain.HIGH_GRASS ||
 				//standing in furrowed grass and not huntress
-				(heroClass != HeroClass.HUNTRESS && Dungeon.level.map[pos] == Terrain.FURROWED_GRASS) ||
+				(heroClass != HeroClass.HUNTRESS && subClass != HeroSubClass.SPECIALIST && Dungeon.level.map[pos] == Terrain.FURROWED_GRASS) ||
 				//standing on a plant
 				Dungeon.level.plants.get(pos) != null);
 	}
@@ -2037,6 +2122,7 @@ public class Hero extends Char {
 				}
 			}
 		}
+		RearrangedHero.onRest(this, fullRest); //rearranged
 		resting = fullRest;
 	}
 	
@@ -2101,7 +2187,9 @@ public class Hero extends Char {
 			break;
 		default:
 		}
-		
+
+		damage = RearrangedHero.attackProc(this, enemy, wep, damage); //rearranged
+
 		return damage;
 	}
 	
@@ -2137,10 +2225,14 @@ public class Hero extends Char {
 			damage = extra.proc( enemy, this, damage );
 		}
 
+		damage = RearrangedHero.shieldProc(this, enemy, damage); //rearranged, the Knight's shield
+
 		WandOfLivingEarth.RockArmor rockArmor = buff(WandOfLivingEarth.RockArmor.class);
 		if (rockArmor != null) {
 			damage = rockArmor.absorb(damage);
 		}
+
+		damage = RearrangedHero.defenseProc(this, enemy, damage); //rearranged
 
 		return super.defenseProc( enemy, damage );
 	}
@@ -2156,6 +2248,12 @@ public class Hero extends Char {
 				}
 				return lvl;
 			}
+		}
+		//rearranged, glyphs on the Knight's shield
+		if (belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.KnightsShield.class) != null
+				&& (belongings.armor() == null || !belongings.armor().hasGlyph(cls, this))
+				&& belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.KnightsShield.class).hasGlyph(cls, this)) {
+			return Math.max(super.glyphLevel(cls), belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.KnightsShield.class).buffedLvl());
 		}
 		if (belongings.armor() != null && belongings.armor().hasGlyph(cls, this)){
 			return Math.max(super.glyphLevel(cls), belongings.armor.buffedLvl());
@@ -2217,6 +2315,10 @@ public class Hero extends Char {
 			if (buff(MonkEnergy.MonkAbility.Meditate.MeditateResistance.class) != null){
 				damage *= 0.2f;
 			}
+			//rearranged, the Medic's painkiller
+			if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PainKiller.class) != null) {
+				damage *= 0.5f;
+			}
 		}
 
 		//unused, could be removed
@@ -2253,6 +2355,7 @@ public class Hero extends Char {
 		damage = com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.onDamageTaken( this, damage, src );
 
 		dmg = Math.round(damage);
+		dmg = RearrangedHero.damageTaken(this, dmg, src); //rearranged
 
 		//we ceil this one to avoid letting the player easily take 0 dmg from tenacity early
 		dmg = (int)Math.ceil(dmg * RingOfTenacity.damageMultiplier( this ));
@@ -2484,11 +2587,14 @@ public class Hero extends Char {
 			if (subClass == HeroSubClass.FREERUNNER){
 				Buff.affect(this, Momentum.class).gainStack();
 			}
-			
+
+			RearrangedHero.onStep(this); //rearranged
+
 			sprite.move(pos, step);
 			move(step);
 
 			spend( delay / speed() );
+			justMoved = true; //rearranged
 			
 			search(false);
 
@@ -2687,6 +2793,7 @@ public class Hero extends Char {
 				attackSkill++;
 				defenseSkill++;
 				Perks.earnPerk(this);
+				RearrangedTalents.onLevelUp(this); //rearranged
 
 			} else {
 				Buff.prolong(this, Bless.class, Bless.DURATION);
@@ -2788,7 +2895,9 @@ public class Hero extends Char {
 			HP = HT;
 			return;
 		}
-		
+
+		if (RearrangedHero.preventsDeath(this, cause)) return; //rearranged
+
 		curAction = null;
 
 		Ankh ankh = null;
@@ -2958,6 +3067,7 @@ public class Hero extends Char {
 	public boolean isAlive() {
 		
 		if (HP <= 0){
+			if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Undead.class) != null) return true; //rearranged
 			if (berserk == null) berserk = buff(Berserk.class);
 			return berserk != null && berserk.berserking();
 		} else {
@@ -3078,9 +3188,13 @@ public class Hero extends Char {
 				|| (attackTarget instanceof Mimic && attackTarget.alignment == Alignment.NEUTRAL);
 
 		boolean hit = attack(attackTarget);
-		
+
 		Invisibility.dispel();
-		spend( attackDelay() );
+		if (RearrangedHero.attackUsesTurn(this)) {
+			spend( attackDelay() );
+		} else {
+			spend( 0 ); //rearranged, a critical hit while awake or a flash slash is free
+		}
 
 		if (hit && subClass == HeroSubClass.GLADIATOR && wasEnemy){
 			Buff.affect( this, Combo.class ).hit(attackTarget);
@@ -3089,6 +3203,8 @@ public class Hero extends Char {
 		if (hit && heroClass == HeroClass.DUELIST && wasEnemy){
 			Buff.affect( this, Sai.ComboStrikeTracker.class).addHit( attackTarget );
 		}
+
+		RearrangedHero.afterAttack(this, attackTarget); //rearranged
 
 		curAction = null;
 		attackTarget = null;
@@ -3251,7 +3367,19 @@ public class Hero extends Char {
 		if (subClass == HeroSubClass.ATTRACTOR && effect == com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm.class){
 			return true;
 		}
+		//rearranged, brimstone on the Knight's shield
+		if (effect == com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning.class
+				&& belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.KnightsShield.class) != null
+				&& belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.KnightsShield.class).hasGlyph(com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone.class, this)){
+			return true;
+		}
 		return super.isImmune(effect);
+	}
+
+	//rearranged, the Specialist's stealth talent, gun attachments, obfuscation on the Knight's shield
+	@Override
+	public float stealth() {
+		return RearrangedHero.stealth(this, super.stealth());
 	}
 
 	public boolean search( boolean intentional ) {
@@ -3336,12 +3464,12 @@ public class Hero extends Char {
 							
 						//unintentional trap detection scales from 40% at floor 0 to 30% at floor 25
 						} else if (Dungeon.level.map[curr] == Terrain.SECRET_TRAP) {
-							chance = 0.4f - (Dungeon.depth / 250f);
+							chance = com.shatteredpixel.shatteredpixeldungeon.items.trinkets.BrokenMagnifyingGlass.trapNoticeChance(); //rearranged
 							chance += 0.2f * pointsInTalent(Talent.ADAPTIVE_MINEFIELD);
 							
 						//unintentional door detection scales from 20% at floor 0 to 0% at floor 20
 						} else {
-							chance = 0.2f - (Dungeon.depth / 100f);
+							chance = com.shatteredpixel.shatteredpixeldungeon.items.trinkets.BrokenMagnifyingGlass.doorNoticeChance(); //rearranged
 						}
 
 						//don't want to let the player search though hidden doors in tutorial

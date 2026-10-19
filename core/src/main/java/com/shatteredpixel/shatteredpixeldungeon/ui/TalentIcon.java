@@ -29,6 +29,7 @@ import com.watabou.noosa.TextureFilm;
 public class TalentIcon extends Image {
 
 	private static TextureFilm film;
+	private static TextureFilm raFilm;
 	private static final int SIZE = 16;
 
 	public TalentIcon(Talent talent){
@@ -36,7 +37,14 @@ public class TalentIcon extends Image {
 	}
 
 	public TalentIcon(int icon){
-		super( Assets.Interfaces.TALENT_ICONS );
+		super( icon >= 10000 ? Assets.Interfaces.RA_TALENT_ICONS : Assets.Interfaces.TALENT_ICONS );
+
+		//rearranged, icons of 10000 and up come from Re-ARranged PD's own sheet
+		if (icon >= 10000){
+			if (raFilm == null) raFilm = new TextureFilm(texture, SIZE, SIZE);
+			frame(raFilm.get(icon - 10000));
+			return;
+		}
 
 		if (film == null) film = new TextureFilm(texture, SIZE, SIZE);
 

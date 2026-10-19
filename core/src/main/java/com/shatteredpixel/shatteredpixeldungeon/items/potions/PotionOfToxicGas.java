@@ -21,6 +21,12 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
@@ -52,5 +58,15 @@ public class PotionOfToxicGas extends Potion {
 	@Override
 	public int value() {
 		return isKnown() ? 30 * quantity : super.value();
+	}
+
+	//rearranged, what this potion does on an arrow dipped in it
+	@Override
+	public ItemSprite.Glowing potionGlowing() {
+		return new ItemSprite.Glowing( 0x50FF60 );
+	}
+	@Override
+	public void potionProc(Hero hero, Char enemy, float damage) {
+		Buff.affect(enemy, Poison.class).set(3+Math.round(damage*0.2f));
 	}
 }

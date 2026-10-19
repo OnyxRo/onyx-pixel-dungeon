@@ -21,6 +21,11 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSight;
@@ -42,5 +47,14 @@ public class PotionOfMagicalSight extends ExoticPotion {
 		Dungeon.observe();
 		
 	}
-	
+
+	//rearranged, what this potion does on an arrow dipped in it
+	@Override
+	public ItemSprite.Glowing potionGlowing() {
+		return new ItemSprite.Glowing( 0xFFC4E5, 0.5f );
+	}
+	@Override
+	public void potionProc(Hero hero, Char enemy, float damage) {
+		Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSight.class, 3f); //the mod gave its own search buff here
+	}
 }

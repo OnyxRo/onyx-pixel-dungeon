@@ -230,6 +230,24 @@ public class WndBag extends WndTabbed {
 			titleWidth = Math.min(titleWidth, amt.x);
 		}
 
+		//rearranged, the spare bullets for Re-ARranged's guns, shown left of the gold
+		if (Dungeon.bullet > 0) {
+			BitmapText amtBullet = new BitmapText(Integer.toString(Dungeon.bullet), PixelScene.pixelFont);
+			amtBullet.hardlight(0xFFFFFF);
+			amtBullet.measure();
+			ItemSprite bullet = new ItemSprite(ItemSpriteSheet.SINGLE_BULLET, null);
+			bullet.scale.set(0.5f);
+			bullet.x = titleWidth - bullet.width() - 2f;
+			bullet.y = (TITLE_HEIGHT - bullet.height()) / 2f;
+			PixelScene.align(bullet);
+			add(bullet);
+			amtBullet.x = bullet.x - amtBullet.width() - 1f;
+			amtBullet.y = (TITLE_HEIGHT - amtBullet.baseLine()) / 2f - 1;
+			PixelScene.align(amtBullet);
+			add(amtBullet);
+			titleWidth = amtBullet.x;
+		}
+
 		String title = selector != null ? selector.textPrompt() : null;
 		RenderedTextBlock txtTitle = PixelScene.renderTextBlock(
 				title != null ? Messages.titleCase(title) : Messages.titleCase( bag.name() ), 8 );

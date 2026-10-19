@@ -21,6 +21,11 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions.brews;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StormCloud;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blizzard;
@@ -69,5 +74,24 @@ public class BlizzardBrew extends Brew {
 			outQuantity = 1;
 		}
 		
+	}
+
+	//rearranged, what this potion does on an arrow dipped in it
+	@Override
+	public ItemSprite.Glowing potionGlowing() {
+		return new ItemSprite.Glowing(0x17C3E6, 0.3f);
+	}
+	@Override
+	public void potionProc(Hero hero, Char enemy, float damage) {
+		int cell = enemy.pos;
+		int centerVolume = 60;
+		for (int i : PathFinder.NEIGHBOURS8){
+			if (!Dungeon.level.solid[cell+i]){
+				GameScene.add( Blob.seed( cell+i, 60, Blizzard.class ) );
+			} else {
+				centerVolume += 60;
+			}
+		}
+		GameScene.add( Blob.seed( cell, centerVolume, Blizzard.class ) );
 	}
 }

@@ -298,6 +298,14 @@ public class Potion extends Item {
 	
 	protected void drink( Hero hero ) {
 
+		//rearranged, the Adventurer's Safe Potion
+		if (!isKnown() && hero.hasTalent(Talent.SAFE_POTION)) {
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BlobImmunity.class, 3f);
+		}
+		if (mustThrowPots.contains(getClass()) && hero.pointsInTalent(Talent.SAFE_POTION) > 1) {
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BlobImmunity.class, 3f);
+		}
+
 		detach( hero.belongings.backpack );
 
 		//Reforged's Volatile Salvage, a chance to keep the potion
@@ -328,6 +336,7 @@ public class Potion extends Item {
 			if (Random.Float() < talentChance) {
 				Dungeon.level.onHeroConsumableUsed(curUser, this);
 				Talent.onPotionUsed(curUser, curUser.pos, talentFactor);
+				com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedTalents.onPotionUsed(curUser, this); //rearranged
 			}
 		}
 	}
@@ -350,6 +359,7 @@ public class Potion extends Item {
 				Catalog.countUse(getClass());
 				if (Random.Float() < talentChance) {
 					Talent.onPotionUsed(curUser, cell, talentFactor);
+					com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedTalents.onPotionUsed(curUser, this); //rearranged
 				}
 			}
 			
@@ -596,5 +606,70 @@ public class Potion extends Item {
 				}
 			};
 		}
+	}
+
+	//rearranged, Re-ARranged PD's pills, brewed one potion into two pills
+	public static class PotionToPill extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe {
+
+		public static java.util.HashMap<Class<?extends Potion>, Class<?extends com.shatteredpixel.shatteredpixeldungeon.items.pills.Pill>> pills = new java.util.HashMap<>();
+		static {
+			pills.put(PotionOfInvisibility.class, 	com.shatteredpixel.shatteredpixeldungeon.items.pills.PillOfInvisibility.class);
+			pills.put(PotionOfPurity.class, 		com.shatteredpixel.shatteredpixeldungeon.items.pills.PillOfAntibiotics.class);
+			pills.put(PotionOfParalyticGas.class, 	com.shatteredpixel.shatteredpixeldungeon.items.pills.PillOfParalysis.class);
+			pills.put(PotionOfMindVision.class, 	com.shatteredpixel.shatteredpixeldungeon.items.pills.PillOfMindFocus.class);
+			pills.put(PotionOfLiquidFlame.class, 	com.shatteredpixel.shatteredpixeldungeon.items.pills.PillOfFlame.class);
+			pills.put(PotionOfFrost.class, 			com.shatteredpixel.shatteredpixeldungeon.items.pills.PillOfFrost.class);
+			pills.put(PotionOfStrength.class, 		com.shatteredpixel.shatteredpixeldungeon.items.pills.PillOfAwakening.class);
+			pills.put(PotionOfToxicGas.class, 		com.shatteredpixel.shatteredpixeldungeon.items.pills.PillOfToxin.class);
+			pills.put(PotionOfExperience.class, 	com.shatteredpixel.shatteredpixeldungeon.items.pills.PillOfVitamin.class);
+			pills.put(PotionOfLevitation.class, 	com.shatteredpixel.shatteredpixeldungeon.items.pills.PillOfLevitation.class);
+			pills.put(PotionOfHealing.class, 		com.shatteredpixel.shatteredpixeldungeon.items.pills.PillOfHealing.class);
+			pills.put(PotionOfHaste.class, 			com.shatteredpixel.shatteredpixeldungeon.items.pills.PillOfAcceleration.class);
+		}
+
+		@Override
+		public boolean testIngredients(java.util.ArrayList<Item> ingredients) {
+			return ingredients.size() == 1
+					&& ingredients.get(0) instanceof Potion
+					&& pills.containsKey(ingredients.get(0).getClass());
+		}
+
+		@Override
+		public int cost(java.util.ArrayList<Item> ingredients) {
+			return 0;
+		}
+
+		@Override
+		public Item brew(java.util.ArrayList<Item> ingredients) {
+			if (!testIngredients(ingredients)) return null;
+			Potion p = (Potion) ingredients.get(0);
+			p.quantity(p.quantity() - 1);
+			p.identify();
+			return Reflection.newInstance(pills.get(p.getClass())).quantity(2);
+		}
+
+		@Override
+		public Item sampleOutput(java.util.ArrayList<Item> ingredients) {
+			if (!testIngredients(ingredients)) return null;
+			Potion p = (Potion) ingredients.get(0);
+			if (!p.isKnown()){
+				return new com.shatteredpixel.shatteredpixeldungeon.items.pills.Pill.PlaceHolder().quantity(2);
+			} else {
+				return Reflection.newInstance(pills.get(p.getClass())).quantity(2);
+			}
+		}
+	}
+
+	//rearranged, what a potion does when the Archer dips an arrow in it (see ArrowBag)
+	public void potionProc(Hero hero, com.shatteredpixel.shatteredpixeldungeon.actors.Char enemy, float damage) {
+		//nothing by default
+	}
+
+	public ItemSprite.Glowing potionGlowing() {
+		return null; //no glow by default
+	}
+
+	public float talentFactor() {
+		return this.talentFactor;
 	}
 }

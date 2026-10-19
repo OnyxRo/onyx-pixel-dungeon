@@ -83,6 +83,12 @@ public class Regeneration extends Buff {
 				//Ryuse's PD helmets
 				delay *= com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.regenDelay(target);
 
+				//rearranged, the Medic's Strong Healpower
+				if (target instanceof com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero
+						&& ((com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero)target).hasTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.STRONG_HEALPOWER)) {
+					delay /= 1f+0.1f*((com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero)target).pointsInTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.STRONG_HEALPOWER);
+				}
+
 				//salt cube is turned off while regen is disabled.
 				if (target.buff(LockedFloor.class) == null) {
 					delay /= SaltCube.healthRegenMultiplier();

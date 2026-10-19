@@ -363,6 +363,11 @@ public class ShopRoom extends SpecialRoom {
 		rare.cursedKnown = true;
 		itemsToSpawn.add( rare );
 
+		//rearranged, shops sell bullet belts, more of them deeper down
+		if (Dungeon.depth >= 5) {
+			itemsToSpawn.add( new com.shatteredpixel.shatteredpixeldungeon.items.BulletBelt().quantity(Dungeon.depth/5));
+		}
+
 		//use a new generator here to prevent items in shop stock affecting levelgen RNG (e.g. sandbags)
 		//we can use a random long for the seed as it will be the same long every time
 		Random.pushGenerator(Random.Long());

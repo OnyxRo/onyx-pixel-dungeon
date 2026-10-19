@@ -290,6 +290,11 @@ public abstract class Level implements Bundlable {
 				Dungeon.LimitedDrops.TRINKET_CATA.drop();
 				addItemToSpawn( new TrinketCatalyst());
 			}
+			//rearranged, a bullet belt for each set of five floors
+			if ( Dungeon.beltNeeded() ) {
+				Dungeon.LimitedDrops.BULLET_BELT.drop();
+				addItemToSpawn( new com.shatteredpixel.shatteredpixeldungeon.items.BulletBelt());
+			}
 			
 			if (shouldGenerateLevelFeeling()) {
 				feeling = withLevelFeelingEffects( randomLevelFeeling() );
@@ -1281,6 +1286,12 @@ public abstract class Level implements Bundlable {
 		
 		GameScene.plantSeed( pos );
 
+		//rearranged, the Adventurer's Root talent
+		Char raRooted = Actor.findChar(pos);
+		if (raRooted != null && raRooted.alignment == Char.Alignment.ENEMY && Dungeon.hero != null && Dungeon.hero.hasTalent(Talent.ROOT)) {
+			Buff.affect(raRooted, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots.class, 1+Dungeon.hero.pointsInTalent(Talent.ROOT));
+		}
+
 		for (Char ch : Actor.chars()){
 			if (ch instanceof WandOfRegrowth.Lotus
 					&& ((WandOfRegrowth.Lotus) ch).inRange(pos)
@@ -1347,7 +1358,7 @@ public abstract class Level implements Bundlable {
 			GameScene.updateMap(cell);
 			return true;
 		} else if (includeTraps && (terr == Terrain.SECRET_TRAP ||
-				terr == Terrain.TRAP || terr == Terrain.INACTIVE_TRAP)){
+				terr == Terrain.TRAP || terr == Terrain.INACTIVE_TRAP || terr == Terrain.WIRE)){
 			set(cell, Terrain.WATER);
 			Dungeon.level.traps.remove(cell);
 			GameScene.updateMap(cell);
@@ -1466,6 +1477,10 @@ public abstract class Level implements Bundlable {
 		case Terrain.DOOR:
 			Door.enter( cell );
 			break;
+
+		case Terrain.WIRE: //rearranged
+			com.shatteredpixel.shatteredpixeldungeon.levels.features.Wire.trample( this, cell);
+			break;
 		}
 
 		TimekeepersHourglass.timeFreeze timeFreeze =
@@ -1524,7 +1539,9 @@ public abstract class Level implements Bundlable {
 		int cx = c.pos % width();
 		int cy = c.pos / width();
 		
-		boolean sighted = c.buff( Blindness.class ) == null && c.buff( Shadows.class ) == null
+		//rearranged, a Samurai with her blade sheathed fights by feel and not by sight
+		boolean sighted = c.buff( com.shatteredpixel.shatteredpixeldungeon.items.Sheath.Sheathing.class ) == null
+				&& c.buff( Blindness.class ) == null && c.buff( Shadows.class ) == null
 						&& c.isAlive();
 		//Pixel Dungeon Reforged Randomizer, Hollow Sockets leave skeletons blind for good
 		if (c instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Skeleton && com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Skeleton.class) == 2) {
@@ -1581,6 +1598,7 @@ public abstract class Level implements Bundlable {
 					viewDist *= 1.25f;
 				}
 				viewDist *= EyeOfNewt.visionRangeMultiplier();
+				viewDist *= 1f + 0.25f*((Hero) c).pointsInTalent(Talent.TELESCOPE); //rearranged
 				viewDist = Math.max(1, viewDist + com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.viewDelta((Hero) c));
 			}
 			
@@ -1661,6 +1679,7 @@ public abstract class Level implements Bundlable {
 						mindVisRange = 1 + 2 * ((Hero) c).pointsInTalent(Talent.DIVINE_SENSE);
 					}
 				}
+				mindVisRange = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedChar.mindVisionRange((Hero) c, mindVisRange); //rearranged
 				mindVisRange = Math.max(mindVisRange, EyeOfNewt.mindVisionRange());
 			}
 
@@ -1712,7 +1731,8 @@ public abstract class Level implements Bundlable {
 						|| m instanceof WandOfRegrowth.Lotus
 						|| m instanceof SpiritHawk.HawkAlly
 						|| (m instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.ConstructHero && Dungeon.hero.hasTalent(Talent.CONSTRUCT_VISION))
-						|| m.buff(PowerOfMany.PowerBuff.class) != null){
+						|| m.buff(PowerOfMany.PowerBuff.class) != null
+						|| m instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.building.WatchTower){
 					if (m.fieldOfView == null || m.fieldOfView.length != length()){
 						m.fieldOfView = new boolean[length()];
 						Dungeon.level.updateFieldOfView( m, m.fieldOfView );
@@ -1871,6 +1891,8 @@ public abstract class Level implements Bundlable {
 				return Messages.get(Level.class, "statue_name");
 			case Terrain.INACTIVE_TRAP:
 				return Messages.get(Level.class, "inactive_trap_name");
+			case Terrain.WIRE:
+				return Messages.get(Level.class, "wire_name");
 			case Terrain.BOOKSHELF:
 				return Messages.get(Level.class, "bookshelf_name");
 			case Terrain.ALCHEMY:
@@ -1909,6 +1931,8 @@ public abstract class Level implements Bundlable {
 				return Messages.get(Level.class, "barricade_desc");
 			case Terrain.INACTIVE_TRAP:
 				return Messages.get(Level.class, "inactive_trap_desc");
+			case Terrain.WIRE:
+				return Messages.get(Level.class, "wire_desc");
 			case Terrain.STATUE:
 			case Terrain.STATUE_SP:
 				return Messages.get(Level.class, "statue_desc");

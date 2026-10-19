@@ -281,6 +281,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 	//from Transformation PD, extra reach from a talent or buff
 	public boolean canReach( Char owner, int target, int extraReach ){
 		int reach = reachFactor(owner) + extraReach;
+		reach += com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RearrangedWeapons.canReachBonus(owner); //rearranged
 		if (Dungeon.level.distance( owner.pos, target ) > reach){
 			return false;
 		} else {

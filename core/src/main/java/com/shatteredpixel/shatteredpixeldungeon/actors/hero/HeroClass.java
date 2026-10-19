@@ -104,7 +104,14 @@ public enum HeroClass {
 	SLIMEGIRL( HeroSubClass.WATERSLIME, HeroSubClass.DARKSLIME ),
 	NINJA( HeroSubClass.TATTEKI_NINJA, HeroSubClass.NINJA_MASTER ),
 	DM400( HeroSubClass.AT400, HeroSubClass.AU400 ),
-	PRINCESS( HeroSubClass.RUNEMAGE, HeroSubClass.COMBATMASTER );
+	PRINCESS( HeroSubClass.RUNEMAGE, HeroSubClass.COMBATMASTER ),
+	//rearranged, from Re-ARranged PD
+	GUNNER( HeroSubClass.OUTLAW, HeroSubClass.GUNSLINGER, HeroSubClass.SPECIALIST ),
+	SAMURAI( HeroSubClass.SLASHER, HeroSubClass.MASTER, HeroSubClass.SLAYER ),
+	ADVENTURER( HeroSubClass.ENGINEER, HeroSubClass.EXPLORER, HeroSubClass.RESEARCHER ),
+	KNIGHT( HeroSubClass.DEATHKNIGHT, HeroSubClass.HORSEMAN, HeroSubClass.CRUSADER ),
+	MEDIC( HeroSubClass.SAVIOR, HeroSubClass.THERAPIST, HeroSubClass.MEDICALOFFICER ),
+	ARCHER( HeroSubClass.BOWMASTER, HeroSubClass.JUGGLER, HeroSubClass.SHARPSHOOTER );
 
 	//the Summoner has two pictures, one is chosen each time the game starts
 	private static final String SUMMONER_SPLASH = Math.random() < 0.5 ? Assets.Splashes.SUMMONER : Assets.Splashes.SORCERESS;
@@ -202,6 +209,11 @@ public enum HeroClass {
 
 			case PRINCESS:
 				initPrincess( hero );
+				break;
+
+			//rearranged
+			case GUNNER: case SAMURAI: case ADVENTURER: case KNIGHT: case MEDIC: case ARCHER:
+				RearrangedHeroes.init( this, hero );
 				break;
 		}
 
@@ -301,6 +313,19 @@ public enum HeroClass {
 				return Badges.Badge.MASTERY_DM400;
 			case PRINCESS:
 				return Badges.Badge.MASTERY_PRINCESS;
+			//rearranged
+			case GUNNER:
+				return Badges.Badge.MASTERY_GUNNER;
+			case SAMURAI:
+				return Badges.Badge.MASTERY_SAMURAI;
+			case ADVENTURER:
+				return Badges.Badge.MASTERY_ADVENTURER;
+			case KNIGHT:
+				return Badges.Badge.MASTERY_KNIGHT;
+			case MEDIC:
+				return Badges.Badge.MASTERY_MEDIC;
+			case ARCHER:
+				return Badges.Badge.MASTERY_ARCHER;
 		}
 		return null;
 	}
@@ -612,6 +637,9 @@ public enum HeroClass {
 				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.dm400.Routine(),
 						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.dm400.Discharge_Gas(),
 						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.dm400.HoneyComb()};
+			//rearranged
+			case GUNNER: case SAMURAI: case ADVENTURER: case KNIGHT: case MEDIC: case ARCHER:
+				return RearrangedHeroes.armorAbilities( this );
 		}
 	}
 
@@ -649,6 +677,19 @@ public enum HeroClass {
 				return Assets.Sprites.DM400;
 			case PRINCESS:
 				return Assets.Sprites.PRINCESS;
+			//rearranged
+			case GUNNER:
+				return Assets.Sprites.GUNNER;
+			case SAMURAI:
+				return Assets.Sprites.SAMURAI;
+			case ADVENTURER:
+				return Assets.Sprites.RA_ADVENTURER;
+			case KNIGHT:
+				return Assets.Sprites.KNIGHT;
+			case MEDIC:
+				return Assets.Sprites.MEDIC;
+			case ARCHER:
+				return Assets.Sprites.ARCHER;
 		}
 	}
 
@@ -687,6 +728,19 @@ public enum HeroClass {
 				return Assets.Splashes.DM400;
 			case PRINCESS:
 				return Assets.Splashes.PRINCESS;
+			//rearranged
+			case GUNNER:
+				return Assets.Splashes.GUNNER;
+			case SAMURAI:
+				return Assets.Splashes.SAMURAI;
+			case ADVENTURER:
+				return Assets.Splashes.ADVENTURER;
+			case KNIGHT:
+				return Assets.Splashes.KNIGHT;
+			case MEDIC:
+				return Assets.Splashes.MEDIC;
+			case ARCHER:
+				return Assets.Splashes.ARCHER;
 		}
 	}
 	
@@ -729,6 +783,19 @@ public enum HeroClass {
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_DM400);
 			case PRINCESS:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_PRINCESS);
+			//rearranged
+			case GUNNER:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_GUNNER);
+			case SAMURAI:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_SAMURAI);
+			case ADVENTURER:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_ADVENTURER);
+			case KNIGHT:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_KNIGHT);
+			case MEDIC:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_MEDIC);
+			case ARCHER:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_ARCHER);
 		}
 	}
 	

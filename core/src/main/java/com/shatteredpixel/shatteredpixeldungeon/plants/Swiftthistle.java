@@ -101,6 +101,11 @@ public class Swiftthistle extends Plant {
 			reset(6);
 		}
 
+		//rearranged
+		public void set(float duration) {
+			left = duration;
+		}
+
 		//Magic Ling PD
 		public void setLeft(float turns){
 			left = turns + 1;

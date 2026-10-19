@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.ui.TalentIcon;
+
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
@@ -76,6 +78,25 @@ public class WndHeroInfo extends WndTabbed {
 				break;
 			case CLERIC:
 				tabIcon = new ItemSprite(ItemSpriteSheet.ARTIFACT_TOME, null);
+				break;
+			//rearranged
+			case GUNNER:
+				tabIcon = new ItemSprite(ItemSpriteSheet.SR_T5, null);
+				break;
+			case SAMURAI:
+				tabIcon = new ItemSprite(ItemSpriteSheet.LONG_KATANA, null);
+				break;
+			case ADVENTURER:
+				tabIcon = new ItemSprite(ItemSpriteSheet.BATTLE_SHOVEL, null);
+				break;
+			case KNIGHT:
+				tabIcon = new ItemSprite(ItemSpriteSheet.KNIGHT_SHIELD, null);
+				break;
+			case MEDIC:
+				tabIcon = new ItemSprite(ItemSpriteSheet.GAMMA_RAY_GUN, null);
+				break;
+			case ARCHER:
+				tabIcon = new ItemSprite(ItemSpriteSheet.LONGBOW, null);
 				break;
 		}
 
@@ -206,6 +227,44 @@ public class WndHeroInfo extends WndTabbed {
 					icons = new Image[]{ new ItemSprite(ItemSpriteSheet.ARTIFACT_TOME),
 							Icons.TALENT.get(),
 							new ItemSprite(ItemSpriteSheet.CUDGEL),
+							new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
+					break;
+				//rearranged
+				case GUNNER:
+					icons = new Image[]{ new ItemSprite(ItemSpriteSheet.SR_T5),
+							new ItemSprite(ItemSpriteSheet.BULLET),
+							new ItemSprite(ItemSpriteSheet.BULLET_BELT),
+							new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
+					break;
+				case SAMURAI:
+					icons = new Image[]{ new TalentIcon(Talent.BASIC_PRACTICE),
+							new ItemSprite(ItemSpriteSheet.SHEATH),
+							new ItemSprite(ItemSpriteSheet.WORN_KATANA),
+							new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
+					break;
+				case ADVENTURER:
+					icons = new Image[]{ new ItemSprite(ItemSpriteSheet.MACHETE),
+							Icons.GRASS.get(),
+							new ItemSprite(ItemSpriteSheet.ADVENTURER_SHOVEL),
+							new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
+					break;
+				case KNIGHT:
+					icons = new Image[]{ new ItemSprite(ItemSpriteSheet.KNIGHT_SHIELD),
+							new ItemSprite(ItemSpriteSheet.SABER),
+							new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
+					break;
+				case MEDIC:
+					icons = new Image[]{ new ItemSprite(ItemSpriteSheet.GAMMA_RAY_GUN),
+							Icons.BUFFS.get(),
+							new ItemSprite(ItemSpriteSheet.PILL_STRENGTH),
+							new ItemSprite(ItemSpriteSheet.SCALPEL),
+							new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
+					break;
+				case ARCHER:
+					icons = new Image[]{ new ItemSprite(ItemSpriteSheet.FISHING_SPEAR),
+							new TalentIcon(Talent.BASIC_PRACTICE),
+							new ItemSprite(ItemSpriteSheet.ARROW_BAG),
+							new ItemSprite(ItemSpriteSheet.WORN_SHORTBOW),
 							new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
 					break;
 			}

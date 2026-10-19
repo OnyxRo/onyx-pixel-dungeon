@@ -96,7 +96,10 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		//all rings, wands, trinkets, seeds, and runestones
 		} else {
 			return item instanceof Ring || item instanceof Wand || item instanceof Trinket
-					|| item instanceof Plant.Seed || item instanceof Runestone;
+					|| item instanceof Plant.Seed || item instanceof Runestone
+					//rearranged, its pills and the Huntress's spirit bow variants
+					|| item instanceof com.shatteredpixel.shatteredpixeldungeon.items.pills.Pill
+					|| com.shatteredpixel.shatteredpixeldungeon.items.changer.OldAmulet.isBowVariant(item);
 		}
 	}
 	
@@ -177,6 +180,15 @@ public class ScrollOfTransmutation extends InventoryScroll {
 			return changeSeed((Plant.Seed) item);
 		} else if (item instanceof Runestone) {
 			return changeStone((Runestone) item);
+		//rearranged
+		} else if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.pills.Pill) {
+			com.shatteredpixel.shatteredpixeldungeon.items.pills.Pill n;
+			do {
+				n = (com.shatteredpixel.shatteredpixeldungeon.items.pills.Pill) Generator.randomUsingDefaults( Generator.Category.PILL );
+			} while (n.getClass() == item.getClass());
+			return n;
+		} else if (com.shatteredpixel.shatteredpixeldungeon.items.changer.OldAmulet.isBowVariant(item)) {
+			return com.shatteredpixel.shatteredpixeldungeon.items.changer.OldAmulet.changeBow((com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow) item);
 		} else if (item instanceof Artifact) {
 			Artifact a = changeArtifact( (Artifact)item );
 			if (a == null){

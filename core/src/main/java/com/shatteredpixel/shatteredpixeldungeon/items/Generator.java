@@ -252,6 +252,17 @@ public class Generator {
 		FOOD_NEW( 0, 0, Food.class ),
 		EXOTIC	( 0, 0, com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion.class ),
 		IDOL	( 0, 0, Item.class ), //Deep PD, what idols drop
+		//rearranged, Re-ARranged PD's alchemy weapons, special weapons, spell books and pills, none drop by category
+		WEP_AL_T3	( 0, 0, MeleeWeapon.class),
+		WEP_AL_T4	( 0, 0, MeleeWeapon.class),
+		WEP_AL_T5	( 0, 0, MeleeWeapon.class),
+		WEP_AL_T6	( 0, 0, MeleeWeapon.class),
+		WEP_AL_T7	( 0, 0, MeleeWeapon.class),
+		WEP_SP		( 0, 0, MeleeWeapon.class),
+		MIS_SP		( 0, 0, MissileWeapon.class ),
+		SPELLBOOK	( 0, 0, com.shatteredpixel.shatteredpixeldungeon.items.spellbook.SpellBook.class ),
+		PILL		( 0, 0, com.shatteredpixel.shatteredpixeldungeon.items.pills.Pill.class ),
+		POSITIVE_PILL	( 0, 0, com.shatteredpixel.shatteredpixeldungeon.items.pills.Pill.class ),
 		
 		POTION	( 8, 8, Potion.class ),
 		SEED	( 1, 1, Plant.Seed.class ),
@@ -727,6 +738,8 @@ public class Generator {
 			};
 			TRINKET.defaultProbs = new float[]{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 			TRINKET.probs = TRINKET.defaultProbs.clone();
+
+			RearrangedLoot.apply(); //rearranged, Re-ARranged PD's weapons, trinkets and new categories
 
 			for (Category cat : Category.values()){
 				if (cat.defaultProbs2 != null){

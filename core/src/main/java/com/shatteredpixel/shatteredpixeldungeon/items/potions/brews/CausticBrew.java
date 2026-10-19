@@ -21,6 +21,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions.brews;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -83,5 +86,25 @@ public class CausticBrew extends Brew {
 			Catalog.countUse(GooBlob.class);
 			return super.brew(ingredients);
 		}
+	}
+
+	//rearranged, what this potion does on an arrow dipped in it
+	@Override
+	public ItemSprite.Glowing potionGlowing() {
+		return new ItemSprite.Glowing(0x404040);
+	}
+	@Override
+	public void potionProc(Hero hero, Char enemy, float damage) {
+		PathFinder.buildDistanceMap(enemy.pos, BArray.not( Dungeon.level.solid, null ), 2 );
+		for (int i = 0; i < PathFinder.distance.length; i++) {
+			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+				Splash.at( i, 0x000000, 5);
+				Char ch = Actor.findChar(  i );
+				if (ch != null && ch.alignment != Char.Alignment.ALLY){
+					Buff.affect(ch, Ooze.class).set( Ooze.DURATION );
+				}
+			}
+		}
+		Sample.INSTANCE.play(Assets.Sounds.SHATTER);
 	}
 }

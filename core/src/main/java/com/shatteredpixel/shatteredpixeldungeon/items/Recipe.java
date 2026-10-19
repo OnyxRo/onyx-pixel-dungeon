@@ -207,6 +207,15 @@ public abstract class Recipe {
 		new com.shatteredpixel.shatteredpixeldungeon.items.food.CheeseSlice.Recipe(),
 		new com.shatteredpixel.shatteredpixeldungeon.items.food.UntaxedFood.TaxedRecipe(),
 		new com.shatteredpixel.shatteredpixeldungeon.items.food.CookedWarrior.Recipe(),
+		//rearranged
+		new BulletItem.Recipe(),
+		new BulletBelt.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spellbook.SpellBook.WandToSpellBook(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.FireMaker.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.IceMaker.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.RapidGrowth.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.ElectricityImbue.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion.PotionToPill(),
 	};
 	
 	private static Recipe[] twoIngredientRecipes = new Recipe[]{
@@ -239,12 +248,24 @@ public abstract class Recipe {
 		new com.shatteredpixel.shatteredpixeldungeon.items.food.DeepfriedRat.Recipe(),
 		new com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.GoblinCurse.Recipe(),
 		new com.shatteredpixel.shatteredpixeldungeon.items.misc.FOFFSDegree.Recipe(),
+		//rearranged
+		new GunSmithingTool.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.Evolution.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.Xray.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.FireImbueSpell.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfTalent.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.UpgradeDust.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.UnstableIdentification.Recipe(),
 	};
 	
 	private static Recipe[] threeIngredientRecipes = new Recipe[]{
 		new Potion.SeedToPotion(),
 		new StewedMeat.threeMeat(),
 		new MeatPie.Recipe(),
+		//rearranged
+		new com.shatteredpixel.shatteredpixeldungeon.items.changer.BluePrint.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.alchemy.Cross.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.alchemy.PotOThunder.Recipe(),
 		//Shittened PD
 		new com.shatteredpixel.shatteredpixeldungeon.items.misc.GoldBar.Craft(),
 		new com.shatteredpixel.shatteredpixeldungeon.items.food.GoldenMeat.Craft(),

@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
@@ -219,4 +221,19 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 			return Messages.get(PotionOfDragonsBreath.class, "prompt");
 		}
 	};
+
+	//rearranged, what this potion does on an arrow dipped in it
+	@Override
+	public ItemSprite.Glowing potionGlowing() {
+		return new ItemSprite.Glowing( 0xFFAA33, 0.5f );
+	}
+	@Override
+	public void potionProc(Hero hero, Char enemy, float damage) {
+		int burnDamage = Random.NormalIntRange( 1, 3 + Dungeon.scalingDepth()/4 );
+		if (burnDamage > 0) {
+			enemy.damage(burnDamage, Blazing.class);
+		}
+		
+		Buff.affect(enemy, Burning.class).reignite(enemy);
+	}
 }

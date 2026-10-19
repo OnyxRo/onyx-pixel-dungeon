@@ -979,6 +979,69 @@ public enum Catalog {
 		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCursedFlame.class);
 		//items ported from ryuse
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.bags.EquipmentPage.class);
+		//rearranged, Re-ARranged PD. Its tier 1 to 5 weapons and trinkets come in through the Generator lists above
+		MELEE_WEAPONS.addItems(Generator.Category.WEP_AL_T3.classes);
+		MELEE_WEAPONS.addItems(Generator.Category.WEP_AL_T4.classes);
+		MELEE_WEAPONS.addItems(Generator.Category.WEP_AL_T5.classes);
+		MELEE_WEAPONS.addItems(Generator.Category.WEP_AL_T6.classes);
+		MELEE_WEAPONS.addItems(Generator.Category.WEP_AL_T7.classes);
+		MELEE_WEAPONS.addItems(Generator.Category.WEP_SP.classes);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.quick.PocketKnife.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.HeroSword.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Shovel.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Machete.class);
+		THROWN_WEAPONS.addItems(Generator.Category.MIS_SP.classes);
+		ARMOR.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.GunnerArmor.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.SamuraiArmor.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.AdventurerArmor.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.KnightArmor.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.MedicArmor.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.ArcherArmor.class);
+		GLYPHS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Afterimage.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Mirrorimage.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Satisfying.class);
+		WANDS.addItems(Generator.Category.SPELLBOOK.classes);
+		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MedicKit.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.KnightsShield.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.DeathSword.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.Saddle.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.Rosary.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.bow.WindBow.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.bow.TacticalBow.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.bow.GoldenBow.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.bow.NaturesBow.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.bow.CorrosiveBow.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.bow.ElectricBow.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.bow.MagicalBow.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.bow.PhaseBow.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.Sheath.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.GammaRayGun.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.ArrowBag.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.changer.OldAmulet.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.Teleporter.class);
+		POTIONS.addItems(Generator.Category.PILL.classes);
+		BREWS_ELIXIRS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfTalent.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.Evolution.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.spells.RapidGrowth.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.spells.IceMaker.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.spells.FireMaker.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.spells.Xray.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.spells.FireImbueSpell.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.spells.ElectricityImbue.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.spells.UnstableIdentification.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.spells.HandyBarricade.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.spells.UpgradeDust.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.changer.BluePrint.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.remains.SpareMagazine.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.remains.SheathFragment.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.remains.HoledPouch.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.remains.BrokenShield.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.remains.ShatteredPillbox.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.Rope.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.GunSmithingTool.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.BulletBelt.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.BulletItem.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.ArrowItem.class);
 
 
 	}

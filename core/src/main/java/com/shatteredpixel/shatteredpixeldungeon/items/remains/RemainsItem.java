@@ -92,6 +92,19 @@ public abstract class RemainsItem extends Item {
 				return new BrokenHilt();
 			case CLERIC:
 				return new TornPage();
+			//rearranged
+			case GUNNER:
+				return new SpareMagazine();
+			case SAMURAI:
+				return new SheathFragment();
+			case ADVENTURER:
+				return new HoledPouch();
+			case KNIGHT:
+				return new BrokenShield();
+			case MEDIC:
+				return new ShatteredPillbox();
+			case ARCHER:
+				return new BowFragment();
 		}
 	}
 

@@ -450,6 +450,14 @@ public class ModRoster {
 		add( "deep", GnollNinja2.class, 0, 1, 99 );
 		add( "deep", ElderShroom.class, 0, 1, 99 );
 		add( "deep", FlyingCat.class, 0, 1, 99 );
+		//rearranged, Re-ARranged PD. Its labs were floors 26 to 29, its Labs world here is floors 21 to 24
+		add( "rearranged", Soldier.class, 2, 21, 24 );
+		add( "rearranged", Researcher.class, 2, 21, 24 );
+		add( "rearranged", Suppression.class, 1, 22, 24 );
+		add( "rearranged", Tank.class, 1, 23, 24 );
+		add( "rearranged", Medic.class, 1, 23, 24 );
+		add( "rearranged", SWAT.class, 0, 1, 99 );
+		add( "rearranged", TempleEbonyMimic.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

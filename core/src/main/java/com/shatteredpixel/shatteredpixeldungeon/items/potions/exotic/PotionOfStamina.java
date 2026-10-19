@@ -21,6 +21,11 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.bow.BowWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Stamina;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -40,5 +45,14 @@ public class PotionOfStamina extends ExoticPotion {
 		Buff.prolong(hero, Stamina.class, Stamina.DURATION);
 		SpellSprite.show(hero, SpellSprite.HASTE, 0.5f, 1, 0.5f);
 	}
-	
+
+	//rearranged, what this potion does on an arrow dipped in it
+	@Override
+	public ItemSprite.Glowing potionGlowing() {
+		return new ItemSprite.Glowing( 0xB4E6BC );
+	}
+	@Override
+	public void potionProc(Hero hero, Char enemy, float damage) {
+		Buff.affect(hero, Stamina.class, 3f);
+	}
 }

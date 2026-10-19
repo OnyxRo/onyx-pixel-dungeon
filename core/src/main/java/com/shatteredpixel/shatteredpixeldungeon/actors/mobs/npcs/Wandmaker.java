@@ -175,6 +175,25 @@ public class Wandmaker extends NPC {
 				case CLERIC:
 					msg1 += Messages.get(this, "intro_cleric");
 					break;
+				//rearranged
+				case GUNNER:
+					msg1 += Messages.get(this, "intro_gunner");
+					break;
+				case SAMURAI:
+					msg1 += Messages.get(this, "intro_samurai");
+					break;
+				case ADVENTURER:
+					msg1 += Messages.get(this, "intro_adventurer");
+					break;
+				case KNIGHT:
+					msg1 += Messages.get(this, "intro_knight");
+					break;
+				case MEDIC:
+					msg1 += Messages.get(this, "intro_medic");
+					break;
+				case ARCHER:
+					msg1 += Messages.get(this, "intro_archer");
+					break;
 			}
 
 			msg1 += Messages.get(this, "intro_1");

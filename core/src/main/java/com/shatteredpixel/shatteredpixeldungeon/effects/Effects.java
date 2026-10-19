@@ -37,10 +37,27 @@ public class Effects {
 		LIGHT_RAY,
 		HEALTH_RAY,
 		GUNSHOT,
-		DARK_HOOK //Transformation PD
+		DARK_HOOK, //Transformation PD
+		//rearranged, drawn from Re-ARranged PD's own effects sheet
+		VINE_ROPE, THUNDERBOLT, GREEN_RAY, YELLOW_RAY, SUPERNOVA_RAY
 	}
-	
+
 	public static Image get( Type type ) {
+		//rearranged
+		switch (type) {
+			case VINE_ROPE: case THUNDERBOLT: case GREEN_RAY: case YELLOW_RAY: case SUPERNOVA_RAY:
+				Image ra = new Image( Assets.Effects.RA_EFFECTS );
+				switch (type) {
+					case VINE_ROPE:     ra.frame(ra.texture.uvRect(6, 22, 11, 28)); break;
+					case THUNDERBOLT:   ra.frame(ra.texture.uvRect(0, 39, 32, 45)); break;
+					case GREEN_RAY:     ra.frame(ra.texture.uvRect(16, 48, 32, 56)); break;
+					case YELLOW_RAY:    ra.frame(ra.texture.uvRect(16, 55, 32, 63)); break;
+					case SUPERNOVA_RAY: default: ra.frame(ra.texture.uvRect(16, 62, 32, 70)); break;
+				}
+				return ra;
+			default:
+				break;
+		}
 		Image icon = new Image( Assets.Effects.EFFECTS );
 		switch (type) {
 			case RIPPLE:

@@ -412,6 +412,12 @@ public abstract class Char extends Actor {
 	}
 
 	final public boolean attack( Char enemy ){
+		//rearranged, the Samurai's Awake ability makes every hit in a fight with her harder
+		Hero h = Dungeon.hero;
+		if (h != null && h.buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.samurai.Awake.awakeTracker.class) != null
+				&& (this instanceof Hero || enemy instanceof Hero)) {
+			return attack(enemy, 1.2f+0.2f*h.pointsInTalent(Talent.AWAKE_LIMIT), 0f, 1f);
+		}
 		return attack(enemy, 1f, 0f, 1f);
 	}
 	
@@ -440,7 +446,15 @@ public abstract class Char extends Actor {
 	public boolean attack( Char enemy, float dmgMulti, float dmgBonus, float accMulti ) {
 
 		if (enemy == null) return false;
-		
+
+		//rearranged, the Explorer uses up rope to reach far, the Medic's stim pack
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedChar.useRope(this, enemy);
+		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.StimPack.class) != null) {
+			accMulti *= 1.6f;
+			dmgMulti *= 1.3f;
+		}
+		boolean raDirectedToHero = false;
+
 		boolean visibleFight = Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[enemy.pos];
 
 		if (enemy.isInvulnerable(getClass())) {
@@ -454,7 +468,14 @@ public abstract class Char extends Actor {
 			return false;
 
 		} else if (attackAlwaysHits( enemy ) || hit( this, enemy, accMulti, false )) {
-			
+
+			//rearranged, the Knight's Chivalry takes the hit for an ally in sight
+			Char raGuard = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedChar.chivalryGuard(this, enemy);
+			if (raGuard != enemy) {
+				enemy = raGuard;
+				raDirectedToHero = true;
+			}
+
 			int dr = Math.round(enemy.drRoll() * AscensionChallenge.statModifier(enemy));
 			dr = modifyEnemyArmor(enemy, dr);
 			if (attackIgnoresArmor(enemy)) dr = 0;
@@ -468,6 +489,18 @@ public abstract class Char extends Actor {
 				}
 
 				if (h.buff(MonkEnergy.MonkAbility.UnarmedAbilityTracker.class) != null){
+					dr = 0;
+				}
+
+				//rearranged, piercing arrows, bullet armor factors, the Samurai's shadow blade
+				dr = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedChar.heroArmorPierce(h, enemy, dr);
+				if (h.buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.samurai.ShadowBlade.shadowBladeTracker.class) != null && Random.Int(2) == 0) {
+					if (h.hasTalent(Talent.CRITICAL_SHADOW)) {
+						dmgBonus += Random.NormalIntRange(0, 5*h.pointsInTalent(Talent.CRITICAL_SHADOW));
+					}
+					if (h.hasTalent(Talent.HERBAL_SHADOW)) {
+						h.heal(h.pointsInTalent(Talent.HERBAL_SHADOW));
+					}
 					dr = 0;
 				}
 			}
@@ -557,6 +590,14 @@ public abstract class Char extends Actor {
 				dmg *= 0.67f;
 			}
 
+			//rearranged
+			if (enemy.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PainKiller.class) != null) {
+				dmg *= 0.5f;
+			}
+			if (raDirectedToHero && Dungeon.hero.pointsInTalent(Talent.CHIVALRY) > 1) {
+				dmg *= 0.5f;
+			}
+
 			//Transformation PD, the Friar's sanity effects and blessings
 			if ( buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Suffering.Fear.class ) != null ) dmg *= 0.75f;
 			if ( buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Suffering.Ecstasy.class ) != null ) dmg *= 1.3f;
@@ -602,6 +643,10 @@ public abstract class Char extends Actor {
 			if (buff(FireImbue.class) != null)  buff(FireImbue.class).proc(enemy);
 			if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EarthImbue.class) != null) buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EarthImbue.class).proc(enemy);
 			if (buff(FrostImbue.class) != null) buff(FrostImbue.class).proc(enemy);
+			//rearranged
+			if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ThunderImbue.class) != null) buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ThunderImbue.class).proc(enemy, effectiveDamage);
+			if (buff(com.shatteredpixel.shatteredpixeldungeon.items.spells.ElectricityImbue.ElectricityImbueBuff.class) != null) buff(com.shatteredpixel.shatteredpixeldungeon.items.spells.ElectricityImbue.ElectricityImbueBuff.class).proc(enemy, effectiveDamage);
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedChar.judgement(this, enemy);
 			if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.KetchupImbue.class) != null) buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.KetchupImbue.class).proc(enemy);
 			//Shittened PD, a venomous weapon sometimes poisons
 			if (this instanceof Hero && Dungeon.hero.belongings.weapon() instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon) {
@@ -807,6 +852,7 @@ public abstract class Char extends Actor {
 		int dr = 0;
 
 		dr += Random.NormalIntRange( 0 , Barkskin.currentLevel(this) );
+		dr -= com.shatteredpixel.shatteredpixeldungeon.items.trinkets.GrindStone.drRoll(); //rearranged
 
 		return dr;
 	}
@@ -889,6 +935,9 @@ public abstract class Char extends Actor {
 		speed *= Swiftness.speedBoost(this, glyphLevel(Swiftness.class));
 		speed *= Flow.speedBoost(this, glyphLevel(Flow.class));
 		speed *= Bulk.speedBoost(this, glyphLevel(Bulk.class));
+		//rearranged, the Researcher's sticky ooze
+		if (this.alignment != Alignment.ALLY && buff(Ooze.class) != null && Dungeon.hero != null
+				&& Dungeon.hero.hasTalent(Talent.STICKY_OOZE)) speed *= 1-0.1f*Dungeon.hero.pointsInTalent(Talent.STICKY_OOZE);
 
 		return speed;
 	}
