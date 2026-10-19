@@ -90,6 +90,7 @@ public class Badges {
 		MASTERY_ARCHER,
 		//summoning
 		MASTERY_CONJURER,
+		MASTERY_FREEMAN, //transformation
 		FOUND_RATMOGRIFY,
 
 		//bronze
@@ -115,6 +116,7 @@ public class Badges {
 		UNLOCK_KNIGHT               ( 4 ),
 		UNLOCK_MEDIC                ( 5 ),
 		UNLOCK_ARCHER               ( 6 ),
+		UNLOCK_FREEMAN              ( 5 ), //transformation
 		MONSTERS_SLAIN_1            ( 6 ),
 		MONSTERS_SLAIN_2            ( 7 ),
 		GOLD_COLLECTED_1            ( 8 ),
@@ -180,6 +182,7 @@ public class Badges {
 		BOSS_SLAIN_1_ARCHER,
 		//summoning
 		BOSS_SLAIN_1_CONJURER,
+		BOSS_SLAIN_1_FREEMAN, //transformation
 		BOSS_SLAIN_1_VIKING,
 		BOSS_SLAIN_1_DRAGONKNIGHT,
 		BOSS_SLAIN_1_ALL_CLASSES    ( 54, BadgeType.GLOBAL ),
@@ -247,6 +250,7 @@ public class Badges {
 		VICTORY_ARCHER,
 		//summoning
 		VICTORY_CONJURER,
+		VICTORY_FREEMAN, //transformation
 		VICTORY_VIKING,
 		VICTORY_DRAGONKNIGHT,
 		VICTORY_ALL_CLASSES         ( 103, BadgeType.GLOBAL ),
@@ -916,6 +920,7 @@ public class Badges {
 		firstBossClassBadges.put(HeroClass.PRINCESS, Badge.BOSS_SLAIN_1_PRINCESS);
 		//summoning
 		firstBossClassBadges.put(HeroClass.CONJURER, Badge.BOSS_SLAIN_1_CONJURER);
+		firstBossClassBadges.put(HeroClass.FREEMAN, Badge.BOSS_SLAIN_1_FREEMAN);
 		firstBossClassBadges.put(HeroClass.VIKING, Badge.BOSS_SLAIN_1_VIKING);
 		firstBossClassBadges.put(HeroClass.DRAGONKNIGHT, Badge.BOSS_SLAIN_1_DRAGONKNIGHT);
 		//rearranged
@@ -945,6 +950,7 @@ public class Badges {
 		victoryClassBadges.put(HeroClass.PRINCESS, Badge.VICTORY_PRINCESS);
 		//summoning
 		victoryClassBadges.put(HeroClass.CONJURER, Badge.VICTORY_CONJURER);
+		victoryClassBadges.put(HeroClass.FREEMAN, Badge.VICTORY_FREEMAN);
 		victoryClassBadges.put(HeroClass.VIKING, Badge.VICTORY_VIKING);
 		victoryClassBadges.put(HeroClass.DRAGONKNIGHT, Badge.VICTORY_DRAGONKNIGHT);
 		//rearranged
@@ -1141,6 +1147,9 @@ public class Badges {
 			//summoning
 			case CONJURER:
 				badge = Badge.MASTERY_CONJURER;
+				break;
+			case FREEMAN:
+				badge = Badge.MASTERY_FREEMAN;
 				break;
 			case VIKING:
 				badge = Badge.MASTERY_VIKING;
@@ -1387,6 +1396,13 @@ public class Badges {
 	}
 	//Re-ARranged's Hedgehog badge, for pinning ten arrows in one enemy, is not here
 	public static void validateHedgehog() {
+	}
+
+	//Transformation PD, metamorphose a talent to unlock the Freeman
+	public static void validateFreemanUnlock(){
+		if (!isUnlocked(Badge.UNLOCK_FREEMAN)){
+			displayBadge( Badge.UNLOCK_FREEMAN );
+		}
 	}
 
 	//Transformation PD, defeat the Dwarf King to unlock the Princess

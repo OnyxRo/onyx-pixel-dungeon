@@ -886,6 +886,9 @@ public abstract class Char extends Actor {
 		for (ChampionEnemy buff : buffs(ChampionEnemy.class)){
 			buff.onAttackProc( enemy );
 		}
+		if (this instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob){
+			damage = com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.mobAttackProc((com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob) this, enemy, damage);
+		}
 		return damage;
 	}
 	
@@ -1023,6 +1026,9 @@ public abstract class Char extends Actor {
 		}
 
 		if (buff(Cursed.class) != null) dmg = Math.round(dmg * 1.1f);
+		//Transformation PD talent catalog
+		if (src instanceof com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand) dmg = com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onWandDamage((com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand) src, this, dmg);
+		if (this instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob) dmg = com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.mobDamageTaken((com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob) this, dmg);
 
 		if(isInvulnerable(src.getClass())){
 			sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "invulnerable"));
@@ -1405,6 +1411,7 @@ public abstract class Char extends Actor {
 
 	public void die( Object src ) {
 		notifyDeathListeners();
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onAllyDie(this); //Transformation PD talent catalog
 		//something else is forcing death, so remove death mark to prevent conflicts
 		if (buff(DeathMark.DeathMarkTracker.class) != null){
 			buff(DeathMark.DeathMarkTracker.class).detachOnDeath();

@@ -85,7 +85,7 @@ public abstract class ClericSpell {
 			hero.buff(Talent.SatiatedSpellsTracker.class).detach();
 		}
 		tome.spendCharge(chargeUse(hero));
-		Talent.onArtifactUsed(hero);
+		if (tome.triggersArtifactTalents()) Talent.onArtifactUsed(hero); //transformation, not for the rubbings tome
 		if (hero.subClass == HeroSubClass.PALADIN){
 			if (this != HolyWeapon.INSTANCE && hero.buff(HolyWeapon.HolyWepBuff.class) != null){
 				hero.buff(HolyWeapon.HolyWepBuff.class).extend(10*chargeUse(hero));
@@ -117,6 +117,7 @@ public abstract class ClericSpell {
 			if (cleric.hasTalent(Talent.SHIELD_OF_LIGHT)) {
 				spells.add(ShieldOfLight.INSTANCE);
 			}
+			addTransformationSpells(cleric, 1, spells);
 
 		} else if (tier == 2) {
 
@@ -135,7 +136,8 @@ public abstract class ClericSpell {
 			if (cleric.hasTalent(Talent.BLESS)){
 				spells.add(BlessSpell.INSTANCE);
 			}
-
+
+			addTransformationSpells(cleric, 2, spells);
 		} else if (tier == 3){
 
 			if (cleric.subClass == HeroSubClass.PRIEST) {
@@ -168,6 +170,7 @@ public abstract class ClericSpell {
 			if (cleric.hasTalent(Talent.WALL_OF_LIGHT)){
 				spells.add(WallOfLight.INSTANCE);
 			}
+			addTransformationSpells(cleric, 3, spells);
 
 		} else if (tier == 4){
 
@@ -235,6 +238,62 @@ public abstract class ClericSpell {
 		spells.add(BeamingRay.INSTANCE);
 		spells.add(LifeLinkSpell.INSTANCE);
 		spells.add(Stasis.INSTANCE);
+		//transformation
+		for (int t = 1; t <= 3; t++) spells.addAll(transformationSpells(t));
 		return spells;
+	}
+
+	//transformation, the spells Transformation PD's spell talents add to the holy tome
+	private static ArrayList<ClericSpell> transformationSpells(int tier){
+		ArrayList<ClericSpell> s = new ArrayList<>();
+		if (tier == 1){
+			s.add(Ascension_Curse.INSTANCE); s.add(Shepherd_Intention.INSTANCE); s.add(Silver_Language.INSTANCE);
+			s.add(Traitorous_Spell.INSTANCE); s.add(Focus_Light.INSTANCE); s.add(Credulous.INSTANCE);
+		} else if (tier == 2){
+			s.add(Divine_Protection.INSTANCE); s.add(Conversion_Holy.INSTANCE); s.add(Genesis.INSTANCE);
+			s.add(Indulgence.INSTANCE); s.add(Sprint_Spell.INSTANCE); s.add(Thorn_Whip.INSTANCE);
+			s.add(Revelation.INSTANCE); s.add(Equipment_Bless.INSTANCE); s.add(HotLight.INSTANCE);
+		} else if (tier == 3){
+			s.add(Purifying_Evil.INSTANCE); s.add(Divine_Storm.INSTANCE); s.add(Resurrection.INSTANCE);
+			s.add(Zhuanyu_Spell.INSTANCE); s.add(Holy_Grenade.INSTANCE); s.add(Blade_Star.INSTANCE);
+			s.add(Sacred_Blade.INSTANCE);
+		}
+		return s;
+	}
+
+	public static Talent transformationTalent(ClericSpell spell){
+		if (spell == Ascension_Curse.INSTANCE) return Talent.ASCENSION_CURSE;
+		if (spell == Shepherd_Intention.INSTANCE) return Talent.SHEPHERD_INTENTION;
+		if (spell == Silver_Language.INSTANCE) return Talent.SILVER_LANGUAGE;
+		if (spell == Traitorous_Spell.INSTANCE) return Talent.TRAITOROUS_SPELL;
+		if (spell == Focus_Light.INSTANCE) return Talent.FOCUS_LIGHT;
+		if (spell == Credulous.INSTANCE) return Talent.CREDULOUS;
+		if (spell == Divine_Protection.INSTANCE) return Talent.DIVINE_PROTECTION;
+		if (spell == Conversion_Holy.INSTANCE) return Talent.CONVERSION_HOLY;
+		if (spell == Genesis.INSTANCE) return Talent.GENESIS;
+		if (spell == Indulgence.INSTANCE) return Talent.INDULGENCE;
+		if (spell == Sprint_Spell.INSTANCE) return Talent.SPRINT_SPELL;
+		if (spell == Thorn_Whip.INSTANCE) return Talent.THORN_WHIP;
+		if (spell == Revelation.INSTANCE) return Talent.REVELATION;
+		if (spell == Equipment_Bless.INSTANCE) return Talent.EQUIPMENT_BLESS;
+		if (spell == HotLight.INSTANCE) return Talent.HOTLIGHT;
+		if (spell == Purifying_Evil.INSTANCE) return Talent.PURIFYING_EVIL;
+		if (spell == Divine_Storm.INSTANCE) return Talent.DIVINE_STORM;
+		if (spell == Resurrection.INSTANCE) return Talent.RESURRECTION;
+		if (spell == Zhuanyu_Spell.INSTANCE) return Talent.ZHUANYU_SPELL;
+		if (spell == Holy_Grenade.INSTANCE) return Talent.HOLY_GRENADE;
+		if (spell == Blade_Star.INSTANCE) return Talent.BLADE_STAR;
+		if (spell == Sacred_Blade.INSTANCE) return Talent.SACRED_BLADE;
+		return null;
+	}
+
+	//the mod's spell talents sit at tiers 1 to 3, the tome shows each with the spells of its talent's tier
+	private static void addTransformationSpells(Hero cleric, int tier, ArrayList<ClericSpell> spells){
+		for (int t = 1; t <= 3; t++){
+			for (ClericSpell s : transformationSpells(t)){
+				Talent talent = transformationTalent(s);
+				if (t == tier && talent != null && cleric.hasTalent(talent)) spells.add(s);
+			}
+		}
 	}
 }

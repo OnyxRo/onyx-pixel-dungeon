@@ -159,8 +159,10 @@ public class Chasm implements Hero.Doom {
 		Dungeon.level.occupyCell(hero );
 		//Reforged's Armorer, with the right armor mod falling no longer cripples or bleeds and hurts less
 		com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent mod = com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.ARMOR_MOD_INFINITE_FALLING;
-		if (!hero.hasTalent(mod)) {
-			Buff.prolong( hero, Cripple.class, Cripple.DURATION );
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onChasmLand(hero); //transformation
+		int fallGuard = com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.fallProtection(hero);
+		if (!hero.hasTalent(mod) && fallGuard < 2) {
+			if (fallGuard == 0) Buff.prolong( hero, Cripple.class, Cripple.DURATION );
 
 			//The lower the hero's HP, the more bleed and the less upfront damage.
 			//Hero has a 50% chance to bleed out at 66% HP, and begins to risk instant-death at 25%

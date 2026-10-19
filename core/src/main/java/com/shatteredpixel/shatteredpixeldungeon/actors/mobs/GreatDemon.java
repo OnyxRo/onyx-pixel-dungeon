@@ -334,7 +334,7 @@ public class GreatDemon extends Mob implements PhysicalRangedAttack {
 
     @Override
     public void die(Object cause) {
-        Statistics.bossScores[5] +=10000;
+        if (Statistics.bossScores.length > 5) Statistics.bossScores[5] +=10000; //transformation, the mod kept more boss scores
         yell(Messages.get(this, "die"));
         Dungeon.level.reunseal();
         GameScene.bossSlain();

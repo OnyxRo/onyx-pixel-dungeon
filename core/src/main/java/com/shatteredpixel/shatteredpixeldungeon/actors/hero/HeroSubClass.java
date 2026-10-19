@@ -101,7 +101,9 @@ public enum HeroSubClass {
 	SHARPSHOOTER(HeroIcon.SHARPSHOOTER),
 	//summoning, Summoning PD Reincarnated, they reuse other subclasses' pictures
 	SOUL_REAVER(HeroIcon.CONJURER),
-	OCCULTIST(HeroIcon.DEVOTEE);
+	OCCULTIST(HeroIcon.DEVOTEE),
+	//transformation
+	FREEMAN(HeroIcon.FREEMAN);
 
 	//Transformation PD asks this of subclasses (its Rat King hero shares them all)
 	public boolean is(HeroSubClass sub) {

@@ -540,6 +540,8 @@ public enum Icons {
 			//summoning
 			case CONJURER:
 				return new ItemSprite(ItemSpriteSheet.FROGGIT_STAFF);
+			case FREEMAN:
+				return new ItemSprite(ItemSpriteSheet.SPECIAL_PACKAGE);
 			default:
 				return null;
 		}

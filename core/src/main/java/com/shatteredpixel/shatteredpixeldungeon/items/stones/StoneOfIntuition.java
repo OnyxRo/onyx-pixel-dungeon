@@ -123,6 +123,7 @@ public class StoneOfIntuition extends InventoryStone {
 							item.identify();
 						}
 						GLog.p( Messages.get(WndGuess.class, "correct") );
+						com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onIntuitionSuccess(); //transformation, Flash Genius
 						curUser.sprite.parent.add( new Identification( curUser.sprite.center().offset( 0, -16 ) ) );
 					} else {
 						GLog.w( Messages.get(WndGuess.class, "incorrect") );

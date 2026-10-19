@@ -636,6 +636,11 @@ public class WorldShuffle {
 			classes = java.util.Arrays.copyOf( classes, classes.length + 1 );
 			classes[classes.length - 1] = com.shatteredpixel.shatteredpixeldungeon.levels.traps.VenomTrap.class;
 		}
+		//transformation, its worlds add the transformation trap
+		if ("transformation".equals(modKey(level))) {
+			classes = java.util.Arrays.copyOf( classes, classes.length + 1 );
+			classes[classes.length - 1] = com.shatteredpixel.shatteredpixeldungeon.levels.traps.TransformationTrap.class;
+		}
 		return classes;
 	}
 
@@ -644,6 +649,10 @@ public class WorldShuffle {
 		if (level instanceof DragonLairLevel) {
 			chances = java.util.Arrays.copyOf( chances, chances.length + 1 );
 			chances[chances.length - 1] = 4f;
+		}
+		if ("transformation".equals(modKey(level))) {
+			chances = java.util.Arrays.copyOf( chances, chances.length + 1 );
+			chances[chances.length - 1] = 1f;
 		}
 		return chances;
 	}

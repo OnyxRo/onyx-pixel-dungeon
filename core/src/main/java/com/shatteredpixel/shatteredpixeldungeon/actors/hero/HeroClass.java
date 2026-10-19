@@ -113,7 +113,9 @@ public enum HeroClass {
 	MEDIC( HeroSubClass.SAVIOR, HeroSubClass.THERAPIST, HeroSubClass.MEDICALOFFICER ),
 	ARCHER( HeroSubClass.BOWMASTER, HeroSubClass.JUGGLER, HeroSubClass.SHARPSHOOTER ),
 	//summoning, Summoning PD Reincarnated
-	CONJURER( HeroSubClass.SOUL_REAVER, HeroSubClass.OCCULTIST );
+	CONJURER( HeroSubClass.SOUL_REAVER, HeroSubClass.OCCULTIST ),
+	//transformation
+	FREEMAN( HeroSubClass.FREEMAN );
 
 	//the Summoner has two pictures, one is chosen each time the game starts
 	private static final String SUMMONER_SPLASH = Math.random() < 0.5 ? Assets.Splashes.SUMMONER : Assets.Splashes.SORCERESS;
@@ -220,6 +222,10 @@ public enum HeroClass {
 			//summoning
 			case CONJURER:
 				initConjurer( hero );
+				break;
+			//transformation
+			case FREEMAN:
+				initFreeman( hero );
 				break;
 		}
 
@@ -335,6 +341,8 @@ public enum HeroClass {
 			//summoning
 			case CONJURER:
 				return Badges.Badge.MASTERY_CONJURER;
+			case FREEMAN:
+				return Badges.Badge.MASTERY_FREEMAN;
 		}
 		return null;
 	}
@@ -556,6 +564,19 @@ public enum HeroClass {
 		new com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution().identify();
 	}
 
+	//Transformation PD, the Freeman (the mod's gentleman). A walking stick, a lucky coin, the special package,
+	//and talents that are blank slots to fill with scrolls of metamorphosis
+	private static void initFreeman( Hero hero ) {
+		(hero.belongings.weapon = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WalkStick()).identify();
+		hero.belongings.weapon.activate(hero);
+		com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.LuckyCoin coin = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.LuckyCoin();
+		coin.quantity(1).identify().collect();
+		Dungeon.quickslot.setSlot(0, coin);
+		new com.shatteredpixel.shatteredpixeldungeon.items.SpecialPackage().collect();
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience().identify();
+		new com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation().identify();
+	}
+
 	private static void initSummoner( Hero hero ) {
 		//Ryuse's PD. Summoner stats, 15 health that grows by 3 a level, a training whip and a dried rose that holds her lover's ghost
 		(hero.belongings.weapon = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.TrainingWhip()).identify();
@@ -678,6 +699,9 @@ public enum HeroClass {
 				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.conjurer.SoulParalysisAbility(),
 						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.summoner.PhaseShift(),
 						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.SpiritHawk()};
+			case FREEMAN:
+				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.freeman.SalesContract(),
+						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify()};
 			case DM400:
 				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.dm400.Routine(),
 						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.dm400.Discharge_Gas(),
@@ -738,6 +762,8 @@ public enum HeroClass {
 			//summoning
 			case CONJURER:
 				return Assets.Sprites.CONJURER;
+			case FREEMAN:
+				return Assets.Sprites.FREEMAN;
 		}
 	}
 
@@ -792,6 +818,8 @@ public enum HeroClass {
 			//summoning
 			case CONJURER:
 				return Assets.Splashes.CONJURER;
+			case FREEMAN:
+				return Assets.Splashes.FREEMAN;
 		}
 	}
 	
@@ -850,6 +878,8 @@ public enum HeroClass {
 			//summoning, open from the start as in Summoning PD
 			case CONJURER:
 				return true;
+			case FREEMAN:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_FREEMAN);
 		}
 	}
 	

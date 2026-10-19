@@ -72,6 +72,19 @@ public class TengusMask extends Item {
 			
 			curUser = hero;
 
+			//Transformation PD, the Freeman takes no subclass from the mask, it gives him a scroll of metamorphosis
+			if (hero.heroClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.FREEMAN){
+				detach( hero.belongings.backpack );
+				Dungeon.level.drop(new com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfMetamorphosis(), hero.pos).sprite.drop();
+				hero.subClass = com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.FREEMAN;
+				com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.initSubclassTalents(hero);
+				hero.spend( com.shatteredpixel.shatteredpixeldungeon.actors.Actor.TICK );
+				hero.busy();
+				hero.sprite.operate( hero.pos );
+				GLog.p( Messages.get(this, "used") );
+				return;
+			}
+
 			GameScene.show( new WndChooseSubclass( this, hero ) );
 			
 		}

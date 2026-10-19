@@ -483,10 +483,11 @@ public class Armor extends EquipableItem {
 		//rearranged, the afterimage glyph trades armor for evasion, the Knight's Armor Adaption turns spare strength into armor
 		int max = com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RearrangedWeapons.armorUpgradeFactor(this, tier) * (2 + lvl) + augment.defenseFactor(lvl);
 		max += com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RearrangedWeapons.armorAdaption(this);
+		int extra = com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.armorMax(this); //transformation, Heavy Application and Thickened Armor
 		if (lvl > max){
-			return ((lvl - max)+1)/2;
+			return ((lvl - max)+1)/2 + extra;
 		} else {
-			return max;
+			return max + extra;
 		}
 	}
 

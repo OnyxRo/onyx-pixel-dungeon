@@ -107,7 +107,7 @@ public abstract class Plant implements Bundlable {
 			}
 		}
 
-		if (Random.Float() < seedChance){
+		if (Random.Float() < seedChance || com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.seedRecycled()){
 			if (seedClass != null && seedClass != Rotberry.Seed.class) {
 				Dungeon.level.drop(Reflection.newInstance(seedClass), pos).sprite.drop();
 			}

@@ -174,7 +174,8 @@ public class Burning extends Buff implements Hero.Doom, Buff.DOTbuff {
 		
 		spend( TICK );
 		left -= TICK;
-		
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onBurning(target, left); //transformation, Updraft
+
 		if (left <= 0 ||
 			(Dungeon.level.water[target.pos] && !target.flying)) {
 			
@@ -189,6 +190,7 @@ public class Burning extends Buff implements Hero.Doom, Buff.DOTbuff {
 	public void detach() {
 		target.needsIncomingDOTUpdate = true;
 		super.detach();
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onBurningEnded(target); //transformation, Nirvana
 	}
 	
 	public void reignite( Char ch ) {

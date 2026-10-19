@@ -199,3 +199,7 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **The worktree guard** refuses lines with `$VAR` before sed or awk, `$(...)` command lists and python heredocs with regexes. Quote variables (`"$F"`), put python in a file in the scratchpad, and put long argument lists in a small wrapper script.
 - **New scroll or potion.** A rune needs a free cell for the regular picture and the cell 16 below it for the exotic one, an entry in `Scroll.runes`, the class appended to the Generator deck with a weight in both prob arrays, and both `regToExo` and `exoToReg`.
 - **Mod rooms with four size categories** (older Shattered) must drop the last weight, this game has three, or the level builder crashes on a null size.
+## Added after the Transformation final run (2026-10-18)
+
+- **A mod system scattered over many classes** (a talent catalog) ports fastest as one hooks class (TransformationTalents) with one line calls. Find every place first with scripts/talent-dossier.py, then write all hooks, then wire the calls with scripts/plib.py patch files.
+- **Never put an abstract class on ModRoster**, and run MobArenaTest on boss monsters before an NPC may spawn them away from their arena.

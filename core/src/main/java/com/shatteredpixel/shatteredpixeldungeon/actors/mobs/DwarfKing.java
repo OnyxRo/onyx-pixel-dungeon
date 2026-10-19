@@ -574,6 +574,7 @@ public class DwarfKing extends Mob {
 
 		GameScene.bossSlain();
 		Badges.validatePrincessUnlock(); //Transformation PD
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationBossTalents.dropSublimation("DWARFKING", pos); //transformation
 
 		super.die( cause );
 

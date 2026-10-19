@@ -235,6 +235,7 @@ public abstract class Wand extends Item {
 
 	//TODO Consider externalizing char awareness buff
 	protected static void wandProc(Char target, int wandLevel, int chargesUsed){
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onWandProc(target); //transformation, wand talents of the catalog
 		if (Dungeon.hero.hasTalent(Talent.ARCANE_VISION)) {
 			int dur = 5 + 5*Dungeon.hero.pointsInTalent(Talent.ARCANE_VISION);
 			Buff.append(Dungeon.hero, TalismanOfForesight.CharAwareness.class, dur).charID = target.id();
@@ -553,7 +554,10 @@ public abstract class Wand extends Item {
 			}
 		}
 		
-		curCharges -= cursed ? 1 : chargesPerCast();
+		//transformation, Magic Recycling may keep the charge
+		if (!(curUser == Dungeon.hero && com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.wandChargeSaved())) {
+			curCharges -= cursed ? 1 : chargesPerCast();
+		}
 
 		//remove magic charge at a higher priority, if we are benefiting from it are and not the
 		//wand that just applied it
@@ -831,6 +835,7 @@ public abstract class Wand extends Item {
 									}
 								});
 					} else {
+						com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onWandZap(curWand, shot.collisionPos); //transformation, Gas Spurt, Fire Ball, Out of Control Magic
 						curWand.fx(shot, new Callback() {
 							public void call() {
 								curWand.onZap(shot);
@@ -920,7 +925,7 @@ public abstract class Wand extends Item {
 					+ (scalingAddition * Math.pow(scalingFactor, missingCharges)));
 
 			if (Regeneration.regenOn())
-				partialCharge += (1f/turnsToCharge) * RingOfEnergy.wandChargeMultiplier(target)
+				partialCharge += (1f/turnsToCharge) * (target == Dungeon.hero ? com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.wandRechargeFactor() : 1f) * RingOfEnergy.wandChargeMultiplier(target)
 						* com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.wandCharge(target);
 
 			for (Recharging bonus : target.buffs(Recharging.class)){

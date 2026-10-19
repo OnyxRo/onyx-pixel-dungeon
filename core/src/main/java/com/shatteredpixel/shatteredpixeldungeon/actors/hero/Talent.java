@@ -640,7 +640,76 @@ public enum Talent {
 	ACC_ENHANCE(10529, 4),
 	EVA_ENHANCE(10530, 4),
 	BETTER_CHOICE(10531, 3),
-	;
+	//transformation
+	//Transformation PD's common, negative and Freeman talent catalog. Icons are 4096 plus the mod's cell, drawn
+	//from interfaces/transformation/talent_icons.png. Hooks are in TransformationTalents.
+	ELITE_RECRUIT(4603, 4, 4, TalentType.ARMOR), PRIM_ACCU(4604, 4, 4, TalentType.ARMOR), SOUL_CONTRACT(4605, 4, 4, TalentType.ARMOR), ACTIVE_MUSCLES(4360, 3, 3, TalentType.ASSIST),
+	AFRAID_DEATH(4328, 3, 3, TalentType.ASSIST), AUTO_PICK(4480, 2, 1, TalentType.ASSIST), BEHEST(4274, 3, 3, TalentType.ASSIST), BEYOND_LIMIT(4397, 3, 3, TalentType.ASSIST),
+	BOMB_MANIAC(4293, 2, 1, TalentType.ASSIST), BURNING_BLOOD(4124, 2, 2, TalentType.ASSIST), CONCEPT_GRID(4352, 3, 3, TalentType.ASSIST), CRAZY_DANCER(4507, 2, 1, TalentType.ASSIST),
+	DROP_RESISTANT(4302, 2, 1, TalentType.ASSIST), EXPLORATION_INTUITION(4391, 2, 2, TalentType.ASSIST), EXTREME_REACTION(4419, 3, 3, TalentType.ASSIST), GOD_LEFTHAND(4310, 2, 2, TalentType.ASSIST),
+	GOD_RIGHTHAND(4315, 2, 2, TalentType.ASSIST), HEAVY_APPLICATION(4291, 2, 2, TalentType.ASSIST), HERO_NAME(4331, 3, 3, TalentType.ASSIST), HOLY_FAITH(4429, 3, 3, TalentType.ASSIST),
+	HOMETOWN_CLOUD(4337, 3, 3, TalentType.ASSIST), LIGHT_APPLICATION(4290, 2, 2, TalentType.ASSIST), NIRVANA(4478, 2, 2, TalentType.ASSIST), POTENTIAL_ENERGY(4477, 2, 1, TalentType.ASSIST),
+	PROTECT_CURSE(4476, 2, 2, TalentType.ASSIST), SAVAGE_PHYSIQUE(4319, 2, 1, TalentType.ASSIST), SEA_WIND(4361, 3, 3, TalentType.ASSIST), SPIDER_SENSE(4539, 2, 1, TalentType.ASSIST),
+	STRENGTH_TRAIN(4303, 2, 1, TalentType.ASSIST), THICKENED_ARMOR(4298, 2, 1, TalentType.ASSIST), WIDE_KNOWLEDGE(4342, 3, 3, TalentType.ASSIST), ABACUS(4353, 3, 3, TalentType.ATTACK),
+	ACCUMULATE_STEADILY(4126, 3, 3, TalentType.ATTACK), AMAZING_EYESIGHT(4289, 2, 2, TalentType.ATTACK), ASHES_BOW(4447, 3, 3, TalentType.ATTACK), ATTACK_DOOR(4223, 2, 1, TalentType.ATTACK),
+	CICADA_DANCE(4424, 3, 3, TalentType.ATTACK), COUNTER_ATTACK(4272, 3, 3, TalentType.ATTACK), COVER_SCAR(4305, 2, 1, TalentType.ATTACK), DEEP_FREEZE(4338, 3, 3, TalentType.ATTACK),
+	DISTURB_ATTACK(4282, 2, 1, TalentType.ATTACK), FEAR_INCARNATION(4273, 2, 1, TalentType.ATTACK), FRENZIED_ATTACK(4339, 2, 2, TalentType.ATTACK), FUDI_CHOUXIN(4392, 2, 2, TalentType.ATTACK),
+	GHOLL_WITCHCRAFT(4283, 2, 2, TalentType.ATTACK), GIANT_KILLER(4156, 2, 2, TalentType.ATTACK), HAND_DESTRUCTION(4482, 3, 3, TalentType.ATTACK), HEDONISM(4396, 2, 2, TalentType.ATTACK),
+	JUSTICE_PUNISH(4277, 2, 2, TalentType.ATTACK), LOVE_BACKSTAB(4351, 3, 3, TalentType.ATTACK), MARTIAL_TRAIN(4297, 3, 3, TalentType.ATTACK), OVERWHELMING(4278, 3, 3, TalentType.ATTACK),
+	POISON_INBODY(4393, 2, 2, TalentType.ATTACK), POSION_DAGGER(4190, 2, 1, TalentType.ATTACK), PRECISE_SHOT(4390, 3, 3, TalentType.ATTACK), RAGE_ATTACK(4307, 3, 3, TalentType.ATTACK),
+	SKY_EARTH(4332, 3, 3, TalentType.ATTACK), STRONG_ATTACK(4268, 2, 1, TalentType.ATTACK), STRONG_THROW(4271, 2, 2, TalentType.ATTACK), SWEET_SLEEP(4617, 2, 2, TalentType.ATTACK),
+	THROWING_RECYCLING(4508, 3, 3, TalentType.ATTACK), WATER_ATTACK(4287, 2, 1, TalentType.ATTACK), WEIRD_THROW(4285, 2, 2, TalentType.ATTACK), WELLFED_MEAL(4219, 3, 3, TalentType.ATTACK),
+	AQUATIC_RECOVER(4256, 2, 2, TalentType.BOSS), BOSS_TALENT_SLOT_1(4626, 1, 1, TalentType.BOSS), BOSS_TALENT_SLOT_2(4626, 1, 1, TalentType.BOSS), BOSS_TALENT_SLOT_3(4626, 1, 2, TalentType.BOSS),
+	BOSS_TALENT_SLOT_4(4626, 1, 2, TalentType.BOSS), BOSS_TALENT_SLOT_5(4626, 1, 3, TalentType.BOSS), BREAK_ENEMY_RANKS(4494, 2, 1, TalentType.BOSS), COMBO_PACKAGE(4493, 2, 1, TalentType.BOSS),
+	FASTING(4264, 2, 2, TalentType.BOSS), KILL_SPREE(4609, 2, 1, TalentType.BOSS), KING_PROTECT(4265, 2, 2, TalentType.BOSS), OOZE_ATTACK(4258, 2, 2, TalentType.BOSS),
+	PHANTOM_STEP(4611, 2, 1, TalentType.BOSS), PUMP_ATTACK(4257, 2, 2, TalentType.BOSS), RUSH(4261, 2, 1, TalentType.BOSS), SEAOFPEOPLE(4610, 2, 1, TalentType.BOSS),
+	SHADOW_KILLER(4608, 2, 1, TalentType.BOSS), STRONGEST_SHIELD(4492, 2, 1, TalentType.BOSS), SUMMON_FOLLOWER(4266, 2, 2, TalentType.BOSS), SURPRISE_THROW(4259, 2, 1, TalentType.BOSS),
+	THUNDER_STRIKE(4262, 2, 2, TalentType.BOSS), WOLFISH_GAZE(4267, 2, 2, TalentType.BOSS), YOG_FIST(4326, 3, 3, TalentType.BOSS), YOG_LARVA(4325, 3, 3, TalentType.BOSS),
+	YOG_RAY(4327, 3, 3, TalentType.BOSS), AID_STOMACH(4255, 2, 1, TalentType.EFFECT), ANESTHESIA(4358, 2, 1, TalentType.EFFECT), ASH_LEDGER(4346, 2, 1, TalentType.EFFECT),
+	BACKFIRED(4417, 2, 2, TalentType.EFFECT), BLESS_MEAL(4292, 2, 2, TalentType.EFFECT), BOOZY(4619, 2, 1, TalentType.EFFECT), COLLECTION_GOLD(4296, 2, 1, TalentType.EFFECT),
+	DELICIOUS_FLYING(4334, 2, 2, TalentType.EFFECT), DETOX_DAMAGE(4252, 3, 3, TalentType.EFFECT), EARTH_MEAL(4322, 3, 3, TalentType.EFFECT), EATEN_SLOWLY(4323, 2, 1, TalentType.EFFECT),
+	ENDLESS_MEAL(4362, 3, 3, TalentType.EFFECT), FLAME_INCARNATION(4510, 3, 3, TalentType.EFFECT), FLASH_GENIUS(4485, 2, 1, TalentType.EFFECT), GET_UP(4127, 2, 2, TalentType.EFFECT),
+	HEALTHY_FOOD(4398, 3, 3, TalentType.EFFECT), ICE_MEAL(4542, 3, 3, TalentType.EFFECT), INSERT_BID(4300, 2, 1, TalentType.EFFECT), INVINCIBLE(4324, 2, 2, TalentType.EFFECT),
+	INVINCIBLE_MEAL(4191, 3, 3, TalentType.EFFECT), JASMINE_TEA(4309, 2, 1, TalentType.EFFECT), MEAL_SHIELD(4301, 2, 1, TalentType.EFFECT), NO_VIEWRAPE(4344, 3, 3, TalentType.EFFECT),
+	NURTRITIOUS_MEAL(4306, 2, 1, TalentType.EFFECT), OVERLOAD_CHARGE(4624, 2, 2, TalentType.EFFECT), PERSONAL_ATTACK(4427, 2, 1, TalentType.EFFECT), POWERFUL_CALCULATIONS(4299, 2, 1, TalentType.EFFECT),
+	READ_PROFITABLE(4356, 3, 3, TalentType.EFFECT), REVERSE_POLARITY(4330, 3, 3, TalentType.EFFECT), SECRET_LIGHTING(4347, 2, 1, TalentType.EFFECT), SHOCK_BOMB(4220, 2, 1, TalentType.EFFECT),
+	SURVIVAL_VOLITION(4269, 2, 2, TalentType.EFFECT), THORNY_ROSE(4336, 2, 1, TalentType.EFFECT), TREAT_MEAL(4304, 2, 1, TalentType.EFFECT), WANLING_POTION(4359, 3, 3, TalentType.EFFECT),
+	WATER_ISFOOD(4333, 3, 3, TalentType.EFFECT), WITCH_POTION(4486, 2, 2, TalentType.EFFECT), WORD_STUN(4159, 2, 2, TalentType.EFFECT), ANGEL_STANCE(4335, 3, 3, TalentType.MAGIC),
+	BURNING_CURSE(4275, 2, 2, TalentType.MAGIC), DAMAGED_CORE(4355, 2, 1, TalentType.MAGIC), EAT_MIND(4502, 2, 2, TalentType.MAGIC), EXTREME_CASTING(4389, 3, 3, TalentType.MAGIC),
+	FIRE_BALL(4484, 2, 1, TalentType.MAGIC), GAS_SPURT(4625, 2, 2, TalentType.MAGIC), ICE_BREAKING(4123, 2, 1, TalentType.MAGIC), INSINUATION(4479, 2, 1, TalentType.MAGIC),
+	MAGIC_GIRL(4341, 2, 2, TalentType.MAGIC), MAGIC_RECYCLING(4280, 3, 3, TalentType.MAGIC), MORONITY(4349, 3, 3, TalentType.MAGIC), PENETRATING_CAST(4629, 2, 2, TalentType.MAGIC),
+	QUANTUM_HACKING(4423, 2, 2, TalentType.MAGIC), STATIC_LIGHT(4572, 2, 1, TalentType.MAGIC), ALCHEMY_ACCIDENT(4621, 2, 0, TalentType.NEGATIVE), BAT_SERUM(4378, 2, 0, TalentType.NEGATIVE),
+	BONE_FIRE(4443, 2, 0, TalentType.NEGATIVE), BURNOUT_CHAMPION(4403, 2, 0, TalentType.NEGATIVE), CHILL_WATER(4386, 2, 0, TalentType.NEGATIVE), COWBOY(4382, 2, 0, TalentType.NEGATIVE),
+	DEEP_FEAR(4420, 2, 0, TalentType.NEGATIVE), DISASTER_CURSE(4446, 2, 0, TalentType.NEGATIVE), DUMP_TRUCK(4402, 2, 0, TalentType.NEGATIVE), EATER(4372, 2, 0, TalentType.NEGATIVE),
+	ENDLESS_MALICE(4374, 2, 0, TalentType.NEGATIVE), EXPLOSION_MEAL(4384, 2, 0, TalentType.NEGATIVE), FAST_DIE(4411, 2, 0, TalentType.NEGATIVE), FATE_DECISION(4373, 2, 0, TalentType.NEGATIVE),
+	FEEBLE(4375, 2, 0, TalentType.NEGATIVE), FIRE_WOOD(4407, 2, 0, TalentType.NEGATIVE), FULLFIGHTING(4415, 2, 0, TalentType.NEGATIVE), FULLPASSION(4414, 2, 0, TalentType.NEGATIVE),
+	GRASS_MOB(4445, 2, 0, TalentType.NEGATIVE), HANDON_GROUND(4385, 2, 0, TalentType.NEGATIVE), HAND_SLIP(4481, 2, 0, TalentType.NEGATIVE), HUNGRY_GHOST(4574, 2, 0, TalentType.NEGATIVE),
+	JIULONGLA_COFFIN(4381, 2, 0, TalentType.NEGATIVE), JUMP_FACE_SILICONE(4444, 2, 0, TalentType.NEGATIVE), LAND_SWIMMING(4380, 2, 0, TalentType.NEGATIVE), LIFE_SPORT(4387, 2, 0, TalentType.NEGATIVE),
+	MALNUTRITION(4376, 2, 0, TalentType.NEGATIVE), MAL_CURSE(4623, 2, 0, TalentType.NEGATIVE), MAMBA_OUT(4383, 2, 0, TalentType.NEGATIVE), MENTAL_COLLAPSE(4399, 2, 0, TalentType.NEGATIVE),
+	MYOPIA(4379, 2, 0, TalentType.NEGATIVE), OUTCONTROL_MAGIC(4405, 2, 0, TalentType.NEGATIVE), PARASITISM(4401, 2, 0, TalentType.NEGATIVE), PHOTOPHOBY(4404, 2, 0, TalentType.NEGATIVE),
+	SHELL_CRY(4622, 2, 0, TalentType.NEGATIVE), SHORTSIGHTED(4377, 2, 0, TalentType.NEGATIVE), STEAM_BEAN(4620, 2, 0, TalentType.NEGATIVE), THORNS_SPRANG(4413, 2, 0, TalentType.NEGATIVE),
+	UNABLE_REST(4575, 2, 0, TalentType.NEGATIVE), UNAVOIDABLE(4400, 2, 0, TalentType.NEGATIVE), UNBEAR_HUNGER(4409, 2, 0, TalentType.NEGATIVE), UPDRAFT(4422, 2, 0, TalentType.NEGATIVE),
+	USURY(4612, 2, 0, TalentType.NEGATIVE), VIP_MEAL(4410, 2, 0, TalentType.NEGATIVE), WASH_HAND(4412, 2, 0, TalentType.NEGATIVE), WEAKEN_CHALICE(4388, 2, 0, TalentType.NEGATIVE),
+	WINTER_SWIMMING(4406, 2, 0, TalentType.NEGATIVE), CHOCOLATE_COINS(4425, 2, 1, TalentType.OTHER), ENGINEER_REFIT(4284, 2, 2, TalentType.OTHER), FISHING_TIME(4189, 2, 1, TalentType.OTHER),
+	POTENTIAL_1(4369, 2, 1, TalentType.OTHER), POTENTIAL_2(4369, 2, 1, TalentType.OTHER), POTENTIAL_3(4369, 2, 2, TalentType.OTHER), POTENTIAL_4(4369, 2, 2, TalentType.OTHER),
+	POTENTIAL_5(4369, 2, 2, TalentType.OTHER), POTENTIAL_6(4370, 3, 3, TalentType.OTHER), POTENTIAL_7(4370, 3, 3, TalentType.OTHER), POTENTIAL_8(4370, 3, 3, TalentType.OTHER),
+	POTENTIAL_9(4370, 3, 3, TalentType.OTHER), SHARP_HEAD(4366, 3, 3, TalentType.OTHER), SHOOT_SATELLITE(4428, 2, 2, TalentType.OTHER), WAKE_SNAKE(4295, 2, 2, TalentType.OTHER),
+	WATER_GHOST(4345, 2, 1, TalentType.OTHER), BIRTHDAY_GIFT(4364, 3, 3, TalentType.RESOURCE), CHANGQI_BOOKSTORE(4432, 3, 3, TalentType.RESOURCE), COLLECT_PLANTS(4365, 3, 3, TalentType.RESOURCE),
+	DOUBLE_TRINKETS(4188, 3, 3, TalentType.RESOURCE), DUNGEON_HERO(4614, 2, 1, TalentType.RESOURCE), EXPERIENCE_MEAL(4363, 2, 1, TalentType.RESOURCE), EXP_SOLID(4615, 2, 2, TalentType.RESOURCE),
+	FAST_BREAK(4506, 2, 2, TalentType.RESOURCE), GHOST_GIFT(4426, 2, 1, TalentType.RESOURCE), GOLDOFBOOK(4418, 2, 1, TalentType.RESOURCE), GOLD_FORMATION(4316, 3, 3, TalentType.RESOURCE),
+	GOLD_MEAL(4343, 2, 1, TalentType.RESOURCE), ILLUSION_FEED(4221, 2, 1, TalentType.RESOURCE), INSTANT_REFINING(4431, 2, 2, TalentType.RESOURCE), INVISIBILITY_SHADOWS(4276, 2, 1, TalentType.RESOURCE),
+	MILITARY_WATERSKIN(4308, 2, 1, TalentType.RESOURCE), MIRACLE_ALCHEMY(4573, 2, 2, TalentType.RESOURCE), MORE_CHANCE(4288, 2, 2, TalentType.RESOURCE), MORE_TALENT(4155, 2, 1, TalentType.RESOURCE),
+	NOVICE_BENEFITS(4187, 2, 1, TalentType.RESOURCE), PRECIOUS_EXPERIENCE(4281, 2, 2, TalentType.RESOURCE), PREDICTIVE_LOVER(4483, 2, 1, TalentType.RESOURCE), PYROMANIAC(4329, 3, 3, TalentType.RESOURCE),
+	RETURNING_HONOR(4253, 3, 3, TalentType.RESOURCE), SECRET_STASH(4321, 3, 3, TalentType.RESOURCE), SEED_RECYCLING(4395, 2, 2, TalentType.RESOURCE), THRID_HAND(4286, 2, 1, TalentType.RESOURCE),
+	TREASURE_SENSE(4394, 3, 3, TalentType.RESOURCE), WANT_ALL(4157, 2, 2, TalentType.RESOURCE), WEALTH_STATUE(4616, 3, 3, TalentType.RESOURCE), WEAPON_MAKE(4320, 3, 3, TalentType.RESOURCE),
+	ZHUOJUN_BUTCHER(4254, 2, 1, TalentType.RESOURCE), ASCENSION_CURSE(4433, 2, 1, TalentType.SPELL), BLADE_STAR(4497, 3, 3, TalentType.SPELL), CONVERSION_HOLY(4436, 2, 2, TalentType.SPELL),
+	CREDULOUS(4628, 2, 1, TalentType.SPELL), DIVINE_PROTECTION(4434, 2, 2, TalentType.SPELL), DIVINE_STORM(4438, 3, 3, TalentType.SPELL), EQUIPMENT_BLESS(4499, 2, 2, TalentType.SPELL),
+	FOCUS_LIGHT(4489, 2, 1, TalentType.SPELL), GENESIS(4439, 2, 2, TalentType.SPELL), HOLY_GRENADE(4496, 3, 3, TalentType.SPELL), HOTLIGHT(4500, 2, 2, TalentType.SPELL),
+	INDULGENCE(4440, 2, 2, TalentType.SPELL), PURIFYING_EVIL(4437, 3, 3, TalentType.SPELL), RESURRECTION(4442, 3, 3, TalentType.SPELL), REVELATION(4495, 2, 2, TalentType.SPELL),
+	SACRED_BLADE(4498, 3, 3, TalentType.SPELL), SHEPHERD_INTENTION(4435, 2, 1, TalentType.SPELL), SILVER_LANGUAGE(4441, 2, 1, TalentType.SPELL), SPRINT_SPELL(4488, 2, 2, TalentType.SPELL),
+	STRENGTHEN_CHALICE(4318, 2, 2, TalentType.SPELL), THORN_WHIP(4491, 2, 2, TalentType.SPELL), TRAITOROUS_SPELL(4487, 2, 1, TalentType.SPELL), ZHUANYU_SPELL(4490, 3, 3, TalentType.SPELL),
+	ARCANE_CONFLUENCE(4775, 3, 3, TalentType.SUBCLASS), COMBO_FOCUS(4771, 3, 3, TalentType.SUBCLASS), FINE_TASTING(4777, 3, 3, TalentType.SUBCLASS), INNER_PEACE(4796, 3, 3, TalentType.SUBCLASS),
+	LONG_ARM(4774, 3, 3, TalentType.SUBCLASS), RELENTLESS_COMBAT(4772, 3, 3, TalentType.SUBCLASS), SKILLED_PARRY(4793, 3, 3, TalentType.SUBCLASS), WEAPON_ABILITY_MASTER(4792, 3, 3, TalentType.SUBCLASS);
 
 	public static class ImprovisedProjectileCooldown extends FlavourBuff{
 		public int icon() { return BuffIndicator.TIME; }
@@ -916,6 +985,20 @@ public enum Talent {
 		this.maxPoints = maxPoints;
 	}
 
+	//Transformation PD's catalog talents carry their own tier and kind
+	private int fixedTier = -1;
+	private TalentType fixedType = null;
+
+	Talent( int icon, int maxPoints, int tier, TalentType type ){
+		this(icon, maxPoints);
+		this.fixedTier = tier;
+		this.fixedType = type;
+	}
+
+	public boolean isCatalogTalent(){
+		return fixedType != null;
+	}
+
 	public int icon(){
 		if (this == HEROIC_ENERGY){
 			if (Ratmogrify.useRatroicEnergy){
@@ -965,6 +1048,8 @@ public enum Talent {
 				//summoning
 				case CONJURER:
 					return 26;
+				case FREEMAN:
+					return com.shatteredpixel.shatteredpixeldungeon.ui.TalentIcon.TRANSFORMATION_BASE + 510;
 			}
 		} else {
 			return icon;
@@ -1012,12 +1097,14 @@ public enum Talent {
 	}
 
 	public int tier(){
+		if (fixedTier >= 0) return fixedTier;
 		if (tierMap == null) buildTierMap();
 		Integer v = tierMap.get(this);
 		return v == null ? 2 : v;
 	}
 
 	public TalentType type(){
+		if (fixedType != null) return fixedType;
 		if (tierMap == null) buildTierMap();
 		if (tier() == 4) return TalentType.ARMOR;
 		if (subclassTalentSet.contains(this)) return TalentType.SUBCLASS;
@@ -1032,8 +1119,8 @@ public enum Talent {
 	}
 
 	//boss talents (the mod's sublimation slots) are not here
-	public static boolean isBossTalent( Talent t ){ return false; }
-	public static boolean isBossTalentPlaceholder( Talent t ){ return false; }
+	public static boolean isBossTalent( Talent t ){ return t.type() == TalentType.BOSS && !TransformationBossTalents.isSlot(t); }
+	public static boolean isBossTalentPlaceholder( Talent t ){ return TransformationBossTalents.isSlot(t); }
 
 	public String title(){
 		if (this == HEROIC_ENERGY && Ratmogrify.useRatroicEnergy){
@@ -1047,13 +1134,19 @@ public enum Talent {
 	}
 
 	public String desc(boolean metamorphed){
+		String desc = Messages.get(this, name() + ".desc");
 		if (metamorphed){
 			String metaDesc = Messages.get(this, name() + ".meta_desc");
 			if (!metaDesc.equals(Messages.NO_TEXT_FOUND)){
-				return Messages.get(this, name() + ".desc") + "\n\n" + metaDesc;
+				desc += "\n\n" + metaDesc;
 			}
 		}
-		return Messages.get(this, name() + ".desc");
+		//Transformation PD's talents carry a short remark
+		String comment = Messages.get(this, name() + ".comment");
+		if (!comment.equals(Messages.NO_TEXT_FOUND) && !comment.isEmpty()){
+			desc += "\n\n" + comment;
+		}
+		return desc;
 	}
 
 	//---- Transformation PD, the Friar ------------------------------------------------------------
@@ -1119,6 +1212,7 @@ public enum Talent {
 
 	//Transformation PD calls this after every armor ability, boss talents hang off it. None are here yet.
 	public static void onArmorAbility( Hero hero, float chargeUse ){
+		TransformationBossTalents.onArmorAbility(hero);
 	}
 
 	public static boolean canRavensEyeInspect( Hero hero, Item item ){
@@ -1248,6 +1342,7 @@ public enum Talent {
 
 	//called from Hero.damage for every hit, returns the damage left
 	public static int onHeroDamage( Hero hero, int dmg, Object src ){
+		dmg = TransformationTalents.onHeroDamage(hero, dmg, src);
 		if (hero.hasTalent(BULWARK_GREATSHIELD) && src instanceof Char && hasBlockingWeapon(hero)){
 			dmg = Math.round(dmg * (hero.pointsInTalent(BULWARK_GREATSHIELD) == 1 ? 0.90f : 0.85f));
 		}
@@ -1853,6 +1948,7 @@ public enum Talent {
 
 	public static void onTalentUpgraded( Hero hero, Talent talent ){
 		RearrangedTalents.onTalentUpgraded(hero, talent); //rearranged
+		TransformationTalents.onTalentUpgraded(hero, talent);
 		if (talent == MIDAS_TOUCH && hero.hasTalent(MIDAS_TOUCH)){
 			Dungeon.level.drop(new com.shatteredpixel.shatteredpixeldungeon.items.LiquidMetal().quantity(20 * hero.pointsInTalent(MIDAS_TOUCH)), hero.pos).sprite.drop(hero.pos);
 		}
@@ -1967,6 +2063,7 @@ public enum Talent {
 
 	public static void onFoodEaten( Hero hero, float foodVal, Item foodSource ){
 		RearrangedTalents.onFoodEaten(hero, foodVal, foodSource); //rearranged
+		TransformationTalents.onFoodEaten(hero, foodSource);
 		onSlimeFoodEaten(hero);
 		onNinjaFoodEaten(hero, foodSource);
 		onDMFoodEaten(hero);
@@ -2143,6 +2240,7 @@ public enum Talent {
 
 	public static void onPotionUsed( Hero hero, int cell, float factor ){
 		RearrangedTalents.onPotionUsed(hero, cell, factor); //rearranged
+		if (cell != hero.pos) TransformationTalents.onPotionThrown(hero, cell);
 		onSlimePotionUsed(hero, factor);
 		if (hero.hasTalent(LIQUID_BARRIER)){
 			float duration = hero.pointsInTalent(LIQUID_BARRIER) == 1 ? 5f : 10f;
@@ -2227,6 +2325,7 @@ public enum Talent {
 
 	public static void onScrollUsed( Hero hero, int pos, float factor, Class<?extends Item> cls ){
 		RearrangedTalents.onScrollUsed(hero, pos, factor); //rearranged
+		TransformationTalents.onScrollUsed(hero);
 		if (hero.hasTalent(INSCRIBED_POWER)){
 			// 2/3 empowered wand zaps
 			Buff.affect(hero, ScrollEmpower.class).reset((int) (factor * (1 + hero.pointsInTalent(INSCRIBED_POWER))));
@@ -2269,6 +2368,7 @@ public enum Talent {
 	}
 
 	public static void onArtifactUsed( Hero hero ){
+		TransformationBossTalents.onArtifactUsed(hero);
 		if (hero.hasTalent(ENHANCED_RINGS)){
 			Buff.prolong(hero, EnhancedRings.class, 3f*hero.pointsInTalent(ENHANCED_RINGS));
 		}
@@ -2329,6 +2429,7 @@ public enum Talent {
 
 	public static void onItemCollected( Hero hero, Item item ){
 		RearrangedTalents.onItemCollected(hero, item); //rearranged
+		TransformationTalents.onItemCollected(hero, item);
 		if (hero.pointsInTalent(THIEFS_INTUITION) == 2){
 			if (item instanceof Ring) ((Ring) item).setKnown();
 		}
@@ -2427,6 +2528,7 @@ public enum Talent {
 
 		dmg = RearrangedTalents.onAttackProc(hero, enemy, dmg); //rearranged
 
+		dmg = TransformationTalents.onAttackProc(hero, enemy, dmg);
 		return dmg;
 	}
 
@@ -2539,6 +2641,9 @@ public enum Talent {
 			case CONJURER:
 				Collections.addAll(tierTalents, HEARTY_MEAL, EMPOWERING_MEAL, SCHOLARS_INTUITION, NATURES_BOUNTY);
 				break;
+			case FREEMAN:
+				Collections.addAll(tierTalents, POTENTIAL_1, POTENTIAL_2, BOSS_TALENT_SLOT_1, BOSS_TALENT_SLOT_2);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -2606,6 +2711,9 @@ public enum Talent {
 			case CONJURER:
 				Collections.addAll(tierTalents, INVIGORATING_MEAL, LIQUID_NATURE, ARCANE_VISION, HEIGHTENED_SENSES, SHIELD_BATTERY);
 				break;
+			case FREEMAN:
+				Collections.addAll(tierTalents, POTENTIAL_3, POTENTIAL_4, POTENTIAL_5, BOSS_TALENT_SLOT_3, BOSS_TALENT_SLOT_4);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -2671,6 +2779,9 @@ public enum Talent {
 			case CONJURER:
 				Collections.addAll(tierTalents, ALLY_WARP, HOLD_FAST);
 				break;
+			case FREEMAN:
+				Collections.addAll(tierTalents, POTENTIAL_6, POTENTIAL_7, POTENTIAL_8, POTENTIAL_9, BOSS_TALENT_SLOT_5);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -2686,6 +2797,19 @@ public enum Talent {
 
 	public static void initSubclassTalents( Hero hero ){
 		initSubclassTalents( hero.subClass, hero.talents );
+		//transformation, subclass talents swapped by a metamorphosis prism
+		if (hero.talents.size() > 2){
+			LinkedHashMap<Talent, Integer> tier = hero.talents.get(2);
+			for (Talent k : hero.metamorphedTalents.keySet()){
+				Talent v = hero.metamorphedTalents.get(k);
+				if (tier.containsKey(k) && !tier.containsKey(v)){
+					LinkedHashMap<Talent, Integer> newTier = new LinkedHashMap<>();
+					for (Talent t : tier.keySet()) newTier.put(t == k ? v : t, tier.get(t));
+					hero.talents.set(2, newTier);
+					tier = newTier;
+				}
+			}
+		}
 	}
 
 	public static void initSubclassTalents( HeroSubClass cls, ArrayList<LinkedHashMap<Talent, Integer>> talents ){
@@ -2855,6 +2979,15 @@ public enum Talent {
 			replacementsBundle.put(t.name(), hero.metamorphedTalents.get(t));
 		}
 		bundle.put("replacements", replacementsBundle);
+
+		//transformation, negative talents are kept with the tier they sit in
+		Bundle negBundle = new Bundle();
+		for (int i = 0; i < MAX_TALENT_TIERS; i++){
+			for (Talent t : hero.talents.get(i).keySet()){
+				if (t.type() == TalentType.NEGATIVE) negBundle.put(t.name(), i);
+			}
+		}
+		bundle.put("negative_talents", negBundle);
 	}
 
 	private static final HashSet<String> removedTalents = new HashSet<>();
@@ -2887,6 +3020,20 @@ public enum Talent {
 		if (hero.heroClass != null)     initClassTalents(hero);
 		if (hero.subClass != null)      initSubclassTalents(hero);
 		if (hero.armorAbility != null)  initArmorTalents(hero);
+
+		//transformation, negative talents from the Cursed talents challenge
+		if (bundle.contains("negative_talents")){
+			Bundle neg = bundle.getBundle("negative_talents");
+			for (String key : neg.getKeys()){
+				try {
+					Talent t = Talent.valueOf(key);
+					int tier = neg.getInt(key);
+					if (tier >= 0 && tier < hero.talents.size()) hero.talents.get(tier).put(t, 0);
+				} catch (Exception e) {
+					ShatteredPixelDungeon.reportException(e);
+				}
+			}
+		}
 
 		for (int i = 0; i < MAX_TALENT_TIERS; i++){
 			LinkedHashMap<Talent, Integer> tier = hero.talents.get(i);

@@ -44,7 +44,7 @@ public class LandPiranha extends Mob{
     @Override
     public float speed() {
         float speed=super.speed();
-        if(true ){
+        if(com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.landSwimming() != 2){
             speed*=0.5f;
         }
         return speed * AscensionChallenge.enemySpeedModifier(this);
@@ -52,7 +52,7 @@ public class LandPiranha extends Mob{
 
     @Override
     protected boolean act() {
-        if ((!Dungeon.level.water[pos] || flying) && true){
+        if ((!Dungeon.level.water[pos] || flying) && com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.landSwimming() == 0){
             dieOnLand();
             return true;
         } else {
@@ -84,7 +84,7 @@ public class LandPiranha extends Mob{
     @Override
     public void damage( int dmg, Object src ) {
 		DamageTag[] damageTags = new DamageTag[0];
-        if(false){
+        if(com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.fishingTime() > 0){
             dmg*=1.3;
         }
         super.damage( dmg, src );

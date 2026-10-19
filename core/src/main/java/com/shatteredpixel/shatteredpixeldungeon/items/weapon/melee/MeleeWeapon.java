@@ -187,7 +187,8 @@ public class MeleeWeapon extends Weapon {
 		return hero != null
 				&& (hero.heroClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.DUELIST
 				|| hero.subClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.CHAMPION
-				|| hero.hasMartialMastery());
+				|| hero.hasMartialMastery()
+				|| hero.hasTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.MARTIAL_TRAIN));
 	}
 
 	public String abilityName() {
@@ -289,6 +290,7 @@ public class MeleeWeapon extends Weapon {
 
 	public void beforeAbilityUsed(Hero hero, Char target){
 		hero.belongings.abilityWeapon = this;
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onWeaponAbility(hero); //transformation, Skilled Parry
 		Charger charger = Buff.affect(hero, Charger.class);
 
 		charger.partialCharge -= abilityChargeUse(hero, target);
@@ -587,7 +589,7 @@ public class MeleeWeapon extends Weapon {
 
 					//40 to 30 turns per charge for champion
 					if (Dungeon.hero.subClass == HeroSubClass.CHAMPION){
-						chargeToGain *= 1.5f;
+						chargeToGain *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.championRechargeBonus(Dungeon.hero); //transformation, Weapon Ability Master
 					}
 
 					//50% slower charge gain with brawler's stance enabled, even if buff is inactive
@@ -635,9 +637,15 @@ public class MeleeWeapon extends Weapon {
 		}
 
 		public int chargeCap(){
+			//Transformation PD's Martial Train, a small pool for heroes that only have the talent
+			if (Dungeon.hero.heroClass != com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.DUELIST
+					&& Dungeon.hero.subClass != HeroSubClass.CHAMPION && !Dungeon.hero.hasMartialMastery()
+					&& Dungeon.hero.hasTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.MARTIAL_TRAIN)){
+				return 1 + Dungeon.hero.pointsInTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.MARTIAL_TRAIN);
+			}
 			//caps at level 19 with 8 or 10 charges
 			if (Dungeon.hero.subClass == HeroSubClass.CHAMPION){
-				return Math.min(10, 4 + (Dungeon.hero.lvl - 1) / 3);
+				return Math.min(10, 4 + (Dungeon.hero.lvl - 1) / 3) + com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.championChargeBonus(Dungeon.hero);
 			} else {
 				return Math.min(8, 2 + (Dungeon.hero.lvl - 1) / 3);
 			}

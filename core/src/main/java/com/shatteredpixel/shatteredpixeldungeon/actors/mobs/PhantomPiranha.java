@@ -57,7 +57,8 @@ public class PhantomPiranha extends Piranha {
 		}
 		super.damage(dmg, src);
 
-		if (isAlive() && !(src instanceof Corruption)) {
+		//Transformation PD, Fishing Time +2 keeps it from teleporting
+		if (isAlive() && !(src instanceof Corruption) && com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.fishingTime() < 2) {
 			if (dmgSource != null) {
 				if (!Dungeon.level.adjacent(pos, dmgSource.pos)) {
 					ArrayList<Integer> candidates = new ArrayList<>();

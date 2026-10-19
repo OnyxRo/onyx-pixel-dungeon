@@ -130,6 +130,7 @@ public class CrystalChoiceRoom extends SpecialRoom {
 		chest.autoExplored = true;
 
 		level.addItemToSpawn( new CrystalKey( Dungeon.depth ) );
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.wantAll(2)) level.addItemToSpawn( new CrystalKey( Dungeon.depth ) ); //transformation, Want All
 
 		entrance().set( Door.Type.LOCKED );
 		level.addItemToSpawn( new IronKey( Dungeon.depth ) );

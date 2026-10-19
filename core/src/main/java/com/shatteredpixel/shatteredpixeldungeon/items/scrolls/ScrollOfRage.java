@@ -47,6 +47,7 @@ public class ScrollOfRage extends Scroll {
 			mob.beckon( curUser.pos );
 			if (mob.alignment != Char.Alignment.ALLY && Dungeon.level.heroFOV[mob.pos]) {
 				Buff.prolong(mob, Amok.class, 5f);
+				com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onRageRead(mob); //transformation, Personal Attack
 			}
 		}
 

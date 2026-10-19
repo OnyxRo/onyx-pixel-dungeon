@@ -758,8 +758,18 @@ public class AlchemyScene extends PixelScene {
 		Sample.INSTANCE.play( Assets.Sounds.PUFF );
 
 		int resultQuantity = result.quantity();
+		//transformation, Miracle Alchemy makes a second one
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.miracleAlchemy() && result.isUpgradable() == false && !result.unique){
+			com.shatteredpixel.shatteredpixeldungeon.items.Item extra = com.watabou.utils.Reflection.newInstance(result.getClass());
+			if (extra != null && !extra.collect()) Dungeon.level.drop(extra, Dungeon.hero.pos);
+		}
 		if (!result.collect()){
 			Dungeon.level.drop(result, Dungeon.hero.pos);
+		}
+		//transformation, Alchemy Accident
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.alchemyAccident()){
+			com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero.damage(Math.max(1, Dungeon.hero.HT/8), new com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb());
+			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.n(com.shatteredpixel.shatteredpixeldungeon.messages.Messages.get(com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.class, "alchemy_accident"));
 		}
 
 		Statistics.itemsCrafted++;

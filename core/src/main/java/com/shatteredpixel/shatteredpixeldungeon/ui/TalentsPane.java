@@ -76,7 +76,8 @@ public class TalentsPane extends ScrollPane {
 					&& Dungeon.hero.lvl+1 >= Talent.tierLevelThresholds[tiersAvailable+1]){
 				tiersAvailable++;
 			}
-			if (tiersAvailable > 2 && Dungeon.hero.subClass == HeroSubClass.NONE){
+			if (tiersAvailable > 2 && Dungeon.hero.subClass == HeroSubClass.NONE
+					&& Dungeon.hero.heroClass != com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.FREEMAN){
 				tiersAvailable = 2;
 			} else if (tiersAvailable > 3 && Dungeon.hero.armorAbility == null){
 				tiersAvailable = 3;
@@ -307,37 +308,23 @@ public class TalentsPane extends ScrollPane {
 				random.setRect(width - 16, y-2, 16, 14);
 			}
 
-			//rearranged, a tier with seven talents or more (Re-ARranged's subclasses have ten) takes two rows
-			if (buttons.size() >= 7) {
-				int placed = 0;
-				int firstRow = Math.round(buttons.size() / 2f);
-				boolean odd = (buttons.size() % 2 == 1);
-				float gap = (width - firstRow * TalentButton.WIDTH) / (firstRow + 1);
+			//transformation, tiers with many talents (the Freeman, cursed talents) wrap into more rows
+			int perRow = Math.max(1, Math.min(buttons.size(), (int)(width / (TalentButton.WIDTH + 2))));
+			float rowTop = title.bottom() + 4;
+			for (int start = 0; start < buttons.size(); start += perRow){
+				int inRow = Math.min(perRow, buttons.size() - start);
+				float gap = (width - inRow*TalentButton.WIDTH)/(inRow+1);
 				left = x + gap;
-				float secondLeft = odd ? x + 1.5f * gap + TalentButton.WIDTH / 2f : x + gap;
-				for (TalentButton btn : buttons) {
-					if (placed < firstRow) {
-						btn.setPos(left, title.bottom() + 4);
-						left += btn.width() + gap;
-					} else {
-						btn.setPos(secondLeft, title.bottom() + 4 + TalentButton.HEIGHT + 4);
-						secondLeft += btn.width() + gap;
-					}
+				for (int i = start; i < start + inRow; i++){
+					TalentButton btn = buttons.get(i);
+					btn.setPos(left, rowTop);
 					PixelScene.align(btn);
-					placed++;
+					left += btn.width() + gap;
 				}
-				height = buttons.get(buttons.size()-1).bottom() - y;
-			} else {
-			float gap = (width - buttons.size()*TalentButton.WIDTH)/(buttons.size()+1);
-			left = x + gap;
-			for (TalentButton btn : buttons){
-				btn.setPos(left, title.bottom() + 4);
-				PixelScene.align(btn);
-				left += btn.width() + gap;
+				rowTop += TalentButton.HEIGHT + 2;
 			}
 
-			height = buttons.get(0).bottom() - y;
-			}
+			height = buttons.get(buttons.size()-1).bottom() - y;
 
 		}
 

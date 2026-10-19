@@ -281,8 +281,9 @@ public class Goo extends Mob {
 
 	@Override
 	public void die( Object cause ) {
-		
+
 		super.die( cause );
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationBossTalents.dropSublimation("GOO", pos); //transformation
 		
 		Dungeon.level.unseal();
 		

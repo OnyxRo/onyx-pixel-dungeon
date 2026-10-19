@@ -150,6 +150,16 @@ public class HolyTome extends Artifact {
 		}
 	}
 
+	//transformation, the rubbings tome casts through a hidden holy tome of its own
+	public void getCharge(){
+		this.level(10);
+		this.charge = 10;
+	}
+
+	public boolean triggersArtifactTalents(){
+		return true;
+	}
+
 	public boolean canCast( Hero hero, ClericSpell spell ){
 		return (isEquipped(hero) || (Dungeon.hero.hasTalent(Talent.LIGHT_READING) && hero.belongings.contains(this)))
 				&& hero.buff(MagicImmune.class) == null

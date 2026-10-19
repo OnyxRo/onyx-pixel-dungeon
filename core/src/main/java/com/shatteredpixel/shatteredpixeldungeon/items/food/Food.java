@@ -153,10 +153,11 @@ public class Food extends Item {
 			|| Dungeon.hero.hasTalent(Talent.NATURES_MEAL)
 			|| Dungeon.hero.hasTalent(Talent.IMPREGNABLE_MEAL)
 			|| Dungeon.hero.hasTalent(Talent.HEALING_MEAL)
-			|| Dungeon.hero.hasTalent(Talent.FIGHTING_MEAL)){
-			return TIME_TO_EAT - 2;
+			|| Dungeon.hero.hasTalent(Talent.FIGHTING_MEAL)
+			|| com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.fastMeal(Dungeon.hero)){
+			return com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.eatingTime(Dungeon.hero, TIME_TO_EAT - 2);
 		} else {
-			return TIME_TO_EAT;
+			return com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.eatingTime(Dungeon.hero, TIME_TO_EAT);
 		}
 	}
 	
@@ -173,7 +174,7 @@ public class Food extends Item {
 	}
 
 	protected void satisfy( Hero hero ){
-		float foodVal = energy;
+		float foodVal = com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.foodValue(hero, this, energy); //transformation
 		if (hero.hasTalent(Talent.VEGETARIANISM)){
 			if (isVegetarianFood()){
 				foodVal *= 2f;

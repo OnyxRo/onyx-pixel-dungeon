@@ -234,7 +234,8 @@ public class GreatShoper extends Mob implements MagicalRangedAttack {
                 mob = new DwarfKing.DKMonk();
                 break;
         }
-        int pos1 =((CityBossLevel)Dungeon.level).getSummoningPos1();
+        //transformation, away from the city arena the minions appear next to the shopper
+        int pos1 = Dungeon.level instanceof CityBossLevel ? ((CityBossLevel)Dungeon.level).getSummoningPos1() : summonCellNearby();
         if(pos1 == -1){
             return;
         }
@@ -472,9 +473,17 @@ public class GreatShoper extends Mob implements MagicalRangedAttack {
 
     }
 
+    private int summonCellNearby(){
+        for (int i : com.watabou.utils.PathFinder.NEIGHBOURS8){
+            int c = pos + i;
+            if (Dungeon.level.passable[c] && Actor.findChar(c) == null) return c;
+        }
+        return -1;
+    }
+
     @Override
     public void die(Object cause) {
-        Statistics.bossScores[6] +=10000;
+        if (Statistics.bossScores.length > 6) Statistics.bossScores[6] +=10000; //transformation, the mod kept more boss scores
         yell(Messages.get(this, "die"));
         Dungeon.level.reunseal();
         GameScene.bossSlain();

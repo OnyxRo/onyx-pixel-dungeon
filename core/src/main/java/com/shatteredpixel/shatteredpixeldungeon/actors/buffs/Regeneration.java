@@ -102,6 +102,8 @@ public class Regeneration extends Buff {
 
 				//Ryuse's PD helmets
 				delay *= com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.regenDelay(target);
+				//transformation, Strengthen Chalice and Weaken Chalice
+				if (chaliceLevel >= 0 && target instanceof com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero) delay *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.chaliceFactor((com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero) target);
 
 				//rearranged, the Medic's Strong Healpower
 				if (target instanceof com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero

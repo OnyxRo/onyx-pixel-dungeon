@@ -42,6 +42,7 @@ public class Light extends FlavourBuff {
 				target.viewDistance = Math.max( Dungeon.level.viewDistance, DISTANCE );
 				Dungeon.observe();
 			}
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onLightGained(target); //transformation, Holy Faith
 			return true;
 		} else {
 			return false;

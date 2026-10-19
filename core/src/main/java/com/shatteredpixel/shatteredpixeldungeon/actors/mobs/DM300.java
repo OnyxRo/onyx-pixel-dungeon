@@ -576,6 +576,7 @@ public class DM300 extends Mob {
 
 		GameScene.bossSlain();
 		Badges.validateDM400Unlock(); //Transformation PD
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationBossTalents.dropSublimation("DM300", pos); //transformation
 		Dungeon.level.unseal();
 
 		//60% chance of 2 shards, 30% chance of 3, 10% chance for 4. Average of 2.5

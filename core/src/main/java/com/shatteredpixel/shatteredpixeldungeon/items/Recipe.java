@@ -231,6 +231,9 @@ public abstract class Recipe {
 		new com.shatteredpixel.shatteredpixeldungeon.items.spells.RapidGrowth.Recipe(),
 		new com.shatteredpixel.shatteredpixeldungeon.items.spells.ElectricityImbue.Recipe(),
 		new com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion.PotionToPill(),
+		//transformation
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.TransformSpell.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.MetamorphosisPrism.Recipe(),
 	};
 	
 	private static Recipe[] twoIngredientRecipes = new Recipe[]{
@@ -296,6 +299,8 @@ public abstract class Recipe {
 		new com.shatteredpixel.shatteredpixeldungeon.items.food.DanishPastry.Recipe(),
 		new com.shatteredpixel.shatteredpixeldungeon.items.food.CakeBase.Recipe(),
 		new com.shatteredpixel.shatteredpixeldungeon.items.food.ChocolateCake.Recipe(),
+		//transformation, two scrolls and a stylus
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.RubbingsTome.Recipe(),
 	};
 	
 	public static ArrayList<Recipe> findRecipes(ArrayList<Item> ingredients){

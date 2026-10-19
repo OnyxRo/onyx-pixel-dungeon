@@ -51,7 +51,34 @@ public class ScrollOfSublimation extends Item {
 			((HeroSprite) hero.sprite).read();
 			Sample.INSTANCE.play(Assets.Sounds.READ);
 			detach(hero.belongings.backpack);
-			hero.HT += 10;
+			//transformation, a hero with the matching boss talent slot picks a talent of that boss
+			if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationBossTalents.canSublimate(hero, type)){
+				final Hero reader = hero;
+				final com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent[] options = com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationBossTalents.talentsFor(type);
+				String[] names = new String[options.length];
+				for (int i = 0; i < options.length; i++) names[i] = com.shatteredpixel.shatteredpixeldungeon.messages.Messages.titleCase(options[i].title());
+				com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene.show(new com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions(
+						new com.shatteredpixel.shatteredpixeldungeon.ui.TalentIcon(options[0]),
+						com.shatteredpixel.shatteredpixeldungeon.messages.Messages.get(ScrollOfSublimation.class, "choose_title"),
+						com.shatteredpixel.shatteredpixeldungeon.messages.Messages.get(ScrollOfSublimation.class, "choose_desc2"), names){
+					@Override
+					protected void onSelect(int index){
+						com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationBossTalents.fillSlot(reader, type, options[index]);
+						com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.onTalentUpgraded(reader, null);
+					}
+					@Override
+					protected boolean hasInfo(int index){ return true; }
+					@Override
+					protected void onInfo(int index){
+						com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene.show(new com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoTalent(options[index], 0, null));
+					}
+					@Override
+					public void onBackPressed(){}
+				});
+				return;
+			}
+			hero.HTBoost += 10;
+			hero.updateHT(true);
 			hero.HP = hero.HT;
 			new Flare(6, 32).color(0xFFFF44, true).show(hero.sprite, 2f);
 			GLog.p("Your health grows.");

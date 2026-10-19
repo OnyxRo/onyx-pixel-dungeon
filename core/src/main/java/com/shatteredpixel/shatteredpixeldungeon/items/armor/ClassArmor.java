@@ -171,6 +171,9 @@ abstract public class ClassArmor extends Armor {
 			case CONJURER:
 				classArmor = new ConjurerClassArmor();
 				break;
+			case FREEMAN:
+				classArmor = new FreemanArmor();
+				break;
 		}
 		
 		classArmor.level(armor.trueLevel());

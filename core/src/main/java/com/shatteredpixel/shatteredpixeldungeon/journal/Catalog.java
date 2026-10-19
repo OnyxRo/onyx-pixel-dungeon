@@ -1125,6 +1125,11 @@ public enum Catalog {
 		THROWN_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnive2.class);
 		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.abilities.SpectralBlades.class);
 		ARMOR.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.ConjurerClassArmor.class);
+		//transformation
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.TransformSpell.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.MetamorphosisPrism.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.RubbingsTome.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.ScrollOfSublimation.class);
 
 
 	}

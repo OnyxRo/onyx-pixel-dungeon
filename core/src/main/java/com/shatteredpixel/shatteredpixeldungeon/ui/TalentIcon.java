@@ -36,13 +36,25 @@ public class TalentIcon extends Image {
 		this(talent.icon());
 	}
 
+	//Transformation PD's talent catalog, icons from 4096 up come from the mod's own sheet
+	public static final int TRANSFORMATION_BASE = 4096;
+	private static TextureFilm transFilm;
+
 	public TalentIcon(int icon){
-		super( icon >= 10000 ? Assets.Interfaces.RA_TALENT_ICONS : Assets.Interfaces.TALENT_ICONS );
+		super( icon >= 10000 ? Assets.Interfaces.RA_TALENT_ICONS
+				: icon >= TRANSFORMATION_BASE ? Assets.Interfaces.TALENT_ICONS_TRANSFORMATION : Assets.Interfaces.TALENT_ICONS );
 
 		//rearranged, icons of 10000 and up come from Re-ARranged PD's own sheet
 		if (icon >= 10000){
 			if (raFilm == null) raFilm = new TextureFilm(texture, SIZE, SIZE);
 			frame(raFilm.get(icon - 10000));
+			return;
+		}
+
+		//transformation, icons from 4096 come from Transformation PD's sheet
+		if (icon >= TRANSFORMATION_BASE){
+			if (transFilm == null) transFilm = new TextureFilm(texture, SIZE, SIZE);
+			frame(transFilm.get(icon - TRANSFORMATION_BASE));
 			return;
 		}
 

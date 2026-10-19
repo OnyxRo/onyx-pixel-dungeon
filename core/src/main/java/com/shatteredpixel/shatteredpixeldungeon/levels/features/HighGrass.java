@@ -79,6 +79,8 @@ public class HighGrass {
 				Level.set(pos, Terrain.GRASS);
 			}
 			
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onGrassTrampled(pos, ch); //transformation
+
 			int naturalismLevel = 0;
 			
 			if (ch != null) {

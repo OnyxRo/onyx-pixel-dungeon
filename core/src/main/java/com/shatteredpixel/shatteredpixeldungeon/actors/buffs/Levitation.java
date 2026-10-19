@@ -44,6 +44,7 @@ public class Levitation extends FlavourBuff {
 		if (super.attachTo( target )) {
 			target.flying = true;
 			Roots.detach( target, Roots.class );
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onLevitationStart(target); //transformation, Updraft
 			return true;
 		} else {
 			return false;
@@ -54,6 +55,7 @@ public class Levitation extends FlavourBuff {
 	public void detach() {
 		target.flying = false;
 		super.detach();
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onLevitationEnd(target); //transformation, Hand On Ground
 		//only press tiles if we're current in the game screen
 		if (ShatteredPixelDungeon.scene() instanceof GameScene) {
 			Dungeon.level.occupyCell(target );

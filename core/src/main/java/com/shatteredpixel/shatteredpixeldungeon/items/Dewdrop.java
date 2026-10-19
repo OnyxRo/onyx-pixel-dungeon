@@ -56,6 +56,7 @@ public class Dewdrop extends Item {
 		Catalog.setSeen(getClass());
 		Statistics.itemTypesDiscovered.add(getClass());
 		
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onDewCollected(hero); //transformation
 		if (flask != null && !flask.isFull()){
 
 			flask.collectDew( this );

@@ -2590,6 +2590,15 @@ public class ItemSpriteSheet {
 		assignItemRect(HALLS_PAGE,  10, 11);
 	}
 
+	//transformation, Transformation PD items, rows 192 to 207 of items.png
+	private static final int TRANSFORMATION_ITEMS = xy(1, 193);
+	public static final int METAMORPH_PRISM = TRANSFORMATION_ITEMS+0;
+	public static final int RUBBINGSTOME    = TRANSFORMATION_ITEMS+1;
+	static{
+		assignItemRect(METAMORPH_PRISM, 10, 15);
+		assignItemRect(RUBBINGSTOME, 14, 16);
+	}
+
 	//for smaller 8x8 icons that often accompany an item sprite
 	public static class Icons {
 

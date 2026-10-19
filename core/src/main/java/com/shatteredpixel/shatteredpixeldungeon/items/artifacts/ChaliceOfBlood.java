@@ -117,11 +117,11 @@ public class ChaliceOfBlood extends Artifact {
 	}
 
 	private int minPrickDmg(){
-		return (int)Math.ceil(3 + 2.5f*(level()*level()));
+		return (int)Math.ceil((3 + 2.5f*(level()*level())) * com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.chalicePrickFactor());
 	}
 
 	private int maxPrickDmg(){
-		return (int)Math.floor(7 + 3.5f*(level()*level()));
+		return (int)Math.floor((7 + 3.5f*(level()*level())) * com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.chalicePrickFactor());
 	}
 
 	private void prick(Hero hero){

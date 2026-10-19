@@ -59,7 +59,7 @@ public class Fire extends Blob {
 
 					burn( cell );
 
-					fire = cur[cell] - 1;
+					fire = com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.fireNeverDies() ? cur[cell] : cur[cell] - 1; //transformation, Bone Fire
 					if (fire <= 0 && flamable[cell]) {
 
 						Dungeon.level.destroy( cell );
