@@ -56,9 +56,9 @@ public class WandOfCorrosion extends Wand {
 
 	@Override
 	public void onZap(Ballistica bolt) {
-		CorrosiveGas gas = Blob.seed(bolt.collisionPos, 50 + 10 * buffedLvl(), CorrosiveGas.class);
+		CorrosiveGas gas = Blob.seed(bolt.collisionPos, com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.corrosionVolume(50 + 10 * buffedLvl()), CorrosiveGas.class); //transformation, Disability Poison
 		CellEmitter.get(bolt.collisionPos).burst(Speck.factory(Speck.CORROSION), 10 );
-		gas.setStrength(2 + buffedLvl(), getClass());
+		gas.setStrength(2 + buffedLvl() + com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.corrosionStrength(), getClass());
 		GameScene.add(gas);
 		Sample.INSTANCE.play(Assets.Sounds.GAS);
 

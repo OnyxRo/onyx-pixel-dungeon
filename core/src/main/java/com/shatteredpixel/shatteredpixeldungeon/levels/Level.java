@@ -1604,6 +1604,7 @@ public abstract class Level implements Bundlable {
 			}
 			
 			ShadowCaster.castShadow( cx, cy, width(), fieldOfView, blocking, Math.round(viewDist) );
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.falconEye(this, c, fieldOfView, viewDist); //transformation, Falcon Eye
 		} else {
 			BArray.setFalse(fieldOfView);
 		}

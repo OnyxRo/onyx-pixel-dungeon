@@ -260,6 +260,7 @@ public enum Rankings {
 					+ Statistics.totalBossScore + Statistics.totalQuestScore;
 
 		Statistics.totalScore *= Statistics.winMultiplier * Statistics.chalMultiplier;
+		Statistics.totalScore *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.scoreMultiplier(); //transformation, Heavy Burden
 
 		return Statistics.totalScore;
 	}

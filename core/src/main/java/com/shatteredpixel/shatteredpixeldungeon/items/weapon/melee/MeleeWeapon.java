@@ -137,7 +137,8 @@ public class MeleeWeapon extends Weapon {
 				//do nothing
 			} else if (STRReq() > hero.STR()){
 				GLog.w(Messages.get(this, "ability_low_str"));
-			} else if ((Buff.affect(hero, Charger.class).charges + Buff.affect(hero, Charger.class).partialCharge) < abilityChargeUse(hero, null)) {
+			} else if ((Buff.affect(hero, Charger.class).charges + Buff.affect(hero, Charger.class).partialCharge) < abilityChargeUse(hero, null)
+					&& !com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.yinYangCovers(hero, Buff.affect(hero, Charger.class).charges + Buff.affect(hero, Charger.class).partialCharge, abilityChargeUse(hero, null))) { //transformation, Yin Yang Balance
 				GLog.w(Messages.get(this, "ability_no_charge"));
 			} else {
 
@@ -298,6 +299,7 @@ public class MeleeWeapon extends Weapon {
 			charger.charges--;
 			charger.partialCharge++;
 		}
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.yinYangPay(hero, charger); //transformation, Yin Yang Balance
 
 		if (hero.heroClass == HeroClass.DUELIST
 				&& hero.hasTalent(Talent.AGGRESSIVE_BARRIER)

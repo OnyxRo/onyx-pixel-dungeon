@@ -177,6 +177,7 @@ public class MasterThievesArmband extends Artifact {
 								Buff.affect(ch, StolenTracker.class).setItemStolen(false);
 							}
 
+							debuffDuration = com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.armbandSteal(curUser, debuffDuration); //transformation, Strength Armband
 							Buff.prolong(ch, Blindness.class, debuffDuration);
 							Buff.prolong(ch, Cripple.class, debuffDuration);
 
@@ -277,7 +278,7 @@ public class MasterThievesArmband extends Artifact {
 			if (charge < chargeCap){
 				//3 charges per hero lvl at +0, scaling to 4.5 per lvl at +10
 				float chargeGain = (3f + 0.15f*level()) * levelPortion;
-				chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);
+				chargeGain *= RingOfEnergy.artifactChargeMultiplier(target) * com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.artifactBoost(MasterThievesArmband.this); //transformation, Strength Armband
 
 				partialCharge += chargeGain;
 				while (partialCharge > 1f){
@@ -297,7 +298,7 @@ public class MasterThievesArmband extends Artifact {
 		}
 		
 		public boolean steal(Item item){
-			int chargesUsed = chargesToUse(item);
+			int chargesUsed = com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.armbandShopCharges(chargesToUse(item)); //transformation, Strength Armband
 			float stealChance = stealChance(item);
 			if (Random.Float() > stealChance){
 				return false;

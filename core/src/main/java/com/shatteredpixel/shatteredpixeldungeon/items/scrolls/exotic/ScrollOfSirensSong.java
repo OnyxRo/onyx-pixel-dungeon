@@ -129,6 +129,16 @@ public class ScrollOfSirensSong extends ExoticScroll {
 			announced = true;
 		}
 
+		//transformation, an enthralled creature loses the Necronomicon's soul bound mark
+		@Override
+		public boolean attachTo(com.shatteredpixel.shatteredpixeldungeon.actors.Char target) {
+			if (super.attachTo(target)) {
+				if (target instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob) com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Necronomicon.clearSoulBound((com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob) target);
+				return true;
+			}
+			return false;
+		}
+
 		@Override
 		public void fx(boolean on) {
 			if (on) target.sprite.add(CharSprite.State.HEARTS);

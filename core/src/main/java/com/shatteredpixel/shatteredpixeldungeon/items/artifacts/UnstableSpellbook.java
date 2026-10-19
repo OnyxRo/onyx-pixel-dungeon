@@ -143,7 +143,7 @@ public class UnstableSpellbook extends Artifact {
 
 		Scroll scroll;
 		do {
-			scroll = (Scroll) Generator.randomUsingDefaults(Generator.Category.SCROLL);
+			scroll = com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.spellbookScroll((Scroll) Generator.randomUsingDefaults(Generator.Category.SCROLL)); //transformation, Strength Book
 		} while (scroll == null
 				//reduce the frequency of these scrolls by half
 				||((scroll instanceof ScrollOfIdentify ||
@@ -349,7 +349,7 @@ public class UnstableSpellbook extends Artifact {
 					&& Regeneration.regenOn()) {
 				//120 turns to charge at full, 80 turns to charge at 0/8
 				float chargeGain = 1 / (120f - (chargeCap - charge)*5f);
-				chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);
+				chargeGain *= RingOfEnergy.artifactChargeMultiplier(target) * com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.artifactBoost(UnstableSpellbook.this); //transformation, Strength Book
 				partialCharge += chargeGain;
 
 				while (partialCharge >= 1) {

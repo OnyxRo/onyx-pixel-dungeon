@@ -413,7 +413,7 @@ public abstract class Mob extends Char {
 						&& mob.paralysed <= 0
 						&& Dungeon.level.distance(pos, mob.pos) <= range
 						&& mob.state != mob.HUNTING) {
-					mob.beckon(	enemy.pos);
+					if (!com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.noMoreMob(mob)) mob.beckon(	enemy.pos); //transformation, No More Mob
 				}
 			}
 			Buff.affect( Dungeon.hero, SwarmIntelTracker.class );
@@ -683,6 +683,7 @@ public abstract class Mob extends Char {
 		if (Dungeon.level.adjacent( pos, enemy.pos )){
 			return true;
 		}
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.phaseclawReach(this, enemy)) return true; //transformation, Phaseclaw
 		for (ChampionEnemy buff : buffs(ChampionEnemy.class)){
 			if (buff.canAttackWithExtraReach( enemy )){
 				return true;
@@ -1205,6 +1206,8 @@ public abstract class Mob extends Char {
 	
 	@Override
 	public void die( Object cause ) {
+
+		if (com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Necronomicon.resolveSoulBoundDeath(this, cause) == com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Necronomicon.SoulBoundDeathResult.INTERCEPTED_DEATH) return; //transformation, the Necronomicon
 
 		com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedChar.onMobDeath(this, cause); //rearranged
 

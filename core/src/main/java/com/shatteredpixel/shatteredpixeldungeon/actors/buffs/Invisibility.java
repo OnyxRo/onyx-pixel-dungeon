@@ -112,7 +112,7 @@ public class Invisibility extends FlavourBuff {
 		}
 
 		Swiftthistle.TimeBubble bubble =  ch.buff( Swiftthistle.TimeBubble.class );
-		if (bubble != null){
+		if (bubble != null && !com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.bubbleSurvives(ch, bubble)){ //transformation, Swift Church
 			bubble.detach();
 		}
 

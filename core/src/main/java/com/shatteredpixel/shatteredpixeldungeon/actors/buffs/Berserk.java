@@ -133,7 +133,7 @@ public class Berserk extends ShieldBuff implements ActionIndicator.Action {
 			if (powerLossBuffer > 0){
 				powerLossBuffer--;
 			} else {
-				power -= GameMath.gate(0.1f, power, 1f) * 0.05f * Math.pow((target.HP / (float) target.HT), 2);
+				if (!com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.ceaselessRage(target, power)) power -= GameMath.gate(0.1f, power, 1f) * 0.05f * Math.pow((target.HP / (float) target.HT), 2); //transformation, Ceaseless Rage
 
 				if (power < 1f){
 					ActionIndicator.clearAction(this);
@@ -233,6 +233,15 @@ public class Berserk extends ShieldBuff implements ActionIndicator.Action {
 		return baseShield*3;
 	}
 	
+	//transformation, the rage and state for Transformation PD's Berserker talents
+	public float rage(){ return power; }
+	public boolean raging(){ return state == State.BERSERK; }
+	public void addRage(float r){
+		if (state != State.NORMAL || r <= 0) return;
+		power = Math.min(1f + 0.1667f*((Hero)target).pointsInTalent(Talent.ENDLESS_RAGE), power + r);
+		if (power >= 1f) ActionIndicator.setAction(this);
+	}
+
 	public void damage(int damage){
 		if (state != State.NORMAL) return;
 		float maxPower = 1f + 0.1667f*((Hero)target).pointsInTalent(Talent.ENDLESS_RAGE);

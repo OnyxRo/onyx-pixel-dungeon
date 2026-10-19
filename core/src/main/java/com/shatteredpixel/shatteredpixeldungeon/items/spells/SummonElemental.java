@@ -253,5 +253,19 @@ public class SummonElemental extends Spell {
 			outQuantity = OUT_QUANTITY;
 		}
 
+		//transformation, Hardware Elements keeps the embers and needs more energy
+		@Override
+		public int cost(java.util.ArrayList<com.shatteredpixel.shatteredpixeldungeon.items.Item> ingredients) {
+			return com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.hardwareCost(super.cost(ingredients));
+		}
+
+		@Override
+		public com.shatteredpixel.shatteredpixeldungeon.items.Item brew(java.util.ArrayList<com.shatteredpixel.shatteredpixeldungeon.items.Item> ingredients) {
+			if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.hardwareKeepsEmbers() && testIngredients(ingredients)) {
+				for (com.shatteredpixel.shatteredpixeldungeon.items.Item i : ingredients) if (i instanceof Embers) i.quantity(i.quantity() + 1);
+			}
+			return super.brew(ingredients);
+		}
+
 	}
 }

@@ -129,12 +129,14 @@ public class Stylus extends Item {
 
 		@Override
 		public boolean itemSelectable(Item item) {
-			return item instanceof Armor;
+			return item instanceof Armor || (com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.kebi() && item instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon); //transformation, Kebi
 		}
 
 		@Override
 		public void onSelect( Item item ) {
-			if (item != null) {
+			if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon) {
+				com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.stylusOnWeapon(Stylus.this, (com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon) item); //transformation, Kebi
+			} else if (item != null) {
 				Stylus.this.inscribe( (Armor)item );
 			}
 		}

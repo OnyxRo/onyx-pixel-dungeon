@@ -284,6 +284,7 @@ public enum Catalog {
 		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMalaise.class);
 		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfThorns.class);
 		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.BloodVial.class);
+		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Necronomicon.class); //transformation
 		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.ArcaneRoot.class);
 		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.LargeRadish.class);
 		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.CrystalApple.class);

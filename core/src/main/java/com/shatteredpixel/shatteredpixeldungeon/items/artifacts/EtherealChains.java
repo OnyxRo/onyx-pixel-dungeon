@@ -196,6 +196,7 @@ public class EtherealChains extends Artifact {
 						enemy.pos = pulledPos;
 
 						charge -= chargeUse;
+						charge += com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.chainRefund(enemy, chargeUse); //transformation, Strengthen Chain
 						Invisibility.dispel(hero);
 						Talent.onArtifactUsed(hero);
 						updateQuickslot();
@@ -203,7 +204,7 @@ public class EtherealChains extends Artifact {
 						Dungeon.level.occupyCell(enemy);
 						Dungeon.observe();
 						GameScene.updateFog();
-						hero.spendAndNext(1f);
+						hero.spendAndNext(com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.chainTime()); //transformation, Strengthen Chain
 
 						artifactProc(enemy, visiblyUpgraded(), chargeUse);
 					}

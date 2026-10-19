@@ -259,7 +259,7 @@ public class TimekeepersHourglass extends Artifact {
 					&& Regeneration.regenOn()) {
 				//90 turns to charge at full, 60 turns to charge at 0/10
 				float chargeGain = 1 / (90f - (chargeCap - charge)*3f);
-				chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);
+				chargeGain *= RingOfEnergy.artifactChargeMultiplier(target) * com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.artifactBoost(TimekeepersHourglass.this); //transformation, Time Sand
 				partialCharge += chargeGain;
 
 				while (partialCharge >= 1) {
@@ -297,7 +297,7 @@ public class TimekeepersHourglass extends Artifact {
 
 				int usedCharge = Math.min(charge, 2);
 				//buffs always act last, so the stasis buff should end a turn early.
-				spend(5*usedCharge);
+				spend(5*usedCharge*com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.timeSandStasis()); //transformation, Time Sand
 
 				//shouldn't punish the player for going into stasis frequently
 				Hunger hunger = Buff.affect(target, Hunger.class);
@@ -354,7 +354,7 @@ public class TimekeepersHourglass extends Artifact {
 			type = buffType.POSITIVE;
 		}
 
-		float turnsToCost = 2f;
+		float turnsToCost = com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.timeFreezeTurns(); //transformation, Time Sand
 
 		ArrayList<Integer> presses = new ArrayList<>();
 
@@ -363,7 +363,7 @@ public class TimekeepersHourglass extends Artifact {
 
 			//use 1/1,000 to account for rounding errors
 			while (turnsToCost < -0.001f){
-				turnsToCost += 2f;
+				turnsToCost += com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.timeFreezeTurns();
 				charge --;
 			}
 

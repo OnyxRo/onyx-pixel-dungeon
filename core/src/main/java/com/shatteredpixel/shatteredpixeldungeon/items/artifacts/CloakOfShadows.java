@@ -240,7 +240,7 @@ public class CloakOfShadows extends Artifact {
 					if (!isEquipped(Dungeon.hero)){
 						chargeToGain *= 0.75f*Dungeon.hero.pointsInTalent(Talent.LIGHT_CLOAK)/3f;
 					}
-					partialCharge += chargeToGain;
+					partialCharge += chargeToGain * com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.artifactBoost(CloakOfShadows.this); //transformation, Strength Cloak
 				}
 
 				while (partialCharge >= 1) {
@@ -347,7 +347,7 @@ public class CloakOfShadows extends Artifact {
 						GLog.p(Messages.get(this, "levelup"));
 						
 					}
-					turnsToCost = 4;
+					turnsToCost = 4 + com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.cloakExtraTurns(); //transformation, Strength Cloak
 				}
 				updateQuickslot();
 			}

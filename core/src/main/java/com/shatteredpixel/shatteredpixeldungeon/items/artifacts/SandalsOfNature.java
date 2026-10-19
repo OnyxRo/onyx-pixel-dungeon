@@ -357,7 +357,7 @@ public class SandalsOfNature extends Artifact {
 						artifactProc(Actor.findChar(cell), visiblyUpgraded(), seedChargeReqs.get(curSeedEffect));
 					}
 
-					charge -= seedChargeReqs.get(curSeedEffect);
+					charge -= com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.sandalsCost(seedChargeReqs.get(curSeedEffect)); //transformation, Journey Nature
 					Talent.onArtifactUsed(Dungeon.hero);
 					updateQuickslot();
 					curUser.spendAndNext(1f);

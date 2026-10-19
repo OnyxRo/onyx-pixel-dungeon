@@ -114,7 +114,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 				int newDmg = attacker.damageRoll();
 				if (newDmg > dmg) dmg = newDmg;
 			}
-			return Math.round(dmg * (1f + baseDmgBonus));
+			return Math.round(dmg * (1f + baseDmgBonus + com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.unexpectedStrike(attacker, ordinal()))); //transformation, Unexpected Strike
 		}
 		
 		public static AttackLevel getLvl(int turnsInvis){
@@ -149,6 +149,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 	public void detach() {
 		super.detach();
 		ActionIndicator.clearAction(this);
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onPreparationEnd(target, attackLevel()); //transformation, Closing Stage
 	}
 
 	public int attackLevel(){

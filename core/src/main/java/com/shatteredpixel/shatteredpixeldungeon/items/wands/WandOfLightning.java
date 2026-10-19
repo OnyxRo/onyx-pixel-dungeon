@@ -89,6 +89,7 @@ public class WandOfLightning extends DamageWand {
 			ch.sprite.flash();
 
 			wandProc(ch, chargesPerCast());
+			if (ch == curUser && com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.lightningHeals(ch, Math.round(damageRoll() * multiplier))) continue; //transformation, Wulei Zhengfa
 			if (ch == curUser && ch.isAlive()) {
 				ch.damage(Math.round(damageRoll() * multiplier * 0.5f), this);
 				if (!curUser.isAlive()) {

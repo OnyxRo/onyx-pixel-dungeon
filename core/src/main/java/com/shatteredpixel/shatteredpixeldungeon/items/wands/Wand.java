@@ -555,8 +555,8 @@ public abstract class Wand extends Item {
 		}
 		
 		//transformation, Magic Recycling may keep the charge
-		if (!(curUser == Dungeon.hero && com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.wandChargeSaved())) {
-			curCharges -= cursed ? 1 : chargesPerCast();
+		if (!(curUser == Dungeon.hero && com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.wandChargeSaved(this))) {
+			curCharges -= cursed ? 1 : chargesPerCast() - com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.chargeDiscount(this, chargesPerCast()); //transformation, Marksman, Focused Casting, Devil Flame
 		}
 
 		//remove magic charge at a higher priority, if we are benefiting from it are and not the

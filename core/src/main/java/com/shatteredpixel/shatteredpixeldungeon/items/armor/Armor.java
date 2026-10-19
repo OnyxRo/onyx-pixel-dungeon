@@ -895,6 +895,7 @@ public class Armor extends EquipableItem {
 
 		Class<? extends Glyph> oldGlyphClass = glyph != null ? glyph.getClass() : null;
 		Glyph gl = Glyph.random( oldGlyphClass );
+		gl = com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.kebiGlyph(gl, oldGlyphClass); //transformation, Kebi
 
 		return inscribe( gl );
 	}
