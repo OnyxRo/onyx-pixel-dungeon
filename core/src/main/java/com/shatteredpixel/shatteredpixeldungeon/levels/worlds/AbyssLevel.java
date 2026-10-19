@@ -84,6 +84,7 @@ public class AbyssLevel extends WorldLevel {
 			default: rooms.add(new com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.BoomRoom()); break;
 		}
 		if (Random.Int(2) == 0) rooms.add(new com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.CircleRoom());
+		if (Random.Int(2) == 0) rooms.add(new com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.BarricadeRoom()); //summoning
 		return rooms;
 	}
 

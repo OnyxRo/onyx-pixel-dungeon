@@ -652,6 +652,8 @@ public abstract class RegularLevel extends Level {
 
 			//a total of 6 pages drop randomly, the rest are specially dropped or are given at the start
 			missingPages.remove(Document.GUIDE_SEARCHING);
+			missingPages.remove(Document.GUIDE_SUMMONING); //summoning
+			missingPages.remove(Document.GUIDE_TIERING); //summoning
 
 			//chance to find a page is 0/25/50/75/100% for floors 1/2/3/4/5+
 			float dropChance = 0.25f*(Dungeon.depth-1);

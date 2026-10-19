@@ -449,7 +449,7 @@ public class Dungeon {
 		return false;
 	}
 	public enum GameMode { NORMAL, SMALL, BIGGER, CAVES, GAUNTLET, EXPLORE, LOL, NO_SOU, NO_EXP, HELL, DIFFICULT, REALTIME, CHAOS }
-	public static final GameMode mode = GameMode.NORMAL;
+	public static GameMode mode = GameMode.NORMAL;
 
 	public static boolean levelHasBeenGenerated(int depth, int branch){
 		return generatedLevels.contains(depth + 1000*branch);

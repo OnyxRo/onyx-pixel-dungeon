@@ -422,6 +422,7 @@ public class Staff extends Weapon implements Tierable {
                     minionmin(),
                     minionmax());
             Statistics.summonedMinions++;
+            com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.findGuidePage(com.shatteredpixel.shatteredpixeldungeon.journal.Document.GUIDE_SUMMONING);
             minion.strength = STRReq();
             this.customizeMinion(minion);
             minion.enchantment = enchantment;
