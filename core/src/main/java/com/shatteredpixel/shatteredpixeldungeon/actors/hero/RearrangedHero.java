@@ -116,6 +116,7 @@ public class RearrangedHero {
 			accuracy *= 1.2f;
 		}
 		accuracy *= Juggling.accuracyFactor(hero);
+		accuracy = com.shatteredpixel.shatteredpixeldungeon.RearrangedChallenges.accuracy(accuracy);
 		if (hero.buff(UnholyBible.Demon.class) != null) {
 			return Float.POSITIVE_INFINITY;
 		}
@@ -148,6 +149,7 @@ public class RearrangedHero {
 		if (hero.buff(UnholyBible.Demon.class) != null) {
 			evasion /= 2;
 		}
+		evasion = com.shatteredpixel.shatteredpixeldungeon.RearrangedChallenges.evasion(evasion);
 		return evasion;
 	}
 
@@ -381,6 +383,7 @@ public class RearrangedHero {
 	}
 
 	public static int attackProc( Hero hero, Char enemy, KindOfWeapon wep, int damage ){
+		damage = com.shatteredpixel.shatteredpixeldungeon.RearrangedChallenges.attackProc(hero, enemy, damage);
 		if (hero.subClass == HeroSubClass.OUTLAW && wep instanceof Gun.Bullet) {
 			if (hero.hasTalent(Talent.HEADSHOT) && Random.Float() < 0.01f*hero.pointsInTalent(Talent.HEADSHOT)) {
 				if (!Char.hasProp(enemy, Char.Property.BOSS) && !Char.hasProp(enemy, Char.Property.MINIBOSS) && enemy.alignment == Char.Alignment.ENEMY) {
@@ -425,6 +428,7 @@ public class RearrangedHero {
 			}
 		}
 
+		com.shatteredpixel.shatteredpixeldungeon.RearrangedChallenges.mutate(hero, enemy, wep, damage);
 		if (hero.buff(Sheath.CertainCrit.class) != null) {
 			hero.buff(Sheath.CertainCrit.class).hit();
 		}
@@ -453,6 +457,7 @@ public class RearrangedHero {
 				Buff.affect(hero, FirstAidBuff.class).set(damage);
 			}
 		}
+		com.shatteredpixel.shatteredpixeldungeon.RearrangedChallenges.defenseProc(hero);
 		if (hero.buff(HorseRiding.class) != null) {
 			hero.buff(HorseRiding.class).onDamage(damage);
 		}

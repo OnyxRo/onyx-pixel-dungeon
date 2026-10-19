@@ -977,6 +977,7 @@ public class HeroSelectScene extends PixelScene {
 							int chals = optChals.getSelectedValue();
 							ArrayList<Integer> chalMasks = new ArrayList<>();
 							for (int i = 0; i < Challenges.MAX_CHALS; i++){
+								if ((1 << i) == Challenges.REARRANGED_HEROES) continue; //rearranged, an option rather than a challenge
 								chalMasks.add((int)Math.pow(2, i));
 							}
 							Random.shuffle(chalMasks);

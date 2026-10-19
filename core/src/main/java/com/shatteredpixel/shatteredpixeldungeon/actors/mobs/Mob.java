@@ -1294,6 +1294,7 @@ public abstract class Mob extends Char {
 				}
 			}
 		}
+		com.shatteredpixel.shatteredpixeldungeon.RearrangedChallenges.onMobDied(this); //rearranged, Cursed Dungeon
 	}
 
 	//from Transformation PD, the mod's own subclasses call this with their own base chance

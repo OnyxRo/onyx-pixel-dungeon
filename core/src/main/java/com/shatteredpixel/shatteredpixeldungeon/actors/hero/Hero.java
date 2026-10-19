@@ -407,7 +407,7 @@ public class Hero extends Char {
 	public Hero() {
 		super();
 
-		HP = HT = 20;
+		HP = HT = com.shatteredpixel.shatteredpixeldungeon.RearrangedChallenges.baseHT(20); //rearranged, Superman
 		STR = STARTING_STR;
 		
 		belongings = new Belongings( this );
@@ -429,6 +429,7 @@ public class Hero extends Char {
 		} else {
 			HT = 20 + 5*(lvl-1) + HTBoost;
 		}
+		HT = com.shatteredpixel.shatteredpixeldungeon.RearrangedChallenges.baseHT(HT); //rearranged, Superman
 		if (subClass.is(HeroSubClass.WATERSLIME)){
 			HT += (int) Math.round(0.5 * lvl * (1 + pointsInTalent(Talent.WATER_BODY)));
 		}

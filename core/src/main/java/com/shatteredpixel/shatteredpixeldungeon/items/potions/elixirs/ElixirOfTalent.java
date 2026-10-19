@@ -65,7 +65,7 @@ public class ElixirOfTalent extends Elixir {
 		} else {
 			hero.STR += 2;
 			hero.onSTRGained();
-			if (false || hero.buff(ElixirOfTalentHTBoost.class) != null){
+			if (Dungeon.isChallenged(Challenges.SUPERMAN) || hero.buff(ElixirOfTalentHTBoost.class) != null){
 				hero.sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "str") );
 			} else {
 				Buff.affect(hero, ElixirOfTalentHTBoost.class);
