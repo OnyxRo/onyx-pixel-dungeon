@@ -280,6 +280,6 @@ Left out, and why.
 - The dried rose ghost firing guns, its Hedgehog badge, its seed finder screens, the bookshelf prize, its changes to the hero select layout.
 - `WeaponCatalyst`, an unused stub in the mod. Its Spade is here as `BattleShovel` since this game already has Pixel Spacebase's Spade.
 
-Checks. `RearrangedHeroesTest` (new, in the full check) builds each hero, reads every talent, subclass and ability for text and icons, picks a subclass, makes the class armor and saves and loads. `ItemArenaTest` on all its items and `MobArenaTest` on its monsters pass. The Rebel is a boss, so `MobArenaTest` cannot fight it outside its level, `BossArenaTest` plays its floor.
+Checks. The full `FAST=1 scripts/check.sh` passed every step through BossArenaTest (world shuffle on 150 seeds, branches, every hero test, every boss floor), then Claude Code stopped it for low memory during MobArenaTest --all, so rerun it once. `RearrangedHeroesTest` (new, in the full check) builds each hero, reads every talent, subclass and ability for text and icons, picks a subclass, makes the class armor and saves and loads. `ItemArenaTest` on all its items and `MobArenaTest` on its monsters pass. The Rebel is a boss, so `MobArenaTest` cannot fight it outside its level, `BossArenaTest` plays its floor.
 
 Nothing was seen on screen yet. Play in the sandbox, each of the six heroes, a gun reload and a bullet belt, the Samurai's sheath, the Knight's shield, the Archer's arrow bag, the Labs world floors 21 to 24, and floor 25 with the Labs world forced.
