@@ -138,6 +138,7 @@ public abstract class ClericSpell {
 			}
 
 			addTransformationSpells(cleric, 2, spells);
+			RearrangedSpells.addSpells(cleric, 2, spells); //rearranged
 		} else if (tier == 3){
 
 			if (cleric.subClass == HeroSubClass.PRIEST) {
@@ -171,6 +172,7 @@ public abstract class ClericSpell {
 				spells.add(WallOfLight.INSTANCE);
 			}
 			addTransformationSpells(cleric, 3, spells);
+			RearrangedSpells.addSpells(cleric, 3, spells); //rearranged
 
 		} else if (tier == 4){
 
@@ -240,6 +242,7 @@ public abstract class ClericSpell {
 		spells.add(Stasis.INSTANCE);
 		//transformation
 		for (int t = 1; t <= 3; t++) spells.addAll(transformationSpells(t));
+		spells.addAll(RearrangedSpells.allSpells()); //rearranged
 		return spells;
 	}
 

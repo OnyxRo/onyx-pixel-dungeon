@@ -116,6 +116,6 @@ public class BookOfWarding extends SpellBook {
     }
 
     public int mirrorImageAmount() {
-        return Math.round((1+(int)(Dungeon.hero.lvl/10))*(1+0.5f*0));
+        return Math.round((1+(int)(Dungeon.hero.lvl/10))*(1+0.5f*Dungeon.hero.pointsInTalent(Talent.SPELL_ENHANCE)));
     }
 }

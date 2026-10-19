@@ -57,7 +57,7 @@ public class BookOfTransfusion extends SpellBook {
             info += "\n\n" + Messages.get(this, "time",
                     3+hero.lvl/5,
                     Math.round(5+Dungeon.scalingDepth()/2f),
-                    new DecimalFormat("#.##").format(100*(0.2f+0.005f*hero.lvl)*(1+0.5f*0)));
+                    new DecimalFormat("#.##").format(100*(0.2f+0.005f*hero.lvl)*(1+0.5f*hero.pointsInTalent(Talent.SPELL_ENHANCE))));
         }
         return info;
     }
@@ -161,7 +161,7 @@ public class BookOfTransfusion extends SpellBook {
         }
 
         public static void proc(Char attacker, int damage){
-            attacker.heal(Math.round(damage*(0.2f+0.005f*hero.lvl)*(1+0.5f*0)));
+            attacker.heal(Math.round(damage*(0.2f+0.005f*hero.lvl)*(1+0.5f*hero.pointsInTalent(Talent.SPELL_ENHANCE))));
         }
 
         @Override

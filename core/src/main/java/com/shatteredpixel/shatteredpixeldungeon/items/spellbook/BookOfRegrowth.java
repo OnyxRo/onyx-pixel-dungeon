@@ -50,7 +50,7 @@ public class BookOfRegrowth extends SpellBook {
 
     @Override
     public void readEffect() {
-        if (spawnPlants(hero.pos, (0.1f+0.01f*hero.lvl)*(1+0.5f*0), 5)) {
+        if (spawnPlants(hero.pos, (0.1f+0.01f*hero.lvl)*(1+0.5f*hero.pointsInTalent(Talent.SPELL_ENHANCE)), 5)) {
             GLog.p(Messages.get(this, "plant"));
             Dungeon.observe();
         }
@@ -62,7 +62,7 @@ public class BookOfRegrowth extends SpellBook {
         if (Dungeon.hero != null && Dungeon.hero.buff(SpellBookCoolDown.class) == null) {
             info += "\n\n" + Messages.get(this, "time",
                     5,
-                    new DecimalFormat("#.##").format(100*((0.1f+0.01f*hero.lvl)*(1+0.5f*0))));
+                    new DecimalFormat("#.##").format(100*((0.1f+0.01f*hero.lvl)*(1+0.5f*hero.pointsInTalent(Talent.SPELL_ENHANCE)))));
         }
         return info;
     }

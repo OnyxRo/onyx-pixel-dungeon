@@ -50,7 +50,7 @@ public class BookOfCorruption extends SpellBook {
             int cell = Dungeon.hero.pos+i;
             Char ch = Actor.findChar(cell);
             if (ch != null && ch.alignment == Char.Alignment.ENEMY && ch instanceof Mob && !(ch instanceof NPC)) {
-                if (Random.Float()+0.01f*(10+Dungeon.hero.lvl/2f)*(1+0.5f*0) < (1-ch.HP/(float)ch.HT)) {
+                if (Random.Float()+0.01f*(10+Dungeon.hero.lvl/2f)*(1+0.5f*Dungeon.hero.pointsInTalent(Talent.SPELL_ENHANCE)) < (1-ch.HP/(float)ch.HT)) {
                     if (!ch.isImmune(Corruption.class)){
                         Corruption.corruptionHeal(ch);
 
@@ -70,7 +70,7 @@ public class BookOfCorruption extends SpellBook {
         String info = super.info();
         if (Dungeon.hero != null && Dungeon.hero.buff(SpellBookCoolDown.class) == null) {
             info += "\n\n" + Messages.get(this, "time",
-                    new DecimalFormat("#.#").format(100*(0.01f*(10+Dungeon.hero.lvl/2f)*(1+0.5f*0))));
+                    new DecimalFormat("#.#").format(100*(0.01f*(10+Dungeon.hero.lvl/2f)*(1+0.5f*Dungeon.hero.pointsInTalent(Talent.SPELL_ENHANCE)))));
         }
         return info;
     }

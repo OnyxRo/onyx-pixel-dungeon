@@ -1012,6 +1012,7 @@ public abstract class Mob extends Char {
 			} else {
 				Surprise.hit(this);
 			}
+			if (enemy instanceof com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero) com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.chaserSurprise((com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero) enemy, this); //rearranged
 		}
 
 		//if attacked by something else than current target, and that thing is closer, switch targets

@@ -99,6 +99,7 @@ public class Regeneration extends Buff {
 						delay /= RingOfEnergy.artifactChargeMultiplier(target);
 					}
 				}
+				delay = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.regenDelay(target, delay); //rearranged
 
 				//Ryuse's PD helmets
 				delay *= com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.regenDelay(target);

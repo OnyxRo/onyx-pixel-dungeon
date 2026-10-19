@@ -103,7 +103,14 @@ public enum HeroSubClass {
 	SOUL_REAVER(HeroIcon.CONJURER),
 	OCCULTIST(HeroIcon.DEVOTEE),
 	//transformation
-	FREEMAN(HeroIcon.FREEMAN);
+	FREEMAN(HeroIcon.FREEMAN),
+	//rearranged, the third subclasses of Shattered's heroes, only offered with the Re-ARranged heroes option
+	VETERAN(HeroIcon.VETERAN),
+	WIZARD(HeroIcon.WIZARD),
+	CHASER(HeroIcon.CHASER),
+	FIGHTER(HeroIcon.FIGHTER),
+	FENCER(HeroIcon.FENCER),
+	ENCHANTER(HeroIcon.ENCHANTER);
 
 	//Transformation PD asks this of subclasses (its Rat King hero shares them all)
 	public boolean is(HeroSubClass sub) {

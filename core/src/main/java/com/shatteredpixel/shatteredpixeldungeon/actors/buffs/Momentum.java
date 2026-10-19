@@ -92,6 +92,14 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 		return true;
 	}
 	
+	//rearranged, Quick Preparation shortens the cooldown when the Freerunner dodges
+	public void quickPrep(int amount) {
+		if (freerunCooldown > 0) {
+			freerunCooldown -= amount;
+		}
+		BuffIndicator.refreshHero();
+	}
+
 	public void gainStack(){
 		movedLastTurn = true;
 		if (freerunCooldown <= 0 && !freerunning()){
@@ -240,6 +248,7 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 		target.sprite.emitter().burst(Speck.factory(Speck.JET), 5+ momentumStacks);
 		SpellSprite.show(target, SpellSprite.HASTE, 1, 1, 0);
 		momentumStacks = 0;
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.momentaryFocusing(target); //rearranged
 		BuffIndicator.refreshHero();
 		ActionIndicator.clearAction(this);
 	}

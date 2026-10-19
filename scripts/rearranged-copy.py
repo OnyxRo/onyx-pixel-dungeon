@@ -22,8 +22,7 @@ RULES = [
     (r'\bshatteredpixeldungeon\.levels\.LabsLevel\b', 'shatteredpixeldungeon.levels.worlds.LabsLevel'),
     #talent names another port already uses here
     (r'\bAssets\.Sprites\.(TANK|ADVENTURER)\b', r'Assets.Sprites.RA_\1'),
-    #the Wizard and the other reworked subclasses of Shattered's heroes are not here, their talents count as 0
-    (r'(?:Dungeon\.)?\bhero\.pointsInTalent\(\s*Talent\.(SPELL_ENHANCE|MAGIC_EMPOWER|SECOND_EFFECT|BRIG_BOOST)\s*\)', '0'),
+
     (r'\bnew TargetedCell\(', 'TargetedCell.colored('),
     #this game's Spade is Pixel Spacebase's, the mod's own is BattleShovel here
     (r'\bSpade\b', 'BattleShovel'),
@@ -34,10 +33,11 @@ RULES = [
     (r'\bnew (CrystalKey|GoldenKey|IronKey)\(\s*[^,()]+,\s*[^,()]+\)', r'new \1(Dungeon.depth)'),
     #small check box icons the mod drew, the normal ones here
     (r'\bIcons\.MINI_(CHECKED|UNCHECKED)\b', r'Icons.\1'),
-    #its five challenges are not here
-    (r'Dungeon\.isChallenged\(\s*Challenges\.(SUPERMAN|PYRO|CURSED_DUNGEON|FATIGUE|MUTATION)\s*\)', 'false'),
-    (r'\bhero\.subClass\s*==\s*HeroSubClass\.(WIZARD|VETERAN|CHASER|FIGHTER|FENCER|ENCHANTER)\b', 'false'),
+
     (r'\bTalent\.(FAST_RELOAD|TOUGH_MEAL|ADRENALINE|BULLSEYE)\b', r'Talent.RA_\1'),
+    #2026-10-19, names in the rework of Shattered's heroes that other ports took first
+    (r'\bTalent\.(ENDURANCE|COUNTER_ATTACK|RESURRECTION)\b', r'Talent.RA_\1'),
+    (r'\bHeroIcon\.RESURRECTION\b', 'HeroIcon.RA_RESURRECTION'),
 ]
 #never copied, see PORTING.md
 SKIP = {
@@ -58,7 +58,7 @@ REWORK = [
         'MagicalEmpower', 'MagicalCircle', 'Fatigue', 'GhostSpawner', 'chargearea/RechargeArea', 'chargearea/WandRechargeArea',
         'chargearea/ArtifactRechargeArea', 'chargearea/BarrierRechargeArea', 'chargearea/Judgement', 'chargearea/MutationBuff')
 ] + ['windows/WndMagicalCombo.java']
-SKIP.update(REWORK)
+#2026-10-19, the rework is in now behind the Re-ARranged heroes option, so these copy too
 
 def LP(p):
     p = os.path.abspath(p)

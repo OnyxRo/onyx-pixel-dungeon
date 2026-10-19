@@ -1305,6 +1305,7 @@ public class Hero extends Char {
 			//This is for that one guy, you shall get your fists of fury!
 			float speed = RingOfFuror.attackSpeedMultiplier(this);
 			if ( buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Furor.class ) != null) speed *= 4f;
+			speed = RearrangedRework.unarmedSpeed(this, speed); //rearranged
 
 			//ditto for furor + sword dance!
 			if (buff(Scimitar.SwordDance.class) != null){
@@ -2741,6 +2742,7 @@ public class Hero extends Char {
 			move(step);
 
 			spend( delay / speed() );
+			RearrangedRework.afterStep(this, delay / speed()); //rearranged, Quick Step
 			justMoved = true; //rearranged
 			
 			search(false);
@@ -3342,6 +3344,7 @@ public class Hero extends Char {
 		boolean hit = attack(attackTarget);
 
 		Invisibility.dispel();
+		RearrangedRework.afterAttack(this, attackTarget, hit, wasEnemy); //rearranged
 		if (RearrangedHero.attackUsesTurn(this)) {
 			spend( attackDelay() );
 		} else {

@@ -104,6 +104,7 @@ public class HornOfPlenty extends Artifact {
 				if (Dungeon.isChallenged(Challenges.NO_FOOD)){
 					satietyPerCharge /= 3;
 				}
+				satietyPerCharge = (int) com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.addedMeal(Dungeon.hero, satietyPerCharge); //rearranged
 
 				Hunger hunger = Buff.affect(Dungeon.hero, Hunger.class);
 				int chargesToUse = Math.max( 1, hunger.hunger() / satietyPerCharge);

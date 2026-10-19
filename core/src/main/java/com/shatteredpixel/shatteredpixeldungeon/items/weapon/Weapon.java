@@ -398,6 +398,7 @@ abstract public class Weapon extends KindOfWeapon {
 		if ( owner.buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Furor.class ) != null) multi *= 2f;
 		multi *= 1 + prefix.speed();
 		multi *= com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RearrangedWeapons.speedFactor(owner); //rearranged
+		multi *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.weaponSpeed(owner); //rearranged
 
 		if (owner.buff(Scimitar.SwordDance.class) != null){
 			multi += 0.6f;

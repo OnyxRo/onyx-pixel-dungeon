@@ -98,6 +98,10 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 
 	@Override
 	public boolean act() {
+		if (target instanceof Hero) { //rearranged, Restored Energy
+			float raGain = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.restoredEnergy((Hero) target);
+			if (raGain > 0) { energy = Math.min(energy + raGain, energyCap()); BuffIndicator.refreshHero(); }
+		}
 		if (cooldown > 0){
 			cooldown--;
 			if (cooldown == 0 && energy >= 1){
@@ -215,6 +219,7 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 
 	public void abilityUsed( MonkAbility abil ){
 		energy -= abil.energyCost();
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.energyBarrier(target, abil.energyCost()); //rearranged
 		energy = Math.min(energy, energyCap());
 
 		if (target instanceof Hero && ((Hero) target).hasTalent(Talent.COMBINED_ENERGY)
@@ -234,6 +239,13 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 			ActionIndicator.refresh();
 		}
 		BuffIndicator.refreshHero();
+	}
+
+	//rearranged, Harmony, the Monk moves and strikes faster with high energy and health
+	public boolean harmonized( Hero hero ){
+		return hero.hasTalent(Talent.HARMONY)
+				&& energy/energyCap() >= 1.2f - 0.2f*hero.pointsInTalent(Talent.HARMONY)
+				&& hero.HP/(float)hero.HT >= 1.2f - 0.2f*hero.pointsInTalent(Talent.HARMONY);
 	}
 
 	public boolean abilitiesEmpowered( Hero hero ){

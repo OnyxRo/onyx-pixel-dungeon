@@ -287,7 +287,8 @@ public class CloakOfShadows extends Artifact {
 
 		@Override
 		public float iconFadePercent() {
-			return (4f - turnsToCost) / 4f;
+			float raMax = 4f + com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.cautiousPrep(target); //rearranged
+			return (raMax - turnsToCost) / raMax;
 		}
 
 		@Override
@@ -347,7 +348,7 @@ public class CloakOfShadows extends Artifact {
 						GLog.p(Messages.get(this, "levelup"));
 						
 					}
-					turnsToCost = 4;
+					turnsToCost = 4 + com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.cautiousPrep(target); //rearranged
 				}
 				updateQuickslot();
 			}

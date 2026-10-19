@@ -542,6 +542,7 @@ public class Armor extends EquipableItem {
 			if (momentum != null){
 				evasion += momentum.evasionBonus(((Hero) owner).lvl, Math.max(0, -aEnc));
 			}
+			evasion = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.unencumberedMovement((Hero) owner, aEnc, evasion); //rearranged
 			//rearranged, the Slayer while awake, and the afterimage glyph
 			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awakening awakening = owner.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awakening.class);
 			if (awakening != null) {
