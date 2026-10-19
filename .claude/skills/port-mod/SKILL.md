@@ -179,3 +179,13 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **Monster spawning for a mod with few monsters** needs its own spawner (see LovecraftSpawner), because a mod with roster entries replaces the whole rotation otherwise. Give the roster lines weight 0.
 - **New potions need potion labels.** `Potion.colors` holds 17 now. Make two more by hue shifting an existing sprite pair (regular and exotic, 16 cells apart) with PIL.
 - **Floors that never shuffle** (1, 4, 9, 14, 19, 5k) cannot hold a mod room, add it from `WorldLevel.initRooms` to any floor of that mod instead.
+
+## Added after Re-ARranged PD (2026-10-18)
+
+- **A mod on Shattered 3.x copies best in one go.** Write a small copier like `scripts/rearranged-copy.py` (every class new to the mod, its own rename rules, a skip list for classes this game already has at the same path), copy all, then fix compile errors in rounds with `scripts/cyc.sh` and `python -I scripts/errsym.py`, which groups missing symbols by where they were looked up.
+- **Hooks into Shattered's classes go in helper classes**, one line per hook in the shared file (see `RearrangedHero`, `RearrangedTalents`, `RearrangedChar`, `RearrangedWeapons`). Parallel ports then merge with few conflicts.
+- **Diff the mod against its Shattered base** to find those hooks. Clone the base tag beside the mod sources (shallow, with long paths on) and diff file by file.
+- **Icons on a separate sheet.** `TalentIcon`, `HeroIcon` and `BuffIcon` draw icon numbers of 10000 and up from `interfaces/rearranged/*`. Another mod can use the same trick with its own offset.
+- **When Gradle is stuck** (an interrupted check leaves its daemon writing class files), run `FAST=1 scripts/check.sh`, it tests the plain javac build. `scripts/test-list.sh <Test> <list file>` runs one test on many classes.
+- **Mods with two message bundles** (Re-ARranged reads `new_messages` before `messages`). Merge them into one bundle in the scratchpad and point `port-strings.py` at that folder.
+- **Keep tool calls small.** One edit spec per few files, never one huge file in one call, and commit as soon as a batch compiles. Two stalls in this port came from long silent calls.
