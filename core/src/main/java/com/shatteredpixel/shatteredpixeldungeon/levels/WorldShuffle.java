@@ -181,7 +181,43 @@ public class WorldShuffle {
 			//Deep Pixel Dungeon
 			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.DeepForestLevel.class,
 			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.GnollCampLevel.class,
-			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.CavesAnnexLevel.class
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.CavesAnnexLevel.class,
+			//Deep Pixel Dungeon, redrawn stage sheets
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.DeepSewersLevel.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.DeepPrisonLevel.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.DeepCavesLevel.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.DeepCityLevel.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.DeepHallsLevel.class,
+			//Unleashed Pixel Dungeon (Goblins PD shares these sheets)
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.UnleashedSewersLevel.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.UnleashedPrisonLevel.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.UnleashedCavesLevel.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.UnleashedCityLevel.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.FrozenCavesLevel.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.UnleashedHallsLevel.class,
+			//Pixel Spacebase
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.MaintenanceDeckLevel.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.SecurityBlockLevel.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.EngineeringDeckLevel.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.HabitationRingLevel.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.ContainmentDeckLevel.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.HolodeckLevel.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.AlienPlanetLevel.class,
+			//SPecial Surprise Pixel Dungeon
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.SpsSewersLevel.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.SpsPrisonLevel.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.SpsCavesLevel.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.SpsCityLevel.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.SpsHallsLevel.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.SpsForestLevel.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.SpsTownLevel.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.SpringFestivalLevel.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.HoneyPotLevel.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.SkeletonArenaLevel.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.SpsBeachLevel.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.MagicCaveLevel.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.SnowTownLevel.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.SpsVaultLevel.class
 	};
 
 	/** A world that fits any region, used for Transformation's tower styles. */
@@ -236,7 +272,15 @@ public class WorldShuffle {
 			//Dragonic Pixel Dungeon, Nilheim
 			PRISON,
 			//Deep Pixel Dungeon. The Forest was its floors 1 to 7, the Gnoll Camp was never linked in (its gnolls roam floors 2 to 9), the Annex branched off the caves
-			SEWERS, PRISON, CAVES
+			SEWERS, PRISON, CAVES,
+			//Deep Pixel Dungeon, its five stage sheets
+			SEWERS, PRISON, CAVES, CITY, HALLS,
+			//Unleashed Pixel Dungeon. The Frozen stage was an extra ice stage near the bottom of its 36 floors
+			SEWERS, PRISON, CAVES, CITY, CAVES, HALLS,
+			//Pixel Spacebase. The Holodeck was its habitation ring boss floor, the Alien Planet the security boss arena
+			SEWERS, PRISON, CAVES, CITY, HALLS, CITY, PRISON,
+			//SPecial Surprise Pixel Dungeon. Stage sheets, then its side floors. Forest, Beach and Vault were its sewer, cave and city challenge floors, the rest are guesses
+			SEWERS, PRISON, CAVES, CITY, HALLS, SEWERS, SEWERS, SEWERS, PRISON, PRISON, CAVES, CAVES, CAVES, CITY
 	};
 
 	//the source mod's app icon for each world, in the same order as WORLDS. Null for Shattered's own
@@ -258,6 +302,9 @@ public class WorldShuffle {
 	private static final String CURSED = "interfaces/mods/cursed.png";
 	private static final String TOWER = "interfaces/mods/tower.png";
 	private static final String DEEP = "interfaces/mods/deep.png";
+	private static final String UNLEASHED = "interfaces/mods/unleashed.png";
+	private static final String SPACEBASE = "interfaces/mods/spacebase.png";
+	private static final String SPS = "interfaces/mods/sps.png";
 	private static final String[] LOGOS = {
 			null, null, null, null, null,
 			COMBUSTED, COMBUSTED, COMBUSTED,
@@ -299,7 +346,14 @@ public class WorldShuffle {
 			//Dragonic Pixel Dungeon, second part
 			DRAGONIC,
 			//Deep Pixel Dungeon
-			DEEP, DEEP, DEEP
+			DEEP, DEEP, DEEP,
+			DEEP, DEEP, DEEP, DEEP, DEEP,
+			//Unleashed Pixel Dungeon
+			UNLEASHED, UNLEASHED, UNLEASHED, UNLEASHED, UNLEASHED, UNLEASHED,
+			//Pixel Spacebase
+			SPACEBASE, SPACEBASE, SPACEBASE, SPACEBASE, SPACEBASE, SPACEBASE, SPACEBASE,
+			//SPecial Surprise Pixel Dungeon
+			SPS, SPS, SPS, SPS, SPS, SPS, SPS, SPS, SPS, SPS, SPS, SPS, SPS, SPS
 	};
 
 	/** The asset path of the icon of the mod a floor's world comes from, or null for Shattered's own worlds. */

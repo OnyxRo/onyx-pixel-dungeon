@@ -72,7 +72,10 @@ public class Gallery {
 	//-Donyx.gallery.only=ui visits one world, then pictures the windows and tries Ctrl+N
 	//-Donyx.gallery.only=arena -Donyx.gallery.mobs=Kobold,Spitter puts those monsters on one floor
 	//together, pictures them once and quits (scripts/arena.sh). Without .mobs it uses every ported monster
-	private static int world = System.getProperty("onyx.gallery.only") == null ? WorldShuffle.HALLS + 1
+	//-Donyx.gallery.fromworld=N pictures worlds N onward and then quits
+	private static final String FROM_WORLD = System.getProperty("onyx.gallery.fromworld");
+	private static int world = FROM_WORLD != null ? Integer.parseInt(FROM_WORLD)
+			: System.getProperty("onyx.gallery.only") == null ? WorldShuffle.HALLS + 1
 			: "ui".equals(System.getProperty("onyx.gallery.only")) ? WorldShuffle.worldCount() - 1 : Integer.MAX_VALUE;
 	private static final boolean ARENA = "arena".equals(System.getProperty("onyx.gallery.only"));
 	private static final java.util.List<String> ARENA_NAMES = System.getProperty("onyx.gallery.mobs") == null
@@ -190,6 +193,7 @@ public class Gallery {
 			if (!here || (shot && time > 2.0f)) {
 				if (here) world++;
 				if (world < WorldShuffle.worldCount()) jump();
+				else if (FROM_WORLD != null) Gdx.app.exit();
 				else time = 0;
 			}
 			return;

@@ -40,6 +40,9 @@ A second wave of 30 worlds was made from the tile sheets of ten more mods. Each 
 | Transformation PD | UES, Lush Surface |
 | Magic Ling PD | Golden City, Desert Wilds, Cold Lands, Dead Lands, Ghost Manor, Frozen Vault, Overgrown Garden, Tengu's Hideout |
 | Devoted PD | True Void |
+| Deep PD | Forest, Gnoll Camp, Caves Annex, Deep Sewers, Prison, Caves, City, Halls |
+| Unleashed PD | Unleashed Sewers, Prison, Caves, City, Halls, Frozen Caves |
+| Pixel Spacebase | Maintenance Deck, Security Block, Engineering, Habitation Ring, Containment Deck, Holodeck, Alien Planet |
 
 Each ported world brings its tileset, water, decoration and, where credited, music. Worlds without credited music of their own use the closest Shattered soundtrack. While you are in a ported world, the source mod's icon shows at the top left, and clicking it opens a short summary of the mod. The mods are GPLv3 or similar, and their authors are credited in each ported file. Licenses and art credits for the newer mods still need a proper check before any public release.
 
@@ -108,14 +111,13 @@ To check the worlds, compile with `scripts/compile.sh` and run `scripts/test/Wor
 ## Next steps
 
 - **Monsters and weapons.** Porting the other mods' enemies and weapons is the next layer, and the most work, since many depend on mechanics unique to their mod.
-- **Pixel Spacebase.** Its art is drawn for Pixel Dungeon's pre-2017 tile layout at four times the resolution, so it would need redrawing to fit, not just porting.
 - **More worlds.** Forks built on Shattered 1.0 or later share this game's tile format and are the easiest to add. Check each one's credits for art with separate terms first.
 
 ## Credits and license
 
 Onyx's Pixel Dungeon is by Onyx Rothman.
 
-Content ported from Combusted Pixel Dungeon (Inferno214221), Devoted Pixel Dungeon (Arackulele and contributors, soundtrack by Cevin2006), Magic Ling Pixel Dungeon (LingASDJ and contributors), Transformation Pixel Dungeon (dongyusangyu), Shattered PD Matt Edition (mr-matthias1829), Pixel Dungeon Reforged (nathanlink169), Shittened Pixel Dungeon (Haukii), Abyssalnite Pixel Dungeon (MywaifuisTataraKogasa), Cursed Pixel Dungeon Legacy (Smujb), Summoning PD Reincarnated, Re-ARranged PD, Experienced PD, Ryuse's PD, Rat King PD 2 and Lovecraft PD (Sadsaltan).
+Content ported from Combusted Pixel Dungeon (Inferno214221), Devoted Pixel Dungeon (Arackulele and contributors, soundtrack by Cevin2006), Magic Ling Pixel Dungeon (LingASDJ and contributors), Transformation Pixel Dungeon (dongyusangyu), Shattered PD Matt Edition (mr-matthias1829), Pixel Dungeon Reforged (nathanlink169), Shittened Pixel Dungeon (Haukii), Abyssalnite Pixel Dungeon (MywaifuisTataraKogasa), Cursed Pixel Dungeon Legacy (Smujb), Summoning PD Reincarnated, Re-ARranged PD, Experienced PD, Ryuse's PD, Rat King PD 2, Lovecraft PD (Sadsaltan), Deep Pixel Dungeon (Mochiee), Unleashed Pixel Dungeon (FthrNature), Pixel Spacebase (codefitz) and SPecial Surprise Pixel Dungeon (hmdzl001). The Deep, Unleashed, Spacebase and SPS tile art was redrawn by hand into this game's layout.
 
 Built on [Shattered Pixel Dungeon](https://shatteredpixel.com/shatteredpd/) by Evan Debenham, which is based on [Pixel Dungeon](https://github.com/00-Evan/pixel-dungeon-gradle) by Oleg Dolya (Watabou). If you enjoy this, consider [supporting Shattered's developer on Patreon](https://www.patreon.com/ShatteredPixel). Please send bug reports about this fork here, not to Shattered.
 

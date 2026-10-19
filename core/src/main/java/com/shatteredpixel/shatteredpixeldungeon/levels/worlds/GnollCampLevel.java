@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.worlds;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.SewerPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.RegularPainter;
+import com.watabou.utils.Random;
 
 /** The Gnoll Camp, a gnoll area Deep Pixel Dungeon by Mochiee drew and built but never linked into its dungeon. */
 public class GnollCampLevel extends WorldLevel {
@@ -44,6 +45,18 @@ public class GnollCampLevel extends WorldLevel {
 	@Override
 	protected RegularPainter basePainter() {
 		return new SewerPainter();
+	}
+
+	@Override
+	protected int standardRooms(boolean forceMax) {
+		if (forceMax) return 8;
+		return 6 + Random.chances(new float[]{1, 3, 1});
+	}
+
+	@Override
+	protected int specialRooms(boolean forceMax) {
+		if (forceMax) return 3;
+		return 2 + Random.chances(new float[]{1, 1});
 	}
 
 	@Override

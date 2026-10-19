@@ -16,7 +16,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.magic.Heal;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfAttunement;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfSoulEnergy;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knife;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.ConjurerKnife;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.FroggitStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.staffs.Staff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -54,7 +54,7 @@ public class SummoningTest {
 		if (hero.maxMana != 20) fail( "Conjurer should start with 20 mana, has " + hero.maxMana );
 		if (hero.attunement != 1) fail( "Conjurer should start with 1 attunement, has " + hero.attunement );
 		if (hero.HT >= 20) fail( "Conjurer should be frail, HT " + hero.HT );
-		if (!(hero.belongings.weapon instanceof Knife)) fail( "Conjurer should hold the toy knife" );
+		if (!(hero.belongings.weapon instanceof ConjurerKnife)) fail( "Conjurer should hold the toy knife" );
 		if (hero.belongings.getItem( ConjurerBook.class ) == null) fail( "no spellbook" );
 		if (hero.belongings.getItem( Heal.class ) == null) fail( "no Heal spell" );
 		FroggitStaff staff = hero.belongings.getItem( FroggitStaff.class );

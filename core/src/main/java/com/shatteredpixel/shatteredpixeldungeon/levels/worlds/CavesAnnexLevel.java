@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.worlds;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.CavesPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.RegularPainter;
+import com.watabou.utils.Random;
 
 /** The Caves Annex, a side branch of the caves in Deep Pixel Dungeon by Mochiee, reached through a portal. */
 public class CavesAnnexLevel extends WorldLevel {
@@ -44,6 +45,18 @@ public class CavesAnnexLevel extends WorldLevel {
 	@Override
 	protected RegularPainter basePainter() {
 		return new CavesPainter();
+	}
+
+	@Override
+	protected int standardRooms(boolean forceMax) {
+		if (forceMax) return 7;
+		return 6 + Random.chances(new float[]{2, 1});
+	}
+
+	@Override
+	protected int specialRooms(boolean forceMax) {
+		if (forceMax) return 3;
+		return 2 + Random.chances(new float[]{4, 1});
 	}
 
 	@Override

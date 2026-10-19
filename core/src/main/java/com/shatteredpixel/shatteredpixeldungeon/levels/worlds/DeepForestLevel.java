@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.worlds;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.SewerPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.RegularPainter;
+import com.watabou.utils.Random;
 
 /** The Forest, the opening stage of Deep Pixel Dungeon by Mochiee (its floors 1 to 7). */
 public class DeepForestLevel extends WorldLevel {
@@ -44,6 +45,18 @@ public class DeepForestLevel extends WorldLevel {
 	@Override
 	protected RegularPainter basePainter() {
 		return new SewerPainter();
+	}
+
+	@Override
+	protected int standardRooms(boolean forceMax) {
+		if (forceMax) return 6;
+		return 4 + Random.chances(new float[]{1, 3, 1});
+	}
+
+	@Override
+	protected int specialRooms(boolean forceMax) {
+		if (forceMax) return 2;
+		return 1 + Random.chances(new float[]{1, 4});
 	}
 
 	@Override
