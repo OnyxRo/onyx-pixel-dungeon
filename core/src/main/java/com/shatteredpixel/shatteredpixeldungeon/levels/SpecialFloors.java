@@ -55,6 +55,7 @@ public class SpecialFloors {
 		add( "Abyssalnite PD", "Final arena, septium pillars and Cthulhu", FinalLevel::new );
 
 		add( "Devoted PD", "Shadow realm, the Void trap", VoidTrapLevel::new );
+		add( "Deep PD", "Caves Annex, Terminator's arena", DeepBossLevel.Annex::new );
 
 		add( "Ryuse's PD", "Eye of Wisdom, the eye shaped chasm", EyeOfWisdomLevel::new );
 

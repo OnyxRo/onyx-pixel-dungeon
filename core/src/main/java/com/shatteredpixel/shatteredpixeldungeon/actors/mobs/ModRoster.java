@@ -448,6 +448,8 @@ public class ModRoster {
 		add( "deep", Mandrake.class, 1, 2, 8 );
 		add( "deep", ShamanLeader.class, 0, 1, 99 );
 		add( "deep", GnollNinja2.class, 0, 1, 99 );
+		add( "deep", ElderShroom.class, 0, 1, 99 );
+		add( "deep", FlyingCat.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

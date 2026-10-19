@@ -177,7 +177,11 @@ public class WorldShuffle {
 			//Lovecraft Pixel Dungeon
 			OverworldLevel.class, EldritchSewersLevel.class, EldritchPrisonLevel.class, EldritchCavesLevel.class, EldritchCityLevel.class, EldritchHallsLevel.class,
 			//Dragonic Pixel Dungeon, second part
-			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.NilheimLevel.class
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.NilheimLevel.class,
+			//Deep Pixel Dungeon
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.DeepForestLevel.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.GnollCampLevel.class,
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.CavesAnnexLevel.class
 	};
 
 	/** A world that fits any region, used for Transformation's tower styles. */
@@ -230,7 +234,9 @@ public class WorldShuffle {
 			//Lovecraft Pixel Dungeon
 			SEWERS, SEWERS, PRISON, CAVES, CITY, HALLS,
 			//Dragonic Pixel Dungeon, Nilheim
-			PRISON
+			PRISON,
+			//Deep Pixel Dungeon. The Forest was its floors 1 to 7, the Gnoll Camp was never linked in (its gnolls roam floors 2 to 9), the Annex branched off the caves
+			SEWERS, PRISON, CAVES
 	};
 
 	//the source mod's app icon for each world, in the same order as WORLDS. Null for Shattered's own
@@ -251,6 +257,7 @@ public class WorldShuffle {
 	private static final String LOVECRAFT = "interfaces/mods/lovecraft.png";
 	private static final String CURSED = "interfaces/mods/cursed.png";
 	private static final String TOWER = "interfaces/mods/tower.png";
+	private static final String DEEP = "interfaces/mods/deep.png";
 	private static final String[] LOGOS = {
 			null, null, null, null, null,
 			COMBUSTED, COMBUSTED, COMBUSTED,
@@ -290,7 +297,9 @@ public class WorldShuffle {
 			//Lovecraft Pixel Dungeon
 			LOVECRAFT, LOVECRAFT, LOVECRAFT, LOVECRAFT, LOVECRAFT, LOVECRAFT,
 			//Dragonic Pixel Dungeon, second part
-			DRAGONIC
+			DRAGONIC,
+			//Deep Pixel Dungeon
+			DEEP, DEEP, DEEP
 	};
 
 	/** The asset path of the icon of the mod a floor's world comes from, or null for Shattered's own worlds. */
@@ -427,6 +436,14 @@ public class WorldShuffle {
 			int pick = forcedVariant >= 0 ? forcedVariant : (int)((Math.abs( Dungeon.seed ) / 7 + depth) & 1);
 			//a third variant is the final arena, only built when asked for by name (the boss test), never by the seed
 			return both[forcedVariant >= 0 ? pick % both.length : pick % Math.min(both.length, 2)];
+		}
+		if (world >= 0 && world < LOGOS.length && DEEP.equals(LOGOS[world])) {
+			//Deep's Elder Shroom guards the end of its Forest, its Shaman Leader the end of the Gnoll Camp
+			switch (depth) {
+				case 5:  return new DeepBossLevel.Forest();
+				case 10: return new DeepBossLevel.Gnoll();
+				default: return null;
+			}
 		}
 		if (world >= 0 && world < LOGOS.length && DRAGONIC.equals(LOGOS[world])) {
 			//Dragonic's Dragon guards the floor 25 gate in place of Yog, it was the last floor of its own game

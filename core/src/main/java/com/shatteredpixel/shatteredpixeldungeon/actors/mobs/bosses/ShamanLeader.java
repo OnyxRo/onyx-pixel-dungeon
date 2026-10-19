@@ -274,7 +274,8 @@ public class ShamanLeader extends Mob implements Callback {
             Dungeon.level.unseal();
 
             GameScene.bossSlain();
-            Dungeon.level.drop( new WornKey( Dungeon.depth ), pos ).sprite.drop();
+            //the arena opens when the boss dies (Deep dropped an old skeleton key for its locked exit)
+        Dungeon.level.unseal();
 
 
             super.die( cause );

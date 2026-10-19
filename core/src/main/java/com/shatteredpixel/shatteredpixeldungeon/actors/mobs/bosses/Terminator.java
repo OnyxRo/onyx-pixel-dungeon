@@ -110,7 +110,8 @@ public class Terminator extends Mob {
         super.die( cause );
 
         GameScene.bossSlain();
-        Dungeon.level.drop( new WornKey( Dungeon.depth  ), pos ).sprite.drop();
+        //the arena opens when the boss dies (Deep dropped an old skeleton key for its locked exit)
+        Dungeon.level.unseal();
 
         Badges.validateBossSlain();
 

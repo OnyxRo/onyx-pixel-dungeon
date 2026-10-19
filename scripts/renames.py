@@ -251,6 +251,8 @@ def apply(s, sps=False):
             body = _m.group(1).replace(_kind + '.add(', _field + '.add(')
             t = t.replace(_m.group(0), '{' + body + '\n    }')
             t = re.sub(r'\n\s*@Override\s*public HashSet<Class<\?>> ' + _field + r'\(\)\s*\{\s*return ' + _kind + r';\s*\}', '', t)
+            # a 0.3 rule above may already have turned the override into an addAll of the set that is now gone
+            t = re.sub(r'\n\s*\{ ' + _field + r'\.addAll\( ' + _kind + r' \); \}', '', t)
             fired.append('old ' + _kind + ' set became the ' + _field + ' field')
     if re.search(r'\bDungeon\.', t) and not re.search(r'import [\w.]*\.Dungeon;', t) and 'package ' + PKG + ';' not in t:
         t = re.sub(r'(package [\w.]+;\r?\n)', r'\1\nimport ' + PKG + '.Dungeon;', t, count=1)
