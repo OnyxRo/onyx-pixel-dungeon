@@ -449,7 +449,7 @@ public class RogueBoss extends Mob implements PhysicalRangedAttack {
                 @Override
                 protected boolean act() {
                     Actor.remove(this);
-                    ((PrisonNewBossLevel)Dungeon.level).onWon();
+                    if (Dungeon.level instanceof PrisonNewBossLevel) ((PrisonNewBossLevel)Dungeon.level).onWon();
                     return true;
                 }
             });
@@ -519,7 +519,8 @@ public class RogueBoss extends Mob implements PhysicalRangedAttack {
     @Override
     public void die( Object cause ) {
 
-        if(((PrisonNewBossLevel)Dungeon.level).state==PrisonNewBossLevel.State.WON){
+        //transformation, it can now be fought away from its own arena
+        if(Dungeon.level instanceof PrisonNewBossLevel && ((PrisonNewBossLevel)Dungeon.level).state==PrisonNewBossLevel.State.WON){
             if(!Statistics.subLimation[1]){
                 Statistics.subLimation[1] = true;
                 Dungeon.level.drop( new ScrollOfSublimation().type("ROGUE"), pos ).sprite.drop();

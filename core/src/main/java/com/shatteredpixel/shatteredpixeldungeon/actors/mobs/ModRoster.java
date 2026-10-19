@@ -268,12 +268,20 @@ public class ModRoster {
 		add( "transformation", AlienatedPrismaticGuard.class, 0, 1, 99 );
 		add( "transformation", VaultMob.class, 0, 1, 99 );
 		add( "transformation", Obscura.class, 0, 1, 99 );
-		add( "transformation", ChaosDisciples.class, 0, 1, 99 );
+		//transformation, the four disciples, their base class is abstract
+		add( "transformation", ChaosDisciples.EyeBoss.class, 0, 1, 99 );
+		add( "transformation", ChaosDisciples.RipperBoss.class, 0, 1, 99 );
+		add( "transformation", ChaosDisciples.ScorpioBoss.class, 0, 1, 99 );
+		add( "transformation", ChaosDisciples.SuccBoss.class, 0, 1, 99 );
 		add( "transformation", WarriorBoss.class, 0, 1, 99 );
 		add( "transformation", HuntressBoss.class, 0, 1, 99 );
 		add( "transformation", RogueBoss.class, 0, 1, 99 );
 		add( "transformation", GreatDemon.class, 0, 1, 99 );
-		add( "transformation", GoldBoss.class, 0, 1, 99 );
+		//transformation, the four gold minions, their base class is abstract
+		add( "transformation", GoldBoss.MonkMaster.class, 0, 1, 99 );
+		add( "transformation", GoldBoss.GoldElemental.class, 0, 1, 99 );
+		add( "transformation", GoldBoss.GoldGolem.class, 0, 1, 99 );
+		add( "transformation", GoldBoss.Thymor.class, 0, 1, 99 );
 		add( "transformation", GreatShoper.class, 0, 1, 99 );
 		add( "transformation", MyriadBlackShadow.class, 0, 1, 99 );
 		//transformation, the surface town folk and the two heralds of the mod's last fights, sandbox only

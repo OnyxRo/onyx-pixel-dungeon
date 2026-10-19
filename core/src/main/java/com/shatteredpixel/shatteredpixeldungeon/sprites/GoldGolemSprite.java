@@ -91,7 +91,7 @@ public class GoldGolemSprite extends MobSprite {
                 new Callback() {
                     @Override
                     public void call() {
-                        ((Golem)ch).onZapComplete();
+                        if (ch instanceof Golem) ((Golem)ch).onZapComplete(); else ch.next(); //transformation, the gold golem is no Golem
                     }
                 } );
         Sample.INSTANCE.play( Assets.Sounds.ZAP );
