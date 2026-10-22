@@ -203,6 +203,9 @@ public class Ring extends KindofMisc {
 		
 		if (isKnown()) {
 			desc += "\n\n" + statsInfo();
+			if (Dungeon.hero != null && Dungeon.hero.hasTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.MYSTICAL_PUNCH)) {
+				desc += "\n\n" + Messages.get(this, "special_effect"); //rearranged
+			}
 		}
 		
 		return desc;
@@ -360,6 +363,7 @@ public class Ring extends KindofMisc {
 		if (Dungeon.hero.buff(EnhancedRings.class) != null){
 			lvl++;
 		}
+		lvl += com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.ringBonus(); //rearranged
 		return lvl;
 	}
 

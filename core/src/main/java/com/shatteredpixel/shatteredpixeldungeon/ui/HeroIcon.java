@@ -211,6 +211,29 @@ public class HeroIcon extends Image {
 	public static final int BOWMASTER       = RA + 44;
 	public static final int JUGGLER         = RA + 45;
 	public static final int SHARPSHOOTER    = RA + 46;
+	//rearranged, the third subclasses of Shattered's heroes, their buffs and the Cleric's new spells
+	public static final int VETERAN         = RA + 2;
+	public static final int WIZARD          = RA + 6;
+	public static final int CHASER          = RA + 10;
+	public static final int FIGHTER         = RA + 14;
+	public static final int FENCER          = RA + 18;
+	public static final int ENCHANTER       = RA + 22;
+	public static final int TACKLE          = RA + 106;
+	public static final int MAGIC_COMBO     = RA + 108;
+	public static final int DIVINE_BLAST    = RA + 179;
+	public static final int DIVINE_RAY      = RA + 180;
+	public static final int HOLY_BOMB       = RA + 181;
+	public static final int RA_RESURRECTION = RA + 182;
+	public static final int HOLY_MANTLE     = RA + 183;
+	public static final int POWER_OF_LIFE   = RA + 184;
+	public static final int INDUCE_AGGRO    = RA + 185;
+	public static final int SPELL_BURST     = RA + 186;
+	public static final int TIME_AMP        = RA + 187;
+	public static final int WEAKENING_HEX   = RA + 188;
+	public static final int STUN            = RA + 189;
+	public static final int THUNDER_IMBUE   = RA + 190;
+	public static final int ARCANE_ARMOR    = RA + 191;
+	public static final int ENCHANT         = RA + 192;
 	public static final int RIOT            = RA + 72;
 	public static final int REINFORCEDARMOR = RA + 73;
 	public static final int FIRSTAIDKIT     = RA + 74;
@@ -244,6 +267,8 @@ public class HeroIcon extends Image {
 	private static TextureFilm raFilm;
 
 	private void pick( int icon ){
+		//rearranged, the mod's sheet keeps spell action icons 48 cells on, not 32
+		if (icon >= DIVINE_BLAST + SPELL_ACTION_OFFSET && icon <= ENCHANT + SPELL_ACTION_OFFSET) icon += 16;
 		if (icon >= RA){
 			texture( Assets.Interfaces.RA_HERO_ICONS );
 			if (raFilm == null) raFilm = new TextureFilm(texture, SIZE, SIZE);

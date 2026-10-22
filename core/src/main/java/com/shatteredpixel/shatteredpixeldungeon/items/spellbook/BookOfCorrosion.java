@@ -39,7 +39,7 @@ public class BookOfCorrosion extends SpellBook {
 
     @Override
     public void readEffect() {
-        GameScene.add( Blob.seed( Dungeon.hero.pos, Math.round(150*(1+0.5f*0)), CorrosiveGas.class ).setStrength( 2*(2 + Dungeon.scalingDepth()/5)));
+        GameScene.add( Blob.seed( Dungeon.hero.pos, Math.round(150*(1+0.5f*Dungeon.hero.pointsInTalent(Talent.SPELL_ENHANCE))), CorrosiveGas.class ).setStrength( 2*(2 + Dungeon.scalingDepth()/5)));
         Sample.INSTANCE.play( Assets.Sounds.GAS );
         if (Dungeon.hero.buff(BlobImmunity.class) == null && Dungeon.hero.buff(PotionOfCleansing.Cleanse.class) == null) {
             GLog.w(Messages.get(this, "warning"));

@@ -56,4 +56,43 @@ public abstract class TargetedClericSpell extends ClericSpell {
 
 	protected abstract void onTargetSelected(HolyTome tome, Hero hero, Integer target);
 
+	//rearranged, the Enchanter's spells hang short debuffs on an enemy, one for each charge spent
+	private static final java.util.HashMap<Class<? extends com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff>, Float> DEBUFFS = new java.util.HashMap<>();
+	static {
+		DEBUFFS.put(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple.class,   1f);
+		DEBUFFS.put(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness.class, 1f);
+		DEBUFFS.put(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror.class,    1f);
+		DEBUFFS.put(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill.class,     1f);
+		DEBUFFS.put(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots.class,     1f);
+		DEBUFFS.put(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo.class,   1f);
+		DEBUFFS.put(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok.class,      1f);
+		DEBUFFS.put(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Daze.class,      1f);
+		DEBUFFS.put(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost.class,     1f);
+	}
+
+	public static void onEnchanterSpellCast(com.shatteredpixel.shatteredpixeldungeon.actors.Char target, float spellCost) {
+		int chargeUse = (int)spellCost;
+		if (target.alignment == com.shatteredpixel.shatteredpixeldungeon.actors.Char.Alignment.ENEMY) {
+			for (int i = 0; i < chargeUse; i++) {
+				java.util.HashMap<Class<? extends com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff>, Float> debuffs = new java.util.HashMap<>(DEBUFFS);
+				for (com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff existing : target.buffs()){
+					if (existing instanceof com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff && debuffs.containsKey(existing.getClass())) {
+						debuffs.put(((com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff) existing).getClass(), 0f);
+					}
+				}
+				for (Class<? extends com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff> toAssign : debuffs.keySet()){
+					if (debuffs.get(toAssign) > 0 && target.isImmune(toAssign)){
+						debuffs.put(toAssign, 0f);
+					}
+				}
+				Class<? extends com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff> debuffCls = com.watabou.utils.Random.chances(debuffs);
+				if (debuffCls != null){
+					com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.append(target, debuffCls, 5);
+				} else {
+					com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(target, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom.class);
+				}
+			}
+		}
+	}
+
 }

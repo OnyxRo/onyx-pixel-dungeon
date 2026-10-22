@@ -407,7 +407,7 @@ public class Hero extends Char {
 	public Hero() {
 		super();
 
-		HP = HT = 20;
+		HP = HT = com.shatteredpixel.shatteredpixeldungeon.RearrangedChallenges.baseHT(20); //rearranged, Superman
 		STR = STARTING_STR;
 		
 		belongings = new Belongings( this );
@@ -429,6 +429,7 @@ public class Hero extends Char {
 		} else {
 			HT = 20 + 5*(lvl-1) + HTBoost;
 		}
+		HT = com.shatteredpixel.shatteredpixeldungeon.RearrangedChallenges.baseHT(HT); //rearranged, Superman
 		if (subClass.is(HeroSubClass.WATERSLIME)){
 			HT += (int) Math.round(0.5 * lvl * (1 + pointsInTalent(Talent.WATER_BODY)));
 		}
@@ -1304,6 +1305,7 @@ public class Hero extends Char {
 			//This is for that one guy, you shall get your fists of fury!
 			float speed = RingOfFuror.attackSpeedMultiplier(this);
 			if ( buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Furor.class ) != null) speed *= 4f;
+			speed = RearrangedRework.unarmedSpeed(this, speed); //rearranged
 
 			//ditto for furor + sword dance!
 			if (buff(Scimitar.SwordDance.class) != null){
@@ -2740,6 +2742,7 @@ public class Hero extends Char {
 			move(step);
 
 			spend( delay / speed() );
+			RearrangedRework.afterStep(this, delay / speed()); //rearranged, Quick Step
 			justMoved = true; //rearranged
 			
 			search(false);
@@ -3341,6 +3344,7 @@ public class Hero extends Char {
 		boolean hit = attack(attackTarget);
 
 		Invisibility.dispel();
+		RearrangedRework.afterAttack(this, attackTarget, hit, wasEnemy); //rearranged
 		if (RearrangedHero.attackUsesTurn(this)) {
 			spend( attackDelay() );
 		} else {

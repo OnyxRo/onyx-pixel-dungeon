@@ -35,7 +35,7 @@ public class BookOfEarth extends SpellBook {
     @Override
     public void readEffect() {
         Buff.affect(Dungeon.hero, Earthroot.Armor.class).level(Dungeon.hero.HT);
-        Buff.affect(Dungeon.hero, Barkskin.class).set(Math.round(Dungeon.hero.lvl/2f*(1 + 0.5f*0)), 1);
+        Buff.affect(Dungeon.hero, Barkskin.class).set(Math.round(Dungeon.hero.lvl/2f*(1 + 0.5f*Dungeon.hero.pointsInTalent(Talent.SPELL_ENHANCE))), 1);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class BookOfEarth extends SpellBook {
         if (Dungeon.hero != null && Dungeon.hero.buff(SpellBookCoolDown.class) == null) {
             info += "\n\n" + Messages.get(this, "time",
                     Dungeon.hero.HT,
-                    Math.round(Dungeon.hero.lvl/2f*(1 + 0.5f*0)));
+                    Math.round(Dungeon.hero.lvl/2f*(1 + 0.5f*Dungeon.hero.pointsInTalent(Talent.SPELL_ENHANCE))));
         }
         return info;
     }

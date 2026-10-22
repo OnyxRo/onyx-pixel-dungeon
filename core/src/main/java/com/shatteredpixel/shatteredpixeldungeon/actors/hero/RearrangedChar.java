@@ -95,6 +95,7 @@ public class RearrangedChar {
 	public static void onMobDeath( com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob mob, Object cause ){
 		Hero hero = Dungeon.hero;
 		if (hero == null) return;
+		RearrangedRework.onMobDeath(mob, cause);
 		if (hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FirstAidBuff.FirstAidBuffCooldown.class) != null) {
 			hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FirstAidBuff.FirstAidBuffCooldown.class).kill();
 		}

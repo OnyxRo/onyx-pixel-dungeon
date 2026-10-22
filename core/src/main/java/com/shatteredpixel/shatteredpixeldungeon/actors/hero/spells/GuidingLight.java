@@ -98,6 +98,7 @@ public class GuidingLight extends TargetedClericSpell {
 				hero.next();
 
 				onSpellCast(tome, hero);
+				if (ch != null && hero.subClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.ENCHANTER) onEnchanterSpellCast(ch, chargeUse(hero)); //rearranged
 				if (hero.subClass == HeroSubClass.PRIEST && hero.buff(GuidingLightPriestCooldown.class) == null) {
 					Buff.prolong(hero, GuidingLightPriestCooldown.class, 50f);
 					ActionIndicator.refresh();

@@ -164,6 +164,7 @@ public class Artifact extends KindofMisc {
 			Buff.affect(target, GuidingLight.Illuminated.class);
 			Buff.affect(Dungeon.hero, Talent.SearingLightCooldown.class, 20f);
 		}
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.wardingLightItem(); //rearranged
 
 		if (target.alignment != Char.Alignment.ALLY
 				&& Dungeon.hero.heroClass != HeroClass.CLERIC

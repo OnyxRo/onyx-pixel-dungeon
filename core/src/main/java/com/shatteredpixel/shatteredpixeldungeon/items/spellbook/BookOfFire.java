@@ -32,7 +32,7 @@ public class BookOfFire extends SpellBook {
 
     @Override
     public void readEffect() {
-        Buff.affect(Dungeon.hero, FireImbue.class).set(5+Math.round(Dungeon.hero.lvl/2f*(1 + 0.5f*0)));
+        Buff.affect(Dungeon.hero, FireImbue.class).set(5+Math.round(Dungeon.hero.lvl/2f*(1 + 0.5f*Dungeon.hero.pointsInTalent(Talent.SPELL_ENHANCE))));
     }
 
     @Override
@@ -40,7 +40,7 @@ public class BookOfFire extends SpellBook {
         String info = super.info();
         if (Dungeon.hero != null && Dungeon.hero.buff(SpellBookCoolDown.class) == null) {
             info += "\n\n" + Messages.get(this, "time",
-                    5+Math.round(Dungeon.hero.lvl/2f*(1 + 0.5f*0)));
+                    5+Math.round(Dungeon.hero.lvl/2f*(1 + 0.5f*Dungeon.hero.pointsInTalent(Talent.SPELL_ENHANCE))));
         }
         return info;
     }

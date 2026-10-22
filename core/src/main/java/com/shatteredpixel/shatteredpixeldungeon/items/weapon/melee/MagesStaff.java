@@ -106,6 +106,15 @@ public class MagesStaff extends MeleeWeapon {
 		wand.curCharges = wand.maxCharges;
 	}
 
+	//rearranged, the Battlemage's magical combo reads and spends the staff's charges
+	public int getCurCharges() {
+		return wand == null ? 0 : wand.curCharges;
+	}
+
+	public void loseCharge() {
+		if (wand != null) wand.loseCharge();
+	}
+
 	@Override
 	public ArrayList<String> actions(Hero hero) {
 		ArrayList<String> actions = super.actions( hero );

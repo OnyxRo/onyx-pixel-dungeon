@@ -102,6 +102,7 @@ public class RingOfForce extends Ring {
 			return dmg;
 		} else {
 			//attack without any ring of force influence
+			if (hero.subClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.FIGHTER) return com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.fighterDamage(hero); //rearranged
 			return Hero.heroDamageIntRange(1, Math.max(hero.STR()-8, 1));
 		}
 	}

@@ -97,6 +97,9 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 		if (!enemy.isAlive() || (enemy.buff(Corruption.class) != null && enemy.HP == enemy.HT)){
 			comboTime = 15f + 15f*((Hero)target).pointsInTalent(Talent.CLEAVE);
+			//rearranged, Skill Repeat lets a kill refresh the finishers
+			boolean[] raRepeat = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.skillRepeat((Hero)target, moveBeingUsed == ComboMove.CLOBBER, moveBeingUsed == ComboMove.PARRY, clobberUsed, parryUsed);
+			clobberUsed = raRepeat[0]; parryUsed = raRepeat[1];
 			initialComboTime = comboTime;
 		}
 

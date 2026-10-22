@@ -236,9 +236,23 @@ public class Berserk extends ShieldBuff implements ActionIndicator.Action {
 	public void damage(int damage){
 		if (state != State.NORMAL) return;
 		float maxPower = 1f + 0.1667f*((Hero)target).pointsInTalent(Talent.ENDLESS_RAGE);
-		power = Math.min(maxPower, power + (damage/(float)target.HT)/4f );
+		power = Math.min(maxPower, power + com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.rageGain((Hero)target, (damage/(float)target.HT)/4f, damage) ); //rearranged
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.maxRage((Hero)target, power, maxPower); //rearranged
 		BuffIndicator.refreshHero(); //show new power immediately
 		powerLossBuffer = 3; //2 turns until rage starts dropping
+		if (power >= 1f){
+			ActionIndicator.setAction(this);
+		}
+	}
+
+	//rearranged, Lethal Rage adds rage on a kill
+	public void add(float amount) {
+		if (state != State.NORMAL) return;
+		float maxPower = 1f + 0.1667f*((Hero)target).pointsInTalent(Talent.ENDLESS_RAGE);
+		power = Math.min(maxPower, power + amount);
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.maxRage((Hero)target, power, maxPower);
+		BuffIndicator.refreshHero();
+		powerLossBuffer = 3;
 		if (power >= 1f){
 			ActionIndicator.setAction(this);
 		}

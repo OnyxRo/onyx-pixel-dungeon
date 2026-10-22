@@ -130,6 +130,7 @@ public class Shockwave extends ArmorAbility {
 									if (hero.subClass == HeroSubClass.GLADIATOR && wasEnemy){
 										Buff.affect( hero, Combo.class ).hit( ch );
 									}
+									com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.shockwaveHit(hero, ch); //rearranged
 								} else {
 									ch.damage(damage, hero);
 								}

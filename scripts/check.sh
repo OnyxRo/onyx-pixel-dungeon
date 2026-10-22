@@ -117,6 +117,14 @@ if [ $QUICK -eq 0 ]; then
   run "RearrangedHeroesTest" RearrangedHeroesTest; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY rearranged)" | tail -12 | sed 's/^/  /'
   [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
+  #rearranged, its five challenges and the Re-ARranged heroes option
+  run "RearrangedChallengesTest" RearrangedChallengesTest; rc=$?
+  tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY rearranged)" | tail -12 | sed 's/^/  /'
+  [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
+  #rearranged, the Re-ARranged heroes option, its rework of Shattered's six heroes
+  run "RearrangedReworkTest" RearrangedReworkTest; rc=$?
+  tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY rearranged)" | tail -12 | sed 's/^/  /'
+  [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
   #Transformation PD's talent catalog and the Freeman, every catalog talent run through every hook
   run "TransformationCatalogTest" TransformationCatalogTest; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY Transformation)" | tail -14 | sed 's/^/  /'

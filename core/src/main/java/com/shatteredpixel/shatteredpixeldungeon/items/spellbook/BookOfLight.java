@@ -41,12 +41,12 @@ public class BookOfLight extends SpellBook {
 
     @Override
     public void readEffect() {
-        Buff.affect(Dungeon.hero, Light.class, 50*(1 + 0.5f * 0));
+        Buff.affect(Dungeon.hero, Light.class, 50*(1 + 0.5f * Dungeon.hero.pointsInTalent(Talent.SPELL_ENHANCE)));
         GameScene.flash(0xFFFFFF);
         Sample.INSTANCE.play(Assets.Sounds.BLAST);
         for (Mob m : Dungeon.level.mobs) {
             if (!(m instanceof NPC) && Dungeon.level.heroFOV[m.pos]) {
-                Buff.affect(m, Blindness.class, (2+(int)Math.floor(Dungeon.hero.lvl/6f)*(1+0.5f*0)));
+                Buff.affect(m, Blindness.class, (2+(int)Math.floor(Dungeon.hero.lvl/6f)*(1+0.5f*Dungeon.hero.pointsInTalent(Talent.SPELL_ENHANCE))));
             }
         }
     }
@@ -56,8 +56,8 @@ public class BookOfLight extends SpellBook {
         String info = super.info();
         if (Dungeon.hero != null && Dungeon.hero.buff(SpellBookCoolDown.class) == null) {
             info += "\n\n" + Messages.get(this, "time",
-                    new DecimalFormat("#").format(50*(1 + 0.5f * 0)),
-                    new DecimalFormat("#").format((2+(int)Math.floor(Dungeon.hero.lvl/6f)*(1+0.5f*0))));
+                    new DecimalFormat("#").format(50*(1 + 0.5f * Dungeon.hero.pointsInTalent(Talent.SPELL_ENHANCE))),
+                    new DecimalFormat("#").format((2+(int)Math.floor(Dungeon.hero.lvl/6f)*(1+0.5f*Dungeon.hero.pointsInTalent(Talent.SPELL_ENHANCE)))));
         }
         return info;
     }

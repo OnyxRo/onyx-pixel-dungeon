@@ -644,7 +644,7 @@ public enum HeroClass {
 	}
 
 	public HeroSubClass[] subClasses() {
-		return subClasses;
+		return RearrangedRework.subClasses(this, subClasses); //rearranged
 	}
 
 	public ArmorAbility[] armorAbilities(){

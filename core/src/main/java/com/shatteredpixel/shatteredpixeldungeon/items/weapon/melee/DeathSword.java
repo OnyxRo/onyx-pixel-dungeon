@@ -52,7 +52,7 @@ public class DeathSword extends MeleeWeapon {
     public String desc() {
         if (Dungeon.hero != null && Dungeon.hero.buff(MaxHPBoost.class) != null) {
             int HTBoost = Dungeon.hero.buff(MaxHPBoost.class).HTBonus();
-            return Messages.get(this, "desc_hero", HTBoost, false ? 10 : 15+Dungeon.hero.lvl*5);
+            return Messages.get(this, "desc_hero", HTBoost, Dungeon.isChallenged(Challenges.SUPERMAN) ? 10 : 15+Dungeon.hero.lvl*5);
         } else {
             return Messages.get(this, "desc");
         }
@@ -76,7 +76,7 @@ public class DeathSword extends MeleeWeapon {
         private int stack = 0;
 
         public void kill() {
-            stack = Math.min(stack+1, false ? 10 : 15+Dungeon.hero.lvl*5);
+            stack = Math.min(stack+1, Dungeon.isChallenged(Challenges.SUPERMAN) ? 10 : 15+Dungeon.hero.lvl*5);
             Dungeon.hero.updateHT(false);
         }
 

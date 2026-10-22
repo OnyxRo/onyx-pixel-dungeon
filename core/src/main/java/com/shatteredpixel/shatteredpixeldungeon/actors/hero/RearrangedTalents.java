@@ -187,6 +187,7 @@ public class RearrangedTalents {
 	}
 
 	public static void onTalentUpgraded( Hero hero, Talent talent ){
+		RearrangedRework.onTalentUpgraded(hero, talent);
 		if (talent == BETTER_CHOICE){
 			switch (hero.pointsInTalent(BETTER_CHOICE)) {
 				case 1: give(hero, new StoneOfEnchantment()); break;
@@ -324,6 +325,7 @@ public class RearrangedTalents {
 	}
 
 	public static void onScrollUsed( Hero hero, int pos, float factor ){
+		RearrangedRework.onScrollUsed(hero, factor);
 		if (hero.hasTalent(INSCRIBED_BULLET)) {
 			BulletItem bulletItem = new BulletItem();
 			bulletItem.quantity((int)(factor * 5 * hero.pointsInTalent(INSCRIBED_BULLET)));
@@ -394,6 +396,7 @@ public class RearrangedTalents {
 	}
 
 	public static int onAttackProc( Hero hero, Char enemy, int damage ){
+		damage = RearrangedRework.onAttackProc(hero, enemy, damage);
 		KindOfWeapon wep;
 		if (RingOfForce.fightingUnarmed(hero) && !RingOfForce.unarmedGetsWeaponEnchantment(hero)){
 			wep = null;

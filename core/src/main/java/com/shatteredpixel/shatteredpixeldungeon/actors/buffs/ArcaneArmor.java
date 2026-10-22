@@ -68,6 +68,14 @@ public class ArcaneArmor extends Buff {
 		}
 	}
 
+	//rearranged, the Enchanter's Arcane Armor spell stacks it up to the hero's level
+	public void add( int value, int time ) {
+		level += value;
+		if (level > com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero.lvl) level = com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero.lvl;
+		interval = time;
+		spend(time - cooldown() - 1);
+	}
+
 	public void delay( float value ){
 		spend(value);
 	}

@@ -548,8 +548,9 @@ public abstract class Char extends Actor {
 			if (enemy.buff(GuidingLight.Illuminated.class) != null){
 				enemy.buff(GuidingLight.Illuminated.class).detach();
 				if (this == Dungeon.hero && Dungeon.hero.hasTalent(Talent.SEARING_LIGHT)){
-					dmg += 1 + 2*Dungeon.hero.pointsInTalent(Talent.SEARING_LIGHT);
+					dmg += com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.searingLight(1 + 2*Dungeon.hero.pointsInTalent(Talent.SEARING_LIGHT)); //rearranged
 				}
+				if (this == Dungeon.hero) com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.wardingLight(Dungeon.hero); //rearranged
 				if (this != Dungeon.hero && Dungeon.hero.subClass == HeroSubClass.PRIEST){
 					enemy.damage(5+Dungeon.hero.lvl, GuidingLight.INSTANCE);
 				}
@@ -604,6 +605,7 @@ public abstract class Char extends Actor {
 			if ( buff(Weakness.class) != null ){
 				dmg *= 0.67f;
 			}
+			dmg = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.markOfWeakness(this, dmg); //rearranged
 
 			//rearranged
 			if (enemy.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PainKiller.class) != null) {
@@ -686,6 +688,7 @@ public abstract class Char extends Actor {
 				if (enemy.sprite != null) {
 					enemy.sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Preparation.class, "assassinated"));
 				}
+				if (this instanceof Hero) com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.energyDraw((Hero) this); //rearranged
 			}
 
 			Talent.CombinedLethalityAbilityTracker combinedLethality = buff(Talent.CombinedLethalityAbilityTracker.class);
@@ -738,6 +741,8 @@ public abstract class Char extends Actor {
 			return true;
 			
 		} else if (!Char.hasProp(enemy, Property.OBJECT)) {
+
+			if (enemy instanceof Hero) com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.onHeroDodged((Hero) enemy); //rearranged
 
 			if (enemy.sprite != null){
 				if (hitMissIcon != -1){
@@ -1123,6 +1128,7 @@ public abstract class Char extends Actor {
 			((Char) src).buff(Vorpal.VorpalTracker.class).detach();
 		}
 
+		dmg = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.holyMantle(this, dmg); //rearranged
 		Class<?> srcClass = src.getClass();
 		if (isImmune( srcClass )) {
 			damage = 0;

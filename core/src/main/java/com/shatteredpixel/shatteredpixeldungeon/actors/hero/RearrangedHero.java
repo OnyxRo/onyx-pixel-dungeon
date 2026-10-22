@@ -91,6 +91,7 @@ public class RearrangedHero {
 		if (hero.buff(DeathSword.MaxHPBoost.class) != null) {
 			ht += hero.buff(DeathSword.MaxHPBoost.class).HTBonus();
 		}
+		ht += RearrangedRework.bonusHT(hero);
 		return ht;
 	}
 
@@ -116,6 +117,8 @@ public class RearrangedHero {
 			accuracy *= 1.2f;
 		}
 		accuracy *= Juggling.accuracyFactor(hero);
+		accuracy = com.shatteredpixel.shatteredpixeldungeon.RearrangedChallenges.accuracy(accuracy);
+		if (RearrangedRework.neverMisses(hero)) return Float.POSITIVE_INFINITY;
 		if (hero.buff(UnholyBible.Demon.class) != null) {
 			return Float.POSITIVE_INFINITY;
 		}
@@ -132,6 +135,7 @@ public class RearrangedHero {
 	}
 
 	public static boolean dodgesEverything( Hero hero, Char enemy ){
+		if (RearrangedRework.dodgesEverything(hero, enemy)) return true;
 		if (enemy != null && hero.buff(Nunchaku.ParryTracker.class) != null){
 			if (hero.canAttack(enemy) && !hero.isCharmedBy(enemy)){
 				Buff.affect(hero, Nunchaku.RiposteTracker.class).enemy = enemy;
@@ -148,6 +152,8 @@ public class RearrangedHero {
 		if (hero.buff(UnholyBible.Demon.class) != null) {
 			evasion /= 2;
 		}
+		evasion = RearrangedRework.evasion(hero, evasion);
+		evasion = com.shatteredpixel.shatteredpixeldungeon.RearrangedChallenges.evasion(evasion);
 		return evasion;
 	}
 
@@ -163,6 +169,8 @@ public class RearrangedHero {
 	}
 
 	public static String defenseVerb( Hero hero ){
+		String raParry = RearrangedRework.defenseVerb(hero);
+		if (raParry != null) return raParry;
 		Nunchaku.ParryTracker nunchakuParry = hero.buff(Nunchaku.ParryTracker.class);
 		if (nunchakuParry != null){
 			nunchakuParry.parried = true;
@@ -242,6 +250,7 @@ public class RearrangedHero {
 			}
 		}
 		speed *= BowMasterSkill.speedBoost(hero);
+		speed = RearrangedRework.speed(hero, speed);
 		return speed;
 	}
 
@@ -341,6 +350,7 @@ public class RearrangedHero {
 	}
 
 	public static void onAct( Hero hero ){
+		RearrangedRework.onAct(hero);
 		if (hero.subClass == HeroSubClass.SLAYER && hero.buff(Awakening.class) == null) {
 			Buff.affect(hero, Awakening.class).indicate();
 		}
@@ -351,6 +361,7 @@ public class RearrangedHero {
 
 	public static void onRest( Hero hero, boolean fullRest ){
 		if (fullRest) return;
+		RearrangedRework.onRest(hero);
 		if (hero.belongings.weapon instanceof LargeSword || hero.belongings.secondWep instanceof LargeSword){
 			Buff.affect(hero, LargeSword.LargeSwordBuff.class).setDamageFactor(hero.belongings.weapon.buffedLvl(), (hero.belongings.secondWep instanceof LargeSword));
 			if (hero.sprite != null) {
@@ -381,6 +392,7 @@ public class RearrangedHero {
 	}
 
 	public static int attackProc( Hero hero, Char enemy, KindOfWeapon wep, int damage ){
+		damage = com.shatteredpixel.shatteredpixeldungeon.RearrangedChallenges.attackProc(hero, enemy, damage);
 		if (hero.subClass == HeroSubClass.OUTLAW && wep instanceof Gun.Bullet) {
 			if (hero.hasTalent(Talent.HEADSHOT) && Random.Float() < 0.01f*hero.pointsInTalent(Talent.HEADSHOT)) {
 				if (!Char.hasProp(enemy, Char.Property.BOSS) && !Char.hasProp(enemy, Char.Property.MINIBOSS) && enemy.alignment == Char.Alignment.ENEMY) {
@@ -425,6 +437,8 @@ public class RearrangedHero {
 			}
 		}
 
+		damage = RearrangedRework.attackProc(hero, enemy, wep, damage);
+		com.shatteredpixel.shatteredpixeldungeon.RearrangedChallenges.mutate(hero, enemy, wep, damage);
 		if (hero.buff(Sheath.CertainCrit.class) != null) {
 			hero.buff(Sheath.CertainCrit.class).hit();
 		}
@@ -453,6 +467,8 @@ public class RearrangedHero {
 				Buff.affect(hero, FirstAidBuff.class).set(damage);
 			}
 		}
+		com.shatteredpixel.shatteredpixeldungeon.RearrangedChallenges.defenseProc(hero);
+		RearrangedRework.defenseProc(hero, enemy);
 		if (hero.buff(HorseRiding.class) != null) {
 			hero.buff(HorseRiding.class).onDamage(damage);
 		}
@@ -468,6 +484,7 @@ public class RearrangedHero {
 	}
 
 	public static int damageTaken( Hero hero, int dmg, Object src ){
+		dmg = RearrangedRework.damageTaken(hero, dmg);
 		if (hero.hasTalent(Talent.PROTECTION)) {
 			dmg = (int)Math.ceil(dmg * (1 - hero.pointsInTalent(Talent.PROTECTION)/6f * ((float)(hero.HT - hero.HP)/hero.HT)));
 		}
@@ -525,6 +542,7 @@ public class RearrangedHero {
 	}
 
 	public static boolean preventsDeath( Hero hero, Object cause ){
+		if (RearrangedRework.preventsDeath(hero)) return true;
 		if (hero.buff(Enduring.class) != null) {
 			hero.HP = 1;
 			return true;
@@ -542,6 +560,7 @@ public class RearrangedHero {
 	}
 
 	public static boolean attackUsesTurn( Hero hero ){
+		if (RearrangedRework.attackIsFree(hero)) return false;
 		if (hero.buff(Awakening.class) != null && hero.buff(Awakening.class).isAwaken() && hero.buff(Sheath.CriticalAttack.class) != null) {
 			return false;
 		}

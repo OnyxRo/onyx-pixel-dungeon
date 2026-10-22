@@ -175,6 +175,7 @@ public class Food extends Item {
 
 	protected void satisfy( Hero hero ){
 		float foodVal = com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.foodValue(hero, this, energy); //transformation
+		foodVal = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.addedMeal(hero, foodVal); //rearranged
 		if (hero.hasTalent(Talent.VEGETARIANISM)){
 			if (isVegetarianFood()){
 				foodVal *= 2f;
@@ -197,6 +198,7 @@ public class Food extends Item {
 		}
 
 		Buff.affect(hero, Hunger.class).satisfy(foodVal);
+		com.shatteredpixel.shatteredpixeldungeon.RearrangedChallenges.onEat(hero); //rearranged, food clears Fatigue
 
 		//Experienced PD's Mystical Meal and Magnetic Meal perks
 		if (hero.perks.contains(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Perks.Perk.MYSTICAL_MEAL)){

@@ -205,6 +205,14 @@ public abstract class Wand extends Item {
 		}
 	}
 
+	//rearranged
+	public void loseCharge() {
+		while (curCharges > 0) {
+			curCharges --;
+			updateQuickslot();
+		}
+	}
+
 	public void gainCharge( float amt ){
 		gainCharge( amt, false );
 	}
@@ -264,6 +272,7 @@ public abstract class Wand extends Item {
 					Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invulnerability.class).cooldown() + dur);
 		}
 
+		wandLevel = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.enhancedMark(wandLevel); //rearranged
 		if (target != Dungeon.hero &&
 				Dungeon.hero.subClass == HeroSubClass.WARLOCK &&
 				//standard 1 - 0.92^x chance, plus 7%. Starts at 15%
@@ -283,6 +292,7 @@ public abstract class Wand extends Item {
 			Buff.affect(target, GuidingLight.Illuminated.class);
 			Buff.affect(Dungeon.hero, Talent.SearingLightCooldown.class, 20f);
 		}
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.wardingLightItem(); //rearranged
 
 		if (target.alignment != Char.Alignment.ALLY
 				&& Dungeon.hero.heroClass != HeroClass.CLERIC
@@ -292,6 +302,7 @@ public abstract class Wand extends Item {
 				Buff.prolong(target, Blindness.class, 4f);
 			}
 		}
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.lifeEnergy(target, chargesUsed); //rearranged
 	}
 
 	@Override
@@ -456,6 +467,7 @@ public abstract class Wand extends Item {
 			if (curCharges == 1 && charger.target instanceof Hero && ((Hero)charger.target).hasTalent(Talent.DESPERATE_POWER)){
 				lvl += ((Hero)charger.target).pointsInTalent(Talent.DESPERATE_POWER);
 			}
+			if (charger != null && charger.target != null) lvl += com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.empoweredWandLevel(charger.target); //rearranged
 
 			if (charger.target.buff(WildMagic.WildMagicTracker.class) != null){
 				int bonus = 4 + ((Hero)charger.target).pointsInTalent(Talent.WILD_POWER);
@@ -555,7 +567,8 @@ public abstract class Wand extends Item {
 		}
 		
 		//transformation, Magic Recycling may keep the charge
-		if (!(curUser == Dungeon.hero && com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.wandChargeSaved())) {
+		if (!(curUser == Dungeon.hero && com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.wandChargeSaved())
+				&& !(curUser == Dungeon.hero && com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.preservesCharge())) { //rearranged, Charge Preservation
 			curCharges -= cursed ? 1 : chargesPerCast();
 		}
 
@@ -572,6 +585,7 @@ public abstract class Wand extends Item {
 			if (empower != null){
 				empower.use();
 			}
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.useMagicalEmpower(curUser); //rearranged
 		}
 
 		//If hero owns wand but it isn't in belongings it must be in the staff
@@ -766,6 +780,7 @@ public abstract class Wand extends Item {
 						float shield = curUser.HT * (0.04f*curWand.curCharges);
 						if (curUser.pointsInTalent(Talent.SHIELD_BATTERY) == 2) shield *= 1.5f;
 						Buff.affect(curUser, Barrier.class).setShield(Math.round(shield));
+						com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.magicalCircle(curUser, curWand.curCharges); //rearranged
 						curUser.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(Math.round(shield)), FloatingText.SHIELDING);
 						curWand.curCharges = 0;
 						curUser.sprite.operate(curUser.pos);
@@ -926,7 +941,8 @@ public abstract class Wand extends Item {
 
 			if (Regeneration.regenOn())
 				partialCharge += (1f/turnsToCharge) * (target == Dungeon.hero ? com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.wandRechargeFactor() : 1f) * RingOfEnergy.wandChargeMultiplier(target)
-						* com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.wandCharge(target);
+						* com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.wandCharge(target)
+						* (target == Dungeon.hero ? com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.wandChargeMulti(1f) : 1f); //rearranged
 
 			for (Recharging bonus : target.buffs(Recharging.class)){
 				if (bonus != null && bonus.remainder() > 0f) {

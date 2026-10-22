@@ -307,6 +307,8 @@ public class MeleeWeapon extends Weapon {
 			hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldAmt), FloatingText.SHIELDING);
 		}
 
+		if (hero.hasTalent(Talent.SKILLED_HAND)) Buff.affect(hero, Talent.SkilledHandTracker.class); //rearranged
+
 		updateQuickslot();
 	}
 
@@ -343,6 +345,9 @@ public class MeleeWeapon extends Weapon {
 				tracker.wepAbilUsed = true;
 				Buff.affect(hero, MonkEnergy.class).processCombinedEnergy(tracker);
 			}
+		}
+		if (hero.hasTalent(Talent.AGGRESSIVE_MOVEMENT)) { //rearranged, the Fencer's next dash costs half
+			Buff.prolong(hero, Talent.AgressiveMovementAbilityTracker.class, hero.cooldown()).wepAbilUsed = true;
 		}
 		if (hero.buff(Talent.CounterAbilityTacker.class) != null){
 			Charger charger = Buff.affect(hero, Charger.class);
@@ -592,6 +597,8 @@ public class MeleeWeapon extends Weapon {
 						chargeToGain *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.championRechargeBonus(Dungeon.hero); //transformation, Weapon Ability Master
 					}
 
+					chargeToGain *= FencerDash.chargeMulti(Dungeon.hero); //rearranged
+
 					//50% slower charge gain with brawler's stance enabled, even if buff is inactive
 					if (Dungeon.hero.buff(RingOfForce.BrawlersStance.class) != null){
 						chargeToGain *= 0.50f;
@@ -615,7 +622,7 @@ public class MeleeWeapon extends Weapon {
 				partialCharge = 0;
 			}
 
-			if (ActionIndicator.action != this && Dungeon.hero.subClass == HeroSubClass.CHAMPION) {
+			if (ActionIndicator.action != this && FencerDash.showsAction()) { //rearranged, the Fencer too
 				ActionIndicator.setAction(this);
 			}
 
@@ -623,9 +630,18 @@ public class MeleeWeapon extends Weapon {
 			return true;
 		}
 
+		//rearranged, the Fencer's dash
+		public void useCharges(float amount) {
+			partialCharge -= amount;
+			while (partialCharge < 0 && charges > 0) {
+				charges--;
+				partialCharge++;
+			}
+		}
+
 		@Override
 		public void fx(boolean on) {
-			if (on && Dungeon.hero.subClass == HeroSubClass.CHAMPION) {
+			if (on && FencerDash.showsAction()) { //rearranged
 				ActionIndicator.setAction(this);
 			}
 		}
@@ -645,9 +661,10 @@ public class MeleeWeapon extends Weapon {
 			}
 			//caps at level 19 with 8 or 10 charges
 			if (Dungeon.hero.subClass == HeroSubClass.CHAMPION){
-				return Math.min(10, 4 + (Dungeon.hero.lvl - 1) / 3) + com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.championChargeBonus(Dungeon.hero);
+				return Math.min(10, 4 + (Dungeon.hero.lvl - 1) / 3) + com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.championChargeBonus(Dungeon.hero)
+						+ Dungeon.hero.pointsInTalent(Talent.ACCUMULATION); //rearranged
 			} else {
-				return Math.min(8, 2 + (Dungeon.hero.lvl - 1) / 3);
+				return Math.min(8, 2 + (Dungeon.hero.lvl - 1) / 3) + Dungeon.hero.pointsInTalent(Talent.ACCUMULATION); //rearranged
 			}
 		}
 
@@ -685,18 +702,22 @@ public class MeleeWeapon extends Weapon {
 
 		@Override
 		public String actionName() {
+			if (FencerDash.isFencer()) return Messages.get(MeleeWeapon.class, "dash"); //rearranged
 			return Messages.get(MeleeWeapon.class, "swap");
 		}
 
 		@Override
 		public int actionIcon() {
+			if (FencerDash.isFencer()) return 0; //rearranged
 			return HeroIcon.WEAPON_SWAP;
 		}
 
 		@Override
 		public Visual primaryVisual() {
 			Image ico;
-			if (Dungeon.hero.belongings.weapon == null){
+			if (FencerDash.isFencer()){
+				ico = FencerDash.icon(); //rearranged
+			} else if (Dungeon.hero.belongings.weapon == null){
 				ico = new HeroIcon(this);
  			} else {
 				ico = new ItemSprite(Dungeon.hero.belongings.weapon);
@@ -725,6 +746,7 @@ public class MeleeWeapon extends Weapon {
 
 		@Override
 		public void doAction() {
+			if (FencerDash.isFencer()) { FencerDash.doAction(this); return; } //rearranged
 			if (Dungeon.hero.subClass != HeroSubClass.CHAMPION){
 				return;
 			}
@@ -740,6 +762,7 @@ public class MeleeWeapon extends Weapon {
 
 			Dungeon.hero.sprite.operate(Dungeon.hero.pos);
 			Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
+			FencerDash.onSwap(Dungeon.hero); //rearranged, Quick Followup
 
 			ActionIndicator.setAction(this);
 			Item.updateQuickslot();

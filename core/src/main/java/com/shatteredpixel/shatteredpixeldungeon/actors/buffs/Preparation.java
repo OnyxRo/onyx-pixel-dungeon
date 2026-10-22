@@ -114,7 +114,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 				int newDmg = attacker.damageRoll();
 				if (newDmg > dmg) dmg = newDmg;
 			}
-			return Math.round(dmg * (1f + baseDmgBonus));
+			return Math.round(dmg * (1f + com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.perfectAssassin(baseDmgBonus))); //rearranged
 		}
 		
 		public static AttackLevel getLvl(int turnsInvis){
@@ -193,7 +193,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 		AttackLevel lvl = AttackLevel.getLvl(turnsInvis);
 
 		desc += "\n\n" + Messages.get(this, "desc_dmg",
-				(int)(lvl.baseDmgBonus*100),
+				(int)(com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.perfectAssassin(lvl.baseDmgBonus)*100), //rearranged
 				(int)(lvl.KOThreshold()*100),
 				(int)(lvl.KOThreshold()*20));
 		

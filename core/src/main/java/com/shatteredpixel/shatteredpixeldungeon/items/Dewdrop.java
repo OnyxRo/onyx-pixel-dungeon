@@ -86,6 +86,7 @@ public class Dewdrop extends Item {
 		if (hero.hasTalent(Talent.QUALITY_ABSORPTION)) effect += (hero.pointsInTalent(Talent.QUALITY_ABSORPTION) + 1) * quantity;
 
 		int heal = Math.min( hero.HT - hero.HP, effect );
+		heal += hero.pointsInTalent(Talent.HEALING_DEW); //rearranged
 
 		int shield = 0;
 		if (hero.hasTalent(Talent.SHIELDING_DEW)){

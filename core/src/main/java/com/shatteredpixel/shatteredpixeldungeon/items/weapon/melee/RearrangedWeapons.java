@@ -122,6 +122,9 @@ public class RearrangedWeapons {
 			multi += attacker.buff(MagicalBow.MagicalArrowTracker.class).getMulti();
 			attacker.buff(MagicalBow.MagicalArrowTracker.class).detach();
 		}
+		if (attacker instanceof Hero && attacker.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Tackle.MysticalTackleTracker.class) != null) {
+			multi += 0.5f * ((Hero) attacker).pointsInTalent(Talent.MYSTICAL_TACKLE);
+		}
 		if (attacker instanceof Hero && ((Hero) attacker).hasTalent(Talent.HIGH_POWER) && ((Hero) attacker).heroClass != HeroClass.MEDIC) {
 			multi += 0.1f * ((Hero) attacker).pointsInTalent(Talent.HIGH_POWER);
 		}

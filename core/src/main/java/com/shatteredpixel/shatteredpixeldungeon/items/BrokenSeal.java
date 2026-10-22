@@ -255,6 +255,12 @@ public class BrokenSeal extends Item {
 		private Armor armor;
 
 		private int cooldown = 0;
+
+		//rearranged, Endurance in Fury cuts the seal's cooldown
+		public void spendCooldown(float amount) {
+			cooldown -= Math.round(amount);
+			cooldown = Math.max(cooldown, -COOLDOWN_START);
+		}
 		private float turnsSinceEnemies = 0;
 		private int initialShield = 0;
 

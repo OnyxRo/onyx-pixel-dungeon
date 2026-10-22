@@ -53,7 +53,7 @@ public class FireImbueSpell extends Spell {
 	@Override
 	protected void onCast(Hero hero) {
 		if (hero.buff(ImbueCooldown.class) == null) {
-			if (false) {
+			if (Dungeon.isChallenged(Challenges.PYRO)) {
 				Buff.affect(hero, FireImbue.class).set(10f/2);
 			} else {
 				Buff.affect(hero, FireImbue.class).set(10f);

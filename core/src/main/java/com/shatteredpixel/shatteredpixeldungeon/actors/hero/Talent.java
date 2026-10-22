@@ -709,7 +709,124 @@ public enum Talent {
 	SACRED_BLADE(4498, 3, 3, TalentType.SPELL), SHEPHERD_INTENTION(4435, 2, 1, TalentType.SPELL), SILVER_LANGUAGE(4441, 2, 1, TalentType.SPELL), SPRINT_SPELL(4488, 2, 2, TalentType.SPELL),
 	STRENGTHEN_CHALICE(4318, 2, 2, TalentType.SPELL), THORN_WHIP(4491, 2, 2, TalentType.SPELL), TRAITOROUS_SPELL(4487, 2, 1, TalentType.SPELL), ZHUANYU_SPELL(4490, 3, 3, TalentType.SPELL),
 	ARCANE_CONFLUENCE(4775, 3, 3, TalentType.SUBCLASS), COMBO_FOCUS(4771, 3, 3, TalentType.SUBCLASS), FINE_TASTING(4777, 3, 3, TalentType.SUBCLASS), INNER_PEACE(4796, 3, 3, TalentType.SUBCLASS),
-	LONG_ARM(4774, 3, 3, TalentType.SUBCLASS), RELENTLESS_COMBAT(4772, 3, 3, TalentType.SUBCLASS), SKILLED_PARRY(4793, 3, 3, TalentType.SUBCLASS), WEAPON_ABILITY_MASTER(4792, 3, 3, TalentType.SUBCLASS);
+	LONG_ARM(4774, 3, 3, TalentType.SUBCLASS), RELENTLESS_COMBAT(4772, 3, 3, TalentType.SUBCLASS), SKILLED_PARRY(4793, 3, 3, TalentType.SUBCLASS), WEAPON_ABILITY_MASTER(4792, 3, 3, TalentType.SUBCLASS),
+
+	//rearranged, Re-ARranged PD's rework of Shattered's six heroes, only on their trees with the Re-ARranged heroes option.
+	//Icons are 10000 plus the cell on its sheet. ENDURANCE, COUNTER_ATTACK and RESURRECTION were taken, they are RA_ here
+	//Warrior T1
+	MAX_HEALTH(10004),
+	//Warrior T2
+	PARRY(10010),
+	//Berserker T3
+	LETHAL_RAGE(10016, 3),
+	MAX_RAGE(10017, 3),
+	RA_ENDURANCE(10018, 3),
+	//Gladiator T3
+	LIGHT_WEAPON(10022, 3),
+	OFFENSIVE_DEFENSE(10023, 3),
+	SKILL_REPEAT(10024, 3),
+	//Veteran T3
+	POWERFUL_TACKLE(10025, 3),
+	MYSTICAL_TACKLE(10026, 3),
+	DELAYED_GRENADE(10027, 3),
+	INCAPACITATION(10028, 3),
+	SUPER_ARMOR(10029, 3),
+	IMPROVED_TACKLE(10030, 3),
+	//Mage T1
+	CHARGE_PRESERVE(10048),
+	//Mage T2
+	FASTER_CHARGER(10054),
+	//Battlemage T3
+	BATTLE_MAGIC(10060, 3),
+	MAGIC_RUSH(10061, 3),
+	MAGICAL_CIRCLE(10062, 3),
+	//Warlock T3
+	MADNESS(10066, 3),
+	ENHANCED_MARK(10067, 3),
+	MARK_OF_WEAKNESS(10068, 3),
+	//Wizard T3
+	SPELL_ENHANCE(10069, 3),
+	BRIG_BOOST(10070, 3),
+	ENERGY_REMAINS(10071, 3),
+	MAGIC_EMPOWER(10072, 3),
+	SECOND_EFFECT(10073, 3),
+	LIFE_ENERGY(10074, 3),
+	//Rogue T1
+	EMERGENCY_ESCAPE(10092),
+	//Rogue T2
+	MOVESPEED_ENHANCE(10098),
+	//Assassin T3
+	ENERGY_DRAW(10104, 3),
+	PERFECT_ASSASSIN(10105, 3),
+	CAUTIOUS_PREP(10106, 3),
+	//Freerunner T3
+	QUICK_PREP(10110, 3),
+	OVERCOMING(10111, 3),
+	MOMENTARY_FOCUSING(10112, 3),
+	//Chaser T3
+	POISONOUS_BLADE(10113, 3),
+	LETHAL_SURPRISE(10114, 3),
+	CHAIN_CLOCK(10115, 3),
+	SOUL_COLLECT(10116, 3),
+	TRAIL_TRACKING(10117, 3),
+	MASTER_OF_CLOAKING(10118, 3),
+	//Huntress T1
+	WATER_FRIENDLY(10136),
+	//Huntress T2
+	ADDED_MEAL(10142),
+	//Sniper T3
+	KICK(10148, 3),
+	SHOOTING_EYES(10149, 3),
+	TARGET_SPOTTING(10150, 3),
+	//Warden T3
+	LIVING_GRASS(10154, 3),
+	ATTRACTION(10155, 3),
+	HEALING_DEW(10156, 3),
+	//Fighter T3
+	SWIFT_MOVEMENT(10157, 3),
+	LESS_RESIST(10158, 3),
+	RING_KNUCKLE(10159, 3),
+	MYSTICAL_PUNCH(10160, 3),
+	QUICK_STEP(10161, 3),
+	RA_COUNTER_ATTACK(10162, 3),
+	//Duelist T1
+	SKILLED_HAND(10180),
+	//Duelist T2
+	ACCUMULATION(10186),
+	//Champion T3
+	FASTER_CHARGE(10192, 3),
+	QUICK_FOLLOWUP(10193, 3),
+	TWIN_SWORD(10194, 3),
+	//Monk T3
+	RESTORED_ENERGY(10198, 3),
+	ENERGY_BARRIER(10199, 3),
+	HARMONY(10200, 3),
+	//Fencer T3
+	CLAM_STEPS(10201, 3),
+	CRITICAL_MOMENTUM(10202, 3),
+	KINETIC_MOVEMENT(10203, 3),
+	AGGRESSIVE_MOVEMENT(10204, 3),
+	UNENCUMBERED_MOVEMENT(10205, 3),
+	SOULIZE(10206, 3),
+	//Cleric T1
+	WARDING_LIGHT(10224),
+	//Cleric T2
+	DIVINE_BLAST(10230),
+	//Priest T3
+	DIVINE_RAY(10236, 3),
+	HOLY_BOMB(10237, 3),
+	RA_RESURRECTION(10238, 3),
+	//Paladin T3
+	HOLY_MANTLE(10242, 3),
+	POWER_OF_LIFE(10243, 3),
+	INDUCE_AGGRO(10244, 3),
+	//Enchanter T3
+	TIME_AMP(10245, 3),
+	WEAKENING_HEX(10246, 3),
+	STUN(10247, 3),
+	THUNDER_IMBUE(10248, 3),
+	ARCANE_ARMOR(10249, 3),
+	ENCHANT(10250, 3);
 
 	public static class ImprovisedProjectileCooldown extends FlavourBuff{
 		public int icon() { return BuffIndicator.TIME; }
@@ -2436,6 +2553,7 @@ public enum Talent {
 	}
 
 	public static int onAttackProc( Hero hero, Char enemy, int dmg ){
+		dmg = RearrangedRework.dashAttack(hero, dmg); //rearranged
 		if (hero.hasTalent(STRENGTH_GREATEST)){
 			dmg += Hero.heroDamageIntRange( 0, hero.pointsInTalent(STRENGTH_GREATEST) );
 		}
@@ -2496,6 +2614,7 @@ public enum Talent {
 			} else if (hero.buff(FollowupStrikeTracker.class) != null
 					&& hero.buff(FollowupStrikeTracker.class).object == enemy.id()){
 				dmg += 1 + hero.pointsInTalent(FOLLOWUP_STRIKE);
+				RearrangedRework.followupStrike(hero, enemy); //rearranged
 				hero.buff(FollowupStrikeTracker.class).detach();
 			}
 		}
@@ -2532,6 +2651,172 @@ public enum Talent {
 		return dmg;
 	}
 
+	//rearranged, buffs of the talents in its rework of Shattered's heroes
+	public static class AgressiveMovementAbilityTracker extends FlavourBuff{
+		public boolean wepAbilUsed = false;
+	}
+	public static class ChainCooldown extends FlavourBuff{
+		public int icon() { return BuffIndicator.TIME; }
+		public void tintIcon(Image icon) { icon.hardlight(0.2f, 0.5f, 0.8f); }
+		public float iconFadePercent() { return Math.max(0, visualcooldown() / 10); }
+		public String toString() { return Messages.get(this, "name"); }
+		public String desc() { return Messages.get(this, "desc", dispTurns(visualcooldown())); }
+		public void spendTime() { spend(-1f); }
+	};
+	public static class ChaseCooldown extends FlavourBuff{
+		public int icon() { return BuffIndicator.TIME; }
+		public void tintIcon(Image icon) { icon.hardlight(0.4f, 0.4f, 0.8f); }
+		public float iconFadePercent() { return Math.max(0, visualcooldown() / (15)); }
+		public String toString() { return Messages.get(this, "name"); }
+		public String desc() { return Messages.get(this, "desc", dispTurns(visualcooldown())); }
+		public void spendTime() { spend(-1f); }
+	};
+	public static class CounterAttackTracker extends Buff{};
+	public static class KickCooldown extends FlavourBuff{
+		public int icon() { return BuffIndicator.TIME; }
+		public void tintIcon(Image icon) { icon.hardlight(0xF27318); }
+		public float iconFadePercent() { return Math.max(0, visualcooldown() / 10); }
+		public String toString() { return Messages.get(this, "name"); }
+		public String desc() { return Messages.get(this, "desc", dispTurns(visualcooldown())); }
+	};
+	public static class LethalCooldown extends FlavourBuff{
+		public int icon() { return BuffIndicator.TIME; }
+		public void tintIcon(Image icon) { icon.hardlight(0.8f, 0.1f, 0.1f); }
+		public float iconFadePercent() { return Math.max(0, visualcooldown() / 5); }
+		public String toString() { return Messages.get(this, "name"); }
+		public String desc() { return Messages.get(this, "desc", dispTurns(visualcooldown())); }
+		public void spendTime() { spend(-1f); }
+	};
+	public static class MaxRageCooldown extends FlavourBuff{
+		public int icon() { return BuffIndicator.TIME; }
+		public void tintIcon(Image icon) { icon.hardlight(0xFF3333); }
+		public float iconFadePercent() { return Math.max(0, visualcooldown() / 50); }
+		public String toString() { return Messages.get(this, "name"); }
+		public String desc() { return Messages.get(this, "desc", dispTurns(visualcooldown())); }
+	};
+	public static class ParryCooldown extends Buff{
+		float cooldown;
+		public void set() {
+			cooldown = 90-20*Dungeon.hero.pointsInTalent(Talent.PARRY)+1;
+		}
+		@Override
+		public boolean act() {
+			cooldown -= Actor.TICK;
+			if (cooldown <= 0) {
+				Buff.affect(target, ParryTracker.class);
+				detach();
+			}
+			if (!Dungeon.hero.hasTalent(Talent.PARRY)) {
+				detach();
+			}
+			spend(Actor.TICK);
+			return true;
+		}
+	};
+	public static class ParryTracker extends Buff{
+		{ actPriority = HERO_PRIO+1;}
+
+		{
+			type = buffType.NEUTRAL;
+			announced = true;
+		}
+
+		@Override
+		public int icon() {
+			return BuffIndicator.PARRY;
+		}
+
+		@Override
+		public boolean act() {
+			if (!Dungeon.hero.hasTalent(Talent.PARRY)) {
+				detach();
+			}
+			spend(Actor.TICK);
+			return true;
+		}
+
+		@Override
+		public void detach() {
+			super.detach();
+			Buff.affect(target, ParryCooldown.class).set();
+		}
+	};
+	public static class QuickFollowupCooldown extends FlavourBuff{
+		public int icon() { return BuffIndicator.TIME; }
+		public void tintIcon(Image icon) { icon.hardlight(0x651F66); }
+		public float iconFadePercent() { return Math.max(0, visualcooldown() / 10); }
+		public String toString() { return Messages.get(this, "name"); }
+		public String desc() { return Messages.get(this, "desc", dispTurns(visualcooldown())); }
+	};
+	public static class QuickFollowupTracker extends FlavourBuff{};
+	public static class QuickStep extends FlavourBuff {
+
+		{
+			type = buffType.NEUTRAL;
+			announced = false;
+		}
+
+		public static final float DURATION	= 1f;
+
+		@Override
+		public int icon() {
+			return BuffIndicator.HASTE;
+		}
+
+		@Override
+		public void tintIcon(Image icon) {
+			icon.hardlight(0x2364BC);
+		}
+
+		@Override
+		public float iconFadePercent() {
+			return Math.max(0, (DURATION - visualcooldown()) / DURATION);
+		}
+
+		@Override
+		public String toString() {
+			return Messages.get(this, "name");
+		}
+
+		@Override
+		public String desc() {
+			return Messages.get(this, "desc", dispTurns());
+		}
+	}
+	public static class RiposteTracker extends Buff {
+		{
+			actPriority = VFX_PRIO;
+		}
+
+		public Char enemy;
+
+		@Override
+		public boolean act() {
+			target.sprite.attack(enemy.pos, new com.watabou.utils.Callback() {
+				@Override
+				public void call() {
+					com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator.target(enemy);
+					if (Dungeon.hero.attack(enemy, 1f, 0, 1)) {
+						Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
+					}
+
+					next();
+				}
+			});
+			detach();
+			return false;
+		}
+	}
+	public static class ShootingEyesTracker extends Buff{};
+	public static class SkilledHandTracker extends Buff{};
+	public static class WardingLightCooldown extends FlavourBuff{
+		@Override
+		public int icon() {
+			return BuffIndicator.TIME;
+		}
+		public void tintIcon(Image icon) { icon.hardlight(0f, 1f, 1f); }
+		public float iconFadePercent() { return Math.max(0, visualcooldown() / 20); }
+	}
 	public static class ProvokedAngerTracker extends FlavourBuff{
 		{ type = Buff.buffType.POSITIVE; }
 		public int icon() { return BuffIndicator.WEAPON; }
@@ -2652,6 +2937,7 @@ public enum Talent {
 			talents.get(0).put(talent, 0);
 		}
 		tierTalents.clear();
+		RearrangedRework.extendClassTier(cls, 1, talents.get(0), replacements); //rearranged
 
 		//tier 2
 		switch (cls){
@@ -2722,6 +3008,7 @@ public enum Talent {
 			talents.get(1).put(talent, 0);
 		}
 		tierTalents.clear();
+		RearrangedRework.extendClassTier(cls, 2, talents.get(1), replacements); //rearranged
 
 		//tier 3
 		switch (cls){
@@ -2933,6 +3220,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, ENHANCED_LETHALITY, ASSASSINS_REACH, BOUNTY_HUNTER);
 				break;
 		}
+		RearrangedRework.extendSubclassTalents(cls, tierTalents); //rearranged
 		for (Talent talent : tierTalents){
 			talents.get(2).put(talent, 0);
 		}
