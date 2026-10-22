@@ -129,6 +129,10 @@ if [ $QUICK -eq 0 ]; then
   run "TransformationCatalogTest" TransformationCatalogTest; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY Transformation)" | tail -14 | sed 's/^/  /'
   [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
+  #transformation, the Necronomicon, its recipe, soul bound deaths and the wraiths it calls
+  run "NecronomiconTest" NecronomiconTest; rc=$?
+  tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY necronomicon)" | tail -10 | sed 's/^/  /'
+  [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
   #the Void trap floor, item infusion, the Gun and the Half Ripper quest
   run "DevotedLeftoversTest" DevotedLeftoversTest; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY devoted)" | tail -12 | sed 's/^/  /'

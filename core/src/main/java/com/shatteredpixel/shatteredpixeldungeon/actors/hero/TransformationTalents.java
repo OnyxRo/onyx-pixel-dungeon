@@ -11,6 +11,26 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Freezing;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.SmokeScreen;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.GreaterHaste;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Preparation;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulMark;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Stamina;
+import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.UnstableSpellbook;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfDisintegration;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFireblast;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFrost;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
@@ -277,6 +297,7 @@ public class TransformationTalents {
 			if (talent == Talent.EXP_SOLID) give.quantity(1);
 			dropAtHero(give);
 		}
+		upgradedMore(hero, talent, pts);
 	}
 
 	//---- hero stats ----------------------------------------------------------------------------
@@ -338,7 +359,7 @@ public class TransformationTalents {
 		if (h.HP < h.HT*0.3f && h.hasTalent(Talent.AFRAID_DEATH)) s *= 1.2f + 0.1f*h.pointsInTalent(Talent.AFRAID_DEATH);
 		if (h.hasTalent(Talent.HOMETOWN_CLOUD) && h.belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.Amulet.class) != null) s *= 1f + 0.2f*h.pointsInTalent(Talent.HOMETOWN_CLOUD);
 		if (h.hasTalent(Talent.SEA_WIND) && Dungeon.level != null && h.pos >= 0 && Dungeon.level.water[h.pos]) s *= 1f + 0.2f*h.pointsInTalent(Talent.SEA_WIND);
-		return s * TransformationBossTalents.speed(h);
+		return s * rageSpeed(h) * TransformationBossTalents.speed(h);
 	}
 
 	public static int reachBonus(Char owner){
@@ -346,7 +367,8 @@ public class TransformationTalents {
 	}
 
 	public static int reachBonus(Char owner, Item weapon){
-		return reachBonus(owner) + longArm(owner, weapon);
+		int bt = owner instanceof Hero && ((Hero) owner).hasTalent(Talent.BLOODTHIRSTY_BERSERK) && berserking((Hero) owner) ? 1 : 0;
+		return reachBonus(owner) + longArm(owner, weapon) + bt;
 	}
 
 	public static int itemLevelBonus(Item item){
@@ -358,6 +380,7 @@ public class TransformationTalents {
 				&& h.buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.spells.Equipment_Bless.Blessbuff.class) != null){
 			b += h.pointsInTalent(Talent.EQUIPMENT_BLESS);
 		}
+		b += focusedLevel(h, item);
 		if (!item.cursed) return b;
 		if ((item instanceof Weapon || item instanceof Armor) && h.hasTalent(Talent.PROTECT_CURSE)) b += h.pointsInTalent(Talent.PROTECT_CURSE);
 		b -= h.pointsNegative(Talent.MAL_CURSE);
@@ -410,6 +433,7 @@ public class TransformationTalents {
 	}
 
 	public static void onNewFloor(Hero h){
+		com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Necronomicon.checkBookQuest();
 		if (h.pointsNegative(Talent.USURY) > 0){
 			int pp = 100 + 50*h.pointsNegative(Talent.USURY);
 			Dungeon.gold = Math.max(0, Dungeon.gold - pp);
@@ -423,6 +447,7 @@ public class TransformationTalents {
 	//---- eating, drinking, reading -------------------------------------------------------------
 
 	public static void onFoodEaten(Hero h, Item food){
+		hornEaten(h, food);
 		if (h.hasTalent(Talent.DELICIOUS_FLYING)) Buff.affect(h, Levitation.class, 5 + 10*h.pointsInTalent(Talent.DELICIOUS_FLYING));
 		if (h.hasTalent(Talent.TREAT_MEAL)) Buff.affect(h, Healing.class).setHeal(1 + 2*h.pointsInTalent(Talent.TREAT_MEAL), 0.25f, 0);
 		if (h.hasTalent(Talent.BLESS_MEAL)) Buff.affect(h, Bless.class, 15 + 10*h.pointsInTalent(Talent.BLESS_MEAL));
@@ -665,11 +690,24 @@ public class TransformationTalents {
 			Buff.affect(h, Daze.class, 4*h.pointsNegative(Talent.STEAM_BEAN));
 			Buff.affect(enemy, SteamBeanMark.class);
 		}
+		Berserk bz = h.buff(Berserk.class);
+		if (melee && bz != null && h.hasTalent(Talent.BLOODTHIRSTY_BERSERK)){
+			int bpts = h.pointsInTalent(Talent.BLOODTHIRSTY_BERSERK);
+			if (bz.raging()) h.HP = Math.min(h.HT, h.HP + Math.round(dmg*(0.125f + 0.125f*bpts)));
+			else bz.addRage(dmg*0.005f*bpts);
+		}
+		dmg = alternatingWeapons(h, dmg);
+		dmg = huntingTechnique(h, enemy, dmg);
+		phantomShooter(h, enemy);
 		return dmg;
 	}
 
 	//the hero is hit, after armor, as Hero.defenseProc
 	public static int onDefenseProc(Hero h, Char enemy, int damage){
+		if (h.hasTalent(Talent.MIRRORED_REVENGE)){
+			BrokenSeal.WarriorShield ws = h.buff(BrokenSeal.WarriorShield.class);
+			if (ws != null && ws.coolingDown()) ws.reduceCooldown(Random.IntRange(5, 10)/150f);
+		}
 		if (h.hasTalent(Talent.RAGE_ATTACK)) damage = Math.round(damage*(1f + 0.1f*h.pointsInTalent(Talent.RAGE_ATTACK)));
 		damage = TransformationBossTalents.onDefenseProc(h, enemy, damage);
 		if (h.hasTalent(Talent.SURVIVAL_VOLITION) && h.HP < h.HT*0.3f && h.buff(SurVolCooldown.class) == null){
@@ -722,6 +760,10 @@ public class TransformationTalents {
 		if (h.pointsNegative(Talent.HAND_SLIP) > 0 && h.buff(HandSlipVulnerability.class) != null){
 			dmg = Math.round(dmg*(1f + 0.25f*h.pointsNegative(Talent.HAND_SLIP)));
 		}
+		if (h.hasTalent(Talent.MIRRORED_REVENGE) && src instanceof Char && src != h && ((Char) src).isAlive()){
+			int absorbed = Math.min(dmg, h.shielding());
+			if (absorbed > 0) ((Char) src).damage(Math.round(absorbed*(0.5f + 0.5f*h.pointsInTalent(Talent.MIRRORED_REVENGE))), Talent.MIRRORED_REVENGE);
+		}
 		return TransformationBossTalents.onHeroDamage(h, dmg, src);
 	}
 
@@ -756,6 +798,9 @@ public class TransformationTalents {
 			Statistics.goldCollected += quantity;
 			h.sprite.showStatusWithIcon(CharSprite.NEUTRAL, Integer.toString(quantity), FloatingText.GOLD);
 		}
+		damage = mindImprisonment(mob, enemy, damage);
+		damage = armedUprising(mob, enemy, damage);
+		if (enemy == h && h.pointsNegative(Talent.PHASECLAW) >= 2 && Random.Int(10) == 0) Buff.affect(h, Vulnerable.class, 3f);
 		return damage;
 	}
 
@@ -888,6 +933,8 @@ public class TransformationTalents {
 			}
 		}
 		com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.freeman.SalesContract.onContractedDeath(mob);
+		if (heroKill) perfectFinale(h);
+		erodingSoulDeath(mob);
 	}
 
 	public static void onAllyDie(Char ally){
@@ -928,6 +975,7 @@ public class TransformationTalents {
 		}
 		if (h.hasTalent(Talent.QUANTUM_HACKING) && !(target instanceof NPC)) Buff.affect(target, Vertigo.class, h.pointsInTalent(Talent.QUANTUM_HACKING));
 		TransformationBossTalents.onWandProc(h, target);
+		boneDeep(h, target);
 	}
 
 	public static void onWandZap(Wand wand, int target){
@@ -941,6 +989,7 @@ public class TransformationTalents {
 		}
 		if (h.hasTalent(Talent.FIRE_BALL) && Dungeon.level.flamable[target]) GameScene.add(Blob.seed(target, h.pointsInTalent(Talent.FIRE_BALL), Fire.class));
 		if (h.pointsNegative(Talent.OUTCONTROL_MAGIC) > Random.Int(5)) new Bomb.ConjuredBomb().explode(h.pos);
+		wandZapMore(h, wand, target);
 	}
 
 	//true when this cast should not use a charge
@@ -950,7 +999,8 @@ public class TransformationTalents {
 	}
 
 	public static float wandRechargeFactor(){
-		return 1f - 0.1f*p(Talent.EXTREME_CASTING);
+		Hero h = hero();
+		return (1f - 0.1f*p(Talent.EXTREME_CASTING)) * (h == null ? 1f : momentumReserve(h));
 	}
 
 	//damage a wand deals to a creature, called from Char.damage
@@ -974,7 +1024,7 @@ public class TransformationTalents {
 			if (turns > 0) Buff.affect(target, Paralysis.class, turns);
 		}
 		if (h.hasTalent(Talent.EAT_MIND) && h.buff(Hunger.class) != null) h.buff(Hunger.class).satisfy((0.1f + 0.1f*h.pointsInTalent(Talent.EAT_MIND))*dmg);
-		return dmg;
+		return wandDamageMore(h, wand, target, dmg);
 	}
 
 	//---- other places --------------------------------------------------------------------------
@@ -1371,11 +1421,14 @@ public class TransformationTalents {
 	//the extra talents each subclass can swap in, the subclass's own three come first
 	public static Talent[] subclassExtras(HeroSubClass sub){
 		switch (sub){
-			case GLADIATOR: return new Talent[]{Talent.COMBO_FOCUS, Talent.RELENTLESS_COMBAT};
-			case BATTLEMAGE: return new Talent[]{Talent.LONG_ARM, Talent.ARCANE_CONFLUENCE};
-			case WARLOCK: return new Talent[]{Talent.FINE_TASTING};
-			case CHAMPION: return new Talent[]{Talent.WEAPON_ABILITY_MASTER, Talent.SKILLED_PARRY};
-			case MONK: return new Talent[]{Talent.INNER_PEACE};
+			case BERSERKER: return new Talent[]{Talent.CEASELESS_RAGE, Talent.MIRRORED_REVENGE, Talent.BLOODTHIRSTY_BERSERK};
+			case GLADIATOR: return new Talent[]{Talent.COMBO_FOCUS, Talent.RELENTLESS_COMBAT, Talent.COMBO_MASTERY};
+			case BATTLEMAGE: return new Talent[]{Talent.LONG_ARM, Talent.ARCANE_CONFLUENCE, Talent.FOCUSED_CASTING};
+			case WARLOCK: return new Talent[]{Talent.FINE_TASTING, Talent.BONE_DEEP, Talent.MIND_IMPRISONMENT};
+			case ASSASSIN: return new Talent[]{Talent.UNEXPECTED_STRIKE, Talent.CLOSING_STAGE, Talent.PERFECT_FINALE};
+			case FREERUNNER: return new Talent[]{Talent.FREERUNNER_AFTERIMAGE, Talent.MOMENTUM_RESERVE, Talent.WARMUP_PREPARATION};
+			case CHAMPION: return new Talent[]{Talent.WEAPON_ABILITY_MASTER, Talent.SKILLED_PARRY, Talent.ALTERNATING_WEAPONS};
+			case MONK: return new Talent[]{Talent.INNER_PEACE, Talent.NATURAL_WAY, Talent.YIN_YANG_BALANCE};
 			default: return new Talent[0];
 		}
 	}
@@ -1413,9 +1466,9 @@ public class TransformationTalents {
 	public static float attackDelayFactor(Hero h){
 		com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo c = h.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo.class);
 		if (h.hasTalent(Talent.RELENTLESS_COMBAT) && c != null && c.getComboCount() >= 8){
-			return 1f / (1f + 0.5f*h.pointsInTalent(Talent.RELENTLESS_COMBAT));
+			return 1f / (1f + 0.5f*h.pointsInTalent(Talent.RELENTLESS_COMBAT)) / rageSpeed(h);
 		}
-		return 1f;
+		return 1f / rageSpeed(h);
 	}
 
 	private static int comboStep(Hero h){ return 5 - h.pointsInTalent(Talent.COMBO_FOCUS); }
@@ -1495,5 +1548,803 @@ public class TransformationTalents {
 			return Random.Int(50) == 0 ? new com.shatteredpixel.shatteredpixeldungeon.actors.mobs.PhantomLandPiranha() : new com.shatteredpixel.shatteredpixeldungeon.actors.mobs.LandPiranha();
 		}
 		return com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Piranha.random();
+	}
+	//==== the second catalog run, talents that reach into single items and systems ===============
+
+	private static boolean onScreen(){
+		return com.watabou.noosa.Game.instance != null && com.watabou.noosa.Game.scene() instanceof GameScene;
+	}
+
+	private static boolean staffWand(Hero h, Wand w){
+		KindOfWeapon kw = h.belongings.weapon();
+		return w != null && kw instanceof MagesStaff && ((MagesStaff) kw).wand() == w;
+	}
+
+	//items and action buffs handed out when one of these talents is taken
+	private static void upgradedMore(Hero hero, Talent talent, int pts){
+		Item give = null;
+		switch (talent){
+			case WULEI_ZHENGFA: if (pts == 1) give = new WandOfLightning().identify(); break;
+			case ERODING_SOUL: if (pts == 1) give = new WandOfCorruption().identify(); break;
+			case LIGHT_SHOCK: if (pts == 1) give = new WandOfPrismaticLight().identify(); break;
+			case SWIFT_CHURCH: if (pts == 1) give = new WandOfRegrowth().identify(); break;
+			case TRAP_MASTER: give = new ReclaimTrap(); break;
+			default: break;
+		}
+		if (give != null && takeItemSlot(hero)) dropAtHero(give);
+		if (talent == Talent.SMOKE_MASK && pts > 0) Buff.affect(hero, SmokeMask.class);
+		if (talent == Talent.NATURAL_CHILD && pts > 0) Buff.affect(hero, NaturalBreath.class);
+	}
+
+	//---- Berserker ----------------------------------------------------------------------------
+
+	//Ceaseless Rage, rage at or below the threshold does not fade
+	public static boolean ceaselessRage(Char target, float power){
+		if (!(target instanceof Hero)) return false;
+		int pts = ((Hero) target).pointsInTalent(Talent.CEASELESS_RAGE);
+		return pts > 0 && power <= 0.2f + 0.1f*pts;
+	}
+
+	private static float rageSpeed(Hero h){
+		if (!h.hasTalent(Talent.CEASELESS_RAGE)) return 1f;
+		Berserk b = h.buff(Berserk.class);
+		return b == null ? 1f : 1f + Math.min(1f, b.rage());
+	}
+
+	private static boolean berserking(Hero h){
+		Berserk b = h.buff(Berserk.class);
+		return b != null && b.raging();
+	}
+
+	//---- Gladiator ----------------------------------------------------------------------------
+
+	public static boolean comboMastery(Char target){
+		return target instanceof Hero && ((Hero) target).hasTalent(Talent.COMBO_MASTERY);
+	}
+
+	public static int comboDiscount(Char target){
+		if (!(target instanceof Hero)) return 0;
+		int pts = ((Hero) target).pointsInTalent(Talent.COMBO_MASTERY);
+		return pts >= 3 ? 2 : (pts == 2 ? 1 : 0);
+	}
+
+	//the combo left after a move, a move that resets the combo keeps the rest with Combo Mastery
+	public static int comboAfterMove(Char target, int count, int req, boolean resets){
+		if (!comboMastery(target)) return resets ? 0 : count;
+		return Math.max(0, count - Math.max(1, req - comboDiscount(target)));
+	}
+
+	//---- Battlemage ---------------------------------------------------------------------------
+
+	public static class FocusedCasting extends FlavourBuff {
+		{ type = buffType.POSITIVE; }
+		public int stacks = 0;
+		@Override public int icon(){ return BuffIndicator.RECHARGING; }
+		@Override public void tintIcon(Image icon){ icon.hardlight(0.4f, 0.6f, 1f); }
+		@Override public String iconTextDisplay(){ return "+" + stacks; }
+		@Override public String desc(){ return Messages.get(this, "desc", stacks, dispTurns()); }
+		@Override public void storeInBundle(com.watabou.utils.Bundle b){ super.storeInBundle(b); b.put("stacks", stacks); }
+		@Override public void restoreFromBundle(com.watabou.utils.Bundle b){ super.restoreFromBundle(b); stacks = b.getInt("stacks"); }
+	}
+
+	private static void onStaffZap(Hero h, Wand w){
+		if (!h.hasTalent(Talent.FOCUSED_CASTING) || !staffWand(h, w)) return;
+		boolean had = h.buff(FocusedCasting.class) != null;
+		FocusedCasting f = Buff.prolong(h, FocusedCasting.class, 5f);
+		if (had) f.stacks = Math.min(1 + h.pointsInTalent(Talent.FOCUSED_CASTING), f.stacks + 1);
+	}
+
+	private static int focusedLevel(Hero h, Item item){
+		if (!(item instanceof Wand)) return 0;
+		FocusedCasting f = h.buff(FocusedCasting.class);
+		return f != null && staffWand(h, (Wand) item) ? f.stacks : 0;
+	}
+
+	//---- Warlock ------------------------------------------------------------------------------
+
+	private static void boneDeep(Hero h, Char target){
+		int pts = h.pointsInTalent(Talent.BONE_DEEP);
+		if (pts == 0 || target == h || target.alignment == h.alignment) return;
+		int extra = pts == 1 ? 5 : (pts == 2 ? 8 : 10);
+		if (target.buff(SoulMark.class) != null){
+			Buff.prolong(target, SoulMark.class, 10 + extra);
+		} else if (Random.Float() < (pts == 1 ? 0.08f : (pts == 2 ? 0.17f : 0.25f))){
+			SoulMark.prolong(target, SoulMark.class, 10 + extra);
+		}
+	}
+
+	private static int mindImprisonment(Mob mob, Char enemy, int dmg){
+		Hero h = hero();
+		if (h == null || enemy != h || !h.hasTalent(Talent.MIND_IMPRISONMENT)) return dmg;
+		if (mob.buff(SoulMark.class) == null || Char.hasProp(mob, Char.Property.BOSS)) return dmg;
+		if (Dungeon.level != null && !Dungeon.level.adjacent(mob.pos, enemy.pos)) return 0;
+		return Math.round(dmg*(0.95f - 0.05f*h.pointsInTalent(Talent.MIND_IMPRISONMENT)));
+	}
+
+	//---- Assassin -----------------------------------------------------------------------------
+
+	//Unexpected Strike, extra damage for each level of preparation (0 to 3)
+	public static float unexpectedStrike(Char attacker, int level){
+		if (!(attacker instanceof Hero)) return 0;
+		int pts = ((Hero) attacker).pointsInTalent(Talent.UNEXPECTED_STRIKE);
+		return pts * (level < 2 ? 0.05f : 0.10f);
+	}
+
+	//Closing Stage, haste when the preparation ends (level 1 to 4)
+	public static void onPreparationEnd(Char target, int level){
+		if (!(target instanceof Hero) || !target.isAlive()) return;
+		int pts = ((Hero) target).pointsInTalent(Talent.CLOSING_STAGE);
+		if (pts == 0) return;
+		int[] turns = {1, 2, 4, 6};
+		Buff.affect(target, Haste.class, turns[Math.max(0, Math.min(3, level - 1))] + pts - 1);
+	}
+
+	private static void perfectFinale(Hero h){
+		int pts = h.pointsInTalent(Talent.PERFECT_FINALE);
+		Preparation p = h.buff(Preparation.class);
+		if (pts == 0 || p == null) return;
+		float[] base = {1f, 1.5f, 3f, 4.5f};
+		float turns = base[Math.max(0, Math.min(3, p.attackLevel() - 1))] + 0.5f*(pts - 1);
+		for (Buff b : h.buffs().toArray(new Buff[0])){
+			if (b instanceof com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact.ArtifactBuff){
+				((com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact.ArtifactBuff) b).charge(h, turns);
+			}
+		}
+	}
+
+	//---- Freerunner ---------------------------------------------------------------------------
+
+	public static void onFreerunEnded(Char target){
+		if (!(target instanceof Hero)) return;
+		Hero h = (Hero) target;
+		int pts = h.pointsInTalent(Talent.FREERUNNER_AFTERIMAGE);
+		if (pts > 0) Buff.affect(h, GreaterHaste.class).set(2 + Math.round(h.lvl*(0.05f + 0.05f*pts)));
+	}
+
+	public static void onFreerunRecovered(Momentum m){
+		if (!(m.target instanceof Hero)) return;
+		Hero h = (Hero) m.target;
+		int pts = h.pointsInTalent(Talent.WARMUP_PREPARATION);
+		if (pts == 0) return;
+		for (int i = 0; i < 4; i++) m.gainStack();
+		if (pts >= 2){
+			CloakOfShadows cloak = h.belongings.getItem(CloakOfShadows.class);
+			if (cloak != null) cloak.charge(h, 8f);
+		}
+		if (pts >= 3) Buff.affect(h, Stamina.class, 8f);
+	}
+
+	private static float momentumReserve(Hero h){
+		int pts = h.pointsInTalent(Talent.MOMENTUM_RESERVE);
+		Momentum m = h.buff(Momentum.class);
+		return pts > 0 && m != null && m.recoveryLeft() > 0 ? 1f + 0.5f*pts : 1f;
+	}
+
+	//---- Champion -----------------------------------------------------------------------------
+
+	public static class AlternatingWeapons extends FlavourBuff {
+		{ type = buffType.POSITIVE; }
+		public float bonus = 0;
+		@Override public int icon(){ return BuffIndicator.WEAPON; }
+		@Override public String iconTextDisplay(){ return Math.round(bonus*100) + "%"; }
+		@Override public String desc(){ return Messages.get(this, "desc", Math.round(bonus*100), dispTurns()); }
+		@Override public void storeInBundle(com.watabou.utils.Bundle b){ super.storeInBundle(b); b.put("bonus", bonus); }
+		@Override public void restoreFromBundle(com.watabou.utils.Bundle b){ super.restoreFromBundle(b); bonus = b.getFloat("bonus"); }
+	}
+
+	private static KindOfWeapon lastAltWeapon = null;
+	private static float lastAltTime = -10f;
+
+	private static int alternatingWeapons(Hero h, int dmg){
+		int pts = h.pointsInTalent(Talent.ALTERNATING_WEAPONS);
+		KindOfWeapon w = h.belongings.attackingWeapon();
+		if (pts > 0 && w != null && !(w instanceof MissileWeapon)){
+			if (lastAltWeapon != null && lastAltWeapon != w && Actor.now() - lastAltTime <= 3f){
+				AlternatingWeapons a = Buff.prolong(h, AlternatingWeapons.class, 5f);
+				a.bonus = Math.min(0.1f + 0.2f*pts, a.bonus + 0.1f*pts);
+			}
+			lastAltWeapon = w;
+			lastAltTime = Actor.now();
+		}
+		AlternatingWeapons a = h.buff(AlternatingWeapons.class);
+		return a == null ? dmg : Math.round(dmg*(1f + a.bonus));
+	}
+
+	//---- Monk ---------------------------------------------------------------------------------
+
+	//Natural Way, more energy per hero level, half for enemies worth half energy
+	public static float naturalWay(Char target, float energyGain){
+		if (!(target instanceof Hero)) return 0;
+		Hero h = (Hero) target;
+		int pts = h.pointsInTalent(Talent.NATURAL_WAY);
+		if (pts == 0) return 0;
+		float bonus = Math.min(0.5f + 0.5f*pts, h.lvl*(0.025f + 0.025f*pts));
+		return energyGain < 1 ? bonus/2f : bonus;
+	}
+
+	//Yin Yang Balance, energy pays for the weapon charges a Monk lacks
+	public static boolean yinYangCovers(Hero h, float have, float need){
+		int pts = h.pointsInTalent(Talent.YIN_YANG_BALANCE);
+		MonkEnergy e = h.buff(MonkEnergy.class);
+		if (pts == 0 || e == null) return false;
+		int missing = (int) Math.ceil(need - have);
+		return (int) e.energy >= missing*(4 - pts);
+	}
+
+	public static void yinYangPay(Hero h, MeleeWeapon.Charger c){
+		int pts = h.pointsInTalent(Talent.YIN_YANG_BALANCE);
+		MonkEnergy e = h.buff(MonkEnergy.class);
+		if (pts == 0 || e == null || c.partialCharge >= 0) return;
+		int missing = (int) Math.ceil(-c.partialCharge);
+		e.energy = Math.max(0, e.energy - missing*(4 - pts));
+		c.partialCharge += missing;
+		BuffIndicator.refreshHero();
+	}
+
+	//---- boss talents -------------------------------------------------------------------------
+
+	public static class SmokeCooldown extends TimedCooldown {}
+	public static class NaturalBreathCooldown extends TimedCooldown {}
+	public static class CollapseCounter extends CounterBuff { { revivePersists = true; } }
+
+	//an action button that comes back when its cooldown is over and goes when its talent is gone
+	public static abstract class TalentAction extends Buff implements ActionIndicator.Action {
+		{ type = buffType.POSITIVE; revivePersists = true; actPriority = HERO_PRIO + 1; }
+		protected abstract Talent talent();
+		protected abstract Class<? extends FlavourBuff> cooldownClass();
+		protected abstract void use(Hero h, int pts);
+		@Override
+		public boolean act(){
+			if (!(target instanceof Hero) || !((Hero) target).hasTalent(talent())){
+				ActionIndicator.clearAction(this);
+				detach();
+				return true;
+			}
+			if (target.buff(cooldownClass()) == null && ActionIndicator.action == null) ActionIndicator.setAction(this);
+			spend(TICK);
+			return true;
+		}
+		@Override public int indicatorColor(){ return 0x3C7A3C; }
+		@Override
+		public void doAction(){
+			Hero h = (Hero) target;
+			if (h.buff(cooldownClass()) != null || !h.hasTalent(talent())) return;
+			use(h, h.pointsInTalent(talent()));
+			Buff.affect(h, cooldownClass(), 25f);
+			ActionIndicator.clearAction(this);
+			h.spendAndNext(1f);
+		}
+	}
+
+	//Smoke Mask, a cloud of smoke around the hero
+	public static class SmokeMask extends TalentAction {
+		protected Talent talent(){ return Talent.SMOKE_MASK; }
+		protected Class<? extends FlavourBuff> cooldownClass(){ return SmokeCooldown.class; }
+		@Override public String actionName(){ return Messages.get(TransformationTalents.class, "smoke_action"); }
+		@Override public int actionIcon(){ return com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon.SMOKEMASK; }
+		@Override public int indicatorColor(){ return 0x666666; }
+		protected void use(Hero h, int pts){
+			GameScene.add(Blob.seed(h.pos, 50 + 50*pts, SmokeScreen.class));
+			if (onScreen()) Sample.INSTANCE.play(Assets.Sounds.GAS);
+		}
+	}
+
+	//Natural Child, high grass around the hero, barkskin and roots for enemies close by
+	public static class NaturalBreath extends TalentAction {
+		protected Talent talent(){ return Talent.NATURAL_CHILD; }
+		protected Class<? extends FlavourBuff> cooldownClass(){ return NaturalBreathCooldown.class; }
+		@Override public String actionName(){ return Messages.get(TransformationTalents.class, "natural_action"); }
+		@Override public int actionIcon(){ return com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon.NATURAL_CHILD; }
+		protected void use(Hero h, int pts){
+			for (int i : PathFinder.NEIGHBOURS9){
+				int c = h.pos + i;
+				if (c < 0 || c >= Dungeon.level.length()) continue;
+				int t = Dungeon.level.map[c];
+				if (t == Terrain.EMPTY || t == Terrain.EMPTY_DECO || t == Terrain.EMBERS || t == Terrain.GRASS){
+					com.shatteredpixel.shatteredpixeldungeon.levels.Level.set(c, Terrain.HIGH_GRASS);
+					if (onScreen()) GameScene.updateMap(c);
+				}
+				Char ch = Actor.findChar(c);
+				if (pts >= 2 && ch != null && ch.alignment == Char.Alignment.ENEMY) Buff.prolong(ch, Roots.class, 2f);
+			}
+			Barkskin.conditionallyAppend(h, 10 + 5*pts, 1);
+			if (onScreen()) Sample.INSTANCE.play(Assets.Sounds.PLANT);
+		}
+	}
+
+	//Hunting Technique, thrown weapons share some of the melee weapon's damage and its enchantment
+	private static int huntingTechnique(Hero h, Char enemy, int dmg){
+		int pts = h.pointsInTalent(Talent.HUNTING_TECHNIQUE);
+		if (pts == 0 || !(h.belongings.attackingWeapon() instanceof MissileWeapon)) return dmg;
+		KindOfWeapon melee = h.belongings.weapon();
+		if (melee == null || melee instanceof MissileWeapon) return dmg;
+		dmg += Math.round(0.25f*melee.damageRoll(h));
+		if (pts >= 2 && melee instanceof Weapon && ((Weapon) melee).enchantment != null){
+			dmg = ((Weapon) melee).enchantment.proc((Weapon) melee, h, enemy, dmg);
+		}
+		return dmg;
+	}
+
+	//Directional Collapse, every few zaps rocks fall around the target
+	private static void directionalCollapse(Hero h, int target){
+		int pts = h.pointsInTalent(Talent.DIRECTIONAL_COLLAPSE);
+		if (pts == 0) return;
+		Buff.count(h, CollapseCounter.class, 1);
+		CollapseCounter cc = h.buff(CollapseCounter.class);
+		if (cc == null || cc.count() < 5 - pts) return;
+		cc.detach();
+		for (int i : PathFinder.NEIGHBOURS9){
+			int c = target + i;
+			if (c < 0 || c >= Dungeon.level.length() || Dungeon.level.solid[c]) continue;
+			Char ch = Actor.findChar(c);
+			if (ch != null && ch != h && ch.alignment != Char.Alignment.ALLY){
+				ch.damage(Random.NormalIntRange(10, 20), Talent.DIRECTIONAL_COLLAPSE);
+				if (ch.isAlive()) Buff.prolong(ch, Paralysis.class, 3f);
+			}
+			if (onScreen() && Dungeon.level.heroFOV[c]) CellEmitter.get(c).start(Speck.factory(Speck.ROCK), 0.07f, 6);
+		}
+		if (onScreen()) Sample.INSTANCE.play(Assets.Sounds.ROCKS);
+	}
+
+	//Falcon Eye, nothing blocks sight close to the hero
+	public static void falconEye(com.shatteredpixel.shatteredpixeldungeon.levels.Level l, Char c, boolean[] fov, float viewDist){
+		if (!(c instanceof Hero) || l == null || c.pos < 0) return;
+		int pts = ((Hero) c).pointsInTalent(Talent.FALCON_EYE);
+		if (pts == 0) return;
+		int r = (int) Math.floor(viewDist*(0.25f + 0.25f*pts));
+		int w = l.width(), cx = c.pos % w, cy = c.pos / w;
+		for (int y = Math.max(0, cy - r); y <= Math.min(l.height() - 1, cy + r); y++){
+			for (int x = Math.max(0, cx - r); x <= Math.min(w - 1, cx + r); x++){
+				if ((x - cx)*(x - cx) + (y - cy)*(y - cy) <= r*r) fov[x + y*w] = true;
+			}
+		}
+	}
+
+	//Energy Conversion, artifacts and wands charge with the hero's movement speed
+	public static float energyConversion(Char target){
+		if (!(target instanceof Hero)) return 1f;
+		int pts = ((Hero) target).pointsInTalent(Talent.ENERGY_CONVERSION);
+		if (pts == 0) return 1f;
+		return Math.max(1f, ((Hero) target).speed()*0.5f*pts);
+	}
+
+	//---- wand talents -------------------------------------------------------------------------
+
+	public static boolean wandChargeSaved(Wand wand){
+		Hero h = hero();
+		if (h != null && wand != null){
+			if (h.hasTalent(Talent.MARKSMAN) && !(wand instanceof WandOfMagicMissile)
+					&& h.buff(WandOfMagicMissile.MagicCharge.class) != null) return true;
+			FocusedCasting f = h.buff(FocusedCasting.class);
+			if (f != null && f.stacks > 0 && staffWand(h, wand) && Random.Int(2) == 0) return true;
+		}
+		return wandChargeSaved();
+	}
+
+	//charges a cast of this wand costs less, Devil Flame
+	public static int chargeDiscount(Wand wand, int cost){
+		Hero h = hero();
+		if (h == null || !(wand instanceof WandOfFireblast)) return 0;
+		int pts = h.pointsInTalent(Talent.DEVIL_FLAME);
+		if (pts >= 2 && cost > 1) return 1;
+		if (pts >= 1 && cost > 2) return 1;
+		return 0;
+	}
+
+	private static int wandDamageMore(Hero h, Wand wand, Char target, int dmg){
+		if (wand instanceof WandOfMagicMissile && h.pointsInTalent(Talent.MARKSMAN) >= 2) dmg += 3;
+		if (wand instanceof WandOfDisintegration && h.pointsInTalent(Talent.ABYSSAL_GAZE) >= 2) dmg = Math.round(dmg*1.2f);
+		if (wand instanceof WandOfFireblast && h.pointsInTalent(Talent.DEVIL_FLAME) >= 3) dmg = Math.round(dmg*1.2f);
+		if (wand instanceof WandOfLightning && h.pointsInTalent(Talent.WULEI_ZHENGFA) >= 2) dmg = Math.round(dmg*1.3f);
+		if (wand instanceof WandOfPrismaticLight && h.hasTalent(Talent.LIGHT_SHOCK) && target.buff(Blindness.class) != null){
+			if (target.buff(Cripple.class) == null) Buff.affect(target, Cripple.class, Math.max(1, wand.buffedLvl()/2));
+			if (h.pointsInTalent(Talent.LIGHT_SHOCK) >= 2) dmg = Math.round(dmg*1.3f);
+		}
+		if (wand instanceof WandOfFrost && h.hasTalent(Talent.ICE_HELL)){
+			Chill chill = target.buff(Chill.class);
+			if (chill != null) dmg = (int) Math.round(dmg / Math.pow(0.9333f, Math.min(10, chill.cooldown())));
+		}
+		return dmg;
+	}
+
+	private static void wandZapMore(Hero h, Wand wand, int target){
+		directionalCollapse(h, target);
+		onStaffZap(h, wand);
+		Char ch = Actor.findChar(target);
+		if (wand instanceof WandOfFrost && h.pointsInTalent(Talent.ICE_HELL) >= 2 && ch != null && ch != h && ch.buff(Frost.class) != null){
+			ch.damage(Math.max(0, wand.buffedLvl())*4, wand);
+		}
+		if (wand instanceof WandOfFrost && h.pointsInTalent(Talent.ICE_HELL) >= 3 && Random.Int(2) == 0){
+			for (int i : PathFinder.NEIGHBOURS9){
+				int c = target + i;
+				if (c >= 0 && c < Dungeon.level.length() && !Dungeon.level.solid[c]) GameScene.add(Blob.seed(c, 10, Freezing.class));
+			}
+		}
+		if (wand instanceof WandOfLightning && h.pointsInTalent(Talent.LIGHT_CROP) >= 2) lightCrop(target, true);
+		if (wand instanceof WandOfCorruption && h.hasTalent(Talent.ERODING_SOUL) && ch != null && ch != h
+				&& ch.alignment == Char.Alignment.ENEMY && !Char.hasProp(ch, Char.Property.UNDEAD)){
+			Buff.affect(ch, ErodingSoul.class);
+			if (h.pointsInTalent(Talent.ERODING_SOUL) >= 2 && Random.Int(2) == 0){
+				switch (Random.Int(4)){
+					case 0: Buff.affect(ch, Weakness.class, 10f); break;
+					case 1: Buff.affect(ch, Vulnerable.class, 10f); break;
+					case 2: Buff.affect(ch, Cripple.class, 10f); break;
+					default: Buff.affect(ch, Blindness.class, 10f); break;
+				}
+			}
+		}
+	}
+
+	//Wulei Zhengfa, the wand of lightning heals the hero instead of hurting him
+	public static boolean lightningHeals(Char ch, int dmg){
+		Hero h = hero();
+		if (h == null || ch != h || !h.hasTalent(Talent.WULEI_ZHENGFA)) return false;
+		int heal = Math.max(1, Math.round(dmg*0.2f));
+		h.HP = Math.min(h.HT, h.HP + heal);
+		if (h.sprite != null) h.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(heal), FloatingText.HEALING);
+		return true;
+	}
+
+	//Abyssal Gaze, the extra power from walls and creatures passed counts twice
+	public static int abyssalGaze(int bonus){
+		return p(Talent.ABYSSAL_GAZE) > 0 ? bonus : 0;
+	}
+
+	//Disability Poison, a stronger gas from the wand of corrosion
+	public static int corrosionVolume(int vol){
+		return p(Talent.DISABLIITY_POSION) > 0 ? Math.round(vol*1.3f) : vol;
+	}
+
+	public static int corrosionStrength(){
+		return p(Talent.DISABLIITY_POSION) > 0 ? 2 : 0;
+	}
+
+	public static void onCorrosiveGas(Char ch){
+		int pts = p(Talent.DISABLIITY_POSION);
+		if (pts < 2 || ch instanceof Hero) return;
+		Buff.affect(ch, Cripple.class, 1f);
+		if (pts >= 3){
+			Buff.affect(ch, Weakness.class, 1f);
+			Buff.affect(ch, Daze.class, 1f);
+		}
+	}
+
+	//Light Crop, electricity grows grass
+	public static void lightCrop(int cell){
+		lightCrop(cell, p(Talent.LIGHT_CROP) > 0);
+	}
+
+	private static void lightCrop(int cell, boolean on){
+		if (!on || Dungeon.level == null || cell < 0 || cell >= Dungeon.level.length()) return;
+		int c = Dungeon.level.map[cell];
+		int to = -1;
+		if (c == Terrain.GRASS) to = Terrain.HIGH_GRASS;
+		else if (c == Terrain.EMPTY || c == Terrain.EMBERS || c == Terrain.EMPTY_DECO) to = Terrain.GRASS;
+		if (to < 0) return;
+		com.shatteredpixel.shatteredpixeldungeon.levels.Level.set(cell, to);
+		if (onScreen()){
+			GameScene.updateMap(cell);
+			CellEmitter.get(cell).burst(com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle.LEVEL_SPECIFIC, 2);
+		}
+	}
+
+	//Eroding Soul, a marked enemy may rise as a corrupted wraith
+	public static class ErodingSoul extends Buff {
+		{ type = buffType.NEGATIVE; announced = true; }
+		@Override public int icon(){ return BuffIndicator.CORRUPT; }
+		@Override public void tintIcon(Image icon){ icon.hardlight(0.6f, 0.2f, 0.8f); }
+	}
+
+	private static void erodingSoulDeath(Mob mob){
+		if (mob.buff(ErodingSoul.class) == null || mob instanceof Wraith || Dungeon.level == null) return;
+		int debuffs = 0;
+		for (Buff b : mob.buffs()) if (b.type == Buff.buffType.NEGATIVE && !(b instanceof ErodingSoul)) debuffs++;
+		boolean sure = mob.buff(Corruption.class) != null || mob.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom.class) != null;
+		if (!sure && Random.Float() >= 0.2f + 0.05f*debuffs) return;
+		Wraith w = Wraith.spawnAt(mob.pos);
+		if (w != null){
+			Buff.affect(w, Corruption.class);
+			if (onScreen() && Dungeon.level.heroFOV[mob.pos]){
+				CellEmitter.get(mob.pos).burst(ShadowParticle.CURSE, 6);
+				Sample.INSTANCE.play(Assets.Sounds.CURSED);
+			}
+		}
+	}
+
+	//---- artifact talents ---------------------------------------------------------------------
+
+	//the 20 percent faster charging of Time Sand, Strength Cloak, Strength Armband and Strength Book
+	public static float artifactBoost(Item artifact){
+		if (artifact instanceof TimekeepersHourglass && p(Talent.TIME_SAND) >= 3) return 1.2f;
+		if (artifact instanceof CloakOfShadows && p(Talent.STRENGTH_CLOAK) >= 3) return 1.2f;
+		if (artifact instanceof MasterThievesArmband && p(Talent.STRENGTH_ARMBAND) >= 1) return 1.2f;
+		if (artifact instanceof UnstableSpellbook && p(Talent.STRENGTH_BOOK) >= 2) return 1.2f;
+		return 1f;
+	}
+
+	//Time Sand, stasis skips twice the turns and a time freeze lasts a turn longer per charge
+	public static int timeSandStasis(){
+		return p(Talent.TIME_SAND) > 0 ? 2 : 1;
+	}
+
+	public static float timeFreezeTurns(){
+		return p(Talent.TIME_SAND) >= 2 ? 3f : 2f;
+	}
+
+	//Strength Cloak, more turns of stealth per charge
+	public static int cloakExtraTurns(){
+		int pts = p(Talent.STRENGTH_CLOAK);
+		if (pts == 1) return 1;
+		if (pts == 2) return 1 + Random.Int(2);
+		return pts >= 3 ? 2 : 0;
+	}
+
+	//Strength Armband, longer debuffs and adrenaline from a steal, cheaper shop steals
+	public static int armbandSteal(Char thief, int duration){
+		int pts = p(Talent.STRENGTH_ARMBAND);
+		if (pts >= 2) duration = Math.round(duration*1.3f);
+		if (pts >= 3 && thief != null) Buff.affect(thief, Adrenaline.class, 3f);
+		return duration;
+	}
+
+	public static int armbandShopCharges(int charges){
+		return p(Talent.STRENGTH_ARMBAND) >= 3 ? Math.max(1, charges - 1) : charges;
+	}
+
+	//Strength Book, the spellbook reads a scroll that suits a fight or a quiet moment
+	public static com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll spellbookScroll(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll s){
+		Hero h = hero();
+		if (s == null || h == null || !h.hasTalent(Talent.STRENGTH_BOOK)) return s;
+		boolean fight = h.visibleEnemies() > 0;
+		boolean quiet = s instanceof com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify
+				|| s instanceof com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse
+				|| s instanceof com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
+		boolean loud = s instanceof com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMirrorImage
+				|| s instanceof com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution
+				|| s instanceof ScrollOfRage
+				|| s instanceof com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror;
+		if (fight && quiet) return null;
+		if (!fight && loud) return null;
+		return s;
+	}
+
+	//Journey Nature, footwear of nature roots cost half
+	public static int sandalsCost(int cost){
+		return p(Talent.JOURNEY_NATURE) >= 2 ? Math.max(1, cost/2) : cost;
+	}
+
+	public static float naturalismSeeds(){
+		return p(Talent.JOURNEY_NATURE) > 0 ? 1.5f : 1f;
+	}
+
+	//Bountiful Enhancement, more food per horn charge and a second taste five turns later
+	public static int hornBonus(){
+		int pts = p(Talent.BOUNTIFUL_ENHANCEMENT);
+		return pts >= 3 ? 30 : (pts == 2 ? 20 : 0);
+	}
+
+	public static class BountifulReserve extends FlavourBuff {
+		{ type = buffType.POSITIVE; }
+		@Override public int icon(){ return BuffIndicator.WELL_FED; }
+		@Override public float iconFadePercent(){ return Math.max(0, visualcooldown()/5f); }
+		@Override
+		public void detach(){
+			super.detach();
+			if (target instanceof Hero && target.isAlive()){
+				inReserve = true;
+				try {
+					Talent.onFoodEaten((Hero) target, Hunger.STARVING/5f, null);
+				} finally {
+					inReserve = false;
+				}
+			}
+		}
+	}
+	private static boolean inReserve = false;
+
+	private static void hornEaten(Hero h, Item food){
+		if (!inReserve && food instanceof HornOfPlenty && h.hasTalent(Talent.BOUNTIFUL_ENHANCEMENT)){
+			Buff.affect(h, BountifulReserve.class, 5f);
+		}
+	}
+
+	//Strengthen Chain, the pulled enemy is crippled, at +2 the pull is free and costs a charge less
+	public static int chainRefund(Char enemy, int chargeUse){
+		int pts = p(Talent.STRENGTHEN_CHAIN);
+		if (pts >= 1 && enemy != null && enemy.isAlive()) Buff.affect(enemy, Cripple.class, 10f);
+		return pts >= 2 && chargeUse > 1 ? 1 : 0;
+	}
+
+	public static float chainTime(){
+		return p(Talent.STRENGTHEN_CHAIN) >= 2 ? 0f : 1f;
+	}
+
+	//---- other systems ------------------------------------------------------------------------
+
+	//Trap Master, a reclaimed trap may come back
+	public static void onTrapReclaimed(Hero h){
+		int pts = h == null ? 0 : h.pointsInTalent(Talent.TRAP_MASTER);
+		if (pts == 0) return;
+		float keep = pts == 1 ? 0.66f : (pts == 2 ? 0.75f : 0.8f);
+		if (Random.Float() < keep){
+			ReclaimTrap again = new ReclaimTrap();
+			if (!again.collect()) dropAtHero(again);
+		}
+	}
+
+	//Hardware Elements, summoning crystals keep their embers but need more energy
+	public static int hardwareCost(int cost){
+		int pts = p(Talent.HARDWARE_ELEMENTS);
+		return pts > 0 ? 25 - 5*pts : cost;
+	}
+
+	public static boolean hardwareKeepsEmbers(){
+		return p(Talent.HARDWARE_ELEMENTS) > 0;
+	}
+
+	//Kebi, the stylus enchants weapons, and rare glyphs and enchantments come up more often
+	public static boolean kebi(){
+		return p(Talent.KEBI) > 0;
+	}
+
+	public static Armor.Glyph kebiGlyph(Armor.Glyph g, Class<? extends Armor.Glyph> old){
+		if (p(Talent.KEBI) >= 2 && Random.Int(5) == 0) return Armor.Glyph.randomRare(old);
+		return g;
+	}
+
+	public static Weapon.Enchantment kebiEnchant(Weapon.Enchantment e, Class<? extends Weapon.Enchantment> old){
+		if (p(Talent.KEBI) >= 2 && Random.Int(5) == 0) return Weapon.Enchantment.randomRare(old);
+		return e;
+	}
+
+	public static void stylusOnWeapon(Item stylus, Weapon w){
+		Hero h = hero();
+		if (h == null) return;
+		w.enchant();
+		stylus.detach(h.belongings.backpack);
+		GLog.p(Messages.get(TransformationTalents.class, "kebi_enchant", w.name()));
+		if (h.sprite != null) h.sprite.operate(h.pos);
+		h.spend(1f);
+		h.busy();
+		h.next();
+	}
+
+	//More Favors, the blacksmith counts more for each dark gold and his limit rises
+	public static int favorPerGold(int per){
+		int pts = p(Talent.MORE_FAVORS);
+		return per + 25*pts;
+	}
+
+	public static int favorCap(int cap){
+		return p(Talent.MORE_FAVORS) >= 2 ? cap + 1000 : cap;
+	}
+
+	//Eternal Curse (negative), removing curses takes more
+	public static boolean eternalCurseBlocks(Item scroll){
+		Hero h = hero();
+		if (h == null || n(Talent.ETERNAL_CURSE) < 2) return false;
+		if (scroll.quantity() >= 2){
+			scroll.quantity(scroll.quantity() - 1);
+			Item.updateQuickslot();
+			return false;
+		}
+		GLog.w(Messages.get(TransformationTalents.class, "eternal_curse"));
+		return true;
+	}
+
+	public static boolean removesCurseEnchant(){
+		return n(Talent.ETERNAL_CURSE) != 1;
+	}
+
+	//Be Inconstant (negative), a weapon picked up may be equipped at once
+	public static void onWeaponPickedUp(Hero h, Item item){
+		int pts = h.pointsNegative(Talent.BE_INCONSTANT);
+		if (pts > 0 && item instanceof MeleeWeapon && h.subClass != com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.CHAMPION
+				&& 10*pts > Random.Int(100) && !item.isEquipped(h)){
+			((MeleeWeapon) item).doEquip(h);
+		}
+	}
+
+	//Phaseclaw (negative), enemies reach one tile further and may leave the hero vulnerable
+	public static boolean phaseclawReach(Mob mob, Char enemy){
+		if (n(Talent.PHASECLAW) == 0 || enemy != hero() || Dungeon.level == null) return false;
+		if (Dungeon.level.distance(mob.pos, enemy.pos) > 2) return false;
+		return new com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica(mob.pos, enemy.pos,
+				com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica.PROJECTILE).collisionPos == enemy.pos;
+	}
+
+	//No Door (negative), more hidden doors
+	public static float noDoorFactor(){
+		int pts = n(Talent.NO_DOOR);
+		return pts >= 2 ? 2f : (pts == 1 ? 1.5f : 1f);
+	}
+
+	//Honey Fish, a honeypot makes water and a frenzied piranha instead of a bee
+	public static boolean honeyFish(int pos){
+		Hero h = hero();
+		if (h == null || !h.hasTalent(Talent.HONEY_FISH) || Dungeon.level == null || pos < 0) return false;
+		if (h.pointsInTalent(Talent.HONEY_FISH) >= 2) new com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.AquaBrew().shatter(pos);
+		Dungeon.level.setCellToWater(true, pos);
+		Mob piranha = com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Piranha.random();
+		piranha.pos = pos;
+		GameScene.add(piranha);
+		Buff.affect(piranha, Amok.class, 50f);
+		return true;
+	}
+
+	//No More Mob, the swarm wakes fewer enemies
+	public static boolean noMoreMob(Mob mob){
+		Hero h = hero();
+		if (h == null || !h.hasTalent(Talent.NO_MORE_MOB)) return false;
+		if (Random.Int(2) == 0) return true;
+		if (h.pointsInTalent(Talent.NO_MORE_MOB) >= 2){
+			mob.state = mob.WANDERING;
+			return true;
+		}
+		return false;
+	}
+
+	//Heavy Burden, a higher score
+	public static int scoreMultiplier(){
+		Hero h = hero();
+		return h == null ? 1 : 1 + h.pointsInTalent(Talent.HEAVY_BURDEN);
+	}
+
+	//Arrow Penetration, thrown weapons pass through walls to a nearby target
+	public static int arrowPenetration(Hero user, int dst, Item item){
+		if (!(item instanceof MissileWeapon) || user == null || Dungeon.level == null || dst < 0 || dst >= Dungeon.level.length()) return -1;
+		int pts = user.pointsInTalent(Talent.ARROW_PENETRATION);
+		if (pts == 0) return -1;
+		int range = pts >= 2 ? 12 : 8;
+		if ((Dungeon.level.passable[dst] || Dungeon.level.avoid[dst] || Actor.findChar(dst) != null)
+				&& Dungeon.level.distance(user.pos, dst) <= range) return dst;
+		return -1;
+	}
+
+	//Phantom Shooter, a second phantom throw
+	private static boolean phantomThrowing = false;
+
+	private static void phantomShooter(Hero h, Char enemy){
+		int pts = h.pointsInTalent(Talent.PHANTOM_SHOOTER);
+		if (pts == 0 || phantomThrowing || !(h.belongings.attackingWeapon() instanceof MissileWeapon)) return;
+		if (Random.Int(10) >= pts || !enemy.isAlive()) return;
+		phantomThrowing = true;
+		try {
+			h.attack(enemy, 1f, 0, 1f);
+		} finally {
+			phantomThrowing = false;
+		}
+	}
+
+	//Healattack, hitting an enemy that holds the guiding light heals the hero
+	public static void onIlluminatedHit(Char attacker){
+		Hero h = hero();
+		if (h == null || attacker != h || !h.hasTalent(Talent.HEALATTACK)) return;
+		int heal = h.pointsInTalent(Talent.HEALATTACK) >= 2 ? Math.max(1, Math.round(h.lvl*0.3f)) : 3;
+		h.HP = Math.min(h.HT, h.HP + heal);
+		if (h.sprite != null) h.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(heal), FloatingText.HEALING);
+	}
+
+	//Armed Uprising, allies share the hero's on hit talents, at +2 their damage changes too
+	private static boolean uprising = false;
+
+	private static int armedUprising(Mob ally, Char enemy, int damage){
+		Hero h = hero();
+		if (h == null || uprising || ally.alignment != Char.Alignment.ALLY || !h.hasTalent(Talent.ARMED_UPRISING) || enemy == null || enemy == h) return damage;
+		uprising = true;
+		try {
+			int changed = Talent.onAttackProc(h, enemy, damage);
+			return h.pointsInTalent(Talent.ARMED_UPRISING) >= 2 ? changed : damage;
+		} finally {
+			uprising = false;
+		}
+	}
+
+	//Swift Church, a time bubble only shrinks when the hero acts
+	public static boolean bubbleSurvives(Char ch, Swiftthistle.TimeBubble bubble){
+		int pts = ch == hero() ? p(Talent.SWIFT_CHURCH) : 0;
+		if (pts < 2) return false;
+		bubble.processTime(8 - 2*pts);
+		return true;
 	}
 }

@@ -301,6 +301,8 @@ public abstract class Recipe {
 		new com.shatteredpixel.shatteredpixeldungeon.items.food.ChocolateCake.Recipe(),
 		//transformation, two scrolls and a stylus
 		new com.shatteredpixel.shatteredpixeldungeon.items.spells.RubbingsTome.Recipe(),
+		//transformation, corpse dust, a rubbings tome and a wand
+		new com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Necronomicon.Recipe(),
 	};
 	
 	public static ArrayList<Recipe> findRecipes(ArrayList<Item> ingredients){
@@ -339,6 +341,9 @@ public abstract class Recipe {
 	}
 	
 	public static boolean usableInRecipe(Item item){
+		//transformation, corpse dust goes into the Necronomicon while the hero carries a rubbings tome
+		if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.quest.CorpseDust && com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero != null
+				&& com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero.belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.spells.RubbingsTome.class) != null) return true;
 		//only upgradeable thrown weapons and wands allowed among equipment items
 		if (item instanceof EquipableItem){
 			return item.cursedKnown && !item.cursed &&

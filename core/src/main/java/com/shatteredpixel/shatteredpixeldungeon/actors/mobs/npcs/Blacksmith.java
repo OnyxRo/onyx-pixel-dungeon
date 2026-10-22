@@ -447,7 +447,7 @@ public class Blacksmith extends NPC {
 			favor = 0;
 			DarkGold gold = Dungeon.hero.belongings.getItem(DarkGold.class);
 			if (gold != null){
-				favor += Math.min(2000, gold.quantity()*50);
+				favor += Math.min(com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.favorCap(2000), gold.quantity()*com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.favorPerGold(50)); //transformation, More Favors
 				gold.detachAll(Dungeon.hero.belongings.backpack);
 			}
 

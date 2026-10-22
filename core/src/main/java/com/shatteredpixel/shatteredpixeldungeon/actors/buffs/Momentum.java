@@ -64,6 +64,7 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 	public boolean act() {
 		if (freerunCooldown > 0){
 			freerunCooldown--;
+			if (freerunCooldown == 0) com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onFreerunRecovered(this); //transformation, Warmup Preparation
 		}
 
 		if (freerunCooldown == 0 && !freerunning() && target.invisible > 0 && Dungeon.hero.pointsInTalent(Talent.SPEEDY_STEALTH) >= 1){
@@ -76,6 +77,7 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 		if (freerunTurns > 0){
 			if (target.invisible == 0 || Dungeon.hero.pointsInTalent(Talent.SPEEDY_STEALTH) < 2) {
 				freerunTurns--;
+				if (freerunTurns == 0) com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onFreerunEnded(target); //transformation, Freerunner Afterimage
 			}
 		} else if (!movedLastTurn){
 			momentumStacks = (int)GameMath.gate(0, momentumStacks-1, Math.round(momentumStacks * 0.667f));
@@ -109,6 +111,8 @@ public class Momentum extends Buff implements ActionIndicator.Action {
 			BuffIndicator.refreshHero();
 		}
 	}
+
+	public int recoveryLeft(){ return freerunCooldown; } //transformation, Momentum Reserve
 
 	public boolean freerunning(){
 		return freerunTurns > 0;

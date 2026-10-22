@@ -121,6 +121,7 @@ public class WandOfDisintegration extends DamageWand {
 		}
 		
 		int lvl = level + (chars.size()-1) + terrainBonus;
+		lvl += com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.abyssalGaze((chars.size()-1) + terrainBonus); //transformation, Abyssal Gaze
 		for (Char ch : chars) {
 			wandProc(ch, chargesPerCast());
 			ch.damage( damageRoll(lvl), this );

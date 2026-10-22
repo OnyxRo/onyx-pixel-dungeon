@@ -68,6 +68,7 @@ public class Electricity extends Blob {
 			for (int j = area.top-1; j <= area.bottom; j++) {
 				cell = i + j*Dungeon.level.width();
 				if (cur[cell] > 0) {
+					com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.lightCrop(cell); //transformation, Light Crop
 					Char ch = Actor.findChar( cell );
 					if (ch != null && !ch.isImmune(this.getClass())) {
 						if (ch.buff(Paralysis.class) == null){

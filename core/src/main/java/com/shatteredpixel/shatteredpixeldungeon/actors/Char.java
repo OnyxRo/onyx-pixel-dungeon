@@ -547,6 +547,7 @@ public abstract class Char extends Actor {
 
 			if (enemy.buff(GuidingLight.Illuminated.class) != null){
 				enemy.buff(GuidingLight.Illuminated.class).detach();
+				com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onIlluminatedHit(this); //transformation, Healattack
 				if (this == Dungeon.hero && Dungeon.hero.hasTalent(Talent.SEARING_LIGHT)){
 					dmg += com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.searingLight(1 + 2*Dungeon.hero.pointsInTalent(Talent.SEARING_LIGHT)); //rearranged
 				}

@@ -148,6 +148,7 @@ public class Item implements Bundlable {
 	public boolean doPickUp(Hero hero, int pos) {
 		if (collect( hero.belongings.backpack )) {
 			com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onItemPickedUp(hero); //transformation
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onWeaponPickedUp(hero, this); //transformation, Be Inconstant
 			
 			GameScene.pickUp( this, pos );
 			Sample.INSTANCE.play( Assets.Sounds.ITEM );
@@ -714,6 +715,8 @@ public class Item implements Bundlable {
 	}
 
 	public int throwPos( Hero user, int dst){
+		int pierced = com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.arrowPenetration(user, dst, this); //transformation, Arrow Penetration
+		if (pierced >= 0) return pierced;
 		return new Ballistica( user.pos, dst, Ballistica.PROJECTILE ).collisionPos;
 	}
 

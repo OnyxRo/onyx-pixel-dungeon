@@ -3671,11 +3671,13 @@ public class Hero extends Char {
 				if (cursed) {
 					GLog.n(Messages.get(this, "search_distracted"));
 					Buff.affect(this, Hunger.class).affectHunger(TIME_TO_SEARCH - (2 * HUNGER_FOR_SEARCH));
+				} else if (hasTalent(Talent.QUICK_SEARCH)) {
+					Buff.affect(this, Hunger.class).affectHunger(-1); //transformation, Quick Search
 				} else {
 					Buff.affect(this, Hunger.class).affectHunger(TIME_TO_SEARCH - HUNGER_FOR_SEARCH);
 				}
 			}
-			spendAndNext(TIME_TO_SEARCH);
+			spendAndNext(hasTalent(Talent.QUICK_SEARCH) ? 1f : TIME_TO_SEARCH); //transformation, Quick Search
 			
 		}
 		

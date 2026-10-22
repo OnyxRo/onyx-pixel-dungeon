@@ -51,6 +51,7 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 
 	@Override
 	public void doRead() {
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.eternalCurseBlocks(this)) return; //transformation, Eternal Curse
 
 		TormentedSpirit spirit = null;
 		for (int i : PathFinder.NEIGHBOURS8){
@@ -127,14 +128,14 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 			}
 			if (item instanceof Weapon){
 				Weapon w = (Weapon) item;
-				if (w.hasCurseEnchant()){
+				if (w.hasCurseEnchant() && com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.removesCurseEnchant()){ //transformation, Eternal Curse
 					w.enchant(null);
 					procced = true;
 				}
 			}
 			if (item instanceof Armor){
 				Armor a = (Armor) item;
-				if (a.hasCurseGlyph()){
+				if (a.hasCurseGlyph() && com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.removesCurseEnchant()){
 					a.inscribe(null);
 					procced = true;
 				}

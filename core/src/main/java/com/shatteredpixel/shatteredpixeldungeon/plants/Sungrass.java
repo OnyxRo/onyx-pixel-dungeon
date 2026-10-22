@@ -50,7 +50,8 @@ public class Sungrass extends Plant {
 			if (ch instanceof Hero && ((Hero) ch).subClass == HeroSubClass.WARDEN) {
 				Buff.affect(ch, Healing.class).setHeal(ch.HT, 0, 1);
 			} else {
-				Buff.affect(ch, Health.class).boost(ch.HT);
+				//transformation, Original Monster heals half again as much
+				Buff.affect(ch, Health.class).boost(ch instanceof Hero && ((Hero) ch).hasTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.ORIGINAL_MONSTER) ? ch.HT*3/2 : ch.HT);
 			}
 		}
 		
@@ -84,7 +85,8 @@ public class Sungrass extends Plant {
 		
 		@Override
 		public boolean act() {
-			if (target.pos != pos) {
+			//transformation, Original Monster at 3 points keeps healing while moving
+			if (target.pos != pos && !(target instanceof Hero && ((Hero) target).pointsInTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.ORIGINAL_MONSTER) >= 3)) {
 				detach();
 			}
 			

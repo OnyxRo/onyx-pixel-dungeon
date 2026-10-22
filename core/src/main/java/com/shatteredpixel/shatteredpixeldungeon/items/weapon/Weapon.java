@@ -600,6 +600,7 @@ abstract public class Weapon extends KindOfWeapon {
 
 		Class<? extends Enchantment> oldEnchantment = enchantment != null ? enchantment.getClass() : null;
 		Enchantment ench = Enchantment.random( oldEnchantment );
+		ench = com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.kebiEnchant(ench, oldEnchantment); //transformation, Kebi
 
 		return enchant( ench );
 	}

@@ -59,7 +59,7 @@ public class TransformationBossTalents {
 		switch (type == null ? "" : type.toUpperCase(java.util.Locale.ENGLISH)){
 			case "GOO": case "WARRIOR": return Talent.BOSS_TALENT_SLOT_1;
 			case "TENGU": case "ROGUE": return Talent.BOSS_TALENT_SLOT_2;
-			case "DM300": return Talent.BOSS_TALENT_SLOT_3;
+			case "DM300": case "HUNTRESS": return Talent.BOSS_TALENT_SLOT_3;
 			case "DWARFKING": case "KING": return Talent.BOSS_TALENT_SLOT_4;
 			case "YOG": return Talent.BOSS_TALENT_SLOT_5;
 			default: return null;
@@ -70,10 +70,11 @@ public class TransformationBossTalents {
 		switch (type == null ? "" : type.toUpperCase(java.util.Locale.ENGLISH)){
 			case "GOO": return new Talent[]{Talent.AQUATIC_RECOVER, Talent.PUMP_ATTACK, Talent.OOZE_ATTACK};
 			case "WARRIOR": return new Talent[]{Talent.STRONGEST_SHIELD, Talent.COMBO_PACKAGE, Talent.BREAK_ENEMY_RANKS};
-			case "TENGU": return new Talent[]{Talent.SURPRISE_THROW, Talent.RUSH};
+			case "TENGU": return new Talent[]{Talent.SURPRISE_THROW, Talent.SMOKE_MASK, Talent.RUSH};
 			case "ROGUE": return new Talent[]{Talent.SHADOW_KILLER, Talent.KILL_SPREE, Talent.SEAOFPEOPLE, Talent.PHANTOM_STEP};
-			case "DM300": return new Talent[]{Talent.FASTING, Talent.THUNDER_STRIKE};
-			case "DWARFKING": case "KING": return new Talent[]{Talent.KING_PROTECT, Talent.SUMMON_FOLLOWER, Talent.WOLFISH_GAZE};
+			case "DM300": return new Talent[]{Talent.FASTING, Talent.THUNDER_STRIKE, Talent.DIRECTIONAL_COLLAPSE};
+			case "HUNTRESS": return new Talent[]{Talent.HUNTING_TECHNIQUE, Talent.NATURAL_CHILD, Talent.FALCON_EYE};
+			case "DWARFKING": case "KING": return new Talent[]{Talent.KING_PROTECT, Talent.SUMMON_FOLLOWER, Talent.WOLFISH_GAZE, Talent.ENERGY_CONVERSION};
 			case "YOG": return new Talent[]{Talent.YOG_LARVA, Talent.YOG_FIST, Talent.YOG_RAY};
 			default: return new Talent[0];
 		}
@@ -100,7 +101,7 @@ public class TransformationBossTalents {
 		}
 	}
 
-	public static final String[] TYPES = {"GOO", "WARRIOR", "TENGU", "ROGUE", "DM300", "DWARFKING", "YOG"};
+	public static final String[] TYPES = {"GOO", "WARRIOR", "TENGU", "ROGUE", "DM300", "HUNTRESS", "DWARFKING", "YOG"};
 
 	//the other talents of the boss this talent came from
 	public static Talent[] groupOf(Talent t){

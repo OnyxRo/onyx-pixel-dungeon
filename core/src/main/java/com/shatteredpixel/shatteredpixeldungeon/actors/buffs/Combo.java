@@ -284,14 +284,15 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	}
 
 	public boolean canUseMove(ComboMove move){
-		if (move == ComboMove.CLOBBER && clobberUsed)   return false;
-		if (move == ComboMove.PARRY && parryUsed)       return false;
-		return move.comboReq <= count;
+		if (move == ComboMove.CLOBBER && clobberUsed && !com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.comboMastery(target))   return false; //transformation, Combo Mastery
+		if (move == ComboMove.PARRY && parryUsed && !com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.comboMastery(target))       return false;
+		return move.comboReq - com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.comboDiscount(target) <= count;
 	}
 
 	public void useMove(ComboMove move){
 		if (move == ComboMove.PARRY){
 			parryUsed = true;
+			count = com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.comboAfterMove(target, count, move.comboReq, false); //transformation, Combo Mastery
 			comboTime = Math.max(comboTime, 5f);
 			Invisibility.dispel();
 			Buff.affect(target, ParryTracker.class, Actor.TICK);
@@ -434,6 +435,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 		switch(moveBeingUsed){
 			case CLOBBER:
 				clobberUsed = true;
+				count = com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.comboAfterMove(target, count, moveBeingUsed.comboReq, false); //transformation, Combo Mastery
 				if (getHighestMove() == null) ActionIndicator.clearAction(Combo.this);
 				hero.spendAndNext(hero.attackDelay());
 				break;
@@ -468,7 +470,8 @@ public class Combo extends Buff implements ActionIndicator.Action {
 				break;
 
 			default:
-				detach();
+				count = com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.comboAfterMove(target, count, moveBeingUsed.comboReq, true); //transformation, Combo Mastery
+				if (count <= 0) detach();
 				ActionIndicator.clearAction(Combo.this);
 				hero.spendAndNext(hero.attackDelay());
 				break;

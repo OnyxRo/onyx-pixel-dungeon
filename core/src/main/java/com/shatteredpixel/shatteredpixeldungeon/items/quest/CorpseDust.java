@@ -82,7 +82,7 @@ public class CorpseDust extends Item {
 	@Override
 	protected void onDetach() {
 		DustGhostSpawner spawner = Dungeon.hero.buff(DustGhostSpawner.class);
-		if (spawner != null){
+		if (spawner != null && !com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Necronomicon.cursedBookEquipped(Dungeon.hero)){ //transformation, a cursed Necronomicon keeps the wraiths coming
 			spawner.dispel();
 		}
 	}
@@ -98,7 +98,8 @@ public class CorpseDust extends Item {
 
 		@Override
 		public boolean act() {
-			if (target instanceof Hero && ((Hero) target).belongings.getItem(CorpseDust.class) == null){
+			if (target instanceof Hero && ((Hero) target).belongings.getItem(CorpseDust.class) == null
+					&& !com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Necronomicon.cursedBookEquipped((Hero) target)){ //transformation
 				spawnPower = 0;
 				spend(TICK);
 				return true;

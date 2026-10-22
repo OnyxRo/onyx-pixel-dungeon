@@ -88,6 +88,7 @@ public class ReclaimTrap extends TargetedSpell {
 			t.reclaimed = true;
 			Bestiary.countEncounter(t.getClass());
 			t.activate();
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onTrapReclaimed(hero); //transformation, Trap Master
 
 			onSpellused();
 			

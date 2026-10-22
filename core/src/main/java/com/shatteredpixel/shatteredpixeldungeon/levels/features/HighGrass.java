@@ -132,6 +132,7 @@ public class HighGrass {
 			if (naturalismLevel >= 0) {
 				// Seed, scales from 1/25 to 1/9
 				float lootChance = 1/(25f - naturalismLevel*4f);
+				if (naturalismLevel > 0) lootChance *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.naturalismSeeds(); //transformation, Journey Nature
 
 				// absolute max drop rate is ~1/6.5 with footwear of nature, ~1/18 without
 				lootChance *= PetrifiedSeed.grassLootMultiplier();

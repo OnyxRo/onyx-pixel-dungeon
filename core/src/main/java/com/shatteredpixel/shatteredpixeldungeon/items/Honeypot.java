@@ -116,6 +116,7 @@ public class Honeypot extends Item {
 		}
 		
 		if (newPos != -1) {
+			if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.honeyFish(newPos)) return new ShatteredPot(); //transformation, Honey Fish
 			Bee bee = new Bee();
 			bee.spawn( Dungeon.scalingDepth() );
 			bee.setPotInfo( pos, owner );

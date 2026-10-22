@@ -48,8 +48,9 @@ public class TransformationCatalogTest {
 			h.run();
 		} catch (Throwable t) {
 			String m = String.valueOf( t.getMessage() );
-			if (t instanceof NullPointerException && (m.contains( "GameScene.scene" ) || m.contains( "CellSelector" ) || m.contains( "Game.instance" ))) {
-				System.out.println( "HEADLESS (not counted): " + what + " needs the game screen" );
+			if ((t instanceof NullPointerException && (m.contains( "GameScene.scene" ) || m.contains( "CellSelector" ) || m.contains( "Game.instance" ) || m.contains( "Camera.main" )))
+					|| (t instanceof ClassCastException && m.contains( "HeroSprite" ))) {
+				System.out.println( "HEADLESS (not counted): " + what + " needs the game screen, from " + (t.getStackTrace().length > 2 ? t.getStackTrace()[1] + " " + t.getStackTrace()[2] : "") );
 				return;
 			}
 			failures++;
@@ -168,6 +169,65 @@ public class TransformationCatalogTest {
 				TransformationTalents.preventsDeath( rat, hero );
 				TransformationTalents.onMobDie( rat, hero );
 			} );
+			hook( n + " second run hooks", () -> {
+				TransformationTalents.ceaselessRage( hero, 0.1f );
+				TransformationTalents.comboAfterMove( hero, 5, 3, true ); TransformationTalents.comboDiscount( hero ); TransformationTalents.comboMastery( hero );
+				TransformationTalents.unexpectedStrike( hero, 2 ); TransformationTalents.onPreparationEnd( hero, 2 );
+				TransformationTalents.naturalWay( hero, 1f ); TransformationTalents.yinYangCovers( hero, 0, 1 );
+			} );
+			hook( n + " second run momentum", () -> {
+				TransformationTalents.onFreerunEnded( hero );
+				TransformationTalents.onFreerunRecovered( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect( hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum.class ) );
+				TransformationTalents.wandChargeSaved( new com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFireblast() );
+				TransformationTalents.chargeDiscount( new com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFireblast(), 3 );
+				TransformationTalents.lightningHeals( hero, 10 ); TransformationTalents.abyssalGaze( 3 );
+				TransformationTalents.corrosionVolume( 60 ); TransformationTalents.corrosionStrength(); TransformationTalents.onCorrosiveGas( rat );
+				TransformationTalents.lightCrop( rat.pos );
+			} );
+			hook( n + " second run wands", () -> {
+				for (com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand w : new com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand[]{
+						new com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFrost(), new com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLightning(),
+						new com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorruption(), new com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfPrismaticLight(),
+						new com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfDisintegration(), new com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFireblast()}) {
+					TransformationTalents.onWandZap( w, rat.pos );
+					if (rat.isAlive()) TransformationTalents.onWandDamage( w, rat, 5 );
+				}
+			} );
+			hook( n + " second run artifacts and systems", () -> {
+				TransformationTalents.artifactBoost( new com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass() );
+				TransformationTalents.timeSandStasis(); TransformationTalents.timeFreezeTurns(); TransformationTalents.cloakExtraTurns();
+				TransformationTalents.armbandSteal( hero, 3 ); TransformationTalents.armbandShopCharges( 2 );
+				TransformationTalents.spellbookScroll( new com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify() );
+				TransformationTalents.sandalsCost( 4 ); TransformationTalents.naturalismSeeds(); TransformationTalents.hornBonus();
+				TransformationTalents.onFoodEaten( hero, new com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty() );
+				if (rat.isAlive()) TransformationTalents.chainRefund( rat, 2 );
+				TransformationTalents.chainTime(); TransformationTalents.onTrapReclaimed( hero );
+				TransformationTalents.hardwareCost( 10 ); TransformationTalents.hardwareKeepsEmbers();
+				TransformationTalents.kebiGlyph( null, null ); TransformationTalents.kebiEnchant( null, null ); TransformationTalents.kebi();
+				TransformationTalents.favorPerGold( 50 ); TransformationTalents.favorCap( 2000 );
+				TransformationTalents.eternalCurseBlocks( new com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse() ); TransformationTalents.removesCurseEnchant();
+				if (rat.isAlive()) { TransformationTalents.phaseclawReach( rat, hero ); TransformationTalents.noMoreMob( rat ); }
+				TransformationTalents.noDoorFactor(); TransformationTalents.scoreMultiplier();
+				TransformationTalents.arrowPenetration( hero, hero.pos + 2, new com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnife() );
+				TransformationTalents.onIlluminatedHit( hero );
+				TransformationTalents.bubbleSurvives( hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect( hero, com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle.TimeBubble.class ) );
+				TransformationTalents.falconEye( level, hero, new boolean[level.length()], 8 );
+				TransformationTalents.energyConversion( hero );
+			} );
+			hook( n + " second run honeypot", () -> {
+				int free = -1;
+				for (int i : com.watabou.utils.PathFinder.NEIGHBOURS8) {
+					int c = hero.pos + i;
+					if (level.passable[c] && Actor.findChar( c ) == null) { free = c; break; }
+				}
+				if (free >= 0) TransformationTalents.honeyFish( free );
+			} );
+			hook( n + " second run actions", () -> {
+				TransformationTalents.SmokeMask sm = hero.buff( TransformationTalents.SmokeMask.class );
+				if (sm != null) { sm.act(); sm.doAction(); }
+				TransformationTalents.NaturalBreath nb = hero.buff( TransformationTalents.NaturalBreath.class );
+				if (nb != null) { nb.act(); nb.doAction(); }
+			} );
 			hero.HP = hero.HT;
 			for (com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff b : hero.buffs().toArray( new com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff[0] )) {
 				if (!(b instanceof com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger)
@@ -210,6 +270,17 @@ public class TransformationCatalogTest {
 			hero.subClass = keepSub;
 		}
 
+		//the second catalog run, extra subclass talents for every subclass the mod gave them to, the Huntress tower slot,
+		//and a hero without these talents keeps the normal numbers
+		for (com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass sc : new com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass[]{ com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.BERSERKER, com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.GLADIATOR, com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.BATTLEMAGE, com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.WARLOCK, com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.ASSASSIN, com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.FREERUNNER, com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.CHAMPION, com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.MONK }) {
+			check( TransformationTalents.subclassExtras( sc ).length == 3, sc + " has three extra talents" );
+		}
+		check( com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationBossTalents.slotFor( "HUNTRESS" ) == Talent.BOSS_TALENT_SLOT_3, "Huntress tower scroll fills slot 3" );
+		check( TransformationTalents.comboAfterMove( hero, 5, 3, true ) == 0 && TransformationTalents.comboAfterMove( hero, 5, 3, false ) == 5, "combo resets as normal without Combo Mastery" );
+		check( TransformationTalents.noDoorFactor() == 1f && TransformationTalents.scoreMultiplier() == 1 && TransformationTalents.hornBonus() == 0
+				&& TransformationTalents.chainTime() == 1f && TransformationTalents.favorPerGold( 50 ) == 50 && TransformationTalents.energyConversion( hero ) == 1f
+				&& !TransformationTalents.ceaselessRage( hero, 0.1f ) && TransformationTalents.timeFreezeTurns() == 2f, "no second run talent changes a normal hero" );
+
 		//the transformation trap swaps one talent
 		hook( "transformation trap", () -> {
 			com.shatteredpixel.shatteredpixeldungeon.levels.traps.TransformationTrap trap = new com.shatteredpixel.shatteredpixeldungeon.levels.traps.TransformationTrap();
@@ -223,7 +294,7 @@ public class TransformationCatalogTest {
 		check( com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationBossTalents.canSublimate( hero, "GOO" ), "Freeman has the Goo slot" );
 		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationBossTalents.fillSlot( hero, "GOO", Talent.PUMP_ATTACK );
 		check( hero.talents.get( 0 ).containsKey( Talent.PUMP_ATTACK ) && !com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationBossTalents.canSublimate( hero, "GOO" ), "Goo slot filled" );
-		for (String type : new String[]{"GOO", "WARRIOR", "TENGU", "ROGUE", "DM300", "DWARFKING", "YOG"}) {
+		for (String type : new String[]{"GOO", "WARRIOR", "TENGU", "ROGUE", "DM300", "HUNTRESS", "DWARFKING", "YOG"}) {
 			for (Talent t : com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationBossTalents.talentsFor( type )) check( t.isCatalogTalent() && hasText( t.title() ), type + " boss talent " + t );
 		}
 

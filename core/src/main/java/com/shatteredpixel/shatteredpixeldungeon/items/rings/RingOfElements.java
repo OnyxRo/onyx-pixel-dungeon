@@ -86,6 +86,18 @@ public class RingOfElements extends Ring {
 	}
 	
 	public static float resist( Char target, Class effect ){
+		//transformation, Original Monster at 2 points resists elements while sungrass heals
+		if (target instanceof com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero
+				&& ((com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero) target).pointsInTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.ORIGINAL_MONSTER) >= 2
+				&& target.buff(com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass.Health.class) != null){
+			for (Class c : RESISTS){
+				if (c.isAssignableFrom(effect)) return 0.67f * resistNoTalent(target, effect);
+			}
+		}
+		return resistNoTalent(target, effect);
+	}
+
+	private static float resistNoTalent( Char target, Class effect ){
 		if (getBuffedBonus(target, Resistance.class) == 0) return 1f;
 		
 		for (Class c : RESISTS){

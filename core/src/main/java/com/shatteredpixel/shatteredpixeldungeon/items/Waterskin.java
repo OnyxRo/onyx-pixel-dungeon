@@ -104,6 +104,10 @@ public class Waterskin extends Item {
 
 				//each drop is worth 5% of total health
 				float dropsNeeded = missingHealthPercent / 0.05f;
+				//transformation, Quality Absorption makes each drop heal more
+				if (hero.hasTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.QUALITY_ABSORPTION)) {
+					dropsNeeded = missingHealthPercent / (0.05f + (hero.pointsInTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.QUALITY_ABSORPTION) + 1) / (float)hero.HT);
+				}
 
 				//we are getting extra heal value, scale back drops needed accordingly
 				if (dropsNeeded > 1.01f && VialOfBlood.delayBurstHealing()){

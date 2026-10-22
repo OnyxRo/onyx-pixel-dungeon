@@ -68,6 +68,7 @@ public class RingOfEnergy extends Ring {
 			bonus *= 1f + (0.2f * ((Hero) target).pointsInTalent(Talent.LIGHT_READING)/3f);
 		}
 
+		bonus *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.energyConversion(target); //transformation, Energy Conversion
 		return bonus;
 	}
 
@@ -83,6 +84,7 @@ public class RingOfEnergy extends Ring {
 			bonus *= 1f + (0.2f * ((Hero) target).pointsInTalent(Talent.LIGHT_CLOAK)/3f);
 		}
 
+		bonus *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.energyConversion(target); //transformation, Energy Conversion
 		return bonus;
 	}
 

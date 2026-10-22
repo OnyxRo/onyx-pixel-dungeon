@@ -142,6 +142,9 @@ public abstract class Plant implements Bundlable {
 	public static class Seed extends Item {
 
 		public static final String AC_PLANT	= "PLANT";
+		//transformation, the Slime Girl sprouts seeds inside herself, Slime Greenhouse lets others eat them
+		public static final String AC_PLANT_IN_BODY	= "PLANT_IN_BODY";
+		public static final String AC_EAT	= "EAT";
 		
 		private static final float TIME_TO_PLANT = 1f;
 		
@@ -156,6 +159,11 @@ public abstract class Plant implements Bundlable {
 		public ArrayList<String> actions( Hero hero ) {
 			ArrayList<String> actions = super.actions( hero );
 			actions.add( AC_PLANT );
+			if (hero.heroClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.SLIMEGIRL) {
+				actions.add( AC_PLANT_IN_BODY ); //transformation
+			} else if (hero.hasTalent(Talent.SLIME_GREENHOUSE)) {
+				actions.add( AC_EAT ); //transformation, Slime Greenhouse
+			}
 			return actions;
 		}
 		
@@ -196,6 +204,31 @@ public abstract class Plant implements Bundlable {
 
 				hero.sprite.operate( hero.pos );
 				
+			} else if (action.equals( AC_PLANT_IN_BODY ) || action.equals( AC_EAT )) {
+				//transformation, sprouting a seed inside the Slime Girl, or eating it with Slime Greenhouse
+				boolean eat = action.equals( AC_EAT );
+				int greenhouse = hero.pointsInTalent(Talent.SLIME_GREENHOUSE);
+				boolean noHerbalism = Dungeon.isChallenged(Challenges.NO_HERBALISM);
+				hero.busy();
+				detach( hero.belongings.backpack );
+				if (eat) {
+					hero.spend( noHerbalism && greenhouse == 2 ? TIME_TO_PLANT*20 : TIME_TO_PLANT );
+				} else if (greenhouse == 0) {
+					hero.spend( noHerbalism ? TIME_TO_PLANT*20 : TIME_TO_PLANT );
+				} else if (noHerbalism) {
+					hero.spend( TIME_TO_PLANT*15 );
+				}
+				if (eat || greenhouse == 2) {
+					com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger.class).satisfy(30);
+				}
+				if (!eat || greenhouse == 2) {
+					couch( hero.pos, null ).activate( hero );
+				}
+				hero.sprite.operate( hero.pos );
+				if (eat) {
+					com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite.show( hero, com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite.FOOD );
+					Sample.INSTANCE.play( Assets.Sounds.EAT );
+				}
 			}
 		}
 		

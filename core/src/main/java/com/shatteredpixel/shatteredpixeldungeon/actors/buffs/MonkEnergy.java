@@ -198,7 +198,7 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 
 			}
 		}
-		energyGain *= enGainMulti;
+		energyGain *= enGainMulti + com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.naturalWay(target, energyGain); //transformation, Natural Way
 
 		energy += energyGain;
 		//if we kill while using an ability, don't apply the cap yet, will be enforced after spending

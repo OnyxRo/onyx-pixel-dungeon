@@ -202,7 +202,7 @@ public abstract class RegularPainter extends Painter {
 	
 	protected void paintDoors( Level l, ArrayList<Room> rooms ) {
 
-		float hiddenDoorChance = hiddenDoorChance(l);
+		float hiddenDoorChance = Math.min(1f, hiddenDoorChance(l) * com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.noDoorFactor()); //transformation, No Door
 
 		HashMap<Room, Room> roomMerges = new HashMap<>();
 
