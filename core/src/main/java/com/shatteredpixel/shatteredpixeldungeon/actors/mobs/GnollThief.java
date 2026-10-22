@@ -60,15 +60,13 @@ public class GnollThief extends Mob {
         return Random.NormalIntRange(0, 5);
     }
 
-    private void lay() {
+    private void lay( Char attacker ) {
 
-        for (int i = 0; i < 4; i++) {
-            int trapPos;
-            do {
-                trapPos = enemy.pos;
-            } while (!Dungeon.level.heroFOV[trapPos] || Dungeon.level.solid[trapPos]);
-
-            if (Dungeon.level.map[trapPos] == Terrain.EMPTY) {
+        //the mod looped until the cell was in view, which froze the game for an attacker out of sight
+        if (attacker != null) {
+            int trapPos = attacker.pos;
+            if (Dungeon.level.heroFOV[trapPos] && !Dungeon.level.solid[trapPos]
+                    && Dungeon.level.map[trapPos] == Terrain.EMPTY) {
                 Dungeon.level.setTrap(new GrippingTrap().reveal(), trapPos);
                 Level.set(trapPos, Terrain.TRAP);
                 ScrollOfMagicMapping.discover(trapPos);
@@ -78,7 +76,7 @@ public class GnollThief extends Mob {
 
     @Override
     public int defenseProc( Char enemy, int damage ) {
-        lay();
+        lay( enemy );
         return damage;
     }
 }

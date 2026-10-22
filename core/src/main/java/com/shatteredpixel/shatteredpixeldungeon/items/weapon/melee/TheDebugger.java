@@ -27,21 +27,24 @@ public class TheDebugger extends MeleeWeapon {
     {
         image = ItemSpriteSheet.TheDebugger;
 
-        tier = 1999999999;
+        //tier 5 for prices and formulas, the numbers below used to overflow and roll negative damage
+        tier = 5;
         ACC = 10f; //1000% boost to accuracy
         RCH = 256;
     }
 
     @Override
+    public int min(int lvl) {
+        return 1000000 + lvl;
+    }
+
+    @Override
     public int max(int lvl) {
-        return 1999999999 * (tier + 1999999999) +    //40 base, up from 30
-                lvl * (tier + 1);   //scaling unchanged
+        return 1000000 + lvl * 10;
     }
 
     @Override
     public int STRReq(int lvl) {
-        lvl = Math.max(0, lvl);
-        //0 base strength, down from 1999999999
-        return (tier - 1999999999);
+        return 10;
     }
 }

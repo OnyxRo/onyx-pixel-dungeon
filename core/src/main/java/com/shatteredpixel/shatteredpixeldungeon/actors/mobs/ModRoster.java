@@ -266,7 +266,6 @@ public class ModRoster {
 		add( "transformation", Corpse.class, 0, 1, 99 );
 		add( "transformation", ElfWineCup.class, 0, 1, 99 );
 		add( "transformation", AlienatedPrismaticGuard.class, 0, 1, 99 );
-		add( "transformation", VaultMob.class, 0, 1, 99 );
 		add( "transformation", Obscura.class, 0, 1, 99 );
 		//transformation, the four disciples, their base class is abstract
 		add( "transformation", ChaosDisciples.EyeBoss.class, 0, 1, 99 );
