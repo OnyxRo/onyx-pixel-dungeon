@@ -172,6 +172,8 @@ public class BuffIndicator extends Component {
 	public static final int ANIMATED     = AMOK;
 	public static final int FAINT        = DROWSY;
 	public static final int GOLDARMOR    = ARMOR;
+	public static final int KEENEYE      = TARGETED;
+	public static final int WALLSTANCE   = HOLY_ARMOR;
 	public static final int HIGHLIGHTED  = MARK;
 	public static final int INSPIRED     = BLESS;
 	public static final int MINIONBOSS   = CORRUPT;

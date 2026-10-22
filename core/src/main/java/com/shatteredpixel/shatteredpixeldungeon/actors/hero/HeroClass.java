@@ -115,7 +115,11 @@ public enum HeroClass {
 	//summoning, Summoning PD Reincarnated
 	CONJURER( HeroSubClass.SOUL_REAVER, HeroSubClass.OCCULTIST ),
 	//transformation
-	FREEMAN( HeroSubClass.FREEMAN );
+	FREEMAN( HeroSubClass.FREEMAN ),
+	//tower, Tower PD. Its heroes had no subclasses, these are Shattered's picked to suit them
+	NECROHERO( HeroSubClass.WARLOCK, HeroSubClass.ASSASSIN ),
+	TANK( HeroSubClass.BERSERKER, HeroSubClass.GLADIATOR ),
+	TOWERPRIEST( HeroSubClass.MONK, HeroSubClass.WARDEN );
 
 	//the Summoner has two pictures, one is chosen each time the game starts
 	private static final String SUMMONER_SPLASH = Math.random() < 0.5 ? Assets.Splashes.SUMMONER : Assets.Splashes.SORCERESS;
@@ -226,6 +230,16 @@ public enum HeroClass {
 			//transformation
 			case FREEMAN:
 				initFreeman( hero );
+				break;
+			//tower
+			case NECROHERO:
+				initNecrohero( hero );
+				break;
+			case TANK:
+				initTank( hero );
+				break;
+			case TOWERPRIEST:
+				initTowerPriest( hero );
 				break;
 		}
 
@@ -343,6 +357,13 @@ public enum HeroClass {
 				return Badges.Badge.MASTERY_CONJURER;
 			case FREEMAN:
 				return Badges.Badge.MASTERY_FREEMAN;
+			//tower
+			case NECROHERO:
+				return Badges.Badge.MASTERY_NECROHERO;
+			case TANK:
+				return Badges.Badge.MASTERY_TANK;
+			case TOWERPRIEST:
+				return Badges.Badge.MASTERY_TOWERPRIEST;
 		}
 		return null;
 	}
@@ -566,6 +587,61 @@ public enum HeroClass {
 
 	//Transformation PD, the Freeman (the mod's gentleman). A walking stick, a lucky coin, the special package,
 	//and talents that are blank slots to fill with scrolls of metamorphosis
+	//tower, Tower PD's three heroes. Each starts with three hero spells, kept in a spell book,
+	//that cast from the quickslot and then cool down
+	private static void giveTowerSpells( com.shatteredpixel.shatteredpixeldungeon.items.herospells.HeroSpell... spells ) {
+		new com.shatteredpixel.shatteredpixeldungeon.items.bags.HeroSpellbook().collect();
+		for (int i = 0; i < spells.length; i++) {
+			spells[i].collect();
+			Dungeon.quickslot.setSlot( i, spells[i] );
+		}
+	}
+
+	private static void initNecrohero( Hero hero ) {
+		hero.STR = 11;
+		(hero.belongings.weapon = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger()).identify();
+		hero.belongings.weapon.activate( hero );
+
+		giveTowerSpells( new com.shatteredpixel.shatteredpixeldungeon.items.herospells.AbNecromancy(),
+				new com.shatteredpixel.shatteredpixeldungeon.items.herospells.AbUndying(),
+				new com.shatteredpixel.shatteredpixeldungeon.items.herospells.AbObelisk() );
+
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfToxicEssence().identify().collect();
+		new com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfFear().identify().collect();
+		new com.shatteredpixel.shatteredpixeldungeon.plants.Sorrowmoss.Seed().identify().collect();
+	}
+
+	private static void initTank( Hero hero ) {
+		hero.STR = 13;
+		(hero.belongings.armor = new com.shatteredpixel.shatteredpixeldungeon.items.armor.LeatherArmor()).identify();
+		com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RoundShield shield = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RoundShield();
+		shield.upgrade();
+		(hero.belongings.weapon = shield).identify();
+		hero.belongings.weapon.activate( hero );
+		hero.belongings.armor.activate( hero );
+
+		giveTowerSpells( new com.shatteredpixel.shatteredpixeldungeon.items.herospells.AbShield(),
+				new com.shatteredpixel.shatteredpixeldungeon.items.herospells.AbWallstance(),
+				new com.shatteredpixel.shatteredpixeldungeon.items.herospells.AbTaunt() );
+
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfShielding().identify().collect();
+		new com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDeepSleep().quantity( 3 ).identify().collect();
+		new com.shatteredpixel.shatteredpixeldungeon.plants.Starflower.Seed().identify().collect();
+	}
+
+	private static void initTowerPriest( Hero hero ) {
+		hero.STR = 10;
+		(hero.belongings.weapon = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Cudgel()).identify();
+		hero.belongings.weapon.activate( hero );
+
+		giveTowerSpells( new com.shatteredpixel.shatteredpixeldungeon.items.herospells.AbPray(),
+				new com.shatteredpixel.shatteredpixeldungeon.items.herospells.AbHolyWater(),
+				new com.shatteredpixel.shatteredpixeldungeon.items.herospells.AbWisp() );
+
+		new com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfHolyNova().identify().collect();
+		new com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfFlock().identify().collect();
+	}
+
 	private static void initFreeman( Hero hero ) {
 		(hero.belongings.weapon = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WalkStick()).identify();
 		hero.belongings.weapon.activate(hero);
@@ -702,6 +778,13 @@ public enum HeroClass {
 			case FREEMAN:
 				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.freeman.SalesContract(),
 						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify()};
+			//tower, Tower PD had no armor abilities, these are Shattered's picked to suit each hero
+			case NECROHERO:
+				return new ArmorAbility[]{new DeathMark(), new ShadowClone(), new WarpBeacon()};
+			case TANK:
+				return new ArmorAbility[]{new Endure(), new Shockwave(), new HeroicLeap()};
+			case TOWERPRIEST:
+				return new ArmorAbility[]{new SpiritHawk(), new WarpBeacon(), new SmokeBomb()};
 			case DM400:
 				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.dm400.Routine(),
 						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.dm400.Discharge_Gas(),
@@ -764,6 +847,13 @@ public enum HeroClass {
 				return Assets.Sprites.CONJURER;
 			case FREEMAN:
 				return Assets.Sprites.FREEMAN;
+			//tower
+			case NECROHERO:
+				return Assets.Sprites.NECROHERO;
+			case TANK:
+				return Assets.Sprites.TANK;
+			case TOWERPRIEST:
+				return Assets.Sprites.PRIEST;
 		}
 	}
 
@@ -820,6 +910,13 @@ public enum HeroClass {
 				return Assets.Splashes.CONJURER;
 			case FREEMAN:
 				return Assets.Splashes.FREEMAN;
+			//tower, Tower PD had no splash art for its heroes, these borrow the closest ones
+			case NECROHERO:
+				return Assets.Splashes.MAGE;
+			case TANK:
+				return Assets.Splashes.WARRIOR;
+			case TOWERPRIEST:
+				return Assets.Splashes.CLERIC;
 		}
 	}
 	
@@ -880,6 +977,13 @@ public enum HeroClass {
 				return true;
 			case FREEMAN:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_FREEMAN);
+			//tower
+			case NECROHERO:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_NECROHERO);
+			case TANK:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_TANK);
+			case TOWERPRIEST:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_TOWERPRIEST);
 		}
 	}
 	

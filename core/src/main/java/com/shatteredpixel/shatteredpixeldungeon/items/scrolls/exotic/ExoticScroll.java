@@ -108,6 +108,8 @@ public abstract class ExoticScroll extends Scroll {
 		//summoning
 		regToExo.put(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfAttunement.class, ScrollOfSoulEnergy.class);
 		exoToReg.put(ScrollOfSoulEnergy.class, com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfAttunement.class);
+		//from Tower PD, reverse lookup only, Terror still brews into Dread
+		exoToReg.put(ScrollOfUnspeakableHorrors.class, com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror.class);
 	}
 	
 	@Override

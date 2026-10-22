@@ -625,11 +625,13 @@ public abstract class Char extends Actor {
 					&& Dungeon.hero != null && Dungeon.hero.hasTalent(Talent.HATRED_OF_EVIL)) {
 				dmg *= 1f+0.2f+0.1f*Dungeon.hero.pointsInTalent(Talent.HATRED_OF_EVIL);
 			}
+			dmg = TowerChar.attackDamage(this, dmg); //tower
 
 			int effectiveDamage = enemy.defenseProc( this, Math.round(dmg) );
 			//do not trigger on-hit logic if defenseProc returned a negative value
 			if (effectiveDamage >= 0) {
 				effectiveDamage = Math.max(effectiveDamage - dr, 0);
+				effectiveDamage = TowerChar.afterArmor(this, enemy, effectiveDamage); //tower
 
 				if (enemy.buff(Viscosity.ViscosityTracker.class) != null) {
 					effectiveDamage = enemy.buff(Viscosity.ViscosityTracker.class).deferDamage(effectiveDamage);
@@ -951,6 +953,7 @@ public abstract class Char extends Actor {
 		if ( buff( Stamina.class ) != null) speed *= 1.5f;
 		if ( buff( Adrenaline.class ) != null) speed *= 2f;
 		if ( buff( Haste.class ) != null) speed *= 3f;
+		speed = TowerChar.speed(this, speed); //tower
 		if ( buff( Dread.class ) != null) speed *= 2f;
 		if ( buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ninja_Energy.WaterSmooth.class ) != null && Dungeon.level.water[pos]) speed *= 2f; //Transformation PD
 		//from Shittened PD
@@ -1040,6 +1043,8 @@ public abstract class Char extends Actor {
 			sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "invulnerable"));
 			return;
 		}
+		dmg = TowerChar.damageTaken(this, dmg, src); //tower
+		if (dmg < 0) return;
 
 		if (!(src instanceof LifeLink || src instanceof Hunger) && buff(LifeLink.class) != null){
 			HashSet<LifeLink> links = buffs(LifeLink.class);
@@ -1280,7 +1285,9 @@ public abstract class Char extends Actor {
 
 		if (HP < 0) HP = 0;
 
-		if (!isAlive()) {
+		if (!isAlive() && TowerChar.cheatDeath(this)) {
+			//tower, Undying
+		} else if (!isAlive()) {
 			die( src );
 		} else if (HP == 0 && buff(DeathMark.DeathMarkTracker.class) != null){
 			DeathMark.processFearTheReaper(this);
@@ -1535,7 +1542,8 @@ public abstract class Char extends Actor {
 		if (buff( Speed.class ) != null) {
 			timeScale *= 2.0f;
 		}
-		
+		timeScale = TowerChar.timeScale(this, timeScale); //tower
+
 		super.spend( time / timeScale );
 	}
 	

@@ -514,6 +514,10 @@ public class ModRoster {
 		add( "summoning", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.GoatClone.class, 0, 1, 99 );
 		add( "summoning", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.ChaosSaber.class, 0, 1, 99 );
 		add( "summoning", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Stenchy.class, 0, 1, 99 );
+		add( "tower", FreeBee.class, 0, 1, 99 );
+		add( "tower", MagicShard.class, 0, 1, 99 );
+		add( "tower", GorematiaSpirit.class, 0, 1, 99 );
+		add( "tower", TowerWisp.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

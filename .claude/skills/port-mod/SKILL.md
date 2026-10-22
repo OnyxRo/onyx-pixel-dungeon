@@ -203,3 +203,9 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 
 - **A mod system scattered over many classes** (a talent catalog) ports fastest as one hooks class (TransformationTalents) with one line calls. Find every place first with scripts/talent-dossier.py, then write all hooks, then wire the calls with scripts/plib.py patch files.
 - **Never put an abstract class on ModRoster**, and run MobArenaTest on boss monsters before an NPC may spawn them away from their arena.
+
+## Added after the Tower PD finish (2026-10-22)
+
+- **Item sheets wider than 16 cells.** `port-itemsprites.py` reads the mod's `WIDTH` from its ItemSpriteSheet (Tower PD uses 32). If a copied picture looks wrong or "EMPTY CELL" shows for an item the mod draws, check that constant first.
+- **Text color markers.** Tower PD writes `#1text#1` for colored text. This game only reads `_text_`, convert them when copying strings.
+- **A mod hero with no subclasses or talents** (Tower PD's BETA and ALPHA placeholders) gets Shattered subclasses, talents and armor abilities that work without that class's own gear, picked to suit. Run `TransformationHeroesTest <CLASS> ...` on it, the test now takes class names and casts each starting hero spell.

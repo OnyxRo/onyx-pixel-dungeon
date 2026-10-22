@@ -174,6 +174,16 @@ abstract public class ClassArmor extends Armor {
 			case FREEMAN:
 				classArmor = new FreemanArmor();
 				break;
+			//tower, Tower PD had no class armor, these borrow the closest ones
+			case NECROHERO:
+				classArmor = new RogueArmor();
+				break;
+			case TANK:
+				classArmor = new WarriorArmor();
+				break;
+			case TOWERPRIEST:
+				classArmor = new ClericArmor();
+				break;
 		}
 		
 		classArmor.level(armor.trueLevel());

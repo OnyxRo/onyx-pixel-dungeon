@@ -95,6 +95,11 @@ public abstract class WorldLevel extends RegularLevel implements ModWorld {
 			if (com.watabou.utils.Random.Int( 5 ) == 0) rooms.add( new com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ElderSignRoom() );
 			if (com.shatteredpixel.shatteredpixeldungeon.Dungeon.depth >= 11 && com.watabou.utils.Random.Int( 5 ) == 0) rooms.add( new com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.YellowSignRoom() );
 		}
+		//Tower PD added eleven standard rooms to its room pool, floors of a Tower world get one or two of them
+		if ("tower".equals( WorldShuffle.modKey( this ) )) {
+			int n = 1 + com.watabou.utils.Random.Int( 2 );
+			for (int i = 0; i < n; i++) rooms.add( com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.TowerRooms.random() );
+		}
 		return rooms;
 	}
 

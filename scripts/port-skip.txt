@@ -149,3 +149,4 @@ WeakForcefield
 ChangingRoomTile
 CustomTileVisual
 Floor
+Mercenary

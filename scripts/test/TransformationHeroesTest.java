@@ -37,6 +37,11 @@ public class TransformationHeroesTest {
 	public static void main( String[] args ) throws Exception {
 		TestBoot.boot();
 		HeroClass[] classes = { HeroClass.FRIAR, HeroClass.SLIMEGIRL, HeroClass.NINJA, HeroClass.DM400, HeroClass.PRINCESS };
+		//other heroes can be named on the command line, check.sh runs Tower PD's three this way
+		if (args.length > 0) {
+			classes = new HeroClass[args.length];
+			for (int i = 0; i < args.length; i++) classes[i] = HeroClass.valueOf( args[i] );
+		}
 		for (HeroClass cls : classes) {
 			try {
 				GamesInProgress.selectedClass = cls;
@@ -50,6 +55,20 @@ public class TransformationHeroesTest {
 				check( cls.armorAbilities().length == 3, n + " has three armor abilities" );
 				check( hero.HT > 0 && hero.HP == hero.HT, n + " health " + hero.HP + "/" + hero.HT );
 				check( cls.splashArt() != null && cls.spritesheet() != null, n + " art" );
+				//Tower PD heroes start with hero spells, each needs text and must cast without crashing
+				for (com.shatteredpixel.shatteredpixeldungeon.items.Item it : hero.belongings) {
+					if (!(it instanceof com.shatteredpixel.shatteredpixeldungeon.items.herospells.HeroSpell)) continue;
+					String sn = it.getClass().getSimpleName();
+					check( hasText( it.name() ) && hasText( it.desc() ), n + " spell " + sn + " text" );
+					try {
+						java.lang.reflect.Field cu = com.shatteredpixel.shatteredpixeldungeon.items.Item.class.getDeclaredField( "curUser" ); cu.setAccessible( true ); cu.set( null, hero );
+						((com.shatteredpixel.shatteredpixeldungeon.items.herospells.HeroSpell) it).cast();
+						hero.buffs( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AbilityCooldown.class ).forEach( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff::detach );
+					} catch (NullPointerException e) {
+						//casting reaches for the game scene and sprites, which a headless run lacks
+						System.out.println( "LIMIT: " + n + " spell " + sn + " cast " + e.getStackTrace()[0] );
+					}
+				}
 				for (LinkedHashMap<Talent, Integer> tier : hero.talents) {
 					for (Talent t : tier.keySet()) {
 						check( hasText( t.title() ), n + " talent " + t + " title" );

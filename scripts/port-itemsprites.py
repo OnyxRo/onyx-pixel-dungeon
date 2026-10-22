@@ -38,11 +38,14 @@ ms = io.open(sheets[0], encoding='utf-8', errors='replace').read()
 cut = ms.find('class Icons')
 body = ms[:cut] if cut != -1 else ms
 defs = dict(re.findall(r'int\s+(\w+)\s*=\s*([^;]+);', body))
+# cells per row of the mod's sheet. Most use 16, Tower PD uses 32 (a 512 wide sheet)
+_w = re.search(r'int\s+WIDTH\s*=\s*(\d+)\s*;', body)
+MW = int(_w.group(1)) if _w else 16
 
 def value(name, depth=0):
     assert depth < 20, name
     expr = defs[name]
-    expr = re.sub(r'xy\(\s*(\d+)\s*,\s*(\d+)\s*\)', lambda m: str(int(m.group(1)) - 1 + 16 * (int(m.group(2)) - 1)), expr)
+    expr = re.sub(r'xy\(\s*(\d+)\s*,\s*(\d+)\s*\)', lambda m: str(int(m.group(1)) - 1 + MW * (int(m.group(2)) - 1)), expr)
     expr = re.sub(r'[A-Za-z_]\w*', lambda m: str(value(m.group(0), depth + 1)) if m.group(0) in defs else m.group(0), expr)
     assert re.fullmatch(r'[\d\s+\-*()]+', expr), (name, expr)
     return int(eval(expr))
@@ -85,7 +88,7 @@ for spec in NAMES:
     if mod_name not in defs:
         print('NOT IN MOD', mod_name); continue
     i = value(mod_name)
-    x, y = (i % 16) * 16, (i // 16) * 16
+    x, y = (i % MW) * 16, (i // MW) * 16
     tile = src.crop((x, y, x + 16, y + 16)); bb = tile.getbbox()
     if not bb:
         print('EMPTY CELL', name); continue

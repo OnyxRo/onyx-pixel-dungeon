@@ -610,9 +610,9 @@ public class WorldShuffle {
 		return world >= 0 && world < LOGOS.length ? LOGOS[world] : null;
 	}
 
-	/** Whether a world's mod is left out of the roll, by Single mod mode or by the sandbox mod toggles. */
+	/** Whether a world's mod is left out of the roll, by the mods picked for the run or by the sandbox mod toggles. */
 	private static boolean modOff( int w ){
-		if (!Dungeon.singleMod.isEmpty()) return !Dungeon.singleMod.equals(modName(w));
+		if (!Dungeon.chosenMods.isEmpty()) return !Dungeon.chosenMods.contains(modName(w));
 		return Dungeon.sandboxOffMods.contains(modName(w));
 	}
 
@@ -626,7 +626,7 @@ public class WorldShuffle {
 		java.util.ArrayList<Integer> regional = new java.util.ArrayList<>();
 		java.util.ArrayList<Integer> anywhere = new java.util.ArrayList<>();
 		//a sandbox run can switch mods off, which leaves their worlds out of the roll
-		boolean single = !Dungeon.singleMod.isEmpty();
+		boolean single = !Dungeon.chosenMods.isEmpty();
 		boolean filtered = single || (Dungeon.sandbox && !Dungeon.sandboxOffMods.isEmpty());
 		for (int w = 0; w < WORLDS.length; w++){
 			if (w == home) continue;

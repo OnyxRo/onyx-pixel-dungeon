@@ -748,7 +748,8 @@ public abstract class Wand extends Item {
 		}
 	}
 	
-	protected static CellSelector.Listener zapper = new  CellSelector.Listener() {
+	//public for Tower PD's Gibberish spell, which zaps a random wand
+	public static CellSelector.Listener zapper = new  CellSelector.Listener() {
 		
 		@Override
 		public void onSelect( Integer target ) {

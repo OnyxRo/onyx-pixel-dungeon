@@ -406,7 +406,7 @@ public class HeroSelectScene extends PixelScene {
 	private void updateOptionsColor(){
 		if (!SPDSettings.customSeed().isEmpty()){
 			btnOptions.icon().hardlight(1f, 1.5f, 0.67f);
-		} else if (!Dungeon.singleMod.isEmpty()){
+		} else if (!Dungeon.chosenMods.isEmpty()){
 			btnOptions.icon().hardlight(0.67f, 1f, 1.5f);
 		} else if (SPDSettings.challenges() != 0 || SPDSettings.difficulty() != 2){
 			btnOptions.icon().hardlight(2f, 1.33f, 0.5f);
@@ -844,26 +844,19 @@ public class HeroSelectScene extends PixelScene {
 			add(difficultyButton);
 			buttons.add(difficultyButton);
 
-			//Shuffle mixes every mod floor by floor, Single mod builds the whole run from one mod
-			final java.util.ArrayList<String> modNames = WorldShuffle.mods();
-			final StyledButton modeButton = new StyledButton(Chrome.Type.BLANK, modeLabel(), 6){
+			//every mod shuffled floor by floor, or only the mods picked here
+			final StyledButton modeButton = new StyledButton(Chrome.Type.BLANK, com.shatteredpixel.shatteredpixeldungeon.windows.WndChooseMods.label(), 6){
 				@Override
 				protected void onClick() {
-					String[] opts = new String[modNames.size() + 1];
-					opts[0] = Messages.get(HeroSelectScene.class, "mode_shuffle");
-					for (int i = 0; i < modNames.size(); i++) opts[i+1] = modNames.get(i);
 					final StyledButton self = this;
-					ShatteredPixelDungeon.scene().addToFront(new WndOptions(
-							Messages.get(HeroSelectScene.class, "mode"),
-							Messages.get(HeroSelectScene.class, "mode_desc"),
-							opts){
+					ShatteredPixelDungeon.scene().addToFront(new com.shatteredpixel.shatteredpixeldungeon.windows.WndChooseMods(
+							new com.shatteredpixel.shatteredpixeldungeon.windows.WndChooseMods.Listener() {
 						@Override
-						protected void onSelect(int index) {
-							Dungeon.singleMod = index == 0 ? "" : modNames.get(index - 1);
-							self.text(modeLabel());
+						public void onChanged() {
+							self.text(com.shatteredpixel.shatteredpixeldungeon.windows.WndChooseMods.label());
 							updateOptionsColor();
 						}
-					});
+					}));
 				}
 			};
 			modeButton.leftJustify = true;
@@ -907,10 +900,6 @@ public class HeroSelectScene extends PixelScene {
 			}
 		}
 
-		private String modeLabel() {
-			return Dungeon.singleMod.isEmpty() ? Messages.get(HeroSelectScene.class, "mode_shuffle")
-					: Messages.get(HeroSelectScene.class, "mode_single", Dungeon.singleMod.replace(" Pixel Dungeon", ""));
-		}
 
 		private class WndRandomize extends Window {
 

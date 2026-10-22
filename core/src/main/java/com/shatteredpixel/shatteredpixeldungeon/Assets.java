@@ -722,6 +722,7 @@ public class Assets {
 		public static final String TIMELESS_SOUL = "sprites/tower/timeless_soul.png"; //ported, tower
 		public static final String TOWER_GNOLL = "sprites/tower/gnoll.png"; //ported, tower, a sheet with extra frames
 		public static final String TOWER_RAT = "sprites/tower/rat.png"; //ported, tower
+		public static final String TOWER_ELEMENTAL = "sprites/tower/elemental.png"; //ported, tower, has the wisp row
 		public static final String TOWER_CRAB = "sprites/tower/crab.png"; //ported, tower
 		public static final String TOWER_SKELETON = "sprites/tower/skeleton.png"; //ported, tower
 		public static final String GOBLINSHAMAN = "sprites/tower/goblinshaman.png"; //ported, tower

@@ -2944,6 +2944,16 @@ public enum Talent {
 			case FREEMAN:
 				Collections.addAll(tierTalents, POTENTIAL_1, POTENTIAL_2, BOSS_TALENT_SLOT_1, BOSS_TALENT_SLOT_2);
 				break;
+			//tower, Tower PD gave its heroes no talents, these are Shattered's picked to suit them
+			case NECROHERO:
+				Collections.addAll(tierTalents, CACHED_RATIONS, SCHOLARS_INTUITION, SUCKER_PUNCH, PATIENT_STRIKE);
+				break;
+			case TANK:
+				Collections.addAll(tierTalents, HEARTY_MEAL, VETERANS_INTUITION, PROVOKED_ANGER, AGGRESSIVE_BARRIER);
+				break;
+			case TOWERPRIEST:
+				Collections.addAll(tierTalents, NATURES_BOUNTY, SURVIVALISTS_INTUITION, NATURES_AID, AGGRESSIVE_BARRIER);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -3015,6 +3025,16 @@ public enum Talent {
 			case FREEMAN:
 				Collections.addAll(tierTalents, POTENTIAL_3, POTENTIAL_4, POTENTIAL_5, BOSS_TALENT_SLOT_3, BOSS_TALENT_SLOT_4);
 				break;
+			//tower
+			case NECROHERO:
+				Collections.addAll(tierTalents, MYSTICAL_MEAL, INSCRIBED_STEALTH, WIDE_SEARCH, SILENT_STEPS, ROGUES_FORESIGHT);
+				break;
+			case TANK:
+				Collections.addAll(tierTalents, IRON_STOMACH, LIQUID_WILLPOWER, LETHAL_MOMENTUM, IMPROVISED_PROJECTILES, SWIFT_EQUIP);
+				break;
+			case TOWERPRIEST:
+				Collections.addAll(tierTalents, INVIGORATING_MEAL, LIQUID_NATURE, REJUVENATING_STEPS, HEIGHTENED_SENSES, DURABLE_PROJECTILES);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -3083,6 +3103,16 @@ public enum Talent {
 				break;
 			case FREEMAN:
 				Collections.addAll(tierTalents, POTENTIAL_6, POTENTIAL_7, POTENTIAL_8, POTENTIAL_9, BOSS_TALENT_SLOT_5);
+				break;
+			//tower
+			case NECROHERO:
+				Collections.addAll(tierTalents, ALLY_WARP, ENHANCED_RINGS);
+				break;
+			case TANK:
+				Collections.addAll(tierTalents, HOLD_FAST, STRONGMAN);
+				break;
+			case TOWERPRIEST:
+				Collections.addAll(tierTalents, ALLY_WARP, HOLD_FAST);
 				break;
 		}
 		for (Talent talent : tierTalents){

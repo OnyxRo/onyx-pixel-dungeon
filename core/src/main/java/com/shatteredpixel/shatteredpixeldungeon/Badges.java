@@ -91,6 +91,9 @@ public class Badges {
 		//summoning
 		MASTERY_CONJURER,
 		MASTERY_FREEMAN, //transformation
+		MASTERY_NECROHERO, //tower
+		MASTERY_TANK, //tower
+		MASTERY_TOWERPRIEST, //tower
 		FOUND_RATMOGRIFY,
 
 		//bronze
@@ -117,6 +120,9 @@ public class Badges {
 		UNLOCK_MEDIC                ( 5 ),
 		UNLOCK_ARCHER               ( 6 ),
 		UNLOCK_FREEMAN              ( 5 ), //transformation
+		UNLOCK_NECROHERO            ( 3 ), //tower
+		UNLOCK_TANK                 ( 1 ), //tower
+		UNLOCK_TOWERPRIEST          ( 4 ), //tower
 		MONSTERS_SLAIN_1            ( 6 ),
 		MONSTERS_SLAIN_2            ( 7 ),
 		GOLD_COLLECTED_1            ( 8 ),
@@ -183,6 +189,9 @@ public class Badges {
 		//summoning
 		BOSS_SLAIN_1_CONJURER,
 		BOSS_SLAIN_1_FREEMAN, //transformation
+		BOSS_SLAIN_1_NECROHERO, //tower
+		BOSS_SLAIN_1_TANK, //tower
+		BOSS_SLAIN_1_TOWERPRIEST, //tower
 		BOSS_SLAIN_1_VIKING,
 		BOSS_SLAIN_1_DRAGONKNIGHT,
 		BOSS_SLAIN_1_ALL_CLASSES    ( 54, BadgeType.GLOBAL ),
@@ -251,6 +260,9 @@ public class Badges {
 		//summoning
 		VICTORY_CONJURER,
 		VICTORY_FREEMAN, //transformation
+		VICTORY_NECROHERO, //tower
+		VICTORY_TANK, //tower
+		VICTORY_TOWERPRIEST, //tower
 		VICTORY_VIKING,
 		VICTORY_DRAGONKNIGHT,
 		VICTORY_ALL_CLASSES         ( 103, BadgeType.GLOBAL ),
@@ -933,6 +945,9 @@ public class Badges {
 		//summoning
 		firstBossClassBadges.put(HeroClass.CONJURER, Badge.BOSS_SLAIN_1_CONJURER);
 		firstBossClassBadges.put(HeroClass.FREEMAN, Badge.BOSS_SLAIN_1_FREEMAN);
+		firstBossClassBadges.put(HeroClass.NECROHERO, Badge.BOSS_SLAIN_1_NECROHERO);
+		firstBossClassBadges.put(HeroClass.TANK, Badge.BOSS_SLAIN_1_TANK);
+		firstBossClassBadges.put(HeroClass.TOWERPRIEST, Badge.BOSS_SLAIN_1_TOWERPRIEST);
 		firstBossClassBadges.put(HeroClass.VIKING, Badge.BOSS_SLAIN_1_VIKING);
 		firstBossClassBadges.put(HeroClass.DRAGONKNIGHT, Badge.BOSS_SLAIN_1_DRAGONKNIGHT);
 		//rearranged
@@ -963,6 +978,9 @@ public class Badges {
 		//summoning
 		victoryClassBadges.put(HeroClass.CONJURER, Badge.VICTORY_CONJURER);
 		victoryClassBadges.put(HeroClass.FREEMAN, Badge.VICTORY_FREEMAN);
+		victoryClassBadges.put(HeroClass.NECROHERO, Badge.VICTORY_NECROHERO);
+		victoryClassBadges.put(HeroClass.TANK, Badge.VICTORY_TANK);
+		victoryClassBadges.put(HeroClass.TOWERPRIEST, Badge.VICTORY_TOWERPRIEST);
 		victoryClassBadges.put(HeroClass.VIKING, Badge.VICTORY_VIKING);
 		victoryClassBadges.put(HeroClass.DRAGONKNIGHT, Badge.VICTORY_DRAGONKNIGHT);
 		//rearranged
@@ -1162,6 +1180,15 @@ public class Badges {
 				break;
 			case FREEMAN:
 				badge = Badge.MASTERY_FREEMAN;
+				break;
+			case NECROHERO:
+				badge = Badge.MASTERY_NECROHERO;
+				break;
+			case TANK:
+				badge = Badge.MASTERY_TANK;
+				break;
+			case TOWERPRIEST:
+				badge = Badge.MASTERY_TOWERPRIEST;
 				break;
 			case VIKING:
 				badge = Badge.MASTERY_VIKING;
@@ -1411,6 +1438,13 @@ public class Badges {
 	}
 
 	//Transformation PD, metamorphose a talent to unlock the Freeman
+	//Tower PD unlocked its heroes by story stage. Here they open by reaching floors 8, 13 and 18
+	public static void validateTowerHeroUnlocks( int depth ){
+		if (depth >= 8 && !isUnlocked(Badge.UNLOCK_NECROHERO)) displayBadge( Badge.UNLOCK_NECROHERO );
+		if (depth >= 13 && !isUnlocked(Badge.UNLOCK_TANK)) displayBadge( Badge.UNLOCK_TANK );
+		if (depth >= 18 && !isUnlocked(Badge.UNLOCK_TOWERPRIEST)) displayBadge( Badge.UNLOCK_TOWERPRIEST );
+	}
+
 	public static void validateFreemanUnlock(){
 		if (!isUnlocked(Badge.UNLOCK_FREEMAN)){
 			displayBadge( Badge.UNLOCK_FREEMAN );

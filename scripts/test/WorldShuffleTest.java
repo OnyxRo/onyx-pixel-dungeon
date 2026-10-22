@@ -268,7 +268,8 @@ public class WorldShuffleTest {
 		//Single mod mode, every shuffled floor must come from the chosen mod
 		int singleChecks = 0;
 		for (String mod : WorldShuffle.mods()) {
-			Dungeon.singleMod = mod;
+			Dungeon.chosenMods.clear();
+			Dungeon.chosenMods.add(mod);
 			for (int d = 1; d <= 26; d++) {
 				if (!WorldShuffle.shuffles(d)) continue;
 				int w = WorldShuffle.worldFor(d);
@@ -279,7 +280,22 @@ public class WorldShuffleTest {
 				}
 			}
 		}
-		Dungeon.singleMod = "";
+		//a pick of several mods, every shuffled floor must come from one of them
+		java.util.ArrayList<String> all = WorldShuffle.mods();
+		for (int start = 0; start + 3 <= all.size(); start += 3) {
+			Dungeon.chosenMods.clear();
+			Dungeon.chosenMods.addAll(all.subList(start, start + 3));
+			for (int d = 1; d <= 26; d++) {
+				if (!WorldShuffle.shuffles(d)) continue;
+				int w = WorldShuffle.worldFor(d);
+				singleChecks++;
+				if (!Dungeon.chosenMods.contains(WorldShuffle.modName(w))) {
+					System.out.println("FAIL: mods " + Dungeon.chosenMods + " gave " + WorldShuffle.modName(w) + " on floor " + d);
+					failures++;
+				}
+			}
+		}
+		Dungeon.chosenMods.clear();
 		System.out.println("single mod checks: " + singleChecks);
 		//every ported monster needs a name string
 		int namedMobs = 0;

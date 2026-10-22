@@ -27,7 +27,7 @@ Update this at the end of every task. Details live in CLAUDE.md.
 ## Left to do
 - Monsters and weapons from Magic Ling (about 350 monster files, 74 weapons) and Transformation (59, 35).
 - Monsters, weapons and items for the other ten mods (counts in CLAUDE.md).
-- Mods not started: Tower PD, Lovecraft, SPS, Goblins, Unleashed, Deep, Pixel Spacebase.
+- Mods not started: Lovecraft, SPS, Goblins, Unleashed, Deep, Pixel Spacebase.
 - SPS worlds are in (see Redrawn SPS worlds below). Its puzzle sheet tiles5, terrain features and custom tiles were not redrawn.
 - Sandbox: forcing a single mod by one click (toggling the rest off works today).
 
@@ -123,6 +123,23 @@ Tools learned here. `mod-report.py --all` was broken (it checked `'all'` instead
 ### Tower defense systems (2026-10-17)
 
 The arenas are in. All 26 Arena floors and 5 endless arenas (`levels/Arena*.java`, `levels/endlessarenas/`), about 60 towers, 15 tower spawner items, the hero spells (`items/herospells`, AbTr*), the three exotic scrolls and the bosses they need are ported. They are listed under Tower PD in `SpecialFloors` and open from the sandbox Floors panel, which first asks for a mode (`WndModes`). `SpecialFloors.towerArena` sets the floor number each arena expects. Arenas are not part of the shuffle. Winning an arena no longer deletes the run (`Arena.completeStage` clears the wave buffs and stalls the portal instead). Left out. Unlock and badge messages, the hero compass, the swap places button, `Statistics` saved only when above 0. Items drawn in rows 106 to 113 of items.png (`ITEM_ROWS` in `scripts/port-itemsprites.py`). `scripts/test/TowerArenaTest.java` builds every arena in both modes, plays four waves with every mob acting and checks every tower (text, save, upgrades). Headless limits are many, read the LIMIT lines. Not played on screen yet.
+
+### Tower PD finish (2026-10-22)
+
+Everything Tower PD adds that works outside its menus is in now.
+
+- Three heroes, `HeroClass.NECROHERO` (Necromancer), `TANK` and `TOWERPRIEST` (Priest). Each starts with its three hero spells in a Hero Spellbook bag and on the quickslots (Necromancy, Second Chance, Obelisk Formation, Protection, Wall Stance, Taunt, Pray, Holy Water, Divine Assistance). The Tank's helmet blocks 25% of physical damage. Tower PD gave its heroes only placeholder subclasses and no talents or armor abilities, so these are Shattered's picked to suit them (Warlock and Assassin, Berserker and Gladiator, Monk and Warden). They borrow the Mage, Warrior and Cleric splash art and the Rogue, Warrior and Cleric class armor. The Priest gets a cudgel, he had no weapon in the mod. They unlock by reaching floors 8, 13 and 18 (the mod used its story stages). The mod's faster resurrection for the Necromancer and Priest is left out, heroes do not resurrect here.
+- All 31 hero spells (`items/herospells/Ab*`) are in the catalog. Their buffs work through `actors/TowerChar` (one line calls in `Char`). Strength, Battlecry, Keen Eye (every hit critical), Protected, Rush, Wall Stance, Gold Armor (gold pays for hits), Undying. `Mob.chooseEnemy` sends allies after a Priority Target. This also wired the Battlecry and Protected buffs the towers already gave.
+- Free Bee, Magic Shard, Gorematia Spirit and the wisp of light (`TowerWisp`, the mod calls it Wisp, which Devoted already uses here) are on `ModRoster` with weight 0, sandbox only, as the mod never spawned them in normal floors. The wisp uses the mod's taller elemental sheet (`sprites/tower/elemental.png`).
+- Blood Reaper, Scroll of Unspeakable Horrors (exotic of Terror, reverse lookup only), Evasion glyph.
+- 11 standard rooms (Bee Garden, Burned Grass, Diamond, Diamond Pond and its piranha version, Flooded Meeting, Lasher, Mass Grave Library, Room in a Room, Separated Halls, Trap Square). `TowerRooms.random()` adds one or two to every floor built in a Tower world.
+- Fixed. Five Tower weapon pictures from the first run were wrong (Banhammer, Dual Hatchet, Infipike, Red Knife, Stone Hammer), `port-itemsprites.py` read Tower's 32 wide sheet as 16 wide.
+- Left out on purpose. Its menu scenes and windows (level select, game mode, tower select, styles, badges, entering scenes, WndStartGame, WndImp, the changelog), Curved Knife (its ability kills the hero to level the knife across runs), its Short Sword (a copy of Shattered's), Mercenary (marked unfinished in the mod, no health), Staff of Beasts and the other debug items, and the buffs only its arenas use (Eating, Infested, Guard On Duty, Watched, Frost Gas).
+- Tests. `TransformationHeroesTest NECROHERO TANK TOWERPRIEST` runs in check.sh as TowerHeroesTest. Spell casts need the game screen, so they show as LIMIT lines. Not played on screen yet.
+
+## Mods picker for normal runs (2026-10-22)
+
+The hero select screen's mode button is now a Mods button. It opens `WndChooseMods`, a tick box per mod. Shuffled floors only roll worlds from the ticked mods (`Dungeon.chosenMods`, saved with the run, empty means every mod). It replaces Single mod mode, which was one mod or all. Old saves that kept one mod under `single_mod` load into the new set. `WorldShuffleTest` checks single mods and groups of three.
 
 ## Lovecraft PD (2026-10-16, repo Sadsaltan/LovecraftPixelDungeon, key `lovecraft`)
 

@@ -113,6 +113,10 @@ if [ $QUICK -eq 0 ]; then
   run "TransformationHeroesTest" TransformationHeroesTest; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY Transformation)" | tail -12 | sed 's/^/  /'
   [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
+  #tower, Tower PD's Necromancer, Tank and Priest, with their starting hero spells
+  run "TowerHeroesTest" TransformationHeroesTest NECROHERO TANK TOWERPRIEST; rc=$?
+  tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|LIMIT|SUMMARY Transformation)" | tail -12 | sed 's/^/  /'
+  [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
   #rearranged, the six hero classes of Re-ARranged PD, text, talents, subclasses, abilities
   run "RearrangedHeroesTest" RearrangedHeroesTest; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY rearranged)" | tail -12 | sed 's/^/  /'

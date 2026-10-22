@@ -476,6 +476,17 @@ public abstract class Mob extends Char {
 
 	protected Char chooseEnemy() {
 
+		//Tower PD, allies go for whatever the hero's Target spell marked
+		if (alignment == Alignment.ALLY && state != PASSIVE && state != SLEEPING && fieldOfView != null) {
+			for (Char ch : Actor.chars()) {
+				if (ch != this && ch.alignment != Alignment.ALLY && fieldOfView[ch.pos]
+						&& ch.buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PriorityTarget.class ) != null) {
+					state = HUNTING;
+					return ch;
+				}
+			}
+		}
+
 		Dread dread = buff( Dread.class );
 		if (dread != null) {
 			Char source = (Char)Actor.findById( dread.object );
