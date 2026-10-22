@@ -108,6 +108,7 @@ public class Food extends Item {
 
 			Dungeon.level.onHeroConsumableUsed(hero, this);
 			Talent.onFoodEaten(hero, energy, this);
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.onFoodEaten(hero); //summoning
 			hero.lastEaten = this;
 			if (hero.subClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.DEVOTEE) {
 				com.shatteredpixel.shatteredpixeldungeon.items.artifacts.BloodVial ref = hero.belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.BloodVial.class);

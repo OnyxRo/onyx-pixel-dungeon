@@ -302,7 +302,9 @@ public class Badges {
 		RATS_4                      ( 139 ),
 		PAT_RAT                     ( 140 ),
 		KETCHUP                     ( 141 ),
-		JACKPOT                     ( 160 );
+		JACKPOT                     ( 160 ),
+		NIGHTMARE_SLAIN             ( 161 ), //summoning
+		SPIRIT_SLAIN                ( 162 ); //summoning
 
 		public boolean meta;
 
@@ -652,9 +654,19 @@ public class Badges {
 		displayBadge( badge );
 	}
 	
-	//summoning, Summoning PD's badges for its two rare bosses are not here
-	public static void validateNightmare(){ }
-	public static void validateSpirit(){ }
+	//summoning, Summoning PD's badges for its two rare bosses
+	public static void validateNightmare(){
+		if (!local.contains( Badge.NIGHTMARE_SLAIN )) {
+			local.add( Badge.NIGHTMARE_SLAIN );
+			displayBadge( Badge.NIGHTMARE_SLAIN );
+		}
+	}
+	public static void validateSpirit(){
+		if (!local.contains( Badge.SPIRIT_SLAIN )) {
+			local.add( Badge.SPIRIT_SLAIN );
+			displayBadge( Badge.SPIRIT_SLAIN );
+		}
+	}
 
 	public static void validateItemLevelAquired( Item item ) {
 		

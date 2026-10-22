@@ -42,7 +42,7 @@ import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
 
-public class AlchemistsToolkit extends Artifact {
+public class AlchemistsToolkit extends Artifact implements com.shatteredpixel.shatteredpixeldungeon.scenes.AlchemyScene.ToolkitLike { //summoning
 
 	{
 		image = ItemSpriteSheet.ARTIFACT_TOOLKIT;

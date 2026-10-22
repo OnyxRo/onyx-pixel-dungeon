@@ -1059,6 +1059,10 @@ public enum Catalog {
 		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.MirrorOfFates.class);
 		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.ParchmentOfElbereth.class);
 		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SubtilitasSigil.class);
+		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.MomentumBoots.class);
+		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.FuelContainer.class);
+		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ringartifacts.SilkyQuiver.class);
+		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SoulOfYendor.class);
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.bags.ConjurerBook.class);
 		BOMBS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.bombs.RatBomb.class);
 		BOMBS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.bombs.SupplyBomb.class);

@@ -93,6 +93,7 @@ public class HighGrass {
 						naturalismLevel = -1;
 					}
 				}
+				naturalismLevel = com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.soulNaturalism(ch, naturalismLevel); //summoning
 
 				//berries try to drop on floors 2/3/4/6/7/8, to a max of 4/6
 				if (ch instanceof Hero && ((Hero) ch).hasTalent(Talent.NATURES_BOUNTY)){

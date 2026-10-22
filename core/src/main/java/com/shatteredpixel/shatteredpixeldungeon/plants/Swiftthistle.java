@@ -106,6 +106,9 @@ public class Swiftthistle extends Plant {
 			left = duration;
 		}
 
+		//summoning, the Soul of Yendor gives back unused frozen time
+		public float left() { return left; }
+
 		//Magic Ling PD
 		public void setLeft(float turns){
 			left = turns + 1;

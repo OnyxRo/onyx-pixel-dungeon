@@ -210,6 +210,10 @@ public enum Document {
 					return new ItemSprite( ItemSpriteSheet.SPIRIT_BOW );
 				case "Magic":
 					return new ItemSprite( ItemSpriteSheet.WAND_FIREBOLT );
+				case Document.GUIDE_SUMMONING: //summoning
+					return new ItemSprite( ItemSpriteSheet.FROGGIT_STAFF );
+				case Document.GUIDE_TIERING: //summoning
+					return new ItemSprite( ItemSpriteSheet.RING_DIAMOND );
 			}
 		}
 	}
@@ -252,6 +256,9 @@ public enum Document {
 	public static final String GUIDE_DIEING         = "Dieing";
 
 	public static final String GUIDE_SEARCHING      = "Searching";
+	//summoning, Summoning PD's two guide pages, given by play instead of dropping on floors
+	public static final String GUIDE_SUMMONING      = "Summoning";
+	public static final String GUIDE_TIERING        = "Tiering";
 
 	public static final String KING_ATTRITION       = "attrition";
 
@@ -274,6 +281,8 @@ public enum Document {
 		ADVENTURERS_GUIDE.pagesStates.put("Levelling",          debug ? READ : NOT_FOUND);
 		ADVENTURERS_GUIDE.pagesStates.put("Positioning",        debug ? READ : NOT_FOUND);
 		ADVENTURERS_GUIDE.pagesStates.put("Magic",              debug ? READ : NOT_FOUND);
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_SUMMONING,      debug ? READ : NOT_FOUND); //summoning
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_TIERING,        debug ? READ : NOT_FOUND); //summoning
 		
 		//given in sewers
 		ALCHEMY_GUIDE.pagesStates.put("Potions",                debug ? READ : NOT_FOUND);

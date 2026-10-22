@@ -1216,9 +1216,15 @@ public class AlchemyScene extends PixelScene {
 		}
 	}
 
-	private static AlchemistsToolkit toolkit;
+	//summoning, the Soul of Yendor brews like the toolkit
+	public interface ToolkitLike {
+		int availableEnergy();
+		int consumeEnergy(int amount);
+	}
 
-	public static void assignToolkit( AlchemistsToolkit toolkit ){
+	private static ToolkitLike toolkit;
+
+	public static void assignToolkit( ToolkitLike toolkit ){
 		AlchemyScene.toolkit = toolkit;
 	}
 

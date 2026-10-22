@@ -1395,6 +1395,7 @@ public abstract class Char extends Actor {
 		if (this instanceof Hero && ((Hero) this).hasTalent(Talent.BIG_FIST) && ((Hero) this).belongings.attackingWeapon() == null) return true;
 		//summoning, Summoning PD attackers that hit through armor
 		if (properties.contains(Property.IGNORE_ARMOR)) return true;
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.ignoresArmor(this, enemy)) return true;
 		return false;
 	}
 
