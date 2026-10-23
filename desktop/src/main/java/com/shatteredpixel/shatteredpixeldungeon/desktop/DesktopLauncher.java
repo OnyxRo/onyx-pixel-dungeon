@@ -101,18 +101,22 @@ public class DesktopLauncher {
 					exceptionMsg = exceptionMsg.substring(0, 1000) + "...";
 				}
 
+				//the title is "Onyx's Pixel Dungeon", its apostrophe made tinyfd refuse every crash box
+				String boxTitle = title == null ? "Onyx’s Pixel Dungeon"
+						: title.replace('\'', '’').replace('"', '”');
+
 				if (exceptionMsg.contains("Couldn’t create window")){
-					TinyFileDialogs.tinyfd_messageBox(title + " Has Crashed!",
-							title + " was not able to initialize its graphics display, sorry about that!\n\n" +
+					TinyFileDialogs.tinyfd_messageBox(boxTitle + " Has Crashed!",
+							boxTitle + " was not able to initialize its graphics display, sorry about that!\n\n" +
 									"This usually happens when your graphics card has misconfigured drivers or does not support openGL 2.0+.\n\n" +
-									"If you are certain the game should work on your computer, please message the developer (Evan@ShatteredPixel.com)\n\n" +
+									"If you are certain the game should work on your computer, please tell Claude\n\n" +
 									"version: " + Game.version + "\n" +
 									exceptionMsg,
 							"ok", "error", false);
 				} else {
-					TinyFileDialogs.tinyfd_messageBox(title + " Has Crashed!",
-							title + " has run into an error it cannot recover from and has crashed, sorry about that!\n\n" +
-									"If you could, please email this error message to the developer (Evan@ShatteredPixel.com):\n\n" +
+					TinyFileDialogs.tinyfd_messageBox(boxTitle + " Has Crashed!",
+							boxTitle + " has run into an error it cannot recover from and has crashed, sorry about that!\n\n" +
+									"If you could, please paste this error message to Claude:\n\n" +
 									"version: " + Game.version + "\n" +
 									exceptionMsg,
 							"ok", "error", false);

@@ -471,3 +471,7 @@ Decisions and left out.
 - Aris's Test Subject is Shattered 2.3's old Warrior talent, kept as `BA_TEST_SUBJECT`.
 - Left out. The mod's changes to Shattered's own heroes and talents (it replaced the six), its shopkeeper and Cherino sprites, the seed finder scenes, the debug Teleporter item, the invisible claymore missile effect, Yuzu's quest enemy counter is not saved (it only counts to eight), and quest enemy handling in ghoul revival, Ratmogrify and cleansing darts.
 - Not seen on screen yet. Play each student in the sandbox, try a gun's reload and special shot, Shiroko's bicycle, Hoshino's shield and the EX skill disc.
+
+## Crash popup fix (2026-10-23)
+
+Every crash showed a Windows popup saying "Invalid message with quotes" instead of the crash details. The popup tool (tinyfd) refuses any text with an apostrophe or double quote, and the crash box used the game title "Onyx's Pixel Dungeon". `DesktopLauncher` now swaps those for curly quotes in the title too (it already did for the error text), and the box asks to paste the error to Claude instead of emailing Evan.
