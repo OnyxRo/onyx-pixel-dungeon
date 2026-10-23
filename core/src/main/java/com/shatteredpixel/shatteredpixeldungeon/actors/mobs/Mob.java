@@ -1340,6 +1340,7 @@ public abstract class Mob extends Char {
 		}
 
 		dropBonus += ShardOfOblivion.lootChanceMultiplier()-1f;
+		dropBonus += com.shatteredpixel.shatteredpixeldungeon.items.spells.RNGManipulator.LuckBoost.luckBoost() / 10000f; //Community PD, luck manipulator
 
 		//rearranged, the pink gem trinket
 		return lootChance * dropBonus * com.shatteredpixel.shatteredpixeldungeon.items.trinkets.PinkGem.dropChanceMultiplier();
@@ -1380,7 +1381,8 @@ public abstract class Mob extends Char {
 			gold.doPickUp(Dungeon.hero);
 		}
 
-		if (Dungeon.hero.lvl > maxLvl + 2 + com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.fastBreak()) return;
+		if (Dungeon.hero.lvl > maxLvl + 2 + com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.fastBreak()
+				+ com.shatteredpixel.shatteredpixeldungeon.items.spells.RNGManipulator.LuckBoost.luckBoost() / 2000) return; //Community PD, luck manipulator
 
 		MasterThievesArmband.StolenTracker stolen = buff(MasterThievesArmband.StolenTracker.class);
 		if (stolen == null || !stolen.itemWasStolen()) {

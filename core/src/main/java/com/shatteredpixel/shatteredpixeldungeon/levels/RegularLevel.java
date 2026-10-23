@@ -439,6 +439,8 @@ public abstract class RegularLevel extends Level {
 			if (feeling == Feeling.LARGE){
 				nItems += 2 + difficultyOffset;
 			}
+			//Community PD, the luck manipulator's boost adds floor items
+			nItems += com.shatteredpixel.shatteredpixeldungeon.items.spells.RNGManipulator.LuckBoost.luckBoost() / 1500;
 		}
 
 		for (int i=0; i < nItems; i++) {

@@ -2290,6 +2290,7 @@ public class Hero extends Char {
 		}
 
 		damage = Talent.onAttackProc( this, enemy, damage );
+		if (buff(com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.LeanyElixir.Lean.class) != null) damage *= 2; //Community PD
 		damage = dragonicOnAttackProc( enemy, damage );
 		damage = Perks.onAttackProc( this, enemy, damage );
 		damage = com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.onAttackProc( this, enemy, damage );
