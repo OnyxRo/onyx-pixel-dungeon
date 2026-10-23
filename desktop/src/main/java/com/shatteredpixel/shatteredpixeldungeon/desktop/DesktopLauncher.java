@@ -80,6 +80,7 @@ public class DesktopLauncher {
 			@Override
 			public void uncaughtException(Thread thread, Throwable throwable) {
 				Game.reportException(throwable);
+				CrashLog.record(throwable, Game.version, thread.getName());
 				StringWriter sw = new StringWriter();
 				PrintWriter pw = new PrintWriter(sw);
 				throwable.printStackTrace(pw);

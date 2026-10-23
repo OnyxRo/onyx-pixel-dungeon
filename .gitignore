@@ -24,3 +24,6 @@ core/src/main/assets/music/mods/*/
 
 __pycache__/
 *.pyc
+
+# crash list written by the game, read by scripts/crashes.py
+crashes/

@@ -493,3 +493,9 @@ Left out, and why.
 - Its Sandbag NPC on the last floor and its vault quest (this game has Shattered's own).
 
 Checks. Compiled and the full `FAST=1 scripts/check.sh` run after merging main (Blue Archive PD was already in). `TransformationHeroesTest` with the eleven students (836 checks, no failures), `ItemArenaTest` on its 84 catalog items and `MobArenaTest` on the four Foxes pass, the world test sees all three worlds. Nothing seen on screen yet. Play each student in the sandbox, a gun's reload and special shot, Shiroko's bicycle and a shop robbery for the Fox squad, Yuzu's laptop and shop, Mari's miracles, and the three worlds.
+
+## Crash list and the journal crash (2026-10-23)
+
+- Opening the journal item list crashed. 46 Transformation PD items draw from a second sheet (`EXItemSpriteSheet`, `sprites/transformati/ex_items.png`) and `ItemSprite.frame` never knew about it. It now switches sheet the way the mod did, and shows the unknown item picture for any number past the end of the sheet. `RBAEmptyScroll` crashed when made outside a run. `scripts/test/ItemSpriteTest.java` checks every catalog item and runs first in `check.sh`.
+- Crash list. `CrashLog.java` in the desktop module adds every crash to `crashes/crashes.jsonl` (git-ignored). `scripts/crashes.py` groups and tracks them, the `fix-bugs` skill works through them.
+- Still open, FirebloomHerb and SorrowmossHerb have no description text (item check).

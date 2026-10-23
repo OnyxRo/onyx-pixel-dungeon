@@ -47,3 +47,7 @@ The cloud routine does the first unchecked task and checks it off. Smallest firs
 - [x] Wire in the redrawn Deep, Unleashed and Spacebase art (2026-10-19). 18 new worlds, Deep's three older worlds get the new sheets. See PORTING.md.
 - [x] Redraw the SPS sheets in Claude Design (14 tile sheets, tiles5 skipped), then hand them to Claude Code.
 - [x] Wire in the redrawn SPS art (2026-10-19). 14 new worlds. See PORTING.md.
+
+- [x] Crash list. Every crash goes into crashes/crashes.jsonl, "fix bugs" works through it (2026-10-23)
+- [x] Journal item list crash from the Transformation item sheet (2026-10-23)
+- [ ] FirebloomHerb and SorrowmossHerb need description text
