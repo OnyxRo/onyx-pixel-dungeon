@@ -67,11 +67,13 @@ public class WandOfInstability extends Wand {
 
 	@Override
 	public boolean tryToZap(Hero owner, int target) {
+		maybeSetCurWandEffect();
 		return curWandEffect.tryToZap(owner, target);
 	}
 
 	@Override
 	public void onZap(Ballistica beam) {
+		maybeSetCurWandEffect();
 		curWandEffect.onZap(beam);
 	}
 
@@ -84,6 +86,7 @@ public class WandOfInstability extends Wand {
 
 	@Override
 	public void fx(Ballistica beam, Callback callback) {
+		maybeSetCurWandEffect();
 		curWandEffect.fx(beam, callback);
 	}
 
@@ -113,6 +116,7 @@ public class WandOfInstability extends Wand {
 
 	@Override
 	protected int chargesPerCast() {
+		maybeSetCurWandEffect();
 		return curWandEffect.chargesPerCast();
 	}
 
