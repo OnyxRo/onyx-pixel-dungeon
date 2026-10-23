@@ -55,7 +55,21 @@ public class BuffIcon extends Image {
 
 	private static TextureFilm raSmallFilm, raLargeFilm;
 
+	private static TextureFilm baSmallFilm, baLargeFilm;
+
 	public void refresh(int icon){
+		//bluearchive, icons of 30000 and up come from Blue Archive PD's own sheets
+		if (icon >= 30000){
+			texture( large ? Assets.Interfaces.BA_BUFFS_LARGE : Assets.Interfaces.BA_BUFFS_SMALL );
+			if (large){
+				if (baLargeFilm == null) baLargeFilm = new TextureFilm(texture, LRG_SIZE, LRG_SIZE);
+				frame(baLargeFilm.get(icon - 30000));
+			} else {
+				if (baSmallFilm == null) baSmallFilm = new TextureFilm(texture, SML_SIZE, SML_SIZE);
+				frame(baSmallFilm.get(icon - 30000));
+			}
+			return;
+		}
 		//rearranged, icons of 10000 and up come from Re-ARranged PD's own sheets
 		if (icon >= 10000){
 			texture( large ? Assets.Interfaces.RA_BUFFS_LARGE : Assets.Interfaces.RA_BUFFS_SMALL );

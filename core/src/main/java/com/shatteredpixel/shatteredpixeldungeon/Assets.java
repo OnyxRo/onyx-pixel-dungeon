@@ -151,6 +151,11 @@ public class Assets {
 		public static final String RA_HERO_ICONS   = "interfaces/rearranged/hero_icons.png";
 		public static final String RA_BUFFS_SMALL  = "interfaces/rearranged/buffs.png";
 		public static final String RA_BUFFS_LARGE  = "interfaces/rearranged/large_buffs.png";
+		//bluearchive, its own icon sheets, picked by an icon number of 30000 or more
+		public static final String BA_TALENT_ICONS = "interfaces/bluearchive/talent_icons.png";
+		public static final String BA_HERO_ICONS   = "interfaces/bluearchive/hero_icons.png";
+		public static final String BA_BUFFS_SMALL  = "interfaces/bluearchive/buffs.png";
+		public static final String BA_BUFFS_LARGE  = "interfaces/bluearchive/large_buffs.png";
 	}
 
 	//these points to resource bundles, not raw asset files
@@ -525,6 +530,16 @@ public class Assets {
 		public static final String KNIGHT     = "splashes/rearranged/knight.jpg";
 		public static final String MEDIC      = "splashes/rearranged/medic.jpg";
 		public static final String ARCHER     = "splashes/rearranged/archer.jpg";
+		//bluearchive
+		public static final String BA_ARIS = "splashes/bluearchive/aris.jpg";
+		public static final String BA_NONOMI = "splashes/bluearchive/nonomi.jpg";
+		public static final String BA_MIYAKO = "splashes/bluearchive/miyako.jpg";
+		public static final String BA_HOSHINO = "splashes/bluearchive/hoshino.jpg";
+		public static final String BA_SHIROKO = "splashes/bluearchive/shiroko.jpg";
+		public static final String BA_NOA = "splashes/bluearchive/noa.jpg";
+		public static final String BA_MIYU = "splashes/bluearchive/miyu.jpg";
+		public static final String BA_YUZU = "splashes/bluearchive/yuzu.jpg";
+		public static final String BA_IZUNA = "splashes/bluearchive/izuna.jpg";
 	}
 
 	public static class Sprites {
@@ -534,6 +549,16 @@ public class Assets {
 		public static final String ANGRY_THORN = "sprites/community/angry_thorn.png"; //ported, community
 		public static final String COMMUNITY_DEFENDER = "sprites/community/defender.png"; //ported, community, the mod widened the guard sheet
 		public static final String COMMUNITY_POISON_ELEMENTAL = "sprites/community/poison_elemental.png"; //ported, community
+		//bluearchive, the Blue Archive PD students
+		public static final String BA_ARIS = "sprites/bluearchive/aris.png";
+		public static final String BA_NONOMI = "sprites/bluearchive/nonomi.png";
+		public static final String BA_MIYAKO = "sprites/bluearchive/miyako.png";
+		public static final String BA_HOSHINO = "sprites/bluearchive/hoshino.png";
+		public static final String BA_SHIROKO = "sprites/bluearchive/shiroko.png";
+		public static final String BA_NOA = "sprites/bluearchive/noa.png";
+		public static final String BA_MIYU = "sprites/bluearchive/miyu.png";
+		public static final String BA_YUZU = "sprites/bluearchive/yuzu.png";
+		public static final String BA_IZUNA = "sprites/bluearchive/izuna.png";
 		public static final String WARRIORBOSS = "sprites/transformation/warriorboss.png"; //ported, transformation
 		public static final String MYRIAD_BLACK_SHADOW_OVERLAY = "sprites/transformation/myriad_black_shadow_overlay.png"; //ported, transformation
 		public static final String SUCCBOSS = "sprites/transformation/succboss.png"; //ported, transformation

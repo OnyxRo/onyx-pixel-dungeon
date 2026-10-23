@@ -82,6 +82,7 @@ public class Slime extends Mob {
 		Dungeon.LimitedDrops.SLIME_WEP.count++;
 		Generator.Category c = Generator.Category.WEP_T2;
 		MeleeWeapon w = (MeleeWeapon)Generator.randomUsingDefaults(Generator.Category.WEP_T2);
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHeroes.usesGuns()) w = com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.randomGun(2); //bluearchive
 		w.level(0);
 		return w;
 	}

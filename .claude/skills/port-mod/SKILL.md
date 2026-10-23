@@ -230,3 +230,9 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **A mod with no worlds whose monsters fit any floor** (Community's level feeling monsters) gets a small spawner that edits the rotation from `Level.createMob` (see `CommunitySpawner`), with its roster lines at weight 0.
 - **A mod that keeps a variant inside a Shattered class** (Community's `Elemental.PoisonElemental`) becomes its own class with a prefix, and a sprite subclass can swap only the texture when the mod's sheet is the same size as ours.
 - **Check borrowed sheets against frame numbers.** Community's guard sheet is wider than ours, so the Failed Defender uses the mod's copy under `sprites/community/`.
+## Added after Blue Archive PD (2026-10-22)
+
+- **Check the mod's own build.gradle for its base**, the survey can be wrong (Blue Archive said 2.1.4, its build is 2.3.2). Clone that Shattered tag to the scratchpad and diff against it.
+- **Mods that rewrite all of Shattered's heroes** (Blue Archive) port as new classes beside the old ones. Prefix every class, talent, subclass, icon and asset constant, put the hooks in a few helper classes, and keep the one line calls in Shattered's files in one rerunnable script (`scripts/bluearchive-hooks.py`). Shattered's `case WARRIOR: default:` switches give new classes the Warrior's talents and items, clear the list in the hook first.
+- **Korean or Chinese only text.** Some mods only filled their `_ko` or `_zh` bundles. Extract the needed lines under this game's keys (`scripts/bluearchive-strings.py extract`), split them in chunks, translate them with parallel agents that get Onyx's writing rules, then `append`.
+- **Copier rules must be idempotent.** A rule whose output still matches its own pattern grows on every `--refix`.

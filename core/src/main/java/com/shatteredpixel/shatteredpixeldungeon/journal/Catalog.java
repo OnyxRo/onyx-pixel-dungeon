@@ -1234,6 +1234,30 @@ public enum Catalog {
 		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.Silencing.class);
 		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.CommunityFury.class);
 		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.CommunityWakizashi.class);
+		//bluearchive, Blue Archive PD. Its guns, the students' gadgets and its throwing set
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.BASuperNova.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.AR.BAAR_tier1.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.AR.BAAR_tier2.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.AR.BAAR_tier3.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.AR.BAAR_tier4.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.AR.BAAR_tier5.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.GL.BAGL_tier1.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.GL.BAGL_tier2.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.GL.BAGL_tier3.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.GL.BAGL_tier4.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.GL.BAGL_tier5.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.HG.BAHG_tier1.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.HG.BAHG_tier2.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.HG.BAHG_tier3.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.HG.BAHG_tier4.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.HG.BAHG_tier5.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.MG.BAMG_tier1.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.MG.BAMG_tier2.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.MG.BAMG_tier3.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.MG.BAMG_tier4.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.MG.BAMG_tier5.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SG.BASG_tier1.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SG.BASG_tier2.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SG.BASG_tier3.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SG.BASG_tier4.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SG.BASG_tier5.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SMG.BASMG_tier1.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SMG.BASMG_tier2.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SMG.BASMG_tier3.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SMG.BASMG_tier4.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SMG.BASMG_tier5.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SR.BASR_tier1.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SR.BASR_tier2.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SR.BASR_tier3.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SR.BASR_tier4.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SR.BASR_tier5.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.BAThrowingSet.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.BABicycle.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.BABlastGrenade.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.BAClaymore.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.BAFlashGrenade.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.BAHPGrenade.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.BAHandGrenade.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.BAIronHorus.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.BALaser.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.BALevelAnalyzer.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.BARainbowGrenade.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.BARegrowGrenade.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.BASmokeGrenade.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.BATrashBin.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.BAAmmoBox.class, com.shatteredpixel.shatteredpixeldungeon.items.BAEXSkillDisc.class);
 
 
 	}

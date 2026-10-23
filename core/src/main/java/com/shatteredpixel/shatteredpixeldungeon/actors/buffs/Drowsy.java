@@ -43,6 +43,11 @@ public class Drowsy extends FlavourBuff {
 		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
 	}
 
+	//bluearchive, Hoshino's sleeping meal sets a longer wait before the sleep
+	public void set(float time) {
+		spend(time - DURATION);
+	}
+
 	public boolean attachTo(Char target ) {
 		if (!target.isImmune(Sleep.class) && super.attachTo(target)) {
 			return true;

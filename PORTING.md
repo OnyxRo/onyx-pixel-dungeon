@@ -454,3 +454,20 @@ Hooks, one line each. `Ring.dustBonus` (gemstone dust levels, a normal upgrade r
 Changed from the mod. The Necklace of Ice's blizzard uses the steam speck in place of the mod's BLIZZDUST. Frostfire Brew uses the FrostFire blob this game already had from another mod, so the mod's Frostburn buff is not here. Silencing stops only the Warlock, Shaman, Eye and the Failed Defender, the mod also changed about a dozen other Shattered monsters and bosses.
 
 Left out. The Cross Bomb in shops (it changes the shop's roll for every run), resin on rings, the luck boost in mimics, the Wandmaker and secret rooms, boiling water (it rewrites the Infernal Brew), the Vertigo overhaul (Shattered's own vertigo), and the mod's tweaks to Shattered's heroes, talents, rings and modes (Explorer mode, Prime of Alchemist mode, daily challenges, smart targeting, remains repair recipes for other classes, Runic Blade rework and the rest of the Feature list).
+### Blue Archive PD (2026-10-22, key `bluearchive`)
+Hoto-Mocha's Blue Archive fan game. Its build says Shattered 2.3.2 (the survey said 2.1.4). GPL-3.0 with Blue Archive's characters and art, personal use only.
+
+Came in.
+- One world, the Kivotos Caves (`levels/worlds/BlueArchiveCavesLevel`, its white and red `tiles_caves2.png` with 7 missing cells filled from Shattered's caves sheet, and its own caves water), region Caves. Icon `interfaces/mods/bluearchive.png`.
+- The nine students as heroes beside the others, unlocked from the start (the mod unlocked each one on the first kill). `HeroClass.BA_ARIS` to `BA_IZUNA`, their 18 EX skill subclasses (`HeroSubClass.BA_*`), 148 talents (`Talent.BA_*`, icons from `interfaces/bluearchive/talent_icons.png` through the 30000 offset), their own sprites and splash art, starting kits, class armors and voice lines in the log. All hooks sit in `actors/hero/BAHero`, `BATalents` and `BAHeroes`, with one marked line (`//bluearchive`) in each Shattered class, wired by `scripts/bluearchive-hooks.py`.
+- 35 guns (assault rifle, grenade launcher, handgun, machine gun, shotgun, SMG and sniper rifle, tiers 1 to 5) with their reload, ammo and bullet system (`BAGun` and the `BAAR` style bases in `items/weapon/melee/gun/*/`), the Supernova light sword, the throwing set, 13 gadgets (grenades, claymore, Iron Horus shield, bicycle, laser, trash bin, level analyzer), the ammo box, the EX skill disc (Tengu drops it instead of his mask for a student) and the scroll of talent reset (an exotic transmutation, catalog only). 20 buffs and the elemental bullet and professional ride windows. Pictures in rows 256 to 263 of `items.png`.
+- Loot. A student other than Aris finds guns wherever another hero finds a melee weapon (random weapons, the Ghost's reward, the slime's drop), and transmuting a gun gives another gun. Other heroes find no guns, they are in the sandbox list.
+- Yuzu's quest enemies (one in eight monsters while she plays), with their extra loot.
+
+Decisions and left out.
+- Every class got a `BA` prefix (Re Blue Archive shares the names, Re-ARranged already has `Gun`, `AR`, `SG` and the rest).
+- The mod's own 27 armor abilities were empty placeholders (they only spent charge) with 81 placeholder talents, so each student has three of Shattered's abilities picked to suit her (`BAHeroes.armorAbilities`).
+- The mod only wrote its new text in Korean. All 915 lines were translated to English for this port (`scripts/bluearchive-strings.py`).
+- Aris's Test Subject is Shattered 2.3's old Warrior talent, kept as `BA_TEST_SUBJECT`.
+- Left out. The mod's changes to Shattered's own heroes and talents (it replaced the six), its shopkeeper and Cherino sprites, the seed finder scenes, the debug Teleporter item, the invisible claymore missile effect, Yuzu's quest enemy counter is not saved (it only counts to eight), and quest enemy handling in ghoul revival, Ratmogrify and cleansing darts.
+- Not seen on screen yet. Play each student in the sandbox, try a gun's reload and special shot, Shiroko's bicycle, Hoshino's shield and the EX skill disc.

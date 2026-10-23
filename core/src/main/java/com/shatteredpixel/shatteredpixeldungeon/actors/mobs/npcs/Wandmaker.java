@@ -157,6 +157,8 @@ public class Wandmaker extends NPC {
 
 			String msg1 = "";
 			String msg2 = "";
+			//bluearchive, the students' own greetings, keyed by name without the BA_ in front
+			if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHeroes.isBA(Dungeon.hero.heroClass)) msg1 += Messages.get(this, "intro_" + Dungeon.hero.heroClass.name().substring(3).toLowerCase());
 			switch(Dungeon.hero.heroClass){
 				case WARRIOR:
 					msg1 += Messages.get(this, "intro_warrior");

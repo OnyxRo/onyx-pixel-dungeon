@@ -68,7 +68,7 @@ public class ScrollOfEnchantment extends ExoticScroll {
 
 	public static boolean enchantable( Item item ){
 		return (item instanceof Weapon || item instanceof Armor)
-				&& (item.isUpgradable() || item instanceof SpiritBow);
+				&& (item.isUpgradable() || item instanceof SpiritBow || item instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.BAThrowingSet); //bluearchive
 	}
 
 	private void confirmCancelation() {

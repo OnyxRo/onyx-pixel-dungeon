@@ -212,7 +212,7 @@ public class Tengu extends Mob {
 	public void die( Object cause ) {
 		
 		if (Dungeon.hero.subClass == HeroSubClass.NONE) {
-			Dungeon.level.drop( new TengusMask(), pos ).sprite.drop();
+			Dungeon.level.drop( com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHeroes.isBA(Dungeon.hero) ? new com.shatteredpixel.shatteredpixeldungeon.items.BAEXSkillDisc() : new TengusMask(), pos ).sprite.drop(); //bluearchive, students get the EX skill disc
 		}
 		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationBossTalents.dropSublimation("TENGU", pos); //transformation
 		

@@ -217,7 +217,9 @@ public class WorldShuffle {
 			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.SpsBeachLevel.class,
 			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.MagicCaveLevel.class,
 			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.SnowTownLevel.class,
-			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.SpsVaultLevel.class
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.SpsVaultLevel.class,
+			//Blue Archive Pixel Dungeon
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.BlueArchiveCavesLevel.class
 	};
 
 	/** A world that fits any region, used for Transformation's tower styles. */
@@ -280,7 +282,9 @@ public class WorldShuffle {
 			//Pixel Spacebase. The Holodeck was its habitation ring boss floor, the Alien Planet the security boss arena
 			SEWERS, PRISON, CAVES, CITY, HALLS, CITY, PRISON,
 			//SPecial Surprise Pixel Dungeon. Stage sheets, then its side floors. Forest, Beach and Vault were its sewer, cave and city challenge floors, the rest are guesses
-			SEWERS, PRISON, CAVES, CITY, HALLS, SEWERS, SEWERS, SEWERS, PRISON, PRISON, CAVES, CAVES, CAVES, CITY
+			SEWERS, PRISON, CAVES, CITY, HALLS, SEWERS, SEWERS, SEWERS, PRISON, PRISON, CAVES, CAVES, CAVES, CITY,
+			//Blue Archive Pixel Dungeon, its caves sheet (the mod's only new tile sheet)
+			CAVES
 	};
 
 	//the source mod's app icon for each world, in the same order as WORLDS. Null for Shattered's own
@@ -305,6 +309,7 @@ public class WorldShuffle {
 	private static final String UNLEASHED = "interfaces/mods/unleashed.png";
 	private static final String SPACEBASE = "interfaces/mods/spacebase.png";
 	private static final String SPS = "interfaces/mods/sps.png";
+	private static final String BLUEARCHIVE = "interfaces/mods/bluearchive.png";
 	private static final String[] LOGOS = {
 			null, null, null, null, null,
 			COMBUSTED, COMBUSTED, COMBUSTED,
@@ -353,7 +358,9 @@ public class WorldShuffle {
 			//Pixel Spacebase
 			SPACEBASE, SPACEBASE, SPACEBASE, SPACEBASE, SPACEBASE, SPACEBASE, SPACEBASE,
 			//SPecial Surprise Pixel Dungeon
-			SPS, SPS, SPS, SPS, SPS, SPS, SPS, SPS, SPS, SPS, SPS, SPS, SPS, SPS
+			SPS, SPS, SPS, SPS, SPS, SPS, SPS, SPS, SPS, SPS, SPS, SPS, SPS, SPS,
+			//Blue Archive Pixel Dungeon
+			BLUEARCHIVE
 	};
 
 	/** The asset path of the icon of the mod a floor's world comes from, or null for Shattered's own worlds. */

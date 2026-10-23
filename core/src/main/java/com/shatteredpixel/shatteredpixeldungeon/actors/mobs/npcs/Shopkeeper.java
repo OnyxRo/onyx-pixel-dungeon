@@ -229,7 +229,7 @@ public class Shopkeeper extends NPC {
 
 	//shopkeepers are greedy!
 	public static int sellPrice(Item item){
-		return item.value() * 5 * (Dungeon.depth / 5 + 1);
+		return item.value() * (5 - (Dungeon.hero == null ? 0 : Dungeon.hero.pointsInTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.BA_GOLD_CARD))) * (Dungeon.depth / 5 + 1); //bluearchive, Nonomi's gold card
 	}
 	
 	public static WndBag sell() {

@@ -141,6 +141,7 @@ public class Food extends Item {
 	}
 
 	protected float eatingTime(){
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.BATalents.fastMeal(Dungeon.hero)) return TIME_TO_EAT - 2; //bluearchive
 		if (Dungeon.hero.hasTalent(Talent.IRON_STOMACH)
 			|| Dungeon.hero.hasTalent(Talent.ENERGIZING_MEAL)
 			|| Dungeon.hero.hasTalent(Talent.MYSTICAL_MEAL)

@@ -732,7 +732,7 @@ public class GameScene extends PixelScene {
 				WndSandbox.revealFloor();
 			}
 
-			if (Dungeon.hero.hasTalent(Talent.ROGUES_FORESIGHT)
+			if ((Dungeon.hero.hasTalent(Talent.ROGUES_FORESIGHT) || Dungeon.hero.hasTalent(Talent.BA_FORESIGHT_EYES)) //bluearchive
 					&& Dungeon.level instanceof RegularLevel && Dungeon.branch == 0){
 				int reqSecrets = Dungeon.level.feeling == Level.Feeling.SECRETS ? 2 : 1;
 				for (Room r : ((RegularLevel) Dungeon.level).rooms()){
@@ -742,7 +742,9 @@ public class GameScene extends PixelScene {
 				//75%/100% chance, use level's seed so that we get the same result for the same level
 				//offset seed slightly to avoid output patterns
 				Random.pushGenerator(Dungeon.seedCurDepth()+1);
-					if (reqSecrets <= 0 && Random.Int(4) < 2+Dungeon.hero.pointsInTalent(Talent.ROGUES_FORESIGHT)){
+					if (reqSecrets <= 0 && (Dungeon.hero.hasTalent(Talent.BA_FORESIGHT_EYES) //bluearchive, Hoshino's foresight eyes
+							? Random.Int(4) <= Dungeon.hero.pointsInTalent(Talent.BA_FORESIGHT_EYES)
+							: Random.Int(4) < 2+Dungeon.hero.pointsInTalent(Talent.ROGUES_FORESIGHT))){
 						GLog.p(Messages.get(this, "secret_hint"));
 					}
 				Random.popGenerator();

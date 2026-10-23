@@ -1015,6 +1015,7 @@ public class Generator {
 		floorSet = (int)GameMath.gate(0, floorSet, floorSetTierProbs.length-1);
 
 		MeleeWeapon w;
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHeroes.usesGuns()) return com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.randomGun(1 + Random.chances(floorSetTierProbs[floorSet])); //bluearchive
 		if (useDefaults){
 			w = (MeleeWeapon) randomUsingDefaults(wepTiers[Random.chances(floorSetTierProbs[floorSet])]);
 		} else {

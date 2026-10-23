@@ -2768,6 +2768,150 @@ public class ItemSpriteSheet {
 		assignItemRect(RUBBINGSTOME, 14, 16);
 	}
 
+	//bluearchive, Blue Archive PD items, rows 256 to 263 of items.png
+	public static final int BA_ARMOR_ARIS = xy(6, 263);
+	static{ assignItemRect(BA_ARMOR_ARIS, 13, 10); }
+	public static final int BA_ARMOR_NONOMI = xy(7, 263);
+	static{ assignItemRect(BA_ARMOR_NONOMI, 14, 10); }
+	public static final int BA_ARMOR_MIYAKO = xy(8, 263);
+	static{ assignItemRect(BA_ARMOR_MIYAKO, 15, 10); }
+	public static final int BA_ARMOR_HOSHINO = xy(9, 263);
+	static{ assignItemRect(BA_ARMOR_HOSHINO, 13, 11); }
+	public static final int BA_ARMOR_SHIROKO = xy(10, 263);
+	static{ assignItemRect(BA_ARMOR_SHIROKO, 15, 12); }
+	public static final int BA_ARMOR_NOA = xy(11, 263);
+	static{ assignItemRect(BA_ARMOR_NOA, 14, 12); }
+	public static final int BA_ARMOR_MIYU = xy(12, 263);
+	static{ assignItemRect(BA_ARMOR_MIYU, 13, 12); }
+	public static final int BA_ARMOR_YUZU = xy(13, 263);
+	static{ assignItemRect(BA_ARMOR_YUZU, 13, 12); }
+	public static final int BA_ARMOR_IZUNA = xy(14, 263);
+	static{ assignItemRect(BA_ARMOR_IZUNA, 15, 11); }
+	public static final int BA_SUPER_NOVA = xy(1, 256);
+	static{ assignItemRect(BA_SUPER_NOVA, 16, 16); }
+	public static final int BA_SMOKE_GRENADE = xy(2, 256);
+	static{ assignItemRect(BA_SMOKE_GRENADE, 12, 12); }
+	public static final int BA_HAND_GRENADE = xy(3, 256);
+	static{ assignItemRect(BA_HAND_GRENADE, 11, 11); }
+	public static final int BA_CLAYMORE = xy(4, 256);
+	static{ assignItemRect(BA_CLAYMORE, 13, 13); }
+	public static final int BA_BLAST_GRENADE = xy(5, 256);
+	static{ assignItemRect(BA_BLAST_GRENADE, 11, 11); }
+	public static final int BA_IRON_HORUS = xy(6, 256);
+	static{ assignItemRect(BA_IRON_HORUS, 14, 14); }
+	public static final int BA_HP_GRENADE = xy(7, 256);
+	static{ assignItemRect(BA_HP_GRENADE, 11, 11); }
+	public static final int BA_BICYCLE = xy(8, 256);
+	static{ assignItemRect(BA_BICYCLE, 16, 16); }
+	public static final int BA_LASER = xy(9, 256);
+	static{ assignItemRect(BA_LASER, 11, 11); }
+	public static final int BA_FLASH_GRENADE = xy(10, 256);
+	static{ assignItemRect(BA_FLASH_GRENADE, 13, 13); }
+	public static final int BA_REGROW_GRENADE = xy(11, 256);
+	static{ assignItemRect(BA_REGROW_GRENADE, 12, 12); }
+	public static final int BA_TRASH_BIN = xy(12, 256);
+	static{ assignItemRect(BA_TRASH_BIN, 16, 16); }
+	public static final int BA_RAINBOW_GRENADE = xy(13, 256);
+	static{ assignItemRect(BA_RAINBOW_GRENADE, 12, 12); }
+	public static final int BA_ANALYZER = xy(14, 256);
+	static{ assignItemRect(BA_ANALYZER, 16, 14); }
+	public static final int BA_AMMO_BOX = xy(15, 256);
+	static{ assignItemRect(BA_AMMO_BOX, 14, 11); }
+	public static final int BA_THROWING_SET = xy(16, 256);
+	static{ assignItemRect(BA_THROWING_SET, 16, 16); }
+	public static final int BA_SINGLE_BULLET = xy(1, 257);
+	static{ assignItemRect(BA_SINGLE_BULLET, 8, 8); }
+	public static final int BA_TRIPLE_BULLET = xy(2, 257);
+	static{ assignItemRect(BA_TRIPLE_BULLET, 8, 8); }
+	public static final int BA_SNIPER_BULLET = xy(3, 257);
+	static{ assignItemRect(BA_SNIPER_BULLET, 8, 8); }
+	public static final int BA_GRENADE_BULLET = xy(4, 257);
+	static{ assignItemRect(BA_GRENADE_BULLET, 8, 8); }
+	public static final int BA_ROCKET_BULLET = xy(5, 257);
+	static{ assignItemRect(BA_ROCKET_BULLET, 8, 8); }
+	public static final int BA_NOTHING_BULLET = xy(6, 257);
+	static{ assignItemRect(BA_NOTHING_BULLET, 1, 1); }
+	public static final int BA_EXPLOSIVE_BULLET = xy(7, 257);
+	static{ assignItemRect(BA_EXPLOSIVE_BULLET, 4, 4); }
+	public static final int BA_SPIRIT_SHURIKEN = xy(8, 257);
+	static{ assignItemRect(BA_SPIRIT_SHURIKEN, 12, 12); }
+	public static final int BA_SPIRIT_KUNAI = xy(9, 257);
+	static{ assignItemRect(BA_SPIRIT_KUNAI, 15, 15); }
+	public static final int BA_AR_TIER_1 = xy(1, 258);
+	static{ assignItemRect(BA_AR_TIER_1, 12, 13); }
+	public static final int BA_AR_TIER_2 = xy(2, 258);
+	static{ assignItemRect(BA_AR_TIER_2, 13, 14); }
+	public static final int BA_AR_TIER_3 = xy(3, 258);
+	static{ assignItemRect(BA_AR_TIER_3, 15, 16); }
+	public static final int BA_AR_TIER_4 = xy(4, 258);
+	static{ assignItemRect(BA_AR_TIER_4, 16, 15); }
+	public static final int BA_AR_TIER_5 = xy(5, 258);
+	static{ assignItemRect(BA_AR_TIER_5, 15, 16); }
+	public static final int BA_GL_TIER_1 = xy(9, 258);
+	static{ assignItemRect(BA_GL_TIER_1, 11, 13); }
+	public static final int BA_GL_TIER_2 = xy(10, 258);
+	static{ assignItemRect(BA_GL_TIER_2, 15, 15); }
+	public static final int BA_GL_TIER_3 = xy(11, 258);
+	static{ assignItemRect(BA_GL_TIER_3, 15, 15); }
+	public static final int BA_GL_TIER_4 = xy(12, 258);
+	static{ assignItemRect(BA_GL_TIER_4, 15, 15); }
+	public static final int BA_GL_TIER_5 = xy(13, 258);
+	static{ assignItemRect(BA_GL_TIER_5, 16, 16); }
+	public static final int BA_HG_TIER_1 = xy(1, 259);
+	static{ assignItemRect(BA_HG_TIER_1, 9, 12); }
+	public static final int BA_HG_TIER_2 = xy(2, 259);
+	static{ assignItemRect(BA_HG_TIER_2, 10, 13); }
+	public static final int BA_HG_TIER_3 = xy(3, 259);
+	static{ assignItemRect(BA_HG_TIER_3, 11, 14); }
+	public static final int BA_HG_TIER_4 = xy(4, 259);
+	static{ assignItemRect(BA_HG_TIER_4, 12, 16); }
+	public static final int BA_HG_TIER_5 = xy(5, 259);
+	static{ assignItemRect(BA_HG_TIER_5, 15, 16); }
+	public static final int BA_MG_TIER_1 = xy(9, 259);
+	static{ assignItemRect(BA_MG_TIER_1, 16, 16); }
+	public static final int BA_MG_TIER_2 = xy(10, 259);
+	static{ assignItemRect(BA_MG_TIER_2, 16, 16); }
+	public static final int BA_MG_TIER_3 = xy(11, 259);
+	static{ assignItemRect(BA_MG_TIER_3, 16, 16); }
+	public static final int BA_MG_TIER_4 = xy(12, 259);
+	static{ assignItemRect(BA_MG_TIER_4, 16, 16); }
+	public static final int BA_MG_TIER_5 = xy(13, 259);
+	static{ assignItemRect(BA_MG_TIER_5, 16, 15); }
+	public static final int BA_SG_TIER_1 = xy(1, 260);
+	static{ assignItemRect(BA_SG_TIER_1, 12, 13); }
+	public static final int BA_SG_TIER_2 = xy(2, 260);
+	static{ assignItemRect(BA_SG_TIER_2, 14, 15); }
+	public static final int BA_SG_TIER_3 = xy(3, 260);
+	static{ assignItemRect(BA_SG_TIER_3, 14, 16); }
+	public static final int BA_SG_TIER_4 = xy(4, 260);
+	static{ assignItemRect(BA_SG_TIER_4, 14, 16); }
+	public static final int BA_SG_TIER_5 = xy(5, 260);
+	static{ assignItemRect(BA_SG_TIER_5, 15, 16); }
+	public static final int BA_SMG_TIER_1 = xy(9, 260);
+	static{ assignItemRect(BA_SMG_TIER_1, 12, 15); }
+	public static final int BA_SMG_TIER_2 = xy(10, 260);
+	static{ assignItemRect(BA_SMG_TIER_2, 15, 15); }
+	public static final int BA_SMG_TIER_3 = xy(11, 260);
+	static{ assignItemRect(BA_SMG_TIER_3, 13, 14); }
+	public static final int BA_SMG_TIER_4 = xy(12, 260);
+	static{ assignItemRect(BA_SMG_TIER_4, 15, 16); }
+	public static final int BA_SMG_TIER_5 = xy(13, 260);
+	static{ assignItemRect(BA_SMG_TIER_5, 15, 15); }
+	public static final int BA_SR_TIER_1 = xy(1, 261);
+	static{ assignItemRect(BA_SR_TIER_1, 13, 16); }
+	public static final int BA_SR_TIER_2 = xy(2, 261);
+	static{ assignItemRect(BA_SR_TIER_2, 13, 16); }
+	public static final int BA_SR_TIER_3 = xy(3, 261);
+	static{ assignItemRect(BA_SR_TIER_3, 14, 16); }
+	public static final int BA_SR_TIER_4 = xy(4, 261);
+	static{ assignItemRect(BA_SR_TIER_4, 15, 16); }
+	public static final int BA_SR_TIER_5 = xy(5, 261);
+	static{ assignItemRect(BA_SR_TIER_5, 15, 16); }
+	public static final int BA_EX_BD = xy(1, 262);
+	static{ assignItemRect(BA_EX_BD, 16, 14); }
+	public static final int BA_TELEPORTER = xy(2, 262);
+	static{ assignItemRect(BA_TELEPORTER, 14, 14); }
+
 	//for smaller 8x8 icons that often accompany an item sprite
 	public static class Icons {
 
