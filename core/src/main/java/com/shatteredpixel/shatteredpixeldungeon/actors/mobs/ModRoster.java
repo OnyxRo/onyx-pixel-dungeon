@@ -518,6 +518,11 @@ public class ModRoster {
 		add( "tower", MagicShard.class, 0, 1, 99 );
 		add( "tower", GorematiaSpirit.class, 0, 1, 99 );
 		add( "tower", TowerWisp.class, 0, 1, 99 );
+		//rebluearchive, Re Blue Archive PD. The Fox squad only comes when Shiroko robs a shop (RBAShims.shopkeeperRun), so weight 0
+		add( "rebluearchive", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.fox.RBAYukino.class, 0, 1, 99 );
+		add( "rebluearchive", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.fox.RBANiko.class, 0, 1, 99 );
+		add( "rebluearchive", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.fox.RBAKurumi.class, 0, 1, 99 );
+		add( "rebluearchive", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.fox.RBAOtogi.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

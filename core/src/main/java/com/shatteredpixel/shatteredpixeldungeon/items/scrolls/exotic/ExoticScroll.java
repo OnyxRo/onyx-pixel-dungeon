@@ -110,6 +110,8 @@ public abstract class ExoticScroll extends Scroll {
 		exoToReg.put(ScrollOfSoulEnergy.class, com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfAttunement.class);
 		//from Tower PD, reverse lookup only, Terror still brews into Dread
 		exoToReg.put(ScrollOfUnspeakableHorrors.class, com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror.class);
+		//rebluearchive, the Scroll of Talent Reset has no recipe here, only the reverse lookup
+		exoToReg.put(RBAScrollOfTalentReset.class, ScrollOfTransmutation.class);
 	}
 	
 	@Override
