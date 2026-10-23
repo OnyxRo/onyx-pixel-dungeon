@@ -110,7 +110,7 @@ public abstract class WellWater extends Blob {
 	
 	public static void affectCell( int cell ) {
 		
-		Class<?>[] waters = {WaterOfHealth.class, WaterOfAwareness.class};
+		Class<?>[] waters = {WaterOfHealth.class, WaterOfAwareness.class, WaterOfEnchantment.class}; //elektro
 		
 		for (Class<?>waterClass : waters) {
 			WellWater water = (WellWater)Dungeon.level.blobs.get( waterClass );

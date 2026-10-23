@@ -39,7 +39,8 @@ public class ScrollHolder extends Bag {
 	@Override
 	public boolean canHold( Item item ) {
 		if (item instanceof Scroll || item instanceof Spell
-				|| item instanceof ArcaneResin || item instanceof Stylus){
+				|| item instanceof ArcaneResin || item instanceof Stylus
+				|| item instanceof com.shatteredpixel.shatteredpixeldungeon.items.ancientrunes.AncientRune){ //elektro
 			return super.canHold(item);
 		} else {
 			return false;

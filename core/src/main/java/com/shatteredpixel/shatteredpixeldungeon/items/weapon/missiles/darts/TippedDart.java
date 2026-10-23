@@ -234,6 +234,9 @@ public abstract class TippedDart extends Dart {
 		types.put(Earthroot.Seed.class,     ParalyticDart.class);
 		types.put(Mageroyal.Seed.class,     CleansingDart.class);
 		types.put(Starflower.Seed.class,    HolyDart.class);
+		//elektro, Elektrocheckers PD
+		types.put(com.shatteredpixel.shatteredpixeldungeon.plants.Voidpearl.Seed.class, VoidDart.class);
+		types.put(com.shatteredpixel.shatteredpixeldungeon.plants.Ghostbulb.Seed.class, GhostDart.class);
 	}
 	
 	public static TippedDart getTipped( Plant.Seed s, int quantity ){

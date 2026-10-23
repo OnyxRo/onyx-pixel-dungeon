@@ -1183,6 +1183,34 @@ public enum Catalog {
 		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.alchemy.ObsidianBow.class);
 		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.alchemy.ObsidianKnife.class);
 
+		//items ported from elektro
+		ENCHANTMENTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Corroding.class);
+		TIPPED_DARTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.GhostDart.class);
+		TIPPED_DARTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.VoidDart.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.ancientrunes.ContravariantAncientRune.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.ancientrunes.CovariantAncientRune.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.ancientrunes.ExistenceAncientRune.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.ancientrunes.FieldOperatorAncientRune.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.ancientrunes.LaplaceAncientRune.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.ancientrunes.NablaAncientRune.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.ancientrunes.PartialAncientRune.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.ancientrunes.PropagationAncientRune.class);
+		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.BloodOrb.class);
+		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CrackedGeode.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.FlameShot.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.GreaterTransmutation.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.IceShot.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.InvariantAncientRune.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.MagicBridge.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.PrismaticImageSpell.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.Transfiguration.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.VampiricShot.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.VenomShot.class);
+		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfChaos.class);
+		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCosmicTravel.class);
+		SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTrauma.class);
+		EXOTIC_SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfDamnation.class);
+
 
 	}
 

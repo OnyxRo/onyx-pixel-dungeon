@@ -303,6 +303,16 @@ public abstract class Recipe {
 		new com.shatteredpixel.shatteredpixeldungeon.items.spells.RubbingsTome.Recipe(),
 		//transformation, corpse dust, a rubbings tome and a wand
 		new com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Necronomicon.Recipe(),
+		//elektro, Elektrocheckers PD's spells
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.PrismaticImageSpell.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.Transfiguration.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.MagicBridge.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.InvariantAncientRune.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.FlameShot.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.IceShot.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.VenomShot.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.VampiricShot.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.GreaterTransmutation.Recipe(),
 	};
 	
 	public static ArrayList<Recipe> findRecipes(ArrayList<Item> ingredients){

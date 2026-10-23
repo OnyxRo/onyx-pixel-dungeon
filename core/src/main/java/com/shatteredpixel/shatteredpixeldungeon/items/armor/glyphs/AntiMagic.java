@@ -133,6 +133,8 @@ public class AntiMagic extends Armor.Glyph {
 		RESISTS.add( Eye.DeathGaze.class );
 		RESISTS.add( YogFist.BrightFist.LightBeam.class );
 		RESISTS.add( YogFist.DarkFist.DarkBolt.class );
+		RESISTS.add( com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfChaos.class ); //elektro
+		RESISTS.add( com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCosmicTravel.class ); //elektro
 	}
 	
 	@Override

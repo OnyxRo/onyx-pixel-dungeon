@@ -699,9 +699,9 @@ public class Hero extends Char {
 			return 0;
 		} else if (buff(PotionOfDivineInspiration.DivineInspirationTracker.class) != null
 					&& buff(PotionOfDivineInspiration.DivineInspirationTracker.class).isBoosted(tier)) {
-			return 2 + RearrangedHero.bonusTalentPoints(this, tier);
+			return Math.max(2, com.shatteredpixel.shatteredpixeldungeon.items.ancientrunes.ElektroHooks.bonusTalentPoints(this, tier)) + RearrangedHero.bonusTalentPoints(this, tier); //elektro, Propagation rune
 		} else {
-			return RearrangedHero.bonusTalentPoints(this, tier); //rearranged, the Elixir of Talent
+			return com.shatteredpixel.shatteredpixeldungeon.items.ancientrunes.ElektroHooks.bonusTalentPoints(this, tier) + RearrangedHero.bonusTalentPoints(this, tier); //rearranged, the Elixir of Talent. elektro, Propagation rune
 		}
 	}
 	

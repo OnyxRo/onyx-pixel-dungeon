@@ -523,6 +523,7 @@ public class YogDzewa extends Mob {
 	public void die( Object cause ) {
 
 		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationBossTalents.dropSublimation("YOG", pos); //transformation
+		com.shatteredpixel.shatteredpixeldungeon.items.ancientrunes.ElektroHooks.dropBossRune(this); //elektro
 		Bestiary.skipCountingEncounters = true;
 		for (Mob mob : (Iterable<Mob>)Dungeon.level.mobs.clone()) {
 			if (mob instanceof Larva || mob instanceof YogRipper || mob instanceof YogEye || mob instanceof YogScorpio) {
