@@ -412,8 +412,11 @@ public class Generator {
 					com.shatteredpixel.shatteredpixeldungeon.plants.CoffeeBush.Seed.class,
 					//from Lovecraft PD, only its worlds drop these
 					com.shatteredpixel.shatteredpixeldungeon.plants.Dreamfoil.Seed.class,
-					com.shatteredpixel.shatteredpixeldungeon.plants.Steamweed.Seed.class};
-			SEED.defaultProbs = new float[]{ 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0 };
+					com.shatteredpixel.shatteredpixeldungeon.plants.Steamweed.Seed.class,
+					//elektro, Elektrocheckers PD, weights scaled from the mod's deck
+					com.shatteredpixel.shatteredpixeldungeon.plants.Ghostbulb.Seed.class,
+					com.shatteredpixel.shatteredpixeldungeon.plants.Voidpearl.Seed.class};
+			SEED.defaultProbs = new float[]{ 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 2, 1 };
 			SEED.probs = SEED.defaultProbs.clone();
 			
 			SCROLL.classes = new Class<?>[]{
@@ -435,10 +438,12 @@ public class Generator {
 					//with a small weight, Reforged's own deck gave it one in thirteen
 					com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfDecay.class,
 					//summoning, Summoning PD's Scroll of Attunement, appended so older saves keep their decks
-					com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfAttunement.class
+					com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfAttunement.class,
+					//elektro, Elektrocheckers PD's Scroll of Trauma, the mod's weights (1, then 2)
+					com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTrauma.class
 			};
-			SCROLL.defaultProbs  = new float[]{ 0, 3, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1 };
-			SCROLL.defaultProbs2 = new float[]{ 0, 3, 2, 2, 1, 2, 1, 1, 1, 1, 1, 0, 0, 1, 1 };
+			SCROLL.defaultProbs  = new float[]{ 0, 3, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1 };
+			SCROLL.defaultProbs2 = new float[]{ 0, 3, 2, 2, 1, 2, 1, 1, 1, 1, 1, 0, 0, 1, 1, 2 };
 			SCROLL.probs = SCROLL.defaultProbs.clone();
 			
 			STONE.classes = new Class<?>[]{
@@ -471,8 +476,11 @@ public class Generator {
 					WandOfWarding.class,
 					WandOfTransfusion.class,
 					WandOfCorruption.class,
-					WandOfRegrowth.class };
-			WAND.defaultProbs = new float[]{ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
+					WandOfRegrowth.class,
+					//elektro, Elektrocheckers PD, the mod gave both a weight of 4
+					com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfChaos.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCosmicTravel.class };
+			WAND.defaultProbs = new float[]{ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4 };
 			WAND.probs = WAND.defaultProbs.clone();
 			
 			//see generator.randomWeapon
@@ -712,9 +720,12 @@ public class Generator {
 					SkeletonKey.class,
 					TalismanOfForesight.class,
 					TimekeepersHourglass.class,
-					UnstableSpellbook.class
+					UnstableSpellbook.class,
+					//elektro, Elektrocheckers PD
+					com.shatteredpixel.shatteredpixeldungeon.items.artifacts.BloodOrb.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CrackedGeode.class
 			};
-			ARTIFACT.defaultProbs = new float[]{ 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1 };
+			ARTIFACT.defaultProbs = new float[]{ 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 			ARTIFACT.probs = ARTIFACT.defaultProbs.clone();
 
 			HELMET.classes = new Class<?>[]{

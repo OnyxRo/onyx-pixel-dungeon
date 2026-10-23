@@ -35,7 +35,7 @@ import com.watabou.utils.Random;
 public class MagicWellRoom extends SpecialRoom {
 
 	private static final Class<?>[] WATERS =
-		{WaterOfAwareness.class, WaterOfHealth.class};
+		{WaterOfAwareness.class, WaterOfHealth.class, com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WaterOfEnchantment.class}; //elektro
 	
 	public Class<?extends WellWater> overrideWater = null;
 	

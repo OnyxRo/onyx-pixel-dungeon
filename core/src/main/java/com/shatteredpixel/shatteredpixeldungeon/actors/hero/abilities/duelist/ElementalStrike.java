@@ -133,6 +133,7 @@ public class ElementalStrike extends ArmorAbility {
 		effectTypes.put(Crystal.class,      MagicMissile.SPECK + Speck.LIGHT);
 		effectTypes.put(Grim.class,         MagicMissile.SHADOW_CONE);
 		effectTypes.put(Vampiric.class,     MagicMissile.BLOOD_CONE);
+		effectTypes.put(com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Corroding.class, MagicMissile.CORROSION_CONE); //elektro
 
 		effectTypes.put(Annoying.class,     MagicMissile.SHADOW_CONE);
 		effectTypes.put(Displacing.class,   MagicMissile.SHADOW_CONE);
@@ -314,7 +315,9 @@ public class ElementalStrike extends ArmorAbility {
 		float powerMulti = 1f + 0.30f*Dungeon.hero.pointsInTalent(Talent.STRIKING_FORCE);
 
 		//*** Blazing ***
-		if (ench instanceof Blazing){
+		if (com.shatteredpixel.shatteredpixeldungeon.items.ancientrunes.ElektroHooks.elementalStrike(ench, new ArrayList<>(cone.cells), powerMulti)){
+			//elektro, Corroding fills the cone with corrosive gas
+		} else if (ench instanceof Blazing){
 			for (int cell : cone.cells) {
 				GameScene.add(Blob.seed(cell, Math.round(8 * powerMulti), Fire.class));
 			}

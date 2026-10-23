@@ -62,6 +62,7 @@ public abstract class Spell extends Item {
 				GLog.w( Messages.get(this, "no_magic") );
 				return;
 			}
+			if (com.shatteredpixel.shatteredpixeldungeon.items.ancientrunes.ElektroHooks.spellsBlocked(hero)) return; //elektro, cursed Cracked Geode
 			
 			onCast( hero );
 			

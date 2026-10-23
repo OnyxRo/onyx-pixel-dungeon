@@ -215,3 +215,8 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **A mod that only retunes Shattered** (Polished) ports as an option, not as content. Put the changes behind one `Challenges` bit marked as an option (skip it in the random picker in `HeroSelectScene`), route each hook through one helper class (`PolishedPD`) and write a small headless test that checks the option off and on.
 - **3.x mods add helpers to Shattered's classes** (`CharSprite.doAfterAnim`, a callback on `Transmuting`, `Buff.Polished.prolongAligned`). Grep the mod's copy of a Shattered class for the method before calling it from ported code, and write the small local version instead.
 - **If the worktree vanishes**, make a new one from the base commit named in the brief with `git worktree add -b <branch> <path> <commit>` and carry on there.
+## Added after Elektrocheckers PD (2026-10-22)
+
+- **Parallel runs share the scratchpad.** Put edit specs and helper scripts in `scratchpad/<mod key>/`, not loose files with short names. Another agent overwrote `e1.txt` between my write and my run.
+- **Recipes go in the list matching their ingredient count** in `Recipe.java` (one, two or three). A recipe in the wrong list compiles and is never found.
+- **A mod rune or item effect that ends on a sprite effect** runs fine headless up to that line. Wrap casts in a test helper that reports a NullPointerException as info, then check the result (see `ElektroRunesTest`).
