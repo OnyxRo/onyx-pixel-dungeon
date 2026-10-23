@@ -549,6 +549,9 @@ public enum Icons {
 				return new ItemSprite(ItemSpriteSheet.HEROSPELL_SHIELD);
 			case TOWERPRIEST:
 				return new ItemSprite(ItemSpriteSheet.HEROSPELL_PRAY);
+			//deranged
+			case RAT_KING:
+				return new ItemSprite(ItemSpriteSheet.CHEEST);
 			default:
 				return null;
 		}

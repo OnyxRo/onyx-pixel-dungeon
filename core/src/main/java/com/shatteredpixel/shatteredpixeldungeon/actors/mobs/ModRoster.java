@@ -518,6 +518,10 @@ public class ModRoster {
 		add( "tower", MagicShard.class, 0, 1, 99 );
 		add( "tower", GorematiaSpirit.class, 0, 1, 99 );
 		add( "tower", TowerWisp.class, 0, 1, 99 );
+		//deranged, DERanged PD. Ech came only with a special seed and the dark matter slime only as a base for
+		//the darkest elf's slimes, so neither spawns by depth
+		add( "deranged", Ech.class, 0, 1, 99 );
+		add( "deranged", DarkSlime.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

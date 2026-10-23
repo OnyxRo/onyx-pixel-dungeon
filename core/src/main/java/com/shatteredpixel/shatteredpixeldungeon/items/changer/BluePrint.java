@@ -301,6 +301,20 @@ public class BluePrint extends Item {
             validIngredients.add( new RL_T6().weaponRecipe() );
             validIngredients.add( new ObsidianKnife().weaponRecipe() );
             validIngredients.add( new ObsidianBow().weaponRecipe() );
+            validIngredients.add( new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.AluminumSword().weaponRecipe() ); //deranged
+            validIngredients.add( new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.NuclearHatchet().weaponRecipe() ); //deranged
+            validIngredients.add( new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.RunicBladeMkII().weaponRecipe() ); //deranged
+            validIngredients.add( new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.ConstructWand().weaponRecipe() ); //deranged
+            validIngredients.add( new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.BloomingPick().weaponRecipe() ); //deranged
+            validIngredients.add( new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.LuminousCutlass().weaponRecipe() ); //deranged
+            validIngredients.add( new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.MoltenStrife().weaponRecipe() ); //deranged
+            validIngredients.add( new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.ElementalDirk().weaponRecipe() ); //deranged
+            validIngredients.add( new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.DreadSlicer().weaponRecipe() ); //deranged
+            validIngredients.add( new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.SharksTooth().weaponRecipe() ); //deranged
+            validIngredients.add( new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.ExoKnife().weaponRecipe() ); //deranged
+            validIngredients.add( new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.TheReaper().weaponRecipe() ); //deranged
+            validIngredients.add( new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.Starsmasher().weaponRecipe() ); //deranged
+            validIngredients.add( new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.RoyalBrand().weaponRecipe() ); //deranged
         }
 
         public static final LinkedHashMap<Integer, Class<?extends MeleeWeapon>> indexToOutput = new LinkedHashMap<>(); //validIngredients 배열의 인덱스를 넣으면 근접 무기를 반환한다.
@@ -332,6 +346,20 @@ public class BluePrint extends Item {
             indexToOutput.put( 24, RL_T6.class );
             indexToOutput.put( 25, ObsidianKnife.class );
             indexToOutput.put( 26, ObsidianBow.class );
+            indexToOutput.put( 27, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.AluminumSword.class ); //deranged
+            indexToOutput.put( 28, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.NuclearHatchet.class ); //deranged
+            indexToOutput.put( 29, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.RunicBladeMkII.class ); //deranged
+            indexToOutput.put( 30, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.ConstructWand.class ); //deranged
+            indexToOutput.put( 31, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.BloomingPick.class ); //deranged
+            indexToOutput.put( 32, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.LuminousCutlass.class ); //deranged
+            indexToOutput.put( 33, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.MoltenStrife.class ); //deranged
+            indexToOutput.put( 34, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.ElementalDirk.class ); //deranged
+            indexToOutput.put( 35, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.DreadSlicer.class ); //deranged
+            indexToOutput.put( 36, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.SharksTooth.class ); //deranged
+            indexToOutput.put( 37, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.ExoKnife.class ); //deranged
+            indexToOutput.put( 38, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.TheReaper.class ); //deranged
+            indexToOutput.put( 39, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.Starsmasher.class ); //deranged
+            indexToOutput.put( 40, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.RoyalBrand.class ); //deranged
         }
 
         public static final LinkedHashMap<Integer, Integer> costs = new LinkedHashMap<>(); //validIngredients 배열의 인덱스를 넣으면 연금술 에너지 필요량을 반환한다.
@@ -363,6 +391,20 @@ public class BluePrint extends Item {
             costs.put( 24, 0 );
             costs.put( 25, 0 );
             costs.put( 26, 5 );
+            costs.put( 27, 10 ); //deranged
+            costs.put( 28, 10 ); //deranged
+            costs.put( 29, 10 ); //deranged
+            costs.put( 30, 10 ); //deranged
+            costs.put( 31, 10 ); //deranged
+            costs.put( 32, 10 ); //deranged
+            costs.put( 33, 10 ); //deranged
+            costs.put( 34, 10 ); //deranged
+            costs.put( 35, 10 ); //deranged
+            costs.put( 36, 10 ); //deranged
+            costs.put( 37, 15 ); //deranged
+            costs.put( 38, 10 ); //deranged
+            costs.put( 39, 10 ); //deranged
+            costs.put( 40, 15 ); //deranged
         }
 
         public ArrayList<Class<?extends Item>> ingredientToArray(ArrayList<Item> ingredients) { //연금술 솥에 넣은 아이템들의 '클래스'를 배열로 만든다.
