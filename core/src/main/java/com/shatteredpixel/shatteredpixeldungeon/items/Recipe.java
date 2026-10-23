@@ -274,6 +274,8 @@ public abstract class Recipe {
 		new com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfTalent.Recipe(),
 		new com.shatteredpixel.shatteredpixeldungeon.items.spells.UpgradeDust.Recipe(),
 		new com.shatteredpixel.shatteredpixeldungeon.items.spells.UnstableIdentification.Recipe(),
+		//polished
+		new com.shatteredpixel.shatteredpixeldungeon.items.food.HoneyedMeat.Recipe(),
 	};
 	
 	private static Recipe[] threeIngredientRecipes = new Recipe[]{

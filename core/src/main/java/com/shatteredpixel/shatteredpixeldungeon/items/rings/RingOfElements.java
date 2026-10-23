@@ -76,6 +76,7 @@ public class RingOfElements extends Ring {
 		RESISTS.add( Frost.class );
 		RESISTS.add( Ooze.class );
 		RESISTS.add( Paralysis.class );
+		RESISTS.add( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Electrified.class ); //polished
 		RESISTS.add( Poison.class );
 		RESISTS.add( Corrosion.class );
 

@@ -1183,6 +1183,9 @@ public enum Catalog {
 		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.alchemy.ObsidianBow.class);
 		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.alchemy.ObsidianKnife.class);
 
+		//items ported from polished
+		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.HoneyedMeat.class);
+
 
 	}
 

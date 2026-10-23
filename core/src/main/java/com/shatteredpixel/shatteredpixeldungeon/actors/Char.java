@@ -607,6 +607,7 @@ public abstract class Char extends Actor {
 				dmg *= 0.67f;
 			}
 			dmg = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.markOfWeakness(this, dmg); //rearranged
+			dmg = com.shatteredpixel.shatteredpixeldungeon.PolishedPD.brittleAttack(this, dmg); //polished, Brittle
 
 			//rearranged
 			if (enemy.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PainKiller.class) != null) {
@@ -642,6 +643,7 @@ public abstract class Char extends Actor {
 				if (enemy.buff(Vulnerable.class) != null) {
 					effectiveDamage *= 1.33f;
 				}
+				effectiveDamage = com.shatteredpixel.shatteredpixeldungeon.PolishedPD.brittleTaken(enemy, effectiveDamage); //polished, Brittle
 
 				effectiveDamage = attackProc(enemy, effectiveDamage);
 			}
@@ -1162,6 +1164,7 @@ public abstract class Char extends Actor {
 		if (buff( Paralysis.class ) != null) {
 			buff( Paralysis.class ).processDamage(dmg);
 		}
+		com.shatteredpixel.shatteredpixeldungeon.PolishedPD.onDamage(this, dmg, src); //polished, Electrified
 
 		BrokenSeal.WarriorShield shield = buff(BrokenSeal.WarriorShield.class);
 		if (!(src instanceof Hunger)

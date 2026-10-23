@@ -51,7 +51,7 @@ public class MagicWellRoom extends SpecialRoom {
 		Class<? extends WellWater> waterClass =
 			overrideWater != null ?
 			overrideWater :
-			(Class<? extends WellWater>)Random.element( WATERS );
+			com.shatteredpixel.shatteredpixeldungeon.PolishedPD.wellWater((Class<? extends WellWater>)Random.element( WATERS )); //polished
 			
 		
 		WellWater.seed(c.x + level.width() * c.y, 1, waterClass, level);

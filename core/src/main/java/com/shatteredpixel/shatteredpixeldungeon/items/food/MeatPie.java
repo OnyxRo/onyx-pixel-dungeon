@@ -65,7 +65,8 @@ public class MeatPie extends Food {
 					} else if (ingredient instanceof MysteryMeat
 							|| ingredient instanceof StewedMeat
 							|| ingredient instanceof ChargrilledMeat
-							|| ingredient instanceof FrozenCarpaccio) {
+							|| ingredient instanceof FrozenCarpaccio
+							|| ingredient instanceof HoneyedMeat) { //polished
 						meat = true;
 					}
 				}

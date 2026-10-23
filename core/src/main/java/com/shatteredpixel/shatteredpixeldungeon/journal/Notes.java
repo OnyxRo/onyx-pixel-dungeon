@@ -146,7 +146,9 @@ public class Notes {
 		HALF_RIPPER,
 		RANDOMIZER,
 
-		DEMON_SPAWNER;
+		DEMON_SPAWNER,
+		//from Polished Pixel Dungeon
+		WELL_OF_CHANGE;
 	}
 	
 	public static class LandmarkRecord extends Record {
@@ -192,6 +194,8 @@ public class Notes {
 				case WELL_OF_HEALTH:
 					return Icons.get(Icons.WELL_HEALTH);
 				case WELL_OF_AWARENESS:
+					return Icons.get(Icons.WELL_AWARENESS);
+				case WELL_OF_CHANGE: //polished
 					return Icons.get(Icons.WELL_AWARENESS);
 				case SACRIFICIAL_FIRE:
 					return Icons.get(Icons.SACRIFICE_ALTAR);
@@ -262,6 +266,7 @@ public class Notes {
 				case DISTANT_WELL:      return Messages.get(WeakFloorRoom.HiddenWell.class, "desc");
 				case WELL_OF_HEALTH:    return Messages.get(WaterOfHealth.class, "desc");
 				case WELL_OF_AWARENESS: return Messages.get(WaterOfAwareness.class, "desc");
+				case WELL_OF_CHANGE:    return Messages.get(com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WaterOfChange.class, "desc"); //polished
 				case SACRIFICIAL_FIRE:  return Messages.get(SacrificialFire.class, "desc");
 				case STATUE:            return Messages.get(Statue.class, "desc");
 
