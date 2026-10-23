@@ -376,3 +376,27 @@ Merged onyx/p4-rearranged, onyx/p4-summoning and onyx/p4-transf. Five clashes be
 Transformation talents wired the same day. Quick Search (search takes 1 turn and almost no hunger, `Hero.search`), Slime Greenhouse (`Plant.Seed`, the Slime Girl's Sprout action was missing and is in now, other heroes with the talent get Eat), Original Monster (Sungrass heals half again as much, at 2 points elemental resistance while it heals in `RingOfElements.resist`, at 3 points healing keeps going while moving), Quality Absorption in the waterskin's drop count (the dewdrop part was already in). Still out on purpose, the Extraction Raid (it rewrites keys, death and level travel, an earlier copy was removed), the Dungeon Doctor's quiz (Chinese only), random hero mode, skins, test windows and New Cycle scenes.
 
 - 2026-10-22. Fixed the four old check failures. TheDebugger (no more overflow, tier 5, a million damage), GnollThief (its trap loop could freeze the game, now one try at the attacker's cell), GreenSlting (description ended in "!!!", which the test reads as a missing string), VaultMob (a base class, off the roster).
+
+## Survey of the next 15 mods (2026-10-22)
+
+Cloned into `~/mod-sources/<key>` (keys in `scripts/mods.txt`), each run through `mod-report.py --all`. Counts are classes this game does not already have. For the three mods built on Re-ARranged, the counts leave out everything Re-ARranged already gave us. Every mod here is GPL-3.0, the same as Shattered. Blue Archive and Re Blue Archive use characters and art from the Blue Archive game, which has its own owner, so they stay personal use only.
+
+| Mod | Key | Base | License | Worlds | Monsters | Weapons | Items | Hero classes | What it is |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Half PD | half | 3.2.1 | GPL-3.0 | none | 0 | 0 | 0 | none | The dungeon cut to 15 floors plus balance changes. A game mode, nothing to port |
+| Too Cruel PD Trials | toocruel | 3.0.0 | GPL-3.0 | none | 0 | 0 | 0 | none | A large set of extra challenge modifiers. A game mode |
+| Even Shorter PD | evenshorter | 3.1.1 | GPL-3.0 | none | 0 | 0 | 2 buffs | none | A shorter dungeon. A game mode |
+| Custom PD | custom | 2.0.0 | GPL-3.0 | none | 0 | 0 | 0 | none | A loader for player made mods. Nothing to port |
+| Shattered PD Radar | radar | 3.3.7 | GPL-3.0 | none | 0 | 0 | 0 | none | Rerolls the seed until chosen items appear. A start screen tool |
+| Estranged PD | estranged | Re-ARranged 3.40.0 | GPL-3.0 | none | 0 | 0 | 1 (Weapon Catalyst), 3 buffs | none new (reworks Re-ARranged's) | Balance and rework of Re-ARranged |
+| Re-ReARranged PD | rerearranged | Re-ARranged 3.40.0 | GPL-3.0 | none | 0 | 4 (Ruin Bow, three boss drops) | 1 (Weapon Catalyst) | none new (reworks Re-ARranged's) | Rework of Re-ARranged |
+| Polished PD | polished | 3.2 | GPL-3.0 | none | 0 | 0 | 7 (Ring of Wealth drop variants, Honeyed Meat), a trap, a well, 3 buffs | none | Quality of life and balance changes |
+| Community PD | community | 2.4.2 | GPL-3.0 | none (same sheets as Shattered) | 5 | 1 | 9 | none | Ideas collected from the community |
+| Elektrocheckers PD | elektro | 2.3.2 | GPL-3.0 | none (a few added tiles only) | 0 | 3 | 27 (ancient runes and their spells, darts) | none | New items and rune magic |
+| DERanged PD | deranged | Re-ARranged 3.39.0 | GPL-3.0 | none (its Abyss sheet is the Summoning Abyss we have) | 2 | 14 | 10 | Rat King omniclass | A silly Re-ARranged with a Rat King hero holding every class |
+| Blue Archive PD | bluearchive | 2.1.4 | GPL-3.0, franchise art | 1 (its white and red caves sheet) | 0 | 37 (guns by type and tier) | 26 | 9 students (Aris, Nonomi, Miyako, Hoshino, Shiroko, Noa, Miyu, Yuzu, Izuna) replacing Shattered's six | Blue Archive characters as heroes |
+| Xun's PD | xun | 2.5.0 | GPL-3.0 | none (Shattered's sheets with a few added tiles) | 6 | 69 (tier 6 among them) | 52 | Explorer, Wraith, Engineer | New weapons, tier 6 gear, three heroes |
+| Re Blue Archive PD | rebluearchive | 3.0.0 | GPL-3.0, franchise art | 3 or 4 (dark sewers, desert prison, pink caves, light city changes) | 5 (students as monsters) | 38 | 31 | 11 students beside Shattered's six | The remaster of Blue Archive PD |
+| Sandbox PD | sandboxpd | 2.1.3 | GPL-3.0 | none (its sheets add editor tiles) | 4 (editor monsters) | 3 | 18 | none | A level editor. 333 of its 401 classes are the editor |
+
+Port order, smallest first. The first five are game modes or tools and only get a line in the left out list. Then Estranged, Re-ReARranged, Polished, Community, Elektrocheckers, DERanged, Blue Archive, Xun's, Re Blue Archive, Sandbox PD.

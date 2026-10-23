@@ -25,3 +25,18 @@ goblins|https://github.com/locastan/GoblinsPixelDungeonGradle|Goblins PD, ported
 deep|https://github.com/Mochiee/deep-pixel-dungeon|Deep PD, monsters and items ported, worlds waiting for art|0.4.3c
 rearranged|https://github.com/Hoto-Mocha/Re-ARranged-Pixel-Dungeon|Re-ARranged PD, ported (heroes, guns, items, monsters, labs boss, temple floors)|3.2.0
 summoning|https://github.com/TrashboxBobylev/Summoning-Pixel-Dungeon|Summoning PD Reincarnated, porting in full|
+polished|https://github.com/lordlen/polished-pixel-dungeon|Polished PD|3.2
+half|https://github.com/lordlen/half-pixel-dungeon|Half PD|3.2.1
+radar|https://github.com/bjsp123/shattered-pixel-dungeon-radar|Shattered PD Radar|3.3.7
+evenshorter|https://github.com/TrashboxBobylev/even-shorter-pixel-dungeon|Even Shorter PD|3.1.1
+toocruel|https://github.com/juh9870/TooCruelPixelDungeonTrials|Too Cruel PD Trials|3.0.0
+xun|https://github.com/X-U-N-123/Xuns-Pixel-Dungeon|Xun's PD|2.5.0
+community|https://github.com/TrashboxBobylev/Community-Pixel-Dungeon|Community PD|2.4.2
+elektro|https://github.com/Elektrochecker/elektrocheckers-pixel-dungeon|Elektrocheckers PD|2.3.2
+sandboxpd|https://github.com/AlphaDraxonis/SandboxPixelDungeon|Sandbox PD (a level editor)|2.1.3
+custom|https://github.com/QuasiStellar/custom-pixel-dungeon|Custom PD|2.0.0
+deranged|https://github.com/TrashboxBobylev/DERanged-Pixel-Dungeon|DERanged PD, on Re-ARranged|ReARranged 3.39.0
+rerearranged|https://github.com/ek-mk8034/Re-Re-ARranged-pixel-dungeon|Re-ReARranged PD, on Re-ARranged|ReARranged 3.40.0
+estranged|https://github.com/ijulee/estranged-pixel-dungeon|Estranged PD, on Re-ARranged|ReARranged 3.40.0
+bluearchive|https://github.com/Hoto-Mocha/Blue-Archive-Pixel-Dungeon|Blue Archive PD, franchise|2.1.4
+rebluearchive|https://github.com/Hoto-Mocha/New-Blue-Archive-Pixel-Dungeon|Re Blue Archive PD, franchise|3.0.0
