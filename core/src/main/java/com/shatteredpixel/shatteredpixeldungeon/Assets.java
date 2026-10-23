@@ -534,6 +534,9 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String RESENT = "sprites/xun/resentment.png"; //ported, xun
+		public static final String MIS_TOWER = "sprites/xun/missiletower.png"; //ported, xun
+		public static final String ENGINEER = "sprites/xun/engineer.png"; //ported, xun
 		public static final String WARRIORBOSS = "sprites/transformation/warriorboss.png"; //ported, transformation
 		public static final String MYRIAD_BLACK_SHADOW_OVERLAY = "sprites/transformation/myriad_black_shadow_overlay.png"; //ported, transformation
 		public static final String SUCCBOSS = "sprites/transformation/succboss.png"; //ported, transformation

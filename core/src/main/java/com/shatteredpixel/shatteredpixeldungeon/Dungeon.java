@@ -194,7 +194,8 @@ public class Dungeon {
 		PHANTOM_EQUIP,
 		SPECTRE_RAT,
 		//xun, Xun's PD's food pouch
-		FOOD_POCKET;
+		FOOD_POCKET,
+		XUN_PARA_MISSILE;
 
 		public int count = 0;
 

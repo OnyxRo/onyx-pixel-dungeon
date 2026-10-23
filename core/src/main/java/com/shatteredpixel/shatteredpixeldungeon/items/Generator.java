@@ -471,7 +471,9 @@ public class Generator {
 					WandOfWarding.class,
 					WandOfTransfusion.class,
 					WandOfCorruption.class,
-					WandOfRegrowth.class };
+					WandOfRegrowth.class,
+					//xun, Xun's PD
+					com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfAvalanche.class };
 			WAND.defaultProbs = new float[]{ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
 			WAND.probs = WAND.defaultProbs.clone();
 			
@@ -488,9 +490,7 @@ public class Generator {
 					Cudgel.class,
 					Warpick.class, //from Devoted Pixel Dungeon,
 					//xun, Xun's PD
-					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Fork.class,
-					//xun, Xun's PD
-					com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfAvalanche.class
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Fork.class
 			};
 			WEP_T1.defaultProbs = new float[]{ 2, 0, 2, 2, 2, 2, 2, 1 };
 			WEP_T1.probs = WEP_T1.defaultProbs.clone();
@@ -771,7 +771,9 @@ public class Generator {
 					RingOfMight.class,
 					RingOfSharpshooting.class,
 					RingOfTenacity.class,
-					RingOfWealth.class};
+					RingOfWealth.class,
+					//xun, Xun's PD
+					com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfVision.class};
 			RING.defaultProbs = new float[]{ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
 			RING.probs = RING.defaultProbs.clone();
 			
@@ -789,8 +791,6 @@ public class Generator {
 					TalismanOfForesight.class,
 					TimekeepersHourglass.class,
 					UnstableSpellbook.class,
-					//xun, Xun's PD
-					com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfVision.class,
 					//xun, Xun's PD
 					com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ElementalMask.class
 			};
