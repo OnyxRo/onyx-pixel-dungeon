@@ -227,6 +227,10 @@ public class BAHero {
 		if (hero.subClass == HeroSubClass.BA_MIYAKO_EX_DRONESTRIKE && hero.buff(BADroneStrike.class) == null) {
 			Buff.affect(hero, BADroneStrike.class);
 		}
+		//also when the subclass came from a plain Tengu's mask
+		if (hero.subClass == HeroSubClass.BA_IZUNA_EX_TELEPORT && hero.buff(BATeleport.class) == null) {
+			Buff.affect(hero, BATeleport.class);
+		}
 		if (hero.hasTalent(Talent.BA_PATH_PREDICTION)) {
 			for (Char ch : Actor.chars()) {
 				if (ch.alignment == Char.Alignment.ENEMY && ch.HP <= ch.HT*(hero.pointsInTalent(Talent.BA_PATH_PREDICTION))/4) {
