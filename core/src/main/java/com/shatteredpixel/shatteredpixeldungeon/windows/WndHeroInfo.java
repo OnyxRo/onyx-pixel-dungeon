@@ -60,6 +60,7 @@ public class WndHeroInfo extends WndTabbed {
 	public WndHeroInfo( HeroClass cl ){
 
 		Image tabIcon;
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHeroes.isBA(cl)) tabIcon = com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHeroes.icon(cl); else //bluearchive
 		switch (cl){
 			case WARRIOR: default:
 				tabIcon = new ItemSprite(ItemSpriteSheet.SEAL, null);
@@ -194,6 +195,7 @@ public class WndHeroInfo extends WndTabbed {
 				add(info[i]);
 			}
 
+			if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHeroes.isBA(cls)) icons = com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHeroes.infoIcons(cls, desc_entries.length); else //bluearchive
 			switch (cls){
 				case WARRIOR: default:
 					icons = new Image[]{ new ItemSprite(ItemSpriteSheet.SEAL),

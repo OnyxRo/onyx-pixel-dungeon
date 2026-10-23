@@ -266,7 +266,43 @@ public class HeroIcon extends Image {
 
 	private static TextureFilm raFilm;
 
+	//bluearchive, Blue Archive PD's icons, drawn from its own sheet (interfaces/bluearchive/hero_icons.png)
+	public static final int BA = 30000;
+	public static final int BA_ARIS_EX_SUPERNOVA            = BA + 40;
+	public static final int BA_ARIS_EX_CHARGE               = BA + 41;
+	public static final int BA_NONOMI_EX_RIOT               = BA + 42;
+	public static final int BA_NONOMI_EX_SHOOTALL           = BA + 43;
+	public static final int BA_MIYAKO_EX_STUNDRONE          = BA + 44;
+	public static final int BA_MIYAKO_EX_DRONESTRIKE        = BA + 45;
+	public static final int BA_HOSHINO_EX_TACTICAL_PRESS    = BA + 46;
+	public static final int BA_HOSHINO_EX_TACTICAL_SHIELD   = BA + 47;
+	public static final int BA_SHIROKO_EX_ELEMENTAL_BULLET  = BA + 48;
+	public static final int BA_SHIROKO_EX_PROFESSIONAL_RIDE = BA + 49;
+	public static final int BA_NOA_EX_LARGE_MAGAZINE        = BA + 50;
+	public static final int BA_NOA_EX_DOUBLE_BARREL         = BA + 51;
+	public static final int BA_MIYU_EX_PENETRATION_SHOT     = BA + 52;
+	public static final int BA_MIYU_EX_SNIPING_BULLET       = BA + 53;
+	public static final int BA_YUZU_EX_GAME_START           = BA + 54;
+	public static final int BA_YUZU_EX_STICKY_GRENADE       = BA + 55;
+	public static final int BA_IZUNA_EX_TELEPORT            = BA + 56;
+	public static final int BA_IZUNA_EX_EXPLOSION           = BA + 57;
+	public static final int BA_STUNDRONE                    = BA + 97;
+	public static final int BA_DRONESTRIKE                  = BA + 98;
+	public static final int BA_ELEMENTAL_BULLET             = BA + 99;
+	public static final int BA_PROFESSIONAL_RIDE            = BA + 100;
+	public static final int BA_DOUBLE_BARREL                = BA + 101;
+	public static final int BA_TELEPORT                     = BA + 102;
+	public static final int BA_BLAST_MISSILE                = BA + 103;
+	private static TextureFilm baFilm;
+
 	private void pick( int icon ){
+		//bluearchive
+		if (icon >= BA){
+			texture( Assets.Interfaces.BA_HERO_ICONS );
+			if (baFilm == null) baFilm = new TextureFilm(texture, SIZE, SIZE);
+			frame(baFilm.get(icon - BA));
+			return;
+		}
 		//rearranged, the mod's sheet keeps spell action icons 48 cells on, not 32
 		if (icon >= DIVINE_BLAST + SPELL_ACTION_OFFSET && icon <= ENCHANT + SPELL_ACTION_OFFSET) icon += 16;
 		if (icon >= RA){

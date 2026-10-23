@@ -40,9 +40,18 @@ public class TalentIcon extends Image {
 	public static final int TRANSFORMATION_BASE = 4096;
 	private static TextureFilm transFilm;
 
+	private static TextureFilm baFilm;
+
 	public TalentIcon(int icon){
-		super( icon >= 10000 ? Assets.Interfaces.RA_TALENT_ICONS
+		super( icon >= 30000 ? Assets.Interfaces.BA_TALENT_ICONS : icon >= 10000 ? Assets.Interfaces.RA_TALENT_ICONS
 				: icon >= TRANSFORMATION_BASE ? Assets.Interfaces.TALENT_ICONS_TRANSFORMATION : Assets.Interfaces.TALENT_ICONS );
+
+		//bluearchive, icons of 30000 and up come from Blue Archive PD's own sheet
+		if (icon >= 30000){
+			if (baFilm == null) baFilm = new TextureFilm(texture, SIZE, SIZE);
+			frame(baFilm.get(icon - 30000));
+			return;
+		}
 
 		//rearranged, icons of 10000 and up come from Re-ARranged PD's own sheet
 		if (icon >= 10000){

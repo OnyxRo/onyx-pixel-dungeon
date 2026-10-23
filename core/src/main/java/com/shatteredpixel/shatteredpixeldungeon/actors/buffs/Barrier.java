@@ -48,6 +48,11 @@ public class Barrier extends ShieldBuff {
 		if (shielding() == shield) partialLostShield = 0;
 	}
 
+	//bluearchive, adds shield up to a cap
+	public void set(int shield, int max) {
+		setShield(Math.min(max, shielding() + shield));
+	}
+
 	@Override
 	public boolean act() {
 

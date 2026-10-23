@@ -820,6 +820,11 @@ public class Hero extends Char {
 	}
 
 	public boolean shoot( Char enemy, MissileWeapon wep ) {
+		return shoot( enemy, wep, 1f, 0, 1f );
+	}
+
+	//bluearchive, Blue Archive PD's guns shoot with damage and accuracy multipliers
+	public boolean shoot( Char enemy, MissileWeapon wep, float dmgMulti, float dmgBonus, float accMulti ) {
 
 		attackTarget = enemy;
 		boolean wasEnemy = enemy.alignment == Alignment.ENEMY
@@ -828,7 +833,8 @@ public class Hero extends Char {
 		//temporarily set the hero's weapon to the missile weapon being used
 		//TODO improve this!
 		belongings.thrownWeapon = wep;
-		boolean hit = attack( enemy );
+		dmgMulti = BAHero.critMulti(this, wep, dmgMulti); //bluearchive
+		boolean hit = attack( enemy, dmgMulti, dmgBonus, accMulti );
 		Invisibility.dispel();
 		belongings.thrownWeapon = null;
 

@@ -1,0 +1,9 @@
+package com.shatteredpixel.shatteredpixeldungeon.actors.buffs.elementals;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BAElementalBullet;
+import com.watabou.noosa.Image;
+public class BAIncendiaryBullet extends BAElementalBulletBuff {
+    @Override
+    public void tintIcon(Image icon) {
+        icon.hardlight(BAElementalBullet.ElementalReload.INCENDIARY_BULLET.tintColor);
+    }
+}
