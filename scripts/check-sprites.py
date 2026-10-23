@@ -60,6 +60,10 @@ for fn in sorted(os.listdir(os.path.join(PK, 'sprites'))):
     if not fn.endswith('.java'):
         continue
     src = rd(os.path.join(PK, 'sprites', fn))
+    # a texture named by a plain path string (Magic Ling's "Boss/SLMKING0.png") must exist too
+    for lit in re.findall(r'texture\(\s*"([^"]+)"\s*\)', src):
+        if not os.path.exists(os.path.join(ASSETS, lit)):
+            print('%s: picture %s is missing' % (fn, lit)); problems += 1
     # only sprites that use exactly one texture, otherwise it is not clear which picture a film belongs to
     refs = set(re.findall(r'texture\(\s*Assets\.(\w+)\.(\w+)\s*\)', src))
     if len(refs) != 1:

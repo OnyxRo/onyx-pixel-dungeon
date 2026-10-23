@@ -254,3 +254,7 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - A mod terrain tile (Xun's underpass) does not port, every world sheet would need the tile. Keep the cells in a small `Blob` subclass whose `evolve` copies `cur` to `off`, and show the cell as an existing terrain.
 - `TransformationHeroesTest` takes hero class names and checks text, talents, subclasses and save and load. Heroes with a different shape (three subclasses, five talents) need their shape added to the test, as was done for Xun's.
 - Python heredocs inside Bash turn a backslash n inside a Java string into a real line break. Write Python edit scripts to the scratchpad with the Write tool and run them from there.
+## Added after Magic Ling batch 2 (2026-10-23)
+- **Before a big copy, list each monster's missing imports** (a short loop over its import lines, checking which classes we lack). A monster whose list names a boss, a boss level or a window will drag the whole system in. Drop it from the batch or put that class in `port-skip.txt` first, then fix the few broken lines by hand.
+- **If the copied files still show the mod's names** (`Statistics.bossRushMode` and the like) after a port, the rename rows did not run. Check which list in `renames.py` holds them. Only the plain `RENAMES` list runs on every mod.
+- **Mod sprites that name a picture by a plain path** (`texture("Boss/SLMKING0.png")`) are not covered by the Assets check. `check-sprites.py` lists them now, copy each picture to `sprites/<key>/` and change the path.

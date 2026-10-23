@@ -10,7 +10,7 @@ import com.watabou.utils.GameMath;
 
 public class LgSprites extends MobSprite {
     public LgSprites() {
-        this.texture("Boss/SLMKING4.png");
+        this.texture("sprites/magicling/slmking4.png");
         TextureFilm var1 = new TextureFilm(this.texture, 20, 14);
         Integer var2 = 2;
         Integer var3 = 1;

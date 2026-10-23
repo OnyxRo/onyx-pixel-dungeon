@@ -100,3 +100,7 @@ Ported OldTengu, OldDM300, King and Yog with their four sealed arena levels. Bos
 ## 2026-10-23 crash popup and crash list
 
 The crash box hid every crash for weeks behind "Invalid message with quotes", so crashes reached Claude only by screenshot. Now they are recorded in a file. A whole second item sheet was ported without wiring it into ItemSprite, nothing checked that items have pictures. ItemSpriteTest does now.
+
+## 2026-10-23 Magic Ling batch 2
+
+The first copy pulled in 265 files (bosses, boss levels, windows) because Army Flag reaches the Dwarf General and two potions reach the Champion buff. Undoing and copying again cost about 15 minutes. Then none of the Magic Ling rename rows fired, because they sat in the SPS list, which only runs on SPS code. Fixes. `renames.apply` now always runs the rows named "Magic Ling", the boss and treasure classes that drag everything in are in `port-skip.txt`, and `check-sprites.py` now catches textures named by a plain path (it found six old slime sprites that would have crashed).

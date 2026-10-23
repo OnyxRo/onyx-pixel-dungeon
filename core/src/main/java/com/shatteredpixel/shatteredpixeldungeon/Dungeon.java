@@ -109,6 +109,9 @@ public class Dungeon {
 		HUNR_HP,
 		NSR,
 		WORM_HP,
+		//from Magic Ling PD, the Cold Magic Rat's potions and the Skeleton Demon's dragon's breath
+		ICERAT_HP,
+		WISP_PHANTOM_FIRE,
 		//from Shittened PD
 		FOODCRATE,
 		TWINGO_ALBUM,

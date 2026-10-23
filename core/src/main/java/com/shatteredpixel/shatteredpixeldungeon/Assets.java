@@ -575,6 +575,28 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String VAMPIRE = "sprites/hollow/magicling/vampire.png"; //ported, magicling
+		public static final String TURTLE = "sprites/ancity/magicling/cltb.png"; //ported, magicling
+		public static final String THREEBUG = "sprites/ancity/magicling/threeleafbug.png"; //ported, magicling
+		public static final String BONE_BEAST = "sprites/tumulus/magicling/bone_beast.png"; //ported, magicling
+		public static final String SATS = "sprites/boss/magicling/yog_servantavgomon.png"; //ported, magicling
+		public static final String RICE_RAT = "sprites/boss/magicling/ricemouse.png"; //ported, magicling
+		public static final String REDSWARM = "sprites/magicling/RedSearm.png"; //ported, magicling
+		public static final String GHOST_HP = "sprites/hollow/magicling/pumpkin_ghost.png"; //ported, magicling
+		public static final String BOMB = "sprites/hollow/magicling/gingerbread.png"; //ported, magicling
+		public static final String PIRANHA_LAND = "sprites/boss/magicling/piranha_land.png"; //ported, magicling
+		public static final String NECRO_APPREN = "sprites/tumulus/magicling/nec_acolyte.png"; //ported, magicling
+		public static final String CRSTA = "sprites/magicling/crstalspawn.png"; //ported, magicling
+		public static final String GHOST_HE = "sprites/hollow/magicling/ghost_halloween.png"; //ported, magicling
+		public static final String DM275 = "sprites/magicling/dm275-RPG.png"; //ported, magicling
+		public static final String COLDRAT = "sprites/magicling/coldrat.png"; //ported, magicling
+		public static final String BTSLIMH = "sprites/hollow/magicling/butcher.png"; //ported, magicling
+		public static final String NECROBLUE = "sprites/magicling/bluenecromancer.png"; //ported, magicling
+		public static final String BLOOD_SWARM = "sprites/magicling/swarm_red.png"; //ported, magicling
+		public static final String BLEED_SENTRY = "sprites/hollow/magicling/bleed_star.png"; //ported, magicling
+		public static final String APWHEEL = "sprites/hollow/magicling/apprentice_witch.png"; //ported, magicling
+		public static final String ANOMALO = "sprites/ancity/magicling/anomalocaris.png"; //ported, magicling
+		public static final String ARTILLERIST = "sprites/gold/magicling/artillerist.png"; //ported, magicling
 		public static final String WIND_SPIRIT = "sprites/community/wind_spirit.png"; //ported, community
 		public static final String WATER_STRIDER = "sprites/community/water_strider.png"; //ported, community
 		public static final String DMXXX = "sprites/community/dmXXX.png"; //ported, community
@@ -764,6 +786,8 @@ public class Assets {
 		public static final String DIED = "sprites/items/magicling/died.png"; //ported, magicling
 		public static final String DEADEYE = "sprites/magicling/eye_doom.png"; //ported, magicling
 		public static final String CRUMB = "sprites/hollow/magicling/crumb.png"; //ported, magicling
+		public static final String ML_BRUTE = "sprites/magicling/brute.png"; //ported, magicling, has the Brute Bot rows
+		public static final String ML_FRANKENSTEIN = "sprites/hollow/magicling/frankenstein.png"; //ported, magicling
 		public static final String CRID = "sprites/boss/magicling/ColdGuard.png"; //ported, magicling
 		public static final String AGGREATUS = "sprites/tumulus/magicling/aggregatus_of_grudge.png"; //ported, magicling
 		public static final String HEROGNOLLOLD = "sprites/gold/magicling/tribesman_old.png"; //ported, magicling

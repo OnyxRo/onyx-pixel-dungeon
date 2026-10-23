@@ -17,6 +17,16 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.dragon.RiceRat;
+
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.dragon.PiraLand;
+
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.ancity.Turtle;
+
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.ancity.ThreeLeafBug;
+
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.ancity.AnomaloCaris;
+
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.tmobs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.tboss.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.towers.*;
@@ -541,6 +551,33 @@ public class ModRoster {
 		add( "xun", MissileTower.class, 0, 1, 26 );
 		add( "xun", Resentment.class, 2, 21, 23 );
 		add( "xun", Marlock.class, 0, 16, 20 );
+		add( "magicling", AnomaloCaris.class, 1, 1, 99 );
+		add( "magicling", Artillerist.class, 1, 1, 99 );
+		add( "magicling", IceCrystal.class, 1, 1, 99 );
+		add( "magicling", PiraLand.class, 1, 1, 99 );
+		add( "magicling", PumkingBomber.class, 1, 1, 99 );
+		add( "magicling", Slime_Red.class, 1, 1, 99 );
+		add( "magicling", ThreeLeafBug.class, 1, 1, 99 );
+		add( "magicling", Turtle.class, 1, 1, 99 );
+		add( "magicling", ServantAvgomon.class, 1, 1, 99 );
+		add( "magicling", ColdMagicRat.class, 1, 1, 99 );
+		add( "magicling", RiceRat.class, 1, 1, 99 );
+		add( "magicling", RedSwarm.class, 1, 1, 99 );
+		add( "magicling", BloodsSwarm.class, 1, 1, 99 );
+		add( "magicling", SkeletonDemon.class, 1, 1, 99 );
+		add( "magicling", BruteBot.class, 1, 1, 99 );
+		add( "magicling", ApprenticeWitch.class, 1, 1, 99 );
+		add( "magicling", FlameC01.class, 1, 1, 99 );
+		add( "magicling", FlameC02.class, 1, 1, 99 );
+		add( "magicling", Vampire.class, 1, 1, 99 );
+		add( "magicling", Frankenstein.class, 1, 1, 99 );
+		add( "magicling", Butcher.class, 1, 1, 99 );
+		add( "magicling", HollowMimic.class, 1, 1, 99 );
+		add( "magicling", Pumking_Ghost.class, 1, 1, 99 );
+		add( "magicling", Ghost_Halloween.class, 1, 1, 99 );
+		add( "magicling", KagenoNusujin.class, 1, 1, 99 );
+		add( "magicling", SkullShaman.class, 1, 1, 99 );
+		add( "magicling", GnollShiled.class, 1, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

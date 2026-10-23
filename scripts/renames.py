@@ -201,7 +201,11 @@ SPS_RULES = [
     ('Magic Ling attack override with a type', r'(public|protected)(\s+)boolean(\s+)attack\(\s*Char\s+(\w+)\s*,\s*float\s+(\w+)\s*,\s*float\s+(\w+)\s*,\s*float\s+(\w+)\s*,\s*(?:Char\.)?DamageType\s+(\w+)\s*\)\s*\{', r'\1\2boolean\3attack( Char \4, float \5, float \6, float \7 ) {\n\t\tDamageType \8 = DamageType.PHYSICAL;'),
     ('Magic Ling inner sprite classes of vanilla sprites', r'\b(?:BatSprite\.BatEDSprite|CrabSprite\.NewBornCrabSprite|MimicSprite\.Dimand)\b', lambda m: 'com.shatteredpixel.shatteredpixeldungeon.sprites.MagicLingSprites.' + m.group(0).split('.')[1]),
     ('Magic Ling counters kept in MagicLingStats', r'\bStatistics\.(survey_research_points|unLockedFireDargon|doNotLookLing|sakaBackStage|spawnersIce|spawnersTombTownAlive|lanterfireactive|crivusfruitslevel2|crivusfruitslevel3|dimandchestmazeCollected|skydeadFight|defalult_deaddog|bossRushMode|dwarfKill|killYogMobsAnargy|attackIFGirl|RandomQuest|GoldMobDead|GoldMobLimit|TPDoorDieds|KillMazeMimic|goldRefogreCount)\b', r'com.shatteredpixel.shatteredpixeldungeon.MagicLingStats.\1'),
-    ('Magic Ling Random.Boolean', r'\bRandom\.Boolean\(\)', '(Random.Int(2) == 0)'),
+    ('Magic Ling ancient city badge, not ported', r'\bBadges\.validateAncityProgress\(\)\s*;', ';'),
+    ('Magic Ling red dragon quest, not ported', r'\bRedDragon\.Quest\.process\(\)\s*;', ';'),
+    ('Magic Ling password badges, not ported', r'\bPaswordBadges\.\w+\(\)\s*;', ';'),
+    ('Magic Ling DLC conducts are never on',r'\bDungeon\.isDLC\(\s*Conducts\.Conduct\.\w+\s*\)', 'false'),
+    ('Magic Ling Random.Boolean',r'\bRandom\.Boolean\(\)', '(Random.Int(2) == 0)'),
     ('Magic Ling Terrain.SALT_WATER', r'\bTerrain\.SALT_WATER\b', 'Terrain.WATER'),
     ('Magic Ling mob.properties field', r'\b(mob|enemy|ch)\.properties\.contains', r'\1.properties().contains'),
     ('Magic Ling ColorTargetedCell', r'new ColorTargetedCell\(', 'com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell.colored('),
@@ -249,7 +253,9 @@ def apply(s, sps=False):
     fired = []
     t = convert_long(s)
     if t != s: fired.append('long damage became int')
-    for why, pat, rep in (SPS_RULES if (sps or 'com.hmdzl.spspd' in s) else []) + RENAMES:
+    # the Magic Ling rows sit in SPS_RULES but are for Magic Ling code, so they always run
+    rules = SPS_RULES if (sps or 'com.hmdzl.spspd' in s) else [r for r in SPS_RULES if r[0].startswith('Magic Ling')]
+    for why, pat, rep in rules + RENAMES:
         t2 = re.sub(pat, rep, t)
         if t2 != t: fired.append(why); t = t2
     # old style resistance and immunity sets (Pixel Spacebase) become the fields of this game's Char
