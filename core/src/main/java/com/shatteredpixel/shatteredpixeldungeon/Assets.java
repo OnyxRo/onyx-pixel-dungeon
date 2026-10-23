@@ -151,6 +151,11 @@ public class Assets {
 		public static final String RA_HERO_ICONS   = "interfaces/rearranged/hero_icons.png";
 		public static final String RA_BUFFS_SMALL  = "interfaces/rearranged/buffs.png";
 		public static final String RA_BUFFS_LARGE  = "interfaces/rearranged/large_buffs.png";
+		//deranged, DERanged PD's own icon sheets, picked by an icon number of 20000 or more
+		public static final String DR_TALENT_ICONS = "interfaces/deranged/talent_icons.png";
+		public static final String DR_HERO_ICONS   = "interfaces/deranged/hero_icons.png";
+		public static final String DR_BUFFS_SMALL  = "interfaces/deranged/buffs.png";
+		public static final String DR_BUFFS_LARGE  = "interfaces/deranged/large_buffs.png";
 	}
 
 	//these points to resource bundles, not raw asset files
@@ -525,9 +530,15 @@ public class Assets {
 		public static final String KNIGHT     = "splashes/rearranged/knight.jpg";
 		public static final String MEDIC      = "splashes/rearranged/medic.jpg";
 		public static final String ARCHER     = "splashes/rearranged/archer.jpg";
+		//deranged
+		public static final String RAT_KING   = "splashes/deranged/ratking.jpg";
 	}
 
 	public static class Sprites {
+		//deranged
+		public static final String RAT_KING_HERO    = "sprites/deranged/ratkinghero.png";
+		public static final String ECH              = "sprites/deranged/ech.png";
+		public static final String MYSTERY_MERCHANT = "sprites/deranged/mystery_merchant.png";
 		public static final String WARRIORBOSS = "sprites/transformation/warriorboss.png"; //ported, transformation
 		public static final String MYRIAD_BLACK_SHADOW_OVERLAY = "sprites/transformation/myriad_black_shadow_overlay.png"; //ported, transformation
 		public static final String SUCCBOSS = "sprites/transformation/succboss.png"; //ported, transformation

@@ -266,9 +266,23 @@ public class HeroIcon extends Image {
 
 	private static TextureFilm raFilm;
 
+	//deranged, DERanged PD's icons, drawn from its own sheet (interfaces/deranged/hero_icons.png)
+	public static final int DR = 20000;
+	public static final int DR_KING         = DR + 97;
+	public static final int DR_WRATH        = DR + 98;
+	public static final int DR_BLOCKING     = DR + 99;
+	private static TextureFilm drFilm;
+
 	private void pick( int icon ){
 		//rearranged, the mod's sheet keeps spell action icons 48 cells on, not 32
 		if (icon >= DIVINE_BLAST + SPELL_ACTION_OFFSET && icon <= ENCHANT + SPELL_ACTION_OFFSET) icon += 16;
+		//deranged, icons of 20000 and up come from DERanged PD's own sheet
+		if (icon >= DR && icon < DR + 10000){
+			texture( Assets.Interfaces.DR_HERO_ICONS );
+			if (drFilm == null) drFilm = new TextureFilm(texture, SIZE, SIZE);
+			frame(drFilm.get(icon - DR));
+			return;
+		}
 		if (icon >= RA){
 			texture( Assets.Interfaces.RA_HERO_ICONS );
 			if (raFilm == null) raFilm = new TextureFilm(texture, SIZE, SIZE);

@@ -30,6 +30,7 @@ public class TalentIcon extends Image {
 
 	private static TextureFilm film;
 	private static TextureFilm raFilm;
+	private static TextureFilm drFilm;
 	private static final int SIZE = 16;
 
 	public TalentIcon(Talent talent){
@@ -41,8 +42,15 @@ public class TalentIcon extends Image {
 	private static TextureFilm transFilm;
 
 	public TalentIcon(int icon){
-		super( icon >= 10000 ? Assets.Interfaces.RA_TALENT_ICONS
+		super( icon >= 20000 && icon < 30000 ? Assets.Interfaces.DR_TALENT_ICONS : icon >= 10000 ? Assets.Interfaces.RA_TALENT_ICONS
 				: icon >= TRANSFORMATION_BASE ? Assets.Interfaces.TALENT_ICONS_TRANSFORMATION : Assets.Interfaces.TALENT_ICONS );
+
+		//deranged, icons of 20000 and up come from DERanged PD's own sheet
+		if (icon >= 20000 && icon < 30000){
+			if (drFilm == null) drFilm = new TextureFilm(texture, SIZE, SIZE);
+			frame(drFilm.get(icon - 20000));
+			return;
+		}
 
 		//rearranged, icons of 10000 and up come from Re-ARranged PD's own sheet
 		if (icon >= 10000){
