@@ -147,6 +147,27 @@ public class ArcaneResin extends Item {
 		}
 	};
 
+	//Community PD, gemstone dust can boost wands too, this spends it like resin
+	public static void apply(Item boostItem, int usedBoost, Wand boostedWand){
+		if (usedBoost < boostItem.quantity()){
+			boostItem.quantity(boostItem.quantity()-usedBoost);
+		} else {
+			boostItem.detachAll(Dungeon.hero.belongings.backpack);
+		}
+		Catalog.countUses(boostItem.getClass(), usedBoost);
+
+		boostedWand.resinBonus++;
+		boostedWand.curCharges++;
+		boostedWand.updateLevel();
+		Item.updateQuickslot();
+
+		curUser.sprite.operate(curUser.pos);
+		Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+		curUser.sprite.emitter().start( Speck.factory( Speck.UP ), 0.2f, 3 );
+
+		curUser.spendAndNext(Actor.TICK);
+	}
+
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe {
 
 		@Override

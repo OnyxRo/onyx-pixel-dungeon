@@ -44,6 +44,7 @@ public class Chill extends FlavourBuff {
 
 	//reduces speed by 10% for every turn remaining, capping at 50%
 	public float speedFactor(){
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.CommunityHooks.necklaceWarm(target)) return 1f; //Community PD, Necklace of Ice
 		return Math.max(0.5f, 1 - cooldown()*0.1f);
 	}
 

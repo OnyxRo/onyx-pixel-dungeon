@@ -536,6 +536,7 @@ public class Item implements Bundlable {
 		if (byHero && Dungeon.hero != null && Dungeon.hero.isAlive()){
 			Catalog.setSeen(getClass());
 			Statistics.itemTypesDiscovered.add(getClass());
+			if (!isIdentified()) com.shatteredpixel.shatteredpixeldungeon.actors.hero.BATalents.onItemIdentified(Dungeon.hero); //bluearchive
 		}
 
 		levelKnown = true;
@@ -764,7 +765,7 @@ public class Item implements Bundlable {
 									Buff.affect(curUser, Talent.ImprovisedProjectileCooldown.class, 50f);
 								}
 							}
-							if (user.buff(Talent.LethalMomentumTracker.class) != null){
+							if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.freeAttack(user)){ user.next(); } else if (user.buff(Talent.LethalMomentumTracker.class) != null){ //bluearchive, Miyu
 								user.buff(Talent.LethalMomentumTracker.class).detach();
 								user.next();
 							} else {
@@ -826,7 +827,7 @@ public class Item implements Bundlable {
 									Buff.affect(curUser, Talent.ImprovisedProjectileCooldown.class, 50f);
 								}
 							}
-							if (user.buff(Talent.LethalMomentumTracker.class) != null){
+							if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.freeAttack(user)){ user.next(); } else if (user.buff(Talent.LethalMomentumTracker.class) != null){ //bluearchive, Miyu
 								user.buff(Talent.LethalMomentumTracker.class).detach();
 								user.next();
 							} else {

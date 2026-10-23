@@ -703,7 +703,9 @@ abstract public class Weapon extends KindOfWeapon {
 				Corrupting.class, Crystal.class, Grim.class, Vampiric.class,
 				//Lovecraft PD
 				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Holy.class,
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.TimeFreezing.class
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.TimeFreezing.class,
+				//Elektrocheckers PD
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Corroding.class
 		};
 
 		public static final float[] typeChances = new float[]{

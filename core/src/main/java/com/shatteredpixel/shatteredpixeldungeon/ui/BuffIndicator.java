@@ -258,6 +258,10 @@ public class BuffIndicator extends Component {
 	public static final int SHEATHING      = 10153;
 	public static final int DEMON_ON       = 10154;
 	public static final int DEMON_OFF      = 10155;
+	//bluearchive, Blue Archive PD buff icons, drawn from interfaces/bluearchive (see BuffIcon)
+	public static final int BA_ARMOR_LIGHT = 30136;
+	public static final int BA_BULLET      = 30137;
+	public static final int BA_SNIPING     = 30138;
 	public static final int LUCK           = 10156;
 	public static final int JUDGEMENT      = 10157;
 	public static final int HORSE_RIDING   = 10158;

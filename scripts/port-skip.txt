@@ -150,3 +150,9 @@ ChangingRoomTile
 CustomTileVisual
 Floor
 Mercenary
+
+# whole mod folders, a line ending in / skips every class under it (Sandbox PD level editor and its helpers)
+editor/
+customobjects/
+scrollofdebug/
+services/server/

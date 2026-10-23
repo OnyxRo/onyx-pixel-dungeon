@@ -98,6 +98,7 @@ abstract public class ClassArmor extends Armor {
 	public static ClassArmor upgrade (Hero owner, Armor armor ) {
 		
 		ClassArmor classArmor = null;
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHeroes.isBA(owner.heroClass)) classArmor = com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHeroes.classArmor(owner.heroClass); //bluearchive
 
 		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.isStudent(owner)) classArmor = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHeroes.classArmor(owner.heroClass); //rebluearchive
 		else switch (owner.heroClass) {

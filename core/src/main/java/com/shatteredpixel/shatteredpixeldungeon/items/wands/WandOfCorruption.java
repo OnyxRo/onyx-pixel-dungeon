@@ -196,6 +196,7 @@ public class WandOfCorruption extends Wand {
 		
 		//do not consider buffs which are already assigned, or that the enemy is immune to.
 		HashMap<Class<? extends Buff>, Float> debuffs = new HashMap<>(category);
+		com.shatteredpixel.shatteredpixeldungeon.PolishedPD.addBrittle(debuffs, category == MINOR_DEBUFFS); //polished
 		for (Buff existing : enemy.buffs()){
 			if (debuffs.containsKey(existing.getClass())) {
 				debuffs.put(existing.getClass(), 0f);

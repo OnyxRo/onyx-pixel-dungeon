@@ -131,10 +131,14 @@ run([sys.executable, '-I', 'scripts/port-strings.py', '.', MOD, MODNAME])
 # placeholder text for items the mod never described
 props = ROOT + '/core/src/main/assets/messages/items/items.properties'
 ptext = rd(props)
+# text can sit in any message file (plants in plants.properties, blobs in actors.properties), so look in all of them
+alltext = ''.join(rd(p) for p in glob.glob(ROOT + '/core/src/main/assets/messages/*/*.properties') if not re.search(r'_[a-z]{2}(_[A-Z]{2})?\.properties$', p))
 ph = []
 for rel in copied:
     key = rel[:-5].replace('/', '.').lower()
-    if key + '.name=' in ptext: continue
+    if key + '.name=' in alltext: continue
+    src = ROOT + '/' + PK + rel
+    if os.path.exists(LP(src)) and re.search(r'\babstract\s+class\b', rd(src)): continue  # never shown in game
     words = re.sub(r'(?<=[a-z0-9])(?=[A-Z])', ' ', os.path.basename(rel)[:-5]).lower()
     ptext += '\n%s.name=%s\n%s.desc=The %s, from %s. The mod gave it no description.' % (key, words, key, words, MODNAME)
     ph.append(os.path.basename(rel)[:-5])

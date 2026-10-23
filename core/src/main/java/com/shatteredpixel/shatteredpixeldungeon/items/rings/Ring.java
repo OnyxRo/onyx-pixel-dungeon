@@ -190,6 +190,13 @@ public class Ring extends KindofMisc {
 			desc = super.info();
 		}
 
+		//Community PD, levels from gemstone dust
+		if (dustBonus == 1){
+			desc += "\n\n" + Messages.get(Ring.class, "dust_one");
+		} else if (dustBonus > 1){
+			desc += "\n\n" + Messages.get(Ring.class, "dust_many", dustBonus);
+		}
+
 		if (cursed && isEquipped( Dungeon.hero )) {
 			desc += "\n\n" + Messages.get(Ring.class, "cursed_worn");
 			
@@ -243,8 +250,21 @@ public class Ring extends KindofMisc {
 		if (Random.Int(3) == 0) {
 			cursed = false;
 		}
-		
+
+		//Community PD, a normal upgrade replaces one level of gemstone dust
+		if (dustBonus > 0){
+			dustBonus--;
+		}
+
 		return this;
+	}
+
+	//Community PD, levels gained from gemstone dust, reset by normal upgrades
+	public int dustBonus = 0;
+
+	@Override
+	public int level() {
+		return super.level() + dustBonus;
 	}
 	
 	@Override
@@ -330,12 +350,14 @@ public class Ring extends KindofMisc {
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
 		bundle.put( LEVELS_TO_ID, levelsToID );
+		if (dustBonus > 0) bundle.put( "dust_bonus", dustBonus );
 	}
 
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
 		levelsToID = bundle.getFloat( LEVELS_TO_ID );
+		dustBonus = bundle.getInt( "dust_bonus" );
 	}
 	
 	public void onHeroGainExp( float levelPercent, Hero hero ){

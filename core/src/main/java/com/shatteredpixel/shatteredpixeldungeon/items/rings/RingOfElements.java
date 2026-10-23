@@ -76,6 +76,7 @@ public class RingOfElements extends Ring {
 		RESISTS.add( Frost.class );
 		RESISTS.add( Ooze.class );
 		RESISTS.add( Paralysis.class );
+		RESISTS.add( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Electrified.class ); //polished
 		RESISTS.add( Poison.class );
 		RESISTS.add( Corrosion.class );
 
@@ -94,7 +95,16 @@ public class RingOfElements extends Ring {
 				if (c.isAssignableFrom(effect)) return 0.67f * resistNoTalent(target, effect);
 			}
 		}
-		return resistNoTalent(target, effect);
+		return resistNoTalent(target, effect) * communityLean(target, effect);
+	}
+
+	//Community PD, the Leany Elixir's lean makes elemental harm three times weaker
+	private static float communityLean( Char target, Class effect ){
+		if (target == null || target.buff(com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.LeanyElixir.Lean.class) == null) return 1f;
+		for (Class c : RESISTS){
+			if (c.isAssignableFrom(effect)) return 1/3f;
+		}
+		return 1f;
 	}
 
 	private static float resistNoTalent( Char target, Class effect ){

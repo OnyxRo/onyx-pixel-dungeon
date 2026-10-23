@@ -218,6 +218,8 @@ public class WorldShuffle {
 			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.MagicCaveLevel.class,
 			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.SnowTownLevel.class,
 			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.SpsVaultLevel.class,
+			//Blue Archive Pixel Dungeon
+			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.BlueArchiveCavesLevel.class,
 			//Re Blue Archive Pixel Dungeon
 			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.RBADarkSewersLevel.class,
 			com.shatteredpixel.shatteredpixeldungeon.levels.worlds.RBADesertPrisonLevel.class,
@@ -285,6 +287,8 @@ public class WorldShuffle {
 			SEWERS, PRISON, CAVES, CITY, HALLS, CITY, PRISON,
 			//SPecial Surprise Pixel Dungeon. Stage sheets, then its side floors. Forest, Beach and Vault were its sewer, cave and city challenge floors, the rest are guesses
 			SEWERS, PRISON, CAVES, CITY, HALLS, SEWERS, SEWERS, SEWERS, PRISON, PRISON, CAVES, CAVES, CAVES, CITY,
+			//Blue Archive Pixel Dungeon, its caves sheet (the mod's only new tile sheet)
+			CAVES,
 			//Re Blue Archive Pixel Dungeon, its redraws of the sewers, prison and caves sheets
 			SEWERS, PRISON, CAVES
 	};
@@ -311,6 +315,7 @@ public class WorldShuffle {
 	private static final String UNLEASHED = "interfaces/mods/unleashed.png";
 	private static final String SPACEBASE = "interfaces/mods/spacebase.png";
 	private static final String SPS = "interfaces/mods/sps.png";
+	private static final String BLUEARCHIVE = "interfaces/mods/bluearchive.png";
 	private static final String REBLUEARCHIVE = "interfaces/mods/rebluearchive.png";
 	private static final String[] LOGOS = {
 			null, null, null, null, null,
@@ -361,6 +366,8 @@ public class WorldShuffle {
 			SPACEBASE, SPACEBASE, SPACEBASE, SPACEBASE, SPACEBASE, SPACEBASE, SPACEBASE,
 			//SPecial Surprise Pixel Dungeon
 			SPS, SPS, SPS, SPS, SPS, SPS, SPS, SPS, SPS, SPS, SPS, SPS, SPS, SPS,
+			//Blue Archive Pixel Dungeon
+			BLUEARCHIVE,
 			//Re Blue Archive Pixel Dungeon
 			REBLUEARCHIVE, REBLUEARCHIVE, REBLUEARCHIVE
 	};
@@ -704,6 +711,11 @@ public class WorldShuffle {
 			classes = java.util.Arrays.copyOf( classes, classes.length + 1 );
 			classes[classes.length - 1] = com.shatteredpixel.shatteredpixeldungeon.levels.traps.TransformationTrap.class;
 		}
+		//Community PD, its regrowth trap joins the caves and city trap lists
+		if (communityRegrowth()) {
+			classes = java.util.Arrays.copyOf( classes, classes.length + 1 );
+			classes[classes.length - 1] = com.shatteredpixel.shatteredpixeldungeon.levels.traps.RegrowthTrap.class;
+		}
 		return classes;
 	}
 
@@ -717,7 +729,17 @@ public class WorldShuffle {
 			chances = java.util.Arrays.copyOf( chances, chances.length + 1 );
 			chances[chances.length - 1] = 1f;
 		}
+		if (communityRegrowth()) {
+			chances = java.util.Arrays.copyOf( chances, chances.length + 1 );
+			chances[chances.length - 1] = 1f;
+		}
 		return chances;
+	}
+
+	//Community PD put its regrowth trap on caves and city floors, as an uncommon trap
+	private static boolean communityRegrowth(){
+		return com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CommunitySpawner.active()
+				&& Dungeon.depth > 10 && Dungeon.depth < 20;
 	}
 
 	/** The floor's world name, like "The Astral Library", or null for Shattered's own worlds. */

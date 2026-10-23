@@ -66,9 +66,11 @@ public class Challenges {
 	public static final int FATIGUE				= 1 << 21;
 	public static final int MUTATION			= 1 << 22;
 	public static final int REARRANGED_HEROES	= 1 << 23;
+	//polished, an option that turns on Polished PD's changes to Shattered's own things
+	public static final int POLISHED_CHANGES	= 1 << 24;
 
-	public static final int MAX_VALUE           = (1 << 24) - 1;
-	public static final int MAX_CHALS           = 24;
+	public static final int MAX_VALUE           = (1 << 25) - 1;
+	public static final int MAX_CHALS           = 25;
 
 	public static final String[] NAME_IDS = {
 			"champion_enemies",
@@ -91,7 +93,9 @@ public class Challenges {
 			//transformation
 			"cursed_talents",
 			//rearranged
-			"superman", "pyro", "cursed_dungeon", "fatigue", "mutation", "rearranged_heroes"
+			"superman", "pyro", "cursed_dungeon", "fatigue", "mutation", "rearranged_heroes",
+			//polished
+			"polished_changes"
 	};
 
 	public static final int[] MASKS = {
@@ -100,14 +104,17 @@ public class Challenges {
 			//transformation
 			CURSED_TALENTS,
 			//rearranged
-			SUPERMAN, PYRO, CURSED_DUNGEON, FATIGUE, MUTATION, REARRANGED_HEROES
+			SUPERMAN, PYRO, CURSED_DUNGEON, FATIGUE, MUTATION, REARRANGED_HEROES,
+			//polished
+			POLISHED_CHANGES
 	};
 
 	//the nine challenges Shattered always has and Experienced's cycles, the rest have to be unlocked
 	private static final int ALWAYS_UNLOCKED = NO_FOOD | NO_ARMOR | NO_HEALING | NO_HERBALISM | SWARM_INTELLIGENCE
 			| DARKNESS | NO_SCROLLS | CHAMPION_ENEMIES | STRONGER_BOSSES | ENDLESS_CYCLES
 			| CURSED_TALENTS //transformation
-			| SUPERMAN | PYRO | CURSED_DUNGEON | FATIGUE | MUTATION | REARRANGED_HEROES; //rearranged
+			| SUPERMAN | PYRO | CURSED_DUNGEON | FATIGUE | MUTATION | REARRANGED_HEROES //rearranged
+			| POLISHED_CHANGES; //polished
 
 	public static int activeChallenges(){
 		return activeChallenges(Dungeon.challenges);

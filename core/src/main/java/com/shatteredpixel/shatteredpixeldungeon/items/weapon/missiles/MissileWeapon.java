@@ -160,6 +160,7 @@ abstract public class MissileWeapon extends Weapon {
 	
 	public int STRReq(int lvl){
 		int req = STRReq(tier, lvl) - 1; //1 less str than normal for their tier
+		req -= com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.throwMasterStr(); //bluearchive
 		if (masteryPotionBonus){
 			req -= 2;
 		}
@@ -300,6 +301,7 @@ abstract public class MissileWeapon extends Weapon {
 			return dst;
 		}
 
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.noaThrow(user, dst, projecting > 0)) return dst; //bluearchive
 		if (projecting > 0
 				&& (Dungeon.level.passable[dst] || Dungeon.level.avoid[dst] || Actor.findChar(dst) != null)
 				&& Dungeon.level.distance(user.pos, dst) <= Math.round(projecting * Enchantment.genericProcChanceMultiplier(user))){
@@ -376,6 +378,7 @@ abstract public class MissileWeapon extends Weapon {
 		if (enemy == null || enemy == curUser) {
 			parent = null;
 
+			if (enemy == null) com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.missedThrow(curUser, cell, this); //bluearchive
 			//metamorphed seer shot logic
 			if (curUser.hasTalent(Talent.SEER_SHOT)
 					&& curUser.heroClass != HeroClass.HUNTRESS
@@ -403,6 +406,7 @@ abstract public class MissileWeapon extends Weapon {
 
 	@Override
 	public int proc(Char attacker, Char defender, int damage) {
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.missileProc(attacker, defender); //bluearchive
 		if (attacker == Dungeon.hero && Random.Int(3) < Dungeon.hero.pointsInTalent(Talent.SHARED_ENCHANTMENT)){
 			SpiritBow bow = Dungeon.hero.belongings.getItem(SpiritBow.class);
 			if (bow != null && bow.enchantment != null && Dungeon.hero.buff(MagicImmune.class) == null) {
@@ -572,6 +576,7 @@ abstract public class MissileWeapon extends Weapon {
 		if (Dungeon.hero != null && Dungeon.hero.hasTalent(Talent.DURABLE_PROJECTILES)){
 			usages *= 1.25f + (0.25f*Dungeon.hero.pointsInTalent(Talent.DURABLE_PROJECTILES));
 		}
+		usages *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.durability(); //bluearchive
 		if (holster) {
 			usages *= MagicalHolster.HOLSTER_DURABILITY_FACTOR;
 		}

@@ -121,6 +121,7 @@ public class Regeneration extends Buff {
 				if (Dungeon.hero != null && Dungeon.hero.subClass.is(com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.WATERSLIME)){
 					delay /= Math.max(target.HT * 0.01 * (1 + Dungeon.hero.pointsInTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.WATER_REGENERATION)/6f), 1);
 				}
+				delay *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.regenDelay(target); //bluearchive
 				partialRegen += 1f / delay;
 
 				if (partialRegen >= 1) {

@@ -117,6 +117,10 @@ if [ $QUICK -eq 0 ]; then
   run "TowerHeroesTest" TransformationHeroesTest NECROHERO TANK TOWERPRIEST; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|LIMIT|SUMMARY Transformation)" | tail -12 | sed 's/^/  /'
   [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
+  #bluearchive, Blue Archive PD's nine students
+  run "BlueArchiveHeroesTest" TransformationHeroesTest BA_ARIS BA_NONOMI BA_MIYAKO BA_HOSHINO BA_SHIROKO BA_NOA BA_MIYU BA_YUZU BA_IZUNA; rc=$?
+  tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|LIMIT|SUMMARY Transformation)" | tail -12 | sed 's/^/  /'
+  [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
   #rearranged, the six hero classes of Re-ARranged PD, text, talents, subclasses, abilities
   run "RearrangedHeroesTest" RearrangedHeroesTest; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY rearranged)" | tail -12 | sed 's/^/  /'
@@ -124,6 +128,10 @@ if [ $QUICK -eq 0 ]; then
   #rearranged, its five challenges and the Re-ARranged heroes option
   run "RearrangedChallengesTest" RearrangedChallengesTest; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY rearranged)" | tail -12 | sed 's/^/  /'
+  [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
+  #polished, Honeyed Meat, the Polished PD changes option, Brittle, Electrified, blast trap, Well of Change
+  run "PolishedTest" PolishedTest; rc=$?
+  tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|HEADLESS|SUMMARY polished)" | tail -10 | sed 's/^/  /'
   [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
   #rearranged, the Re-ARranged heroes option, its rework of Shattered's six heroes
   run "RearrangedReworkTest" RearrangedReworkTest; rc=$?
@@ -136,6 +144,10 @@ if [ $QUICK -eq 0 ]; then
   #transformation, the Necronomicon, its recipe, soul bound deaths and the wraiths it calls
   run "NecronomiconTest" NecronomiconTest; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY necronomicon)" | tail -10 | sed 's/^/  /'
+  [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
+  #elektro, Elektrocheckers PD's ancient runes from boss drop to use, its wells and its loot in the decks
+  run "ElektroRunesTest" ElektroRunesTest; rc=$?
+  tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY elektro)" | tail -12 | sed 's/^/  /'
   [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
   #the Void trap floor, item infusion, the Gun and the Half Ripper quest
   run "DevotedLeftoversTest" DevotedLeftoversTest; rc=$?

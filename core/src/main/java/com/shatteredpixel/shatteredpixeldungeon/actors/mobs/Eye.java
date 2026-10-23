@@ -90,7 +90,7 @@ public class Eye extends Mob {
 	@Override
 	protected boolean canAttack( Char enemy ) {
 
-		if (beamCooldown == 0) {
+		if (beamCooldown == 0 && buff(com.shatteredpixel.shatteredpixeldungeon.items.spells.Silencing.Effect.class) == null) { //Community PD, silenced eyes cannot charge a beam
 			Ballistica aim = new Ballistica(pos, enemy.pos, Ballistica.STOP_SOLID);
 
 			//Pixel Dungeon Reforged Randomizer, Myopic Vision only sees three cells
@@ -126,6 +126,11 @@ public class Eye extends Mob {
 
 	@Override
 	protected boolean doAttack( Char enemy ) {
+
+		//Community PD, a silenced eye only bites, unless its beam was already charged
+		if (!beamCharged && buff(com.shatteredpixel.shatteredpixeldungeon.items.spells.Silencing.Effect.class) != null) {
+			return super.doAttack(enemy);
+		}
 
 		beam = new Ballistica(pos, beamTarget, Ballistica.STOP_SOLID);
 		if (beamCooldown > 0 || (!beamCharged && !beam.subPath(1, beam.dist).contains(enemy.pos))) {

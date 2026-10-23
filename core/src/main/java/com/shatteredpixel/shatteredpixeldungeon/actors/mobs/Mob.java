@@ -1189,6 +1189,7 @@ public abstract class Mob extends Char {
 				if (exp > 0) {
 					Dungeon.hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(exp), FloatingText.EXPERIENCE);
 				}
+				exp = com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.expMulti(this, exp); //bluearchive
 				Dungeon.hero.earnExp(exp, getClass());
 				com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose.shareExp(exp);
 				com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.kill(Dungeon.hero, this);
@@ -1297,6 +1298,7 @@ public abstract class Mob extends Char {
 
 		boolean soulMarked = buff(SoulMark.class) != null;
 
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.onMobDie(this, cause); //bluearchive
 		super.die( cause );
 
 		if (!(this instanceof Wraith)
@@ -1342,6 +1344,7 @@ public abstract class Mob extends Char {
 		}
 
 		dropBonus += ShardOfOblivion.lootChanceMultiplier()-1f;
+		dropBonus += com.shatteredpixel.shatteredpixeldungeon.items.spells.RNGManipulator.LuckBoost.luckBoost() / 10000f; //Community PD, luck manipulator
 
 		dropBonus += com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.lootMulti()-1f; //rebluearchive, Yuzu's shop
 
@@ -1350,6 +1353,7 @@ public abstract class Mob extends Char {
 	}
 	
 	public void rollToDropLoot(){
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.questLoot(this); //bluearchive
 		//Cursed PD's lucky badge, extra loot from every kill while its buff lasts
 		com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LuckyBadgeBuff luckyBuff = Dungeon.hero == null ? null : Dungeon.hero.buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LuckyBadgeBuff.class );
 		if (luckyBuff != null) {
@@ -1384,7 +1388,8 @@ public abstract class Mob extends Char {
 			gold.doPickUp(Dungeon.hero);
 		}
 
-		if (Dungeon.hero.lvl > maxLvl + 2 + com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.fastBreak()) return;
+		if (Dungeon.hero.lvl > maxLvl + 2 + com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.fastBreak()
+				+ com.shatteredpixel.shatteredpixeldungeon.items.spells.RNGManipulator.LuckBoost.luckBoost() / 2000) return; //Community PD, luck manipulator
 
 		MasterThievesArmband.StolenTracker stolen = buff(MasterThievesArmband.StolenTracker.class);
 		if (stolen == null || !stolen.itemWasStolen()) {
@@ -1427,6 +1432,9 @@ public abstract class Mob extends Char {
 	}
 	
 	protected Object loot = null;
+	//Sandbox PD, the gold digger trap takes a monster's gold
+	public Object sandboxPDLoot() { return loot; }
+	public void sandboxPDClearLoot() { loot = null; }
 	//from Transformation PD, a mob that drops more than one item overrides this
 	protected ArrayList<Item> createLootDrops() {
 		ArrayList<Item> drops = new ArrayList<>(1);
@@ -1576,6 +1584,8 @@ public abstract class Mob extends Char {
 				for (Char ch : Actor.chars()){
 					if (fieldOfView[ch.pos] && ch.invisible == 0 && ch.alignment != alignment && ch.alignment != Alignment.NEUTRAL){
 						float bestChance = detectionChance(ch);
+						//bluearchive, Izuna's quiet move works like silent steps
+						if (ch instanceof Hero && Dungeon.hero.hasTalent(Talent.BA_QUIET_MOVE) && distance(ch) >= 4 - Dungeon.hero.pointsInTalent(Talent.BA_QUIET_MOVE)) bestChance = Float.POSITIVE_INFINITY;
 						//silent steps rogue talent, which also applies to rogue's shadow clone
 						if ((ch instanceof Hero || ch instanceof ShadowClone.ShadowAlly)
 								&& Dungeon.hero.hasTalent(Talent.SILENT_STEPS)){

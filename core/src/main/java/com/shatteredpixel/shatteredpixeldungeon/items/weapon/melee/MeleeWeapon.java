@@ -65,17 +65,25 @@ public class MeleeWeapon extends Weapon {
 	public static String AC_ABILITY = "ABILITY";
 	public static String AC_SCRAP = "SCRAP"; //rearranged, the Gunner and the Archer take weapons apart
 
+	//Community PD, the Duelist or a hero carrying the Repaired Rapier can use weapon abilities
+	public static boolean abilitiesActive(Char ch){
+		if (!(ch instanceof Hero)) return false;
+		Hero h = (Hero) ch;
+		return h.heroClass == HeroClass.DUELIST
+				|| h.belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.RepairedRapier.class) != null;
+	}
+
 	@Override
 	public void activate(Char ch) {
 		super.activate(ch);
-		if (ch instanceof Hero && ((Hero) ch).heroClass == HeroClass.DUELIST){
+		if (abilitiesActive(ch)){
 			Buff.affect(ch, Charger.class);
 		}
 	}
 
 	@Override
 	public String defaultAction() {
-		if (Dungeon.hero != null && (Dungeon.hero.heroClass == HeroClass.DUELIST
+		if (Dungeon.hero != null && (abilitiesActive(Dungeon.hero)
 			|| Dungeon.hero.hasTalent(Talent.SWIFT_EQUIP))
 			&& !(this instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.Gun)
 			&& !(this instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.bow.BowWeapon)){
@@ -88,7 +96,7 @@ public class MeleeWeapon extends Weapon {
 	@Override
 	public ArrayList<String> actions(Hero hero) {
 		ArrayList<String> actions = super.actions(hero);
-		if (isEquipped(hero) && hero.heroClass == HeroClass.DUELIST){
+		if (isEquipped(hero) && abilitiesActive(hero)){
 			actions.add(AC_ABILITY);
 		}
 		//rearranged
@@ -127,13 +135,13 @@ public class MeleeWeapon extends Weapon {
 					if (hero.buff(Talent.SwiftEquipCooldown.class) == null
 						|| hero.buff(Talent.SwiftEquipCooldown.class).hasSecondUse()){
 						execute(hero, AC_EQUIP);
-					} else if (hero.heroClass == HeroClass.DUELIST) {
+					} else if (abilitiesActive(hero)) {
 						GLog.w(Messages.get(this, "ability_need_equip"));
 					}
-				} else if (hero.heroClass == HeroClass.DUELIST) {
+				} else if (abilitiesActive(hero)) {
 					GLog.w(Messages.get(this, "ability_need_equip"));
 				}
-			} else if (hero.heroClass != HeroClass.DUELIST){
+			} else if (!abilitiesActive(hero)){
 				//do nothing
 			} else if (STRReq() > hero.STR()){
 				GLog.w(Messages.get(this, "ability_low_str"));
@@ -425,7 +433,7 @@ public class MeleeWeapon extends Weapon {
 	private static boolean evaluatingTwinUpgrades = false;
 	@Override
 	public int buffedLvl() {
-		if (!evaluatingTwinUpgrades && Dungeon.hero != null && isEquipped(Dungeon.hero) && Dungeon.hero.hasTalent(Talent.TWIN_UPGRADES)){
+		if (!evaluatingTwinUpgrades && Dungeon.hero != null && isEquipped(Dungeon.hero) && (Dungeon.hero.hasTalent(Talent.TWIN_UPGRADES) || Dungeon.hero.hasTalent(Talent.BA_DOUBLE_BARREL_1))){ //bluearchive, Noa's double barrel
 			KindOfWeapon other = null;
 			if (Dungeon.hero.belongings.weapon() != this) other = Dungeon.hero.belongings.weapon();
 			if (Dungeon.hero.belongings.secondWep() != this) other = Dungeon.hero.belongings.secondWep();
@@ -436,14 +444,14 @@ public class MeleeWeapon extends Weapon {
 				evaluatingTwinUpgrades = false;
 
 				//weaker weapon needs to be 2/1/0 tiers lower, based on talent level
-				if ((tier + (3 - Dungeon.hero.pointsInTalent(Talent.TWIN_UPGRADES))) <= ((MeleeWeapon) other).tier
+				if ((tier + (3 - Math.max(Dungeon.hero.pointsInTalent(Talent.TWIN_UPGRADES), Dungeon.hero.pointsInTalent(Talent.BA_DOUBLE_BARREL_1)))) <= ((MeleeWeapon) other).tier
 						&& otherLevel > super.buffedLvl()) {
 					return otherLevel;
 				}
 
 			}
 		}
-		return super.buffedLvl();
+		return super.buffedLvl() + com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.hgBonus(this); //bluearchive
 	}
 
 	@Override
@@ -521,7 +529,7 @@ public class MeleeWeapon extends Weapon {
 		}
 
 		//the mage's staff has no ability as it can only be gained by the mage
-		if (Dungeon.hero != null && Dungeon.hero.heroClass == HeroClass.DUELIST && !(this instanceof MagesStaff)){
+		if (Dungeon.hero != null && abilitiesActive(Dungeon.hero) && !(this instanceof MagesStaff)){
 			info += "\n\n" + abilityInfo();
 		}
 

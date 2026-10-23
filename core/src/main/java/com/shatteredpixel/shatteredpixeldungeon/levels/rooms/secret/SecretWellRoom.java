@@ -33,7 +33,7 @@ import com.watabou.utils.Random;
 public class SecretWellRoom extends SecretRoom {
 	
 	private static final Class<?>[] WATERS =
-			{WaterOfAwareness.class, WaterOfHealth.class};
+			{WaterOfAwareness.class, WaterOfHealth.class, com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WaterOfEnchantment.class}; //elektro
 	
 	@Override
 	public boolean canConnect(Point p) {

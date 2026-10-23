@@ -106,6 +106,15 @@ public class WndSandbox extends Window {
 			}
 		}, null );
 
+		//Sandbox PD's trap placing, the part of its level editor that fits this panel
+		addRow( new RedButton( Messages.get(this, "traps") ) {
+			@Override
+			protected void onClick() {
+				hide();
+				GameScene.show( new WndSandboxTraps() );
+			}
+		}, null );
+
 		addRow( new RedButton( Messages.get(WndCompendium.class, "title") ) {
 			@Override
 			protected void onClick() {

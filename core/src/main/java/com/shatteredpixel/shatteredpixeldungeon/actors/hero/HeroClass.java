@@ -120,6 +120,16 @@ public enum HeroClass {
 	NECROHERO( HeroSubClass.WARLOCK, HeroSubClass.ASSASSIN ),
 	TANK( HeroSubClass.BERSERKER, HeroSubClass.GLADIATOR ),
 	TOWERPRIEST( HeroSubClass.MONK, HeroSubClass.WARDEN ),
+	//bluearchive, Blue Archive PD's students, see BAHeroes
+	BA_ARIS( HeroSubClass.BA_ARIS_EX_SUPERNOVA, HeroSubClass.BA_ARIS_EX_CHARGE ),
+	BA_NONOMI( HeroSubClass.BA_NONOMI_EX_RIOT, HeroSubClass.BA_NONOMI_EX_SHOOTALL ),
+	BA_MIYAKO( HeroSubClass.BA_MIYAKO_EX_STUNDRONE, HeroSubClass.BA_MIYAKO_EX_DRONESTRIKE ),
+	BA_HOSHINO( HeroSubClass.BA_HOSHINO_EX_TACTICAL_PRESS, HeroSubClass.BA_HOSHINO_EX_TACTICAL_SHIELD ),
+	BA_SHIROKO( HeroSubClass.BA_SHIROKO_EX_ELEMENTAL_BULLET, HeroSubClass.BA_SHIROKO_EX_PROFESSIONAL_RIDE ),
+	BA_NOA( HeroSubClass.BA_NOA_EX_LARGE_MAGAZINE, HeroSubClass.BA_NOA_EX_DOUBLE_BARREL ),
+	BA_MIYU( HeroSubClass.BA_MIYU_EX_PENETRATION_SHOT, HeroSubClass.BA_MIYU_EX_SNIPING_BULLET ),
+	BA_YUZU( HeroSubClass.BA_YUZU_EX_GAME_START, HeroSubClass.BA_YUZU_EX_STICKY_GRENADE ),
+	BA_IZUNA( HeroSubClass.BA_IZUNA_EX_TELEPORT, HeroSubClass.BA_IZUNA_EX_EXPLOSION ),
 	//rebluearchive, the eleven students of Re Blue Archive PD
 	RBA_ARIS( HeroSubClass.RBA_LIGHT_HERO, HeroSubClass.RBA_BATTERY_CHARGE ),
 	RBA_NONOMI( HeroSubClass.RBA_SHOOT_ALL, HeroSubClass.RBA_SPREAD_SHOT ),
@@ -166,6 +176,7 @@ public enum HeroClass {
 
 		new ScrollOfIdentify().identify();
 
+		if (BAHeroes.isBA(this)) BAHeroes.initHero(this, hero); else //bluearchive
 		switch (this) {
 			case WARRIOR:
 				initWarrior( hero );
@@ -323,6 +334,7 @@ public enum HeroClass {
 	}
 
 	public Badges.Badge masteryBadge() {
+		if (BAHeroes.isBA(this)) return BAHeroes.masteryBadge(this); //bluearchive
 		switch (this) {
 			case WARRIOR:
 				return Badges.Badge.MASTERY_WARRIOR;
@@ -741,6 +753,7 @@ public enum HeroClass {
 	}
 
 	public ArmorAbility[] armorAbilities(){
+		if (BAHeroes.isBA(this)) return BAHeroes.armorAbilities(this); //bluearchive
 		if (RBAHero.isStudent(this)) return RBAHeroes.armorAbilities(this); //rebluearchive
 		switch (this) {
 			case WARRIOR: default:
@@ -814,6 +827,7 @@ public enum HeroClass {
 	}
 
 	public String spritesheet() {
+		if (BAHeroes.isBA(this)) return BAHeroes.spritesheet(this); //bluearchive
 		if (RBAHero.isStudent(this)) return RBAHeroes.spritesheet(this); //rebluearchive
 		switch (this) {
 			case WARRIOR: default:
@@ -877,6 +891,7 @@ public enum HeroClass {
 	}
 
 	public String splashArt(){
+		if (BAHeroes.isBA(this)) return BAHeroes.splashArt(this); //bluearchive
 		if (RBAHero.isStudent(this)) return RBAHeroes.splashArt(this); //rebluearchive
 		switch (this) {
 			case WARRIOR: default:

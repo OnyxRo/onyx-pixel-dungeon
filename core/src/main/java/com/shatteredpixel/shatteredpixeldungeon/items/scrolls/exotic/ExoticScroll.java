@@ -97,6 +97,7 @@ public abstract class ExoticScroll extends Scroll {
 		
 		regToExo.put(ScrollOfTransmutation.class, ScrollOfMetamorphosis.class);
 		exoToReg.put(ScrollOfMetamorphosis.class, ScrollOfTransmutation.class);
+		exoToReg.put(BAScrollOfTalentReset.class, ScrollOfTransmutation.class); //bluearchive, its exotic transmutation, reached from the catalog only
 
 		//from Shittened PD
 		regToExo.put(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfShit.class, ScrollOfEnshittification.class);
@@ -110,6 +111,9 @@ public abstract class ExoticScroll extends Scroll {
 		exoToReg.put(ScrollOfSoulEnergy.class, com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfAttunement.class);
 		//from Tower PD, reverse lookup only, Terror still brews into Dread
 		exoToReg.put(ScrollOfUnspeakableHorrors.class, com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror.class);
+		//elektro, Elektrocheckers PD
+		regToExo.put(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTrauma.class, ScrollOfDamnation.class);
+		exoToReg.put(ScrollOfDamnation.class, com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTrauma.class);
 		//rebluearchive, the Scroll of Talent Reset has no recipe here, only the reverse lookup
 		exoToReg.put(RBAScrollOfTalentReset.class, ScrollOfTransmutation.class);
 	}

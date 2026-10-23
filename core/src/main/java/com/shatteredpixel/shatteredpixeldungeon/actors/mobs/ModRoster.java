@@ -518,6 +518,12 @@ public class ModRoster {
 		add( "tower", MagicShard.class, 0, 1, 99 );
 		add( "tower", GorematiaSpirit.class, 0, 1, 99 );
 		add( "tower", TowerWisp.class, 0, 1, 99 );
+		add( "community", AngryThorn.class, 0, 1, 99 );
+		add( "community", DMXXX.class, 0, 1, 99 );
+		add( "community", WaterStrider.class, 0, 1, 99 );
+		add( "community", FailedDefender.class, 0, 1, 99 );
+		add( "community", WindSpirit.class, 0, 1, 99 );
+		add( "community", CommunityPoisonElemental.class, 0, 1, 99 );
 		//rebluearchive, Re Blue Archive PD. The Fox squad only comes when Shiroko robs a shop (RBAShims.shopkeeperRun), so weight 0
 		add( "rebluearchive", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.fox.RBAYukino.class, 0, 1, 99 );
 		add( "rebluearchive", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.fox.RBANiko.class, 0, 1, 99 );

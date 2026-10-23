@@ -46,7 +46,8 @@ public class Unstable extends Weapon.Enchantment {
 			Vampiric.class,
 			Venomous.class,
 			Vorpal.class,
-			Eldritch.class
+			Eldritch.class,
+			Corroding.class //elektro
 	};
 
 	@Override

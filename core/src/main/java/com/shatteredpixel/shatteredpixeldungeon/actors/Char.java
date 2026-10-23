@@ -509,6 +509,7 @@ public abstract class Char extends Actor {
 
 				//rearranged, piercing arrows, bullet armor factors, the Samurai's shadow blade
 				dr = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedChar.heroArmorPierce(h, enemy, dr);
+				dr = com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.enemyDR(this, enemy, dr); //bluearchive
 				dr = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.enemyArmor(h, enemy, dr); //rebluearchive
 				if (h.buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.samurai.ShadowBlade.shadowBladeTracker.class) != null && Random.Int(2) == 0) {
 					if (h.hasTalent(Talent.CRITICAL_SHADOW)) {
@@ -574,6 +575,7 @@ public abstract class Char extends Actor {
 				}
 			}
 
+			dmg *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.damageMulti(this, enemy); //bluearchive
 			for (ChampionEnemy buff : buffs(ChampionEnemy.class)){
 				dmg *= buff.meleeDamageFactor();
 			}
@@ -608,6 +610,7 @@ public abstract class Char extends Actor {
 				dmg *= 0.67f;
 			}
 			dmg = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.markOfWeakness(this, dmg); //rearranged
+			dmg = com.shatteredpixel.shatteredpixeldungeon.PolishedPD.brittleAttack(this, dmg); //polished, Brittle
 
 			//rearranged
 			if (enemy.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PainKiller.class) != null) {
@@ -644,6 +647,7 @@ public abstract class Char extends Actor {
 				if (enemy.buff(Vulnerable.class) != null) {
 					effectiveDamage *= 1.33f;
 				}
+				effectiveDamage = com.shatteredpixel.shatteredpixeldungeon.PolishedPD.brittleTaken(enemy, effectiveDamage); //polished, Brittle
 
 				effectiveDamage = attackProc(enemy, effectiveDamage);
 			}
@@ -749,6 +753,7 @@ public abstract class Char extends Actor {
 		} else if (!Char.hasProp(enemy, Property.OBJECT)) {
 
 			if (enemy instanceof Hero) com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.onHeroDodged((Hero) enemy); //rearranged
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.onDodge(enemy); //bluearchive
 
 			if (enemy.sprite != null){
 				if (hitMissIcon != -1){
@@ -839,6 +844,7 @@ public abstract class Char extends Actor {
 		if (defender.buff(Bless.class) != null) defRoll *= 1.25f;
 		if (defender.buff(  Hex.class) != null) defRoll *= 0.8f;
 		if (defender.buff( Daze.class) != null) defRoll *= 0.5f;
+		if (defender.buff( com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.LeanyElixir.Lean.class) != null) defRoll *= 1.5f; //Community PD
 		if (defender.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Gotted.class) != null) defRoll *= 1.1f;
 		if (defender.buff(Cursed.class) != null) defRoll *= 0.7f;
 		for (ChampionEnemy buff : defender.buffs(ChampionEnemy.class)){
@@ -913,6 +919,7 @@ public abstract class Char extends Actor {
 		if (armor != null) {
 			damage = armor.absorb( damage );
 		}
+		damage = CommunityHooks.necklaceBlock(this, damage); //Community PD, Necklace of Ice
 
 		ShieldOfLight.ShieldOfLightTracker shield = buff( ShieldOfLight.ShieldOfLightTracker.class);
 		if (shield != null && shield.object == enemy.id()){
@@ -962,6 +969,7 @@ public abstract class Char extends Actor {
 		if ( buff( Haste.class ) != null) speed *= 3f;
 		speed = TowerChar.speed(this, speed); //tower
 		if ( buff( Dread.class ) != null) speed *= 2f;
+		if ( buff( com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.LeanyElixir.Lean.class ) != null) speed *= 2f; //Community PD
 		if ( buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ninja_Energy.WaterSmooth.class ) != null && Dungeon.level.water[pos]) speed *= 2f; //Transformation PD
 		//from Shittened PD
 		if ( buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CaffeineRush.class ) != null) speed *= 1.25f;
@@ -1171,6 +1179,7 @@ public abstract class Char extends Actor {
 		if (buff( Paralysis.class ) != null) {
 			buff( Paralysis.class ).processDamage(dmg);
 		}
+		com.shatteredpixel.shatteredpixeldungeon.PolishedPD.onDamage(this, dmg, src); //polished, Electrified
 
 		BrokenSeal.WarriorShield shield = buff(BrokenSeal.WarriorShield.class);
 		if (!(src instanceof Hunger)
@@ -1288,7 +1297,7 @@ public abstract class Char extends Actor {
 			}
 			hitMissIcon = -1;
 
-			sprite.showStatusWithIcon(CharSprite.NEGATIVE, Integer.toString(dmg + shielded), icon);
+			sprite.showStatusWithIcon(CharSprite.NEGATIVE, com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.damageText(Integer.toString(dmg + shielded)), icon); //bluearchive
 
 			if (ironWill) Perks.ironWillBlast((Hero) this, dmg, src);
 		}
@@ -1324,6 +1333,7 @@ public abstract class Char extends Actor {
 	public void destroy() {
 		HP = 0;
 		Actor.remove( this );
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.onCharDie(this); //bluearchive
 
 		for (Char ch : Actor.chars().toArray(new Char[0])){
 			if (ch.buff(Charm.class) != null && ch.buff(Charm.class).object == id()){
@@ -1553,6 +1563,7 @@ public abstract class Char extends Actor {
 		if (buff( Speed.class ) != null) {
 			timeScale *= 2.0f;
 		}
+		timeScale *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.timeScale(this); //bluearchive
 		timeScale = TowerChar.timeScale(this, timeScale); //tower
 
 		super.spend( time / timeScale );
@@ -1676,7 +1687,8 @@ public abstract class Char extends Actor {
 	//travelling may be false when a character is moving instantaneously, such as via teleportation
 	public void move( int step, boolean travelling ) {
 
-		if (travelling && Dungeon.level.adjacent( step, pos ) && buff( Vertigo.class ) != null) {
+		if (travelling && Dungeon.level.adjacent( step, pos ) && (buff( Vertigo.class ) != null
+				|| buff( com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.LeanyElixir.Lean.class ) != null)) { //Community PD, lean staggers like vertigo
 			sprite.interruptMotion();
 			int newPos = pos + PathFinder.NEIGHBOURS8[Random.Int( 8 )];
 			if (!(Dungeon.level.passable[newPos] || Dungeon.level.avoid[newPos])

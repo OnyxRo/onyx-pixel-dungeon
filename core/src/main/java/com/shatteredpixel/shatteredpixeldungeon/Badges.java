@@ -94,6 +94,9 @@ public class Badges {
 		MASTERY_NECROHERO, //tower
 		MASTERY_TANK, //tower
 		MASTERY_TOWERPRIEST, //tower
+		//bluearchive
+		MASTERY_BA_ARIS, MASTERY_BA_NONOMI, MASTERY_BA_MIYAKO, MASTERY_BA_HOSHINO, MASTERY_BA_SHIROKO,
+		MASTERY_BA_NOA, MASTERY_BA_MIYU, MASTERY_BA_YUZU, MASTERY_BA_IZUNA,
 		FOUND_RATMOGRIFY,
 
 		//bronze
@@ -1112,6 +1115,7 @@ public class Badges {
 	public static void validateMastery() {
 		
 		Badge badge = null;
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHeroes.isBA(Dungeon.hero.heroClass)) badge = Dungeon.hero.heroClass.masteryBadge(); //bluearchive
 		switch (Dungeon.hero.heroClass) {
 			case WARRIOR:
 				badge = Badge.MASTERY_WARRIOR;

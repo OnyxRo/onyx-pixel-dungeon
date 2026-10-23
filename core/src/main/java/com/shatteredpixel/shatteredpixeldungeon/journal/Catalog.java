@@ -1183,6 +1183,81 @@ public enum Catalog {
 		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.alchemy.ObsidianBow.class);
 		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.alchemy.ObsidianKnife.class);
 
+		//items ported from polished
+		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.HoneyedMeat.class);
+		//items ported from elektro
+		ENCHANTMENTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Corroding.class);
+		TIPPED_DARTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.GhostDart.class);
+		TIPPED_DARTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.VoidDart.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.ancientrunes.ContravariantAncientRune.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.ancientrunes.CovariantAncientRune.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.ancientrunes.ExistenceAncientRune.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.ancientrunes.FieldOperatorAncientRune.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.ancientrunes.LaplaceAncientRune.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.ancientrunes.NablaAncientRune.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.ancientrunes.PartialAncientRune.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.ancientrunes.PropagationAncientRune.class);
+		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.BloodOrb.class);
+		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CrackedGeode.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.FlameShot.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.GreaterTransmutation.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.IceShot.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.InvariantAncientRune.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.MagicBridge.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.PrismaticImageSpell.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.Transfiguration.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.VampiricShot.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.VenomShot.class);
+		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfChaos.class);
+		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCosmicTravel.class);
+		SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTrauma.class);
+		EXOTIC_SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfDamnation.class);
+		//items ported from sandboxpd
+		RINGS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfTime.class);
+		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfInstability.class);
+		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfSummoning.class);
+		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfYendor.class);
+		SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfWipeOut.class);
+		BREWS_ELIXIRS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.PotionCocktail.class);
+		//items ported from community
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.AlchemicalAkrafena.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.GemstoneDust.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.RepairedRapier.class);
+		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.NecklaceOfIce.class);
+		BOMBS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.bombs.CrossBomb.class);
+		BREWS_ELIXIRS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.FrostfireBrew.class);
+		BREWS_ELIXIRS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.LeanyElixir.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.RNGManipulator.class);
+		TRINKETS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.trinkets.BrokenTreasureBox.class);
+
+		//items ported from community
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.Silencing.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.CommunityFury.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.CommunityWakizashi.class);
+		//bluearchive, Blue Archive PD. Its guns, the students' gadgets and its throwing set
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.BASuperNova.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.AR.BAAR_tier1.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.AR.BAAR_tier2.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.AR.BAAR_tier3.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.AR.BAAR_tier4.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.AR.BAAR_tier5.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.GL.BAGL_tier1.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.GL.BAGL_tier2.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.GL.BAGL_tier3.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.GL.BAGL_tier4.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.GL.BAGL_tier5.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.HG.BAHG_tier1.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.HG.BAHG_tier2.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.HG.BAHG_tier3.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.HG.BAHG_tier4.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.HG.BAHG_tier5.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.MG.BAMG_tier1.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.MG.BAMG_tier2.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.MG.BAMG_tier3.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.MG.BAMG_tier4.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.MG.BAMG_tier5.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SG.BASG_tier1.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SG.BASG_tier2.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SG.BASG_tier3.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SG.BASG_tier4.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SG.BASG_tier5.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SMG.BASMG_tier1.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SMG.BASMG_tier2.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SMG.BASMG_tier3.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SMG.BASMG_tier4.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SMG.BASMG_tier5.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SR.BASR_tier1.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SR.BASR_tier2.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SR.BASR_tier3.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SR.BASR_tier4.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SR.BASR_tier5.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.BAThrowingSet.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.BABicycle.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.BABlastGrenade.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.BAClaymore.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.BAFlashGrenade.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.BAHPGrenade.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.BAHandGrenade.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.BAIronHorus.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.BALaser.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.BALevelAnalyzer.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.BARainbowGrenade.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.BARegrowGrenade.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.BASmokeGrenade.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.BATrashBin.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.BAAmmoBox.class, com.shatteredpixel.shatteredpixeldungeon.items.BAEXSkillDisc.class);
 		//rebluearchive, Re Blue Archive PD
 		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.RBAConversionKit.class);
 		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.RBAGunSmithingTool.class);

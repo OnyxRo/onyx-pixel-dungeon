@@ -112,6 +112,9 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 		ANGULAR_SPEEDS.put(Trident.class,       0);
 		
 		ANGULAR_SPEEDS.put(SpiritBow.SpiritArrow.class,       0);
+		ANGULAR_SPEEDS.put(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.BAGun.Bullet.class, 0); //bluearchive
+		ANGULAR_SPEEDS.put(com.shatteredpixel.shatteredpixeldungeon.items.weapon.BAThrowingSet.SpiritKunai.class, 0); //bluearchive
+		ANGULAR_SPEEDS.put(com.shatteredpixel.shatteredpixeldungeon.items.weapon.BAThrowingSet.SpiritShuriken.class, 2160); //bluearchive
 		ANGULAR_SPEEDS.put(ScorpioSprite.ScorpioShot.class,   0);
 		ANGULAR_SPEEDS.put(HolyLance.HolyLanceVFX.class,      0);
 		//rearranged, bullets, arrows and shots fly straight
@@ -205,6 +208,10 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 				|| item instanceof RebelSprite.RebelShot){
 			speed *= 1.5f;
 		//rearranged, guns and bows of Re-ARranged PD
+		} else if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.BAGun.Bullet //bluearchive
+				|| item instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.BAThrowingSet.SpiritKunai
+				|| item instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.BAThrowingSet.SpiritShuriken) {
+			speed *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.missileSpeed(item);
 		} else if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.Gun.Bullet
 				|| item instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.bow.BowWeapon.Arrow
 				|| item instanceof com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.archer.Snipe.SnipeArrow) {

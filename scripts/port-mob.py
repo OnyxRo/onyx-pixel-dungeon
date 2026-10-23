@@ -19,8 +19,15 @@ Output is long, so it goes to build/port-mob.log and only a summary is printed.
 """
 import sys, os, re, io, glob, shutil, subprocess
 
-pos = [a for a in sys.argv[1:] if not a.startswith('--')]
-opts = {a.split('=')[0]: (a.split('=')[1] if '=' in a else True) for a in sys.argv[1:] if a.startswith('--')}
+#accept "--weight 0" as well as "--weight=0", the spaced form once wrote True into ModRoster
+_args, _i = [], 1
+while _i < len(sys.argv):
+    a = sys.argv[_i]
+    if a in ('--weight', '--min', '--max') and _i + 1 < len(sys.argv):
+        _args.append(a + '=' + sys.argv[_i + 1]); _i += 2; continue
+    _args.append(a); _i += 1
+pos = [a for a in _args if not a.startswith('--')]
+opts = {a.split('=')[0]: (a.split('=')[1] if '=' in a else True) for a in _args if a.startswith('--')}
 if len(pos) < 3:
     print(__doc__); sys.exit(1)
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))

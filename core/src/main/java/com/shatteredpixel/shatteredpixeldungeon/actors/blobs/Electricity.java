@@ -71,9 +71,8 @@ public class Electricity extends Blob {
 					com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.lightCrop(cell); //transformation, Light Crop
 					Char ch = Actor.findChar( cell );
 					if (ch != null && !ch.isImmune(this.getClass())) {
-						if (ch.buff(Paralysis.class) == null){
-							Buff.prolong( ch, Paralysis.class, cur[cell]);
-						}
+						//polished, Electrified instead of paralysis when its option is on
+						com.shatteredpixel.shatteredpixeldungeon.PolishedPD.shock( ch, cur[cell] );
 						if (cur[cell] % 2 == 1) {
 							ch.damage(Math.round(Random.Float(2 + Dungeon.scalingDepth() / 5f)), this);
 							if (!ch.isAlive() && ch == Dungeon.hero){

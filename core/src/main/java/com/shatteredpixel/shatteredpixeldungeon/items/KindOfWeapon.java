@@ -52,7 +52,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 	
 	@Override
 	public void execute(Hero hero, String action) {
-		if (hero.subClass == HeroSubClass.CHAMPION && action.equals(AC_EQUIP)){
+		if ((hero.subClass == HeroSubClass.CHAMPION || (hero.subClass == HeroSubClass.BA_NOA_EX_DOUBLE_BARREL && this instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.HG.BAHG)) && action.equals(AC_EQUIP)){ //bluearchive
 			usesTargeting = false;
 			String primaryName = Messages.titleCase(hero.belongings.weapon != null ? hero.belongings.weapon.trueName() : Messages.get(KindOfWeapon.class, "empty"));
 			String secondaryName = Messages.titleCase(hero.belongings.secondWep != null ? hero.belongings.secondWep.trueName() : Messages.get(KindOfWeapon.class, "empty"));
