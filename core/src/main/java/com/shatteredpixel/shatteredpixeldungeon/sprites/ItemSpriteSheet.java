@@ -511,6 +511,11 @@ public class ItemSpriteSheet {
 	//elektro, the rune PERTHRO for the Scroll of Trauma, its exotic one sits one row lower
 	public static final int SCROLL_PERTHRO = xy(1, 243);
 	public static final int EXOTIC_PERTHRO = xy(1, 244);
+	public static final int BREW_COCKTAIL = xy(1, 252);
+	public static final int SCROLL_WIPE_OUT = xy(2, 252);
+	public static final int WAND_INSTABILITY = xy(3, 252);
+	public static final int WAND_SUMMONING = xy(4, 252);
+	public static final int WAND_YENDOR = xy(5, 252);
 	public static final int HONEYED_MEAT = xy(12, 58);
 	public static final int LUNAR_KATANA = xy(8, 58);
 	public static final int OBSIDIANBOW = xy(9, 58);
@@ -1460,6 +1465,11 @@ public class ItemSpriteSheet {
 		assignItemRect(WAND_COSMOS, 14, 14);
 		assignItemRect(SCROLL_PERTHRO, 15, 14);
 		assignItemRect(EXOTIC_PERTHRO, 15, 14);
+		assignItemRect(BREW_COCKTAIL, 12, 14);
+		assignItemRect(SCROLL_WIPE_OUT, 15, 14);
+		assignItemRect(WAND_INSTABILITY, 14, 14);
+		assignItemRect(WAND_SUMMONING, 14, 14);
+		assignItemRect(WAND_YENDOR, 16, 16);
 		assignItemRect(HONEYED_MEAT, 15, 11);
 		assignItemRect(LUNAR_KATANA, 15, 16);
 		assignItemRect(OBSIDIANBOW, 16, 16);

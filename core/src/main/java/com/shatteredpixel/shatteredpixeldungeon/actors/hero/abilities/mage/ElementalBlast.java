@@ -106,6 +106,10 @@ public class ElementalBlast extends ArmorAbility {
 		effectTypes.put(WandOfRegrowth.class,       MagicMissile.FOLIAGE_CONE);
 		effectTypes.put(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfChaos.class, MagicMissile.SHADOW_CONE); //elektro
 		effectTypes.put(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCosmicTravel.class, MagicMissile.PURPLE_CONE); //elektro
+		//Sandbox PD's wands
+		effectTypes.put(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfSummoning.class,   MagicMissile.SHADOW_CONE);
+		effectTypes.put(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfYendor.class,      MagicMissile.RAINBOW_CONE);
+		effectTypes.put(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfInstability.class, MagicMissile.RAINBOW_CONE);
 	}
 
 	private static final HashMap<Class<?extends Wand>, Float> damageFactors = new HashMap<>();
@@ -125,6 +129,10 @@ public class ElementalBlast extends ArmorAbility {
 		damageFactors.put(WandOfRegrowth.class,         0f);
 		damageFactors.put(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfChaos.class, 0.67f); //elektro
 		damageFactors.put(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCosmicTravel.class, 0.5f); //elektro
+		//Sandbox PD's wands
+		damageFactors.put(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfSummoning.class,   0f);
+		damageFactors.put(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfYendor.class,      10f);
+		damageFactors.put(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfInstability.class, 1f);
 	}
 
 	{

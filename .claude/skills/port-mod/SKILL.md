@@ -220,3 +220,8 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **Parallel runs share the scratchpad.** Put edit specs and helper scripts in `scratchpad/<mod key>/`, not loose files with short names. Another agent overwrote `e1.txt` between my write and my run.
 - **Recipes go in the list matching their ingredient count** in `Recipe.java` (one, two or three). A recipe in the wrong list compiles and is never found.
 - **A mod rune or item effect that ends on a sprite effect** runs fine headless up to that line. Wrap casts in a test helper that reports a NullPointerException as info, then check the result (see `ElektroRunesTest`).
+## Added after Sandbox PD (2026-10-22)
+
+- **Mods that are mostly a tool** (a level editor, a debug console). When `mod-report.py` says an item "drags in windows and ui code", the copier will follow it into the whole tool. Add the tool's folders to `port-skip.txt` first (a line ending in `/` skips a folder), or copy the few classes by hand and fix their editor calls with small shims.
+- **Rings, scrolls and potions outside their deck** keep the picture set in their initializer, because `reset()` runs in the parent constructor first. Override `isKnown()` to return true, and for a ring also `reset()` and `setKnown()`, or the handler throws on an unknown class.
+- **Traps have a sandbox list now.** `WndSandboxTraps` lists `Bestiary.TRAP`. Add a ported trap there and it can be placed from the sandbox panel.

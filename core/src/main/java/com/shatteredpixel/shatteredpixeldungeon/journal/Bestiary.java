@@ -360,6 +360,16 @@ public enum Bestiary {
 				GeyserTrap.class, ExplosiveTrap.class, RockfallTrap.class, PitfallTrap.class,
 				DistortionTrap.class, DisarmingTrap.class, GrimTrap.class);
 
+		//Sandbox PD's traps, placed from the sandbox panel's trap list
+		TRAP.addEntities(com.shatteredpixel.shatteredpixeldungeon.levels.traps.ParalyticTrap.class,
+				com.shatteredpixel.shatteredpixeldungeon.levels.traps.ShroudingTrap.class,
+				com.shatteredpixel.shatteredpixeldungeon.levels.traps.RageTrap.class,
+				com.shatteredpixel.shatteredpixeldungeon.levels.traps.ActionTrap.class,
+				com.shatteredpixel.shatteredpixeldungeon.levels.traps.GoldDiggerTrap.class,
+				com.shatteredpixel.shatteredpixeldungeon.levels.traps.LooseItemsTrap.class,
+				com.shatteredpixel.shatteredpixeldungeon.levels.traps.UnstableTrap.class,
+				com.shatteredpixel.shatteredpixeldungeon.levels.traps.WarpwayTrap.class);
+
 		PLANT.addEntities(Rotberry.class, Sungrass.class, Fadeleaf.class, Icecap.class,
 				Firebloom.class, Sorrowmoss.class, Swiftthistle.class, Blindweed.class,
 				Stormvine.class, Earthroot.class, Mageroyal.class, Starflower.class,
