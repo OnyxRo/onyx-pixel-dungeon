@@ -562,6 +562,8 @@ public class Assets {
 		public static final String BA_MIYU = "splashes/bluearchive/miyu.jpg";
 		public static final String BA_YUZU = "splashes/bluearchive/yuzu.jpg";
 		public static final String BA_IZUNA = "splashes/bluearchive/izuna.jpg";
+		//deranged
+		public static final String RAT_KING   = "splashes/deranged/ratking.jpg";
 	}
 
 	public static class Sprites {
@@ -599,11 +601,6 @@ public class Assets {
 		public static final String RBA_OTOGI = "sprites/rebluearchive/otogi.png"; //rebluearchive
 		public static final String RBA_SAKI = "sprites/rebluearchive/saki.png"; //rebluearchive
 		public static final String RBA_YUKINO = "sprites/rebluearchive/yukino.png"; //rebluearchive
-		//deranged
-		public static final String RAT_KING   = "splashes/deranged/ratking.jpg";
-	}
-
-	public static class Sprites {
 		//deranged
 		public static final String RAT_KING_HERO    = "sprites/deranged/ratkinghero.png";
 		public static final String ECH              = "sprites/deranged/ech.png";
