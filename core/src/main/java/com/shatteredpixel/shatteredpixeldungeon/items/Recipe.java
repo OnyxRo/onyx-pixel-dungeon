@@ -187,6 +187,8 @@ public abstract class Recipe {
 	};
 	
 	private static Recipe[] oneIngredientRecipes = new Recipe[]{
+		//deranged, three red crystals make a potion of strength (one stack, so a one ingredient recipe)
+		new com.shatteredpixel.shatteredpixeldungeon.items.quest.RedCrystal.StrengthRecipe(),
 		new Scroll.ScrollToStone(),
 		new ExoticPotion.PotionToExotic(),
 		new ExoticScroll.ScrollToExotic(),
@@ -309,8 +311,6 @@ public abstract class Recipe {
 		new com.shatteredpixel.shatteredpixeldungeon.items.spells.RubbingsTome.Recipe(),
 		//transformation, corpse dust, a rubbings tome and a wand
 		new com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Necronomicon.Recipe(),
-		//deranged, three red crystals make a potion of strength
-		new com.shatteredpixel.shatteredpixeldungeon.items.quest.RedCrystal.StrengthRecipe(),
 	};
 	
 	public static ArrayList<Recipe> findRecipes(ArrayList<Item> ingredients){

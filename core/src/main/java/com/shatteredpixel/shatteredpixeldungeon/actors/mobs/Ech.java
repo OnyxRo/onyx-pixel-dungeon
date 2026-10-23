@@ -62,7 +62,7 @@ public class Ech extends DirectableAlly {
         if (Dungeon.hero.heroClass == HeroClass.DUELIST && Dungeon.hero.belongings.weapon() != null){
             damage += Dungeon.hero.belongings.weapon().damageRoll(Dungeon.hero)/4;
         }
-        if (!level.adjacent(pos, enemy.pos)) damage /= 4;
+        if (enemy != null && !level.adjacent(pos, enemy.pos)) damage /= 4;
         return damage;
     }
 

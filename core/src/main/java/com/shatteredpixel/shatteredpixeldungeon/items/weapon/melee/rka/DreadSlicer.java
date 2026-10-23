@@ -54,7 +54,7 @@ public class DreadSlicer extends MeleeWeapon implements RkaSpellblade, AlchemyWe
         if (Random.Int(2) == 0){
             Terror terror = Buff.prolong(defender, Terror.class, 8f);
             if (terror != null) {
-                terror.object = curUser.id();
+                terror.object = attacker.id();
             }
         }
         if (defender.buff(Terror.class) != null){
