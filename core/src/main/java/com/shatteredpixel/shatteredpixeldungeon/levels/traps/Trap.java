@@ -100,11 +100,22 @@ public abstract class Trap implements Bundlable {
 			Dungeon.level.discover(pos);
 			Bestiary.setSeen(getClass());
 			Bestiary.countEncounter(getClass());
+			//xun, Xun's PD unlocks the Engineer after five traps go off in one run
+			com.shatteredpixel.shatteredpixeldungeon.Statistics.trapsActivated++;
+			if (com.shatteredpixel.shatteredpixeldungeon.Statistics.trapsActivated >= 5)
+				com.shatteredpixel.shatteredpixeldungeon.Badges.validateXunUnlock(com.shatteredpixel.shatteredpixeldungeon.Badges.Badge.UNLOCK_ENGINEER);
 			activate();
 		}
 	}
 
 	public abstract void activate();
+
+	//xun, the Engineer's pulse can switch a disarmed trap back on
+	public void fix(){
+		active = true;
+		com.shatteredpixel.shatteredpixeldungeon.levels.Level.set(pos, com.shatteredpixel.shatteredpixeldungeon.levels.Terrain.TRAP);
+		com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene.updateMap(pos);
+	}
 
 	public void disarm(){
 		active = false;

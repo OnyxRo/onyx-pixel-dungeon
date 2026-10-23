@@ -213,6 +213,7 @@ public class XunHooks {
 
 	//Hero.rest, waiting locks a hidden blade again
 	public static void onRest(Hero hero){
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.onRest(hero);
 		KindOfWeapon wep = hero.belongings.weapon();
 		if (wep instanceof HiddenBlade) ((HiddenBlade) wep).lock(true);
 		wep = hero.belongings.secondWep();

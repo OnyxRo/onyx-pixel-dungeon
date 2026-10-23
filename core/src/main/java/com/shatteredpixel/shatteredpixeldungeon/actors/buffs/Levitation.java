@@ -38,6 +38,7 @@ public class Levitation extends FlavourBuff {
 	}
 
 	public static final float DURATION	= 20f;
+	public boolean fromSandstorm = false; //xun, the Explorer's sandstorm drops lifted monsters hard
 	
 	@Override
 	public boolean attachTo( Char target ) {
@@ -59,6 +60,11 @@ public class Levitation extends FlavourBuff {
 		//only press tiles if we're current in the game screen
 		if (ShatteredPixelDungeon.scene() instanceof GameScene) {
 			Dungeon.level.occupyCell(target );
+			if (fromSandstorm && !target.flying && target.isAlive()){
+				target.damage(com.watabou.utils.Random.NormalIntRange(25, 40), Dungeon.hero.armorAbility);
+				if (Dungeon.hero.fieldOfView[target.pos])
+					com.watabou.noosa.audio.Sample.INSTANCE.play(com.shatteredpixel.shatteredpixeldungeon.Assets.Sounds.BLAST, 1f, 0.7f);
+			}
 		}
 	}
 

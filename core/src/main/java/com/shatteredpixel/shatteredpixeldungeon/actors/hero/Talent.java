@@ -1199,6 +1199,10 @@ public enum Talent {
 			switch (cls){
 				case WARRIOR: default:
 					return 26;
+				//xun, Xun's PD's sheet keeps 48 cells per hero, heroic energy is cell 41 of each
+				case EXPLORER: return 40000 + 6*48 + 41;
+				case WRAITH:   return 40000 + 7*48 + 41;
+				case ENGINEER: return 40000 + 8*48 + 41;
 				case MAGE:
 					return 58;
 				case ROGUE:
@@ -2254,6 +2258,7 @@ public enum Talent {
 
 	public static void onFoodEaten( Hero hero, float foodVal, Item foodSource ){
 		RearrangedTalents.onFoodEaten(hero, foodVal, foodSource); //rearranged
+		XunTalents.onFoodEaten(hero); //xun
 		TransformationTalents.onFoodEaten(hero, foodSource);
 		onSlimeFoodEaten(hero);
 		onNinjaFoodEaten(hero, foodSource);
@@ -2431,6 +2436,7 @@ public enum Talent {
 
 	public static void onPotionUsed( Hero hero, int cell, float factor ){
 		RearrangedTalents.onPotionUsed(hero, cell, factor); //rearranged
+		XunTalents.onPotionUsed(hero, factor); //xun
 		if (cell != hero.pos) TransformationTalents.onPotionThrown(hero, cell);
 		onSlimePotionUsed(hero, factor);
 		if (hero.hasTalent(LIQUID_BARRIER)){
@@ -2516,6 +2522,7 @@ public enum Talent {
 
 	public static void onScrollUsed( Hero hero, int pos, float factor, Class<?extends Item> cls ){
 		RearrangedTalents.onScrollUsed(hero, pos, factor); //rearranged
+		XunTalents.onScrollUsed(hero, factor); //xun
 		TransformationTalents.onScrollUsed(hero);
 		if (hero.hasTalent(INSCRIBED_POWER)){
 			// 2/3 empowered wand zaps
@@ -3013,6 +3020,16 @@ public enum Talent {
 			case TOWERPRIEST:
 				Collections.addAll(tierTalents, NATURES_BOUNTY, SURVIVALISTS_INTUITION, NATURES_AID, AGGRESSIVE_BARRIER);
 				break;
+			//xun, Xun's PD's three heroes
+			case EXPLORER:
+				Collections.addAll(tierTalents, KEEN_MEAL, SECRET_FORESIGHT, TESTED_AWARENESS, HOME_ADVANTAGE, SAFE_SURVEY);
+				break;
+			case WRAITH:
+				Collections.addAll(tierTalents, ANCESTRAL_TRIBUTE, BLOOD_INTUITION, TESTED_ANTIMAGIC, BURIAL_CEREMONY, SAFE_PRICK);
+				break;
+			case ENGINEER:
+				Collections.addAll(tierTalents, EAT_LITTLE_AND_OFTEN, FINE_INTUITION, TESTED_MAINTENANCE, GENERAL_DISARM, PULSE_ENERGY);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -3094,6 +3111,16 @@ public enum Talent {
 			case TOWERPRIEST:
 				Collections.addAll(tierTalents, INVIGORATING_MEAL, LIQUID_NATURE, REJUVENATING_STEPS, HEIGHTENED_SENSES, DURABLE_PROJECTILES);
 				break;
+			//xun
+			case EXPLORER:
+				Collections.addAll(tierTalents, PREPARING_MEAL, LIQUID_CLAIRVOYANCE, BARBED_WIRE, WINDING_PORCH, REKINDLED_EMBER, AGGRESSIVE_ROADBLOCK);
+				break;
+			case WRAITH:
+				Collections.addAll(tierTalents, TEARING_MEAL, INSCRIBED_REGENERATION, BLURING_BODY, PSIONIC_BLAST, SCAPEGOAT, THROWN_EVIL);
+				break;
+			case ENGINEER:
+				Collections.addAll(tierTalents, TOILSOME_MEAL, IONIC_LIQUID, STRONG_PULSE, RESONANT_SENSING, APART_ANYTHING, REMOTE_DESTRUCTION);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -3172,6 +3199,16 @@ public enum Talent {
 				break;
 			case TOWERPRIEST:
 				Collections.addAll(tierTalents, ALLY_WARP, HOLD_FAST);
+				break;
+			//xun
+			case EXPLORER:
+				Collections.addAll(tierTalents, DEMOLITION, DIG_THE_WELL, CONVENIENT_SHOVEL);
+				break;
+			case WRAITH:
+				Collections.addAll(tierTalents, VICIOUS_BETRAYAL, CURSED_POWER, WICKED_GROWTH);
+				break;
+			case ENGINEER:
+				Collections.addAll(tierTalents, DURABLE_MODIFIES, ELECTRONIC_REPAIR, IONIZING_RADIATION);
 				break;
 		}
 		for (Talent talent : tierTalents){
@@ -3322,6 +3359,34 @@ public enum Talent {
 				break;
 			case OCCULTIST:
 				Collections.addAll(tierTalents, ENHANCED_LETHALITY, ASSASSINS_REACH, BOUNTY_HUNTER);
+				break;
+			//xun, Xun's PD's subclasses have five talents each
+			case WAVECHASER:
+				Collections.addAll(tierTalents, RIVER_EROSION, SON_OF_SEA, DROWNING, LAKE_DEVELOPMENT, UNDERCURRENT);
+				break;
+			case TRAPPER:
+				Collections.addAll(tierTalents, XUN_TRAP_MASTER, FRIENDLY_MECHANISM, SIMPLE_STRUCTURE, SENSITIVE_PEDAL, LIQUID_COLLECTING);
+				break;
+			case ROCKSY:
+				Collections.addAll(tierTalents, METEROIC_IRON, ROCK_PROTECTOR, MIND_CONTROL, DESTRUCTIVE_STRIKE, METEOR_CRATER);
+				break;
+			case INCUBUS:
+				Collections.addAll(tierTalents, LULLABY, SLEEPWALKING, SLEEPING_IN, WRONG_SIDE_OF_THE_BED, NIGHTMARE_HAUNTING);
+				break;
+			case PLAGUEGOD:
+				Collections.addAll(tierTalents, CORPSE_DECAY, HOMEMADE_DRUG, MAGICAL_VENT, ACID_RAIN, PLAGUE_EUCHARIST);
+				break;
+			case SOULHANDLER:
+				Collections.addAll(tierTalents, IMMEDIATE_USE, VENGEFUL_SPIRIT, SOUL_CAGING, DEVOUR_SURGING, OVERFLOW);
+				break;
+			case CRAFTSMAN:
+				Collections.addAll(tierTalents, ACTIVE_REPAIR, MULTI_MODIFY, PART_RECYCLING, FAVORITE_WORK, KINETIC_FRAGMENT);
+				break;
+			case HACKER:
+				Collections.addAll(tierTalents, BACKFIRE, DIFFRACTION, ELECTRIC_CHARGE, DARK_MAGIC, CHARISMA);
+				break;
+			case GRENADIER:
+				Collections.addAll(tierTalents, EXPLOSION_PROOF, XUN_SHOCKWAVE, ADDED_POWDER, MAGICAL_EXPLOSION, BALLISTICA_CALC);
 				break;
 		}
 		RearrangedRework.extendSubclassTalents(cls, tierTalents); //rearranged

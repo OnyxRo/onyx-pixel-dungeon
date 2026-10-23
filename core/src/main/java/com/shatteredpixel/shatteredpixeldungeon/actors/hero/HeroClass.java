@@ -119,7 +119,11 @@ public enum HeroClass {
 	//tower, Tower PD. Its heroes had no subclasses, these are Shattered's picked to suit them
 	NECROHERO( HeroSubClass.WARLOCK, HeroSubClass.ASSASSIN ),
 	TANK( HeroSubClass.BERSERKER, HeroSubClass.GLADIATOR ),
-	TOWERPRIEST( HeroSubClass.MONK, HeroSubClass.WARDEN );
+	TOWERPRIEST( HeroSubClass.MONK, HeroSubClass.WARDEN ),
+	//xun, Xun's PD's three heroes
+	EXPLORER( HeroSubClass.WAVECHASER, HeroSubClass.TRAPPER, HeroSubClass.ROCKSY ),
+	WRAITH( HeroSubClass.INCUBUS, HeroSubClass.PLAGUEGOD, HeroSubClass.SOULHANDLER ),
+	ENGINEER( HeroSubClass.CRAFTSMAN, HeroSubClass.HACKER, HeroSubClass.GRENADIER );
 
 	//the Summoner has two pictures, one is chosen each time the game starts
 	private static final String SUMMONER_SPLASH = Math.random() < 0.5 ? Assets.Splashes.SUMMONER : Assets.Splashes.SORCERESS;
@@ -240,6 +244,10 @@ public enum HeroClass {
 				break;
 			case TOWERPRIEST:
 				initTowerPriest( hero );
+				break;
+			//xun
+			case EXPLORER: case WRAITH: case ENGINEER:
+				XunHeroes.init( this, hero );
 				break;
 		}
 
@@ -364,6 +372,13 @@ public enum HeroClass {
 				return Badges.Badge.MASTERY_TANK;
 			case TOWERPRIEST:
 				return Badges.Badge.MASTERY_TOWERPRIEST;
+			//xun
+			case EXPLORER:
+				return Badges.Badge.MASTERY_EXPLORER;
+			case WRAITH:
+				return Badges.Badge.MASTERY_WRAITH;
+			case ENGINEER:
+				return Badges.Badge.MASTERY_ENGINEER;
 		}
 		return null;
 	}
@@ -785,6 +800,9 @@ public enum HeroClass {
 				return new ArmorAbility[]{new Endure(), new Shockwave(), new HeroicLeap()};
 			case TOWERPRIEST:
 				return new ArmorAbility[]{new SpiritHawk(), new WarpBeacon(), new SmokeBomb()};
+			//xun
+			case EXPLORER: case WRAITH: case ENGINEER:
+				return XunHeroes.armorAbilities( this );
 			case DM400:
 				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.dm400.Routine(),
 						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.dm400.Discharge_Gas(),
@@ -854,6 +872,13 @@ public enum HeroClass {
 				return Assets.Sprites.TANK;
 			case TOWERPRIEST:
 				return Assets.Sprites.PRIEST;
+			//xun
+			case EXPLORER:
+				return Assets.Sprites.XUN_EXPLORER;
+			case WRAITH:
+				return Assets.Sprites.XUN_WRAITH;
+			case ENGINEER:
+				return Assets.Sprites.XUN_ENGINEER;
 		}
 	}
 
@@ -917,6 +942,11 @@ public enum HeroClass {
 				return Assets.Splashes.WARRIOR;
 			case TOWERPRIEST:
 				return Assets.Splashes.CLERIC;
+			//xun, only the Explorer has splash art in Xun's PD, the other two use its generic hero picture
+			case EXPLORER:
+				return Assets.Splashes.XUN_EXPLORER;
+			case WRAITH: case ENGINEER:
+				return Assets.Splashes.XUN_NEWHERO;
 		}
 	}
 	
@@ -984,6 +1014,13 @@ public enum HeroClass {
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_TANK);
 			case TOWERPRIEST:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_TOWERPRIEST);
+			//xun
+			case EXPLORER:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_EXPLORER);
+			case WRAITH:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_WRAITH);
+			case ENGINEER:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_ENGINEER);
 		}
 	}
 	

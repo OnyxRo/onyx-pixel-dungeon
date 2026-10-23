@@ -1212,6 +1212,9 @@ public abstract class Mob extends Char {
 				if (Dungeon.hero.subClass == HeroSubClass.MONK){
 					Buff.affect(Dungeon.hero, MonkEnergy.class).gainEnergy(this);
 				}
+				if (Dungeon.hero.subClass == HeroSubClass.SOULHANDLER){ //xun
+					Buff.affect(Dungeon.hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulHandle.class).gainEnergy(this);
+				}
 			}
 		}
 	}

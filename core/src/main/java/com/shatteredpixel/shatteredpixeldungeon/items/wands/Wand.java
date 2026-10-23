@@ -21,6 +21,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.MetalPart;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Transmuting;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.engineer.ForceField;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -373,6 +377,7 @@ public abstract class Wand extends Item {
 			desc += "\n\n" + Messages.get(this, "bmage_desc");
 		}
 
+		if (modify != null) desc += "\n\n" + Messages.get(Wand.class, "has_modify", modify.title(), modDurability) + modify.desc(); //xun
 		return desc;
 	}
 
@@ -537,6 +542,7 @@ public abstract class Wand extends Item {
 	}
 
 	public void wandUsed() {
+		if (modify != null) decreaseModDurability(); //xun
 		if (!isIdentified()) {
 			float uses = Math.min( availableUsesToID, Talent.itemIDSpeedFactor(Dungeon.hero, this) );
 			availableUsesToID -= uses;
@@ -691,6 +697,8 @@ public abstract class Wand extends Item {
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
+		if (modify != null) bundle.put( "modify", modify ); //xun
+		bundle.put( "mod_durability", modDurability );
 		bundle.put( USES_LEFT_TO_ID, usesLeftToID );
 		bundle.put( AVAILABLE_USES, availableUsesToID );
 		bundle.put( CUR_CHARGES, curCharges );
@@ -703,6 +711,8 @@ public abstract class Wand extends Item {
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
+		if (bundle.contains( "modify" )) modify = bundle.getEnum( "modify", Modification.class ); //xun
+		modDurability = bundle.getInt( "mod_durability" );
 		usesLeftToID = bundle.getInt( USES_LEFT_TO_ID );
 		availableUsesToID = bundle.getInt( AVAILABLE_USES );
 		curseInfusionBonus = bundle.getBoolean(CURSE_INFUSION_BONUS);
@@ -943,6 +953,7 @@ public abstract class Wand extends Item {
 			}
 			float turnsToCharge = (float) (BASE_CHARGE_DELAY
 					+ (scalingAddition * Math.pow(scalingFactor, missingCharges)));
+			if (Wand.this.modify == Modification.STATIC_CHARGE) turnsToCharge /= 2f; //xun
 
 			if (Regeneration.regenOn())
 				partialCharge += (1f/turnsToCharge) * (target == Dungeon.hero ? com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.wandRechargeFactor() : 1f) * RingOfEnergy.wandChargeMultiplier(target)
@@ -979,4 +990,89 @@ public abstract class Wand extends Item {
 			this.scalingFactor = value;
 		}
 	}
+
+	//xun, Xun's PD's modifications, fitted by the Engineer with metal parts
+	public enum Modification {
+		STATIC_CHARGE,
+		SPARROW,
+		PRISM,
+		REPEATING,
+		DISINTEGRATING;
+
+		public int partCost(){
+			switch (this){
+				case STATIC_CHARGE:
+				case SPARROW:
+				case PRISM:
+				case REPEATING:      return 5;
+				case DISINTEGRATING: return 10;
+				default:             return 0;
+			}
+		}
+
+		public int maxDurability(){
+			switch (this){
+				case PRISM:
+				case REPEATING:
+				case DISINTEGRATING:
+				case STATIC_CHARGE:  return 15;
+				case SPARROW:
+				default:             return 25;
+			}
+		}
+
+		public String title(){return Messages.get(Modification.class, toString());}
+		public String desc() {return Messages.get(Modification.class, this + "_desc");}
+
+		public boolean craftsman(){
+			return this == REPEATING || this == DISINTEGRATING;
+		}
+	}
+
+	public void decreaseModDurability(){
+		if (Dungeon.hero.buff(ForceField.Field.class) == null
+				|| Random.Int(4) >= Dungeon.hero.pointsInTalent(Talent.REPAIR_ABILITY))
+			modDurability = Math.max(modDurability - 1, 0);
+		if (modDurability <= 0) modify(null);
+	}
+
+	public void modify(Modification mod){
+		boolean activeRepair = modify == mod && Dungeon.hero.hasTalent(Talent.ACTIVE_REPAIR);
+		if (modify == Modification.DISINTEGRATING && mod != Modification.DISINTEGRATING) return;
+		modify = mod;
+		if (mod == null){
+			modDurability = 0;
+			GLog.n(Messages.get(this, "modify_break"));
+			float chance = Dungeon.hero.pointsInTalent(Talent.PART_RECYCLING) / 2f;
+			while (Random.Float() < chance){
+				MetalPart part = new MetalPart();
+				if (!part.collect()) Dungeon.level.drop(part, Dungeon.hero.pos).sprite.drop();
+				chance --;
+			}
+			if (Dungeon.hero.pointsInTalent(Talent.KINETIC_FRAGMENT) >= 3){
+				Buff.affect(Dungeon.hero, Recharging.class, 5);
+				ScrollOfRecharging.charge(Dungeon.hero);
+			}
+		} else {
+			if (!activeRepair)
+				modDurability = 0;
+
+			float duraToInc = mod.maxDurability() * (1 + 0.15f * Dungeon.hero.pointsInTalent(Talent.DURABLE_MODIFIES));
+			if (Dungeon.hero.pointsInTalent(Talent.ACTIVE_REPAIR) >= 2 && activeRepair) duraToInc *= 1.2f;
+			modDurability += Math.round(duraToInc);
+
+			Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
+			Transmuting.show(curUser, this, this);
+			curUser.sprite.operate(curUser.pos);
+
+			if (Dungeon.hero.pointsInTalent(Talent.ACTIVE_REPAIR) >= 3 && activeRepair){
+				MetalPart part = new MetalPart();
+				if (!part.collect()) Dungeon.level.drop(part, Dungeon.hero.pos).sprite.drop();
+			}
+		}
+	}
+
+	public Modification modify = null;
+	public int modDurability = 0;
+
 }

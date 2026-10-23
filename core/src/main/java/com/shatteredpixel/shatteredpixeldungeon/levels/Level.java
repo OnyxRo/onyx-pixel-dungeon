@@ -1396,9 +1396,11 @@ public abstract class Level implements Bundlable {
 			//we call act here instead of detach in case the debuffs haven't managed to deal dmg once yet
 			if (map[ch.pos] == Terrain.WATER){
 				if (ch.buff(Burning.class) != null){
+					if (ch == Dungeon.hero) com.shatteredpixel.shatteredpixeldungeon.Badges.validateXunUnlock(com.shatteredpixel.shatteredpixeldungeon.Badges.Badge.UNLOCK_EXPLORER); //xun
 					ch.buff(Burning.class).act();
 				}
 				if (ch.buff(Ooze.class) != null){
+					if (ch == Dungeon.hero) com.shatteredpixel.shatteredpixeldungeon.Badges.validateXunUnlock(com.shatteredpixel.shatteredpixeldungeon.Badges.Badge.UNLOCK_EXPLORER); //xun
 					ch.buff(Ooze.class).act();
 				}
 			}

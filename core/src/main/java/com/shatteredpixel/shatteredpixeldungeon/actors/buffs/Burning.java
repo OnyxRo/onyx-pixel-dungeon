@@ -54,6 +54,7 @@ public class Burning extends Buff implements Hero.Doom, Buff.DOTbuff {
 	private static final float DURATION = 8f;
 	
 	private float left;
+	public float left(){ return left; } //xun, read by the Wraith's transfusion
 	private boolean acted = false; //whether the debuff has done any damage at all yet
 	private int burnIncrement = 0; //for tracking burning of hero items
 	private int nextHit = 0; //we pre-caulcate the incoming hit for a bit more accuracy in totalIncomingDMG()
@@ -91,6 +92,12 @@ public class Burning extends Buff implements Hero.Doom, Buff.DOTbuff {
 		Buff.detach( target, Chill.class);
 
 		return super.attachTo(target);
+	}
+
+	//xun, only used by the Explorer's sandstorm
+	public void fireSpend(float time) {
+		spend(time);
+		left -= time;
 	}
 
 	@Override

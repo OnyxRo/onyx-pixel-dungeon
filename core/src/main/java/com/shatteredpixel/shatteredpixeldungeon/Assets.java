@@ -511,6 +511,8 @@ public class Assets {
 		public static final String SORCERESS = "splashes/sorceress.png"; //ported, ryuse, the Summoner's other picture
 		//summoning
 		public static final String CONJURER = "splashes/summoning/conjurer.png"; //ported, summoning
+		public static final String XUN_EXPLORER = "splashes/xun/explorer.png"; //xun
+		public static final String XUN_NEWHERO  = "splashes/xun/newhero.jpg"; //xun
 
 		public static final String SEWERS   = "splashes/sewers.jpg";
 		public static final String PRISON   = "splashes/prison.jpg";
@@ -1060,6 +1062,11 @@ public class Assets {
 		//summoning, Summoning PD Reincarnated
 		public static final String CHAOS_SABER = "sprites/summoning/chaossaber.png"; //ported, summoning
 		public static final String CONJURER = "sprites/summoning/conjurer.png"; //ported, summoning
+		public static final String XUN_EXPLORER = "sprites/xun/explorer.png"; //xun, hero sheets
+		public static final String XUN_WRAITH   = "sprites/xun/herowraith.png";
+		public static final String XUN_ENGINEER = "sprites/xun/heroengineer.png";
+		public static final String XUN_DETONATOR = "sprites/xun/detonator.png";
+		public static final String XUN_BARRICADE = "sprites/xun/barricade.png";
 		public static final String SLIME_MINION = "sprites/summoning/slime_minion.png"; //ported, summoning
 		public static final String IMP_QUEEN = "sprites/summoning/imp_queen.png"; //ported, summoning
 		public static final String IMP_MINION = "sprites/summoning/imp_minion.png"; //ported, summoning

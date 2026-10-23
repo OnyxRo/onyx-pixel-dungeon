@@ -724,6 +724,7 @@ public class Dungeon {
 		
 		Light light = hero.buff( Light.class );
 		hero.viewDistance = light == null ? level.viewDistance : Math.max( Light.DISTANCE, level.viewDistance );
+		hero.viewDistance += com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunHeroes.viewBonus(hero); //xun, the Explorer sees a tile further
 		
 		hero.curAction = hero.lastAction = null;
 

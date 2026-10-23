@@ -2789,6 +2789,14 @@ public class ItemSpriteSheet {
 	public static final int WATCHTOWER = xy(13, 271);
 	public static final int WORN_LOCK = xy(14, 271);
 	public static final int RING_JADE = xy(15, 271);
+	public static final int PART = xy(16, 271);
+	public static final int ARMOR_ENGINEER = xy(1, 272);
+	public static final int ARMOR_EXPLORER = xy(2, 272);
+	public static final int ARMOR_WRAITH = xy(3, 272);
+	public static final int REMAIN_TOOL = xy(4, 272);
+	public static final int RESIDUE = xy(5, 272);
+	public static final int SHOVEL_SCRAP = xy(6, 272);
+	public static final int TOOL = xy(7, 272);
 	public static final int XUN_ANCHOR = xy(16, 282);
 	static{
 		assignItemRect(ANTIMATTER, 12, 11);
@@ -2902,6 +2910,14 @@ public class ItemSpriteSheet {
 		assignItemRect(WATCHTOWER, 12, 11);
 		assignItemRect(WORN_LOCK, 10, 14);
 		assignItemRect(RING_JADE, 8, 10);
+		assignItemRect(PART, 13, 13);
+		assignItemRect(ARMOR_ENGINEER, 14, 12);
+		assignItemRect(ARMOR_EXPLORER, 15, 14);
+		assignItemRect(ARMOR_WRAITH, 15, 16);
+		assignItemRect(REMAIN_TOOL, 13, 13);
+		assignItemRect(RESIDUE, 13, 8);
+		assignItemRect(SHOVEL_SCRAP, 10, 11);
+		assignItemRect(TOOL, 15, 16);
 		assignItemRect(XUN_ANCHOR, 16, 16);
 	}
 

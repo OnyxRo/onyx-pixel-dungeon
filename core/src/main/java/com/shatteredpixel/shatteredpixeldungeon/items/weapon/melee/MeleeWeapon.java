@@ -530,6 +530,7 @@ public class MeleeWeapon extends Weapon {
 			info += "\n\n" + Messages.get(Weapon.class, "critchance", Messages.decimalFormat("#.##", 100*Dungeon.hero.critChance(this)));
 		}
 		
+		if (modify != null) info += "\n\n" + Messages.get(KindOfWeapon.class, "has_modify", modify.title(), modDurability) + modify.desc(); //xun
 		return info;
 	}
 	

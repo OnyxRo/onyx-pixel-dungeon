@@ -49,6 +49,7 @@ public class Statistics {
 	public static int enemiesSlain;
 	public static int foodEaten;
 	public static int shitsTaken; //from Shittened PD
+	public static int trapsActivated; //xun
 	//xun, Xun's PD's elixirs and crystals that stack for the whole run
 	public static int elixirManaDrunk, conEnergyUsed, conRechargeUsed, enlighteningDrunk;
 	public static boolean corrosionUsed;
@@ -121,6 +122,7 @@ public class Statistics {
 		enemiesSlain	= 0;
 		foodEaten		= 0;
 		shitsTaken		= 0;
+		trapsActivated	= 0;
 		elixirManaDrunk = conEnergyUsed = conRechargeUsed = enlighteningDrunk = 0; //xun
 		corrosionUsed = false; //xun
 		ratsSlain		= 0;
@@ -231,6 +233,7 @@ public class Statistics {
 		bundle.put( SLAIN,		enemiesSlain );
 		bundle.put( FOOD,		foodEaten );
 		bundle.put( TURDS,		shitsTaken );
+		bundle.put( "xun_traps_activated", trapsActivated );
 		bundle.put( "xun_mana", elixirManaDrunk ); //xun
 		bundle.put( "xun_conenergy", conEnergyUsed );
 		bundle.put( "xun_conrecharge", conRechargeUsed );
@@ -303,6 +306,7 @@ public class Statistics {
 		enemiesSlain	= bundle.getInt( SLAIN );
 		foodEaten		= bundle.getInt( FOOD );
 		shitsTaken		= bundle.getInt( TURDS );
+		trapsActivated	= bundle.getInt( "xun_traps_activated" );
 		elixirManaDrunk = bundle.getInt( "xun_mana" ); //xun
 		conEnergyUsed = bundle.getInt( "xun_conenergy" );
 		conRechargeUsed = bundle.getInt( "xun_conrecharge" );

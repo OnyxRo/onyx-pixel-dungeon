@@ -549,6 +549,13 @@ public enum Icons {
 				return new ItemSprite(ItemSpriteSheet.HEROSPELL_SHIELD);
 			case TOWERPRIEST:
 				return new ItemSprite(ItemSpriteSheet.HEROSPELL_PRAY);
+			//xun
+			case EXPLORER:
+				return new ItemSprite(ItemSpriteSheet.SHOVEL);
+			case WRAITH:
+				return new ItemSprite(ItemSpriteSheet.BONE_SPIKE);
+			case ENGINEER:
+				return new ItemSprite(ItemSpriteSheet.TOOL);
 			default:
 				return null;
 		}

@@ -529,6 +529,7 @@ public class Item implements Bundlable {
 	public Item identify( boolean byHero ) {
 
 		if (byHero && Dungeon.hero != null && Dungeon.hero.isAlive()){
+			if (!isIdentified()) com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.onItemIdentified(Dungeon.hero, this); //xun
 			Catalog.setSeen(getClass());
 			Statistics.itemTypesDiscovered.add(getClass());
 		}

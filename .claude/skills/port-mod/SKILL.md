@@ -209,3 +209,10 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **Item sheets wider than 16 cells.** `port-itemsprites.py` reads the mod's `WIDTH` from its ItemSpriteSheet (Tower PD uses 32). If a copied picture looks wrong or "EMPTY CELL" shows for an item the mod draws, check that constant first.
 - **Text color markers.** Tower PD writes `#1text#1` for colored text. This game only reads `_text_`, convert them when copying strings.
 - **A mod hero with no subclasses or talents** (Tower PD's BETA and ALPHA placeholders) gets Shattered subclasses, talents and armor abilities that work without that class's own gear, picked to suit. Run `TransformationHeroesTest <CLASS> ...` on it, the test now takes class names and casts each starting hero spell.
+
+## Added after Xun's PD (2026-10-23)
+- Before writing a new helper class with the Write tool, check the file does not exist yet (`ls`). Write replaces a file without a word, and a later round's `XunTalents` replaced round 1's version this way. Look for a mod's earlier helpers with `grep -rl "//xun"` first.
+- A mod hero whose icons sit on its own sheets needs no sheet edits. Copy its hero, buff and talent sheets to `interfaces/<key>/` and draw icon numbers of 40000 and up from them in `HeroIcon`, `BuffIcon` and `TalentIcon` (the Re-ARranged sheets use 10000 the same way). Pick a new base for the next mod.
+- A mod terrain tile (Xun's underpass) does not port, every world sheet would need the tile. Keep the cells in a small `Blob` subclass whose `evolve` copies `cur` to `off`, and show the cell as an existing terrain.
+- `TransformationHeroesTest` takes hero class names and checks text, talents, subclasses and save and load. Heroes with a different shape (three subclasses, five talents) need their shape added to the test, as was done for Xun's.
+- Python heredocs inside Bash turn a backslash n inside a Java string into a real line break. Write Python edit scripts to the scratchpad with the Write tool and run them from there.

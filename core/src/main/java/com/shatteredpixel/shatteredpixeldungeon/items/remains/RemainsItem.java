@@ -105,6 +105,13 @@ public abstract class RemainsItem extends Item {
 				return new ShatteredPillbox();
 			case ARCHER:
 				return new BowFragment();
+			//xun
+			case EXPLORER:
+				return new ShovelScrap();
+			case WRAITH:
+				return new ResidualRemain();
+			case ENGINEER:
+				return new RemainTool();
 		}
 	}
 

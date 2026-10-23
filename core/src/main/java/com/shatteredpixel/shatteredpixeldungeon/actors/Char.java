@@ -1512,6 +1512,9 @@ public abstract class Char extends Actor {
 		return isAlive();
 	}
 
+	//xun, Xun's PD's time bomb freezes everything caught in it
+	public void xunFreezeTime(float time) { spendConstant(time); }
+
 	@Override
 	protected void spendConstant(float time) {
 		TimekeepersHourglass.timeFreeze freeze = buff(TimekeepersHourglass.timeFreeze.class);

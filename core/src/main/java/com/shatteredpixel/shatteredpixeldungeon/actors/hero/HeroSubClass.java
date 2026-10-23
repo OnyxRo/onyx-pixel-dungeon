@@ -110,7 +110,17 @@ public enum HeroSubClass {
 	CHASER(HeroIcon.CHASER),
 	FIGHTER(HeroIcon.FIGHTER),
 	FENCER(HeroIcon.FENCER),
-	ENCHANTER(HeroIcon.ENCHANTER);
+	ENCHANTER(HeroIcon.ENCHANTER),
+	//xun, Xun's PD's subclasses, icons from its own sheet
+	WAVECHASER(HeroIcon.XUN + 19),
+	TRAPPER(HeroIcon.XUN + 20),
+	ROCKSY(HeroIcon.XUN + 21),
+	INCUBUS(HeroIcon.XUN + 22),
+	PLAGUEGOD(HeroIcon.XUN + 23),
+	SOULHANDLER(HeroIcon.XUN + 24),
+	CRAFTSMAN(HeroIcon.XUN + 25),
+	HACKER(HeroIcon.XUN + 26),
+	GRENADIER(HeroIcon.XUN + 27);
 
 	//Transformation PD asks this of subclasses (its Rat King hero shares them all)
 	public boolean is(HeroSubClass sub) {
