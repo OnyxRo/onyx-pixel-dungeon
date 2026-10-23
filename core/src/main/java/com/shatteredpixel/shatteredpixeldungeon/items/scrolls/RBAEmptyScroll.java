@@ -11,7 +11,8 @@ public class RBAEmptyScroll extends InventoryScroll {
     {
         image = ItemSpriteSheet.RBA_SCROLL_EMPTY;
         preferredBag = ScrollHolder.class;
-        handler.know(this);
+        //no labels exist outside a run, the journal makes this scroll from the title screen too
+        if (handler != null) handler.know(this);
         anonymous = false;
 
         bones = false;

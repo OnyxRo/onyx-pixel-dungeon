@@ -181,6 +181,10 @@ He wants to playtest everything, so build these next.
 
 Also, his promo banner art says "50+ MODS". The game currently has content from four mods, so suggest an accurate label like "24 WORLDS" if it comes up.
 
+## Crash list
+
+Every crash on this computer is added to `crashes/crashes.jsonl` in the main project folder (`desktop/.../CrashLog.java`, git-ignored, screenshot tour crashes are left out). When Onyx says "fix bugs", use the `fix-bugs` skill, which reads the list with `python -I scripts/crashes.py`, fixes each open crash and marks it fixed. The crash box used to show "Invalid message with quotes" for every crash because of the apostrophe in the game title, fixed on 2026-10-23.
+
 ## Improving the process
 
 - Edit code with `scripts/edit.py` (a plain text spec, see its header), not shell heredocs or sed. Backslashes in heredocs got mangled repeatedly.

@@ -533,3 +533,9 @@ Round 4, heroes. The Explorer, Wraith and Engineer are playable (`HeroClass.EXPL
 - The Explorer's underpass. Xun's PD added a terrain tile for tunnel exits. This game keeps the exits in a blob (`Underpass.Exits`) and shows the dug cell as decorated floor, so every world's tile sheet still works.
 - Not ported yet. About 40 of the 123 talents need hooks deep in Shattered's code (lullaby, sleepwalking, wrong side of the bed, homemade drug, magical vent, explosion proof, shockwave, the trap talents and others). They show in the talent tree and do nothing. The Wavechaser's swimming speed and the Trapper's hidden trap talents are also missing. Hero sprites are the mod's own sheets in `sprites/xun/`. Only the Explorer has splash art, the other two use the mod's generic new hero picture.
 - Checks. `scripts/check.sh` runs `TransformationHeroesTest EXPLORER WRAITH ENGINEER` as XunHeroesTest (text, talents, subclasses, abilities, save and load).
+
+## Crash list and the journal crash (2026-10-23)
+
+- Opening the journal item list crashed. 46 Transformation PD items draw from a second sheet (`EXItemSpriteSheet`, `sprites/transformati/ex_items.png`) and `ItemSprite.frame` never knew about it. It now switches sheet the way the mod did, and shows the unknown item picture for any number past the end of the sheet. `RBAEmptyScroll` crashed when made outside a run. `scripts/test/ItemSpriteTest.java` checks every catalog item and runs first in `check.sh`.
+- Crash list. `CrashLog.java` in the desktop module adds every crash to `crashes/crashes.jsonl` (git-ignored). `scripts/crashes.py` groups and tracks them, the `fix-bugs` skill works through them.
+- Still open, FirebloomHerb and SorrowmossHerb have no description text (item check).
