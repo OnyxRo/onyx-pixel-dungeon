@@ -192,7 +192,10 @@ public class Dungeon {
 		MEDIC_HP,
 		//summoning, Summoning PD's phantom gear and spectre rat drops
 		PHANTOM_EQUIP,
-		SPECTRE_RAT;
+		SPECTRE_RAT,
+		//xun, Xun's PD's food pouch
+		FOOD_POCKET,
+		XUN_PARA_MISSILE;
 
 		public int count = 0;
 
@@ -723,6 +726,7 @@ public class Dungeon {
 		
 		Light light = hero.buff( Light.class );
 		hero.viewDistance = light == null ? level.viewDistance : Math.max( Light.DISTANCE, level.viewDistance );
+		hero.viewDistance += com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunHeroes.viewBonus(hero); //xun, the Explorer sees a tile further
 		
 		hero.curAction = hero.lastAction = null;
 

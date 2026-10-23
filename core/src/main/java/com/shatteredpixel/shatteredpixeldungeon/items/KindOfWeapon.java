@@ -21,6 +21,12 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.MetalPart;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Transmuting;
+import com.watabou.utils.Bundle;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.engineer.ForceField;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PhysicalEmpower;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -312,4 +318,109 @@ abstract public class KindOfWeapon extends EquipableItem {
 		Sample.INSTANCE.play(hitSound, 1, pitch * hitSoundPitch);
 	}
 	
+
+	//xun, Xun's PD's modifications, fitted by the Engineer with metal parts
+	public enum Modification{
+		LONG_HANDLE, //only for melee
+		SHARP_BLADE,
+		SMOG_ATTACH, //only for thrown
+		CONDUCTIVE,
+		BATTLE_MODULE,
+		PNEUMATICS;
+
+		public int partCost(){
+			switch (this){
+				case LONG_HANDLE:     return 3;
+				case SMOG_ATTACH:     return 3;
+				case SHARP_BLADE:     return 4;
+				case CONDUCTIVE:      return 5;
+				case BATTLE_MODULE:   return 8;
+				case PNEUMATICS:      return 8;
+				default:              return 0;
+			}
+		}
+
+		public int maxDurability(){
+			switch (this){
+				case LONG_HANDLE:
+				case SMOG_ATTACH:     return 15;
+				case SHARP_BLADE:
+				case BATTLE_MODULE:
+				case PNEUMATICS:
+				case CONDUCTIVE:
+				default:              return 25;
+			}
+		}
+
+		public String title(){return Messages.get(Modification.class, toString());}
+		public String desc() {return Messages.get(Modification.class, this + "_desc");}
+
+		public boolean craftsman(){
+			return this == BATTLE_MODULE || this == PNEUMATICS;
+		}
+	}
+
+	public void decreaseModDurability(){
+		if (Dungeon.hero.buff(ForceField.Field.class) == null
+				|| Random.Int(4) >= Dungeon.hero.pointsInTalent(Talent.REPAIR_ABILITY))
+			modDurability = Math.max(modDurability - 1, 0);
+		if (modDurability <= 0) modify(null);
+	}
+
+	public void modify(Modification mod){
+		boolean activeRepair = modify == mod && Dungeon.hero.hasTalent(Talent.ACTIVE_REPAIR);
+		modify = mod;
+		if (mod == null){
+			modDurability = 0;
+			GLog.n(Messages.get(this, "modify_break"));
+			float chance = Dungeon.hero.pointsInTalent(Talent.PART_RECYCLING) / 2f;
+			while (Random.Float() < chance){
+				MetalPart part = new MetalPart();
+				if (!part.collect()) Dungeon.level.drop(part, Dungeon.hero.pos).sprite.drop();
+				chance --;
+			}
+			if (Dungeon.hero.hasTalent(Talent.KINETIC_FRAGMENT)){
+				Buff.affect(Dungeon.hero, PhysicalEmpower.class).set((int)(Dungeon.hero.lvl * 0.5f), 2);
+			}
+		} else {
+			if (!activeRepair)
+				modDurability = 0;
+
+			float duraToInc = mod.maxDurability() * (1 + 0.15f * Dungeon.hero.pointsInTalent(Talent.DURABLE_MODIFIES));
+			if (Dungeon.hero.pointsInTalent(Talent.ACTIVE_REPAIR) >= 2 && activeRepair) duraToInc *= 1.2f;
+			modDurability += Math.round(duraToInc);
+
+			Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
+			Transmuting.show(curUser, this, this);
+			curUser.sprite.operate(curUser.pos);
+
+			if (Dungeon.hero.pointsInTalent(Talent.ACTIVE_REPAIR) >= 3 && activeRepair){
+				MetalPart part = new MetalPart();
+				if (!part.collect()) Dungeon.level.drop(part, Dungeon.hero.pos).sprite.drop();
+			}
+		}
+	}
+
+	public static class BattleModule{} //xun, only used to mark damage
+
+	public Modification modify = null;
+	public int modDurability = 0;
+
+	private static final String XUN_MODIFY = "modify";
+	private static final String XUN_MODDURA = "mod_durability";
+
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		if (modify != null) bundle.put(XUN_MODIFY, modify);
+		bundle.put(XUN_MODDURA, modDurability);
+	}
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		if (bundle.contains(XUN_MODIFY)) modify = bundle.getEnum(XUN_MODIFY, Modification.class);
+		modDurability = bundle.getInt(XUN_MODDURA);
+	}
+
 }

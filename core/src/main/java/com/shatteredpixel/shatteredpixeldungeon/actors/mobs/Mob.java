@@ -1029,7 +1029,7 @@ public abstract class Mob extends Char {
 
 		//if attacked by something else than current target, and that thing is closer, switch targets
 		//or if attacked by target, simply update target position
-		if (state != FLEEING) {
+		if (state != FLEEING && !com.shatteredpixel.shatteredpixeldungeon.actors.XunHooks.pacified(this)) { //xun, peaceful
 			if (state != HUNTING) {
 				aggro(enemy);
 				target = enemy.pos;
@@ -1130,12 +1130,12 @@ public abstract class Mob extends Char {
 	public void damage( int dmg, Object src ) {
 
 		if (!isInvulnerable(src.getClass())) {
-			if (state == SLEEPING) {
+			if (state == SLEEPING && !com.shatteredpixel.shatteredpixeldungeon.actors.XunHooks.pacified(this)) { //xun, peaceful
 				state = WANDERING;
 			}
 			if (!(src instanceof Corruption) && state != FLEEING) {
 				if (state != HUNTING) {
-					alerted = true;
+					if (!com.shatteredpixel.shatteredpixeldungeon.actors.XunHooks.pacified(this)) alerted = true; //xun, peaceful
 					//assume the hero is hitting us in these common cases
 					if (src instanceof Wand || src instanceof ClericSpell || src instanceof ArmorAbility) {
 						aggro(Dungeon.hero);
@@ -1176,7 +1176,7 @@ public abstract class Mob extends Char {
 
 				AscensionChallenge.processEnemyKill(this);
 				
-				int exp = Dungeon.hero.lvl <= maxLvl + com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.fastBreak() ? com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.bonusExp(EXP) : 0;
+				int exp = Dungeon.hero.lvl <= maxLvl + com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.fastBreak() + com.shatteredpixel.shatteredpixeldungeon.items.trinkets.StoneofIntelligence.LootandExpinc() ? com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.bonusExp(EXP) : 0; //xun, stone of intelligence
 
 				//during ascent, under-levelled enemies grant 10 xp each until level 30
 				// after this enemy kills which reduce the amulet curse still grant 10 effective xp
@@ -1214,6 +1214,9 @@ public abstract class Mob extends Char {
 
 				if (Dungeon.hero.subClass.is(HeroSubClass.MONK)){
 					Buff.affect(Dungeon.hero, MonkEnergy.class).gainEnergy(this);
+				}
+				if (Dungeon.hero.subClass == HeroSubClass.SOULHANDLER){ //xun
+					Buff.affect(Dungeon.hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulHandle.class).gainEnergy(this);
 				}
 			}
 		}
@@ -1315,6 +1318,7 @@ public abstract class Mob extends Char {
 			}
 		}
 		com.shatteredpixel.shatteredpixeldungeon.RearrangedChallenges.onMobDied(this); //rearranged, Cursed Dungeon
+		com.shatteredpixel.shatteredpixeldungeon.actors.XunHooks.onMobDied(this); //xun, cursed coin and the barricade curse
 	}
 
 	//from Transformation PD, the mod's own subclasses call this with their own base chance
@@ -1390,7 +1394,8 @@ public abstract class Mob extends Char {
 		}
 
 		if (Dungeon.hero.lvl > maxLvl + 2 + com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.fastBreak()
-				+ com.shatteredpixel.shatteredpixeldungeon.items.spells.RNGManipulator.LuckBoost.luckBoost() / 2000) return; //Community PD, luck manipulator
+				+ com.shatteredpixel.shatteredpixeldungeon.items.spells.RNGManipulator.LuckBoost.luckBoost() / 2000
+				+ com.shatteredpixel.shatteredpixeldungeon.items.trinkets.StoneofIntelligence.LootandExpinc()) return; //Community PD, luck manipulator, xun stone of intelligence
 
 		MasterThievesArmband.StolenTracker stolen = buff(MasterThievesArmband.StolenTracker.class);
 		if (stolen == null || !stolen.itemWasStolen()) {
@@ -1476,7 +1481,7 @@ public abstract class Mob extends Char {
 			item = (Item)loot;
 
 		}
-		return item;
+		return com.shatteredpixel.shatteredpixeldungeon.actors.XunHooks.replaceDrop(item); //xun, magical gem and solidified metal
 	}
 
 	//how many mobs this one should count as when determining spawning totals

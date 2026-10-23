@@ -121,6 +121,10 @@ if [ $QUICK -eq 0 ]; then
   run "BlueArchiveHeroesTest" TransformationHeroesTest BA_ARIS BA_NONOMI BA_MIYAKO BA_HOSHINO BA_SHIROKO BA_NOA BA_MIYU BA_YUZU BA_IZUNA; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|LIMIT|SUMMARY Transformation)" | tail -12 | sed 's/^/  /'
   [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
+  #xun, Xun's PD's Explorer, Wraith and Engineer
+  run "XunHeroesTest" TransformationHeroesTest EXPLORER WRAITH ENGINEER; rc=$?
+  tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|LIMIT|SUMMARY Transformation)" | tail -12 | sed 's/^/  /'
+  [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
   #rearranged, the six hero classes of Re-ARranged PD, text, talents, subclasses, abilities
   run "RearrangedHeroesTest" RearrangedHeroesTest; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY rearranged)" | tail -12 | sed 's/^/  /'

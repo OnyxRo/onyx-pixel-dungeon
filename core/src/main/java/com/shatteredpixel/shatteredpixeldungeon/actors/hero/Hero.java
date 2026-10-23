@@ -650,6 +650,12 @@ public class Hero extends Char {
 		return pointsInTalent( talent );
 	}
 
+	//xun, Xun's PD's elixir of crash course raises the base skills the way a level up does
+	public void xunIncSkills(int attack, int defense){
+		attackSkill += attack;
+		defenseSkill += defense;
+	}
+
 	public int pointsInTalent( Talent talent ){
 		for (LinkedHashMap<Talent, Integer> tier : talents){
 			for (Talent f : tier.keySet()){
@@ -749,6 +755,7 @@ public class Hero extends Char {
 
 	//Transformation PD. The buffs and action buttons that come with a subclass. Called when the subclass is chosen and when a run loads.
 	public void ensureSubclassBuffs() {
+		XunHeroes.ensureBuffs(this); //xun
 		//rearranged, the buffs that run Re-ARranged's subclasses
 		if (subClass.is(HeroSubClass.ENGINEER)) Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Build.class);
 		if (subClass.is(HeroSubClass.HORSEMAN) && buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HorseRiding.class) == null) {
@@ -909,7 +916,7 @@ public class Hero extends Char {
 					accuracy *= 1f + 0.1f * pointsInTalent(Talent.PRECISE_ASSAULT);
 				}
 
-				if (wep instanceof Flail && buff(Flail.SpinAbilityTracker.class) != null){
+				if ((wep instanceof Flail || com.shatteredpixel.shatteredpixeldungeon.actors.XunHooks.isSpinFlail(wep)) && buff(Flail.SpinAbilityTracker.class) != null){
 					//do nothing, this is not a regular attack so don't consume talent fx
 				} else if (wep instanceof Crossbow && buff(Crossbow.ChargedShot.class) != null){
 					//do nothing, this is not a regular attack so don't consume talent fx
@@ -954,6 +961,7 @@ public class Hero extends Char {
 		accuracy = RBAHero.accuracy(this, wep, accuracy); //rebluearchive
 		if (accuracy == Float.POSITIVE_INFINITY) return INFINITE_ACCURACY;
 		int rbaSkill = attackSkill + RBAHero.accuracyBonus(this); //rebluearchive, Noa's Taking Aim
+		accuracy *= XunHeroes.accuracyFactor(this) * XunTalents.accuracy(this, target); //xun
 
 		if (!RingOfForce.fightingUnarmed(this)) {
 			accuracy *= TransformationTalents.accuracy(this, target); //Transformation PD talent catalog
@@ -1053,6 +1061,7 @@ public class Hero extends Char {
 			float hunger = buff(Hunger.class).hunger();
 			evasion *= 1f + 0.5f*((Hunger.STARVING - hunger)/Hunger.STARVING);
 		}
+		evasion *= XunHeroes.evasionFactor(this); //xun
 
 		return Math.max(1, Math.round(evasion));
 	}
@@ -1262,6 +1271,7 @@ public class Hero extends Char {
 		speed *= BAHero.speedMulti(this); //bluearchive
 		speed = AscensionChallenge.modifyHeroSpeed(speed);
 		speed = SummoningHooks.speed(this, speed); //summoning
+		speed *= XunHeroes.speedFactor(this); //xun
 
 		return speed;
 		
@@ -1275,6 +1285,7 @@ public class Hero extends Char {
 		if (STR() < ((Weapon)w).STRReq())       return false;
 		if (w instanceof Flail)                 return false;
 		if (w instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SG.BASG.SGBullet) return false; //bluearchive
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.XunHooks.isSpinFlail(w)) return false; //xun
 		if (SummoningHooks.blocksSurpriseAttack(this)) return false; //summoning
 		if (w instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.alchemy.ChainFlail) return false; //rearranged
 		if (w instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon
@@ -2273,6 +2284,7 @@ public class Hero extends Char {
 	public void rest( boolean fullRest ) {
 		Dungeon.level.onHeroWaited(this);
 		TransformationTalents.onRest(this); //Transformation PD talent catalog
+		com.shatteredpixel.shatteredpixeldungeon.actors.XunHooks.onRest(this); //xun
 		spendAndNextConstant( TIME_TO_REST );
 		if (perks.contains(Perks.Perk.HOLD_FAST)){
 			Buff.affect(this, Perks.PerkHoldFast.class).pos = pos;
@@ -2317,6 +2329,7 @@ public class Hero extends Char {
 	@Override
 	public int attackProc( final Char enemy, int damage ) {
 		damage = super.attackProc( enemy, damage );
+		damage = XunHeroes.attackProc( this, enemy, damage ); //xun
 
 		KindOfWeapon wep;
 		if (RingOfForce.fightingUnarmed(this) && !RingOfForce.unarmedGetsWeaponEnchantment(this)){
@@ -2563,6 +2576,7 @@ public class Hero extends Char {
 		int preHP = HP + shielding();
 		if (src instanceof Hunger) preHP -= shielding();
 		super.damage( dmg, src );
+		if (isAlive() && HP <= HT / 5f) Badges.validateXunUnlock(Badges.Badge.UNLOCK_WRAITH); //xun
 		int postHP = HP + shielding();
 		if (src instanceof Hunger) postHP -= shielding();
 		int effectiveDamage = preHP - postHP;
@@ -3574,6 +3588,7 @@ public class Hero extends Char {
 
 	@Override
 	public boolean isImmune(Class effect) {
+		if (XunTalents.isImmune(this, effect)) return true; //xun, the Plague God
 		//Dragonic PD, an Icebreaker does not feel the cold and a Dragon Knight does not burn
 		if (subClass == HeroSubClass.ICEBREAKER && (effect == com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost.class
 				|| effect == com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill.class)){
@@ -3598,7 +3613,7 @@ public class Hero extends Char {
 	//rearranged, the Specialist's stealth talent, gun attachments, obfuscation on the Knight's shield
 	@Override
 	public float stealth() {
-		return RBAHero.stealth(this, RearrangedHero.stealth(this, super.stealth()) + BAHero.stealthBonus(this)); //bluearchive, rebluearchive
+		return RBAHero.stealth(this, RearrangedHero.stealth(this, super.stealth()) + BAHero.stealthBonus(this) + XunTalents.stealthBonus(this)); //xun, the Incubus //bluearchive, rebluearchive
 	}
 
 	public boolean search( boolean intentional ) {

@@ -143,7 +143,11 @@ public enum HeroClass {
 	RBA_MIKA( HeroSubClass.RBA_CALL_OF_STAR, HeroSubClass.RBA_LITTLE_ANGRY ),
 	RBA_MARI( HeroSubClass.RBA_DEVOUT_PRAYER, HeroSubClass.RBA_SYMBOL_OF_PEACE ),
 	//deranged, DERanged PD's Rat King, who counts as every class of Shattered and Re-ARranged
-	RAT_KING( HeroSubClass.KING );
+	RAT_KING( HeroSubClass.KING ),
+	//xun, Xun's PD's three heroes
+	EXPLORER( HeroSubClass.WAVECHASER, HeroSubClass.TRAPPER, HeroSubClass.ROCKSY ),
+	WRAITH( HeroSubClass.INCUBUS, HeroSubClass.PLAGUEGOD, HeroSubClass.SOULHANDLER ),
+	ENGINEER( HeroSubClass.CRAFTSMAN, HeroSubClass.HACKER, HeroSubClass.GRENADIER );
 
 	//deranged, the Rat King counts as the classes he shares, everyone else only as themselves
 	public boolean is( HeroClass cls ){
@@ -278,6 +282,9 @@ public enum HeroClass {
 			//deranged
 			case RAT_KING:
 				DerangedKing.init( hero );
+			//xun
+			case EXPLORER: case WRAITH: case ENGINEER:
+				XunHeroes.init( this, hero );
 				break;
 		}
 
@@ -406,6 +413,13 @@ public enum HeroClass {
 			//deranged
 			case RAT_KING:
 				return Badges.Badge.MASTERY_RAT_KING;
+			//xun
+			case EXPLORER:
+				return Badges.Badge.MASTERY_EXPLORER;
+			case WRAITH:
+				return Badges.Badge.MASTERY_WRAITH;
+			case ENGINEER:
+				return Badges.Badge.MASTERY_ENGINEER;
 		}
 		return null;
 	}
@@ -832,6 +846,9 @@ public enum HeroClass {
 			//deranged
 			case RAT_KING:
 				return DerangedKing.armorAbilities();
+			//xun
+			case EXPLORER: case WRAITH: case ENGINEER:
+				return XunHeroes.armorAbilities( this );
 			case DM400:
 				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.dm400.Routine(),
 						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.dm400.Discharge_Gas(),
@@ -906,6 +923,13 @@ public enum HeroClass {
 			//deranged
 			case RAT_KING:
 				return Assets.Sprites.RAT_KING_HERO;
+			//xun
+			case EXPLORER:
+				return Assets.Sprites.XUN_EXPLORER;
+			case WRAITH:
+				return Assets.Sprites.XUN_WRAITH;
+			case ENGINEER:
+				return Assets.Sprites.XUN_ENGINEER;
 		}
 	}
 
@@ -974,6 +998,11 @@ public enum HeroClass {
 			//deranged
 			case RAT_KING:
 				return Assets.Splashes.RAT_KING;
+			//xun, only the Explorer has splash art in Xun's PD, the other two use its generic hero picture
+			case EXPLORER:
+				return Assets.Splashes.XUN_EXPLORER;
+			case WRAITH: case ENGINEER:
+				return Assets.Splashes.XUN_NEWHERO;
 		}
 	}
 	
@@ -1046,6 +1075,13 @@ public enum HeroClass {
 			//deranged, a score of 250 000 in one run, as the mod's text says
 			case RAT_KING:
 				return Badges.isUnlocked(Badges.Badge.HIGH_SCORE_4);
+			//xun
+			case EXPLORER:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_EXPLORER);
+			case WRAITH:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_WRAITH);
+			case ENGINEER:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_ENGINEER);
 		}
 	}
 	

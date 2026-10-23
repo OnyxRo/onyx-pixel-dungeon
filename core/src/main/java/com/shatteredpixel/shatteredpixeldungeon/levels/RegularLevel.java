@@ -447,6 +447,7 @@ public abstract class RegularLevel extends Level {
 
 			Item toDrop = i < slots.size() ? Generator.random(slots.get(i)) : Generator.random();
 			if (toDrop == null) continue;
+			toDrop = com.shatteredpixel.shatteredpixeldungeon.actors.XunHooks.replaceDrop(toDrop); //xun, magical gem and solidified metal
 
 			int cell = randomDropCell();
 			if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {

@@ -54,6 +54,7 @@ public class BuffIcon extends Image {
 	}
 
 	private static TextureFilm raSmallFilm, raLargeFilm;
+	private static TextureFilm xunSmallFilm, xunLargeFilm;
 
 	private static TextureFilm drSmallFilm, drLargeFilm;
 
@@ -75,7 +76,7 @@ public class BuffIcon extends Image {
 			return;
 		}
 		//bluearchive, icons of 30000 and up come from Blue Archive PD's own sheets
-		if (icon >= 30000){
+		if (icon >= 30000 && icon < 40000){
 			texture( large ? Assets.Interfaces.BA_BUFFS_LARGE : Assets.Interfaces.BA_BUFFS_SMALL );
 			if (large){
 				if (baLargeFilm == null) baLargeFilm = new TextureFilm(texture, LRG_SIZE, LRG_SIZE);
@@ -95,6 +96,18 @@ public class BuffIcon extends Image {
 			} else {
 				if (drSmallFilm == null) drSmallFilm = new TextureFilm(texture, SML_SIZE, SML_SIZE);
 				frame(drSmallFilm.get(icon - 20000));
+			}
+			return;
+		}
+		//xun, icons of 40000 and up come from Xun's PD's own sheets
+		if (icon >= 40000){
+			texture( large ? Assets.Interfaces.XUN_BUFFS_LARGE : Assets.Interfaces.XUN_BUFFS_SMALL );
+			if (large){
+				if (xunLargeFilm == null) xunLargeFilm = new TextureFilm(texture, LRG_SIZE, LRG_SIZE);
+				frame(xunLargeFilm.get(icon - 40000));
+			} else {
+				if (xunSmallFilm == null) xunSmallFilm = new TextureFilm(texture, SML_SIZE, SML_SIZE);
+				frame(xunSmallFilm.get(icon - 40000));
 			}
 			return;
 		}

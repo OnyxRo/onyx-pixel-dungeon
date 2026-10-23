@@ -167,6 +167,11 @@ public class Assets {
 		public static final String DR_HERO_ICONS   = "interfaces/deranged/hero_icons.png";
 		public static final String DR_BUFFS_SMALL  = "interfaces/deranged/buffs.png";
 		public static final String DR_BUFFS_LARGE  = "interfaces/deranged/large_buffs.png";
+		//xun, Xun's PD icon sheets, drawn for icon numbers of 40000 and up
+		public static final String XUN_TALENT_ICONS = "interfaces/xun/talent_icons.png";
+		public static final String XUN_HERO_ICONS   = "interfaces/xun/hero_icons.png";
+		public static final String XUN_BUFFS_SMALL  = "interfaces/xun/buffs.png";
+		public static final String XUN_BUFFS_LARGE  = "interfaces/xun/large_buffs.png";
 	}
 
 	//these points to resource bundles, not raw asset files
@@ -465,6 +470,7 @@ public class Assets {
 		public static final String MASTERY  = "sounds/mastery.mp3";
 		public static final String PUFF     = "sounds/puff.mp3";
 		public static final String ROCKS    = "sounds/rocks.mp3";
+		public static final String XUN_BUILD = "sounds/xun/build.mp3"; //xun, Xun's PD
 		public static final String BURNING  = "sounds/burning.mp3";
 		public static final String FALLING  = "sounds/falling.mp3";
 		public static final String GHOST    = "sounds/ghost.mp3";
@@ -532,6 +538,8 @@ public class Assets {
 		public static final String SORCERESS = "splashes/sorceress.png"; //ported, ryuse, the Summoner's other picture
 		//summoning
 		public static final String CONJURER = "splashes/summoning/conjurer.png"; //ported, summoning
+		public static final String XUN_EXPLORER = "splashes/xun/explorer.png"; //xun
+		public static final String XUN_NEWHERO  = "splashes/xun/newhero.jpg"; //xun
 
 		public static final String SEWERS   = "splashes/sewers.jpg";
 		public static final String PRISON   = "splashes/prison.jpg";
@@ -605,6 +613,9 @@ public class Assets {
 		public static final String RAT_KING_HERO    = "sprites/deranged/ratkinghero.png";
 		public static final String ECH              = "sprites/deranged/ech.png";
 		public static final String MYSTERY_MERCHANT = "sprites/deranged/mystery_merchant.png";
+		public static final String RESENT = "sprites/xun/resentment.png"; //ported, xun
+		public static final String MIS_TOWER = "sprites/xun/missiletower.png"; //ported, xun
+		public static final String ENGINEER = "sprites/xun/engineer.png"; //ported, xun
 		public static final String WARRIORBOSS = "sprites/transformation/warriorboss.png"; //ported, transformation
 		public static final String MYRIAD_BLACK_SHADOW_OVERLAY = "sprites/transformation/myriad_black_shadow_overlay.png"; //ported, transformation
 		public static final String SUCCBOSS = "sprites/transformation/succboss.png"; //ported, transformation
@@ -1128,6 +1139,11 @@ public class Assets {
 		//summoning, Summoning PD Reincarnated
 		public static final String CHAOS_SABER = "sprites/summoning/chaossaber.png"; //ported, summoning
 		public static final String CONJURER = "sprites/summoning/conjurer.png"; //ported, summoning
+		public static final String XUN_EXPLORER = "sprites/xun/explorer.png"; //xun, hero sheets
+		public static final String XUN_WRAITH   = "sprites/xun/herowraith.png";
+		public static final String XUN_ENGINEER = "sprites/xun/heroengineer.png";
+		public static final String XUN_DETONATOR = "sprites/xun/detonator.png";
+		public static final String XUN_BARRICADE = "sprites/xun/barricade.png";
 		public static final String SLIME_MINION = "sprites/summoning/slime_minion.png"; //ported, summoning
 		public static final String IMP_QUEEN = "sprites/summoning/imp_queen.png"; //ported, summoning
 		public static final String IMP_MINION = "sprites/summoning/imp_minion.png"; //ported, summoning

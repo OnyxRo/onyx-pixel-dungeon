@@ -559,6 +559,7 @@ public class MeleeWeapon extends Weapon {
 		}
 		
 		if (trollers) info += "\n\n" + Messages.get(MeleeWeapon.class, "cursed_kromer"); //deranged
+		if (modify != null) info += "\n\n" + Messages.get(KindOfWeapon.class, "has_modify", modify.title(), modDurability) + modify.desc(); //xun
 		return info;
 	}
 	

@@ -443,6 +443,12 @@ public class Bomb extends Item {
 			validIngredients.put(MetalShard.class,              ShrapnelBomb.class);
 			//Community PD
 			validIngredients.put(com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken.class, CrossBomb.class);
+			//xun, Xun's PD's bombs, from ingredients no other bomb uses
+			validIngredients.put(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror.class,          AdrenalineBomb.class);
+			validIngredients.put(com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas.class,        StenchBomb.class);
+			validIngredients.put(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation.class,   WarpBomb.class);
+			validIngredients.put(com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision.class,      PhantomBomb.class);
+			validIngredients.put(com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfParalyticGas.class,    TimeBomb.class);
 		}
 		
 		private static final HashMap<Class<?extends Bomb>, Integer> bombCosts = new HashMap<>();
@@ -462,6 +468,11 @@ public class Bomb extends Item {
 			bombCosts.put(ArcaneBomb.class,     6);
 			bombCosts.put(ShrapnelBomb.class,   6);
 			bombCosts.put(CrossBomb.class,      3); //Community PD
+			bombCosts.put(AdrenalineBomb.class, 2); //xun
+			bombCosts.put(StenchBomb.class,     2);
+			bombCosts.put(WarpBomb.class,       2);
+			bombCosts.put(PhantomBomb.class,    4);
+			bombCosts.put(TimeBomb.class,       4); //xun
 		}
 		
 		@Override

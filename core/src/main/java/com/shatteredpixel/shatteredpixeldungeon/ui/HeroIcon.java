@@ -193,6 +193,9 @@ public class HeroIcon extends Image {
 
 	//rearranged, Re-ARranged PD's icons, drawn from its own sheet (interfaces/rearranged/hero_icons.png)
 	public static final int RA = 10000;
+	//xun, Xun's PD's icons, 40000 plus the cell on interfaces/xun/hero_icons.png
+	public static final int XUN = 40000;
+	private static TextureFilm xunFilm;
 	public static final int OUTLAW          = RA + 24;
 	public static final int GUNSLINGER      = RA + 25;
 	public static final int SPECIALIST      = RA + 26;
@@ -457,6 +460,13 @@ public class HeroIcon extends Image {
 			texture( Assets.Interfaces.DR_HERO_ICONS );
 			if (drFilm == null) drFilm = new TextureFilm(texture, SIZE, SIZE);
 			frame(drFilm.get(icon - DR));
+			return;
+		}
+		//xun, icons of 40000 and up come from Xun's PD's own sheet
+		if (icon >= XUN){
+			texture( Assets.Interfaces.XUN_HERO_ICONS );
+			if (xunFilm == null) xunFilm = new TextureFilm(texture, SIZE, SIZE);
+			frame(xunFilm.get(icon - XUN));
 			return;
 		}
 		if (icon >= RA){

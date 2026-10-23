@@ -98,6 +98,9 @@ public class Badges {
 		MASTERY_BA_ARIS, MASTERY_BA_NONOMI, MASTERY_BA_MIYAKO, MASTERY_BA_HOSHINO, MASTERY_BA_SHIROKO,
 		MASTERY_BA_NOA, MASTERY_BA_MIYU, MASTERY_BA_YUZU, MASTERY_BA_IZUNA,
 		MASTERY_RAT_KING, //deranged
+		MASTERY_EXPLORER, //xun
+		MASTERY_WRAITH, //xun
+		MASTERY_ENGINEER, //xun
 		FOUND_RATMOGRIFY,
 
 		//bronze
@@ -127,6 +130,9 @@ public class Badges {
 		UNLOCK_NECROHERO            ( 3 ), //tower
 		UNLOCK_TANK                 ( 1 ), //tower
 		UNLOCK_TOWERPRIEST          ( 4 ), //tower
+		UNLOCK_EXPLORER             ( 3 ), //xun
+		UNLOCK_WRAITH               ( 2 ), //xun
+		UNLOCK_ENGINEER             ( 5 ), //xun
 		MONSTERS_SLAIN_1            ( 6 ),
 		MONSTERS_SLAIN_2            ( 7 ),
 		GOLD_COLLECTED_1            ( 8 ),
@@ -197,6 +203,9 @@ public class Badges {
 		BOSS_SLAIN_1_TANK, //tower
 		BOSS_SLAIN_1_TOWERPRIEST, //tower
 		BOSS_SLAIN_1_RAT_KING, //deranged
+		BOSS_SLAIN_1_EXPLORER, //xun
+		BOSS_SLAIN_1_WRAITH, //xun
+		BOSS_SLAIN_1_ENGINEER, //xun
 		BOSS_SLAIN_1_VIKING,
 		BOSS_SLAIN_1_DRAGONKNIGHT,
 		BOSS_SLAIN_1_ALL_CLASSES    ( 54, BadgeType.GLOBAL ),
@@ -269,6 +278,9 @@ public class Badges {
 		VICTORY_TANK, //tower
 		VICTORY_TOWERPRIEST, //tower
 		VICTORY_RAT_KING, //deranged
+		VICTORY_EXPLORER, //xun
+		VICTORY_WRAITH, //xun
+		VICTORY_ENGINEER, //xun
 		VICTORY_VIKING,
 		VICTORY_DRAGONKNIGHT,
 		VICTORY_ALL_CLASSES         ( 103, BadgeType.GLOBAL ),
@@ -955,6 +967,9 @@ public class Badges {
 		firstBossClassBadges.put(HeroClass.TANK, Badge.BOSS_SLAIN_1_TANK);
 		firstBossClassBadges.put(HeroClass.TOWERPRIEST, Badge.BOSS_SLAIN_1_TOWERPRIEST);
 		firstBossClassBadges.put(HeroClass.RAT_KING, Badge.BOSS_SLAIN_1_RAT_KING); //deranged
+		firstBossClassBadges.put(HeroClass.EXPLORER, Badge.BOSS_SLAIN_1_EXPLORER); //xun
+		firstBossClassBadges.put(HeroClass.WRAITH, Badge.BOSS_SLAIN_1_WRAITH);
+		firstBossClassBadges.put(HeroClass.ENGINEER, Badge.BOSS_SLAIN_1_ENGINEER);
 		firstBossClassBadges.put(HeroClass.VIKING, Badge.BOSS_SLAIN_1_VIKING);
 		firstBossClassBadges.put(HeroClass.DRAGONKNIGHT, Badge.BOSS_SLAIN_1_DRAGONKNIGHT);
 		//rearranged
@@ -989,6 +1004,9 @@ public class Badges {
 		victoryClassBadges.put(HeroClass.TANK, Badge.VICTORY_TANK);
 		victoryClassBadges.put(HeroClass.TOWERPRIEST, Badge.VICTORY_TOWERPRIEST);
 		victoryClassBadges.put(HeroClass.RAT_KING, Badge.VICTORY_RAT_KING); //deranged
+		victoryClassBadges.put(HeroClass.EXPLORER, Badge.VICTORY_EXPLORER); //xun
+		victoryClassBadges.put(HeroClass.WRAITH, Badge.VICTORY_WRAITH);
+		victoryClassBadges.put(HeroClass.ENGINEER, Badge.VICTORY_ENGINEER);
 		victoryClassBadges.put(HeroClass.VIKING, Badge.VICTORY_VIKING);
 		victoryClassBadges.put(HeroClass.DRAGONKNIGHT, Badge.VICTORY_DRAGONKNIGHT);
 		//rearranged
@@ -1201,6 +1219,15 @@ public class Badges {
 				break;
 			case RAT_KING: //deranged
 				badge = Badge.MASTERY_RAT_KING;
+			//xun
+			case EXPLORER:
+				badge = Badge.MASTERY_EXPLORER;
+				break;
+			case WRAITH:
+				badge = Badge.MASTERY_WRAITH;
+				break;
+			case ENGINEER:
+				badge = Badge.MASTERY_ENGINEER;
 				break;
 			case VIKING:
 				badge = Badge.MASTERY_VIKING;
@@ -1482,6 +1509,12 @@ public class Badges {
 		}
 	}
 	
+	//xun, Xun's PD's heroes unlock by putting out fire or ooze in water (Explorer), dropping to a fifth of health
+	//(Wraith) and setting off five traps in one run (Engineer)
+	public static void validateXunUnlock( Badge badge ){
+		if (!isUnlocked( badge )) displayBadge( badge );
+	}
+
 	public static void validateMasteryCombo( int n ) {
 		if (!local.contains( Badge.MASTERY_COMBO ) && n == 10) {
 			Badge badge = Badge.MASTERY_COMBO;

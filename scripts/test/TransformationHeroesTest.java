@@ -51,7 +51,8 @@ public class TransformationHeroesTest {
 				String n = cls.name();
 				check( hero.heroClass == cls, n + " hero class" );
 				check( hasText( cls.title() ) && hasText( cls.desc() ) && hasText( cls.shortDesc() ), n + " class text" );
-				check( cls.subClasses().length == 2, n + " has two subclasses" );
+				boolean xun = cls == HeroClass.EXPLORER || cls == HeroClass.WRAITH || cls == HeroClass.ENGINEER; //xun heroes have three subclasses of five talents
+				check( cls.subClasses().length == (xun ? 3 : 2), n + " has " + (xun ? 3 : 2) + " subclasses" );
 				check( cls.armorAbilities().length == 3, n + " has three armor abilities" );
 				check( hero.HT > 0 && hero.HP == hero.HT, n + " health " + hero.HP + "/" + hero.HT );
 				check( cls.splashArt() != null && cls.spritesheet() != null, n + " art" );
@@ -91,11 +92,11 @@ public class TransformationHeroesTest {
 							check( hasText( t.title() ) && hasText( t.desc() ), n + " subclass talent " + t + " text" );
 						}
 					}
-					check( count == 3, n + " subclass " + sub + " has three talents, found " + count );
+					check( count == (xun ? 5 : 3), n + " subclass " + sub + " talents, found " + count );
 				}
 				for (ArmorAbility a : cls.armorAbilities()) {
 					check( hasText( a.name() ) && hasText( a.shortDesc() ), n + " ability " + a.getClass().getSimpleName() + " text" );
-					check( a.talents().length == 4, n + " ability " + a.getClass().getSimpleName() + " has four talents" );
+					check( a.talents().length == (xun ? 5 : 4), n + " ability " + a.getClass().getSimpleName() + " talents " + a.talents().length );
 					for (Talent t : a.talents()) {
 						check( hasText( t.title() ) && hasText( t.desc() ), n + " ability talent " + t + " text" );
 					}
@@ -108,7 +109,7 @@ public class TransformationHeroesTest {
 				check( armor != null && hasText( armor.name() ), n + " class armor" );
 				hero.armorAbility = cls.armorAbilities()[0];
 				Talent.initArmorTalents( hero );
-				check( hero.talents.get( 3 ).size() == 4, n + " armor talents " + hero.talents.get( 3 ).size() );
+				check( hero.talents.get( 3 ).size() == (xun ? 5 : 4), n + " armor talents " + hero.talents.get( 3 ).size() );
 				//save and load
 				com.watabou.utils.Bundle b = new com.watabou.utils.Bundle();
 				hero.storeInBundle( b );

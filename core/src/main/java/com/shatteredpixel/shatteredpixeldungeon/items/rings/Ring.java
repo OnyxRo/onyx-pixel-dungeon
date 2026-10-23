@@ -66,6 +66,7 @@ public class Ring extends KindofMisc {
 			put("quartz",ItemSpriteSheet.RING_QUARTZ);
 			put("agate",ItemSpriteSheet.RING_AGATE);
 			put("diamond",ItemSpriteSheet.RING_DIAMOND);
+			put("jade",ItemSpriteSheet.RING_JADE); //xun, a gem for Xun's PD's ring of vision
 		}
 	};
 	
@@ -196,6 +197,12 @@ public class Ring extends KindofMisc {
 		} else if (dustBonus > 1){
 			desc += "\n\n" + Messages.get(Ring.class, "dust_many", dustBonus);
 		}
+		//xun, Xun's PD's gem powder
+		if (powderBonus == 1){
+			desc += "\n\n" + Messages.get(Ring.class, "powder_one");
+		} else if (powderBonus > 1){
+			desc += "\n\n" + Messages.get(Ring.class, "powder_many", powderBonus);
+		}
 
 		if (cursed && isEquipped( Dungeon.hero )) {
 			desc += "\n\n" + Messages.get(Ring.class, "cursed_worn");
@@ -243,10 +250,19 @@ public class Ring extends KindofMisc {
 		return null;
 	}
 	
+	//xun, levels from Xun's PD's gem powder, lost again one per real upgrade like arcane resin on wands
+	public int powderBonus = 0;
+
+	@Override
+	public com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing glowing() {
+		if (powderBonus == 0) return super.glowing();
+		return new com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing(0xFFFFFF, 1f/(float)powderBonus);
+	}
+
 	@Override
 	public Item upgrade() {
 		super.upgrade();
-		
+
 		if (Random.Int(3) == 0) {
 			cursed = false;
 		}
@@ -254,6 +270,9 @@ public class Ring extends KindofMisc {
 		//Community PD, a normal upgrade replaces one level of gemstone dust
 		if (dustBonus > 0){
 			dustBonus--;
+		}
+		if (powderBonus > 0){ //xun
+			powderBonus--;
 		}
 
 		return this;
@@ -264,7 +283,7 @@ public class Ring extends KindofMisc {
 
 	@Override
 	public int level() {
-		return super.level() + dustBonus;
+		return super.level() + dustBonus + powderBonus; //Community PD gemstone dust, xun gem powder
 	}
 	
 	@Override
@@ -351,6 +370,7 @@ public class Ring extends KindofMisc {
 		super.storeInBundle( bundle );
 		bundle.put( LEVELS_TO_ID, levelsToID );
 		if (dustBonus > 0) bundle.put( "dust_bonus", dustBonus );
+		bundle.put( "xun_powder", powderBonus ); //xun
 	}
 
 	@Override
@@ -358,6 +378,7 @@ public class Ring extends KindofMisc {
 		super.restoreFromBundle( bundle );
 		levelsToID = bundle.getFloat( LEVELS_TO_ID );
 		dustBonus = bundle.getInt( "dust_bonus" );
+		powderBonus = bundle.getInt( "xun_powder" ); //xun
 	}
 	
 	public void onHeroGainExp( float levelPercent, Hero hero ){

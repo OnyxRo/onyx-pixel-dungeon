@@ -67,6 +67,7 @@ public class RingOfEnergy extends Ring {
 		if (target instanceof Hero && !((Hero) target).heroClass.is(HeroClass.CLERIC) && ((Hero) target).hasTalent(Talent.LIGHT_READING)){
 			bonus *= 1f + (0.2f * ((Hero) target).pointsInTalent(Talent.LIGHT_READING)/3f);
 		}
+		if (target instanceof Hero) bonus *= 1 + com.shatteredpixel.shatteredpixeldungeon.Statistics.conRechargeUsed * 0.1f; //xun, steady recharge crystal
 
 		bonus *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.energyConversion(target); //transformation, Energy Conversion
 		return bonus;
@@ -83,6 +84,7 @@ public class RingOfEnergy extends Ring {
 		if (target instanceof Hero && !((Hero) target).heroClass.is(HeroClass.ROGUE) && ((Hero) target).hasTalent(Talent.LIGHT_CLOAK)){
 			bonus *= 1f + (0.2f * ((Hero) target).pointsInTalent(Talent.LIGHT_CLOAK)/3f);
 		}
+		if (target instanceof Hero) bonus *= 1 + com.shatteredpixel.shatteredpixeldungeon.Statistics.conEnergyUsed * 0.1f; //xun, steady energy crystal
 
 		bonus *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.energyConversion(target); //transformation, Energy Conversion
 		return bonus;

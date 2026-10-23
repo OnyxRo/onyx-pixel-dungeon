@@ -1165,7 +1165,65 @@ public enum Talent {
 	RK_OUTLAW(20589, 3), RK_GUNSLINGER(20590, 3), RK_SPECIALIST(20591, 3), RK_SLASHER(20633, 3), RK_MASTER(20634, 3), RK_SLAYER(20635, 3),
 	RK_ENGINEER(20677, 3), RK_EXPLORER(20678, 3), RK_RESEARCHER(20679, 3), RK_DEATHKNIGHT(20592, 3), RK_HORSEMAN(20593, 3), RK_CRUSADER(20594, 3),
 	RK_SAVIOR(20636, 3), RK_THERAPIST(20637, 3), RK_MEDICALOFFICER(20638, 3), RK_BOWMASTER(20680, 3), RK_JUGGLER(20681, 3), RK_SHARPSHOOTER(20682, 3),
-	RK_AFTERSHOCK(20595, 4), RK_RAT_BLAST(20596, 4), RK_SMOKE_AND_MIRRORS(20597, 4), RK_SEA_OF_BLADES(20598, 4);
+	RK_AFTERSHOCK(20595, 4), RK_RAT_BLAST(20596, 4), RK_SMOKE_AND_MIRRORS(20597, 4), RK_SEA_OF_BLADES(20598, 4),
+	//xun, the talents of Xun's PD's Explorer, Wraith and Engineer. Icons are 40000 plus the cell on
+	//interfaces/xun/talent_icons.png, hooks are in XunTalents
+	//Explorer T1
+	KEEN_MEAL(40288), SECRET_FORESIGHT(40289), TESTED_AWARENESS(40290), HOME_ADVANTAGE(40291), SAFE_SURVEY(40292),
+	//Explorer T2
+	PREPARING_MEAL(40293), LIQUID_CLAIRVOYANCE(40294), BARBED_WIRE(40295), WINDING_PORCH(40296), REKINDLED_EMBER(40297), AGGRESSIVE_ROADBLOCK(40298),
+	//Explorer T3
+	DEMOLITION(40299, 3), DIG_THE_WELL(40300, 3), CONVENIENT_SHOVEL(40301, 3),
+	//WaveChaser T3
+	RIVER_EROSION(40302, 3), SON_OF_SEA(40303, 3), DROWNING(40304, 3), LAKE_DEVELOPMENT(40305, 3), UNDERCURRENT(40306, 3),
+	//Trapper T3
+	XUN_TRAP_MASTER(40307, 3), FRIENDLY_MECHANISM(40308, 3), SIMPLE_STRUCTURE(40309, 3), SENSITIVE_PEDAL(40310, 3), LIQUID_COLLECTING(40311, 3),
+	//Rocksy T3
+	METEROIC_IRON(40312, 3), ROCK_PROTECTOR(40313, 3), MIND_CONTROL(40314, 3), DESTRUCTIVE_STRIKE(40315, 3), METEOR_CRATER(40316, 3),
+	//Optical Camouflage T4
+	LASTING_DISGUISE(40317, 4), STRAIN_CAPACITY(40318, 4), STANDBY(40319, 4), ENERGY_SURPLUS(40320, 4),
+	//Sandstorm T4
+	GLOOM_ABOVE(40321, 4), SAND_FLOW(40322, 4), HEART_OF_STORM(40323, 4), DRIFT_SAND(40324, 4),
+	//Underpass T4
+	EXPRESS_UNDERWAY(40325, 4), MONITOR_BENEATH(40326, 4), SLY_RABBIT(40327, 4), GRENADE_COVER(40328, 4),
+
+	//Wraith T1
+	ANCESTRAL_TRIBUTE(40336), BLOOD_INTUITION(40337), TESTED_ANTIMAGIC(40338), BURIAL_CEREMONY(40339), SAFE_PRICK(40340),
+	//Wraith T2
+	TEARING_MEAL(40341), INSCRIBED_REGENERATION(40342), BLURING_BODY(40343), PSIONIC_BLAST(40344), SCAPEGOAT(40345), THROWN_EVIL(40346),
+	//Wraith T3
+	VICIOUS_BETRAYAL(40347, 3), CURSED_POWER(40348, 3), WICKED_GROWTH(40349, 3),
+	//Incubus T3
+	LULLABY(40350, 3), SLEEPWALKING(40351, 3), SLEEPING_IN(40352, 3), WRONG_SIDE_OF_THE_BED(40353, 3), NIGHTMARE_HAUNTING(40354, 3),
+	//PlagueGod T3
+	CORPSE_DECAY(40355, 3), HOMEMADE_DRUG(40356, 3), MAGICAL_VENT(40357, 3), ACID_RAIN(40358, 3), PLAGUE_EUCHARIST(40359, 3),
+	//SoulHandler T3
+	IMMEDIATE_USE(40360, 3), VENGEFUL_SPIRIT(40361, 3), SOUL_CAGING(40362, 3), DEVOUR_SURGING(40363, 3), OVERFLOW(40364, 3),
+	//Transfusion T4
+	EMERGENCY_TRANSFUSION(40365, 4), BLOOD_INFECTION(40366, 4), BIOLOGICAL_CONTROL(40367, 4), HEMATOPOIESIS(40368, 4),
+	//EvilUnfold T4
+	BUFFED_NERF(40369, 4), XUN_ARMY_OF_DEATH(40370, 4), STRANGLING(40371, 4), IMMORTAL_EVIL(40372, 4),
+	//GhostWander T4
+	FACE_TO_FACE_FRIGHT(40373, 4), SOUL_VANISHING(40374, 4), FEAR_SPREADING(40375, 4), SOULFREE_GHOST(40376, 4),
+
+	//Engineer T1
+	EAT_LITTLE_AND_OFTEN(40384), FINE_INTUITION(40385), TESTED_MAINTENANCE(40386), GENERAL_DISARM(40387), PULSE_ENERGY(40388),
+	//Engineer T2
+	TOILSOME_MEAL(40389), IONIC_LIQUID(40390), STRONG_PULSE(40391), RESONANT_SENSING(40392), APART_ANYTHING(40393), REMOTE_DESTRUCTION(40394),
+	//Engineer T3
+	DURABLE_MODIFIES(40395, 3), ELECTRONIC_REPAIR(40396, 3), IONIZING_RADIATION(40397, 3),
+	//Craftsman T3
+	ACTIVE_REPAIR(40398, 3), MULTI_MODIFY(40399, 3), PART_RECYCLING(40400, 3), FAVORITE_WORK(40401, 3), KINETIC_FRAGMENT(40402, 3),
+	//Hacker T3
+	BACKFIRE(40403, 3), DIFFRACTION(40404, 3), ELECTRIC_CHARGE(40405, 3), DARK_MAGIC(40406, 3), CHARISMA(40407, 3),
+	//Grenadier T4
+	EXPLOSION_PROOF(40408, 3), XUN_SHOCKWAVE(40409, 3), ADDED_POWDER(40410, 3), MAGICAL_EXPLOSION(40411, 3), BALLISTICA_CALC(40412, 3),
+	//ForceField T4
+	MECHANICAL_REFINEMENT(40413, 4), MOMENTUM_TRANSFORM(40414, 4), ACTIVE_DEFENSE(40415, 4), REPAIR_ABILITY(40416, 4),
+	//Summoning Beacon T4
+	POWERED_DEVICE(40417, 4), SKYNET(40418, 4), VIOLENT_LEAP(40419, 4), ASSAULT(40420, 4),
+	//Detonator T4
+	STACKED_CHARGE(40421, 4), ALCHEMY_CRAFT(40422, 4), DECOY(40423, 4), PORTABLE_DETONATOR(40424, 4);
 
 	public static class ImprovisedProjectileCooldown extends FlavourBuff{
 		public int icon() { return BuffIndicator.TIME; }
@@ -1466,6 +1524,10 @@ public enum Talent {
 			switch (cls){
 				case WARRIOR: default:
 					return 26;
+				//xun, Xun's PD's sheet keeps 48 cells per hero, heroic energy is cell 41 of each
+				case EXPLORER: return 40000 + 6*48 + 41;
+				case WRAITH:   return 40000 + 7*48 + 41;
+				case ENGINEER: return 40000 + 8*48 + 41;
 				case MAGE:
 					return 58;
 				case ROGUE:
@@ -2528,6 +2590,7 @@ public enum Talent {
 		BATalents.onFoodEaten(hero); //bluearchive
 		RBATalents.onFoodEaten(hero, foodVal, foodSource); //rebluearchive
 		RearrangedTalents.onFoodEaten(hero, foodVal, foodSource); //rearranged
+		XunTalents.onFoodEaten(hero); //xun
 		TransformationTalents.onFoodEaten(hero, foodSource);
 		onSlimeFoodEaten(hero);
 		onNinjaFoodEaten(hero, foodSource);
@@ -2707,6 +2770,7 @@ public enum Talent {
 	public static void onPotionUsed( Hero hero, int cell, float factor ){
 		RBATalents.onPotionUsed(hero, cell, factor); //rebluearchive
 		RearrangedTalents.onPotionUsed(hero, cell, factor); //rearranged
+		XunTalents.onPotionUsed(hero, factor); //xun
 		if (cell != hero.pos) TransformationTalents.onPotionThrown(hero, cell);
 		onSlimePotionUsed(hero, factor);
 		if (hero.hasTalent(LIQUID_BARRIER)){
@@ -2794,6 +2858,7 @@ public enum Talent {
 		BATalents.onScrollUsed(hero); //bluearchive
 		RBATalents.onScrollUsed(hero, pos, factor); //rebluearchive
 		RearrangedTalents.onScrollUsed(hero, pos, factor); //rearranged
+		XunTalents.onScrollUsed(hero, factor); //xun
 		TransformationTalents.onScrollUsed(hero);
 		if (hero.hasTalent(INSCRIBED_POWER)){
 			// 2/3 empowered wand zaps
@@ -3306,6 +3371,15 @@ public enum Talent {
 			case RBA_ARIS: case RBA_NONOMI: case RBA_MIYAKO: case RBA_HOSHINO: case RBA_SHIROKO: case RBA_NOA:
 			case RBA_MIYU: case RBA_YUZU: case RBA_IZUNA: case RBA_MIKA: case RBA_MARI:
 				RBATalents.addClassTalents(cls, 1, tierTalents);
+			//xun, Xun's PD's three heroes
+			case EXPLORER:
+				Collections.addAll(tierTalents, KEEN_MEAL, SECRET_FORESIGHT, TESTED_AWARENESS, HOME_ADVANTAGE, SAFE_SURVEY);
+				break;
+			case WRAITH:
+				Collections.addAll(tierTalents, ANCESTRAL_TRIBUTE, BLOOD_INTUITION, TESTED_ANTIMAGIC, BURIAL_CEREMONY, SAFE_PRICK);
+				break;
+			case ENGINEER:
+				Collections.addAll(tierTalents, EAT_LITTLE_AND_OFTEN, FINE_INTUITION, TESTED_MAINTENANCE, GENERAL_DISARM, PULSE_ENERGY);
 				break;
 		}
 		BATalents.classTier(cls, 1, tierTalents); //bluearchive
@@ -3397,6 +3471,15 @@ public enum Talent {
 			case RBA_ARIS: case RBA_NONOMI: case RBA_MIYAKO: case RBA_HOSHINO: case RBA_SHIROKO: case RBA_NOA:
 			case RBA_MIYU: case RBA_YUZU: case RBA_IZUNA: case RBA_MIKA: case RBA_MARI:
 				RBATalents.addClassTalents(cls, 2, tierTalents);
+			//xun
+			case EXPLORER:
+				Collections.addAll(tierTalents, PREPARING_MEAL, LIQUID_CLAIRVOYANCE, BARBED_WIRE, WINDING_PORCH, REKINDLED_EMBER, AGGRESSIVE_ROADBLOCK);
+				break;
+			case WRAITH:
+				Collections.addAll(tierTalents, TEARING_MEAL, INSCRIBED_REGENERATION, BLURING_BODY, PSIONIC_BLAST, SCAPEGOAT, THROWN_EVIL);
+				break;
+			case ENGINEER:
+				Collections.addAll(tierTalents, TOILSOME_MEAL, IONIC_LIQUID, STRONG_PULSE, RESONANT_SENSING, APART_ANYTHING, REMOTE_DESTRUCTION);
 				break;
 		}
 		BATalents.classTier(cls, 2, tierTalents); //bluearchive
@@ -3485,6 +3568,15 @@ public enum Talent {
 			case RBA_ARIS: case RBA_NONOMI: case RBA_MIYAKO: case RBA_HOSHINO: case RBA_SHIROKO: case RBA_NOA:
 			case RBA_MIYU: case RBA_YUZU: case RBA_IZUNA: case RBA_MIKA: case RBA_MARI:
 				RBATalents.addClassTalents(cls, 3, tierTalents);
+			//xun
+			case EXPLORER:
+				Collections.addAll(tierTalents, DEMOLITION, DIG_THE_WELL, CONVENIENT_SHOVEL);
+				break;
+			case WRAITH:
+				Collections.addAll(tierTalents, VICIOUS_BETRAYAL, CURSED_POWER, WICKED_GROWTH);
+				break;
+			case ENGINEER:
+				Collections.addAll(tierTalents, DURABLE_MODIFIES, ELECTRONIC_REPAIR, IONIZING_RADIATION);
 				break;
 		}
 		BATalents.classTier(cls, 3, tierTalents); //bluearchive
@@ -3645,6 +3737,34 @@ public enum Talent {
 				break;
 			case OCCULTIST:
 				Collections.addAll(tierTalents, ENHANCED_LETHALITY, ASSASSINS_REACH, BOUNTY_HUNTER);
+				break;
+			//xun, Xun's PD's subclasses have five talents each
+			case WAVECHASER:
+				Collections.addAll(tierTalents, RIVER_EROSION, SON_OF_SEA, DROWNING, LAKE_DEVELOPMENT, UNDERCURRENT);
+				break;
+			case TRAPPER:
+				Collections.addAll(tierTalents, XUN_TRAP_MASTER, FRIENDLY_MECHANISM, SIMPLE_STRUCTURE, SENSITIVE_PEDAL, LIQUID_COLLECTING);
+				break;
+			case ROCKSY:
+				Collections.addAll(tierTalents, METEROIC_IRON, ROCK_PROTECTOR, MIND_CONTROL, DESTRUCTIVE_STRIKE, METEOR_CRATER);
+				break;
+			case INCUBUS:
+				Collections.addAll(tierTalents, LULLABY, SLEEPWALKING, SLEEPING_IN, WRONG_SIDE_OF_THE_BED, NIGHTMARE_HAUNTING);
+				break;
+			case PLAGUEGOD:
+				Collections.addAll(tierTalents, CORPSE_DECAY, HOMEMADE_DRUG, MAGICAL_VENT, ACID_RAIN, PLAGUE_EUCHARIST);
+				break;
+			case SOULHANDLER:
+				Collections.addAll(tierTalents, IMMEDIATE_USE, VENGEFUL_SPIRIT, SOUL_CAGING, DEVOUR_SURGING, OVERFLOW);
+				break;
+			case CRAFTSMAN:
+				Collections.addAll(tierTalents, ACTIVE_REPAIR, MULTI_MODIFY, PART_RECYCLING, FAVORITE_WORK, KINETIC_FRAGMENT);
+				break;
+			case HACKER:
+				Collections.addAll(tierTalents, BACKFIRE, DIFFRACTION, ELECTRIC_CHARGE, DARK_MAGIC, CHARISMA);
+				break;
+			case GRENADIER:
+				Collections.addAll(tierTalents, EXPLOSION_PROOF, XUN_SHOCKWAVE, ADDED_POWDER, MAGICAL_EXPLOSION, BALLISTICA_CALC);
 				break;
 		}
 		RearrangedRework.extendSubclassTalents(cls, tierTalents); //rearranged

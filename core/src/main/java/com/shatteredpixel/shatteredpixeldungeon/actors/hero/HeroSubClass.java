@@ -154,7 +154,17 @@ public enum HeroSubClass {
 	RBA_DEVOUT_PRAYER(HeroIcon.RBA_DEVOUT_PRAYER),
 	RBA_SYMBOL_OF_PEACE(HeroIcon.RBA_SYMBOL_OF_PEACE),
 	//deranged, DERanged PD's Rat King, who takes on other subclasses through his talents
-	KING(HeroIcon.DR_KING);
+	KING(HeroIcon.DR_KING),
+	//xun, Xun's PD's subclasses, icons from its own sheet
+	WAVECHASER(HeroIcon.XUN + 19),
+	TRAPPER(HeroIcon.XUN + 20),
+	ROCKSY(HeroIcon.XUN + 21),
+	INCUBUS(HeroIcon.XUN + 22),
+	PLAGUEGOD(HeroIcon.XUN + 23),
+	SOULHANDLER(HeroIcon.XUN + 24),
+	CRAFTSMAN(HeroIcon.XUN + 25),
+	HACKER(HeroIcon.XUN + 26),
+	GRENADIER(HeroIcon.XUN + 27);
 
 	//Transformation PD asks this of subclasses. DERanged PD's King counts as every subclass he has the talent for
 	public boolean is(HeroSubClass sub) {

@@ -28,9 +28,9 @@ import com.watabou.utils.Random;
 
 public class RipperSprite extends MobSprite {
 
-	private Animation stab;
-	private Animation prep;
-	private Animation leap;
+	protected Animation stab; //protected for Xun's PD's parasite
+	protected Animation prep;
+	protected Animation leap;
 
 	private boolean alt = Random.Int(2) == 0;
 

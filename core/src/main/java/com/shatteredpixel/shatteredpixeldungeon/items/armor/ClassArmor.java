@@ -189,6 +189,15 @@ abstract public class ClassArmor extends Armor {
 			//deranged
 			case RAT_KING:
 				classArmor = new RatKingArmor();
+			//xun
+			case EXPLORER:
+				classArmor = new ExplorerArmor();
+				break;
+			case WRAITH:
+				classArmor = new WraithArmor();
+				break;
+			case ENGINEER:
+				classArmor = new EngineerArmor();
 				break;
 		}
 		

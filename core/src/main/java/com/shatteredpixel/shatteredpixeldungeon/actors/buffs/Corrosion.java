@@ -35,6 +35,8 @@ public class Corrosion extends Buff implements Hero.Doom, Buff.DOTbuff {
 
 	private float damage = 1;
 	protected float left;
+	public float duration(){ return left; } //xun, read by the Wraith's transfusion
+	public float damage(){ return damage; }
 
 	//used in specific cases where the source of the corrosion is important for death logic
 	private Class source;

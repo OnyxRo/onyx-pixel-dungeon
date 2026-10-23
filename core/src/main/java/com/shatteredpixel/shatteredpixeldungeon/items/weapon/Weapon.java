@@ -155,6 +155,18 @@ abstract public class Weapon extends KindOfWeapon {
 	@Override
 	public int proc( Char attacker, Char defender, int damage ) {
 
+		//xun, the Engineer's weapon modifications
+		if (modify == Modification.BATTLE_MODULE){
+			defender.damage(Math.round(damage/2f), new BattleModule());
+		}
+		if (modify == Modification.SHARP_BLADE
+				|| (modify == Modification.LONG_HANDLE && !com.shatteredpixel.shatteredpixeldungeon.Dungeon.level.adjacent(attacker.pos, defender.pos))
+				|| (modify == Modification.CONDUCTIVE && enchantment != null)
+				|| modify == Modification.BATTLE_MODULE
+				|| modify == Modification.PNEUMATICS)
+			decreaseModDurability();
+		if (modify == Modification.SHARP_BLADE) damage = Math.max(damage, Math.round((min() + max()) / 2f));
+
 		if (special != null && attacker.buff(MagicImmune.class) == null) {
 			damage = special.proc(this, attacker, defender, damage);
 		}
@@ -368,12 +380,14 @@ abstract public class Weapon extends KindOfWeapon {
 			ACC /= 5;
 		}
 
+		if (modify == Modification.PNEUMATICS) ACC *= 1.25f; //xun
 		return encumbrance > 0 ? (float)(ACC / Math.pow( 1.5, encumbrance )) : ACC;
 	}
 	
 	@Override
 	public float delayFactor( Char owner ) {
-		return baseDelay(owner) * (1f/speedMultiplier(owner));
+		float xunMod = modify == Modification.BATTLE_MODULE ? 1.25f : modify == Modification.PNEUMATICS ? 0.625f : 1f; //xun
+		return xunMod * baseDelay(owner) * (1f/speedMultiplier(owner));
 	}
 
 	protected float baseDelay( Char owner ){
@@ -423,6 +437,7 @@ abstract public class Weapon extends KindOfWeapon {
 			reach += 2;
 		}
 		reach += com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RearrangedWeapons.bonusReach(owner); //rearranged
+		if (modify == Modification.LONG_HANDLE) reach++; //xun
 		if (hasEnchant(Projecting.class, owner)){
 			return reach + Math.round(Enchantment.genericProcChanceMultiplier(owner));
 		} else {
@@ -696,7 +711,9 @@ abstract public class Weapon extends KindOfWeapon {
 				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Friendship.class,
 				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Glowing.class,
 				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Hunting.class,
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Sting.class
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Sting.class,
+				//xun, Xun's PD
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Peaceful.class
 		};
 
 		public static final Class<?>[] rare = new Class<?>[]{
@@ -705,7 +722,9 @@ abstract public class Weapon extends KindOfWeapon {
 				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Holy.class,
 				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.TimeFreezing.class,
 				//Elektrocheckers PD
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Corroding.class
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Corroding.class,
+				//xun, Xun's PD
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Alienating.class
 		};
 
 		public static final float[] typeChances = new float[]{

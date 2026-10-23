@@ -37,6 +37,7 @@ public class Ooze extends Buff implements Buff.DOTbuff {
 	}
 
 	private float left;
+	public float left(){ return left; } //xun, read by the Wraith's transfusion
 	private boolean acted = false; //whether the debuff has done any damage at all yet
 
 	private static final String LEFT	= "left";

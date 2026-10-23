@@ -82,6 +82,8 @@ public class Ghoul extends Mob {
 	}
 
 	private int timesDowned = 0;
+	//xun, Xun's PD's Havoc counts kills and skips ghouls that will get back up
+	public int timesDowned(){ return timesDowned; }
 	protected int partnerID = -1;
 
 	private static final String PARTNER_ID = "partner_id";

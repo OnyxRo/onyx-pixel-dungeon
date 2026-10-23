@@ -40,12 +40,13 @@ public class TalentIcon extends Image {
 	//Transformation PD's talent catalog, icons from 4096 up come from the mod's own sheet
 	public static final int TRANSFORMATION_BASE = 4096;
 	private static TextureFilm transFilm;
+	private static TextureFilm xunFilm;
 
 	private static TextureFilm baFilm;
 	private static TextureFilm rbaFilm;
 
 	public TalentIcon(int icon){
-		super( icon >= 50000 ? Assets.Interfaces.RBA_TALENT_ICONS : icon >= 30000 ? Assets.Interfaces.BA_TALENT_ICONS : icon >= 20000 ? Assets.Interfaces.DR_TALENT_ICONS : icon >= 10000 ? Assets.Interfaces.RA_TALENT_ICONS
+		super( icon >= 50000 ? Assets.Interfaces.RBA_TALENT_ICONS : icon >= 40000 ? Assets.Interfaces.XUN_TALENT_ICONS : icon >= 30000 ? Assets.Interfaces.BA_TALENT_ICONS : icon >= 20000 ? Assets.Interfaces.DR_TALENT_ICONS : icon >= 10000 ? Assets.Interfaces.RA_TALENT_ICONS
 				: icon >= TRANSFORMATION_BASE ? Assets.Interfaces.TALENT_ICONS_TRANSFORMATION : Assets.Interfaces.TALENT_ICONS );
 
 		//rebluearchive, icons of 50000 and up come from Re Blue Archive PD's own sheet
@@ -56,7 +57,7 @@ public class TalentIcon extends Image {
 		}
 
 		//bluearchive, icons of 30000 and up come from Blue Archive PD's own sheet
-		if (icon >= 30000){
+		if (icon >= 30000 && icon < 40000){
 			if (baFilm == null) baFilm = new TextureFilm(texture, SIZE, SIZE);
 			frame(baFilm.get(icon - 30000));
 			return;
@@ -66,6 +67,13 @@ public class TalentIcon extends Image {
 		if (icon >= 20000 && icon < 30000){
 			if (drFilm == null) drFilm = new TextureFilm(texture, SIZE, SIZE);
 			frame(drFilm.get(icon - 20000));
+			return;
+		}
+
+		//xun, icons of 40000 and up come from Xun's PD's own sheet
+		if (icon >= 40000){
+			if (xunFilm == null) xunFilm = new TextureFilm(texture, SIZE, SIZE);
+			frame(xunFilm.get(icon - 40000));
 			return;
 		}
 

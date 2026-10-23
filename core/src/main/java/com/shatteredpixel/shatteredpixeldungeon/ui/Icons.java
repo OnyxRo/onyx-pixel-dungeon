@@ -554,6 +554,13 @@ public enum Icons {
 			//deranged
 			case RAT_KING:
 				return new ItemSprite(ItemSpriteSheet.CHEEST);
+			//xun
+			case EXPLORER:
+				return new ItemSprite(ItemSpriteSheet.SHOVEL);
+			case WRAITH:
+				return new ItemSprite(ItemSpriteSheet.BONE_SPIKE);
+			case ENGINEER:
+				return new ItemSprite(ItemSpriteSheet.TOOL);
 			default:
 				return null;
 		}

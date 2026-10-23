@@ -533,6 +533,14 @@ public class ModRoster {
 		//the darkest elf's slimes, so neither spawns by depth
 		add( "deranged", Ech.class, 0, 1, 99 );
 		add( "deranged", DarkSlime.class, 0, 1, 99 );
+		//xun, Xun's PD has no worlds, so these only show in the sandbox list and the bestiary. Depths follow its MobSpawner,
+		//the parasite and marlock are rare stand ins for rippers and warlocks, the missile tower guards its tower room
+		add( "xun", Parasite.class, 0, 21, 26 );
+		add( "xun", DemonSentry.class, 2, 22, 26 );
+		add( "xun", Engineer.class, 1, 17, 20 );
+		add( "xun", MissileTower.class, 0, 1, 26 );
+		add( "xun", Resentment.class, 2, 21, 23 );
+		add( "xun", Marlock.class, 0, 16, 20 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

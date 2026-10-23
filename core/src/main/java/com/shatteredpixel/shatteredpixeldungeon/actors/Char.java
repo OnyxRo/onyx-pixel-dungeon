@@ -969,6 +969,7 @@ public abstract class Char extends Actor {
 		if ( buff( Adrenaline.class ) != null) speed *= 2f;
 		if ( buff( Haste.class ) != null) speed *= 3f;
 		speed = TowerChar.speed(this, speed); //tower
+		speed = XunHooks.speed(this, speed); //xun
 		if ( buff( Dread.class ) != null) speed *= 2f;
 		if ( buff( com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.LeanyElixir.Lean.class ) != null) speed *= 2f; //Community PD
 		if ( buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ninja_Energy.WaterSmooth.class ) != null && Dungeon.level.water[pos]) speed *= 2f; //Transformation PD
@@ -1122,9 +1123,10 @@ public abstract class Char extends Actor {
 		if (this.buff(Frost.class) != null){
 			Buff.detach( this, Frost.class );
 		}
-		if (this.buff(MagicalSleep.class) != null){
+		if (this.buff(MagicalSleep.class) != null && !XunHooks.pacified(this)){ //xun, peaceful
 			Buff.detach(this, MagicalSleep.class);
 		}
+		XunHooks.endPeace(this); //xun
 		if (this.buff(Doom.class) != null && !isImmune(Doom.class)){
 			damage *= 1.67f;
 		}
@@ -1312,6 +1314,8 @@ public abstract class Char extends Actor {
 			die( src );
 		} else if (HP == 0 && buff(DeathMark.DeathMarkTracker.class) != null){
 			DeathMark.processFearTheReaper(this);
+		} else {
+			XunHooks.afterDamage(this, dmg); //xun
 		}
 	}
 
@@ -1330,6 +1334,7 @@ public abstract class Char extends Actor {
 		NO_ARMOR_PHYSICAL_SOURCES.add(Heap.class); //damage from wraiths attempting to spawn from heaps
 		NO_ARMOR_PHYSICAL_SOURCES.add(Necromancer.SummoningBlockDamage.class);
 		NO_ARMOR_PHYSICAL_SOURCES.add(DriedRose.GhostHero.NoRoseDamage.class);
+		NO_ARMOR_PHYSICAL_SOURCES.add(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfAvalanche.class); //xun
 	}
 	
 	public void destroy() {
@@ -1530,6 +1535,9 @@ public abstract class Char extends Actor {
 		return isAlive();
 	}
 
+	//xun, Xun's PD's time bomb freezes everything caught in it
+	public void xunFreezeTime(float time) { spendConstant(time); }
+
 	@Override
 	protected void spendConstant(float time) {
 		TimekeepersHourglass.timeFreeze freeze = buff(TimekeepersHourglass.timeFreeze.class);
@@ -1676,6 +1684,7 @@ public abstract class Char extends Actor {
 		float stealth = 0;
 
 		stealth += Obfuscation.stealthBoost(this, glyphLevel(Obfuscation.class));
+		stealth += XunHooks.stealth(this); //xun, elixir of concealment
 
 		return stealth;
 	}
@@ -1768,7 +1777,7 @@ public abstract class Char extends Actor {
 				result *= 0.5f;
 			}
 		}
-		return result * RingOfElements.resist(this, effect);
+		return result * RingOfElements.resist(this, effect) * XunHooks.resist(this, effect); //xun, elemental mask
 	}
 	
 	protected final HashSet<Class> immunities = new HashSet<>();
@@ -1793,6 +1802,7 @@ public abstract class Char extends Actor {
 		if (glyphLevel(Brimstone.class) >= 0){
 			immunes.add(Burning.class);
 		}
+		XunHooks.addImmunities(this, immunes); //xun, frost glyph
 		
 		for (Class c : immunes){
 			if (c.isAssignableFrom(effect)){

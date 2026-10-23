@@ -107,6 +107,7 @@ public class Viscosity extends Glyph {
 		}
 		
 		protected int damage = 0;
+		public int damage(){ return damage; } //xun, read by the Wraith's transfusion
 		
 		private static final String DAMAGE	= "damage";
 		

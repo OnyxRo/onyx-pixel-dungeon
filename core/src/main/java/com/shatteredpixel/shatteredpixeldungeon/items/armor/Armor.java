@@ -21,6 +21,15 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.MetalPart;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Transmuting;
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.watabou.noosa.audio.Sample;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.engineer.ForceField;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
+
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -151,6 +160,8 @@ public class Armor extends EquipableItem {
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
+		if (modify != null) bundle.put( "modify", modify ); //xun
+		bundle.put( "mod_durability", modDurability );
 		bundle.put( USES_LEFT_TO_ID, usesLeftToID );
 		bundle.put( AVAILABLE_USES, availableUsesToID );
 		bundle.put( GLYPH, glyph );
@@ -165,6 +176,8 @@ public class Armor extends EquipableItem {
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle(bundle);
+		if (bundle.contains( "modify" )) modify = bundle.getEnum( "modify", Modification.class ); //xun
+		modDurability = bundle.getInt( "mod_durability" );
 		usesLeftToID = bundle.getInt( USES_LEFT_TO_ID );
 		availableUsesToID = bundle.getInt( AVAILABLE_USES );
 		inscribe((Glyph) bundle.get(GLYPH));
@@ -530,6 +543,7 @@ public class Armor extends EquipableItem {
 	
 	public float evasionFactor( Char owner, float evasion ){
 		if (testingNoArmDefSkill) return evasion;
+		if (modify == Modification.DEFLECTION) evasion *= 1.5f; //xun
 		
 		if (hasGlyph(Stone.class, owner) && !Stone.testingEvasion()){
 			return 0;
@@ -563,6 +577,7 @@ public class Armor extends EquipableItem {
 	}
 
 	public float speedFactor( Char owner, float speed ){
+		if (modify == Modification.EXOSKELETON) speed *= 1.25f; //xun
 		
 		if (owner instanceof Hero) {
 			int aEnc = STRReq() - ((Hero) owner).STR();
@@ -631,6 +646,18 @@ public class Armor extends EquipableItem {
 	}
 	
 	public int proc( Char attacker, Char defender, int damage ) {
+
+		//xun, the Engineer's armor modifications wear down as the hero is hit
+		if (modify == Modification.WEAKNESS_ENHANCE) damage = Math.max(0, damage - Math.round(DRMax() * 0.25f));
+		if (modify == Modification.EXPLOSIVE && attacker != null && attacker.isAlive()){
+			//the charge goes off against the attacker only, so the wearer is not caught in it
+			com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter.center(attacker.pos).burst(com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle.FACTORY, 10);
+			com.watabou.noosa.audio.Sample.INSTANCE.play(com.shatteredpixel.shatteredpixeldungeon.Assets.Sounds.BLAST);
+			attacker.damage(com.watabou.utils.Random.NormalIntRange(4 + Dungeon.scalingDepth(), 12 + 3 * Dungeon.scalingDepth()), this);
+		}
+		if (modify == Modification.EXPLOSIVE || modify == Modification.WEAKNESS_ENHANCE
+				|| modify == Modification.EXOSKELETON || modify == Modification.DEFLECTION)
+			decreaseModDurability();
 
 		if (special != null && defender.buff(MagicImmune.class) == null) {
 			damage = special.proc(this, attacker, defender, damage);
@@ -792,6 +819,7 @@ public class Armor extends EquipableItem {
 			info += "\n\n" + Messages.get(Armor.class, "seal_attached", seal.maxShield(tier, level()));
 		}
 		
+		if (modify != null) info += "\n\n" + Messages.get(Armor.class, "has_modify", modify.title(), modDurability) + modify.desc(); //xun
 		return info;
 	}
 
@@ -844,6 +872,7 @@ public class Armor extends EquipableItem {
 
 	public int STRReq(int lvl){
 		int req = STRReq(tier, lvl);
+		if (modify == Modification.EXOSKELETON) req--; //xun
 		if (masteryPotionBonus){
 			req -= 2;
 		}
@@ -974,7 +1003,9 @@ public class Armor extends EquipableItem {
 				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Weight.class,
 				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Chaotic.class,
 				//rearranged
-				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Afterimage.class };
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Afterimage.class,
+				//xun, Xun's PD
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Freezingglyph.class };
 
 		public static final Class<?>[] rare = new Class<?>[]{
 				Affection.class, AntiMagic.class, Thorns.class,
@@ -982,7 +1013,9 @@ public class Armor extends EquipableItem {
 				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.FreezeTime.class,
 				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Teleport.class,
 				//rearranged
-				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Satisfying.class };
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Satisfying.class,
+				//xun, Xun's PD
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Vengeance.class };
 
 		public static final float[] typeChances = new float[]{
 				50, //12.5% each
@@ -995,7 +1028,9 @@ public class Armor extends EquipableItem {
 				Multiplicity.class, Stench.class, Overgrowth.class, Bulk.class,
 				com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Binding.class,
 				//Lovecraft PD
-				com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Clumsy.class
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Clumsy.class,
+				//xun, Xun's PD
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Dizziness.class
 		};
 		
 		public abstract int proc( Armor armor, Char attacker, Char defender, int damage );
@@ -1112,4 +1147,88 @@ public class Armor extends EquipableItem {
 		}
 		
 	}
+
+	//xun, Xun's PD's modifications, fitted by the Engineer with metal parts
+	public enum Modification {
+		WEAKNESS_ENHANCE,
+		EXPLOSIVE,
+		CONDUCTIVE,
+		DEFLECTION,
+		EXOSKELETON;
+
+		public int partCost(){
+			switch (this){
+				case WEAKNESS_ENHANCE:return 4;
+				case EXPLOSIVE:       return 2;
+				case CONDUCTIVE:      return 5;
+				case DEFLECTION:      return 5;
+				case EXOSKELETON:     return 10;
+				default:              return 0;
+			}
+		}
+
+		public int maxDurability(){
+			switch (this){
+				case EXPLOSIVE:       return 1;
+				case CONDUCTIVE:      return 150;
+				case DEFLECTION:return 15;
+				case EXOSKELETON:     return 30;
+				case WEAKNESS_ENHANCE:
+				default:              return 25;
+			}
+		}
+
+		public String title(){return Messages.get(Modification.class, toString());}
+		public String desc() {return Messages.get(Modification.class, this + "_desc");}
+
+		public boolean craftsman(){
+			return this == DEFLECTION || this == EXOSKELETON;
+		}
+	}
+
+	public void decreaseModDurability(){
+		if (Dungeon.hero.buff(ForceField.Field.class) == null
+				|| Random.Int(4) >= Dungeon.hero.pointsInTalent(Talent.REPAIR_ABILITY))
+			modDurability = Math.max(modDurability - 1, 0);
+		if (modDurability <= 0) modify(null);
+	}
+
+	public void modify(Modification mod){
+		boolean activeRepair = modify == mod && Dungeon.hero.hasTalent(Talent.ACTIVE_REPAIR);
+		modify = mod;
+		if (mod == null){
+			modDurability = 0;
+			GLog.n(Messages.get(this, "modify_break"));
+			float chance = Dungeon.hero.pointsInTalent(Talent.PART_RECYCLING) / 2f;
+			while (Random.Float() < chance){
+				MetalPart part = new MetalPart();
+				if (!part.collect()) Dungeon.level.drop(part, Dungeon.hero.pos).sprite.drop();
+				chance --;
+			}
+			if (Dungeon.hero.pointsInTalent(Talent.KINETIC_FRAGMENT) >= 2){
+				Buff.affect(Dungeon.hero, Barrier.class).setShield(Dungeon.hero.lvl);
+				Dungeon.hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(Dungeon.hero.lvl), FloatingText.SHIELDING);
+			}
+		} else {
+			if (!activeRepair)
+				modDurability = 0;
+
+			float duraToInc = mod.maxDurability() * (1 + 0.15f * Dungeon.hero.pointsInTalent(Talent.DURABLE_MODIFIES));
+			if (Dungeon.hero.pointsInTalent(Talent.ACTIVE_REPAIR) >= 2 && activeRepair) duraToInc *= 1.2f;
+			modDurability += Math.round(duraToInc);
+
+			Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
+			Transmuting.show(curUser, this, this);
+			curUser.sprite.operate(curUser.pos);
+
+			if (Dungeon.hero.pointsInTalent(Talent.ACTIVE_REPAIR) >= 3 && activeRepair){
+				MetalPart part = new MetalPart();
+				if (!part.collect()) Dungeon.level.drop(part, Dungeon.hero.pos).sprite.drop();
+			}
+		}
+	}
+
+	public Modification modify = null;
+	public int modDurability = 0;
+
 }

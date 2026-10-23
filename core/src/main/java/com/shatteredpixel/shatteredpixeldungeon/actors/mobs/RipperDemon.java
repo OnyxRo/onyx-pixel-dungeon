@@ -134,7 +134,35 @@ public class RipperDemon extends Mob {
 		return result;
 	}
 
-	private int leapPos = -1;
+	protected int leapPos = -1; //protected for Xun's PD's parasite
+
+	//xun, Xun's PD's parasite leaps on its own cooldown and does its own thing on landing
+	protected int leapCDStart(){
+		return Random.NormalIntRange(2, 4);
+	}
+
+	protected void doLeap(Char leapVictim, int endPos) {
+		if (leapVictim != null && alignment != leapVictim.alignment){
+			if (hit(RipperDemon.this, leapVictim, Char.INFINITE_ACCURACY, false)) {
+				Buff.affect(leapVictim, Bleeding.class).set(0.75f * damageRoll());
+				leapVictim.sprite.flash();
+				Sample.INSTANCE.play(Assets.Sounds.HIT);
+			} else {
+				leapVictim.sprite.showStatus( CharSprite.NEUTRAL, leapVictim.defenseVerb() );
+				Sample.INSTANCE.play(Assets.Sounds.MISS);
+			}
+		}
+
+		if (endPos != leapPos){
+			Actor.add(new Pushing(RipperDemon.this, leapPos, endPos));
+		}
+
+		pos = endPos;
+		leapPos = -1;
+		sprite.idle();
+		Dungeon.level.occupyCell(RipperDemon.this);
+		next();
+	}
 	private float leapCooldown = 0;
 
 	public class Hunting extends Mob.Hunting {
@@ -144,7 +172,7 @@ public class RipperDemon extends Mob {
 
 			if (leapPos != -1){
 
-				leapCooldown = Random.NormalIntRange(2, 4);
+				leapCooldown = leapCDStart();
 
 				if (rooted){
 					leapPos = -1;
@@ -192,27 +220,7 @@ public class RipperDemon extends Mob {
 				sprite.jump(pos, leapPos, new Callback() {
 					@Override
 					public void call() {
-
-						if (leapVictim != null && alignment != leapVictim.alignment){
-							if (hit(RipperDemon.this, leapVictim, Char.INFINITE_ACCURACY, false)) {
-								Buff.affect(leapVictim, Bleeding.class).set(0.75f * damageRoll());
-								leapVictim.sprite.flash();
-								Sample.INSTANCE.play(Assets.Sounds.HIT);
-							} else {
-								leapVictim.sprite.showStatus( CharSprite.NEUTRAL, leapVictim.defenseVerb() );
-								Sample.INSTANCE.play(Assets.Sounds.MISS);
-							}
-						}
-
-						if (endPos != leapPos){
-							Actor.add(new Pushing(RipperDemon.this, leapPos, endPos));
-						}
-
-						pos = endPos;
-						leapPos = -1;
-						sprite.idle();
-						Dungeon.level.occupyCell(RipperDemon.this);
-						next();
+						doLeap(leapVictim, endPos);
 					}
 				});
 				return false;

@@ -440,7 +440,7 @@ public abstract class Level implements Bundlable {
 				} else if (trapMechChance < TrapMechanism.overrideNormalLevelChance()) {
 					return TrapMechanism.getNextFeeling();
 				} else {
-					return Feeling.NONE;
+					return com.shatteredpixel.shatteredpixeldungeon.actors.XunHooks.wornLockFeeling(); //xun, broken lock, NONE without it
 				}
 		}
 	}
@@ -1401,9 +1401,11 @@ public abstract class Level implements Bundlable {
 			//we call act here instead of detach in case the debuffs haven't managed to deal dmg once yet
 			if (map[ch.pos] == Terrain.WATER){
 				if (ch.buff(Burning.class) != null){
+					if (ch == Dungeon.hero) com.shatteredpixel.shatteredpixeldungeon.Badges.validateXunUnlock(com.shatteredpixel.shatteredpixeldungeon.Badges.Badge.UNLOCK_EXPLORER); //xun
 					ch.buff(Burning.class).act();
 				}
 				if (ch.buff(Ooze.class) != null){
+					if (ch == Dungeon.hero) com.shatteredpixel.shatteredpixeldungeon.Badges.validateXunUnlock(com.shatteredpixel.shatteredpixeldungeon.Badges.Badge.UNLOCK_EXPLORER); //xun
 					ch.buff(Ooze.class).act();
 				}
 			}
@@ -1609,6 +1611,7 @@ public abstract class Level implements Bundlable {
 				viewDist *= 1f + 0.25f*((Hero) c).pointsInTalent(Talent.TELESCOPE); //rearranged
 				viewDist *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.viewDistanceFactor((Hero) c); //transformation, Shortsighted
 				viewDist = Math.max(1, viewDist + com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.viewDelta((Hero) c));
+				viewDist = Math.max(1, viewDist + com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfVision.visionBonus()); //xun, ring of vision
 			}
 			
 			ShadowCaster.castShadow( cx, cy, width(), fieldOfView, blocking, Math.round(viewDist) );
