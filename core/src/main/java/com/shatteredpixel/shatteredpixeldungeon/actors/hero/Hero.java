@@ -2902,6 +2902,7 @@ public class Hero extends Char {
 
 		Berserk berserk = buff(Berserk.class);
 		if (berserk != null) berserk.recover(percent);
+		com.shatteredpixel.shatteredpixeldungeon.actors.CommunityHooks.onHeroExp(this, exp); //Community PD, Necklace of Ice
 		
 		if (source != PotionOfExperience.class) {
 			for (Item i : belongings) {

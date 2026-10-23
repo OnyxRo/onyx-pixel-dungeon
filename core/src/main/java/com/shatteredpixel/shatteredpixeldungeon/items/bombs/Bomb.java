@@ -428,6 +428,8 @@ public class Bomb extends Item {
 			
 			validIngredients.put(GooBlob.class,                 ArcaneBomb.class);
 			validIngredients.put(MetalShard.class,              ShrapnelBomb.class);
+			//Community PD
+			validIngredients.put(com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken.class, CrossBomb.class);
 		}
 		
 		private static final HashMap<Class<?extends Bomb>, Integer> bombCosts = new HashMap<>();
@@ -446,6 +448,7 @@ public class Bomb extends Item {
 			
 			bombCosts.put(ArcaneBomb.class,     6);
 			bombCosts.put(ShrapnelBomb.class,   6);
+			bombCosts.put(CrossBomb.class,      3); //Community PD
 		}
 		
 		@Override

@@ -906,6 +906,7 @@ public abstract class Char extends Actor {
 		if (armor != null) {
 			damage = armor.absorb( damage );
 		}
+		damage = CommunityHooks.necklaceBlock(this, damage); //Community PD, Necklace of Ice
 
 		ShieldOfLight.ShieldOfLightTracker shield = buff( ShieldOfLight.ShieldOfLightTracker.class);
 		if (shield != null && shield.object == enemy.id()){

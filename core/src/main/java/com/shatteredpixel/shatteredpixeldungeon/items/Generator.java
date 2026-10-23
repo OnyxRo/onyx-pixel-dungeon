@@ -775,6 +775,7 @@ public class Generator {
 			TRINKET.probs = TRINKET.defaultProbs.clone();
 
 			RearrangedLoot.apply(); //rearranged, Re-ARranged PD's weapons, trinkets and new categories
+			CommunityLoot.apply(); //Community PD's two tier 4 weapons, Necklace of Ice and Broken Treasure Box
 
 			for (Category cat : Category.values()){
 				if (cat.defaultProbs2 != null){

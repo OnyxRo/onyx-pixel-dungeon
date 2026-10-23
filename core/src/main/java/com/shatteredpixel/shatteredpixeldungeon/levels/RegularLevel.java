@@ -166,6 +166,7 @@ public abstract class RegularLevel extends Level {
 		if (feeling == Feeling.LARGE){
 			specials++;
 		}
+		specials += com.shatteredpixel.shatteredpixeldungeon.actors.CommunityHooks.extraSpecialRooms(); //Community PD, Broken Treasure Box
 		SpecialRoom.initForFloor();
 		for (int i = 0; i < specials; i++) {
 			SpecialRoom s = SpecialRoom.createRoom();
