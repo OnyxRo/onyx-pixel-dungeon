@@ -101,6 +101,7 @@ public abstract class ChampionEnemy extends Buff {
 	}
 
 	public static void rollForChampion(Mob m){
+		com.shatteredpixel.shatteredpixeldungeon.actors.DerangedChar.rollWarp(m); //deranged
 		Dungeon.mobsToChampion--;
 
 		//we roll for a champion enemy even if we aren't spawning one to ensure that

@@ -1090,6 +1090,7 @@ public abstract class Mob extends Char {
 			speed *= 1.15f+0.15f*Dungeon.hero.pointsInTalent(Talent.EFFICIENT_ORDER); //Transformation PD, the DM400
 		}
 		speed *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.mobSpeed(this);
+		if (Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.FORGET_PATH)) speed *= 1.25f; //deranged
 		return speed * AscensionChallenge.enemySpeedModifier(this);
 	}
 

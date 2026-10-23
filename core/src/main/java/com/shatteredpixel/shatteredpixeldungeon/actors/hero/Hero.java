@@ -430,6 +430,7 @@ public class Hero extends Char {
 			HT = 20 + 5*(lvl-1) + HTBoost;
 		}
 		HT = com.shatteredpixel.shatteredpixeldungeon.RearrangedChallenges.baseHT(HT); //rearranged, Superman
+		HT = com.shatteredpixel.shatteredpixeldungeon.actors.DerangedChar.heroHT(this, HT); //deranged, No HP
 		if (subClass.is(HeroSubClass.WATERSLIME)){
 			HT += (int) Math.round(0.5 * lvl * (1 + pointsInTalent(Talent.WATER_BODY)));
 		}
@@ -795,6 +796,7 @@ public class Hero extends Char {
 		Buff.affect( this, Regeneration.class );
 		Buff.affect( this, Hunger.class );
 		Buff.affect( this, MpRegen.class );
+		com.shatteredpixel.shatteredpixeldungeon.actors.DerangedChar.live(this); //deranged, Forget Path
 		//Dragonic PD, the Dragon Knight sears raw meat
 		if (heroClass == HeroClass.DRAGONKNIGHT) Buff.affect( this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sear.class );
 		ensureSubclassBuffs();
@@ -2516,6 +2518,7 @@ public class Hero extends Char {
 
 		//we ceil this one to avoid letting the player easily take 0 dmg from tenacity early
 		dmg = (int)Math.ceil(dmg * RingOfTenacity.damageMultiplier( this ));
+		com.shatteredpixel.shatteredpixeldungeon.actors.DerangedChar.onHeroDamaged(this, dmg); //deranged, No HP
 
 		//Transformation PD talents that react to a hit (Alchemy Shield, Dying Will, the Friar's sanity loss)
 		dmg = Talent.onHeroDamage( this, dmg, src );
@@ -3232,6 +3235,7 @@ public class Hero extends Char {
 		
 		if (HP <= 0){
 			if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Undead.class) != null) return true; //rearranged
+			if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.KromerNoDeath.class) != null) return true; //deranged
 			if (berserk == null) berserk = buff(Berserk.class);
 			return berserk != null && berserk.berserking();
 		} else {

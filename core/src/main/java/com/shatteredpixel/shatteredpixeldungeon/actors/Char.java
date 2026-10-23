@@ -894,6 +894,7 @@ public abstract class Char extends Actor {
 		for (ChampionEnemy buff : buffs(ChampionEnemy.class)){
 			buff.onAttackProc( enemy );
 		}
+		DerangedChar.attackProc(this, enemy); //deranged
 		if (this instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob){
 			damage = com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.mobAttackProc((com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob) this, enemy, damage);
 		}
@@ -1112,6 +1113,7 @@ public abstract class Char extends Actor {
 		if (this.buff(Doom.class) != null && !isImmune(Doom.class)){
 			damage *= 1.67f;
 		}
+		damage *= DerangedChar.damageMult(this, src); //deranged
 		if (alignment != Alignment.ALLY && this.buff(DeathMark.DeathMarkTracker.class) != null){
 			damage *= 1.25f;
 		}
@@ -1543,6 +1545,7 @@ public abstract class Char extends Actor {
 			timeScale *= 2.0f;
 		}
 		timeScale = TowerChar.timeScale(this, timeScale); //tower
+		timeScale *= DerangedChar.timeScale(this); //deranged
 
 		super.spend( time / timeScale );
 	}
