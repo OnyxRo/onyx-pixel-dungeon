@@ -421,7 +421,7 @@ public class BAGun extends MeleeWeapon {
         if (isEquipped(hero) && round == 0 && hero.hasTalent(Talent.BA_SHOOTALL_3)) {
             damage *= 1f + 0.2f/3f*hero.pointsInTalent(Talent.BA_SHOOTALL_3);
         }
-        return damage;
+        return Math.max(trueMax(damage), min(lvl)); //Shittened PD's prefixes, as for every melee weapon here
 
     }
 
