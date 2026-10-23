@@ -463,6 +463,7 @@ abstract public class Weapon extends KindOfWeapon {
 	
 	public Item upgrade(boolean enchant ) {
 
+		if (enchantment != null && com.shatteredpixel.shatteredpixeldungeon.RBAHooks.keepsEnchant()) enchant = true; //rebluearchive, Aris
 		if (enchant){
 			if (enchantment == null){
 				enchant(Enchantment.random());
@@ -754,6 +755,7 @@ abstract public class Weapon extends KindOfWeapon {
 				multi = rage.enchantFactor(multi);
 			}
 			multi = com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RearrangedWeapons.procChance(attacker, multi); //rearranged
+			multi = com.shatteredpixel.shatteredpixeldungeon.RBAHooks.enchantFactor(attacker, multi); //rebluearchive, bullet mods
 
 			if (attacker.buff(RunicBlade.RunicSlashTracker.class) != null){
 				multi += attacker.buff(RunicBlade.RunicSlashTracker.class).boost;

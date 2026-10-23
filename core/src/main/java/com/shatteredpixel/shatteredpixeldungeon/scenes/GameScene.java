@@ -814,6 +814,9 @@ public class GameScene extends PixelScene {
 			com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MagicalCompass.onSwitchLevel();
 			com.shatteredpixel.shatteredpixeldungeon.items.trinkets.CrystalBall.onSwitchLevel();
 			com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedChar.archersForesight();
+			//rebluearchive, Aris's compass, Shiroko's lock sense and Noa's trap sense
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBATalents.onLevelArrive();
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBATalents.onLevelCreated();
 
 			//Pixel Dungeon Reforged, the Randomizer challenge shows what changed in each new region
 			Randomizer.showRandomizerWindowIfRequired();

@@ -393,6 +393,7 @@ public class Potion extends Item {
 			if (!isKnown()) {
 				handler.know(this);
 				updateQuickslot();
+				com.shatteredpixel.shatteredpixeldungeon.RBAHooks.onConsumableIdentified(); //rebluearchive, Aris
 			}
 			
 			if (Dungeon.hero.isAlive()) {

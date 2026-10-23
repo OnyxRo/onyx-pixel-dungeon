@@ -123,6 +123,7 @@ public class TengusMask extends Item {
 		if (way == HeroSubClass.ASSASSIN && curUser.invisible > 0){
 			Buff.affect(curUser, Preparation.class);
 		}
+		com.shatteredpixel.shatteredpixeldungeon.RBAHooks.onSubclassChosen(curUser, way); //rebluearchive
 		
 		//Transformation PD, the Friar's two subclasses
 		curUser.ensureSubclassBuffs();

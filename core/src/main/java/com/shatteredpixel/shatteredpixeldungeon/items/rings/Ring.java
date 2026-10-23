@@ -364,6 +364,7 @@ public class Ring extends KindofMisc {
 			lvl++;
 		}
 		lvl += com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.ringBonus(); //rearranged
+		lvl += com.shatteredpixel.shatteredpixeldungeon.RBAHooks.ringBonus(); //rebluearchive, Aris
 		return lvl;
 	}
 

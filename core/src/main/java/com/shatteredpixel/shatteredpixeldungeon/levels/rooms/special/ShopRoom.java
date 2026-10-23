@@ -320,6 +320,7 @@ public class ShopRoom extends SpecialRoom {
 
 		itemsToSpawn.add( new Ankh() );
 		itemsToSpawn.add( new StoneOfAugmentation() );
+		com.shatteredpixel.shatteredpixeldungeon.RBAHooks.addShopItems(itemsToSpawn); //rebluearchive
 
 		TimekeepersHourglass hourglass = Dungeon.hero.belongings.getItem(TimekeepersHourglass.class);
 		if (hourglass != null && hourglass.isIdentified() && !hourglass.cursed){

@@ -163,6 +163,7 @@ abstract public class MissileWeapon extends Weapon {
 		if (masteryPotionBonus){
 			req -= 2;
 		}
+		req += com.shatteredpixel.shatteredpixeldungeon.RBAHooks.missileStrReq(); //rebluearchive, Izuna
 		return req;
 	}
 
@@ -173,9 +174,9 @@ abstract public class MissileWeapon extends Weapon {
 
 	public int buffedLvl(){
 		if (parent != null) {
-			return parent.buffedLvl();
+			return com.shatteredpixel.shatteredpixeldungeon.RBAHooks.missileLevel(parent.buffedLvl()); //rebluearchive
 		} else {
-			return super.buffedLvl();
+			return com.shatteredpixel.shatteredpixeldungeon.RBAHooks.missileLevel(super.buffedLvl()); //rebluearchive
 		}
 	}
 
@@ -397,6 +398,7 @@ abstract public class MissileWeapon extends Weapon {
 
 			}
 		}
+		com.shatteredpixel.shatteredpixeldungeon.RBAHooks.onMissileThrown(curUser); //rebluearchive
 	}
 
 	@Override
@@ -420,12 +422,14 @@ abstract public class MissileWeapon extends Weapon {
 		if (parent != null) parent.cursedKnown = true;
 
 		//instant ID with the right talent
-		if (attacker == Dungeon.hero && Dungeon.hero.pointsInTalent(Talent.SURVIVALISTS_INTUITION) == 2){
+		if ((attacker == Dungeon.hero && Dungeon.hero.pointsInTalent(Talent.SURVIVALISTS_INTUITION) == 2)
+				|| com.shatteredpixel.shatteredpixeldungeon.RBAHooks.instantMissileID(attacker)){ //rebluearchive, Izuna
 			usesLeftToID = Math.min(usesLeftToID, 0);
 			availableUsesToID =  Math.max(usesLeftToID, 0);
 		}
 
 		int result = super.proc(attacker, defender, damage);
+		com.shatteredpixel.shatteredpixeldungeon.RBAHooks.afterMissileHit(this, attacker, defender); //rebluearchive
 
 		//handle ID progress over parent/child
 		if (parent != null && parent.usesLeftToID > usesLeftToID){
@@ -510,6 +514,7 @@ abstract public class MissileWeapon extends Weapon {
 	
 	@Override
 	public float castDelay(Char user, int cell) {
+		if (com.shatteredpixel.shatteredpixeldungeon.RBAHooks.instantThrow(user)) return 0; //rebluearchive, Izuna
 		if (Actor.findChar(cell) != null && Actor.findChar(cell) != user){
 			return delayFactor( user );
 		} else {
@@ -574,6 +579,7 @@ abstract public class MissileWeapon extends Weapon {
 		//+50% durability on speed aug, -33% durability on damage aug
 		usages /= augment.delayFactor(1f);
 
+		usages = com.shatteredpixel.shatteredpixeldungeon.RBAHooks.missileUses(usages); //rebluearchive, Izuna
 		if (Dungeon.hero != null) {
 			usages *= RingOfSharpshooting.durabilityMultiplier( Dungeon.hero );
 		}

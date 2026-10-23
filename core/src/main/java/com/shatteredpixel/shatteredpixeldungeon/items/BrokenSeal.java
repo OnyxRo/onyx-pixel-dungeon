@@ -73,7 +73,8 @@ public class BrokenSeal extends Item {
 		if (glyph == null){
 			return false;
 		}
-		if (Dungeon.hero.pointsInTalent(Talent.RUNIC_TRANSFERENCE) == 2){
+		if (Dungeon.hero.pointsInTalent(Talent.RUNIC_TRANSFERENCE) == 2
+				|| com.shatteredpixel.shatteredpixeldungeon.RBAHooks.sealTransfersAnyGlyph()){ //rebluearchive, Aris
 			return true;
 		} else if (Dungeon.hero.pointsInTalent(Talent.RUNIC_TRANSFERENCE) == 1
 			&& (Arrays.asList(Armor.Glyph.common).contains(glyph.getClass())
@@ -94,7 +95,7 @@ public class BrokenSeal extends Item {
 
 	public int maxShield( int armTier, int armLvl ){
 		// 5-15, based on equip tier and iron will
-		return 3 + 2*armTier + Dungeon.hero.pointsInTalent(Talent.IRON_WILL);
+		return 3 + 2*armTier + Dungeon.hero.pointsInTalent(Talent.IRON_WILL) + com.shatteredpixel.shatteredpixeldungeon.RBAHooks.sealShieldBonus(); //rebluearchive
 	}
 
 	@Override

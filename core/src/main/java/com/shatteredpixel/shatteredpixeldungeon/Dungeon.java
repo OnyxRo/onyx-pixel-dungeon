@@ -390,6 +390,7 @@ public class Dungeon {
 		Random.resetGenerators();
 		
 		Statistics.reset();
+		com.shatteredpixel.shatteredpixeldungeon.RBAHooks.reset(); //rebluearchive
 		Notes.reset();
 
 		quickslot.reset();
@@ -920,6 +921,7 @@ public class Dungeon {
 			com.shatteredpixel.shatteredpixeldungeon.levels.rooms.modifierunlocks.ModifierUnlockRoom.storeRoomsInBundle( bundle );
 			
 			Statistics.storeInBundle( bundle );
+			RBAShims.store( bundle ); //rebluearchive
 			Notes.storeInBundle( bundle );
 			Generator.storeInBundle( bundle );
 
@@ -1108,6 +1110,7 @@ public class Dungeon {
 		energy = bundle.getInt( ENERGY );
 
 		Statistics.restoreFromBundle( bundle );
+		RBAShims.restore( bundle ); //rebluearchive
 		Generator.restoreFromBundle( bundle );
 
 	}
@@ -1225,6 +1228,8 @@ public class Dungeon {
 	public static void observe(){
 		int dist = Math.max(Dungeon.hero.viewDistance, 8);
 		dist *= 1f + 0.25f*Dungeon.hero.pointsInTalent(Talent.FARSIGHT);
+		dist *= com.shatteredpixel.shatteredpixeldungeon.RBAHooks.viewFactor(Dungeon.hero); //rebluearchive
+		dist = com.shatteredpixel.shatteredpixeldungeon.RBAHooks.senseRange(Dungeon.hero, dist);
 
 		if (Dungeon.hero.buff(MagicalSight.class) != null){
 			dist = Math.max( dist, MagicalSight.DISTANCE );
