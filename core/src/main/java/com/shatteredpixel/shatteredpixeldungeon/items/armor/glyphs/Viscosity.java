@@ -62,7 +62,7 @@ public class Viscosity extends Glyph {
 			actPriority = Actor.VFX_PRIO;
 		}
 
-		private int level = 0;
+		public int level = 0; //rebluearchive, public for RBAShims.applyViscosity
 
 		public int deferDamage(int dmg){
 			//account for icon stomach (just skip the glyph)

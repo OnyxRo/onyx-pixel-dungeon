@@ -82,6 +82,63 @@ public class RBAShims {
 		mobsToQuest = bundle.contains(MOBS_TO_QUEST) ? bundle.getFloat( MOBS_TO_QUEST ) : 1;
 	}
 
+	// ---- PotionOfCleansing.cleanseDebuff, StoneOfClairvoyance.mapping, Viscosity.applyViscosity ------
+
+	/** Removes negative buffs without the hunger and long buff side of a full cleanse. */
+	public static void cleanseDebuff( Char ch, float duration ){
+		for (com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff b : ch.buffs()){
+			if (b.type == com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.buffType.NEGATIVE
+					&& !(b instanceof com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff)
+					&& !(b instanceof com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory)){
+				b.detach();
+			}
+		}
+		if (duration > 0) {
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.prolong(ch,
+					com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCleansing.Cleanse.class, duration);
+		}
+	}
+
+	/** Maps the area around a cell like a Stone of Clairvoyance of the given reach. */
+	public static void clairvoyance( int cell, int distance ){
+		Level level = Dungeon.level;
+		distance = Math.max(0, Math.min(distance, com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster.MAX_DISTANCE));
+		com.watabou.utils.Point c = level.cellToPoint(cell);
+		int[] rounding = com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster.rounding[distance];
+		int left, right, curr;
+		for (int y = Math.max(0, c.y - distance); y <= Math.min(level.height() - 1, c.y + distance); y++) {
+			if (rounding[Math.abs(c.y - y)] < Math.abs(c.y - y)) {
+				left = c.x - rounding[Math.abs(c.y - y)];
+			} else {
+				left = distance;
+				while (rounding[left] < rounding[Math.abs(c.y - y)]) {
+					left--;
+				}
+				left = c.x - left;
+			}
+			right = Math.min(level.width() - 1, c.x + c.x - left);
+			left = Math.max(0, left);
+			for (curr = left + y * level.width(); curr <= right + y * level.width(); curr++) {
+				GameScene.checkedCell(curr, cell);
+				level.mapped[curr] = true;
+				if (level.secret[curr]) {
+					level.discover(curr);
+					if (level.heroFOV[curr]) {
+						GameScene.discoverTile(curr, level.map[curr]);
+						com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping.discover(curr);
+					}
+				}
+			}
+		}
+		GameScene.updateFog();
+	}
+
+	/** Adds to the damage a Viscosity glyph spreads over time, as if the glyph had more levels. */
+	public static void applyViscosity( Char defender, int level ){
+		com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(defender,
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity.ViscosityTracker.class).level += level;
+	}
+
 	// ---- Actor.enemiesInHeroFOV ---------------------------------------------------------------------
 
 	public static HashSet<Mob> enemiesInHeroFOV( Level level ){

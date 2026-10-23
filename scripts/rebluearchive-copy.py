@@ -187,7 +187,7 @@ TALENT_NESTED = ['AmbushShotTracker', 'AutoReloadBuff', 'BlessOfPlentyTracker', 
 
 def add_imports(src):
     for n, fq in HELPERS.items():
-        if re.search(r'\b' + n + r'\.', src) and ('import ' + fq + ';') not in src and not src.startswith('package ' + fq.rsplit('.', 1)[0] + ';'):
+        if re.search(r'\b' + n + r'\.', src) and ('import ' + fq + ';') not in src and not re.search(r'^package ' + re.escape(fq.rsplit('.', 1)[0]) + ';', src, re.M):
             src = re.sub(r'^(package [\w.]+;\s*\n)', r'\1\nimport ' + fq + ';\n', src, count=1, flags=re.M)
     return src
 
@@ -211,7 +211,12 @@ RULES = [
     (r'\b(\w+)\.sprite\.rgb\(', r'RBASprites.rgb(\1.sprite, '),
     (r'\b(\w+)\.sprite\.clearRgb\(\)', r'RBASprites.clearRgb(\1.sprite)'),
     (r'\bnew HeroIcon\((miracle|content)\)', r'HeroIcon.rba(\1.icon())'),
-    (r'\bElastic\.pushEnemy\(([^,()]+(?:\([^()]*\))?),\s*([^,()]+(?:\([^()]*\))?),\s*([^,()]+(?:\([^()]*\))?),', r'Elastic.pushEnemy(\3, \1, \2,'),
+    #the mod's order is attacker, defender, weapon. Only a call that starts with a character is reordered, so the
+    #rule can run twice
+    (r'\bElastic\.pushEnemy(?:WithoutPit)?\(((?:Dungeon\.hero|hero|curUser|attacker|this|target|owner)\s*),\s*([^,()]+(?:\([^()]*\))?),\s*([^,()]+(?:\([^()]*\))?),', r'Elastic.pushEnemy(\3, \1, \2,'),
+    (r'\bPotionOfCleansing\.cleanseDebuff\(', 'RBAShims.cleanseDebuff('),
+    (r'\bStoneOfClairvoyance\.mapping\(', 'RBAShims.clairvoyance('),
+    (r'\bViscosity\.applyViscosity\(', 'RBAShims.applyViscosity('),
     (r'\bTalent\.hasFoodTalent\(', 'RBATalents.hasFoodTalent('),
     (r'\bactors\.mobs\.Sheep\b', 'actors.mobs.npcs.Sheep'),
     (r'\bIcons\.ACTION_SAKI\.get\(\)', 'RBASprites.icon(16, 144, 9, 9)'),
@@ -232,6 +237,16 @@ def main():
     if sys.argv[1] == '--names':
         print(json.dumps(names())); return
     cmap = classes(rels)
+    if sys.argv[1] == '--fix':
+        #runs the renames over files of this game written in the mod's names (hooks pasted from the mod), in place
+        for f in sys.argv[2:]:
+            p = os.path.abspath(f)
+            rel = os.path.relpath(p, OURS).replace(os.sep, '/')
+            s = io.open(p, encoding='utf-8', newline='').read()
+            t = rewrite(s, rel, cmap)
+            if t != s:
+                io.open(p, 'w', encoding='utf-8', newline='').write(t); print('fixed', rel)
+        return
     dup = {n: p for n, p in cmap.items() if len(p) > 1}
     if dup: print('same simple name in two packages', dup)
     force = sys.argv[1] == '--refix'
