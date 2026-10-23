@@ -29,7 +29,7 @@ public class ItemSpriteSheet {
 	public static final int SIZE = 16;
 
 	private static final int TX_WIDTH = 256;
-	private static final int TX_HEIGHT = 4224;
+	private static final int TX_HEIGHT = 4864;
 
 	private static final int WIDTH = TX_WIDTH / SIZE;
 
@@ -482,6 +482,7 @@ public class ItemSpriteSheet {
 	public static final int DOGSTICK = xy(4, 60);
 	public static final int FISHSKELETON = xy(5, 60);
 	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;
+	public static final int HONEYED_MEAT = xy(12, 58);
 	public static final int LUNAR_KATANA = xy(8, 58);
 	public static final int OBSIDIANBOW = xy(9, 58);
 	public static final int OBSIDIAN_KNIFE = xy(10, 58);
@@ -1402,6 +1403,7 @@ public class ItemSpriteSheet {
 		assignItemRect(DOGSTICK, 11, 15);
 		assignItemRect(FISHSKELETON, 16, 16);
 		assignItemRect(WOODEN_BOOMERANG, 12, 12);
+		assignItemRect(HONEYED_MEAT, 15, 11);
 		assignItemRect(LUNAR_KATANA, 15, 16);
 		assignItemRect(OBSIDIANBOW, 16, 16);
 		assignItemRect(OBSIDIAN_KNIFE, 12, 13);
