@@ -1173,6 +1173,10 @@ public enum Catalog {
 		GLYPHS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Evasion.class);
 		EXOTIC_SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfUnspeakableHorrors.class);
 
+		//items ported from ratking
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.remains.CrownShard.class);
+		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFirebolt.class);
+
 
 	}
 

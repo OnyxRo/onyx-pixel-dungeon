@@ -135,7 +135,7 @@ public class RearrangedChallengesTest {
 			for (int k = 0; k < 300; k++) {
 				r = ratNextToHero();
 				if (r == null) break;
-				try { hero.attackProc( r, 1 ); } catch (NullPointerException e) { if (!e.toString().contains( "Game.instance" )) throw e; } //headless, trampling grass needs a scene
+				try { hero.attackProc( r, 1 ); } catch (NullPointerException e) { if (!e.toString().contains( "Game.instance" ) && !e.toString().contains( "ItemSprite.drop()" )) throw e; } //headless, trampling grass needs a scene
 				hero.buffs( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.chargearea.MutationBuff.class ).forEach( b -> b.detach() );
 				if (!Dungeon.level.mobs.contains( r )) mutated++;
 				else { Actor.remove( r ); Dungeon.level.mobs.remove( r ); }

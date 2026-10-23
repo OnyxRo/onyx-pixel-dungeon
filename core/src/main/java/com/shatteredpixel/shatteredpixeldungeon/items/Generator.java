@@ -881,8 +881,10 @@ public class Generator {
 			//summoning
 			case STAFF:
 				return randomStaff();
-			case MISSILE:
-				return randomMissile();
+			case MISSILE: {
+				Item thrown = com.shatteredpixel.shatteredpixeldungeon.items.weapon.thrown.CombustedLoot.maybeRoll(); //Combusted
+				return thrown != null ? thrown : randomMissile();
+			}
 			case ARTIFACT:
 				Item item = randomArtifact();
 				//if we're out of artifacts, return a ring instead.

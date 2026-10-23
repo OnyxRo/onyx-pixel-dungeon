@@ -87,7 +87,7 @@ public class BlackSoul extends Mob implements Callback {
 
         //missile
         do {
-            missile = (MissileWeapon)Generator.random(Generator.Category.MISSILE);
+            missile = Generator.randomMissile();
         } while (missile.cursed);
 
         properties.add(Property.ABYSS);
