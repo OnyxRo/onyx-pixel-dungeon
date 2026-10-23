@@ -209,3 +209,9 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **Item sheets wider than 16 cells.** `port-itemsprites.py` reads the mod's `WIDTH` from its ItemSpriteSheet (Tower PD uses 32). If a copied picture looks wrong or "EMPTY CELL" shows for an item the mod draws, check that constant first.
 - **Text color markers.** Tower PD writes `#1text#1` for colored text. This game only reads `_text_`, convert them when copying strings.
 - **A mod hero with no subclasses or talents** (Tower PD's BETA and ALPHA placeholders) gets Shattered subclasses, talents and armor abilities that work without that class's own gear, picked to suit. Run `TransformationHeroesTest <CLASS> ...` on it, the test now takes class names and casts each starting hero spell.
+
+## Added after Elektrocheckers PD (2026-10-22)
+
+- **Parallel runs share the scratchpad.** Put edit specs and helper scripts in `scratchpad/<mod key>/`, not loose files with short names. Another agent overwrote `e1.txt` between my write and my run.
+- **Recipes go in the list matching their ingredient count** in `Recipe.java` (one, two or three). A recipe in the wrong list compiles and is never found.
+- **A mod rune or item effect that ends on a sprite effect** runs fine headless up to that line. Wrap casts in a test helper that reports a NullPointerException as info, then check the result (see `ElektroRunesTest`).
