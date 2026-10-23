@@ -1184,6 +1184,7 @@ public abstract class Mob extends Char {
 						exp == 0 && maxLvl > 0 && EXP > 0 && Dungeon.hero.lvl < Hero.MAX_LEVEL){
 					exp = Math.round(10 * spawningWeight());
 				}
+				exp = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.killExp(this, exp); //rebluearchive
 
 				if (exp > 0) {
 					Dungeon.hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(exp), FloatingText.EXPERIENCE);
@@ -1292,6 +1293,7 @@ public abstract class Mob extends Char {
 		if (Dungeon.hero.isAlive() && !Dungeon.level.heroFOV[pos]) {
 			GLog.i( Messages.get(this, "died") );
 		}
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.onMobDie(this, cause); //rebluearchive
 
 		boolean soulMarked = buff(SoulMark.class) != null;
 
@@ -1340,6 +1342,8 @@ public abstract class Mob extends Char {
 		}
 
 		dropBonus += ShardOfOblivion.lootChanceMultiplier()-1f;
+
+		dropBonus += com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.lootMulti()-1f; //rebluearchive, Yuzu's shop
 
 		//rearranged, the pink gem trinket
 		return lootChance * dropBonus * com.shatteredpixel.shatteredpixeldungeon.items.trinkets.PinkGem.dropChanceMultiplier();
@@ -1515,6 +1519,7 @@ public abstract class Mob extends Char {
 		for (Buff b : buffs(ChampionEnemy.class)){
 			desc += "\n\n_" + Messages.titleCase(b.name()) + "_\n" + b.desc();
 		}
+		desc += com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.mobDesc(this); //rebluearchive
 
 		return desc;
 	}
@@ -1578,6 +1583,7 @@ public abstract class Mob extends Char {
 								bestChance = Float.POSITIVE_INFINITY;
 							}
 						}
+						if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.silentSteps(Mob.this, ch)) bestChance = Float.POSITIVE_INFINITY; //rebluearchive
 						//flying characters are naturally stealthy
 						if (ch.flying && distance(ch) >= 2){
 							bestChance = Float.POSITIVE_INFINITY;

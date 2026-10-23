@@ -628,8 +628,8 @@ public class RBAHero {
 		return damage;
 	}
 
-	/** Damage taken after armor-like effects, before shields soak it. */
-	public static int damageReduction( Char target, int dmg, Object src ){
+	/** Magic damage that Hoshino's tactical shield turns aside with her talent, inside the Anti Magic block. */
+	public static int magicReduction( Char target, int dmg ){
 		if (Dungeon.hero != null && Dungeon.hero.hasTalent(Talent.RBA_HOSHINO_T2_4)) {
 			if (target.buff(RBAIronHorus.LightTacticalShieldBuff.class) != null) {
 				dmg -= Math.round(target.buff(RBAIronHorus.LightTacticalShieldBuff.class).drRoll()*0.25f*(Dungeon.hero.pointsInTalent(Talent.RBA_HOSHINO_T2_4)+1));
@@ -639,6 +639,11 @@ public class RBAHero {
 			}
 			dmg = Math.max(dmg, 0);
 		}
+		return dmg;
+	}
+
+	/** Damage taken after armor-like effects, before shields soak it. */
+	public static int damageReduction( Char target, int dmg, Object src ){
 		boolean hunger = src instanceof com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 		if (target.buff(RBAProtection.ProtectionBuff.class) != null && !hunger) {
 			dmg -= target.buff(RBAProtection.ProtectionBuff.class).damageReduction(Dungeon.hero);
@@ -654,11 +659,10 @@ public class RBAHero {
 		return dmg;
 	}
 
-	public static void onCharDie( Char ch ){
-		for (Char c : Actor.chars()){
-			RBADoubleBarrelMark m = c.buff(RBADoubleBarrelMark.class);
-			if (m != null && m.object == ch.id()) m.detach();
-		}
+	/** When a character dies, the Double Barrel mark another character put on it goes too. */
+	public static void onCharDie( Char dying, Char ch ){
+		RBADoubleBarrelMark m = ch.buff(RBADoubleBarrelMark.class);
+		if (m != null && m.object == dying.id()) m.detach();
 	}
 
 	// ---- Mob ----------------------------------------------------------------------------------------
