@@ -58,7 +58,7 @@ public class RingOfHaste extends Ring {
 	}
 	
 	public static float speedMultiplier( Char target ){
-		return (float)Math.pow(1.15, getBuffedBonus(target, Haste.class));
+		return (float)Math.pow(1.15, getBuffedBonus(target, Haste.class)) * RingOfTime.speedMultiplier(target);
 	}
 	
 	public class Haste extends RingBuff {

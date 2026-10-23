@@ -39,7 +39,7 @@ import java.util.ArrayList;
 
 public class Amulet extends Item {
 	
-	private static final String AC_END = "END";
+	public static final String AC_END = "END"; //public for Sandbox PD's Wand of Yendor
 	
 	{
 		image = ItemSpriteSheet.AMULET;
@@ -98,7 +98,7 @@ public class Amulet extends Item {
 		}
 	}
 	
-	private void showAmuletScene( boolean showText ) {
+	public static void showAmuletScene( boolean showText ) {
 		AmuletScene.noText = !showText;
 		Game.switchScene( AmuletScene.class, new Game.SceneChangeCallback() {
 			@Override

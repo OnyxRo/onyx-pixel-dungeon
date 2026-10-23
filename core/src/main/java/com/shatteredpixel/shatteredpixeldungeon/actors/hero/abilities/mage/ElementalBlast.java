@@ -104,6 +104,10 @@ public class ElementalBlast extends ArmorAbility {
 		effectTypes.put(WandOfTransfusion.class,    MagicMissile.BLOOD_CONE);
 		effectTypes.put(WandOfCorruption.class,     MagicMissile.SHADOW_CONE);
 		effectTypes.put(WandOfRegrowth.class,       MagicMissile.FOLIAGE_CONE);
+		//Sandbox PD's wands
+		effectTypes.put(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfSummoning.class,   MagicMissile.SHADOW_CONE);
+		effectTypes.put(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfYendor.class,      MagicMissile.RAINBOW_CONE);
+		effectTypes.put(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfInstability.class, MagicMissile.RAINBOW_CONE);
 	}
 
 	private static final HashMap<Class<?extends Wand>, Float> damageFactors = new HashMap<>();
@@ -121,6 +125,10 @@ public class ElementalBlast extends ArmorAbility {
 		damageFactors.put(WandOfTransfusion.class,      0f);
 		damageFactors.put(WandOfCorruption.class,       0f);
 		damageFactors.put(WandOfRegrowth.class,         0f);
+		//Sandbox PD's wands
+		damageFactors.put(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfSummoning.class,   0f);
+		damageFactors.put(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfYendor.class,      10f);
+		damageFactors.put(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfInstability.class, 1f);
 	}
 
 	{

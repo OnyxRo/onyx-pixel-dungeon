@@ -1423,6 +1423,9 @@ public abstract class Mob extends Char {
 	}
 	
 	protected Object loot = null;
+	//Sandbox PD, the gold digger trap takes a monster's gold
+	public Object sandboxPDLoot() { return loot; }
+	public void sandboxPDClearLoot() { loot = null; }
 	//from Transformation PD, a mob that drops more than one item overrides this
 	protected ArrayList<Item> createLootDrops() {
 		ArrayList<Item> drops = new ArrayList<>(1);

@@ -482,6 +482,11 @@ public class ItemSpriteSheet {
 	public static final int DOGSTICK = xy(4, 60);
 	public static final int FISHSKELETON = xy(5, 60);
 	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;
+	public static final int BREW_COCKTAIL = xy(1, 252);
+	public static final int SCROLL_WIPE_OUT = xy(2, 252);
+	public static final int WAND_INSTABILITY = xy(3, 252);
+	public static final int WAND_SUMMONING = xy(4, 252);
+	public static final int WAND_YENDOR = xy(5, 252);
 	public static final int HONEYED_MEAT = xy(12, 58);
 	public static final int LUNAR_KATANA = xy(8, 58);
 	public static final int OBSIDIANBOW = xy(9, 58);
@@ -1403,6 +1408,11 @@ public class ItemSpriteSheet {
 		assignItemRect(DOGSTICK, 11, 15);
 		assignItemRect(FISHSKELETON, 16, 16);
 		assignItemRect(WOODEN_BOOMERANG, 12, 12);
+		assignItemRect(BREW_COCKTAIL, 12, 14);
+		assignItemRect(SCROLL_WIPE_OUT, 15, 14);
+		assignItemRect(WAND_INSTABILITY, 14, 14);
+		assignItemRect(WAND_SUMMONING, 14, 14);
+		assignItemRect(WAND_YENDOR, 16, 16);
 		assignItemRect(HONEYED_MEAT, 15, 11);
 		assignItemRect(LUNAR_KATANA, 15, 16);
 		assignItemRect(OBSIDIANBOW, 16, 16);

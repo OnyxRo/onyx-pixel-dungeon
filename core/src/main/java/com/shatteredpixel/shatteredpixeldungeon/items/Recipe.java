@@ -274,8 +274,10 @@ public abstract class Recipe {
 		new com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfTalent.Recipe(),
 		new com.shatteredpixel.shatteredpixeldungeon.items.spells.UpgradeDust.Recipe(),
 		new com.shatteredpixel.shatteredpixeldungeon.items.spells.UnstableIdentification.Recipe(),
+		//Sandbox PD, a known potion poured into a potion cocktail
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.PotionCocktail.Recipe(),
 	};
-	
+
 	private static Recipe[] threeIngredientRecipes = new Recipe[]{
 		new Potion.SeedToPotion(),
 		new StewedMeat.threeMeat(),
@@ -303,6 +305,8 @@ public abstract class Recipe {
 		new com.shatteredpixel.shatteredpixeldungeon.items.spells.RubbingsTome.Recipe(),
 		//transformation, corpse dust, a rubbings tome and a wand
 		new com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Necronomicon.Recipe(),
+		//Sandbox PD, the Amulet, the King's crown and Tengu's mask
+		new com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfYendor.Recipe(),
 	};
 	
 	public static ArrayList<Recipe> findRecipes(ArrayList<Item> ingredients){
