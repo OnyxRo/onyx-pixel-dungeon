@@ -1188,7 +1188,6 @@ public enum Catalog {
 		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.RBAGunSmithingTool.class);
 		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.RBABicycle.class);
 		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.RBAClaymore.class);
-		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.RBAGrenade.class);
 		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.RBAHandGrenade.class);
 		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.RBAIronHorus.class);
 		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.active.RBALaptop.class);

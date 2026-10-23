@@ -27,10 +27,11 @@ public class RBAFox extends Mob {
     public boolean hit = false;
     public int spawnPos;
 
-    public int yukinoID;
-    public int nikoID;
-    public int kurumiID;
-    public int otogiID;
+    //-1 is no partner, a Fox made outside a squad (the sandbox) has none
+    public int yukinoID = -1;
+    public int nikoID = -1;
+    public int kurumiID = -1;
+    public int otogiID = -1;
 
     {
         state = HUNTING;
@@ -46,6 +47,9 @@ public class RBAFox extends Mob {
         immunities.add(AllyBuff.class);                         //아군으로 만들 수 없음
 
         lootChance = 1f;
+
+        //stats for the current depth, spawnAt sets them again for a squad
+        setLevel( Dungeon.hero != null ? Dungeon.scalingDepth() : 1 );
     }
 
     @Override
@@ -115,10 +119,7 @@ public class RBAFox extends Mob {
     @Override
     public void die(Object cause) {
         yell(Messages.get(this, "die"));
-        if (yukinoID != -1 && !(this instanceof RBAYukino))    ((RBAFox) Actor.findById(yukinoID)).allyDie(this );
-        if (nikoID != -1 && !(this instanceof RBANiko))        ((RBAFox) Actor.findById(nikoID)).allyDie(this );
-        if (kurumiID != -1 && !(this instanceof RBAKurumi))    ((RBAFox) Actor.findById(kurumiID)).allyDie(this );
-        if (otogiID != -1 && !(this instanceof RBAOtogi))      ((RBAFox) Actor.findById(otogiID)).allyDie(this );
+        for (RBAFox ally : allies()) ally.allyDie(this);
         super.die(cause);
     }
 
@@ -183,10 +184,12 @@ public class RBAFox extends Mob {
 
     public ArrayList<RBAFox> allies() {
         ArrayList<RBAFox> allies = new ArrayList<>();
-        if (yukinoID != -1 && !(this instanceof RBAYukino)) allies.add((RBAFox)Actor.findById(yukinoID));
-        if (nikoID != -1 && !(this instanceof RBANiko)) allies.add((RBAFox)Actor.findById(nikoID));
-        if (kurumiID != -1 && !(this instanceof RBAKurumi)) allies.add((RBAFox)Actor.findById(kurumiID));
-        if (otogiID != -1 && !(this instanceof RBAOtogi)) allies.add((RBAFox)Actor.findById(otogiID));
+        int[] ids = {yukinoID, nikoID, kurumiID, otogiID};
+        for (int id : ids) {
+            if (id == -1) continue;
+            Actor a = Actor.findById(id);
+            if (a instanceof RBAFox && a != this) allies.add((RBAFox) a);
+        }
         return allies;
     }
 
@@ -197,6 +200,7 @@ public class RBAFox extends Mob {
         @Override
         protected boolean continueWandering() {
             enemySeen = false;
+            if (spawnPos <= 0) spawnPos = pos; //a Fox made outside a squad guards where it first wanders from
 
             RBAFox partner = findPartner();
 
