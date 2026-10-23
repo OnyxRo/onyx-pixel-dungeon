@@ -1183,6 +1183,22 @@ public enum Catalog {
 		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.alchemy.ObsidianBow.class);
 		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.alchemy.ObsidianKnife.class);
 
+		//items ported from community
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.AlchemicalAkrafena.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.GemstoneDust.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.RepairedRapier.class);
+		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.NecklaceOfIce.class);
+		BOMBS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.bombs.CrossBomb.class);
+		BREWS_ELIXIRS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.FrostfireBrew.class);
+		BREWS_ELIXIRS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.LeanyElixir.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.RNGManipulator.class);
+		TRINKETS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.trinkets.BrokenTreasureBox.class);
+
+		//items ported from community
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.Silencing.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.CommunityFury.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.CommunityWakizashi.class);
+
 
 	}
 
