@@ -52,8 +52,8 @@ public class HeroSprite extends CharSprite {
 	
 	private static TextureFilm tiers;
 	
-	private Animation fly;
-	private Animation read;
+	protected Animation fly; //rebluearchive, protected for RBASprites
+	protected Animation read; //rebluearchive, protected for RBASprites
 
 	public HeroSprite() {
 		super();

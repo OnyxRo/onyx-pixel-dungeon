@@ -1,0 +1,97 @@
+package com.shatteredpixel.shatteredpixeldungeon.effects.particles;
+
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.RBAGun;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SR.RBASR;
+import com.watabou.noosa.particles.Emitter;
+import com.watabou.utils.Callback;
+
+public class RBAShootParticle extends RBASnipeParticle {
+    public static Emitter.Factory factory(Char target, int tier, int lvl, Callback callback) {
+        return new Emitter.Factory() {
+            @Override
+            public void emit(Emitter emitter, int index, float x, float y) {
+                if (target == null) return; //타겟이 없으면 아무것도 하지 않음
+                ((RBAShootParticle)emitter.recycle( RBAShootParticle.class )).reset( x, y, target, tier, lvl, callback );
+            }
+        };
+    }
+
+    public static Emitter.Factory factory(Char target, RBAGun.Bullet bullet, Callback callback) {
+        return new Emitter.Factory() {
+            @Override
+            public void emit(Emitter emitter, int index, float x, float y) {
+                ((RBAShootParticle)emitter.recycle( RBAShootParticle.class )).reset( x, y, target, bullet, callback );
+            }
+        };
+    }
+
+    public RBAShootParticle() {
+        super();
+        color(0x000000);
+        am = 0;
+    }
+
+    boolean shoot; //총 발사 여부
+    Char target = null;
+    int tier = -1;
+    int lvl = -1;
+    RBAGun.Bullet bullet = null;
+    Callback callback;
+    //총 발사 후 쉬는 구간 이후 마지막 구간 사이는 아무것도 하지 않음
+
+    public void reset( float x, float y, Char target, int tier, int lvl, Callback callback) {
+        reset(x, y);
+
+        size(2f);
+
+        shoot = false;
+
+        this.target = target;
+        this.tier = tier;
+        this.lvl = lvl;
+        this.callback = callback;
+    }
+
+    public void reset(float x, float y, Char target, RBAGun.Bullet bullet, Callback callback) {
+        reset(x, y);
+
+        size(2f);
+
+        shoot = false;
+
+        this.target = target;
+        this.bullet = bullet;
+        this.callback = callback;
+    }
+
+    @Override
+    public void update() {
+        super.update();
+
+        if (!shoot && left <= lifespan- FIRST - MIDDLE_REST) { //left가 총 발사 타이밍과 완벽하게 일치하지 않아서 범위로 지정
+            RBAGun.Bullet attackingBullet;
+            if (bullet != null) {
+                attackingBullet = bullet;
+            } else {
+                RBAGun gun = RBAGun.getGun(RBASR.class, this.tier, this.lvl);
+                attackingBullet = gun.knockBullet();
+                if (Dungeon.hero.hasTalent(Talent.RBA_MIYAKO_EX1_2)) {
+                    attackingBullet.setAccMulti(1f+(2f*Dungeon.hero.pointsInTalent(Talent.RBA_MIYAKO_EX1_2)-1f));
+                }
+            }
+
+            attackingBullet.throwSound();
+            attackingBullet.shoot(this.target.pos, true);
+            CellEmitter.center(this.target.pos).burst(BlastParticle.FACTORY, 4);
+            shoot = true;
+        }
+
+        if (left <= 0) {
+            this.callback.call();
+        }
+    }
+}

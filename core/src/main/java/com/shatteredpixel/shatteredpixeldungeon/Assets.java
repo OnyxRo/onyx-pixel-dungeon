@@ -151,6 +151,12 @@ public class Assets {
 		public static final String RA_HERO_ICONS   = "interfaces/rearranged/hero_icons.png";
 		public static final String RA_BUFFS_SMALL  = "interfaces/rearranged/buffs.png";
 		public static final String RA_BUFFS_LARGE  = "interfaces/rearranged/large_buffs.png";
+		//rebluearchive, Re Blue Archive PD's own icon sheets, picked by an icon number of 50000 or more
+		public static final String RBA_TALENT_ICONS = "interfaces/rebluearchive/talent_icons.png";
+		public static final String RBA_HERO_ICONS   = "interfaces/rebluearchive/hero_icons.png";
+		public static final String RBA_BUFFS_SMALL  = "interfaces/rebluearchive/buffs.png";
+		public static final String RBA_BUFFS_LARGE  = "interfaces/rebluearchive/large_buffs.png";
+		public static final String RBA_ICONS        = "interfaces/rebluearchive/icons.png";
 	}
 
 	//these points to resource bundles, not raw asset files
@@ -528,6 +534,13 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String RBA_AVANT_GARDE_KUN = "sprites/rebluearchive/avantgardekun.png"; //rebluearchive
+		public static final String RBA_FOX_DOLL = "sprites/rebluearchive/foxdoll.png"; //rebluearchive
+		public static final String RBA_KURUMI = "sprites/rebluearchive/kurumi.png"; //rebluearchive
+		public static final String RBA_NIKO = "sprites/rebluearchive/niko.png"; //rebluearchive
+		public static final String RBA_OTOGI = "sprites/rebluearchive/otogi.png"; //rebluearchive
+		public static final String RBA_SAKI = "sprites/rebluearchive/saki.png"; //rebluearchive
+		public static final String RBA_YUKINO = "sprites/rebluearchive/yukino.png"; //rebluearchive
 		public static final String WARRIORBOSS = "sprites/transformation/warriorboss.png"; //ported, transformation
 		public static final String MYRIAD_BLACK_SHADOW_OVERLAY = "sprites/transformation/myriad_black_shadow_overlay.png"; //ported, transformation
 		public static final String SUCCBOSS = "sprites/transformation/succboss.png"; //ported, transformation

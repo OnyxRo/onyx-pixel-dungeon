@@ -264,11 +264,150 @@ public class HeroIcon extends Image {
 	public static final int JUGGLING        = RA + 145;
 	public static final int SHARPSHOOTING   = RA + 146;
 
+	//rebluearchive, Re Blue Archive PD's icons, drawn from its own sheet (interfaces/rebluearchive/hero_icons.png)
+	public static final int RBA = 50000;
+	public static final int RBA_HERO_OF_LIGHT = RBA + 128;
+	public static final int RBA_BATTERY_CHARGE = RBA + 129;
+	public static final int RBA_SHOOT_ALL = RBA + 130;
+	public static final int RBA_SPREAD_SHOT = RBA + 131;
+	public static final int RBA_RABBIT_SQUAD = RBA + 132;
+	public static final int RBA_SUPPORT_DRONE = RBA + 133;
+	public static final int RBA_SHIELD_BASH = RBA + 134;
+	public static final int RBA_SWIFT_MOVEMENT = RBA + 135;
+	public static final int RBA_PROFESSIONAL_RIDING = RBA + 136;
+	public static final int RBA_BANK_ROBBER = RBA + 137;
+	public static final int RBA_DOUBLE_BARREL = RBA + 138;
+	public static final int RBA_CONVERSATION = RBA + 139;
+	public static final int RBA_TELESCOPE = RBA + 140;
+	public static final int RBA_CAMOUFLAGE = RBA + 141;
+	public static final int RBA_AVANT_GARDE_KUN = RBA + 142;
+	public static final int RBA_GAME_START = RBA + 143;
+	public static final int RBA_SWITCHING = RBA + 144;
+	public static final int RBA_CHASE = RBA + 145;
+	public static final int RBA_CALL_OF_STAR = RBA + 146;
+	public static final int RBA_LITTLE_ANGRY = RBA + 147;
+	public static final int RBA_DEVOUT_PRAYER = RBA + 148;
+	public static final int RBA_SYMBOL_OF_PEACE = RBA + 149;
+	public static final int RBA_ARIS_1 = RBA + 152;
+	public static final int RBA_ARIS_2 = RBA + 153;
+	public static final int RBA_ARIS_3 = RBA + 154;
+	public static final int RBA_NONOMI_1 = RBA + 155;
+	public static final int RBA_NONOMI_2 = RBA + 156;
+	public static final int RBA_NONOMI_3 = RBA + 157;
+	public static final int RBA_MIYAKO_1 = RBA + 158;
+	public static final int RBA_MIYAKO_2 = RBA + 159;
+	public static final int RBA_MIYAKO_3 = RBA + 160;
+	public static final int RBA_HOSHINO_1 = RBA + 161;
+	public static final int RBA_HOSHINO_2 = RBA + 162;
+	public static final int RBA_HOSHINO_3 = RBA + 163;
+	public static final int RBA_SHIROKO_1 = RBA + 164;
+	public static final int RBA_SHIROKO_2 = RBA + 165;
+	public static final int RBA_SHIROKO_3 = RBA + 166;
+	public static final int RBA_NOA_1 = RBA + 167;
+	public static final int RBA_NOA_2 = RBA + 168;
+	public static final int RBA_NOA_3 = RBA + 169;
+	public static final int RBA_MIYU_1 = RBA + 170;
+	public static final int RBA_MIYU_2 = RBA + 171;
+	public static final int RBA_MIYU_3 = RBA + 172;
+	public static final int RBA_YUZU_1 = RBA + 173;
+	public static final int RBA_YUZU_2 = RBA + 174;
+	public static final int RBA_YUZU_3 = RBA + 175;
+	public static final int RBA_IZUNA_1 = RBA + 176;
+	public static final int RBA_IZUNA_2 = RBA + 177;
+	public static final int RBA_IZUNA_3 = RBA + 178;
+	public static final int RBA_MIKA_1 = RBA + 179;
+	public static final int RBA_MIKA_2 = RBA + 180;
+	public static final int RBA_MIKA_3 = RBA + 181;
+	public static final int RBA_MARI_1 = RBA + 182;
+	public static final int RBA_MARI_2 = RBA + 183;
+	public static final int RBA_MARI_3 = RBA + 184;
+	public static final int RBA_CHARGE = RBA + 192;
+	public static final int RBA_SHOOT_ALL_ACTION = RBA + 193;
+	public static final int RBA_SPREAD_SHOT_ACTION = RBA + 194;
+	public static final int RBA_RABBIT_SQUAD_ACTION = RBA + 195;
+	public static final int RBA_SHIELD_BASH_ACTION = RBA + 196;
+	public static final int RBA_SWIFT_MOVEMENT_ACTION = RBA + 197;
+	public static final int RBA_PROFESSIONAL_RIDING_ACTION = RBA + 198;
+	public static final int RBA_BANK_ROBBER_ACTION = RBA + 199;
+	public static final int RBA_DOUBLE_BARREL_ACTION = RBA + 200;
+	public static final int RBA_CONVERSATION_ACTION = RBA + 201;
+	public static final int RBA_TELESCOPE_ACTION = RBA + 202;
+	public static final int RBA_AVANT_GARDE_KUN_ACTION = RBA + 203;
+	public static final int RBA_CHASE_ACTION = RBA + 204;
+	public static final int RBA_CALL_OF_STAR_ACTION = RBA + 205;
+	public static final int RBA_LITTLE_ANGRY_ACTION = RBA + 206;
+	public static final int RBA_SHOP_1 = RBA + 216;
+	public static final int RBA_SHOP_2 = RBA + 217;
+	public static final int RBA_SHOP_3 = RBA + 218;
+	public static final int RBA_SHOP_4 = RBA + 219;
+	public static final int RBA_SHOP_5 = RBA + 220;
+	public static final int RBA_SHOP_6 = RBA + 221;
+	public static final int RBA_SHOP_7 = RBA + 222;
+	public static final int RBA_SHOP_8 = RBA + 223;
+	public static final int RBA_SHOP_9 = RBA + 224;
+	public static final int RBA_SHOP_10 = RBA + 225;
+	public static final int RBA_CONTINUE_CONSOLE = RBA + 226;
+	public static final int RBA_FIGHTER_CONSOLE = RBA + 227;
+	public static final int RBA_FANTASY_CONSOLE = RBA + 228;
+	public static final int RBA_SANDBOX_CONSOLE = RBA + 229;
+	public static final int RBA_SHOP_11 = RBA + 230;
+	public static final int RBA_SHOP_12 = RBA + 231;
+	public static final int RBA_SHOP_13 = RBA + 232;
+	public static final int RBA_FIGHTER_WEAK_ATK = RBA + 240;
+	public static final int RBA_FIGHTER_STROING_ATK = RBA + 241;
+	public static final int RBA_FIGHTER_CHARGE = RBA + 242;
+	public static final int RBA_FIGHTER_LEFT = RBA + 243;
+	public static final int RBA_FIGHTER_UP = RBA + 244;
+	public static final int RBA_FIGHTER_DOWN = RBA + 245;
+	public static final int RBA_FIGHTER_RIGHT = RBA + 246;
+	public static final int RBA_FANTASY_FIREBALL = RBA + 247;
+	public static final int RBA_FANTASY_HYDROPUMP = RBA + 248;
+	public static final int RBA_FANTASY_LIGHTNING = RBA + 249;
+	public static final int RBA_FANTASY_ICE_LANCE = RBA + 250;
+	public static final int RBA_FANTASY_BLACKHOLE = RBA + 251;
+	public static final int RBA_SANDBOX_FARMING = RBA + 252;
+	public static final int RBA_SANDBOX_BARRICADE = RBA + 253;
+	public static final int RBA_SANDBOX_BRIDGE = RBA + 254;
+	public static final int RBA_SANDBOX_DIG = RBA + 255;
+	public static final int RBA_SANDBOX_WELL = RBA + 256;
+	public static final int RBA_LIGHT_BULLET = RBA + 264;
+	public static final int RBA_PROTECTION = RBA + 265;
+	public static final int RBA_PRAY = RBA + 266;
+	public static final int RBA_UNHOLY_DETECTION = RBA + 267;
+	public static final int RBA_SILVER_BULLET = RBA + 268;
+	public static final int RBA_MIND_BIND = RBA + 269;
+	public static final int RBA_BLESS_OF_CHARITY = RBA + 270;
+	public static final int RBA_HOLY_PROTECTION = RBA + 271;
+	public static final int RBA_HOLY_BULLET = RBA + 272;
+	public static final int RBA_HOLY_BLAST = RBA + 273;
+	public static final int RBA_THUNDER_LANCE = RBA + 274;
+	public static final int RBA_HOLY_MANTLE = RBA + 275;
+	public static final int RBA_HEALING_TOUCH = RBA + 276;
+	public static final int RBA_BAPTIZE = RBA + 277;
+	public static final int RBA_SALVATION = RBA + 278;
+	public static final int RBA_REPENT = RBA + 279;
+	public static final int RBA_FLASH_MIRACLE = RBA + 280;
+	public static final int RBA_BLESS_OF_LIGHT = RBA + 281;
+	public static final int RBA_PUNISHMENT_BULLET = RBA + 282;
+	public static final int RBA_TOUGH_BODY = RBA + 283;
+	public static final int RBA_CRYSTAL_MIND = RBA + 284;
+	public static final int RBA_HOLY_SOUL = RBA + 285;
+	public static final int RBA_ENCORE = RBA + 286;
+	public static final int RBA_CHARITY_KISS = RBA + 287;
+	public static final int RBA_HEART_OVERFLOW = RBA + 288;
+
 	private static TextureFilm raFilm;
+	private static TextureFilm rbaFilm;
 
 	private void pick( int icon ){
 		//rearranged, the mod's sheet keeps spell action icons 48 cells on, not 32
 		if (icon >= DIVINE_BLAST + SPELL_ACTION_OFFSET && icon <= ENCHANT + SPELL_ACTION_OFFSET) icon += 16;
+		if (icon >= RBA){
+			texture( Assets.Interfaces.RBA_HERO_ICONS );
+			if (rbaFilm == null) rbaFilm = new TextureFilm(texture, SIZE, SIZE);
+			frame(rbaFilm.get(icon - RBA));
+			return;
+		}
 		if (icon >= RA){
 			texture( Assets.Interfaces.RA_HERO_ICONS );
 			if (raFilm == null) raFilm = new TextureFilm(texture, SIZE, SIZE);
@@ -279,6 +418,19 @@ public class HeroIcon extends Image {
 			film = new TextureFilm(texture, SIZE, SIZE);
 		}
 		frame(film.get(icon));
+	}
+
+	//rebluearchive, an icon by number, for Re Blue Archive PD's miracles, shop goods and console contents
+	public static HeroIcon rba( int icon ){
+		return new HeroIcon( icon, true );
+	}
+
+	private HeroIcon( int icon, boolean rba ){
+		super( Assets.Interfaces.HERO_ICONS );
+		if (film == null){
+			film = new TextureFilm(texture, SIZE, SIZE);
+		}
+		pick(icon);
 	}
 
 	public HeroIcon(HeroSubClass subCls){

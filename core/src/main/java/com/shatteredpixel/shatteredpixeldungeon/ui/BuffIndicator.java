@@ -270,6 +270,37 @@ public class BuffIndicator extends Component {
 	public static final int ARROW_EMPOWER  = 10165;
 	public static final int JUGGLING       = 10166;
 
+	//rebluearchive, Re Blue Archive PD's buff icons, drawn from its own sheets
+	public static final int RBA = 50000;
+	public static final int RBA_SEAL_SHIELD = RBA + 84;
+	public static final int RBA_THROWN_WEP = RBA + 85;
+	public static final int RBA_KEY = RBA + 100;
+	public static final int RBA_SUPPORT_DRONE = RBA + 101;
+	public static final int RBA_IRON_HORUS = RBA + 102;
+	public static final int RBA_LIGHT_IRON_HORUS = RBA + 103;
+	public static final int RBA_BICYCLE = RBA + 104;
+	public static final int RBA_GPS_ROUTE = RBA + 105;
+	public static final int RBA_SNIPE = RBA + 106;
+	public static final int RBA_HP_BULLET = RBA + 107;
+	public static final int RBA_AVANT_GARDE_KUN = RBA + 108;
+	public static final int RBA_CONSOLE = RBA + 109;
+	public static final int RBA_VIP = RBA + 110;
+	public static final int RBA_INFINITE_BULLET = RBA + 111;
+	public static final int RBA_CHASE_MARK = RBA + 112;
+	public static final int RBA_LIGHT_BULLET = RBA + 113;
+	public static final int RBA_PROTECTION = RBA + 114;
+	public static final int RBA_BLESS_OF_CHARITY = RBA + 115;
+	public static final int RBA_HOLY_MANTLE = RBA + 116;
+	public static final int RBA_TRINITY_NONE = RBA + 117;
+	public static final int RBA_TRINITY_YELLOW = RBA + 118;
+	public static final int RBA_TRINITY_RED = RBA + 119;
+	public static final int RBA_TRINITY_BLUE = RBA + 120;
+	public static final int RBA_TRINITY_YELLOW_RED = RBA + 121;
+	public static final int RBA_TRINITY_YELLOW_BLUE = RBA + 122;
+	public static final int RBA_TRINITY_RED_BLUE = RBA + 123;
+	public static final int RBA_TRINITY_ALL = RBA + 124;
+	public static final int RBA_ENCORE = RBA + 125;
+
 	public static final int SIZE_SMALL  = 7;
 	public static final int SIZE_LARGE  = 16;
 	

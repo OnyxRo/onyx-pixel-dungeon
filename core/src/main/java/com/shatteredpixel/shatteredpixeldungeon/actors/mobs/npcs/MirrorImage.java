@@ -62,8 +62,8 @@ public class MirrorImage extends NPC {
 		actPriority = MOB_PRIO + 1;
 	}
 	
-	private Hero hero;
-	private int heroID;
+	protected Hero hero; //rebluearchive, protected for its hologram
+	protected int heroID;
 	public int armTier;
 	
 	@Override

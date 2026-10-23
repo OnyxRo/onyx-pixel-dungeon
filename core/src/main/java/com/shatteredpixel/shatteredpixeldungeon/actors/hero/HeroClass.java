@@ -119,7 +119,19 @@ public enum HeroClass {
 	//tower, Tower PD. Its heroes had no subclasses, these are Shattered's picked to suit them
 	NECROHERO( HeroSubClass.WARLOCK, HeroSubClass.ASSASSIN ),
 	TANK( HeroSubClass.BERSERKER, HeroSubClass.GLADIATOR ),
-	TOWERPRIEST( HeroSubClass.MONK, HeroSubClass.WARDEN );
+	TOWERPRIEST( HeroSubClass.MONK, HeroSubClass.WARDEN ),
+	//rebluearchive, the eleven students of Re Blue Archive PD
+	RBA_ARIS( HeroSubClass.RBA_LIGHT_HERO, HeroSubClass.RBA_BATTERY_CHARGE ),
+	RBA_NONOMI( HeroSubClass.RBA_SHOOT_ALL, HeroSubClass.RBA_SPREAD_SHOT ),
+	RBA_MIYAKO( HeroSubClass.RBA_RABBIT_SQUAD, HeroSubClass.RBA_SUPPORT_DRONE ),
+	RBA_HOSHINO( HeroSubClass.RBA_SHIELD_BASH, HeroSubClass.RBA_SWIFT_MOVEMENT ),
+	RBA_SHIROKO( HeroSubClass.RBA_PROFESSIONAL_RIDING, HeroSubClass.RBA_BANK_ROBBER ),
+	RBA_NOA( HeroSubClass.RBA_DOUBLE_BARREL, HeroSubClass.RBA_CONVERSATION ),
+	RBA_MIYU( HeroSubClass.RBA_TELESCOPE, HeroSubClass.RBA_CAMOUFLAGE ),
+	RBA_YUZU( HeroSubClass.RBA_AVANT_GARDE_KUN, HeroSubClass.RBA_GAME_START ),
+	RBA_IZUNA( HeroSubClass.RBA_SWITCHING, HeroSubClass.RBA_CHASE ),
+	RBA_MIKA( HeroSubClass.RBA_CALL_OF_STAR, HeroSubClass.RBA_LITTLE_ANGRY ),
+	RBA_MARI( HeroSubClass.RBA_DEVOUT_PRAYER, HeroSubClass.RBA_SYMBOL_OF_PEACE );
 
 	//the Summoner has two pictures, one is chosen each time the game starts
 	private static final String SUMMONER_SPLASH = Math.random() < 0.5 ? Assets.Splashes.SUMMONER : Assets.Splashes.SORCERESS;
