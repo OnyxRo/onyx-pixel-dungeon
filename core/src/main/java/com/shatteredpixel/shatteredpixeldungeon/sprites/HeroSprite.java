@@ -92,6 +92,11 @@ public class HeroSprite extends CharSprite {
 	public void updateArmor() {
 
 		TextureFilm film = new TextureFilm( tiers(), Dungeon.hero.tier(), FRAME_WIDTH, FRAME_HEIGHT );
+		//rebluearchive, the students are drawn 12 by 17 with one look for every armor
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.isStudent(Dungeon.hero)
+				&& Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HeroDisguise.class) == null){
+			film = new TextureFilm( texture, FRAME_WIDTH, RBASprites.STUDENT_HEIGHT );
+		}
 		
 		idle = new Animation( 1, true );
 		idle.frames( film, 0, 0, 0, 1, 0, 0, 1, 1 );
@@ -116,12 +121,14 @@ public class HeroSprite extends CharSprite {
 		read = new Animation( 20, false );
 		read.frames( film, 19, 20, 20, 20, 20, 20, 20, 20, 20, 19 );
 		
+		if (Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RBAAvantGardeKunBuff.OnBoard.class) != null) RBASprites.replaceAvantGardeSprite(this); //rebluearchive
+
 		if (Dungeon.hero.isAlive())
 			idle();
 		else
 			die();
 	}
-	
+
 	@Override
 	public void place( int p ) {
 		super.place( p );
@@ -204,6 +211,12 @@ public class HeroSprite extends CharSprite {
 	}
 	
 	public static Image avatar( HeroClass cl, int armorTier ) {
+		//rebluearchive, the students' first frame, 12 by 17
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.isStudent(cl)){
+			Image avatar = new Image( cl.spritesheet() );
+			avatar.frame( avatar.texture.uvRect( 0, 0, FRAME_WIDTH, RBASprites.STUDENT_HEIGHT ) );
+			return avatar;
+		}
 		
 		RectF patch = tiers().get( armorTier );
 		Image avatar = new Image( cl.spritesheet() );

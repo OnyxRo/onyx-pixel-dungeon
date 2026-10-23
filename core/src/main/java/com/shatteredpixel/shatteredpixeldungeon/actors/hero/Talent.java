@@ -1424,6 +1424,7 @@ public enum Talent {
 				return 250;
 			}
 			HeroClass cls = Dungeon.hero != null ? Dungeon.hero.heroClass : GamesInProgress.selectedClass;
+			if (RBAHero.isStudent(cls)) return RBATalents.heroicEnergyIcon(cls); //rebluearchive
 			switch (cls){
 				case WARRIOR: default:
 					return 26;
@@ -2366,6 +2367,7 @@ public enum Talent {
 	}
 
 	public static void onTalentUpgraded( Hero hero, Talent talent ){
+		RBATalents.onTalentUpgraded(hero, talent); //rebluearchive
 		RearrangedTalents.onTalentUpgraded(hero, talent); //rearranged
 		TransformationTalents.onTalentUpgraded(hero, talent);
 		if (talent == MIDAS_TOUCH && hero.hasTalent(MIDAS_TOUCH)){
@@ -2481,6 +2483,7 @@ public enum Talent {
 	public static class NatureBerriesDropped extends CounterBuff{{revivePersists = true;}};
 
 	public static void onFoodEaten( Hero hero, float foodVal, Item foodSource ){
+		RBATalents.onFoodEaten(hero, foodVal, foodSource); //rebluearchive
 		RearrangedTalents.onFoodEaten(hero, foodVal, foodSource); //rearranged
 		TransformationTalents.onFoodEaten(hero, foodSource);
 		onSlimeFoodEaten(hero);
@@ -2624,7 +2627,7 @@ public enum Talent {
 	}
 
 	public static float itemIDSpeedFactor( Hero hero, Item item ){
-		float manaSense = manaSenseFactor(hero, item);
+		float manaSense = manaSenseFactor(hero, item) * RBATalents.itemIDSpeedFactor(hero, item); //rebluearchive
 		if (manaSense != 1f) return manaSense * itemIDSpeedFactorBase(hero, item);
 		return itemIDSpeedFactorBase(hero, item);
 	}
@@ -2658,6 +2661,7 @@ public enum Talent {
 	}
 
 	public static void onPotionUsed( Hero hero, int cell, float factor ){
+		RBATalents.onPotionUsed(hero, cell, factor); //rebluearchive
 		RearrangedTalents.onPotionUsed(hero, cell, factor); //rearranged
 		if (cell != hero.pos) TransformationTalents.onPotionThrown(hero, cell);
 		onSlimePotionUsed(hero, factor);
@@ -2743,6 +2747,7 @@ public enum Talent {
 	}
 
 	public static void onScrollUsed( Hero hero, int pos, float factor, Class<?extends Item> cls ){
+		RBATalents.onScrollUsed(hero, pos, factor); //rebluearchive
 		RearrangedTalents.onScrollUsed(hero, pos, factor); //rearranged
 		TransformationTalents.onScrollUsed(hero);
 		if (hero.hasTalent(INSCRIBED_POWER)){
@@ -2768,6 +2773,7 @@ public enum Talent {
 	}
 
 	public static void onRunestoneUsed( Hero hero, int pos, Class<?extends Item> cls ){
+		RBATalents.onRunestoneUsed(hero); //rebluearchive
 		if (hero.hasTalent(RECALL_INSCRIPTION) && Runestone.class.isAssignableFrom(cls)){
 			if (hero.heroClass == HeroClass.CLERIC){
 				Buff.prolong(hero, RecallInscription.UsedItemTracker.class, hero.pointsInTalent(RECALL_INSCRIPTION) == 2 ? 300 : 10).item = cls;
@@ -2830,6 +2836,7 @@ public enum Talent {
 		if (hero.pointsInTalent(ADVENTURERS_INTUITION) == 2 && item instanceof Weapon){
 			identify = true;
 		}
+		if (RBATalents.identifiesOnEquip(hero, item)) identify = true; //rebluearchive
 
 		if (identify) {
 			if (ShardOfOblivion.passiveIDDisabled()) {
@@ -2847,6 +2854,7 @@ public enum Talent {
 	}
 
 	public static void onItemCollected( Hero hero, Item item ){
+		RBATalents.onItemCollected(hero, item); //rebluearchive
 		RearrangedTalents.onItemCollected(hero, item); //rearranged
 		TransformationTalents.onItemCollected(hero, item);
 		if (hero.pointsInTalent(THIEFS_INTUITION) == 2){
@@ -2855,6 +2863,7 @@ public enum Talent {
 	}
 
 	public static int onAttackProc( Hero hero, Char enemy, int dmg ){
+		dmg = RBATalents.onAttackProc(hero, enemy, dmg); //rebluearchive
 		dmg = RearrangedRework.dashAttack(hero, dmg); //rearranged
 		if (hero.hasTalent(STRENGTH_GREATEST)){
 			dmg += Hero.heroDamageIntRange( 0, hero.pointsInTalent(STRENGTH_GREATEST) );
@@ -3241,6 +3250,11 @@ public enum Talent {
 			case TOWERPRIEST:
 				Collections.addAll(tierTalents, NATURES_BOUNTY, SURVIVALISTS_INTUITION, NATURES_AID, AGGRESSIVE_BARRIER);
 				break;
+			//rebluearchive
+			case RBA_ARIS: case RBA_NONOMI: case RBA_MIYAKO: case RBA_HOSHINO: case RBA_SHIROKO: case RBA_NOA:
+			case RBA_MIYU: case RBA_YUZU: case RBA_IZUNA: case RBA_MIKA: case RBA_MARI:
+				RBATalents.addClassTalents(cls, 1, tierTalents);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -3322,6 +3336,11 @@ public enum Talent {
 			case TOWERPRIEST:
 				Collections.addAll(tierTalents, INVIGORATING_MEAL, LIQUID_NATURE, REJUVENATING_STEPS, HEIGHTENED_SENSES, DURABLE_PROJECTILES);
 				break;
+			//rebluearchive
+			case RBA_ARIS: case RBA_NONOMI: case RBA_MIYAKO: case RBA_HOSHINO: case RBA_SHIROKO: case RBA_NOA:
+			case RBA_MIYU: case RBA_YUZU: case RBA_IZUNA: case RBA_MIKA: case RBA_MARI:
+				RBATalents.addClassTalents(cls, 2, tierTalents);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -3401,6 +3420,11 @@ public enum Talent {
 			case TOWERPRIEST:
 				Collections.addAll(tierTalents, ALLY_WARP, HOLD_FAST);
 				break;
+			//rebluearchive
+			case RBA_ARIS: case RBA_NONOMI: case RBA_MIYAKO: case RBA_HOSHINO: case RBA_SHIROKO: case RBA_NOA:
+			case RBA_MIYU: case RBA_YUZU: case RBA_IZUNA: case RBA_MIKA: case RBA_MARI:
+				RBATalents.addClassTalents(cls, 3, tierTalents);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -3439,6 +3463,11 @@ public enum Talent {
 		}
 
 		ArrayList<Talent> tierTalents = new ArrayList<>();
+		//rebluearchive, a student subclass's three talents
+		if (RBATalents.addSubclassTalents(cls, tierTalents)){
+			for (Talent talent : tierTalents) talents.get(2).put(talent, 0);
+			return;
+		}
 
 		//tier 3
 		switch (cls){

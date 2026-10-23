@@ -253,6 +253,11 @@ public enum HeroClass {
 			case TOWERPRIEST:
 				initTowerPriest( hero );
 				break;
+			//rebluearchive, the students of Re Blue Archive PD
+			case RBA_ARIS: case RBA_NONOMI: case RBA_MIYAKO: case RBA_HOSHINO: case RBA_SHIROKO: case RBA_NOA:
+			case RBA_MIYU: case RBA_YUZU: case RBA_IZUNA: case RBA_MIKA: case RBA_MARI:
+				RBAHeroes.init( this, hero );
+				break;
 		}
 
 		//Pixel Dungeon Reforged, Trinket Madness starts the hero with three upgraded trinkets that stick
@@ -736,6 +741,7 @@ public enum HeroClass {
 	}
 
 	public ArmorAbility[] armorAbilities(){
+		if (RBAHero.isStudent(this)) return RBAHeroes.armorAbilities(this); //rebluearchive
 		switch (this) {
 			case WARRIOR: default:
 				return new ArmorAbility[]{new HeroicLeap(), new Shockwave(), new Endure()};
@@ -808,6 +814,7 @@ public enum HeroClass {
 	}
 
 	public String spritesheet() {
+		if (RBAHero.isStudent(this)) return RBAHeroes.spritesheet(this); //rebluearchive
 		switch (this) {
 			case WARRIOR: default:
 				return Assets.Sprites.WARRIOR;
@@ -870,6 +877,7 @@ public enum HeroClass {
 	}
 
 	public String splashArt(){
+		if (RBAHero.isStudent(this)) return RBAHeroes.splashArt(this); //rebluearchive
 		switch (this) {
 			case WARRIOR: default:
 				return Assets.Splashes.WARRIOR;
@@ -937,6 +945,8 @@ public enum HeroClass {
 		if (DeviceCompat.isDebug()) return true;
 		//and in sandbox runs
 		if (Dungeon.sandbox) return true;
+		//rebluearchive, the students are open from the start as in the mod
+		if (RBAHero.isStudent(this)) return true;
 
 		switch (this){
 			case WARRIOR: default:

@@ -141,6 +141,10 @@ def rewrite(src, rel, cmap):
         imported.add(m.group(1).split('.')[-1])
         s = split(m.group(1))
         if s and s[2]: visible.add(s[1])
+        #an import already renamed (a file being fixed again) still makes the mod's name visible
+        pkg, _, last = m.group(1).rpartition('.')
+        if last.startswith(PREFIX) and last[len(PREFIX):] in cmap and pkg in cmap[last[len(PREFIX):]]:
+            visible.add(last[len(PREFIX):])
     for n, pkgs in cmap.items():
         if mypkg in pkgs and n not in imported: visible.add(n)
     #imports of copied classes, and of their nested classes, and fully qualified uses in code

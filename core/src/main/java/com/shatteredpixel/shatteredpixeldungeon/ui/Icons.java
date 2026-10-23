@@ -486,6 +486,7 @@ public enum Icons {
 	}
 	
 	public static Image get( HeroClass cl ) {
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.isStudent(cl)) return new ItemSprite(com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHeroes.icon(cl)); //rebluearchive
 		switch (cl) {
 			case WARRIOR:
 				return new ItemSprite(ItemSpriteSheet.SEAL);

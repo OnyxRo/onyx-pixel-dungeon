@@ -35,6 +35,9 @@ public class RBASprites {
 	/** CharSprite.BLUE in the mod, the colour of its blue status text. */
 	public static final int BLUE = 0x5454FF;
 
+	/** The students' sprites are 17 pixels tall, Shattered's heroes 15. */
+	public static final int STUDENT_HEIGHT = 17;
+
 	// ---- the colour cycle Mari's Trinity puts on a character ---------------------------------------
 
 	private static final WeakHashMap<CharSprite, RBARGBBlock> rgb = new WeakHashMap<>();
