@@ -48,6 +48,12 @@ public class PartialAncientRune extends AncientRuneInventory {
 		item.detach(curUser.belongings.backpack);
 		Item result;
 
+		//this game has exotics from other mods without a regular form, refund those
+		if ((item instanceof ExoticScroll && ExoticScroll.exoToReg.get(item.getClass()) == null)
+				|| (item instanceof ExoticPotion && ExoticPotion.exoToReg.get(item.getClass()) == null)) {
+			item.collect();
+			return;
+		}
 		if (item instanceof ExoticScroll) {
 			result = Reflection.newInstance(ExoticScroll.exoToReg.get(item.getClass()));
 		} else if (item instanceof ExoticPotion) {

@@ -51,6 +51,12 @@ public class LaplaceAncientRune extends AncientRuneInventory {
 		item.detach(curUser.belongings.backpack);
 		Item result;
 
+		//this game has scrolls and potions from other mods without an exotic form, refund those
+		if ((item instanceof Scroll && ExoticScroll.regToExo.get(item.getClass()) == null)
+				|| (item instanceof Potion && ExoticPotion.regToExo.get(item.getClass()) == null)) {
+			item.collect();
+			return;
+		}
 		if (item instanceof Scroll) {
 			result = Reflection.newInstance(ExoticScroll.regToExo.get(item.getClass()));
 		} else if (item instanceof Potion) {

@@ -274,6 +274,15 @@ public abstract class Recipe {
 		new com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfTalent.Recipe(),
 		new com.shatteredpixel.shatteredpixeldungeon.items.spells.UpgradeDust.Recipe(),
 		new com.shatteredpixel.shatteredpixeldungeon.items.spells.UnstableIdentification.Recipe(),
+		//elektro, Elektrocheckers PD's spells
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.PrismaticImageSpell.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.Transfiguration.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.MagicBridge.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.InvariantAncientRune.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.FlameShot.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.IceShot.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.VenomShot.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.VampiricShot.Recipe(),
 	};
 	
 	private static Recipe[] threeIngredientRecipes = new Recipe[]{
@@ -303,15 +312,7 @@ public abstract class Recipe {
 		new com.shatteredpixel.shatteredpixeldungeon.items.spells.RubbingsTome.Recipe(),
 		//transformation, corpse dust, a rubbings tome and a wand
 		new com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Necronomicon.Recipe(),
-		//elektro, Elektrocheckers PD's spells
-		new com.shatteredpixel.shatteredpixeldungeon.items.spells.PrismaticImageSpell.Recipe(),
-		new com.shatteredpixel.shatteredpixeldungeon.items.spells.Transfiguration.Recipe(),
-		new com.shatteredpixel.shatteredpixeldungeon.items.spells.MagicBridge.Recipe(),
-		new com.shatteredpixel.shatteredpixeldungeon.items.spells.InvariantAncientRune.Recipe(),
-		new com.shatteredpixel.shatteredpixeldungeon.items.spells.FlameShot.Recipe(),
-		new com.shatteredpixel.shatteredpixeldungeon.items.spells.IceShot.Recipe(),
-		new com.shatteredpixel.shatteredpixeldungeon.items.spells.VenomShot.Recipe(),
-		new com.shatteredpixel.shatteredpixeldungeon.items.spells.VampiricShot.Recipe(),
+		//elektro, Elektrocheckers PD
 		new com.shatteredpixel.shatteredpixeldungeon.items.spells.GreaterTransmutation.Recipe(),
 	};
 	
