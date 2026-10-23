@@ -209,3 +209,9 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **Item sheets wider than 16 cells.** `port-itemsprites.py` reads the mod's `WIDTH` from its ItemSpriteSheet (Tower PD uses 32). If a copied picture looks wrong or "EMPTY CELL" shows for an item the mod draws, check that constant first.
 - **Text color markers.** Tower PD writes `#1text#1` for colored text. This game only reads `_text_`, convert them when copying strings.
 - **A mod hero with no subclasses or talents** (Tower PD's BETA and ALPHA placeholders) gets Shattered subclasses, talents and armor abilities that work without that class's own gear, picked to suit. Run `TransformationHeroesTest <CLASS> ...` on it, the test now takes class names and casts each starting hero spell.
+
+## Added after DERanged PD (2026-10-22)
+
+- **A hero that counts as other classes** (DERanged's Rat King) needs no edits in each effect. `HeroClass.is` and `HeroSubClass.is` answer for him, and `python -I scripts/deranged-loosen.py` rewrites `x.heroClass == HeroClass.Y` and `x.subClass == HeroSubClass.Y` into `is()` calls in game logic folders. Extend its lists if another hero shares classes.
+- **Talents that stand for other talents** go in one table with one hook in `Hero.pointsInTalent` (see `DerangedKing.BORROWED`), built from the mod's two argument `hasTalent` and `pointsInTalent` calls with a small script.
+- **Python helpers on Windows files.** Normalize CRLF before multi line replaces, or use `edit.py` specs, which handle it.
