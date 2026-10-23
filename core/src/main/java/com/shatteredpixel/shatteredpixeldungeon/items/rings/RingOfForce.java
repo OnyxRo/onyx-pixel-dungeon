@@ -99,8 +99,10 @@ public class RingOfForce extends Ring {
 				// lvl*((4+2*tier)/8) scaling, +50% dmg
 				dmg += Math.round(3+tier+(level*((4+2*tier)/8f)));
 			}
+			if (com.shatteredpixel.shatteredpixeldungeon.RBAHooks.mikaFists(hero)) dmg += Hero.heroDamageIntRange(com.shatteredpixel.shatteredpixeldungeon.RBAHooks.mikaMin(hero), com.shatteredpixel.shatteredpixeldungeon.RBAHooks.mikaMax(hero)); //rebluearchive
 			return dmg;
 		} else {
+			if (com.shatteredpixel.shatteredpixeldungeon.RBAHooks.mikaFists(hero)) return Hero.heroDamageIntRange(com.shatteredpixel.shatteredpixeldungeon.RBAHooks.mikaMin(hero), com.shatteredpixel.shatteredpixeldungeon.RBAHooks.mikaMax(hero)); //rebluearchive, Mika
 			//attack without any ring of force influence
 			if (hero.subClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.FIGHTER) return com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.fighterDamage(hero); //rearranged
 			return Hero.heroDamageIntRange(1, Math.max(hero.STR()-8, 1));

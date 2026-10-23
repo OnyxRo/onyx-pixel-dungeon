@@ -362,7 +362,8 @@ public abstract class Recipe {
 				}
 			}
 		}
-		
+		com.shatteredpixel.shatteredpixeldungeon.RBAHooks.addRecipes(ingredients, result); //rebluearchive
+
 		return result;
 	}
 	

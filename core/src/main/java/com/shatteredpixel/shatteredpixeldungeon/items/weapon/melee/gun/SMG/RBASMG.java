@@ -1,0 +1,60 @@
+package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SMG;
+
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.RBAGun;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+
+public class RBASMG extends RBAGun {
+
+    {
+        max_round = 4;
+        round = max_round;
+        shotPerShoot = 3;
+        shootingAccuracy = 1f;
+    }
+
+    @Override
+    public int STRReq(int lvl) {
+        int req = super.STRReq(lvl);
+        if (Dungeon.hero != null && Dungeon.hero.heroClass == HeroClass.RBA_MIYAKO){
+            req -= 1;
+        }
+        return req;
+    }
+
+    @Override
+    public int baseBulletMax(int lvl) {
+        return 2 * (tier()+1) +
+                Math.round(0.5f * lvl * tier()); //2강 당 1/2/3/4/5 증가
+    }
+
+    @Override
+    public Bullet knockBullet(){
+        return new SMGBullet();
+    }
+
+    public class SMGBullet extends Bullet {
+        {
+            image = ItemSpriteSheet.RBA_TRIPLE_BULLET;
+        }
+    }
+
+    @Override
+    public PlaceHolder getPlaceHolder() {
+        return new PlaceHolder();
+    }
+
+    public static class PlaceHolder extends RBAGun.PlaceHolder {
+        {
+            image = ItemSpriteSheet.RBA_SMG_PLACEHOLDER;
+        }
+
+        @Override
+        public boolean isSimilar(Item item) {
+            return super.isSimilar(item) && item instanceof RBASMG;
+        }
+    }
+
+}

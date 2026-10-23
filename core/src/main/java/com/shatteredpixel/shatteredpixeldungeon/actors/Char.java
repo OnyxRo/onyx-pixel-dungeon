@@ -510,6 +510,7 @@ public abstract class Char extends Actor {
 				//rearranged, piercing arrows, bullet armor factors, the Samurai's shadow blade
 				dr = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedChar.heroArmorPierce(h, enemy, dr);
 				dr = com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.enemyDR(this, enemy, dr); //bluearchive
+				dr = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.enemyArmor(h, enemy, dr); //rebluearchive
 				if (h.buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.samurai.ShadowBlade.shadowBladeTracker.class) != null && Random.Int(2) == 0) {
 					if (h.hasTalent(Talent.CRITICAL_SHADOW)) {
 						dmgBonus += Random.NormalIntRange(0, 5*h.pointsInTalent(Talent.CRITICAL_SHADOW));
@@ -629,6 +630,7 @@ public abstract class Char extends Actor {
 				dmg *= 1f+0.2f+0.1f*Dungeon.hero.pointsInTalent(Talent.HATRED_OF_EVIL);
 			}
 			dmg = TowerChar.attackDamage(this, dmg); //tower
+			dmg = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.attackDamage(this, enemy, dmg); //rebluearchive
 
 			int effectiveDamage = enemy.defenseProc( this, Math.round(dmg) );
 			//do not trigger on-hit logic if defenseProc returned a negative value
@@ -720,6 +722,7 @@ public abstract class Char extends Actor {
 				}
 				combinedLethality.detach();
 			}
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.afterHit(this, enemy); //rebluearchive, Hoshino's executes
 
 			if (enemy.sprite != null) {
 				enemy.sprite.bloodBurstA(sprite.center(), effectiveDamage);
@@ -767,6 +770,7 @@ public abstract class Char extends Actor {
 				}
 			}
 			if (enemy instanceof Hero) Talent.onHeroDodged((Hero) enemy, this); //Transformation PD
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.onMiss(this); //rebluearchive, Noa's Taking Aim
 			if (visibleFight) {
 				//TODO enemy.defenseSound? currently miss plays for monks/crab even when they parry
 				Sample.INSTANCE.play(Assets.Sounds.MISS);
@@ -803,6 +807,8 @@ public abstract class Char extends Actor {
 		if (defender.buff(MonkEnergy.MonkAbility.Focus.FocusBuff.class) != null){
 			defStat = INFINITE_EVASION;
 		}
+
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.alwaysDodges(defender)) defStat = INFINITE_EVASION; //rebluearchive
 
 		//if accuracy or evasion are large enough, treat them as infinite.
 		//note that infinite evasion beats infinite accuracy
@@ -882,6 +888,7 @@ public abstract class Char extends Actor {
 
 		dr += Random.NormalIntRange( 0 , Barkskin.currentLevel(this) );
 		dr -= com.shatteredpixel.shatteredpixeldungeon.items.trinkets.GrindStone.drRoll(); //rearranged
+		dr -= com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.armorBreak(this); //rebluearchive
 		//summoning, monsters from Summoning PD give a fixed armor value, rolled from 20 to 80 percent
 		int fixedArmor = defenseValue();
 		if (fixedArmor > 0) dr += Random.NormalIntRange( Math.round(fixedArmor * 0.2f), Math.round(fixedArmor * 0.8f) );
@@ -1123,6 +1130,7 @@ public abstract class Char extends Actor {
 		if (alignment != Alignment.ALLY && this.buff(DeathMark.DeathMarkTracker.class) != null){
 			damage *= 1.25f;
 		}
+		damage = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.damageFactor(this, damage, src); //rebluearchive
 
 		//two separate things can convert dmg to bleed, we handle that here
 		//we do this before modifiers are applied back to dmg as we don't want to stack them twice (from this and bleed)
@@ -1164,6 +1172,7 @@ public abstract class Char extends Actor {
 			if (buff(ArcaneArmor.class) != null) {
 				dmg -= Random.NormalIntRange(0, buff(ArcaneArmor.class).level());
 			}
+			dmg = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.magicReduction(this, dmg); //rebluearchive
 			if (dmg < 0) dmg = 0;
 		}
 		
@@ -1202,6 +1211,7 @@ public abstract class Char extends Actor {
 		}
 
 		dmg = Math.max(0, modifyPreShieldDamage(dmg, src)); //Transformation PD
+		dmg = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.damageReduction(this, dmg, src); //rebluearchive
 		int shielded = dmg;
 		dmg = ShieldBuff.processDamage(this, dmg, src);
 		shielded -= dmg;
@@ -1338,6 +1348,7 @@ public abstract class Char extends Actor {
 			if (ch.buff(SnipersMark.class) != null && ch.buff(SnipersMark.class).object == id()){
 				ch.buff(SnipersMark.class).detach();
 			}
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.onCharDie(this, ch); //rebluearchive
 			if (ch.buff(Talent.FollowupStrikeTracker.class) != null
 					&& ch.buff(Talent.FollowupStrikeTracker.class).object == id()){
 				ch.buff(Talent.FollowupStrikeTracker.class).detach();

@@ -156,6 +156,12 @@ public class Assets {
 		public static final String BA_HERO_ICONS   = "interfaces/bluearchive/hero_icons.png";
 		public static final String BA_BUFFS_SMALL  = "interfaces/bluearchive/buffs.png";
 		public static final String BA_BUFFS_LARGE  = "interfaces/bluearchive/large_buffs.png";
+		//rebluearchive, Re Blue Archive PD's own icon sheets, picked by an icon number of 50000 or more
+		public static final String RBA_TALENT_ICONS = "interfaces/rebluearchive/talent_icons.png";
+		public static final String RBA_HERO_ICONS   = "interfaces/rebluearchive/hero_icons.png";
+		public static final String RBA_BUFFS_SMALL  = "interfaces/rebluearchive/buffs.png";
+		public static final String RBA_BUFFS_LARGE  = "interfaces/rebluearchive/large_buffs.png";
+		public static final String RBA_ICONS        = "interfaces/rebluearchive/icons.png";
 	}
 
 	//these points to resource bundles, not raw asset files
@@ -492,6 +498,17 @@ public class Assets {
 	}
 
 	public static class Splashes {
+		public static final String RBA_ARIS = "splashes/rebluearchive/aris.png"; //rebluearchive
+		public static final String RBA_HOSHINO = "splashes/rebluearchive/hoshino.png"; //rebluearchive
+		public static final String RBA_IZUNA = "splashes/rebluearchive/izuna.png"; //rebluearchive
+		public static final String RBA_MARI = "splashes/rebluearchive/mari.png"; //rebluearchive
+		public static final String RBA_MIKA = "splashes/rebluearchive/mika.png"; //rebluearchive
+		public static final String RBA_MIYAKO = "splashes/rebluearchive/miyako.png"; //rebluearchive
+		public static final String RBA_MIYU = "splashes/rebluearchive/miyu.png"; //rebluearchive
+		public static final String RBA_NOA = "splashes/rebluearchive/noa.png"; //rebluearchive
+		public static final String RBA_NONOMI = "splashes/rebluearchive/nonomi.png"; //rebluearchive
+		public static final String RBA_SHIROKO = "splashes/rebluearchive/shiroko.png"; //rebluearchive
+		public static final String RBA_YUZU = "splashes/rebluearchive/yuzu.png"; //rebluearchive
 		public static final String WARRIOR  = "splashes/warrior.jpg";
 		public static final String MAGE     = "splashes/mage.jpg";
 		public static final String ROGUE    = "splashes/rogue.jpg";
@@ -559,6 +576,24 @@ public class Assets {
 		public static final String BA_MIYU = "sprites/bluearchive/miyu.png";
 		public static final String BA_YUZU = "sprites/bluearchive/yuzu.png";
 		public static final String BA_IZUNA = "sprites/bluearchive/izuna.png";
+		public static final String RBA_ARIS = "sprites/rebluearchive/aris.png"; //rebluearchive
+		public static final String RBA_HOSHINO = "sprites/rebluearchive/hoshino.png"; //rebluearchive
+		public static final String RBA_IZUNA = "sprites/rebluearchive/izuna.png"; //rebluearchive
+		public static final String RBA_MARI = "sprites/rebluearchive/mari.png"; //rebluearchive
+		public static final String RBA_MIKA = "sprites/rebluearchive/mika.png"; //rebluearchive
+		public static final String RBA_MIYAKO = "sprites/rebluearchive/miyako.png"; //rebluearchive
+		public static final String RBA_MIYU = "sprites/rebluearchive/miyu.png"; //rebluearchive
+		public static final String RBA_NOA = "sprites/rebluearchive/noa.png"; //rebluearchive
+		public static final String RBA_NONOMI = "sprites/rebluearchive/nonomi.png"; //rebluearchive
+		public static final String RBA_SHIROKO = "sprites/rebluearchive/shiroko.png"; //rebluearchive
+		public static final String RBA_YUZU = "sprites/rebluearchive/yuzu.png"; //rebluearchive
+		public static final String RBA_AVANT_GARDE_KUN = "sprites/rebluearchive/avantgardekun.png"; //rebluearchive
+		public static final String RBA_FOX_DOLL = "sprites/rebluearchive/foxdoll.png"; //rebluearchive
+		public static final String RBA_KURUMI = "sprites/rebluearchive/kurumi.png"; //rebluearchive
+		public static final String RBA_NIKO = "sprites/rebluearchive/niko.png"; //rebluearchive
+		public static final String RBA_OTOGI = "sprites/rebluearchive/otogi.png"; //rebluearchive
+		public static final String RBA_SAKI = "sprites/rebluearchive/saki.png"; //rebluearchive
+		public static final String RBA_YUKINO = "sprites/rebluearchive/yukino.png"; //rebluearchive
 		public static final String WARRIORBOSS = "sprites/transformation/warriorboss.png"; //ported, transformation
 		public static final String MYRIAD_BLACK_SHADOW_OVERLAY = "sprites/transformation/myriad_black_shadow_overlay.png"; //ported, transformation
 		public static final String SUCCBOSS = "sprites/transformation/succboss.png"; //ported, transformation

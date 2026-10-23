@@ -1,0 +1,65 @@
+package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SG;
+
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.RBAGun;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+
+public class RBASG extends RBAGun {
+    {
+        max_round = 2;
+        round = max_round;
+        adjacentShootingAccuracy = 1.5f;
+        shotPerShoot = 5;
+        spread = true;
+    }
+
+    @Override
+    public int STRReq(int lvl) {
+        int req = super.STRReq(lvl);
+        if (Dungeon.hero != null && Dungeon.hero.heroClass == HeroClass.RBA_HOSHINO){
+            req -= 1;
+        }
+        return req;
+    }
+
+    @Override
+    public int bulletUse() {
+        return maxRound()-round;
+    }
+
+    @Override
+    public int baseBulletMax(int lvl) {
+        return  (tier()+3) + // 초기 피해량 4/5/6/7/8
+                Math.round(0.5f * lvl * (tier())); //2강 당 1/2/3/4/5 증가
+    }
+
+    @Override
+    public Bullet knockBullet(){
+        return new SGBullet();
+    }
+
+    public class SGBullet extends Bullet {
+        {
+            image = ItemSpriteSheet.RBA_TRIPLE_BULLET;
+        }
+    }
+
+    @Override
+    public PlaceHolder getPlaceHolder() {
+        return new PlaceHolder();
+    }
+
+    public static class PlaceHolder extends RBAGun.PlaceHolder {
+        {
+            image = ItemSpriteSheet.RBA_SG_PLACEHOLDER;
+        }
+
+        @Override
+        public boolean isSimilar(Item item) {
+            return super.isSimilar(item) && item instanceof RBASG;
+        }
+    }
+}

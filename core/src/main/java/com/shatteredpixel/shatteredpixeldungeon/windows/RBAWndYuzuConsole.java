@@ -1,0 +1,140 @@
+package com.shatteredpixel.shatteredpixeldungeon.windows;
+
+import com.shatteredpixel.shatteredpixeldungeon.Chrome;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.console.RBAYuzuConsoleContent;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.active.console.RBAConsole;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
+import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RightClickMenu;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.watabou.input.PointerEvent;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.NinePatch;
+import com.watabou.utils.PointF;
+
+import java.util.ArrayList;
+
+public class RBAWndYuzuConsole extends Window {
+
+	protected static final int WIDTH    = 120;
+
+	public static int BTN_SIZE = 20;
+
+	public RBAWndYuzuConsole(RBAConsole console, Hero yuzu, boolean info){
+		ArrayList<RBAYuzuConsoleContent> contents = RBAYuzuConsoleContent.getContentList(yuzu, console);
+
+		ArrayList<IconButton> contentBtns = new ArrayList<>();
+
+		for (RBAYuzuConsoleContent content : contents) {
+			IconButton contentBtn = new ConsoleButton(content, yuzu, console, info);
+			add(contentBtn);
+			contentBtns.add(contentBtn);
+		}
+
+		int left = 2 + (WIDTH - contentBtns.size() * (BTN_SIZE + 4)) / 2;
+		for (IconButton btn : contentBtns) {
+			btn.setRect(left, 0, BTN_SIZE, BTN_SIZE);
+			left += btn.width() + 4;
+		}
+
+		resize(WIDTH, BTN_SIZE);
+
+		//if we are on mobile, offset the window down to just above the toolbar
+		if (SPDSettings.interfaceSize() != 2){
+			offset(0, (int) (GameScene.uiCamera.height/2 - 30 - height/2));
+		}
+
+	}
+
+	public class ConsoleButton extends IconButton {
+
+		RBAYuzuConsoleContent content;
+		Hero yuzu;
+		RBAConsole console;
+		boolean info;
+
+		NinePatch bg;
+
+		public ConsoleButton(RBAYuzuConsoleContent content, Hero yuzu, RBAConsole console, boolean info){
+			super(HeroIcon.rba(content.icon()));
+
+			this.content = content;
+			this.yuzu = yuzu;
+			this.console = console;
+			this.info = info;
+
+			if (!content.canSelect(yuzu)){
+				icon.alpha( 0.3f );
+			} else if (content.isEnhanced(yuzu)) {
+				icon.brightness(1.5f);
+			}
+
+			bg = Chrome.get(Chrome.Type.TOAST);
+			addToBack(bg);
+		}
+
+		@Override
+		protected void onPointerDown() {
+			super.onPointerDown();
+		}
+
+		@Override
+		protected void onPointerUp() {
+			super.onPointerUp();
+			if (!content.canSelect(Dungeon.hero)){
+				icon.alpha( 0.3f );
+			} else if (content.isEnhanced(yuzu)) {
+				icon.brightness(1.5f);
+			}
+		}
+
+		@Override
+		protected void layout() {
+			super.layout();
+
+			if (bg != null) {
+				bg.size(width, height);
+				bg.x = x;
+				bg.y = y;
+			}
+		}
+
+		@Override
+		protected void onClick() {
+			if (info){
+				GameScene.show(new WndTitledMessage(HeroIcon.rba(content.icon()), Messages.titleCase(content.name()), content.desc()));
+			} else {
+				if (!content.canSelect(Dungeon.hero)) {
+					return;
+				} else {
+					executeContent();
+				}
+			}
+		}
+
+		@Override
+		protected boolean onLongClick() {
+			GameScene.show(new WndTitledMessage(HeroIcon.rba(content.icon()), Messages.titleCase(content.name()), content.desc()));
+			return true;
+		}
+
+		@Override
+		protected void onRightClick() {
+			GameScene.show(new WndTitledMessage(HeroIcon.rba(content.icon()), Messages.titleCase(content.name()), content.desc()));
+		}
+
+		public void executeContent() {
+			hide();
+			content.onSelect(Dungeon.hero);
+			content.onContentSelect(console, Dungeon.hero, info);
+			Item.updateQuickslot();
+		}
+	}
+
+}

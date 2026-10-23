@@ -53,6 +53,7 @@ public class Invisibility extends FlavourBuff {
 			if (target instanceof Hero && ((Hero) target).hasTalent(Talent.PROTECTIVE_SHADOWS)){
 				Buff.affect(target, Talent.ProtectiveShadowsTracker.class);
 			}
+			com.shatteredpixel.shatteredpixeldungeon.RBAHooks.onInvisible(target); //rebluearchive, Izuna
 			return true;
 		} else {
 			return false;
@@ -95,6 +96,7 @@ public class Invisibility extends FlavourBuff {
 			if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.keepsInvisibility(ch)) break; //transformation, Cicada Dance
 			invis.detach();
 		}
+		com.shatteredpixel.shatteredpixeldungeon.RBAHooks.onDispel(ch); //rebluearchive, Izuna's cape
 		CloakOfShadows.cloakStealth cloakBuff = ch.buff( CloakOfShadows.cloakStealth.class );
 		if (cloakBuff != null) {
 			cloakBuff.dispel();

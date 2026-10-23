@@ -106,6 +106,15 @@ public class Bomb extends Item {
 		return !harmless;
 	}
 
+	//rebluearchive, Re Blue Archive PD's bombs can spare characters and the items on the floor
+	public boolean canDamage(Char ch) {
+		return true;
+	}
+
+	public boolean destroyItem() {
+		return true;
+	}
+
 	protected int explosionRange(){
 		return 1;
 	}
@@ -194,7 +203,7 @@ public class Bomb extends Item {
 				if (PathFinder.distance[i] != Integer.MAX_VALUE) {
 					affectedCells.add(i);
 					Char ch = Actor.findChar(i);
-					if (ch != null) {
+					if (ch != null && canDamage(ch)) {
 						affectedChars.add(ch);
 					}
 				}
@@ -213,7 +222,7 @@ public class Bomb extends Item {
 
 				//destroys items / triggers bombs caught in the blast.
 				Heap heap = Dungeon.level.heaps.get(i);
-				if (heap != null && !subBomb) {
+				if (heap != null && !subBomb && destroyItem()) {
 					heap.explode();
 				}
 			}

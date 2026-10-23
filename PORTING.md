@@ -475,3 +475,21 @@ Decisions and left out.
 ## Crash popup fix (2026-10-23)
 
 Every crash showed a Windows popup saying "Invalid message with quotes" instead of the crash details. The popup tool (tinyfd) refuses any text with an apostrophe or double quote, and the crash box used the game title "Onyx's Pixel Dungeon". `DesktopLauncher` now swaps those for curly quotes in the title too (it already did for the error text), and the box asks to paste the error to Claude instead of emailing Evan.
+
+### Re Blue Archive PD (2026-10-22, key rebluearchive)
+Repo Hoto-Mocha/Re-Blue-Archive-Pixel-Dungeon, built on Shattered 3.0.0, GPL with Blue Archive art (personal use). It shares many class names with Blue Archive PD and Re-ARranged PD, so `scripts/rebluearchive-copy.py` copied every class it adds with an RBA prefix (Gun is `RBAGun`, Division is `RBADivision`) and every entry it added to Talent, HeroClass and HeroSubClass with RBA_ (`RBA_ARIS`, `RBA_ARIS_T1_1`). Its own sheets live under `interfaces/rebluearchive` (talents, hero icons, buffs, small icons) with icon numbers from 50000, its sprites and splashes under `sprites/rebluearchive` and `splashes/rebluearchive`, item pictures in rows 283 to 289 of `sprites/items.png`. The mod's changes to Shattered's classes are one line calls into `RBAHero` (hero, char and mob hooks), `RBATalents` (talent trees, talent hooks, the trackers the mod kept in Talent), `RBAHeroes` (kits, abilities, pictures), `RBAHooks` (items, levels, shops, alchemy), `RBAShims` (members it added to Shattered classes) and `RBASprites`, `RBALoot`.
+
+What is in.
+- Eleven students as heroes beside Shattered's six, Aris, Nonomi, Miyako, Hoshino, Shiroko, Noa, Miyu, Yuzu, Izuna, Mika and Mari, open from the start as in the mod. Each has her kit, two subclasses (22), three armor abilities (33), 26 talents (286 in all), class armor, her speech lines (`RBAHero.yell*`), and her 12 by 17 sprite. Mari's miracles, Yuzu's console games and shop, Miyako's rabbit squad and drone, Shiroko's bicycle and bank robbery, Hoshino's shield, Izuna's cape and kunai, Mika's scrunchie.
+- Its gun system, 52 guns (seven kinds in five tiers and 17 special guns made by alchemy with its gunsmithing tool), bullet and conversion kit mods, all in the catalog. Students who use guns (all but Aris) find a gun of the same tier wherever a melee weapon would drop (`RBALoot`), shops sell them the gunsmithing tool, and the special gun recipes work for them.
+- 19 buffs, the Super Nova, 11 armors, 3 artifacts, 2 foods, 2 scrolls, 12 gadgets, all in the catalog.
+- The Fox squad (Yukino, Niko, Kurumi, Otogi). They come when Shiroko's Bank Robber robs a shop and the shopkeeper calls them (`RBAShims.shopkeeperRun`), and from the sandbox list (weight 0 on ModRoster). Quest enemies (a bounty champion) appear only in a student's run.
+- Three worlds, its redraws of Shattered's sheets, the Dark Sewers, Desert Prison and Blossom Caves, with its water. Its city and halls sheets were Shattered's own.
+- English text from both of its bundles (`scripts/rebluearchive-strings.py`).
+
+Left out, and why.
+- Its rework of Shattered's six heroes (it took them out of hero select and gave them new talents), its badges for the students (the mod's own badge set, a student run earns Shattered's general badges only), the seed finder, title background and changes list.
+- Small things only seen on screen. Bullet trail speeds in `MissileSprite`, the floating damage icons for miracles and crits, the gun stats lines in the upgrade window, the blacksmith's gun inscription, Noa's Double Barrel second weapon choice on equip, the mirror image drawn from a 17 pixel tall sheet, the fog of war marking for Mind Bind and Miyu's scope (their sight works).
+- Its Sandbag NPC on the last floor and its vault quest (this game has Shattered's own).
+
+Checks. Compiled and the full `FAST=1 scripts/check.sh` run after merging main (Blue Archive PD was already in). `TransformationHeroesTest` with the eleven students (836 checks, no failures), `ItemArenaTest` on its 84 catalog items and `MobArenaTest` on the four Foxes pass, the world test sees all three worlds. Nothing seen on screen yet. Play each student in the sandbox, a gun's reload and special shot, Shiroko's bicycle and a shop robbery for the Fox squad, Yuzu's laptop and shop, Mari's miracles, and the three worlds.

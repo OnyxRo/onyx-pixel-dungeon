@@ -506,6 +506,11 @@ public class Item implements Bundlable {
 		return cursed && cursedKnown;
 	}
 	
+	//rebluearchive, items Re Blue Archive PD keeps out of the Scroll of Transmutation
+	public boolean transmutable() {
+		return true;
+	}
+
 	public boolean isUpgradable() {
 		//Pixel Dungeon Reforged, in the Cube challenge only the Force Cube can be upgraded
 		if (Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.CUBE)) {

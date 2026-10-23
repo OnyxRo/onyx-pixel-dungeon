@@ -229,7 +229,7 @@ public class Shopkeeper extends NPC {
 
 	//shopkeepers are greedy!
 	public static int sellPrice(Item item){
-		return item.value() * (5 - (Dungeon.hero == null ? 0 : Dungeon.hero.pointsInTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.BA_GOLD_CARD))) * (Dungeon.depth / 5 + 1); //bluearchive, Nonomi's gold card
+		return item.value() * (5 - (Dungeon.hero == null ? 0 : Dungeon.hero.pointsInTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.BA_GOLD_CARD)) - com.shatteredpixel.shatteredpixeldungeon.RBAHooks.shopPriceFactor()) * (Dungeon.depth / 5 + 1); //bluearchive, Nonomi's gold card, rebluearchive Nonomi's talent
 	}
 	
 	public static WndBag sell() {
@@ -240,6 +240,7 @@ public class Shopkeeper extends NPC {
 		if (item.value() <= 0)                                              return false;
 		if (item.unique && !item.stackable)                                 return false;
 		if (item instanceof Armor && ((Armor) item).checkSeal() != null)    return false;
+		if (com.shatteredpixel.shatteredpixeldungeon.RBAHooks.unsellable(item)) return false; //rebluearchive, a gun with Noa's kit
 		if (item.isEquipped(Dungeon.hero) && item.cursed)                   return false;
 		return true;
 	}

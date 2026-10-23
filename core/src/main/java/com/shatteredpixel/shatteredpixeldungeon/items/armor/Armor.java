@@ -483,6 +483,7 @@ public class Armor extends EquipableItem {
 		//rearranged, the afterimage glyph trades armor for evasion, the Knight's Armor Adaption turns spare strength into armor
 		int max = com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RearrangedWeapons.armorUpgradeFactor(this, tier) * (2 + lvl) + augment.defenseFactor(lvl);
 		max += com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RearrangedWeapons.armorAdaption(this);
+		max += com.shatteredpixel.shatteredpixeldungeon.RBAHooks.armorMaxBonus(tier); //rebluearchive, Hoshino
 		int extra = com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.armorMax(this); //transformation, Heavy Application and Thickened Armor
 		if (lvl > max){
 			return ((lvl - max)+1)/2 + extra;
@@ -588,6 +589,7 @@ public class Armor extends EquipableItem {
 	
 	public Item upgrade( boolean inscribe ) {
 
+		if (glyph != null && com.shatteredpixel.shatteredpixeldungeon.RBAHooks.keepsEnchant()) inscribe = true; //rebluearchive, Aris
 		if (inscribe){
 			if (glyph == null){
 				inscribe( Glyph.random() );

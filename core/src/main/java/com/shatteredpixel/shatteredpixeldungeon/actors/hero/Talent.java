@@ -868,7 +868,294 @@ public enum Talent {
 	BA_GAME_START_3(30237, 3), BA_STICKY_GRENADE_1(30238, 3), BA_STICKY_GRENADE_2(30239, 3), BA_STICKY_GRENADE_3(30240, 3), BA_BASIC_NINJUTSU(30256, 2), BA_ARMOR_INTUITION(30257, 2),
 	BA_SURPRISE_ATTACK(30258, 2), BA_ENERGY_COLLECT(30259, 2), BA_MEAL_SET(30260, 2), BA_HEALING_SCROLL(30261, 2), BA_WIDER_SEARCH(30262, 2), BA_QUIET_MOVE(30263, 2),
 	BA_THROW_MASTER(30264, 2), BA_DURABLE_THROW(30265, 3), BA_SECRET_WEAPON(30266, 3), BA_TELEPORT_1(30267, 3), BA_TELEPORT_2(30268, 3), BA_TELEPORT_3(30269, 3),
-	BA_EXPLOSION_1(30270, 3), BA_EXPLOSION_2(30271, 3), BA_EXPLOSION_3(30272, 3);
+	BA_EXPLOSION_1(30270, 3), BA_EXPLOSION_2(30271, 3), BA_EXPLOSION_3(30272, 3),
+	//rebluearchive, the eleven students of Re Blue Archive PD, icons from 50000 come from its own sheet
+	RBA_ARIS_T1_1(50000, 2),
+	RBA_ARIS_T1_2(50001, 2),
+	RBA_ARIS_T1_3(50002, 2),
+	RBA_ARIS_T1_4(50003, 2),
+	RBA_ARIS_T2_1(50004, 2),
+	RBA_ARIS_T2_2(50005, 2),
+	RBA_ARIS_T2_3(50006, 2),
+	RBA_ARIS_T2_4(50007, 2),
+	RBA_ARIS_T2_5(50008, 2),
+	RBA_ARIS_T3_1(50009, 3),
+	RBA_ARIS_T3_2(50010, 3),
+	RBA_ARIS_EX1_1(50011, 3),
+	RBA_ARIS_EX1_2(50012, 3),
+	RBA_ARIS_EX1_3(50013, 3),
+	RBA_ARIS_EX2_1(50014, 3),
+	RBA_ARIS_EX2_2(50015, 3),
+	RBA_ARIS_EX2_3(50016, 3),
+	RBA_ARIS_ARMOR1_1(50017, 4),
+	RBA_ARIS_ARMOR1_2(50018, 4),
+	RBA_ARIS_ARMOR1_3(50019, 4),
+	RBA_ARIS_ARMOR2_1(50020, 4),
+	RBA_ARIS_ARMOR2_2(50021, 4),
+	RBA_ARIS_ARMOR2_3(50022, 4),
+	RBA_ARIS_ARMOR3_1(50023, 4),
+	RBA_ARIS_ARMOR3_2(50024, 4),
+	RBA_ARIS_ARMOR3_3(50025, 4),
+	RBA_NONOMI_T1_1(50032, 2),
+	RBA_NONOMI_T1_2(50033, 2),
+	RBA_NONOMI_T1_3(50034, 2),
+	RBA_NONOMI_T1_4(50035, 2),
+	RBA_NONOMI_T2_1(50036, 2),
+	RBA_NONOMI_T2_2(50037, 2),
+	RBA_NONOMI_T2_3(50038, 2),
+	RBA_NONOMI_T2_4(50039, 2),
+	RBA_NONOMI_T2_5(50040, 2),
+	RBA_NONOMI_T3_1(50041, 3),
+	RBA_NONOMI_T3_2(50042, 3),
+	RBA_NONOMI_EX1_1(50043, 3),
+	RBA_NONOMI_EX1_2(50044, 3),
+	RBA_NONOMI_EX1_3(50045, 3),
+	RBA_NONOMI_EX2_1(50046, 3),
+	RBA_NONOMI_EX2_2(50047, 3),
+	RBA_NONOMI_EX2_3(50048, 3),
+	RBA_NONOMI_ARMOR1_1(50049, 4),
+	RBA_NONOMI_ARMOR1_2(50050, 4),
+	RBA_NONOMI_ARMOR1_3(50051, 4),
+	RBA_NONOMI_ARMOR2_1(50052, 4),
+	RBA_NONOMI_ARMOR2_2(50053, 4),
+	RBA_NONOMI_ARMOR2_3(50054, 4),
+	RBA_NONOMI_ARMOR3_1(50055, 4),
+	RBA_NONOMI_ARMOR3_2(50056, 4),
+	RBA_NONOMI_ARMOR3_3(50057, 4),
+	RBA_MIYAKO_T1_1(50064, 2),
+	RBA_MIYAKO_T1_2(50065, 2),
+	RBA_MIYAKO_T1_3(50066, 2),
+	RBA_MIYAKO_T1_4(50067, 2),
+	RBA_MIYAKO_T2_1(50068, 2),
+	RBA_MIYAKO_T2_2(50069, 2),
+	RBA_MIYAKO_T2_3(50070, 2),
+	RBA_MIYAKO_T2_4(50071, 2),
+	RBA_MIYAKO_T2_5(50072, 2),
+	RBA_MIYAKO_T3_1(50073, 3),
+	RBA_MIYAKO_T3_2(50074, 3),
+	RBA_MIYAKO_EX1_1(50075, 3),
+	RBA_MIYAKO_EX1_2(50076, 3),
+	RBA_MIYAKO_EX1_3(50077, 3),
+	RBA_MIYAKO_EX2_1(50078, 3),
+	RBA_MIYAKO_EX2_2(50079, 3),
+	RBA_MIYAKO_EX2_3(50080, 3),
+	RBA_MIYAKO_ARMOR1_1(50081, 4),
+	RBA_MIYAKO_ARMOR1_2(50082, 4),
+	RBA_MIYAKO_ARMOR1_3(50083, 4),
+	RBA_MIYAKO_ARMOR2_1(50084, 4),
+	RBA_MIYAKO_ARMOR2_2(50085, 4),
+	RBA_MIYAKO_ARMOR2_3(50086, 4),
+	RBA_MIYAKO_ARMOR3_1(50087, 4),
+	RBA_MIYAKO_ARMOR3_2(50088, 4),
+	RBA_MIYAKO_ARMOR3_3(50089, 4),
+	RBA_HOSHINO_T1_1(50096, 2),
+	RBA_HOSHINO_T1_2(50097, 2),
+	RBA_HOSHINO_T1_3(50098, 2),
+	RBA_HOSHINO_T1_4(50099, 2),
+	RBA_HOSHINO_T2_1(50100, 2),
+	RBA_HOSHINO_T2_2(50101, 2),
+	RBA_HOSHINO_T2_3(50102, 2),
+	RBA_HOSHINO_T2_4(50103, 2),
+	RBA_HOSHINO_T2_5(50104, 2),
+	RBA_HOSHINO_T3_1(50105, 3),
+	RBA_HOSHINO_T3_2(50106, 3),
+	RBA_HOSHINO_EX1_1(50107, 3),
+	RBA_HOSHINO_EX1_2(50108, 3),
+	RBA_HOSHINO_EX1_3(50109, 3),
+	RBA_HOSHINO_EX2_1(50110, 3),
+	RBA_HOSHINO_EX2_2(50111, 3),
+	RBA_HOSHINO_EX2_3(50112, 3),
+	RBA_HOSHINO_ARMOR1_1(50113, 4),
+	RBA_HOSHINO_ARMOR1_2(50114, 4),
+	RBA_HOSHINO_ARMOR1_3(50115, 4),
+	RBA_HOSHINO_ARMOR2_1(50116, 4),
+	RBA_HOSHINO_ARMOR2_2(50117, 4),
+	RBA_HOSHINO_ARMOR2_3(50118, 4),
+	RBA_HOSHINO_ARMOR3_1(50119, 4),
+	RBA_HOSHINO_ARMOR3_2(50120, 4),
+	RBA_HOSHINO_ARMOR3_3(50121, 4),
+	RBA_SHIROKO_T1_1(50128, 2),
+	RBA_SHIROKO_T1_2(50129, 2),
+	RBA_SHIROKO_T1_3(50130, 2),
+	RBA_SHIROKO_T1_4(50131, 2),
+	RBA_SHIROKO_T2_1(50132, 2),
+	RBA_SHIROKO_T2_2(50133, 2),
+	RBA_SHIROKO_T2_3(50134, 2),
+	RBA_SHIROKO_T2_4(50135, 2),
+	RBA_SHIROKO_T2_5(50136, 2),
+	RBA_SHIROKO_T3_1(50137, 3),
+	RBA_SHIROKO_T3_2(50138, 3),
+	RBA_SHIROKO_EX1_1(50139, 3),
+	RBA_SHIROKO_EX1_2(50140, 3),
+	RBA_SHIROKO_EX1_3(50141, 3),
+	RBA_SHIROKO_EX2_1(50142, 3),
+	RBA_SHIROKO_EX2_2(50143, 3),
+	RBA_SHIROKO_EX2_3(50144, 3),
+	RBA_SHIROKO_ARMOR1_1(50145, 4),
+	RBA_SHIROKO_ARMOR1_2(50146, 4),
+	RBA_SHIROKO_ARMOR1_3(50147, 4),
+	RBA_SHIROKO_ARMOR2_1(50148, 4),
+	RBA_SHIROKO_ARMOR2_2(50149, 4),
+	RBA_SHIROKO_ARMOR2_3(50150, 4),
+	RBA_SHIROKO_ARMOR3_1(50151, 4),
+	RBA_SHIROKO_ARMOR3_2(50152, 4),
+	RBA_SHIROKO_ARMOR3_3(50153, 4),
+	RBA_NOA_T1_1(50160, 2),
+	RBA_NOA_T1_2(50161, 2),
+	RBA_NOA_T1_3(50162, 2),
+	RBA_NOA_T1_4(50163, 2),
+	RBA_NOA_T2_1(50164, 2),
+	RBA_NOA_T2_2(50165, 2),
+	RBA_NOA_T2_3(50166, 2),
+	RBA_NOA_T2_4(50167, 2),
+	RBA_NOA_T2_5(50168, 2),
+	RBA_NOA_T3_1(50169, 3),
+	RBA_NOA_T3_2(50170, 3),
+	RBA_NOA_EX1_1(50171, 3),
+	RBA_NOA_EX1_2(50172, 3),
+	RBA_NOA_EX1_3(50173, 3),
+	RBA_NOA_EX2_1(50174, 3),
+	RBA_NOA_EX2_2(50175, 3),
+	RBA_NOA_EX2_3(50176, 3),
+	RBA_NOA_ARMOR1_1(50177, 4),
+	RBA_NOA_ARMOR1_2(50178, 4),
+	RBA_NOA_ARMOR1_3(50179, 4),
+	RBA_NOA_ARMOR2_1(50180, 4),
+	RBA_NOA_ARMOR2_2(50181, 4),
+	RBA_NOA_ARMOR2_3(50182, 4),
+	RBA_NOA_ARMOR3_1(50183, 4),
+	RBA_NOA_ARMOR3_2(50184, 4),
+	RBA_NOA_ARMOR3_3(50185, 4),
+	RBA_MIYU_T1_1(50192, 2),
+	RBA_MIYU_T1_2(50193, 2),
+	RBA_MIYU_T1_3(50194, 2),
+	RBA_MIYU_T1_4(50195, 2),
+	RBA_MIYU_T2_1(50196, 2),
+	RBA_MIYU_T2_2(50197, 2),
+	RBA_MIYU_T2_3(50198, 2),
+	RBA_MIYU_T2_4(50199, 2),
+	RBA_MIYU_T2_5(50200, 2),
+	RBA_MIYU_T3_1(50201, 3),
+	RBA_MIYU_T3_2(50202, 3),
+	RBA_MIYU_EX1_1(50203, 3),
+	RBA_MIYU_EX1_2(50204, 3),
+	RBA_MIYU_EX1_3(50205, 3),
+	RBA_MIYU_EX2_1(50206, 3),
+	RBA_MIYU_EX2_2(50207, 3),
+	RBA_MIYU_EX2_3(50208, 3),
+	RBA_MIYU_ARMOR1_1(50209, 4),
+	RBA_MIYU_ARMOR1_2(50210, 4),
+	RBA_MIYU_ARMOR1_3(50211, 4),
+	RBA_MIYU_ARMOR2_1(50212, 4),
+	RBA_MIYU_ARMOR2_2(50213, 4),
+	RBA_MIYU_ARMOR2_3(50214, 4),
+	RBA_MIYU_ARMOR3_1(50215, 4),
+	RBA_MIYU_ARMOR3_2(50216, 4),
+	RBA_MIYU_ARMOR3_3(50217, 4),
+	RBA_YUZU_T1_1(50224, 2),
+	RBA_YUZU_T1_2(50225, 2),
+	RBA_YUZU_T1_3(50226, 2),
+	RBA_YUZU_T1_4(50227, 2),
+	RBA_YUZU_T2_1(50228, 2),
+	RBA_YUZU_T2_2(50229, 2),
+	RBA_YUZU_T2_3(50230, 2),
+	RBA_YUZU_T2_4(50231, 2),
+	RBA_YUZU_T2_5(50232, 2),
+	RBA_YUZU_T3_1(50233, 3),
+	RBA_YUZU_T3_2(50234, 3),
+	RBA_YUZU_EX1_1(50235, 3),
+	RBA_YUZU_EX1_2(50236, 3),
+	RBA_YUZU_EX1_3(50237, 3),
+	RBA_YUZU_EX2_1(50238, 3),
+	RBA_YUZU_EX2_2(50239, 3),
+	RBA_YUZU_EX2_3(50240, 3),
+	RBA_YUZU_ARMOR1_1(50241, 4),
+	RBA_YUZU_ARMOR1_2(50242, 4),
+	RBA_YUZU_ARMOR1_3(50243, 4),
+	RBA_YUZU_ARMOR2_1(50244, 4),
+	RBA_YUZU_ARMOR2_2(50245, 4),
+	RBA_YUZU_ARMOR2_3(50246, 4),
+	RBA_YUZU_ARMOR3_1(50247, 4),
+	RBA_YUZU_ARMOR3_2(50248, 4),
+	RBA_YUZU_ARMOR3_3(50249, 4),
+	RBA_IZUNA_T1_1(50256, 2),
+	RBA_IZUNA_T1_2(50257, 2),
+	RBA_IZUNA_T1_3(50258, 2),
+	RBA_IZUNA_T1_4(50259, 2),
+	RBA_IZUNA_T2_1(50260, 2),
+	RBA_IZUNA_T2_2(50261, 2),
+	RBA_IZUNA_T2_3(50262, 2),
+	RBA_IZUNA_T2_4(50263, 2),
+	RBA_IZUNA_T2_5(50264, 2),
+	RBA_IZUNA_T3_1(50265, 3),
+	RBA_IZUNA_T3_2(50266, 3),
+	RBA_IZUNA_EX1_1(50267, 3),
+	RBA_IZUNA_EX1_2(50268, 3),
+	RBA_IZUNA_EX1_3(50269, 3),
+	RBA_IZUNA_EX2_1(50270, 3),
+	RBA_IZUNA_EX2_2(50271, 3),
+	RBA_IZUNA_EX2_3(50272, 3),
+	RBA_IZUNA_ARMOR1_1(50273, 4),
+	RBA_IZUNA_ARMOR1_2(50274, 4),
+	RBA_IZUNA_ARMOR1_3(50275, 4),
+	RBA_IZUNA_ARMOR2_1(50276, 4),
+	RBA_IZUNA_ARMOR2_2(50277, 4),
+	RBA_IZUNA_ARMOR2_3(50278, 4),
+	RBA_IZUNA_ARMOR3_1(50279, 4),
+	RBA_IZUNA_ARMOR3_2(50280, 4),
+	RBA_IZUNA_ARMOR3_3(50281, 4),
+	RBA_MIKA_T1_1(50288, 2),
+	RBA_MIKA_T1_2(50289, 2),
+	RBA_MIKA_T1_3(50290, 2),
+	RBA_MIKA_T1_4(50291, 2),
+	RBA_MIKA_T2_1(50292, 2),
+	RBA_MIKA_T2_2(50293, 2),
+	RBA_MIKA_T2_3(50294, 2),
+	RBA_MIKA_T2_4(50295, 2),
+	RBA_MIKA_T2_5(50296, 2),
+	RBA_MIKA_T3_1(50297, 3),
+	RBA_MIKA_T3_2(50298, 3),
+	RBA_MIKA_EX1_1(50299, 3),
+	RBA_MIKA_EX1_2(50300, 3),
+	RBA_MIKA_EX1_3(50301, 3),
+	RBA_MIKA_EX2_1(50302, 3),
+	RBA_MIKA_EX2_2(50303, 3),
+	RBA_MIKA_EX2_3(50304, 3),
+	RBA_MIKA_ARMOR1_1(50305, 4),
+	RBA_MIKA_ARMOR1_2(50306, 4),
+	RBA_MIKA_ARMOR1_3(50307, 4),
+	RBA_MIKA_ARMOR2_1(50308, 4),
+	RBA_MIKA_ARMOR2_2(50309, 4),
+	RBA_MIKA_ARMOR2_3(50310, 4),
+	RBA_MIKA_ARMOR3_1(50311, 4),
+	RBA_MIKA_ARMOR3_2(50312, 4),
+	RBA_MIKA_ARMOR3_3(50313, 4),
+	RBA_MARI_T1_1(50320, 2),
+	RBA_MARI_T1_2(50321, 2),
+	RBA_MARI_T1_3(50322, 2),
+	RBA_MARI_T1_4(50323, 2),
+	RBA_MARI_T2_1(50324, 2),
+	RBA_MARI_T2_2(50325, 2),
+	RBA_MARI_T2_3(50326, 2),
+	RBA_MARI_T2_4(50327, 2),
+	RBA_MARI_T2_5(50328, 2),
+	RBA_MARI_T3_1(50329, 3),
+	RBA_MARI_T3_2(50330, 3),
+	RBA_MARI_EX1_1(50331, 3),
+	RBA_MARI_EX1_2(50332, 3),
+	RBA_MARI_EX1_3(50333, 3),
+	RBA_MARI_EX2_1(50334, 3),
+	RBA_MARI_EX2_2(50335, 3),
+	RBA_MARI_EX2_3(50336, 3),
+	RBA_MARI_ARMOR1_1(50337, 4),
+	RBA_MARI_ARMOR1_2(50338, 4),
+	RBA_MARI_ARMOR1_3(50339, 4),
+	RBA_MARI_ARMOR2_1(50340, 4),
+	RBA_MARI_ARMOR2_2(50341, 4),
+	RBA_MARI_ARMOR2_3(50342, 4),
+	RBA_MARI_ARMOR3_1(50343, 4),
+	RBA_MARI_ARMOR3_2(50344, 4),
+	RBA_MARI_ARMOR3_3(50345, 4);
 
 	public static class ImprovisedProjectileCooldown extends FlavourBuff{
 		public int icon() { return BuffIndicator.TIME; }
@@ -1165,6 +1452,7 @@ public enum Talent {
 			}
 			HeroClass cls = Dungeon.hero != null ? Dungeon.hero.heroClass : GamesInProgress.selectedClass;
 			if (BATalents.heroicEnergyIcon(cls) >= 0) return BATalents.heroicEnergyIcon(cls); //bluearchive
+			if (RBAHero.isStudent(cls)) return RBATalents.heroicEnergyIcon(cls); //rebluearchive
 			switch (cls){
 				case WARRIOR: default:
 					return 26;
@@ -2108,6 +2396,7 @@ public enum Talent {
 
 	public static void onTalentUpgraded( Hero hero, Talent talent ){
 		BATalents.onTalentUpgraded(hero, talent); //bluearchive
+		RBATalents.onTalentUpgraded(hero, talent); //rebluearchive
 		RearrangedTalents.onTalentUpgraded(hero, talent); //rearranged
 		TransformationTalents.onTalentUpgraded(hero, talent);
 		if (talent == MIDAS_TOUCH && hero.hasTalent(MIDAS_TOUCH)){
@@ -2224,6 +2513,7 @@ public enum Talent {
 
 	public static void onFoodEaten( Hero hero, float foodVal, Item foodSource ){
 		BATalents.onFoodEaten(hero); //bluearchive
+		RBATalents.onFoodEaten(hero, foodVal, foodSource); //rebluearchive
 		RearrangedTalents.onFoodEaten(hero, foodVal, foodSource); //rearranged
 		TransformationTalents.onFoodEaten(hero, foodSource);
 		onSlimeFoodEaten(hero);
@@ -2368,7 +2658,7 @@ public enum Talent {
 
 	public static float itemIDSpeedFactor( Hero hero, Item item ){
 		if (BAHeroes.isBA(hero)) return BATalents.itemIDSpeedFactor(hero, item); //bluearchive
-		float manaSense = manaSenseFactor(hero, item);
+		float manaSense = manaSenseFactor(hero, item) * RBATalents.itemIDSpeedFactor(hero, item); //rebluearchive
 		if (manaSense != 1f) return manaSense * itemIDSpeedFactorBase(hero, item);
 		return itemIDSpeedFactorBase(hero, item);
 	}
@@ -2402,6 +2692,7 @@ public enum Talent {
 	}
 
 	public static void onPotionUsed( Hero hero, int cell, float factor ){
+		RBATalents.onPotionUsed(hero, cell, factor); //rebluearchive
 		RearrangedTalents.onPotionUsed(hero, cell, factor); //rearranged
 		if (cell != hero.pos) TransformationTalents.onPotionThrown(hero, cell);
 		onSlimePotionUsed(hero, factor);
@@ -2488,6 +2779,7 @@ public enum Talent {
 
 	public static void onScrollUsed( Hero hero, int pos, float factor, Class<?extends Item> cls ){
 		BATalents.onScrollUsed(hero); //bluearchive
+		RBATalents.onScrollUsed(hero, pos, factor); //rebluearchive
 		RearrangedTalents.onScrollUsed(hero, pos, factor); //rearranged
 		TransformationTalents.onScrollUsed(hero);
 		if (hero.hasTalent(INSCRIBED_POWER)){
@@ -2513,6 +2805,7 @@ public enum Talent {
 	}
 
 	public static void onRunestoneUsed( Hero hero, int pos, Class<?extends Item> cls ){
+		RBATalents.onRunestoneUsed(hero); //rebluearchive
 		if (hero.hasTalent(RECALL_INSCRIPTION) && Runestone.class.isAssignableFrom(cls)){
 			if (hero.heroClass == HeroClass.CLERIC){
 				Buff.prolong(hero, RecallInscription.UsedItemTracker.class, hero.pointsInTalent(RECALL_INSCRIPTION) == 2 ? 300 : 10).item = cls;
@@ -2576,6 +2869,7 @@ public enum Talent {
 		if (hero.pointsInTalent(ADVENTURERS_INTUITION) == 2 && item instanceof Weapon){
 			identify = true;
 		}
+		if (RBATalents.identifiesOnEquip(hero, item)) identify = true; //rebluearchive
 
 		if (identify) {
 			if (ShardOfOblivion.passiveIDDisabled()) {
@@ -2594,6 +2888,7 @@ public enum Talent {
 
 	public static void onItemCollected( Hero hero, Item item ){
 		BATalents.onItemCollected(hero, item); //bluearchive
+		RBATalents.onItemCollected(hero, item); //rebluearchive
 		RearrangedTalents.onItemCollected(hero, item); //rearranged
 		TransformationTalents.onItemCollected(hero, item);
 		if (hero.pointsInTalent(THIEFS_INTUITION) == 2){
@@ -2603,6 +2898,7 @@ public enum Talent {
 
 	public static int onAttackProc( Hero hero, Char enemy, int dmg ){
 		dmg = BATalents.onAttackProc(hero, enemy, dmg); //bluearchive
+		dmg = RBATalents.onAttackProc(hero, enemy, dmg); //rebluearchive
 		dmg = RearrangedRework.dashAttack(hero, dmg); //rearranged
 		if (hero.hasTalent(STRENGTH_GREATEST)){
 			dmg += Hero.heroDamageIntRange( 0, hero.pointsInTalent(STRENGTH_GREATEST) );
@@ -2989,6 +3285,11 @@ public enum Talent {
 			case TOWERPRIEST:
 				Collections.addAll(tierTalents, NATURES_BOUNTY, SURVIVALISTS_INTUITION, NATURES_AID, AGGRESSIVE_BARRIER);
 				break;
+			//rebluearchive
+			case RBA_ARIS: case RBA_NONOMI: case RBA_MIYAKO: case RBA_HOSHINO: case RBA_SHIROKO: case RBA_NOA:
+			case RBA_MIYU: case RBA_YUZU: case RBA_IZUNA: case RBA_MIKA: case RBA_MARI:
+				RBATalents.addClassTalents(cls, 1, tierTalents);
+				break;
 		}
 		BATalents.classTier(cls, 1, tierTalents); //bluearchive
 		for (Talent talent : tierTalents){
@@ -3071,6 +3372,11 @@ public enum Talent {
 			case TOWERPRIEST:
 				Collections.addAll(tierTalents, INVIGORATING_MEAL, LIQUID_NATURE, REJUVENATING_STEPS, HEIGHTENED_SENSES, DURABLE_PROJECTILES);
 				break;
+			//rebluearchive
+			case RBA_ARIS: case RBA_NONOMI: case RBA_MIYAKO: case RBA_HOSHINO: case RBA_SHIROKO: case RBA_NOA:
+			case RBA_MIYU: case RBA_YUZU: case RBA_IZUNA: case RBA_MIKA: case RBA_MARI:
+				RBATalents.addClassTalents(cls, 2, tierTalents);
+				break;
 		}
 		BATalents.classTier(cls, 2, tierTalents); //bluearchive
 		for (Talent talent : tierTalents){
@@ -3151,6 +3457,11 @@ public enum Talent {
 			case TOWERPRIEST:
 				Collections.addAll(tierTalents, ALLY_WARP, HOLD_FAST);
 				break;
+			//rebluearchive
+			case RBA_ARIS: case RBA_NONOMI: case RBA_MIYAKO: case RBA_HOSHINO: case RBA_SHIROKO: case RBA_NOA:
+			case RBA_MIYU: case RBA_YUZU: case RBA_IZUNA: case RBA_MIKA: case RBA_MARI:
+				RBATalents.addClassTalents(cls, 3, tierTalents);
+				break;
 		}
 		BATalents.classTier(cls, 3, tierTalents); //bluearchive
 		for (Talent talent : tierTalents){
@@ -3190,6 +3501,11 @@ public enum Talent {
 		}
 
 		ArrayList<Talent> tierTalents = new ArrayList<>();
+		//rebluearchive, a student subclass's three talents
+		if (RBATalents.addSubclassTalents(cls, tierTalents)){
+			for (Talent talent : tierTalents) talents.get(2).put(talent, 0);
+			return;
+		}
 
 		//tier 3
 		switch (cls){

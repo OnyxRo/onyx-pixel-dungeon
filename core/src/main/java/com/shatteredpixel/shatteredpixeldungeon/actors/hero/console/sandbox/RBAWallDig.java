@@ -1,0 +1,65 @@
+package com.shatteredpixel.shatteredpixeldungeon.actors.hero.console.sandbox;
+
+
+
+import com.shatteredpixel.shatteredpixeldungeon.RBAShims;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero;
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.PathFinder;
+
+public class RBAWallDig extends RBASandboxConsoleContent {
+    public static final RBAWallDig INSTANCE = new RBAWallDig();
+
+    @Override
+    public int icon() {
+        return HeroIcon.RBA_SANDBOX_DIG;
+    }
+
+    @Override
+    public boolean execute(Hero hero, int target) {
+        if (Dungeon.level.distance(hero.pos, target) > 1) {
+            RBAHero.yellW(hero, "need_to_be_adjacent");
+            return false;
+        }
+
+        if (!canBuild(target)) {
+            RBAHero.yellW(hero, "cannot_break");
+            return false;
+        }
+
+        hero.sprite.zap(target);
+        Dungeon.level.map[target] = Terrain.EMPTY;
+        hero.spendAndNext(1);
+
+        RBAShims.breakWall(target);
+        CellEmitter.get( target ).start(Speck.factory(Speck.ROCK), 0.07f, 10);
+        CellEmitter.center( target ).burst( Speck.factory( Speck.STAR ), 7 );
+        Sample.INSTANCE.play(Assets.Sounds.ROCKS);
+        Sample.INSTANCE.play(Assets.Sounds.EVOKE);
+
+        return true;
+    }
+
+    @Override
+    public int countUse() {
+        return 5;
+    }
+
+    @Override
+    public boolean canBuild(int target) {
+        return RBAShims.canBreakWall(target);
+    }
+
+    @Override
+    public boolean canSelect(Hero hero) {
+        return super.canSelect(hero) && Dungeon.depth % 5 != 0 && Dungeon.depth != 26;
+    }
+}

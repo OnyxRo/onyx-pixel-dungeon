@@ -610,6 +610,11 @@ public abstract class RegularLevel extends Level {
 			}
 		Random.popGenerator();
 
+		//rebluearchive, Miyu's hard tack, like cached rations
+		Random.pushGenerator( Random.Long() );
+		com.shatteredpixel.shatteredpixeldungeon.RBAHooks.dropHardTack(this, () -> randomDropCell(com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom.class));
+		Random.popGenerator();
+
 		//cached rations try to drop in a special room on floors 2/4/7, to a max of 2/3
 		//we increment dropped by 2 for compatibility with old saves, when the talent dropped 4/6 items
 		Random.pushGenerator( Random.Long() );

@@ -885,6 +885,8 @@ public class Generator {
 	}
 	
 	public static Item random( Category cat ) {
+		Item rbaGun = RBALoot.gunFor(cat); //rebluearchive, students with guns find guns
+		if (rbaGun != null) return rbaGun;
 		switch (cat) {
 			case ARMOR:
 				return randomArmor();
@@ -938,6 +940,8 @@ public class Generator {
 	//overrides any deck systems and always uses default probs
 	// except for artifacts, which must always use a deck
 	public static Item randomUsingDefaults( Category cat ){
+		Item rbaGun = RBALoot.gunFor(cat); //rebluearchive, students with guns find guns
+		if (rbaGun != null) return rbaGun;
 		if (cat == Category.WEAPON){
 			return randomWeapon(true);
 		} else if (cat == Category.MISSILE){

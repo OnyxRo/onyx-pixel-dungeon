@@ -129,7 +129,19 @@ public enum HeroClass {
 	BA_NOA( HeroSubClass.BA_NOA_EX_LARGE_MAGAZINE, HeroSubClass.BA_NOA_EX_DOUBLE_BARREL ),
 	BA_MIYU( HeroSubClass.BA_MIYU_EX_PENETRATION_SHOT, HeroSubClass.BA_MIYU_EX_SNIPING_BULLET ),
 	BA_YUZU( HeroSubClass.BA_YUZU_EX_GAME_START, HeroSubClass.BA_YUZU_EX_STICKY_GRENADE ),
-	BA_IZUNA( HeroSubClass.BA_IZUNA_EX_TELEPORT, HeroSubClass.BA_IZUNA_EX_EXPLOSION );
+	BA_IZUNA( HeroSubClass.BA_IZUNA_EX_TELEPORT, HeroSubClass.BA_IZUNA_EX_EXPLOSION ),
+	//rebluearchive, the eleven students of Re Blue Archive PD
+	RBA_ARIS( HeroSubClass.RBA_LIGHT_HERO, HeroSubClass.RBA_BATTERY_CHARGE ),
+	RBA_NONOMI( HeroSubClass.RBA_SHOOT_ALL, HeroSubClass.RBA_SPREAD_SHOT ),
+	RBA_MIYAKO( HeroSubClass.RBA_RABBIT_SQUAD, HeroSubClass.RBA_SUPPORT_DRONE ),
+	RBA_HOSHINO( HeroSubClass.RBA_SHIELD_BASH, HeroSubClass.RBA_SWIFT_MOVEMENT ),
+	RBA_SHIROKO( HeroSubClass.RBA_PROFESSIONAL_RIDING, HeroSubClass.RBA_BANK_ROBBER ),
+	RBA_NOA( HeroSubClass.RBA_DOUBLE_BARREL, HeroSubClass.RBA_CONVERSATION ),
+	RBA_MIYU( HeroSubClass.RBA_TELESCOPE, HeroSubClass.RBA_CAMOUFLAGE ),
+	RBA_YUZU( HeroSubClass.RBA_AVANT_GARDE_KUN, HeroSubClass.RBA_GAME_START ),
+	RBA_IZUNA( HeroSubClass.RBA_SWITCHING, HeroSubClass.RBA_CHASE ),
+	RBA_MIKA( HeroSubClass.RBA_CALL_OF_STAR, HeroSubClass.RBA_LITTLE_ANGRY ),
+	RBA_MARI( HeroSubClass.RBA_DEVOUT_PRAYER, HeroSubClass.RBA_SYMBOL_OF_PEACE );
 
 	//the Summoner has two pictures, one is chosen each time the game starts
 	private static final String SUMMONER_SPLASH = Math.random() < 0.5 ? Assets.Splashes.SUMMONER : Assets.Splashes.SORCERESS;
@@ -251,6 +263,11 @@ public enum HeroClass {
 				break;
 			case TOWERPRIEST:
 				initTowerPriest( hero );
+				break;
+			//rebluearchive, the students of Re Blue Archive PD
+			case RBA_ARIS: case RBA_NONOMI: case RBA_MIYAKO: case RBA_HOSHINO: case RBA_SHIROKO: case RBA_NOA:
+			case RBA_MIYU: case RBA_YUZU: case RBA_IZUNA: case RBA_MIKA: case RBA_MARI:
+				RBAHeroes.init( this, hero );
 				break;
 		}
 
@@ -737,6 +754,7 @@ public enum HeroClass {
 
 	public ArmorAbility[] armorAbilities(){
 		if (BAHeroes.isBA(this)) return BAHeroes.armorAbilities(this); //bluearchive
+		if (RBAHero.isStudent(this)) return RBAHeroes.armorAbilities(this); //rebluearchive
 		switch (this) {
 			case WARRIOR: default:
 				return new ArmorAbility[]{new HeroicLeap(), new Shockwave(), new Endure()};
@@ -810,6 +828,7 @@ public enum HeroClass {
 
 	public String spritesheet() {
 		if (BAHeroes.isBA(this)) return BAHeroes.spritesheet(this); //bluearchive
+		if (RBAHero.isStudent(this)) return RBAHeroes.spritesheet(this); //rebluearchive
 		switch (this) {
 			case WARRIOR: default:
 				return Assets.Sprites.WARRIOR;
@@ -873,6 +892,7 @@ public enum HeroClass {
 
 	public String splashArt(){
 		if (BAHeroes.isBA(this)) return BAHeroes.splashArt(this); //bluearchive
+		if (RBAHero.isStudent(this)) return RBAHeroes.splashArt(this); //rebluearchive
 		switch (this) {
 			case WARRIOR: default:
 				return Assets.Splashes.WARRIOR;
@@ -940,6 +960,8 @@ public enum HeroClass {
 		if (DeviceCompat.isDebug()) return true;
 		//and in sandbox runs
 		if (Dungeon.sandbox) return true;
+		//rebluearchive, the students are open from the start as in the mod
+		if (RBAHero.isStudent(this)) return true;
 
 		switch (this){
 			case WARRIOR: default:

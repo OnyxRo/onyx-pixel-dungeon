@@ -114,6 +114,8 @@ public abstract class ExoticScroll extends Scroll {
 		//elektro, Elektrocheckers PD
 		regToExo.put(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTrauma.class, ScrollOfDamnation.class);
 		exoToReg.put(ScrollOfDamnation.class, com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTrauma.class);
+		//rebluearchive, the Scroll of Talent Reset has no recipe here, only the reverse lookup
+		exoToReg.put(RBAScrollOfTalentReset.class, ScrollOfTransmutation.class);
 	}
 	
 	@Override

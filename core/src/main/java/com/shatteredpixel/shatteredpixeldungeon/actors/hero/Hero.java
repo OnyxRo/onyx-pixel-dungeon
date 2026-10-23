@@ -451,6 +451,7 @@ public class Hero extends Char {
 			HT *= 0.8f;
 		}
 		HT = TransformationTalents.maxHP(this, HT); //Transformation PD talent catalog
+		HT = RBAHero.maxHP(this, HT); //rebluearchive
 		if (HT < 1) HT = 1;
 
 		if (boostHP){
@@ -475,6 +476,7 @@ public class Hero extends Char {
 			strBonus += (int)Math.floor(STR * (0.03f + 0.05f*pointsInTalent(Talent.STRONGMAN)));
 		}
 		strBonus += TransformationTalents.strBonus(this); //Transformation PD talent catalog
+		strBonus += RBAHero.strBonus(this, STR); //rebluearchive
 
 		return STR + strBonus;
 	}
@@ -786,9 +788,11 @@ public class Hero extends Char {
 	public boolean directAttackDamageInProgress() { return directAttackDamageInProgress; }
 
 	public void live() {
+		java.util.ArrayList<Class<? extends Buff>> rbaKeep = RBAHero.liveKeep(this); //rebluearchive
 		for (Buff b : buffs()){
 			if (!b.revivePersists) b.detach();
 		}
+		RBAHero.liveRestore(this, rbaKeep); //rebluearchive
 		Buff.affect( this, Regeneration.class );
 		Buff.affect( this, Hunger.class );
 		Buff.affect( this, MpRegen.class );
@@ -866,6 +870,7 @@ public class Hero extends Char {
 				buff(Talent.LiquidAgilACCTracker.class).detach();
 			}
 		}
+		RBAHero.afterAttack(this); //rebluearchive
 		return result;
 	}
 
@@ -876,6 +881,7 @@ public class Hero extends Char {
 		if (com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.guaranteedHit(this)) {
 			return INFINITE_ACCURACY;
 		}
+		if (RBAHero.infiniteAccuracy(this, wep)) return INFINITE_ACCURACY; //rebluearchive, Mari's light bullets
 
 		float accuracy = 1;
 		accuracy *= RingOfAccuracy.accuracyMultiplier( this );
@@ -939,13 +945,15 @@ public class Hero extends Char {
 		if (BAHero.doubleTap(this, target, wep)) return INFINITE_ACCURACY; //bluearchive
 		accuracy = BAHero.accuracy(this, target, wep, accuracy); //bluearchive
 		accuracy = RearrangedHero.accuracy(this, wep, accuracy); //rearranged
+		accuracy = RBAHero.accuracy(this, wep, accuracy); //rebluearchive
 		if (accuracy == Float.POSITIVE_INFINITY) return INFINITE_ACCURACY;
+		int rbaSkill = attackSkill + RBAHero.accuracyBonus(this); //rebluearchive, Noa's Taking Aim
 
 		if (!RingOfForce.fightingUnarmed(this)) {
 			accuracy *= TransformationTalents.accuracy(this, target); //Transformation PD talent catalog
-			return Math.max(1, Math.round(attackSkill * accuracy * wep.accuracyFactor( this, target )));
+			return Math.max(1, Math.round(rbaSkill * accuracy * wep.accuracyFactor( this, target )));
 		} else {
-			return Math.max(1, Math.round(attackSkill * accuracy * TransformationTalents.accuracy(this, target)));
+			return Math.max(1, Math.round(rbaSkill * accuracy * TransformationTalents.accuracy(this, target)));
 		}
 	}
 	
@@ -965,6 +973,7 @@ public class Hero extends Char {
 
 		//rearranged, the nunchaku's parry and the Slayer's evasive move
 		if (RearrangedHero.dodgesEverything(this, enemy)) return INFINITE_EVASION;
+		if (RBAHero.dodges(this, enemy)) return INFINITE_EVASION; //rebluearchive
 
 		if (TransformationBossTalents.phantomDodge(this)) return INFINITE_EVASION; //transformation, Phantom Step
 		if (TransformationTalents.skilledParry(this)) return INFINITE_EVASION; //transformation, Skilled Parry
@@ -1008,6 +1017,7 @@ public class Hero extends Char {
 			evasion *= 1f + 0.1f * pointsInTalent(Talent.HUMAN_GLORY);
 		}
 		evasion = RearrangedHero.evasion(this, evasion); //rearranged
+		evasion = RBAHero.evasion(this, evasion); //rebluearchive
 		
 		evasion *= TransformationTalents.innerPeace(this); //transformation, Inner Peace
 		evasion += TransformationTalents.evasionBonus(this); //Transformation PD talent catalog
@@ -1070,6 +1080,8 @@ public class Hero extends Char {
 		//rearranged
 		String raVerb = RearrangedHero.defenseVerb(this);
 		if (raVerb != null) return raVerb;
+		String rbaVerb = RBAHero.defenseVerb(this); //rebluearchive
+		if (rbaVerb != null) return rbaVerb;
 
 		return super.defenseVerb();
 	}
@@ -1131,6 +1143,7 @@ public class Hero extends Char {
 		}
 		dr += RearrangedHero.bonusDR(this); //rearranged
 		dr += BAHero.drBonus(this); //bluearchive
+		dr += RBAHero.bonusDR(this); //rebluearchive
 
 		dr = TransformationTalents.armor(this, dr); //Transformation PD talent catalog
 		
@@ -1237,6 +1250,7 @@ public class Hero extends Char {
 			speed *= (2f + 0.25f*pointsInTalent(Talent.GROWING_POWER));
 		}
 		speed = RearrangedHero.speed(this, speed); //rearranged
+		speed = RBAHero.speed(this, speed); //rebluearchive
 
 		speed *= TransformationTalents.speed(this); //Transformation PD talent catalog
 		speed *= BAHero.speedMulti(this); //bluearchive
@@ -1570,6 +1584,7 @@ public class Hero extends Char {
 		}
 
 		RearrangedHero.onAct(this); //rearranged
+		RBAHero.onAct(this); //rebluearchive
 
 		BAHero.onAct(this); //bluearchive
 		return actResult;
@@ -2358,6 +2373,7 @@ public class Hero extends Char {
 
 		damage = RearrangedHero.attackProc(this, enemy, wep, damage); //rearranged
 		damage = BAHero.attackProc(this, enemy, damage, wep); //bluearchive
+		damage = RBAHero.attackProc(this, enemy, wep, damage); //rebluearchive
 
 		return damage;
 	}
@@ -2404,6 +2420,7 @@ public class Hero extends Char {
 		}
 
 		damage = RearrangedHero.defenseProc(this, enemy, damage); //rearranged
+		damage = RBAHero.defenseProc(this, enemy, damage); //rebluearchive
 
 		return super.defenseProc( enemy, damage );
 	}
@@ -2528,6 +2545,7 @@ public class Hero extends Char {
 		dmg = Math.round(damage);
 		dmg = RearrangedHero.damageTaken(this, dmg, src); //rearranged
 		dmg = BAHero.magicShield(this, dmg, src); //bluearchive
+		dmg = RBAHero.damageTaken(this, dmg, src); //rebluearchive
 
 		//we ceil this one to avoid letting the player easily take 0 dmg from tenacity early
 		dmg = (int)Math.ceil(dmg * RingOfTenacity.damageMultiplier( this ));
@@ -2561,9 +2579,11 @@ public class Hero extends Char {
 				if (flashIntensity >= 1/6f) {
 					Sample.INSTANCE.play(Assets.Sounds.HEALTH_CRITICAL, 1/3f + flashIntensity * 2f);
 					BAHero.healthYell(this, true); //bluearchive
+					RBAHero.healthWarn(this, true); //rebluearchive
 				} else {
 					Sample.INSTANCE.play(Assets.Sounds.HEALTH_WARN, 1/3f + flashIntensity * 4f);
 					BAHero.healthYell(this, false); //bluearchive
+					RBAHero.healthWarn(this, false); //rebluearchive
 				}
 				//hero gets interrupted on taking serious damage, regardless of any other factor
 				interrupt();
@@ -2739,6 +2759,7 @@ public class Hero extends Char {
 			if (buff(GreaterHaste.class) != null){
 				delay = 0;
 			}
+			delay = RBAHero.moveDelay(this, delay); //rebluearchive, Shiroko's bicycle
 
 			if (Dungeon.level.pit[step] && !Dungeon.level.solid[step]
 					&& (!flying || buff(Levitation.class) != null && buff(Levitation.class).detachesWithinDelay(delay / speed()))){
@@ -2764,6 +2785,7 @@ public class Hero extends Char {
 			SummoningHooks.onStep(this); //summoning
 
 			RearrangedHero.onStep(this); //rearranged
+			RBAHero.onStep(this); //rebluearchive
 
 			sprite.move(pos, step);
 			move(step);
@@ -2963,6 +2985,7 @@ public class Hero extends Char {
 				lvl++;
 				levelUp = true;
 				TransformationTalents.onLevelUp(this); //Transformation PD talent catalog
+				RBAHero.onLevelUp(this); //rebluearchive
 				
 				if (buff(ElixirOfMight.HTBoost.class) != null){
 					buff(ElixirOfMight.HTBoost.class).onLevelUp();
@@ -3081,6 +3104,7 @@ public class Hero extends Char {
 		}
 
 		if (RearrangedHero.preventsDeath(this, cause)) return; //rearranged
+		RBAHero.onDie(this, cause); //rebluearchive
 
 		curAction = null;
 
@@ -3391,6 +3415,7 @@ public class Hero extends Char {
 		}
 
 		RearrangedHero.afterAttack(this, attackTarget); //rearranged
+		RBAHero.onAttackComplete(this); //rebluearchive
 
 		curAction = null;
 		attackTarget = null;
@@ -3565,7 +3590,7 @@ public class Hero extends Char {
 	//rearranged, the Specialist's stealth talent, gun attachments, obfuscation on the Knight's shield
 	@Override
 	public float stealth() {
-		return RearrangedHero.stealth(this, super.stealth()) + BAHero.stealthBonus(this); //bluearchive
+		return RBAHero.stealth(this, RearrangedHero.stealth(this, super.stealth()) + BAHero.stealthBonus(this)); //bluearchive, rebluearchive
 	}
 
 	public boolean search( boolean intentional ) {
@@ -3579,6 +3604,7 @@ public class Hero extends Char {
 		if (hasTalent(Talent.WIDE_SEARCH)) distance++;
 		distance += BAHero.searchBonus(this); //bluearchive
 		if (pointsInTalent(Talent.BA_WIDER_SEARCH) == 1) circular = true; //bluearchive
+		distance += RBAHero.searchDistance(this); //rebluearchive, Noa
 		
 		boolean foresight = buff(Foresight.class) != null;
 		boolean foresightScan = foresight && !Dungeon.level.mapped[pos];

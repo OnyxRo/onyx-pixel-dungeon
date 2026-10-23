@@ -41,10 +41,18 @@ public class TalentIcon extends Image {
 	private static TextureFilm transFilm;
 
 	private static TextureFilm baFilm;
+	private static TextureFilm rbaFilm;
 
 	public TalentIcon(int icon){
-		super( icon >= 30000 ? Assets.Interfaces.BA_TALENT_ICONS : icon >= 10000 ? Assets.Interfaces.RA_TALENT_ICONS
+		super( icon >= 50000 ? Assets.Interfaces.RBA_TALENT_ICONS : icon >= 30000 ? Assets.Interfaces.BA_TALENT_ICONS : icon >= 10000 ? Assets.Interfaces.RA_TALENT_ICONS
 				: icon >= TRANSFORMATION_BASE ? Assets.Interfaces.TALENT_ICONS_TRANSFORMATION : Assets.Interfaces.TALENT_ICONS );
+
+		//rebluearchive, icons of 50000 and up come from Re Blue Archive PD's own sheet
+		if (icon >= 50000){
+			if (rbaFilm == null) rbaFilm = new TextureFilm(texture, SIZE, SIZE);
+			frame(rbaFilm.get(icon - 50000));
+			return;
+		}
 
 		//bluearchive, icons of 30000 and up come from Blue Archive PD's own sheet
 		if (icon >= 30000){
