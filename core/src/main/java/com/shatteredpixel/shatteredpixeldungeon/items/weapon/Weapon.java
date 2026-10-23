@@ -695,14 +695,18 @@ abstract public class Weapon extends KindOfWeapon {
 				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Friendship.class,
 				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Glowing.class,
 				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Hunting.class,
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Sting.class
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Sting.class,
+				//xun, Xun's PD
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Peaceful.class
 		};
 
 		public static final Class<?>[] rare = new Class<?>[]{
 				Corrupting.class, Crystal.class, Grim.class, Vampiric.class,
 				//Lovecraft PD
 				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Holy.class,
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.TimeFreezing.class
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.TimeFreezing.class,
+				//xun, Xun's PD
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Alienating.class
 		};
 
 		public static final float[] typeChances = new float[]{

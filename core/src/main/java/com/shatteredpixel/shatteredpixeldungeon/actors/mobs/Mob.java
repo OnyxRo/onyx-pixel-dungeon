@@ -1029,7 +1029,7 @@ public abstract class Mob extends Char {
 
 		//if attacked by something else than current target, and that thing is closer, switch targets
 		//or if attacked by target, simply update target position
-		if (state != FLEEING) {
+		if (state != FLEEING && !com.shatteredpixel.shatteredpixeldungeon.actors.XunHooks.pacified(this)) { //xun, peaceful
 			if (state != HUNTING) {
 				aggro(enemy);
 				target = enemy.pos;
@@ -1129,12 +1129,12 @@ public abstract class Mob extends Char {
 	public void damage( int dmg, Object src ) {
 
 		if (!isInvulnerable(src.getClass())) {
-			if (state == SLEEPING) {
+			if (state == SLEEPING && !com.shatteredpixel.shatteredpixeldungeon.actors.XunHooks.pacified(this)) { //xun, peaceful
 				state = WANDERING;
 			}
 			if (!(src instanceof Corruption) && state != FLEEING) {
 				if (state != HUNTING) {
-					alerted = true;
+					if (!com.shatteredpixel.shatteredpixeldungeon.actors.XunHooks.pacified(this)) alerted = true; //xun, peaceful
 					//assume the hero is hitting us in these common cases
 					if (src instanceof Wand || src instanceof ClericSpell || src instanceof ArmorAbility) {
 						aggro(Dungeon.hero);

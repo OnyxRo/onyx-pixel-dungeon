@@ -954,6 +954,7 @@ public abstract class Char extends Actor {
 		if ( buff( Adrenaline.class ) != null) speed *= 2f;
 		if ( buff( Haste.class ) != null) speed *= 3f;
 		speed = TowerChar.speed(this, speed); //tower
+		speed = XunHooks.speed(this, speed); //xun
 		if ( buff( Dread.class ) != null) speed *= 2f;
 		if ( buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ninja_Energy.WaterSmooth.class ) != null && Dungeon.level.water[pos]) speed *= 2f; //Transformation PD
 		//from Shittened PD
@@ -1106,9 +1107,10 @@ public abstract class Char extends Actor {
 		if (this.buff(Frost.class) != null){
 			Buff.detach( this, Frost.class );
 		}
-		if (this.buff(MagicalSleep.class) != null){
+		if (this.buff(MagicalSleep.class) != null && !XunHooks.pacified(this)){ //xun, peaceful
 			Buff.detach(this, MagicalSleep.class);
 		}
+		XunHooks.endPeace(this); //xun
 		if (this.buff(Doom.class) != null && !isImmune(Doom.class)){
 			damage *= 1.67f;
 		}
@@ -1291,6 +1293,8 @@ public abstract class Char extends Actor {
 			die( src );
 		} else if (HP == 0 && buff(DeathMark.DeathMarkTracker.class) != null){
 			DeathMark.processFearTheReaper(this);
+		} else {
+			XunHooks.afterDamage(this, dmg); //xun
 		}
 	}
 

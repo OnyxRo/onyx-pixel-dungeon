@@ -486,9 +486,11 @@ public class Generator {
 					Gloves.class,
 					Rapier.class,
 					Cudgel.class,
-					Warpick.class, //from Devoted Pixel Dungeon
+					Warpick.class, //from Devoted Pixel Dungeon,
+					//xun, Xun's PD
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Fork.class
 			};
-			WEP_T1.defaultProbs = new float[]{ 2, 0, 2, 2, 2, 2, 2 };
+			WEP_T1.defaultProbs = new float[]{ 2, 0, 2, 2, 2, 2, 2, 1 };
 			WEP_T1.probs = WEP_T1.defaultProbs.clone();
 			
 			WEP_T2.classes = new Class<?>[]{
@@ -498,9 +500,19 @@ public class Generator {
 					Quarterstaff.class,
 					Dirk.class,
 					Sickle.class,
-					Pickaxe.class
+					Pickaxe.class,
+					//xun, Xun's PD
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Wicker.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.XunNunchaku.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Vineshield.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crabclaw.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Jiewan.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Smallrunicblade.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Havoc.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.XunStoneHammer.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.SleeveArrow.class
 			};
-			WEP_T2.defaultProbs = new float[]{ 2, 2, 2, 2, 2, 2, 0 };
+			WEP_T2.defaultProbs = new float[]{ 2, 2, 2, 2, 2, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 			WEP_T2.probs = WEP_T2.defaultProbs.clone();
 			
 			WEP_T3.classes = new Class<?>[]{
@@ -509,9 +521,20 @@ public class Generator {
 					Scimitar.class,
 					RoundShield.class,
 					Sai.class,
-					Whip.class
+					Whip.class,
+					//xun, Xun's PD
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Daggeraxe.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Bayonet.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Roguedagger.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Shortrunicblade.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.XunKnife.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.XunScythe.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.LightFlail.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Windblade.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Zhouyi.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.HiddenBlade.class
 			};
-			WEP_T3.defaultProbs = new float[]{ 2, 2, 2, 2, 2, 2 };
+			WEP_T3.defaultProbs = new float[]{ 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 			WEP_T3.probs = WEP_T3.defaultProbs.clone();
 			
 			WEP_T4.classes = new Class<?>[]{
@@ -521,9 +544,19 @@ public class Generator {
 					RunicBlade.class,
 					AssassinsBlade.class,
 					Crossbow.class,
-					Katana.class
+					Katana.class,
+					//xun, Xun's PD
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.XunHalberd.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.KiteShield.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Twobroadaxe.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Wolftailgrassspear.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Hoe.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Jieniu.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crystalsword.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Darkgoldsword.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Futsunomitama.class
 			};
-			WEP_T4.defaultProbs = new float[]{ 2, 2, 2, 2, 2, 2, 2 };
+			WEP_T4.defaultProbs = new float[]{ 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 			WEP_T4.probs = WEP_T4.defaultProbs.clone();
 			
 			WEP_T5.classes = new Class<?>[]{
@@ -534,9 +567,19 @@ public class Generator {
 					Greatshield.class,
 					Gauntlet.class,
 					WarScythe.class,
-					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.SummonerWhip.class //from Ryuse's PD
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.SummonerWhip.class, //from Ryuse's PD
+					//xun, Xun's PD
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Chainwhip.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Ironbar.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Longassassinsblade.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Longrunicblade.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatknife.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Miaoblade.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.XunHeavyFlail.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Lightsword.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.DMdrill.class
 			};
-			WEP_T5.defaultProbs = new float[]{ 2, 2, 2, 2, 2, 2, 2, 2 };
+			WEP_T5.defaultProbs = new float[]{ 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 			WEP_T5.probs = WEP_T5.defaultProbs.clone();
 
 			WEP_T6.classes = new Class<?>[]{
@@ -545,9 +588,25 @@ public class Generator {
 					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.tier6.TwoHandedGreatsword.class,
 					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.tier6.VenomousSickle.class,
 					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.tier6.GreatGreatGreatsword.class,
-					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.tier6.DemonTailWhip.class
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.tier6.DemonTailWhip.class,
+					//xun, Xun's PD
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Shangfang.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Doublesword.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Jingubang.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Etherealsword.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Darknesssword.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Ripperclaw.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Rake.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Canopy.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dwarvessword.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Erlangknife.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatrunicblade.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Fetter.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.StoneCudgel.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.ZhugeCrossbow.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Chixiao.class
 			};
-			WEP_T6.defaultProbs = new float[]{ 2, 2, 2, 2, 2, 2 };
+			WEP_T6.defaultProbs = new float[]{ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 };
 			WEP_T6.probs = WEP_T6.defaultProbs.clone();
 			
 			//see Generator.randomArmor
@@ -575,41 +634,56 @@ public class Generator {
 					ThrowingKnife.class,
 					ThrowingSpike.class,
 					Dart.class,
-					WoodenBoomerang.class //from Devoted Pixel Dungeon
+					WoodenBoomerang.class, //from Devoted Pixel Dungeon
+					//xun, Xun's PD
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Clay.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.BoneFragment.class
 			};
-			MIS_T1.defaultProbs = new float[]{ 3, 3, 3, 0, 3 };
+			MIS_T1.defaultProbs = new float[]{ 3, 3, 3, 0, 3, 1, 1 };
 			MIS_T1.probs = MIS_T1.defaultProbs.clone();
 			
 			MIS_T2.classes = new Class<?>[]{
 					FishingSpear.class,
 					ThrowingClub.class,
-					Shuriken.class
+					Shuriken.class,
+					//xun, Xun's PD
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.LightBoomerang.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Mucus.class
 			};
-			MIS_T2.defaultProbs = new float[]{ 3, 3, 3 };
+			MIS_T2.defaultProbs = new float[]{ 3, 3, 3, 1, 1 };
 			MIS_T2.probs = MIS_T2.defaultProbs.clone();
 			
 			MIS_T3.classes = new Class<?>[]{
 					ThrowingSpear.class,
 					Kunai.class,
-					Bolas.class
+					Bolas.class,
+					//xun, Xun's PD
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.CoinDart.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.SmokeBombWep.class
 			};
-			MIS_T3.defaultProbs = new float[]{ 3, 3, 3 };
+			MIS_T3.defaultProbs = new float[]{ 3, 3, 3, 1, 1 };
 			MIS_T3.probs = MIS_T3.defaultProbs.clone();
 			
 			MIS_T4.classes = new Class<?>[]{
 					Javelin.class,
 					Tomahawk.class,
-					HeavyBoomerang.class
+					HeavyBoomerang.class,
+					//xun, Xun's PD
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Lancet.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ForceCobble.class
 			};
-			MIS_T4.defaultProbs = new float[]{ 3, 3, 3 };
+			MIS_T4.defaultProbs = new float[]{ 3, 3, 3, 1, 1 };
 			MIS_T4.probs = MIS_T4.defaultProbs.clone();
 			
 			MIS_T5.classes = new Class<?>[]{
 					Trident.class,
 					ThrowingHammer.class,
-					ForceCube.class
+					ForceCube.class,
+					//xun, Xun's PD
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Headdart.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.FlyingCymbals.class
 			};
-			MIS_T5.defaultProbs = new float[]{ 3, 3, 3 };
+			MIS_T5.defaultProbs = new float[]{ 3, 3, 3, 1, 1 };
 			MIS_T5.probs = MIS_T5.defaultProbs.clone();
 			
 			FOOD.classes = new Class<?>[]{

@@ -151,6 +151,11 @@ public class Assets {
 		public static final String RA_HERO_ICONS   = "interfaces/rearranged/hero_icons.png";
 		public static final String RA_BUFFS_SMALL  = "interfaces/rearranged/buffs.png";
 		public static final String RA_BUFFS_LARGE  = "interfaces/rearranged/large_buffs.png";
+		//xun, Xun's PD icon sheets, drawn for icon numbers of 40000 and up
+		public static final String XUN_TALENT_ICONS = "interfaces/xun/talent_icons.png";
+		public static final String XUN_HERO_ICONS   = "interfaces/xun/hero_icons.png";
+		public static final String XUN_BUFFS_SMALL  = "interfaces/xun/buffs.png";
+		public static final String XUN_BUFFS_LARGE  = "interfaces/xun/large_buffs.png";
 	}
 
 	//these points to resource bundles, not raw asset files

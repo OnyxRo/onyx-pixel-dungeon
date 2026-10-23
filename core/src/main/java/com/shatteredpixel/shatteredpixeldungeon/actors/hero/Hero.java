@@ -890,7 +890,7 @@ public class Hero extends Char {
 					accuracy *= 1f + 0.1f * pointsInTalent(Talent.PRECISE_ASSAULT);
 				}
 
-				if (wep instanceof Flail && buff(Flail.SpinAbilityTracker.class) != null){
+				if ((wep instanceof Flail || com.shatteredpixel.shatteredpixeldungeon.actors.XunHooks.isSpinFlail(wep)) && buff(Flail.SpinAbilityTracker.class) != null){
 					//do nothing, this is not a regular attack so don't consume talent fx
 				} else if (wep instanceof Crossbow && buff(Crossbow.ChargedShot.class) != null){
 					//do nothing, this is not a regular attack so don't consume talent fx
@@ -1242,6 +1242,7 @@ public class Hero extends Char {
 		if (RingOfForce.fightingUnarmed(this))  return true;
 		if (STR() < ((Weapon)w).STRReq())       return false;
 		if (w instanceof Flail)                 return false;
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.XunHooks.isSpinFlail(w)) return false; //xun
 		if (SummoningHooks.blocksSurpriseAttack(this)) return false; //summoning
 		if (w instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.alchemy.ChainFlail) return false; //rearranged
 		if (w instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon
@@ -2237,6 +2238,7 @@ public class Hero extends Char {
 	public void rest( boolean fullRest ) {
 		Dungeon.level.onHeroWaited(this);
 		TransformationTalents.onRest(this); //Transformation PD talent catalog
+		com.shatteredpixel.shatteredpixeldungeon.actors.XunHooks.onRest(this); //xun
 		spendAndNextConstant( TIME_TO_REST );
 		if (perks.contains(Perks.Perk.HOLD_FAST)){
 			Buff.affect(this, Perks.PerkHoldFast.class).pos = pos;
