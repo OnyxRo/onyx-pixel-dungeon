@@ -209,3 +209,9 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **Item sheets wider than 16 cells.** `port-itemsprites.py` reads the mod's `WIDTH` from its ItemSpriteSheet (Tower PD uses 32). If a copied picture looks wrong or "EMPTY CELL" shows for an item the mod draws, check that constant first.
 - **Text color markers.** Tower PD writes `#1text#1` for colored text. This game only reads `_text_`, convert them when copying strings.
 - **A mod hero with no subclasses or talents** (Tower PD's BETA and ALPHA placeholders) gets Shattered subclasses, talents and armor abilities that work without that class's own gear, picked to suit. Run `TransformationHeroesTest <CLASS> ...` on it, the test now takes class names and casts each starting hero spell.
+
+## Added after Polished PD (2026-10-22)
+
+- **A mod that only retunes Shattered** (Polished) ports as an option, not as content. Put the changes behind one `Challenges` bit marked as an option (skip it in the random picker in `HeroSelectScene`), route each hook through one helper class (`PolishedPD`) and write a small headless test that checks the option off and on.
+- **3.x mods add helpers to Shattered's classes** (`CharSprite.doAfterAnim`, a callback on `Transmuting`, `Buff.Polished.prolongAligned`). Grep the mod's copy of a Shattered class for the method before calling it from ported code, and write the small local version instead.
+- **If the worktree vanishes**, make a new one from the base commit named in the brief with `git worktree add -b <branch> <path> <commit>` and carry on there.
