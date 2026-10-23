@@ -209,3 +209,9 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **Item sheets wider than 16 cells.** `port-itemsprites.py` reads the mod's `WIDTH` from its ItemSpriteSheet (Tower PD uses 32). If a copied picture looks wrong or "EMPTY CELL" shows for an item the mod draws, check that constant first.
 - **Text color markers.** Tower PD writes `#1text#1` for colored text. This game only reads `_text_`, convert them when copying strings.
 - **A mod hero with no subclasses or talents** (Tower PD's BETA and ALPHA placeholders) gets Shattered subclasses, talents and armor abilities that work without that class's own gear, picked to suit. Run `TransformationHeroesTest <CLASS> ...` on it, the test now takes class names and casts each starting hero spell.
+
+## Added after Sandbox PD (2026-10-22)
+
+- **Mods that are mostly a tool** (a level editor, a debug console). When `mod-report.py` says an item "drags in windows and ui code", the copier will follow it into the whole tool. Add the tool's folders to `port-skip.txt` first (a line ending in `/` skips a folder), or copy the few classes by hand and fix their editor calls with small shims.
+- **Rings, scrolls and potions outside their deck** keep the picture set in their initializer, because `reset()` runs in the parent constructor first. Override `isKnown()` to return true, and for a ring also `reset()` and `setKnown()`, or the handler throws on an unknown class.
+- **Traps have a sandbox list now.** `WndSandboxTraps` lists `Bestiary.TRAP`. Add a ported trap there and it can be placed from the sandbox panel.

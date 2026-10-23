@@ -5,7 +5,7 @@
  * Shattered Pixel Dungeon
  * Copyright (C) 2014-2025 Evan Debenham
  *
- * Ported from Sandbox PD (AlphaDraxonis/sandboxpd), GPL-3.0.
+ * Ported from Sandbox PD (AlphaDraxonis/SandboxPixelDungeon), GPL-3.0.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

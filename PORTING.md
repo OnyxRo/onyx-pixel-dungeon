@@ -406,3 +406,21 @@ Nothing came in. Its only new item, the Weapon Catalyst, is an empty stub in the
 
 ### Re-ReARranged PD (2026-10-22, key `rerearranged`)
 Four alchemy weapons, crafted with the Blueprint like Re-ARranged's others. Ruin Bow (tier 7, its arrows pierce and hit harder for each enemy passed), Moonlight Katana (`LunarBlade`, tier 6, freezes on every sixth hit), Obsidian Knife (tier 3 alchemy, deep bleeding) and Obsidian Bow (tier 6, bleeding arrows). Added to `RearrangedLoot` with weight 0 like the other alchemy weapons, the Blueprint now matches the mod's (recipes 17 to 26). Text is the mod's own. Left out, the Weapon Catalyst (an empty stub), `AlternatingTrapsRoom`, and its reworks of Re-ARranged's heroes. `port-strings.py` now also reads a mod's `new_messages` folder, which is where Re-ARranged forks keep their newer text.
+
+### Sandbox PD (2026-10-22, key `sandboxpd`)
+Sandbox PD (AlphaDraxonis, GPL-3.0, Shattered 2.1.3) is a level editor. Its own items and traps only appear in levels made with that editor, the mod never puts them in its loot tables, so here they are in the journal catalog (the sandbox item list) and nowhere in normal loot.
+- Items. Ring of Time (a ring of haste and a ring of furor at 40% each, hooked into `RingOfHaste.speedMultiplier` and `RingOfFuror.attackSpeedMultiplier`, always known and drawn as a diamond ring since it is not in the ring deck), Wand of Instability (a random wand effect each zap), Wand of Summoning (each zap raises a corrupted wraith, which is what the mod's wand does when its editor picked nothing), Wand of Yendor (fires all 14 wand effects at once, and like the Amulet it ends the game), Scroll of Wipe Out (kills everything on the floor except bosses, shop goods become free first), Potion Cocktail (holds several potions and gives all their effects).
+- Recipes. A known potion plus a potion cocktail adds that potion to the cocktail. The Amulet, the King's crown and Tengu's mask make the Wand of Yendor. Mage Elemental Blast knows the three wands.
+- Traps, 8. Paralytic gas, shrouding, rage, action, gold digger, loose pockets, unstable (goes off as a random trap from the journal) and warpway (a gateway trap that also wipes your map). They are in the journal's trap list. No floor builds them, since ported worlds keep their floor's usual traps.
+- Sandbox panel. A new Place traps button (`WndSandboxTraps`) lists every trap in the journal and sets the clicked one next to the hero. Placing traps is the one part of the level editor that fits this panel.
+- Shims. `Amulet.AC_END` and `Amulet.showAmuletScene` are public static, `Mob.sandboxPDLoot` and `sandboxPDClearLoot` for the gold digger trap, `items/SandboxPDCopy` stands in for the mod's `Item.getCopy`.
+- Pictures in row 252 of `sprites/items.png`.
+
+Left out, and why.
+- The level editor itself (333 classes in `editor/`, `customobjects/`, `scrollofdebug/` and the dungeon sharing server). It is a separate program for building and sharing custom dungeons, and our sandbox panel already covers floor skipping, items and monsters. `port-skip.txt` now skips those folders whole.
+- Its four monsters. `DMMob` and `SpawnerMob` are abstract bases for editor made monsters, `HeroMob` is a monster copy of a hero that the editor sets up with gear and talents (1600 lines tied to editor windows), and `SinisterMimic` is an unfinished item disguise that only spawns a rat.
+- Fake Tengu bomb and shocker. They need the mod's rewrite of Tengu's abilities into static helpers.
+- `RandomCurse`, `RandomGlyph`, `RandomEnchantment`, `EnchantmentWeapon`, `GlyphArmor`, `Backpack`, `UnlimitedCapacityBag`, `CustomDocumentPage`, `RatSkullOld`, `SkeletonKeyOld`. Editor placeholders and holders, or old copies of Shattered items.
+- Its four buffs (`ColorBuff`, `BuffWithDuration`, `MindVisionImmunity`, `HeroSubclassAbilityBuff`) are tools the editor uses to give monsters custom tints, timers and abilities.
+- Its 17 level classes are the eight traps above plus editor room layouts (`RoomLayoutLevel`, the single reward rooms, `AlternatingTrapsRoom`), the pressure plate trap (needs editor wiring) and the dart trap base. No special floors.
+- Its music and editor art.

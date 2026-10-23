@@ -98,6 +98,7 @@ SKIP = set(filter(None, os.environ.get('PORT_SKIP', '').split(','))) | {'Perks',
 _skipfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'port-skip.txt')
 if os.path.exists(_skipfile):
     SKIP |= {l.strip() for l in open(_skipfile, encoding='utf-8') if l.strip() and not l.lstrip().startswith('#')}
+SKIP_DIRS = [s for s in SKIP if s.endswith('/')]
 for rnd in range(ROUNDS):
     out = compile_errors()
     blocks = re.split(r'(?=^\S.*?: error: )', out, flags=re.M)
@@ -125,6 +126,10 @@ for rnd in range(ROUNDS):
             if name not in skipped: skipped.append(name)
             continue
         rel = os.path.relpath(cands[0], MB).replace(os.sep, '/')
+        # a port-skip.txt line ending in / skips a whole mod folder (Sandbox PD's editor/)
+        if any(rel.startswith(d) for d in SKIP_DIRS):
+            if name not in skipped: skipped.append(name)
+            continue
         if os.path.exists(B + rel): continue
         # never shadow a class the project already has somewhere else
         if glob.glob(B + '**/' + name + '.java', recursive=True): continue
