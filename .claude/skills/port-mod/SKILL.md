@@ -225,3 +225,8 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **Mods that are mostly a tool** (a level editor, a debug console). When `mod-report.py` says an item "drags in windows and ui code", the copier will follow it into the whole tool. Add the tool's folders to `port-skip.txt` first (a line ending in `/` skips a folder), or copy the few classes by hand and fix their editor calls with small shims.
 - **Rings, scrolls and potions outside their deck** keep the picture set in their initializer, because `reset()` runs in the parent constructor first. Override `isKnown()` to return true, and for a ring also `reset()` and `setKnown()`, or the handler throws on an unknown class.
 - **Traps have a sandbox list now.** `WndSandboxTraps` lists `Bestiary.TRAP`. Add a ported trap there and it can be placed from the sandbox panel.
+## Added after Community PD (2026-10-22)
+
+- **A mod with no worlds whose monsters fit any floor** (Community's level feeling monsters) gets a small spawner that edits the rotation from `Level.createMob` (see `CommunitySpawner`), with its roster lines at weight 0.
+- **A mod that keeps a variant inside a Shattered class** (Community's `Elemental.PoisonElemental`) becomes its own class with a prefix, and a sprite subclass can swap only the texture when the mod's sheet is the same size as ours.
+- **Check borrowed sheets against frame numbers.** Community's guard sheet is wider than ours, so the Failed Defender uses the mod's copy under `sprites/community/`.

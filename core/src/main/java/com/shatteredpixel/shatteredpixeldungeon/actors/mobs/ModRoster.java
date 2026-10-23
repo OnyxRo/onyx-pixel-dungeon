@@ -518,6 +518,12 @@ public class ModRoster {
 		add( "tower", MagicShard.class, 0, 1, 99 );
 		add( "tower", GorematiaSpirit.class, 0, 1, 99 );
 		add( "tower", TowerWisp.class, 0, 1, 99 );
+		add( "community", AngryThorn.class, 0, 1, 99 );
+		add( "community", DMXXX.class, 0, 1, 99 );
+		add( "community", WaterStrider.class, 0, 1, 99 );
+		add( "community", FailedDefender.class, 0, 1, 99 );
+		add( "community", WindSpirit.class, 0, 1, 99 );
+		add( "community", CommunityPoisonElemental.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

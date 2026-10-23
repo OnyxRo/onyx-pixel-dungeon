@@ -234,6 +234,12 @@ public abstract class Recipe {
 		//transformation
 		new com.shatteredpixel.shatteredpixeldungeon.items.spells.TransformSpell.Recipe(),
 		new com.shatteredpixel.shatteredpixeldungeon.items.spells.MetamorphosisPrism.Recipe(),
+		//Community PD
+		new com.shatteredpixel.shatteredpixeldungeon.items.GemstoneDust.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.Silencing.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.RNGManipulator.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.CommunityFury.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.RepairedRapier.Recipe(),
 	};
 	
 	private static Recipe[] twoIngredientRecipes = new Recipe[]{
@@ -287,6 +293,9 @@ public abstract class Recipe {
 		new com.shatteredpixel.shatteredpixeldungeon.items.spells.VampiricShot.Recipe(),
 		//Sandbox PD, a known potion poured into a potion cocktail
 		new com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.PotionCocktail.Recipe(),
+		//Community PD
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.FrostfireBrew.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.LeanyElixir.Recipe(),
 	};
 
 	private static Recipe[] threeIngredientRecipes = new Recipe[]{

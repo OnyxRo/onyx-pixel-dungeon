@@ -695,6 +695,11 @@ public class WorldShuffle {
 			classes = java.util.Arrays.copyOf( classes, classes.length + 1 );
 			classes[classes.length - 1] = com.shatteredpixel.shatteredpixeldungeon.levels.traps.TransformationTrap.class;
 		}
+		//Community PD, its regrowth trap joins the caves and city trap lists
+		if (communityRegrowth()) {
+			classes = java.util.Arrays.copyOf( classes, classes.length + 1 );
+			classes[classes.length - 1] = com.shatteredpixel.shatteredpixeldungeon.levels.traps.RegrowthTrap.class;
+		}
 		return classes;
 	}
 
@@ -708,7 +713,17 @@ public class WorldShuffle {
 			chances = java.util.Arrays.copyOf( chances, chances.length + 1 );
 			chances[chances.length - 1] = 1f;
 		}
+		if (communityRegrowth()) {
+			chances = java.util.Arrays.copyOf( chances, chances.length + 1 );
+			chances[chances.length - 1] = 1f;
+		}
 		return chances;
+	}
+
+	//Community PD put its regrowth trap on caves and city floors, as an uncommon trap
+	private static boolean communityRegrowth(){
+		return com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CommunitySpawner.active()
+				&& Dungeon.depth > 10 && Dungeon.depth < 20;
 	}
 
 	/** The floor's world name, like "The Astral Library", or null for Shattered's own worlds. */

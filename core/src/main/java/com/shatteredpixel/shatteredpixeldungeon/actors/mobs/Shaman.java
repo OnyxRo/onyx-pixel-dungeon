@@ -74,7 +74,8 @@ public abstract class Shaman extends Mob {
 	@Override
 	protected boolean canAttack( Char enemy ) {
 		return super.canAttack(enemy)
-				|| new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos;
+				|| (new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos
+					&& buff(com.shatteredpixel.shatteredpixeldungeon.items.spells.Silencing.Effect.class) == null); //Community PD, silenced casters cannot zap
 	}
 
 	@Override
@@ -93,6 +94,7 @@ public abstract class Shaman extends Mob {
 	protected boolean doAttack(Char enemy ) {
 
 		if (Dungeon.level.adjacent( pos, enemy.pos )
+				|| buff(com.shatteredpixel.shatteredpixeldungeon.items.spells.Silencing.Effect.class) != null
 				|| new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos != enemy.pos) {
 			
 			return super.doAttack( enemy );

@@ -528,6 +528,12 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String WIND_SPIRIT = "sprites/community/wind_spirit.png"; //ported, community
+		public static final String WATER_STRIDER = "sprites/community/water_strider.png"; //ported, community
+		public static final String DMXXX = "sprites/community/dmXXX.png"; //ported, community
+		public static final String ANGRY_THORN = "sprites/community/angry_thorn.png"; //ported, community
+		public static final String COMMUNITY_DEFENDER = "sprites/community/defender.png"; //ported, community, the mod widened the guard sheet
+		public static final String COMMUNITY_POISON_ELEMENTAL = "sprites/community/poison_elemental.png"; //ported, community
 		public static final String WARRIORBOSS = "sprites/transformation/warriorboss.png"; //ported, transformation
 		public static final String MYRIAD_BLACK_SHADOW_OVERLAY = "sprites/transformation/myriad_black_shadow_overlay.png"; //ported, transformation
 		public static final String SUCCBOSS = "sprites/transformation/succboss.png"; //ported, transformation

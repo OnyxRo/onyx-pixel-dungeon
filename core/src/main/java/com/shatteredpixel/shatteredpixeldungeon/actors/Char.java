@@ -835,6 +835,7 @@ public abstract class Char extends Actor {
 		if (defender.buff(Bless.class) != null) defRoll *= 1.25f;
 		if (defender.buff(  Hex.class) != null) defRoll *= 0.8f;
 		if (defender.buff( Daze.class) != null) defRoll *= 0.5f;
+		if (defender.buff( com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.LeanyElixir.Lean.class) != null) defRoll *= 1.5f; //Community PD
 		if (defender.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Gotted.class) != null) defRoll *= 1.1f;
 		if (defender.buff(Cursed.class) != null) defRoll *= 0.7f;
 		for (ChampionEnemy buff : defender.buffs(ChampionEnemy.class)){
@@ -908,6 +909,7 @@ public abstract class Char extends Actor {
 		if (armor != null) {
 			damage = armor.absorb( damage );
 		}
+		damage = CommunityHooks.necklaceBlock(this, damage); //Community PD, Necklace of Ice
 
 		ShieldOfLight.ShieldOfLightTracker shield = buff( ShieldOfLight.ShieldOfLightTracker.class);
 		if (shield != null && shield.object == enemy.id()){
@@ -957,6 +959,7 @@ public abstract class Char extends Actor {
 		if ( buff( Haste.class ) != null) speed *= 3f;
 		speed = TowerChar.speed(this, speed); //tower
 		if ( buff( Dread.class ) != null) speed *= 2f;
+		if ( buff( com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.LeanyElixir.Lean.class ) != null) speed *= 2f; //Community PD
 		if ( buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ninja_Energy.WaterSmooth.class ) != null && Dungeon.level.water[pos]) speed *= 2f; //Transformation PD
 		//from Shittened PD
 		if ( buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CaffeineRush.class ) != null) speed *= 1.25f;
@@ -1668,7 +1671,8 @@ public abstract class Char extends Actor {
 	//travelling may be false when a character is moving instantaneously, such as via teleportation
 	public void move( int step, boolean travelling ) {
 
-		if (travelling && Dungeon.level.adjacent( step, pos ) && buff( Vertigo.class ) != null) {
+		if (travelling && Dungeon.level.adjacent( step, pos ) && (buff( Vertigo.class ) != null
+				|| buff( com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.LeanyElixir.Lean.class ) != null)) { //Community PD, lean staggers like vertigo
 			sprite.interruptMotion();
 			int newPos = pos + PathFinder.NEIGHBOURS8[Random.Int( 8 )];
 			if (!(Dungeon.level.passable[newPos] || Dungeon.level.avoid[newPos])

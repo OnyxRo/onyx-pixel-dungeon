@@ -79,12 +79,14 @@ public class Warlock extends Mob {
 		//Pixel Dungeon Reforged Randomizer, Short Range
 		if (com.shatteredpixel.shatteredpixeldungeon.Randomizer.getCreatureNerf(Warlock.class) == 1 && distance(enemy) > 3) return false;
 		return super.canAttack(enemy)
-				|| new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos;
+				|| (new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos
+					&& buff(com.shatteredpixel.shatteredpixeldungeon.items.spells.Silencing.Effect.class) == null); //Community PD, silenced casters cannot zap
 	}
 	
 	protected boolean doAttack( Char enemy ) {
 
 		if (Dungeon.level.adjacent( pos, enemy.pos )
+				|| buff(com.shatteredpixel.shatteredpixeldungeon.items.spells.Silencing.Effect.class) != null
 				|| new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos != enemy.pos) {
 			
 			return super.doAttack( enemy );

@@ -674,6 +674,8 @@ public abstract class Level implements Bundlable {
 		if (mobsToSpawn == null || mobsToSpawn.isEmpty()) {
 			//ported worlds can bring their own mod's monsters, see WorldShuffle
 			mobsToSpawn = WorldShuffle.mobRotation(this, Dungeon.depth);
+			//Community PD has no worlds, its monsters join any floor (level feelings, rare alts)
+			com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CommunitySpawner.adjust(mobsToSpawn, this);
 		}
 
 		Mob m = Reflection.newInstance(mobsToSpawn.remove(0));
