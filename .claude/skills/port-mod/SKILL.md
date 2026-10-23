@@ -236,3 +236,10 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **Mods that rewrite all of Shattered's heroes** (Blue Archive) port as new classes beside the old ones. Prefix every class, talent, subclass, icon and asset constant, put the hooks in a few helper classes, and keep the one line calls in Shattered's files in one rerunnable script (`scripts/bluearchive-hooks.py`). Shattered's `case WARRIOR: default:` switches give new classes the Warrior's talents and items, clear the list in the hook first.
 - **Korean or Chinese only text.** Some mods only filled their `_ko` or `_zh` bundles. Extract the needed lines under this game's keys (`scripts/bluearchive-strings.py extract`), split them in chunks, translate them with parallel agents that get Onyx's writing rules, then `append`.
 - **Copier rules must be idempotent.** A rule whose output still matches its own pattern grows on every `--refix`.
+
+## Added after Re Blue Archive PD (2026-10-22)
+
+- **A mod whose class names clash with ours or with a parallel port** ports fastest with a prefix copier, see `scripts/rebluearchive-copy.py` (every new class gets the prefix, imports, fully qualified names and enum entries are renamed, the mod's added members of Shattered classes go to shim calls by rule). Write hook code in the mod's own names and run `--fix` on it.
+- **Find the hooks with `rebluearchive-hunks.py`** (copy it and point it at the new mod), it shows only the changed hunks that name something the mod added, a few hundred lines instead of thousands.
+- **Icon offsets in use.** Re-ARranged 10000, Blue Archive 30000, Re Blue Archive 50000. Check the highest offset first in `TalentIcon`, `BuffIcon` and `HeroIcon.pick`.
+- **Merging main after a parallel port** that appended to the same enum or list, take main's file and reapply your own small edits, keep both sides only for plain appended lines.
