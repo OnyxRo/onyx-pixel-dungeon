@@ -24,11 +24,11 @@ PRE = r'((?:\(\([A-Za-z.]+\)\s*\w+\)|[A-Za-z_][\w.]*(?:\(\))?)\.)?'
 
 def rewrite(src, field, enum, names):
     alt = '|'.join(names)
-    pq = r'(?:[\w.]+\.)?' + enum
+    pq = r'((?:[\w.]+\.)?' + enum + ')'
     def eq(m):
-        return (m.group(1) or '') + field + '.is(' + enum + '.' + m.group(2) + ')'
+        return (m.group(1) or '') + field + '.is(' + m.group(2) + '.' + m.group(3) + ')'
     def ne(m):
-        return '!' + (m.group(1) or '') + field + '.is(' + enum + '.' + m.group(2) + ')'
+        return '!' + (m.group(1) or '') + field + '.is(' + m.group(2) + '.' + m.group(3) + ')'
     src, a = re.subn(r'(?<![\w.])' + PRE + field + r'\s*==\s*' + pq + r'\.(' + alt + r')\b', eq, src)
     src, b = re.subn(r'(?<![\w.])' + PRE + field + r'\s*!=\s*' + pq + r'\.(' + alt + r')\b', ne, src)
     return src, a + b

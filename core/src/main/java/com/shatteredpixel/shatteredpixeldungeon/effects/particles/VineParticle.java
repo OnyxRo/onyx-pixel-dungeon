@@ -10,7 +10,7 @@ public class VineParticle extends PixelParticle {
     public static final Emitter.Factory FACTORY = new Emitter.Factory() {
         @Override
         public void emit( Emitter emitter, int index, float x, float y ) {
-            emitter.recycle( VineParticle.class ).reset( x, y );
+            ((VineParticle)emitter.recycle( VineParticle.class )).reset( x, y );
         }
         @Override
         public boolean lightMode() {

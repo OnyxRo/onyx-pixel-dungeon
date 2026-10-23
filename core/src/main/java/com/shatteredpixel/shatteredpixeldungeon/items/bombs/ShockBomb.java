@@ -76,7 +76,7 @@ public class ShockBomb extends Bomb {
 			if (power > 0){
 				//32% to 8% regular bomb damage
 				int damage = Math.round(Random.NormalIntRange(5 + Dungeon.scalingDepth(), 10 + 2*Dungeon.scalingDepth()) * (power/50f));
-				if (Dungeon.hero.heroClass == HeroClass.ROGUE){
+				if (Dungeon.hero.heroClass.is(HeroClass.ROGUE)){
 					damage *= 2.5f;
 				}
 				ch.damage(damage, this);

@@ -228,7 +228,7 @@ public class RearrangedTalents {
 		if (talent == DOCTORS_INTUITION) {
 			identifyPotions(1+2*hero.pointsInTalent(talent));
 		}
-		if (talent == MAKESHIFT_BOW && hero.heroClass == HeroClass.ARCHER) {
+		if (talent == MAKESHIFT_BOW && hero.heroClass.is(HeroClass.ARCHER)) {
 			BowWeapon bow = null;
 			switch (hero.pointsInTalent(MAKESHIFT_BOW)) {
 				case 1: bow = new Bow(); break;
@@ -241,7 +241,7 @@ public class RearrangedTalents {
 				give(hero, bow);
 			}
 		}
-		if (talent == ARCHERS_INTUITION && hero.heroClass == HeroClass.ARCHER && hero.pointsInTalent(ARCHERS_INTUITION) == 2) {
+		if (talent == ARCHERS_INTUITION && hero.heroClass.is(HeroClass.ARCHER) && hero.pointsInTalent(ARCHERS_INTUITION) == 2) {
 			BowWeapon bow = new ShortBow();
 			bow.identify();
 			give(hero, bow);
@@ -416,7 +416,7 @@ public class RearrangedTalents {
 		if (hero.hasTalent(DRAWING_ENHANCE) && hero.buff(Sheath.Sheathing.class) != null) {
 			damage += 1+hero.pointsInTalent(DRAWING_ENHANCE);
 		}
-		if (hero.heroClass != HeroClass.SAMURAI && hero.hasTalent(DRAWING_ENHANCE) && enemy.buff(DrawEnhanceMetaTracker.class) == null ) {
+		if (!hero.heroClass.is(HeroClass.SAMURAI) && hero.hasTalent(DRAWING_ENHANCE) && enemy.buff(DrawEnhanceMetaTracker.class) == null ) {
 			damage += Hero.heroDamageIntRange(hero.pointsInTalent(DRAWING_ENHANCE), 2);
 			Buff.affect(enemy, DrawEnhanceMetaTracker.class);
 		}
@@ -505,7 +505,7 @@ public class RearrangedTalents {
 			Buff.prolong(enemy, StoneOfAggression.Aggression.class, duration);
 		}
 
-		if (hero.hasTalent(RADIATION) && hero.heroClass != HeroClass.MEDIC && enemy.buff(RadioactiveMutation.class) == null) {
+		if (hero.hasTalent(RADIATION) && !hero.heroClass.is(HeroClass.MEDIC) && enemy.buff(RadioactiveMutation.class) == null) {
 			if (Random.Float() < 0.03f) {
 				Buff.affect(enemy, RadioactiveMutation.class).set(6-hero.pointsInTalent(RADIATION));
 			}
@@ -551,7 +551,7 @@ public class RearrangedTalents {
 			}
 		}
 
-		if (hero.belongings.attackingWeapon() instanceof MeleeWeapon && hero.heroClass != HeroClass.ADVENTURER && hero.hasTalent(LONG_MACHETE)) {
+		if (hero.belongings.attackingWeapon() instanceof MeleeWeapon && !hero.heroClass.is(HeroClass.ADVENTURER) && hero.hasTalent(LONG_MACHETE)) {
 			int dist = Dungeon.level.distance(hero.pos, enemy.pos)-1;
 			dist = Math.min(dist, hero.pointsInTalent(LONG_MACHETE));
 			damage = (int)Math.round(damage * Math.pow(0.8f, dist));
@@ -573,11 +573,11 @@ public class RearrangedTalents {
 			}
 		}
 
-		if (hero.subClass == HeroSubClass.SLASHER) {
+		if (hero.subClass.is(HeroSubClass.SLASHER)) {
 			Buff.affect(hero, SwordAura.class).hit(damage);
 		}
 
-		if (hero.subClass == HeroSubClass.RESEARCHER && Random.Float() < 0.2f) {
+		if (hero.subClass.is(HeroSubClass.RESEARCHER) && Random.Float() < 0.2f) {
 			Buff.affect(enemy, Ooze.class).set(Ooze.DURATION/4f * (1+0.5f*hero.pointsInTalent(POWERFUL_ACID)));
 		}
 
@@ -586,7 +586,7 @@ public class RearrangedTalents {
 			Buff.affect(enemy, Lucky.LuckProc.class);
 		}
 
-		if (hero.subClass == HeroSubClass.CRUSADER && hero.buff(Bless.class) != null) {
+		if (hero.subClass.is(HeroSubClass.CRUSADER) && hero.buff(Bless.class) != null) {
 			int healAmt = Math.round(damage*0.4f);
 			int excessHeal = healAmt - (hero.HT - hero.HP);
 			hero.heal(healAmt);

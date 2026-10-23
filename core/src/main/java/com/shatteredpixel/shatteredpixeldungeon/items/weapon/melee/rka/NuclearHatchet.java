@@ -61,7 +61,12 @@ public class NuclearHatchet extends MeleeWeapon implements AlchemyWeapon {
     }
 
     @Override
-    protected DuelistAbility duelistAbility() {
+    protected void duelistAbility(Hero hero, Integer target) {
+    	RkaAbility.DuelistAbility a = rkaAbility();
+    	if (a != null) a.execute(hero, target, this);
+    }
+    
+    protected RkaAbility.DuelistAbility rkaAbility() {
         return new Irradiate();
     }
 
@@ -84,7 +89,7 @@ public class NuclearHatchet extends MeleeWeapon implements AlchemyWeapon {
         return info;
     }
 
-    public static class Irradiate extends MeleeAbility {
+    public static class Irradiate extends RkaAbility.MeleeAbility {
 
         @Override
         public void afterHit(Char enemy, boolean hit) {

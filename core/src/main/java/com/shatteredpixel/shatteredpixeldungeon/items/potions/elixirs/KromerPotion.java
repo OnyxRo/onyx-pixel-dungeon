@@ -27,7 +27,7 @@ public class KromerPotion extends Elixir{
         GLog.p( Messages.get(this, "msg_2") );
     }
 
-    private static final ItemSprite.Glowing CHAOTIC = new ItemSprite.Glowing( 0.2f  );
+    private static final ItemSprite.Glowing CHAOTIC = new ItemSprite.Glowing( 0x00FF54, 0.2f );
 
     @Override
     public ItemSprite.Glowing glowing() {

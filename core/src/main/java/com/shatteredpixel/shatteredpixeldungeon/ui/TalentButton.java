@@ -61,7 +61,9 @@ public class TalentButton extends Button {
 		METAMORPH_CHOOSE,
 		METAMORPH_REPLACE,
 		//transformation, picking a negative talent for the Cursed talents challenge
-		NEGATIVE
+		NEGATIVE,
+		//deranged, DERanged PD's Mysterious Merchant takes a point back from a talent
+		MYSTERY_DEGRADE
 	}
 
 	public TalentButton(int tier, Talent talent, int points, Mode mode){
@@ -231,6 +233,17 @@ public class TalentButton extends Button {
 					if (com.shatteredpixel.shatteredpixeldungeon.windows.WndNegative.INSTANCE != null){
 						com.shatteredpixel.shatteredpixeldungeon.windows.WndNegative.INSTANCE.select(talent);
 					}
+				}
+			});
+		} else if (mode == Mode.MYSTERY_DEGRADE && Dungeon.hero != null && Dungeon.hero.isAlive()) {
+			toAdd = new WndInfoTalent(talent, pointsInTalent, new WndInfoTalent.TalentButtonCallback() {
+				@Override
+				public String prompt() {
+					return Messages.titleCase(Messages.get(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MysteryMerchant.class, "degrade_talent"));
+				}
+				@Override
+				public void call() {
+					com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MysteryMerchant.degrade(talent);
 				}
 			});
 		} else {

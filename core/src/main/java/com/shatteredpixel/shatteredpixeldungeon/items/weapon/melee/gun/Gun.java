@@ -258,7 +258,7 @@ public class Gun extends MeleeWeapon {
 		}
 		if (action.equals(AC_RELOAD)) {
 			if (isAllLoaded()){
-				if (hero.heroClass == HeroClass.DUELIST) {
+				if (hero.heroClass.is(HeroClass.DUELIST)) {
 					execute(hero, AC_ABILITY);
 				} else {
 					GLog.w(Messages.get(this, "already_loaded"));
@@ -303,7 +303,7 @@ public class Gun extends MeleeWeapon {
 		onReload();
 
 		if (Dungeon.bullet < shotPerShoot()) {
-			if (hero.heroClass == HeroClass.DUELIST) {
+			if (hero.heroClass.is(HeroClass.DUELIST)) {
 				execute(hero, AC_ABILITY);
 				return;
 			}
@@ -422,7 +422,7 @@ public class Gun extends MeleeWeapon {
 
 		if (hero != null && user == hero) {
 			amount -= hero.pointsInTalent(Talent.RA_FAST_RELOAD);
-			if (((Hero)user).heroClass == HeroClass.GUNNER) {
+			if (((Hero)user).heroClass.is(HeroClass.GUNNER)) {
 				amount -= 1;
 			}
 		}
@@ -758,7 +758,7 @@ public class Gun extends MeleeWeapon {
 
 		@Override
 		public float castDelay(Char user, int dst) {
-			if (hero.subClass == HeroSubClass.GUNSLINGER) {
+			if (hero.subClass.is(HeroSubClass.GUNSLINGER)) {
 				if (user instanceof Hero && ((Hero) user).justMoved)  return 0;
 				else                                                  return delayFactor( user );
 			} else {
@@ -892,7 +892,7 @@ public class Gun extends MeleeWeapon {
 
 			boolean willAggroEnemy = true;
 
-			if (curUser.subClass == HeroSubClass.SPECIALIST && curUser.buff(Invisibility.class) != null ||
+			if (curUser.subClass.is(HeroSubClass.SPECIALIST) && curUser.buff(Invisibility.class) != null ||
 					curUser.hasTalent(Talent.STEALTH_MASTER)) {
 				willAggroEnemy = false;
 			}

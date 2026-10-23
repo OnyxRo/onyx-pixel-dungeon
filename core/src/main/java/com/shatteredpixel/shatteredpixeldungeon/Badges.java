@@ -94,6 +94,7 @@ public class Badges {
 		MASTERY_NECROHERO, //tower
 		MASTERY_TANK, //tower
 		MASTERY_TOWERPRIEST, //tower
+		MASTERY_RAT_KING, //deranged
 		FOUND_RATMOGRIFY,
 
 		//bronze
@@ -192,6 +193,7 @@ public class Badges {
 		BOSS_SLAIN_1_NECROHERO, //tower
 		BOSS_SLAIN_1_TANK, //tower
 		BOSS_SLAIN_1_TOWERPRIEST, //tower
+		BOSS_SLAIN_1_RAT_KING, //deranged
 		BOSS_SLAIN_1_VIKING,
 		BOSS_SLAIN_1_DRAGONKNIGHT,
 		BOSS_SLAIN_1_ALL_CLASSES    ( 54, BadgeType.GLOBAL ),
@@ -263,6 +265,7 @@ public class Badges {
 		VICTORY_NECROHERO, //tower
 		VICTORY_TANK, //tower
 		VICTORY_TOWERPRIEST, //tower
+		VICTORY_RAT_KING, //deranged
 		VICTORY_VIKING,
 		VICTORY_DRAGONKNIGHT,
 		VICTORY_ALL_CLASSES         ( 103, BadgeType.GLOBAL ),
@@ -948,6 +951,7 @@ public class Badges {
 		firstBossClassBadges.put(HeroClass.NECROHERO, Badge.BOSS_SLAIN_1_NECROHERO);
 		firstBossClassBadges.put(HeroClass.TANK, Badge.BOSS_SLAIN_1_TANK);
 		firstBossClassBadges.put(HeroClass.TOWERPRIEST, Badge.BOSS_SLAIN_1_TOWERPRIEST);
+		firstBossClassBadges.put(HeroClass.RAT_KING, Badge.BOSS_SLAIN_1_RAT_KING); //deranged
 		firstBossClassBadges.put(HeroClass.VIKING, Badge.BOSS_SLAIN_1_VIKING);
 		firstBossClassBadges.put(HeroClass.DRAGONKNIGHT, Badge.BOSS_SLAIN_1_DRAGONKNIGHT);
 		//rearranged
@@ -981,6 +985,7 @@ public class Badges {
 		victoryClassBadges.put(HeroClass.NECROHERO, Badge.VICTORY_NECROHERO);
 		victoryClassBadges.put(HeroClass.TANK, Badge.VICTORY_TANK);
 		victoryClassBadges.put(HeroClass.TOWERPRIEST, Badge.VICTORY_TOWERPRIEST);
+		victoryClassBadges.put(HeroClass.RAT_KING, Badge.VICTORY_RAT_KING); //deranged
 		victoryClassBadges.put(HeroClass.VIKING, Badge.VICTORY_VIKING);
 		victoryClassBadges.put(HeroClass.DRAGONKNIGHT, Badge.VICTORY_DRAGONKNIGHT);
 		//rearranged
@@ -1189,6 +1194,9 @@ public class Badges {
 				break;
 			case TOWERPRIEST:
 				badge = Badge.MASTERY_TOWERPRIEST;
+				break;
+			case RAT_KING: //deranged
+				badge = Badge.MASTERY_RAT_KING;
 				break;
 			case VIKING:
 				badge = Badge.MASTERY_VIKING;

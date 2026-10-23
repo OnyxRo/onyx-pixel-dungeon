@@ -64,7 +64,7 @@ public class ConstructWand extends MeleeWeapon implements AlchemyWeapon {
                     && attacker == Dungeon.hero) {
 
                 GuardianKnight guardianKnight = new GuardianKnight();
-                guardianKnight.weapon = this;
+                guardianKnight.setWeapon(this);
                 guardianKnight.pos = attacker.pos + i;
                 guardianKnight.aggro(defender);
                 GameScene.add(guardianKnight);
@@ -86,7 +86,7 @@ public class ConstructWand extends MeleeWeapon implements AlchemyWeapon {
                     && Actor.findChar(Dungeon.hero.pos + i) == null) {
 
                 GuardianKnight guardianKnight = new GuardianKnight();
-                guardianKnight.weapon = this;
+                guardianKnight.setWeapon(this);
                 guardianKnight.pos = Dungeon.hero.pos + i;
                 guardianKnight.HP = guardianKnight.HT = guardianKnight.HT / 2;
                 guardianKnight.aggro(enemy);
@@ -123,7 +123,7 @@ public class ConstructWand extends MeleeWeapon implements AlchemyWeapon {
                     && Actor.findChar(Dungeon.hero.pos + i) == null) {
 
                 GuardianKnight guardianKnight = new GuardianKnight();
-                guardianKnight.weapon = this;
+                guardianKnight.setWeapon(this);
                 guardianKnight.pos = Dungeon.hero.pos + i;
                 GameScene.add(guardianKnight);
                 Dungeon.level.occupyCell(guardianKnight);
@@ -200,6 +200,10 @@ public class ConstructWand extends MeleeWeapon implements AlchemyWeapon {
         public GuardianKnight() {
             HP = HT = 7 + Dungeon.scalingDepth() *3;
             defenseSkill = Dungeon.scalingDepth();
+        }
+
+        public void setWeapon( com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon w ) {
+            weapon = w;
         }
 
         @Override

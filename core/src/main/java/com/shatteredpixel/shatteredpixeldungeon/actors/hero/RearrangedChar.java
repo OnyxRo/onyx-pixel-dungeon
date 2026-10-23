@@ -43,7 +43,7 @@ public class RearrangedChar {
 	public static void useRope( Char attacker, Char enemy ){
 		if (!(attacker instanceof Hero)) return;
 		Hero hero = (Hero) attacker;
-		if (hero.subClass != HeroSubClass.EXPLORER) return;
+		if (!hero.subClass.is(HeroSubClass.EXPLORER)) return;
 		Rope rope = hero.belongings.getItem(Rope.class);
 		KindOfWeapon wep = hero.belongings.attackingWeapon();
 		if (rope == null || !(wep instanceof MeleeWeapon)) return;
@@ -116,10 +116,10 @@ public class RearrangedChar {
 			if (hero.hasTalent(Talent.KINETIC_BATTLE)) {
 				com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(hero, Talent.KineticBattle.class).set();
 			}
-			if (hero.subClass == HeroSubClass.MEDICALOFFICER) {
+			if (hero.subClass.is(HeroSubClass.MEDICALOFFICER)) {
 				com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Command.class).kill();
 			}
-			if (hero.subClass == HeroSubClass.DEATHKNIGHT){
+			if (hero.subClass.is(HeroSubClass.DEATHKNIGHT)){
 				com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulCollect.class).killMob(mob);
 			}
 			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Juggling.kill();
@@ -127,7 +127,7 @@ public class RearrangedChar {
 			com.shatteredpixel.shatteredpixeldungeon.items.Saddle.kill(mob);
 		}
 		//air support kills also give the Medical Officer a command, even past the limit
-		if (cause instanceof com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Command.CASBomb && hero.subClass == HeroSubClass.MEDICALOFFICER) {
+		if (cause instanceof com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Command.CASBomb && hero.subClass.is(HeroSubClass.MEDICALOFFICER)) {
 			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Command.class).kill(true);
 		}
 	}
@@ -173,7 +173,7 @@ public class RearrangedChar {
 
 	//Level.updateFieldOfView, the Samurai's Dragon's Eye and Inner Eye, the Gunner's Tactical Sight
 	public static int mindVisionRange( Hero h, int range ){
-		if (h.hasTalent(Talent.DRAGONS_EYE) && h.heroClass != HeroClass.SAMURAI){
+		if (h.hasTalent(Talent.DRAGONS_EYE) && !h.heroClass.is(HeroClass.SAMURAI)){
 			range = Math.max(range, 1+h.pointsInTalent(Talent.DRAGONS_EYE));
 		}
 		if (h.hasTalent(Talent.DRAGONS_EYE) && h.buff(com.shatteredpixel.shatteredpixeldungeon.items.Sheath.Sheathing.class) != null) {

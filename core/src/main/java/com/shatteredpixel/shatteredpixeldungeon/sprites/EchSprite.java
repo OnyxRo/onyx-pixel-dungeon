@@ -58,7 +58,7 @@ public class EchSprite extends MobSprite {
         if (anim == zap) {
             idle();
 
-            parent.recycle( MissileSprite.class ).
+            ((MissileSprite)parent.recycle( MissileSprite.class )).
                     reset( this, cellToAttack, new RunicMissile(), new Callback() {
                         @Override
                         public void call() {

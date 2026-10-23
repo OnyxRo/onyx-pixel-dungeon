@@ -131,7 +131,7 @@ public class SpellBook extends Item {
                 curUser.busy();
                 ((HeroSprite)curUser.sprite).read();
                 Sample.INSTANCE.play(Assets.Sounds.READ);
-                if (hero.subClass == HeroSubClass.WIZARD) {
+                if (hero.subClass.is(HeroSubClass.WIZARD)) {
                     Buff.affect(hero, SpellBookEmpower.class).set(5*(1+hero.pointsInTalent(Talent.MAGIC_EMPOWER)));
                     if (Random.Float() < hero.pointsInTalent(Talent.SECOND_EFFECT) / 3f) {
                         MagesStaff staff = hero.belongings.getItem(MagesStaff.class);

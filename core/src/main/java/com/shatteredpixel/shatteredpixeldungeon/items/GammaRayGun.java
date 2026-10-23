@@ -146,7 +146,7 @@ public class GammaRayGun extends Item {
                             if (curUser.hasTalent(Talent.RADIATION)) {
                                 Buff.affect(ch, RadioactiveMutation.class).set(6-curUser.pointsInTalent(Talent.RADIATION));
                             }
-                            if (curUser.subClass == HeroSubClass.SAVIOR) {
+                            if (curUser.subClass.is(HeroSubClass.SAVIOR)) {
                                 int allyNumber = 0;
                                 for (Char mob : Actor.chars()) {
                                     if (mob.buff(SaviorAllyBuff.class) != null) {

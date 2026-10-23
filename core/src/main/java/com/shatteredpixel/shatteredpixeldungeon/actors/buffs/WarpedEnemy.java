@@ -1,4 +1,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
+import com.watabou.noosa.particles.Emitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -21,10 +23,25 @@ public class WarpedEnemy extends Buff {
         return Messages.get(this, "name");
     }
 
+    //a purple cloud around warped enemies, the mod drew it with its own sprite state
+    private Emitter cloud;
+
     @Override
     public void fx(boolean on) {
-        if (on) target.sprite.add(CharSprite.State.WARPED);
-        else target.sprite.remove(CharSprite.State.WARPED);
+        cloud = warpFx(this, cloud, on);
+    }
+
+    static Emitter warpFx(Buff b, Emitter cloud, boolean on) {
+        if (on) {
+            if (cloud == null && b.target.sprite != null) {
+                cloud = b.target.sprite.emitter();
+                cloud.pour(ShadowParticle.CURSE, 0.35f);
+            }
+        } else if (cloud != null) {
+            cloud.on = false;
+            cloud = null;
+        }
+        return cloud;
     }
 
     {
@@ -35,10 +52,11 @@ public class WarpedEnemy extends Buff {
 
     //special variant, used for boss buffs
     public static class BossEffect extends Buff {
+        private Emitter cloud;
+
         @Override
         public void fx(boolean on) {
-            if (on) target.sprite.add(CharSprite.State.WARPED);
-            else target.sprite.remove(CharSprite.State.WARPED);
+            cloud = warpFx(this, cloud, on);
         }
 
         {

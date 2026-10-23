@@ -136,7 +136,12 @@ public class BloomingPick extends MeleeWeapon implements AlchemyWeapon {
     }
 
     @Override
-    protected DuelistAbility duelistAbility() {
+    protected void duelistAbility(Hero hero, Integer target) {
+    	RkaAbility.DuelistAbility a = rkaAbility();
+    	if (a != null) a.execute(hero, target, this);
+    }
+    
+    protected RkaAbility.DuelistAbility rkaAbility() {
         return new VineStalling();
     }
 
@@ -159,7 +164,7 @@ public class BloomingPick extends MeleeWeapon implements AlchemyWeapon {
         return info;
     }
 
-    public static class VineStalling extends MeleeAbility {
+    public static class VineStalling extends RkaAbility.MeleeAbility {
 
         @Override
         public float dmgMulti(Char enemy) {
@@ -176,7 +181,7 @@ public class BloomingPick extends MeleeWeapon implements AlchemyWeapon {
             if (enemy.isAlive()) {
                 Buff.affect(enemy, VineCovered.class);
                 float vineTime = (enemy.properties().contains(Char.Property.BOSS) || enemy.properties().contains(Char.Property.MINIBOSS)) ? 5f : 100_000_000f;
-                enemy.spendConstant( vineTime );
+                Buff.prolong(enemy, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis.class, Math.min(vineTime, 1000f));
                 ((Mob) enemy).clearEnemy();
                 for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
                     if (mob.alignment != Char.Alignment.ALLY && Dungeon.level.heroFOV[mob.pos] && Dungeon.level.distance(mob.pos, enemy.pos) <= 3) {
@@ -204,13 +209,12 @@ public class BloomingPick extends MeleeWeapon implements AlchemyWeapon {
             type = buffType.NEGATIVE;
             announced = true;
 
-            properties.add(Char.Property.IMMOVABLE);
         }
 
         @Override
         public void fx(boolean on) {
-            if (on) target.sprite.add(CharSprite.State.VINECOVERED);
-            else    target.sprite.remove(CharSprite.State.VINECOVERED);
+            if (on) target.sprite.add(CharSprite.State.ILLUMINATED);
+            else    target.sprite.remove(CharSprite.State.ILLUMINATED);
         }
 
         @Override

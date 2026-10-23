@@ -1,238 +1,177 @@
+/*
+ * Onyx's Pixel Dungeon
+ * The Rat King's Omni-Ability from DERanged PD (from Rat King PD 2 by zrp200), GPL-3.0. Rewritten for this game
+ * (2026-10-22). It holds one armor ability of Shattered's or Re-ARranged's heroes, or the King's own, and rolls a
+ * new one each time the held one is used. The tier 4 talent points move over to the new ability's talents.
+ * Trinity is left out of the pool, its code asks the hero's armor ability to be Trinity itself.
+ */
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ratking;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.TrinityStorage;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.Trinity;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Transmuting;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
-import com.watabou.noosa.Image;
-import com.watabou.utils.Bundlable;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
 
-import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
+public class OmniAbility extends ArmorAbility {
 
-public class OmniAbility extends ArmorAbility implements TrinityStorage {
+	private ArmorAbility armorAbility = null;
 
-    private ArmorAbility armorAbility = null;
+	public ArmorAbility activeAbility(){
+		return armorAbility;
+	}
 
-    @Override public void use(ClassArmor armor, Hero hero) {
-        if(armorAbility == null) setArmorAbility();
-        else {
-            armorAbility.use(armor, hero);
-            // change armor ability afterwards ( see ClassArmor.useCharge() )
-        }
+	@Override
+	public void use( ClassArmor armor, Hero hero ) {
+		if (armorAbility == null){
+			roll(hero);
+			return;
+		}
+		final ArmorAbility held = armorAbility;
+		if (held.targetingPrompt() == null){
+			fire(held, armor, hero, hero.pos);
+		} else {
+			GameScene.selectCell(new CellSelector.Listener() {
+				@Override
+				public void onSelect(Integer cell) {
+					fire(held, armor, hero, cell);
+				}
 
-    }
-    @Override public void activate(ClassArmor armor, Hero hero, Integer target) {/*do nothing*/}
+				@Override
+				public String prompt() {
+					return held.targetingPrompt();
+				}
+			});
+		}
+	}
 
-    // talent choosing
-    public ArmorAbility activeAbility() { return armorAbility; }
-    public void setArmorAbility() {
-        Set<ArmorAbility> pool = new HashSet<>(abilities);
-        pool.removeAll(activeAbilities());
+	private void fire( ArmorAbility held, ClassArmor armor, Hero hero, Integer cell ){
+		float before = armor.charge;
+		held.activateFor(armor, hero, cell);
+		//a new ability once the held one has been used
+		if (armor.charge < before && armorAbility == held) roll(hero);
+	}
 
-        // Rat King's abilities show up less.
-        // fixme should I weight things to attempt to 'even' out the results of rng?
-        if(Random.Int(2) == 0) {
-            //pool.remove(new Wrath());
-            if (Random.Int(4) == 0) pool.remove(new Ratmogrify());
-        }
+	@Override
+	protected void activate( ClassArmor armor, Hero hero, Integer target ) {
+		//use() does the work
+	}
 
-        pool.remove(armorAbility);
+	private static ArrayList<ArmorAbility> pool(){
+		ArrayList<ArmorAbility> pool = new ArrayList<>();
+		for (HeroClass cls : HeroClass.values()){
+			if (cls != HeroClass.RAT_KING && !Dungeon_shares(cls)) continue;
+			for (ArmorAbility a : cls.armorAbilities()){
+				if (a instanceof OmniAbility || a instanceof Trinity) continue;
+				pool.add(a);
+			}
+		}
+		return pool;
+	}
 
-        new Transmuting(
-                armorAbility != null ? new HeroIcon(armorAbility) : new Image(),
-                new HeroIcon(armorAbility = Objects.requireNonNull(Random.element(pool)))
-        ).show(hero);
-        Item.updateQuickslot();
-        if(hero.talents.size() >= 4) {
-            hero.talents.set(3, transferTalents(armorAbility));
-        }
-    }
+	private static boolean Dungeon_shares( HeroClass cls ){
+		return com.shatteredpixel.shatteredpixeldungeon.actors.hero.DerangedKing.sharesClass(cls);
+	}
 
-    @Override
-    public int targetedPos(Char user, int dst) {
-        return armorAbility != null ? armorAbility.targetedPos(user, dst) :
-                super.targetedPos(user, dst);
-    }
+	public void roll( Hero hero ){
+		ArrayList<ArmorAbility> pool = pool();
+		//the Rat King's own abilities show up less
+		if (Random.Int(8) == 0){
+			for (Iterator<ArmorAbility> i = pool.iterator(); i.hasNext();){
+				if (i.next() instanceof Ratmogrify) i.remove();
+			}
+		}
+		if (armorAbility != null){
+			for (Iterator<ArmorAbility> i = pool.iterator(); i.hasNext();){
+				if (i.next().getClass() == armorAbility.getClass()) i.remove();
+			}
+		}
+		armorAbility = Random.element(pool);
+		GLog.p( Messages.get(this, "rolled", armorAbility.name()) );
+		Item.updateQuickslot();
+		if (hero.talents.size() >= 4){
+			hero.talents.set(3, transferTalents(hero, armorAbility));
+		}
+	}
 
-    @Override public boolean useTargeting() {
-        return armorAbility != null ? armorAbility.useTargeting() : super.useTargeting();
-    }
+	//the points put in tier 4 move over to the new ability's talents in order
+	private static LinkedHashMap<Talent, Integer> transferTalents( Hero hero, ArmorAbility ability ){
+		LinkedHashMap<Talent, Integer> talents = new LinkedHashMap<>();
+		Iterator<Integer> points = hero.talents.get(3).values().iterator();
+		for (Talent t : ability.talents()){
+			talents.put(t, points.hasNext() ? points.next() : 0);
+		}
+		return talents;
+	}
 
-    @Override public float chargeUse(Hero hero) {
-        return armorAbility != null ? armorAbility.chargeUse(hero) : 0;
-    }
+	@Override
+	public String targetingPrompt() {
+		return armorAbility != null ? armorAbility.targetingPrompt() : null;
+	}
 
-    @Override
-    public String desc() {
-        String desc = Messages.get(this,"desc");
-        if(armorAbility != null) {
-            desc += "\n\n"
-                    + Messages.get(this, "ability_desc")
-                    + "\n" + armorAbility.desc();
-        }
-        return desc;
-    }
+	@Override
+	public boolean useTargeting() {
+		return armorAbility != null ? armorAbility.useTargeting() : super.useTargeting();
+	}
 
-    @Override
-    public String shortDesc() {
-        String desc = super.shortDesc();
-        if(armorAbility != null) {
-            desc += "\n\n"
-                    + Messages.get(this, "ability_desc")
-                    + "\n" + armorAbility.shortDesc();
-        }
-        return desc;
-    }
+	@Override
+	public float chargeUse( Hero hero ) {
+		return armorAbility != null ? armorAbility.chargeUse(hero) : 0;
+	}
 
-    @Override public Talent[] talents() {
-        if (armorAbility != null){
-            ArrayList<Talent> talents = new ArrayList<>(Arrays.asList(armorAbility.talents()));
-            return talents.toArray(new Talent[0]);
-        }
-        return new Talent[0];
-    }
+	@Override
+	public String desc() {
+		String desc = Messages.get(this, "desc");
+		if (armorAbility != null){
+			desc += "\n\n" + Messages.get(this, "ability_desc") + "\n" + armorAbility.desc();
+		}
+		return desc;
+	}
 
-    @Override
-    public String actionName() {
-        return armorAbility != null ? armorAbility.actionName() : super.actionName();
-    }
+	@Override
+	public String shortDesc() {
+		String desc = super.shortDesc();
+		if (armorAbility != null){
+			desc += "\n\n" + Messages.get(this, "ability_desc") + "\n" + armorAbility.shortDesc();
+		}
+		return desc;
+	}
 
-    // note that if any other class ends up using bundling I'll need to store the ability list as well.
-    private static final String ABILITY = "armorAbility";
-    @Override public void storeInBundle(Bundle bundle) {
-        super.storeInBundle(bundle);
-        bundle.put(ABILITY, armorAbility);
-    }
-    @Override public void restoreFromBundle(Bundle bundle) {
-        super.restoreFromBundle(bundle);
-        armorAbility = (ArmorAbility) bundle.get(ABILITY);
-    }
-    // interactions with talent-related stuff.
+	@Override
+	public int icon() {
+		return armorAbility != null ? armorAbility.icon() : HeroIcon.RATMOGRIFY;
+	}
 
-    /** establishes that these interactions need to be performed. **/
-    public static boolean isApplicable() {
-        return hero != null && hero.armorAbility instanceof OmniAbility;
-    }
-    /** omniability checks based on ability usage. **/
-    public static void markAbilityUsed(ArmorAbility ability) {
-        if(isApplicable()) {
-            OmniAbility omniAbility = (OmniAbility) hero.armorAbility;
-            if(ability.equals(omniAbility.armorAbility)) omniAbility.setArmorAbility();
-        }
-    }
-    public static LinkedHashMap<Talent, Integer> transferTalents(ArmorAbility armorAbility) {
-        LinkedHashMap<Talent, Integer> talents = new LinkedHashMap<>();
-        if(hero.talents.size() < 4) return talents;
-        Iterator<Integer> iterator = hero.talents.get(3).values().iterator();
-        for(Talent talent : armorAbility.talents()) {
-            talents.put(talent, iterator.hasNext() ? iterator.next() : 0);
-        }
+	@Override
+	public Talent[] talents() {
+		return armorAbility != null ? armorAbility.talents() : new Talent[0];
+	}
 
-        return talents;
-    }
-    /** returns the amount of points that would be in that talent if it corresponded, otherwise return null.
-     * It is worth noting that this is only checked after a standard check would have failed, and the stored ability does not use this method.
-     * If I wanted to exclude a talent from being transferred unless it's currently in the active ability, then here would be the place to do it.
-     * **/
-    public static Integer findTalent(Talent talent) {
-        for(ArmorAbility ability : trackedAbilities()) {
-            for(Talent t : ability.talents()) {
-                if(t == talent) return transferTalents(ability).get(talent);
-            }
-        }
-        return null;
-    }
+	private static final String ABILITY = "armorAbility";
 
-    /** Abilities that are still functioning and thus need access to their respective talents.
-     * Anything in here will have their talents available for lookup by the talent system.
-     * These can still be rolled by OmniAbility.
-     **/
-    public static Set<ArmorAbility> trackedAbilities() {
-        HashSet<ArmorAbility> r = new HashSet();
-        if(isApplicable()) for(ArmorAbility ability : abilities) {
-            if((ability.isActive(hero) || ability.isTracked(hero))
-                    && !ability.equals(( (OmniAbility) hero.armorAbility ).armorAbility)) {
-                r.add(ability);
-            }
-        }
-        return r;
-    }
+	@Override
+	public void storeInBundle( Bundle bundle ) {
+		super.storeInBundle(bundle);
+		if (armorAbility != null) bundle.put(ABILITY, armorAbility);
+	}
 
-    /** set of all SELECTABLE additional abilities.
-     * Anything in here cannot be rolled by OmniAbility. **/
-    public static Set<ArmorAbility> activeAbilities() {
-        Set<ArmorAbility> abilities = trackedAbilities();
-        for(Iterator<ArmorAbility> i = abilities.iterator(); i.hasNext();) {
-            ArmorAbility aa = i.next();
-            if( !aa.isActive(hero) ) i.remove();
-        }
-        return abilities;
-    }
-    /** Allows you to select previous actions that still can be interacted with when applicable.
-     *  Used with ClassArmor.java
-     **/
-    public static Map<String, ArmorAbility> additionalActions() {
-        HashMap<String, ArmorAbility> map = new HashMap<>();
-        for(ArmorAbility ability : activeAbilities()) map.put(ability.actionName(), ability);
-        return map;
-    }
-    /** the pool by which abilities are searched.
-     *
-     * Anything not in this pool won't be rolled by omniability, and does not have to accommodate it.
-     * By default everything is in this pool by default, however.
-     **/
-    private static final Set<ArmorAbility> abilities = new HashSet(); static {
-        for(HeroClass cls : HeroClass.values()) {
-            abilities.addAll(Arrays.asList(cls.armorAbilities()));
-        }
-        abilities.remove(new OmniAbility());
-        //abilities.add(new Ratmogrify());
-    }
-
-    // trinity compat
-
-    public Bundlable bodyForm() {
-        return ((Trinity)armorAbility).bodyForm();
-    }
-
-    public void bodyForm(Bundlable bodyForm) {
-        ((Trinity)armorAbility).bodyForm(bodyForm);
-    }
-
-    public Bundlable mindForm() {
-        return ((Trinity)armorAbility).mindForm();
-    }
-
-    public void mindForm(Bundlable bodyForm) {
-        ((Trinity)armorAbility).mindForm(bodyForm);
-    }
-
-    public Bundlable spiritForm() {
-        return ((Trinity)armorAbility).spiritForm();
-    }
-
-    public void spiritForm(Bundlable bodyForm) {
-        ((Trinity)armorAbility).spiritForm(bodyForm);
-    }
+	@Override
+	public void restoreFromBundle( Bundle bundle ) {
+		super.restoreFromBundle(bundle);
+		if (bundle.contains(ABILITY)) armorAbility = (ArmorAbility) bundle.get(ABILITY);
+	}
 }

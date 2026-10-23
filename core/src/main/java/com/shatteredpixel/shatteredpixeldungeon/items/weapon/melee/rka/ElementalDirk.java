@@ -119,7 +119,7 @@ public class ElementalDirk extends AssassinsBlade implements AlchemyWeapon {
 
     @Override
     public int targetingPos(Hero user, int dst) {
-        return new Ballistica( user.pos, dst, Ballistica.FRIENDLY_MAGIC_BOLT ).collisionPos;
+        return new Ballistica( user.pos, dst, Ballistica.MAGIC_BOLT ).collisionPos;
     }
 
     @Override
@@ -136,7 +136,7 @@ public class ElementalDirk extends AssassinsBlade implements AlchemyWeapon {
         Invisibility.dispel();
 
         ElementalDirkPower currentPower = Random.element(ElementalDirkPower.values());
-        final Ballistica shot = new Ballistica( curUser.pos, target, Ballistica.FRIENDLY_MAGIC_BOLT/*,
+        final Ballistica shot = new Ballistica( curUser.pos, target, Ballistica.MAGIC_BOLT/*,
                 curUser.buff(ChampionEnemy.Projecting.class) != null && curUser.pointsInTalent(Talent.RK_PROJECT) == 3*/);
         final int DEBUFF_DURATION = 10;
 
@@ -162,7 +162,7 @@ public class ElementalDirk extends AssassinsBlade implements AlchemyWeapon {
                             } else if (debuff == Poison.class){
                                 Buff.affect(ch, Poison.class).set(DEBUFF_DURATION);
                             } else {
-                                Buff.affect(ch, debuff).postpone(ch.resist(debuff)*DEBUFF_DURATION);
+                                Buff.prolong(ch, (Class<com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff>)(Class)debuff, DEBUFF_DURATION);
                             }
                         }
                     } else {

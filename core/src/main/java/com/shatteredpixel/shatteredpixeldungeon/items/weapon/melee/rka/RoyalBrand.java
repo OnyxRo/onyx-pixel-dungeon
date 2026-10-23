@@ -47,7 +47,7 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class RoyalBrand extends Crossbow implements Talent.SpellbladeForgeryWeapon, AlchemyWeapon {
+public class RoyalBrand extends Crossbow implements RkaSpellblade, AlchemyWeapon {
     {
         image = ItemSpriteSheet.ROYAL_SWORD;
         hitSound = Assets.Sounds.HIT_STRONG;

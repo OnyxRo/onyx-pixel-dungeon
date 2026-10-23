@@ -71,7 +71,7 @@ public class Kromer extends Item {
         return actions;
     }
 
-    private static final ItemSprite.Glowing CHAOTIC = new ItemSprite.Glowing( 0.2f  );
+    private static final ItemSprite.Glowing CHAOTIC = new ItemSprite.Glowing( 0x00FF54, 0.2f );
 
     @Override
     public void execute(Hero hero, String action) {
@@ -99,7 +99,7 @@ public class Kromer extends Item {
                         do {
                             cls = Random.element(HeroClass.values());
                         } while (cls == Dungeon.hero.heroClass);
-                        randomTalent = Random.element(Talent.talentList(cls, index + 1));
+                        randomTalent = Random.element(com.shatteredpixel.shatteredpixeldungeon.actors.hero.DerangedKing.talentList(cls, index + 1));
                     }
                     Dungeon.hero.talents.get(index).put(randomTalent, 0);
                     Sample.INSTANCE.play( Assets.Sounds.LEVELUP );
@@ -171,8 +171,8 @@ public class Kromer extends Item {
                     new Endure(), new Awake(), new ShadowBlade(), new Root(), new Sprout(),
                     new Hunt(), new Snipe(), new ElementalStrike(), new Riot(), new FirstAidKit(),
                     new NaturesPower(), new HolyShield(), new HealingGenerator(), new AngelWing(),
-                    new Wrath()})
-                ability.activate(armor, Dungeon.hero, cell);
+                    new KingsWrath()})
+                ability.activateFor(armor, Dungeon.hero, cell);
             WarpDebuff.inflict(120, 0.33f);
         }), -1);
     }

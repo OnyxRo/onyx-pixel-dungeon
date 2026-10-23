@@ -56,7 +56,7 @@ public class Build extends Buff implements ActionIndicator.Action {
     public boolean attachTo(Char target) {
         if (super.attachTo(target)){
             if (hero != null) {
-                if (hero.subClass == HeroSubClass.ENGINEER) {
+                if (hero.subClass.is(HeroSubClass.ENGINEER)) {
                     ActionIndicator.setAction(this);
                 }
             }

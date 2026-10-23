@@ -23,6 +23,12 @@
  */
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.watabou.noosa.audio.Sample;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 
 import static com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.MAX_TALENT_TIERS;
 
@@ -118,14 +124,44 @@ public class MysteryMerchant extends NPC {
         });
     }
 
-    @Override
-    public Notes.Landmark landmark() {
-        return Notes.Landmark.MYSTERY_MERCHANT;
+    //a metamorphosis bought from the merchant, called by ScrollOfMetamorphosis
+    public static void onMetamorphSold( Talent oldTalent, Talent newTalent ){
+        for (Char ch : Actor.chars()){
+            if (ch instanceof MysteryMerchant){
+                ((MysteryMerchant) ch).yell( Messages.get(MysteryMerchant.class, "transmute_complete", oldTalent.title(), newTalent.title() ));
+            }
+        }
+        Stats.handlePurchase();
+    }
+
+    //a talent point taken back, called by TalentButton
+    public static void degrade( Talent talent ){
+        if (WndDegradeChoose.INSTANCE != null){
+            WndDegradeChoose.INSTANCE.hide();
+        }
+        for (LinkedHashMap<Talent, Integer> tier : Dungeon.hero.talents){
+            Integer pts = tier.get(talent);
+            if (pts != null) tier.put(talent, Math.max(0, pts - 1));
+        }
+        Dungeon.observe();
+        Item.updateQuickslot();
+        Dungeon.hero.sprite.emitter().start(Speck.factory(Speck.CHANGE), 0.2f, 10);
+        Sample.INSTANCE.play(Assets.Sounds.DEGRADE);
+        for (Char ch : Actor.chars()){
+            if (ch instanceof MysteryMerchant){
+                ((MysteryMerchant) ch).yell( Messages.get(MysteryMerchant.class, "degrade_complete", talent.title() ));
+            }
+        }
+        Stats.handlePurchase();
+    }
+
+    private static int chapterNumber(){
+        return Math.max(Dungeon.depth / 5, 0);
     }
 
     @Override
     protected boolean act() {
-        if (Dungeon.hero.buff(AscensionChallenge.class) != null || Stats.lastChapter < Dungeon.chapterNumber()){
+        if (Dungeon.hero.buff(AscensionChallenge.class) != null || Stats.lastChapter < chapterNumber()){
             die(null);
             return true;
         }
@@ -164,32 +200,50 @@ public class MysteryMerchant extends NPC {
         private static boolean hasSeenBefore;
 
         private static int lastChapter;
+        private static int rooms;
 
         public static void reset() {
             pricing = 400;
             lastChapter = 0;
             hasSeenBefore = false;
+            rooms = 0;
+        }
+
+        //one merchant in each set of five floors of the main dungeon, as in the mod
+        public static boolean roomNeeded(){
+            if (Dungeon.branch != 0 || Dungeon.depth < 2 || Dungeon.depth > 24 || Dungeon.depth % 5 == 0) return false;
+            int leftThisSet = 1 - (rooms - (Dungeon.depth / 5));
+            if (leftThisSet <= 0) return false;
+            int floorThisSet = Dungeon.depth % 5;
+            return com.watabou.utils.Random.Int(5 - floorThisSet) < leftThisSet;
+        }
+
+        public static void roomPlaced(){
+            rooms++;
         }
 
         private static final String PRICING = "pricing";
         private static final String LAST_CHAPTER = "last_chapter";
         private static final String SEEN = "seen";
+        private static final String ROOMS = "merchant_rooms";
 
         public static void storeInBundle( Bundle bundle ){
             bundle.put(PRICING, pricing);
             bundle.put(LAST_CHAPTER, lastChapter);
             bundle.put(SEEN, hasSeenBefore);
+            bundle.put(ROOMS, rooms);
         }
 
         public static void restoreFromBundle( Bundle bundle ) {
             pricing = bundle.getInt(PRICING);
             lastChapter = bundle.getInt(LAST_CHAPTER);
             hasSeenBefore = bundle.getBoolean(SEEN);
+            rooms = bundle.getInt(ROOMS);
+            if (!bundle.contains(PRICING)) reset();
         }
 
         public static void updateChapter(){
-            lastChapter = Dungeon.chapterNumber();
-            Notes.remove(Notes.Landmark.MYSTERY_MERCHANT);
+            lastChapter = chapterNumber();
         }
 
         public static void handlePurchase(){

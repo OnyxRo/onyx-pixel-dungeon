@@ -152,13 +152,13 @@ public class Artifact extends KindofMisc {
 	}
 
 	public static void artifactProc(Char target, int artifLevel, int chargesUsed){
-		if (Dungeon.hero.subClass == HeroSubClass.PRIEST && target.buff(GuidingLight.Illuminated.class) != null) {
+		if (Dungeon.hero.subClass.is(HeroSubClass.PRIEST) && target.buff(GuidingLight.Illuminated.class) != null) {
 			target.buff(GuidingLight.Illuminated.class).detach();
 			target.damage(5+Dungeon.hero.lvl, GuidingLight.INSTANCE);
 		}
 
 		if (target.alignment != Char.Alignment.ALLY
-				&& Dungeon.hero.heroClass != HeroClass.CLERIC
+				&& !Dungeon.hero.heroClass.is(HeroClass.CLERIC)
 				&& Dungeon.hero.hasTalent(Talent.SEARING_LIGHT)
 				&& Dungeon.hero.buff(Talent.SearingLightCooldown.class) == null){
 			Buff.affect(target, GuidingLight.Illuminated.class);
@@ -167,7 +167,7 @@ public class Artifact extends KindofMisc {
 		com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.wardingLightItem(); //rearranged
 
 		if (target.alignment != Char.Alignment.ALLY
-				&& Dungeon.hero.heroClass != HeroClass.CLERIC
+				&& !Dungeon.hero.heroClass.is(HeroClass.CLERIC)
 				&& Dungeon.hero.hasTalent(Talent.SUNRAY)){
 			// 15/25% chance
 			if (Random.Int(20) < 1 + 2*Dungeon.hero.pointsInTalent(Talent.SUNRAY)){

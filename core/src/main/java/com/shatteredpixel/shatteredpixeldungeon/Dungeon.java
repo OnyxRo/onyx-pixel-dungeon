@@ -432,6 +432,7 @@ public class Dungeon {
 		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.FriendlyThief.Quest.reset();
 		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper.Quest.reset();
 		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.BountyHunter.Quest.reset();
+		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MysteryMerchant.Stats.reset(); //deranged
 
 		hero = new Hero();
 		hero.live();
@@ -913,6 +914,7 @@ public class Dungeon {
 			com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.FriendlyThief.Quest.storeInBundle( quests );
 			com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper.Quest.storeInBundle( quests );
 			com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.BountyHunter.Quest.storeInBundle( quests );
+			com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MysteryMerchant.Stats.storeInBundle( quests ); //deranged
 			bundle.put( QUESTS, quests );
 			
 			SpecialRoom.storeRoomsInBundle( bundle );
@@ -1043,6 +1045,7 @@ public class Dungeon {
 				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.FriendlyThief.Quest.restoreFromBundle( quests );
 				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper.Quest.restoreFromBundle( quests );
 				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.BountyHunter.Quest.restoreFromBundle( quests );
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MysteryMerchant.Stats.restoreFromBundle( quests ); //deranged
 			} else {
 				Ghost.Quest.reset();
 				Wandmaker.Quest.reset();

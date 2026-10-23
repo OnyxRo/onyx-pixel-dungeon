@@ -65,17 +65,33 @@ public class MeleeWeapon extends Weapon {
 	public static String AC_ABILITY = "ABILITY";
 	public static String AC_SCRAP = "SCRAP"; //rearranged, the Gunner and the Archer take weapons apart
 
+	//deranged, a weapon infused with Pipis by DERanged PD's Pipisfusion hits twice as hard and warps its wielder
+	public boolean trollers = false;
+	private static final String KROMER = "kromer";
+
+	@Override
+	public void storeInBundle( com.watabou.utils.Bundle bundle ) {
+		super.storeInBundle(bundle);
+		if (trollers) bundle.put(KROMER, true);
+	}
+
+	@Override
+	public void restoreFromBundle( com.watabou.utils.Bundle bundle ) {
+		super.restoreFromBundle(bundle);
+		trollers = bundle.getBoolean(KROMER);
+	}
+
 	@Override
 	public void activate(Char ch) {
 		super.activate(ch);
-		if (ch instanceof Hero && ((Hero) ch).heroClass == HeroClass.DUELIST){
+		if (ch instanceof Hero && ((Hero) ch).heroClass.is(HeroClass.DUELIST)){
 			Buff.affect(ch, Charger.class);
 		}
 	}
 
 	@Override
 	public String defaultAction() {
-		if (Dungeon.hero != null && (Dungeon.hero.heroClass == HeroClass.DUELIST
+		if (Dungeon.hero != null && (Dungeon.hero.heroClass.is(HeroClass.DUELIST)
 			|| Dungeon.hero.hasTalent(Talent.SWIFT_EQUIP))
 			&& !(this instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.Gun)
 			&& !(this instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.bow.BowWeapon)){
@@ -88,11 +104,11 @@ public class MeleeWeapon extends Weapon {
 	@Override
 	public ArrayList<String> actions(Hero hero) {
 		ArrayList<String> actions = super.actions(hero);
-		if (isEquipped(hero) && hero.heroClass == HeroClass.DUELIST){
+		if (isEquipped(hero) && hero.heroClass.is(HeroClass.DUELIST)){
 			actions.add(AC_ABILITY);
 		}
 		//rearranged
-		if (!isEquipped(hero) && (hero.heroClass == HeroClass.GUNNER || hero.heroClass == HeroClass.ARCHER)
+		if (!isEquipped(hero) && (hero.heroClass.is(HeroClass.GUNNER) || hero.heroClass.is(HeroClass.ARCHER))
 				&& !(this instanceof com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe)) {
 			actions.add(AC_SCRAP);
 		}
@@ -127,13 +143,13 @@ public class MeleeWeapon extends Weapon {
 					if (hero.buff(Talent.SwiftEquipCooldown.class) == null
 						|| hero.buff(Talent.SwiftEquipCooldown.class).hasSecondUse()){
 						execute(hero, AC_EQUIP);
-					} else if (hero.heroClass == HeroClass.DUELIST) {
+					} else if (hero.heroClass.is(HeroClass.DUELIST)) {
 						GLog.w(Messages.get(this, "ability_need_equip"));
 					}
-				} else if (hero.heroClass == HeroClass.DUELIST) {
+				} else if (hero.heroClass.is(HeroClass.DUELIST)) {
 					GLog.w(Messages.get(this, "ability_need_equip"));
 				}
-			} else if (hero.heroClass != HeroClass.DUELIST){
+			} else if (!hero.heroClass.is(HeroClass.DUELIST)){
 				//do nothing
 			} else if (STRReq() > hero.STR()){
 				GLog.w(Messages.get(this, "ability_low_str"));
@@ -186,8 +202,8 @@ public class MeleeWeapon extends Weapon {
 
 	public static boolean canUseWeaponAbility( Hero hero ) {
 		return hero != null
-				&& (hero.heroClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.DUELIST
-				|| hero.subClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.CHAMPION
+				&& (hero.heroClass.is(HeroClass.DUELIST)
+				|| hero.subClass.is(HeroSubClass.CHAMPION)
 				|| hero.hasMartialMastery()
 				|| hero.hasTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.MARTIAL_TRAIN));
 	}
@@ -301,7 +317,7 @@ public class MeleeWeapon extends Weapon {
 		}
 		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.yinYangPay(hero, charger); //transformation, Yin Yang Balance
 
-		if (hero.heroClass == HeroClass.DUELIST
+		if (hero.heroClass.is(HeroClass.DUELIST)
 				&& hero.hasTalent(Talent.AGGRESSIVE_BARRIER)
 				&& (hero.HP / (float)hero.HT) <= 0.5f){
 			int shieldAmt = 1 + 2*hero.pointsInTalent(Talent.AGGRESSIVE_BARRIER);
@@ -391,6 +407,10 @@ public class MeleeWeapon extends Weapon {
 	public int proc(Char attacker, Char defender, int damage) {
 		if (critChance > 0f && com.watabou.utils.Random.Float() < critChance) {
 			damage = Math.round(damage * critMult);
+		}
+		if (trollers) { //deranged
+			damage *= 2;
+			if (attacker == com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero) com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WarpDebuff.inflict(10f, 1f);
 		}
 		return super.proc(attacker, defender, damage);
 	}
@@ -497,7 +517,7 @@ public class MeleeWeapon extends Weapon {
 		}
 
 		if (isEquipped(Dungeon.hero) && !hasCurseEnchant() && Dungeon.hero.buff(HolyWeapon.HolyWepBuff.class) != null
-				&& (Dungeon.hero.subClass != HeroSubClass.PALADIN || enchantment == null)){
+				&& (!Dungeon.hero.subClass.is(HeroSubClass.PALADIN) || enchantment == null)){
 			info += "\n\n" + Messages.capitalize(Messages.get(Weapon.class, "enchanted", Messages.get(HolyWeapon.class, "ench_name", Messages.get(Enchantment.class, "enchant"))));
 			info += " " + Messages.get(HolyWeapon.class, "ench_desc");
 		} else if (enchantment != null && (cursedKnown || !enchantment.curse())){
@@ -521,7 +541,7 @@ public class MeleeWeapon extends Weapon {
 		}
 
 		//the mage's staff has no ability as it can only be gained by the mage
-		if (Dungeon.hero != null && Dungeon.hero.heroClass == HeroClass.DUELIST && !(this instanceof MagesStaff)){
+		if (Dungeon.hero != null && Dungeon.hero.heroClass.is(HeroClass.DUELIST) && !(this instanceof MagesStaff)){
 			info += "\n\n" + abilityInfo();
 		}
 
@@ -530,6 +550,7 @@ public class MeleeWeapon extends Weapon {
 			info += "\n\n" + Messages.get(Weapon.class, "critchance", Messages.decimalFormat("#.##", 100*Dungeon.hero.critChance(this)));
 		}
 		
+		if (trollers) info += "\n\n" + Messages.get(MeleeWeapon.class, "cursed_kromer"); //deranged
 		return info;
 	}
 	
@@ -595,7 +616,7 @@ public class MeleeWeapon extends Weapon {
 					float chargeToGain = 1/(60f-1.5f*(chargeCap()-charges));
 
 					//40 to 30 turns per charge for champion
-					if (Dungeon.hero.subClass == HeroSubClass.CHAMPION){
+					if (Dungeon.hero.subClass.is(HeroSubClass.CHAMPION)){
 						chargeToGain *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.championRechargeBonus(Dungeon.hero); //transformation, Weapon Ability Master
 					}
 
@@ -656,13 +677,13 @@ public class MeleeWeapon extends Weapon {
 
 		public int chargeCap(){
 			//Transformation PD's Martial Train, a small pool for heroes that only have the talent
-			if (Dungeon.hero.heroClass != com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.DUELIST
-					&& Dungeon.hero.subClass != HeroSubClass.CHAMPION && !Dungeon.hero.hasMartialMastery()
+			if (!Dungeon.hero.heroClass.is(HeroClass.DUELIST)
+					&& !Dungeon.hero.subClass.is(HeroSubClass.CHAMPION) && !Dungeon.hero.hasMartialMastery()
 					&& Dungeon.hero.hasTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.MARTIAL_TRAIN)){
 				return 1 + Dungeon.hero.pointsInTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.MARTIAL_TRAIN);
 			}
 			//caps at level 19 with 8 or 10 charges
-			if (Dungeon.hero.subClass == HeroSubClass.CHAMPION){
+			if (Dungeon.hero.subClass.is(HeroSubClass.CHAMPION)){
 				return Math.min(10, 4 + (Dungeon.hero.lvl - 1) / 3) + com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.championChargeBonus(Dungeon.hero)
 						+ Dungeon.hero.pointsInTalent(Talent.ACCUMULATION); //rearranged
 			} else {
@@ -749,7 +770,7 @@ public class MeleeWeapon extends Weapon {
 		@Override
 		public void doAction() {
 			if (FencerDash.isFencer()) { FencerDash.doAction(this); return; } //rearranged
-			if (Dungeon.hero.subClass != HeroSubClass.CHAMPION){
+			if (!Dungeon.hero.subClass.is(HeroSubClass.CHAMPION)){
 				return;
 			}
 

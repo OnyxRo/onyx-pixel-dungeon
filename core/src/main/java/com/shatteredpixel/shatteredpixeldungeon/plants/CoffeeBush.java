@@ -48,13 +48,13 @@ public class CoffeeBush extends FoodPlant {
 			do {
 				ofs = PathFinder.NEIGHBOURS9[Random.Int(9)];
 			} while (!Dungeon.level.passable[pos + ofs]);
-			if (ch instanceof Hero && ((Hero) ch).subClass == HeroSubClass.WARDEN && Random.Float() > 0.8f) {
+			if (ch instanceof Hero && ((Hero) ch).subClass.is(HeroSubClass.WARDEN) && Random.Float() > 0.8f) {
 				Dungeon.level.drop( new Coffee(), pos + ofs ).sprite.drop( pos );
 			} else {
 				Dungeon.level.drop( new CoffeeBean(), pos + ofs ).sprite.drop( pos );
 			}
 		}
-		if (ch instanceof Hero && ((Hero) ch).subClass == HeroSubClass.WARDEN) {
+		if (ch instanceof Hero && ((Hero) ch).subClass.is(HeroSubClass.WARDEN)) {
 			Buff.affect(ch, CaffeineRush.class, 50f);
 		}
 	}

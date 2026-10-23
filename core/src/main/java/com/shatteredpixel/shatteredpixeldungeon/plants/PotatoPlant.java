@@ -43,7 +43,7 @@ public class PotatoPlant extends FoodPlant {
 	@Override
 	public void activate( Char ch ) {
 		Dungeon.level.drop( new Potato(), pos ).sprite.drop( pos );
-		if (ch instanceof Hero && ((Hero) ch).subClass == HeroSubClass.WARDEN ) {
+		if (ch instanceof Hero && ((Hero) ch).subClass.is(HeroSubClass.WARDEN) ) {
 			for( int i : PathFinder.NEIGHBOURS9) {
 				if (!Dungeon.level.solid[ch.pos + i]) {
 					Splash.at( ch.pos + i, 0x483026, 3);

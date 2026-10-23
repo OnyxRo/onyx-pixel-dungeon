@@ -51,12 +51,12 @@ public class Painting extends Item {
 
 		switch (id) {
 			case 4:
-				if (Dungeon.hero.heroClass == HeroClass.WARRIOR) {
+				if (Dungeon.hero.heroClass.is(HeroClass.WARRIOR)) {
 					desc += Messages.get(this, "warrior", Dungeon.hero.name());
 				}
 				break;
 			case 5:
-				if (Dungeon.hero.heroClass == HeroClass.ROGUE) {
+				if (Dungeon.hero.heroClass.is(HeroClass.ROGUE)) {
 					desc += Messages.get(this, "rogue", Dungeon.hero.name());
 				}
 				break;

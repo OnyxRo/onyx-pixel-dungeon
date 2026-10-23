@@ -28,7 +28,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class MoltenStrife extends MeleeWeapon implements Talent.SpellbladeForgeryWeapon, AlchemyWeapon {
+public class MoltenStrife extends MeleeWeapon implements RkaSpellblade, AlchemyWeapon {
     {
         image = ItemSpriteSheet.MOLTEN_STRIFE;
         hitSound = Assets.Sounds.HIT_SLASH;
@@ -94,7 +94,7 @@ public class MoltenStrife extends MeleeWeapon implements Talent.SpellbladeForger
         Enchanting.show(hero, new MoltenStrife(){
             @Override
             public ItemSprite.Glowing glowing() {
-                return Blazing.ORANGE;
+                return new ItemSprite.Glowing( 0xFF4400 );
             }
         });
         hero.busy();

@@ -186,14 +186,14 @@ abstract public class Weapon extends KindOfWeapon {
 					damage = ringEnchant.proc(kingRing.getWeapon(), attacker, defender, damage);
 				}
 				if (enchantment != null &&
-						(((Hero) attacker).subClass == HeroSubClass.PALADIN || hasCurseEnchant())){
+						(((Hero) attacker).subClass.is(HeroSubClass.PALADIN) || hasCurseEnchant())){
 					damage = enchantment.proc(this, attacker, defender, damage);
 				}
 				if (defender.isAlive() && trinityEnchant != null){
 					damage = trinityEnchant.proc(this, attacker, defender, damage);
 				}
 				if (defender.isAlive()) {
-					int dmg = ((Hero) attacker).subClass == HeroSubClass.PALADIN ? 6 : 2;
+					int dmg = ((Hero) attacker).subClass.is(HeroSubClass.PALADIN) ? 6 : 2;
 					defender.damage(Math.round(dmg * Enchantment.genericProcChanceMultiplier(attacker)), HolyWeapon.INSTANCE);
 				}
 
@@ -504,7 +504,7 @@ abstract public class Weapon extends KindOfWeapon {
 
 	private String enchantedName() {
 		if (isEquipped(Dungeon.hero) && !hasCurseEnchant() && Dungeon.hero.buff(HolyWeapon.HolyWepBuff.class) != null
-			&& (Dungeon.hero.subClass != HeroSubClass.PALADIN || enchantment == null)){
+			&& (!Dungeon.hero.subClass.is(HeroSubClass.PALADIN) || enchantment == null)){
 				return Messages.get(HolyWeapon.class, "ench_name", super.name());
 			} else {
 				return enchantment != null && (cursedKnown || !enchantment.curse()) ? enchantment.name(super.name()) : super.name();
@@ -613,7 +613,7 @@ abstract public class Weapon extends KindOfWeapon {
 				&& owner instanceof Hero
 				&& isEquipped((Hero) owner)
 				&& owner.buff(HolyWeapon.HolyWepBuff.class) != null
-				&& ((Hero) owner).subClass != HeroSubClass.PALADIN) {
+				&& !((Hero) owner).subClass.is(HeroSubClass.PALADIN)) {
 			return false;
 		} else if (owner.buff(BodyForm.BodyFormBuff.class) != null
 				&& owner.buff(BodyForm.BodyFormBuff.class).enchant() != null
@@ -646,7 +646,7 @@ abstract public class Weapon extends KindOfWeapon {
 	@Override
 	public ItemSprite.Glowing glowing() {
 		if (isEquipped(Dungeon.hero) && !hasCurseEnchant() && Dungeon.hero.buff(HolyWeapon.HolyWepBuff.class) != null
-				&& (Dungeon.hero.subClass != HeroSubClass.PALADIN || enchantment == null)){
+				&& (!Dungeon.hero.subClass.is(HeroSubClass.PALADIN) || enchantment == null)){
 			return HOLY;
 		} else {
 			if (enchantment == null && special != null) return special.glowing();

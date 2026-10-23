@@ -55,12 +55,12 @@ import com.watabou.utils.PathFinder;
 public class FencerDash {
 
 	public static boolean isFencer(){
-		return Dungeon.hero != null && Dungeon.hero.subClass == HeroSubClass.FENCER;
+		return Dungeon.hero != null && Dungeon.hero.subClass.is(HeroSubClass.FENCER);
 	}
 
 	//the Charger shows its action for the Champion and the Fencer
 	public static boolean showsAction(){
-		return Dungeon.hero != null && (Dungeon.hero.subClass == HeroSubClass.CHAMPION || isFencer());
+		return Dungeon.hero != null && (Dungeon.hero.subClass.is(HeroSubClass.CHAMPION) || isFencer());
 	}
 
 	public static float chargeMulti( Hero hero ){

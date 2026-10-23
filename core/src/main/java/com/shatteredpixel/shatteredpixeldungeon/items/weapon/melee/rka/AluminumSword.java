@@ -39,7 +39,7 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class AluminumSword extends MeleeWeapon implements Talent.SpellbladeForgeryWeapon, AlchemyWeapon {
+public class AluminumSword extends MeleeWeapon implements RkaSpellblade, AlchemyWeapon {
 
     {
         image = ItemSpriteSheet.ALUMINUM_SWORD;
@@ -74,7 +74,7 @@ public class AluminumSword extends MeleeWeapon implements Talent.SpellbladeForge
 
     @Override
     public int targetingPos(Hero user, int dst) {
-        return new Ballistica( user.pos, dst, Ballistica.FRIENDLY_MAGIC_BOLT ).collisionPos;
+        return new Ballistica( user.pos, dst, Ballistica.MAGIC_BOLT ).collisionPos;
     }
 
     @Override
@@ -256,7 +256,7 @@ public class AluminumSword extends MeleeWeapon implements Talent.SpellbladeForge
             for (int i = 0; i < PathFinder.distance.length; i++) {
                 if (PathFinder.distance[i] < Integer.MAX_VALUE) {
                     if (Dungeon.level.heroFOV[i]) {
-                        Talent.SpellbladeForgeryWound.hit(i, 45, 0xCEDAE4);
+                        RkaSpellblade.Wound.hit(i, 45, 0xCEDAE4);
                         if (i % 3 == 0){
                             weapon.hitSound(Random.Float(0.87f, 1.15f));
                         }

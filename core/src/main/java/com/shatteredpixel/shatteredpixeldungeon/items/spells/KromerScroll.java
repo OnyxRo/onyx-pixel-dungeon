@@ -22,7 +22,7 @@ public class KromerScroll extends Spell{
         image = ItemSpriteSheet.EXOTIC_KROMER;
     }
 
-    private static final ItemSprite.Glowing CHAOTIC = new ItemSprite.Glowing( 0.2f  );
+    private static final ItemSprite.Glowing CHAOTIC = new ItemSprite.Glowing( 0x00FF54, 0.2f );
 
     @Override
     public ItemSprite.Glowing glowing() {

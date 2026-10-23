@@ -65,6 +65,9 @@ import java.util.LinkedHashMap;
 
 public class Bomb extends Item {
 
+	//deranged, DERanged PD's Molten Strife sets this while its explosion goes off, so the wielder is not hurt
+	public static boolean doNotDamageHero = false;
+
 	//rearranged, Re-ARranged PD's air support bombs set their own damage, -1 keeps the normal roll
 	public int minDamage = -1;
 	public int maxDamage = -1;
@@ -233,6 +236,7 @@ public class Bomb extends Item {
 				if (dmg > 0) {
 					//the Void trap bombs only hurt the hero, so they cannot kill the wraiths
 					if (subBomb && ch.alignment != Dungeon.hero.alignment) {}
+					else if (doNotDamageHero && ch == Dungeon.hero) {} //deranged, Molten Strife's blasts
 					else ch.damage(dmg, this);
 					com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onBombHit(ch); //transformation, Shock Bomb
 

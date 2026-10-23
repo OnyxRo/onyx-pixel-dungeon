@@ -76,7 +76,7 @@ public class RearrangedWeapons {
 		if (!(owner instanceof Hero)) return 0;
 		Hero hero = (Hero) owner;
 		int reach = 0;
-		if (hero.heroClass != HeroClass.ADVENTURER && hero.hasTalent(Talent.LONG_MACHETE)) {
+		if (!hero.heroClass.is(HeroClass.ADVENTURER) && hero.hasTalent(Talent.LONG_MACHETE)) {
 			reach += hero.pointsInTalent(Talent.LONG_MACHETE);
 		}
 		return reach;
@@ -87,7 +87,7 @@ public class RearrangedWeapons {
 		if (!(owner instanceof Hero)) return 0;
 		Hero hero = (Hero) owner;
 		int reach = 0;
-		if (hero.subClass == HeroSubClass.EXPLORER && hero.belongings.getItem(Rope.class) != null) {
+		if (hero.subClass.is(HeroSubClass.EXPLORER) && hero.belongings.getItem(Rope.class) != null) {
 			reach += hero.belongings.getItem(Rope.class).quantity();
 		}
 		BookOfDisintegration.ReachBuff buff = hero.buff(BookOfDisintegration.ReachBuff.class);
@@ -125,7 +125,7 @@ public class RearrangedWeapons {
 		if (attacker instanceof Hero && attacker.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Tackle.MysticalTackleTracker.class) != null) {
 			multi += 0.5f * ((Hero) attacker).pointsInTalent(Talent.MYSTICAL_TACKLE);
 		}
-		if (attacker instanceof Hero && ((Hero) attacker).hasTalent(Talent.HIGH_POWER) && ((Hero) attacker).heroClass != HeroClass.MEDIC) {
+		if (attacker instanceof Hero && ((Hero) attacker).hasTalent(Talent.HIGH_POWER) && !((Hero) attacker).heroClass.is(HeroClass.MEDIC)) {
 			multi += 0.1f * ((Hero) attacker).pointsInTalent(Talent.HIGH_POWER);
 		}
 		return multi;
@@ -262,7 +262,7 @@ public class RearrangedWeapons {
 
 	//MeleeWeapon AC_SCRAP. The Gunner turns a weapon into liquid metal and energy, the Archer into a thrown weapon
 	public static void scrap( final MeleeWeapon wep, final Hero hero ){
-		if (hero.heroClass == HeroClass.GUNNER) {
+		if (hero.heroClass.is(HeroClass.GUNNER)) {
 			Game.runOnRenderThread(new Callback() {
 				@Override
 				public void call() {
@@ -316,7 +316,7 @@ public class RearrangedWeapons {
 					);
 				}
 			});
-		} else if (hero.heroClass == HeroClass.ARCHER) {
+		} else if (hero.heroClass.is(HeroClass.ARCHER)) {
 			wep.detach(hero.belongings.backpack);
 			hero.sprite.operate(hero.pos);
 			Sample.INSTANCE.play(Assets.Sounds.EVOKE);

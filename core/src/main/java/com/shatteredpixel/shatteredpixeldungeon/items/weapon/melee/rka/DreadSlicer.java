@@ -22,7 +22,7 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class DreadSlicer extends MeleeWeapon implements Talent.SpellbladeForgeryWeapon, AlchemyWeapon {
+public class DreadSlicer extends MeleeWeapon implements RkaSpellblade, AlchemyWeapon {
     {
         image = ItemSpriteSheet.DREAD_SWORD;
         hitSound = Assets.Sounds.HIT_SLASH;
@@ -97,8 +97,13 @@ public class DreadSlicer extends MeleeWeapon implements Talent.SpellbladeForgery
     }
 
     @Override
-    protected DuelistAbility duelistAbility() {
-        return new MeleeAbility(2) {
+    protected void duelistAbility(Hero hero, Integer target) {
+    	RkaAbility.DuelistAbility a = rkaAbility();
+    	if (a != null) a.execute(hero, target, this);
+    }
+    
+    protected RkaAbility.DuelistAbility rkaAbility() {
+        return new RkaAbility.MeleeAbility(2) {
 
             @Override
             protected void proc(Hero hero, Char enemy) {

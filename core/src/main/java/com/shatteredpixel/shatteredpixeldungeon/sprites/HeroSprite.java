@@ -52,8 +52,8 @@ public class HeroSprite extends CharSprite {
 	
 	private static TextureFilm tiers;
 	
-	private Animation fly;
-	private Animation read;
+	Animation fly;
+	Animation read;
 
 	public HeroSprite() {
 		super();
@@ -90,6 +90,13 @@ public class HeroSprite extends CharSprite {
 	}
 	
 	public void updateArmor() {
+
+		//deranged, DERanged PD's Rat King has his own frame layout
+		if (Dungeon.hero.heroClass == HeroClass.RAT_KING && Dungeon.hero.buff(HeroDisguise.class) == null){
+			RatKingHeroSprite.setup(this);
+			if (Dungeon.hero.isAlive()) idle(); else die();
+			return;
+		}
 
 		TextureFilm film = new TextureFilm( tiers(), Dungeon.hero.tier(), FRAME_WIDTH, FRAME_HEIGHT );
 		
@@ -204,6 +211,7 @@ public class HeroSprite extends CharSprite {
 	}
 	
 	public static Image avatar( HeroClass cl, int armorTier ) {
+		if (cl == HeroClass.RAT_KING) return RatKingHeroSprite.avatar(); //deranged
 		
 		RectF patch = tiers().get( armorTier );
 		Image avatar = new Image( cl.spritesheet() );

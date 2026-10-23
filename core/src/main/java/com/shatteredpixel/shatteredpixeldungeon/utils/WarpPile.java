@@ -70,8 +70,6 @@ public class WarpPile {
     }
 
     public static float getMaxWarp() {
-        if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.NO_WARP))
-            return 1;
         return MAX_WARP;
     }
 
@@ -91,7 +89,7 @@ public class WarpPile {
             float warpAmount = WarpDebuff.stacks();
             Sample.INSTANCE.play(Assets.Sounds.CURSED);
             if (ch instanceof Hero)
-                GLog.d(Messages.get(this, "message"));
+                GLog.n(Messages.get(this, "message"));
             else
                 ch.sprite.showStatus(WarpPile.COLOR, Messages.get(this, "message"));
             doEffect(ch, warpAmount);

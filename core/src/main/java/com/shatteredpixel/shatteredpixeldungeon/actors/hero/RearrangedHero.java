@@ -104,7 +104,7 @@ public class RearrangedHero {
 	}
 
 	public static float accuracy( Hero hero, KindOfWeapon wep, float accuracy ){
-		if (hero.subClass == HeroSubClass.GUNSLINGER && hero.justMoved && wep instanceof MissileWeapon) {
+		if (hero.subClass.is(HeroSubClass.GUNSLINGER) && hero.justMoved && wep instanceof MissileWeapon) {
 			accuracy *= 0.25f*(1+0.5f*hero.pointsInTalent(Talent.MOVING_SHOT));
 		}
 		if (hero.hasTalent(Talent.ACC_ENHANCE)) {
@@ -122,7 +122,7 @@ public class RearrangedHero {
 		if (hero.buff(UnholyBible.Demon.class) != null) {
 			return Float.POSITIVE_INFINITY;
 		}
-		if (hero.subClass == HeroSubClass.MASTER &&
+		if (hero.subClass.is(HeroSubClass.MASTER) &&
 				hero.buff(Sheath.Sheathing.class) != null &&
 				hero.buff(Sheath.FlashSlashCooldown.class) == null &&
 				hero.buff(Sheath.DashAttackTracker.class) == null) {
@@ -197,7 +197,7 @@ public class RearrangedHero {
 			int shieldDr = Random.NormalIntRange(0, shield.defenseFactor());
 			if (shieldDr > 0) dr += shieldDr;
 		}
-		if (hero.heroClass != HeroClass.KNIGHT && hero.hasTalent(Talent.HARD_SHIELD)) {
+		if (!hero.heroClass.is(HeroClass.KNIGHT) && hero.hasTalent(Talent.HARD_SHIELD)) {
 			dr += Random.NormalIntRange(0, 2*hero.pointsInTalent(Talent.HARD_SHIELD));
 		}
 		if (hero.hasTalent(Talent.PARRING)) {
@@ -257,13 +257,13 @@ public class RearrangedHero {
 	public static float critChance( Hero hero, Weapon wep ){
 		float chance = 0;
 
-		if (hero.heroClass == HeroClass.SAMURAI) {
+		if (hero.heroClass.is(HeroClass.SAMURAI)) {
 			chance = 0.01f;
 			chance += 0.01f * (hero.lvl - 1);
 			chance += Math.max(0, (0.02f + 0.005f*hero.pointsInTalent(Talent.WEAPON_MASTERY)) * (hero.STR() - wep.STRReq()));
 		}
 
-		if (hero.heroClass == HeroClass.ARCHER && wep instanceof MissileWeapon) {
+		if (hero.heroClass.is(HeroClass.ARCHER) && wep instanceof MissileWeapon) {
 			chance = 0.03f;
 			chance += 0.03f*(hero.lvl-1);
 			chance = Math.min(chance, 0.3f);
@@ -293,7 +293,7 @@ public class RearrangedHero {
 		}
 
 		if (hero.buff(Sheath.Sheathing.class) != null) {
-			if (hero.subClass == HeroSubClass.MASTER &&
+			if (hero.subClass.is(HeroSubClass.MASTER) &&
 					hero.buff(Sheath.FlashSlashCooldown.class) == null &&
 					hero.buff(Sheath.DashAttackTracker.class) == null &&
 					hero.belongings.attackingWeapon() instanceof MeleeWeapon) {
@@ -351,7 +351,7 @@ public class RearrangedHero {
 
 	public static void onAct( Hero hero ){
 		RearrangedRework.onAct(hero);
-		if (hero.subClass == HeroSubClass.SLAYER && hero.buff(Awakening.class) == null) {
+		if (hero.subClass.is(HeroSubClass.SLAYER) && hero.buff(Awakening.class) == null) {
 			Buff.affect(hero, Awakening.class).indicate();
 		}
 		if (hero.buff(Undead.class) != null) {
@@ -369,7 +369,7 @@ public class RearrangedHero {
 				if (e != null) e.burst(EnergyParticle.FACTORY, 15);
 			}
 		}
-		if (Dungeon.level.map[hero.pos] == Terrain.FURROWED_GRASS && hero.subClass == HeroSubClass.SPECIALIST) {
+		if (Dungeon.level.map[hero.pos] == Terrain.FURROWED_GRASS && hero.subClass.is(HeroSubClass.SPECIALIST)) {
 			boolean adjacentMob = false;
 			for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 				if (Dungeon.level.adjacent(hero.pos, mob.pos)) {
@@ -393,7 +393,7 @@ public class RearrangedHero {
 
 	public static int attackProc( Hero hero, Char enemy, KindOfWeapon wep, int damage ){
 		damage = com.shatteredpixel.shatteredpixeldungeon.RearrangedChallenges.attackProc(hero, enemy, damage);
-		if (hero.subClass == HeroSubClass.OUTLAW && wep instanceof Gun.Bullet) {
+		if (hero.subClass.is(HeroSubClass.OUTLAW) && wep instanceof Gun.Bullet) {
 			if (hero.hasTalent(Talent.HEADSHOT) && Random.Float() < 0.01f*hero.pointsInTalent(Talent.HEADSHOT)) {
 				if (!Char.hasProp(enemy, Char.Property.BOSS) && !Char.hasProp(enemy, Char.Property.MINIBOSS) && enemy.alignment == Char.Alignment.ENEMY) {
 					damage = enemy.HP;
@@ -462,7 +462,7 @@ public class RearrangedHero {
 		if (hero.buff(Pray.Praying.class) != null) {
 			hero.buff(Pray.Praying.class).defenseProc(enemy, damage);
 		}
-		if (hero.subClass == HeroSubClass.THERAPIST) {
+		if (hero.subClass.is(HeroSubClass.THERAPIST)) {
 			if (hero.buff(FirstAidBuff.FirstAidBuffCooldown.class) == null) {
 				Buff.affect(hero, FirstAidBuff.class).set(damage);
 			}
@@ -574,7 +574,7 @@ public class RearrangedHero {
 				Buff.affect(hero, Sheath.Sheathing.class);
 			}
 		}
-		if (hero.heroClass != HeroClass.SAMURAI && hero.hasTalent(Talent.QUICK_SHEATHING) && target != null && !target.isAlive()) {
+		if (!hero.heroClass.is(HeroClass.SAMURAI) && hero.hasTalent(Talent.QUICK_SHEATHING) && target != null && !target.isAlive()) {
 			Buff.affect(hero, Haste.class, 3f*hero.pointsInTalent(Talent.QUICK_SHEATHING));
 		}
 		if (hero.buff(Sheath.CriticalAttack.class) != null) {

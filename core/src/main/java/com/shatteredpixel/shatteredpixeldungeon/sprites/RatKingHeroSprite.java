@@ -1,55 +1,49 @@
+/*
+ * Onyx's Pixel Dungeon
+ * DERanged PD's Rat King hero picture (from Rat King PD 2 by zrp200), GPL-3.0. Its frames are 16 by 17 and laid
+ * out its own way, so HeroSprite asks this class for the King's animations instead of reading a tier row.
+ */
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.MovieClip.Animation;
 import com.watabou.noosa.TextureFilm;
 
-public class RatKingHeroSprite extends HeroSprite {
-    // placeholder
-    private static final int FRAME_WIDTH = 16;
-    private static final int FRAME_HEIGHT = 17;
-    {
-        //runFramerate = 10;
-    }
+public class RatKingHeroSprite {
 
-    @Override public int frameWidth() { return FRAME_WIDTH; }
-    @Override public int frameHeight() { return FRAME_HEIGHT; }
+	private static final int FRAME_WIDTH = 16;
+	private static final int FRAME_HEIGHT = 17;
 
-    public void updateArmor() {
-        // there's only two armors. really one atm.
-        // TODO decide if I want a "crownless" rat king towards the beginning of the game.
-        TextureFilm film = new TextureFilm( tiers(), 0, FRAME_WIDTH, FRAME_HEIGHT );
-        idle = new Animation( 2, true );
-        idle.frames( film, 0, 0, 0, 1 );
+	static void setup( HeroSprite s ){
+		TextureFilm film = new TextureFilm( s.texture, FRAME_WIDTH, FRAME_HEIGHT );
 
-        run = new Animation( 20, true );
-        run.frames( film, 6, 7, 8, 9, 10 );
+		s.idle = new Animation( 2, true );
+		s.idle.frames( film, 0, 0, 0, 1 );
 
-        attack = new Animation( 15, false );
-        attack.frames( film, 2, 3, 4, 5, 0 );
+		s.run = new Animation( 20, true );
+		s.run.frames( film, 6, 7, 8, 9, 10 );
 
-        die = new Animation( 10, false );
-        die.frames( film, 11,12,13,14 );
+		s.attack = new Animation( 15, false );
+		s.attack.frames( film, 2, 3, 4, 5, 0 );
 
-        zap = attack.clone();
+		s.die = new Animation( 10, false );
+		s.die.frames( film, 11, 12, 13, 14 );
 
-        operate = new Animation( 8, false );
-        operate.frames( film, 2,6,2,6);
+		s.zap = s.attack.clone();
 
-        fly = new Animation( 1, true );
-        fly.frames( film, 0 );
+		s.operate = new Animation( 8, false );
+		s.operate.frames( film, 2, 6, 2, 6 );
 
-        read = operate;
+		s.fly = new Animation( 1, true );
+		s.fly.frames( film, 0 );
 
-        if (Dungeon.hero.isAlive())
-            idle();
-        else
-            die();
-    }
+		s.read = s.operate;
+	}
 
-    @Override
-    public TextureFilm tiers() {
-        if(tiers == null) tiers = tiers(Assets.Sprites.RAT_KING_HERO, FRAME_HEIGHT);
-        return tiers;
-    }
+	static Image avatar(){
+		Image avatar = new Image( Assets.Sprites.RAT_KING_HERO );
+		avatar.frame( avatar.texture.uvRect( 0, 0, FRAME_WIDTH, FRAME_HEIGHT ) );
+		return avatar;
+	}
 }

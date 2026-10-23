@@ -275,19 +275,19 @@ public abstract class Wand extends Item {
 
 		wandLevel = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.enhancedMark(wandLevel); //rearranged
 		if (target != Dungeon.hero &&
-				Dungeon.hero.subClass == HeroSubClass.WARLOCK &&
+				Dungeon.hero.subClass.is(HeroSubClass.WARLOCK) &&
 				//standard 1 - 0.92^x chance, plus 7%. Starts at 15%
 				Random.Float() > (Math.pow(0.92f, (wandLevel*chargesUsed)+1) - 0.07f)){
 			SoulMark.prolong(target, SoulMark.class, SoulMark.DURATION + wandLevel);
 		}
 
-		if (Dungeon.hero.subClass == HeroSubClass.PRIEST && target.buff(GuidingLight.Illuminated.class) != null) {
+		if (Dungeon.hero.subClass.is(HeroSubClass.PRIEST) && target.buff(GuidingLight.Illuminated.class) != null) {
 			target.buff(GuidingLight.Illuminated.class).detach();
 			target.damage(Dungeon.hero.lvl+5, GuidingLight.INSTANCE);
 		}
 
 		if (target.alignment != Char.Alignment.ALLY
-				&& Dungeon.hero.heroClass != HeroClass.CLERIC
+				&& !Dungeon.hero.heroClass.is(HeroClass.CLERIC)
 				&& Dungeon.hero.hasTalent(Talent.SEARING_LIGHT)
 				&& Dungeon.hero.buff(Talent.SearingLightCooldown.class) == null){
 			Buff.affect(target, GuidingLight.Illuminated.class);
@@ -296,7 +296,7 @@ public abstract class Wand extends Item {
 		com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.wardingLightItem(); //rearranged
 
 		if (target.alignment != Char.Alignment.ALLY
-				&& Dungeon.hero.heroClass != HeroClass.CLERIC
+				&& !Dungeon.hero.heroClass.is(HeroClass.CLERIC)
 				&& Dungeon.hero.hasTalent(Talent.SUNRAY)){
 			// 15/25% chance
 			if (Random.Int(20) < 1 + 2*Dungeon.hero.pointsInTalent(Talent.SUNRAY)){
@@ -369,7 +369,7 @@ public abstract class Wand extends Item {
 			desc += "\n\n" + Messages.get(Wand.class, "not_cursed");
 		}
 
-		if (Dungeon.hero != null && Dungeon.hero.subClass == HeroSubClass.BATTLEMAGE){
+		if (Dungeon.hero != null && Dungeon.hero.subClass.is(HeroSubClass.BATTLEMAGE)){
 			desc += "\n\n" + Messages.get(this, "bmage_desc");
 		}
 
@@ -605,13 +605,13 @@ public abstract class Wand extends Item {
 			Buff.prolong(Dungeon.hero, Talent.LingeringMagicTracker.class, 5f);
 		}
 
-		if (Dungeon.hero.heroClass != HeroClass.CLERIC
+		if (!Dungeon.hero.heroClass.is(HeroClass.CLERIC)
 				&& Dungeon.hero.hasTalent(Talent.DIVINE_SENSE)){
 			Buff.prolong(Dungeon.hero, DivineSense.DivineSenseTracker.class, Dungeon.hero.cooldown()+1);
 		}
 
 		// 10/20/30%
-		if (Dungeon.hero.heroClass != HeroClass.CLERIC
+		if (!Dungeon.hero.heroClass.is(HeroClass.CLERIC)
 				&& Dungeon.hero.hasTalent(Talent.CLEANSE)
 				&& Random.Int(10) < Dungeon.hero.pointsInTalent(Talent.CLEANSE)){
 			boolean removed = false;
@@ -817,14 +817,14 @@ public abstract class Wand extends Item {
 							&& curWand.charger != null && curWand.charger.target == curUser){
 
 						//regular. If hero owns wand but it isn't in belongings it must be in the staff
-						if (curUser.heroClass == HeroClass.MAGE && !curUser.belongings.contains(curWand)){
+						if (curUser.heroClass.is(HeroClass.MAGE) && !curUser.belongings.contains(curWand)){
 							//grants 3/5 shielding
 							int shieldToGive = 1 + 2 * Dungeon.hero.pointsInTalent(Talent.BACKUP_BARRIER);
 							Buff.affect(Dungeon.hero, Barrier.class).setShield(shieldToGive);
 							Dungeon.hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldToGive), FloatingText.SHIELDING);
 
 						//metamorphed. Triggers if wand is highest level hero has
-						} else if (curUser.heroClass != HeroClass.MAGE) {
+						} else if (!curUser.heroClass.is(HeroClass.MAGE)) {
 							boolean highest = true;
 							for (Item i : curUser.belongings.getAllItems(Wand.class)){
 								if (i.level() > curWand.level()){

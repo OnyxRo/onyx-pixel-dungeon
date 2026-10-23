@@ -216,7 +216,7 @@ abstract public class MissileWeapon extends Weapon {
 	public static final String AC_JUGGLE = "JUGGLE";
 
 	private boolean canJuggle(){
-		return Dungeon.hero != null && Dungeon.hero.subClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.JUGGLER
+		return Dungeon.hero != null && Dungeon.hero.subClass.is(com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.JUGGLER)
 				&& this.STRReq() <= Dungeon.hero.STR();
 	}
 
@@ -312,7 +312,7 @@ abstract public class MissileWeapon extends Weapon {
 	public float accuracyFactor(Char owner, Char target) {
 		float accFactor = super.accuracyFactor(owner, target);
 		//rearranged, Makeshift Bow for heroes other than the Archer
-		if (owner instanceof Hero && ((Hero) owner).heroClass != com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.ARCHER && ((Hero) owner).hasTalent(Talent.MAKESHIFT_BOW)) {
+		if (owner instanceof Hero && !((Hero) owner).heroClass.is(HeroClass.ARCHER) && ((Hero) owner).hasTalent(Talent.MAKESHIFT_BOW)) {
 			accFactor *= 1f + 0.2f*((Hero) owner).pointsInTalent(Talent.MAKESHIFT_BOW);
 		}
 
@@ -377,7 +377,7 @@ abstract public class MissileWeapon extends Weapon {
 
 			//metamorphed seer shot logic
 			if (curUser.hasTalent(Talent.SEER_SHOT)
-					&& curUser.heroClass != HeroClass.HUNTRESS
+					&& !curUser.heroClass.is(HeroClass.HUNTRESS)
 					&& curUser.buff(Talent.SeerShotCooldown.class) == null){
 				if (Actor.findChar(cell) == null) {
 					RevealedArea a = Buff.affect(curUser, RevealedArea.class, 5 * curUser.pointsInTalent(Talent.SEER_SHOT));

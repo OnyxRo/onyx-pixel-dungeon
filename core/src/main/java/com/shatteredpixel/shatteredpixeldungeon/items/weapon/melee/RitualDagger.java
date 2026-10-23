@@ -178,7 +178,7 @@ public class RitualDagger extends MeleeWeapon {
         }
 
         if (isEquipped(Dungeon.hero) && !hasCurseEnchant() && Dungeon.hero.buff(HolyWeapon.HolyWepBuff.class) != null
-                && (Dungeon.hero.subClass != HeroSubClass.PALADIN || enchantment == null)){
+                && (!Dungeon.hero.subClass.is(HeroSubClass.PALADIN) || enchantment == null)){
             info += "\n\n" + Messages.capitalize(Messages.get(Weapon.class, "enchanted", Messages.get(HolyWeapon.class, "ench_name", Messages.get(Enchantment.class, "enchant"))));
             info += " " + Messages.get(HolyWeapon.class, "ench_desc");
         } else if (enchantment != null && (cursedKnown || !enchantment.curse())){

@@ -47,7 +47,7 @@ public class Invisibility extends FlavourBuff {
 		if (super.attachTo( target )) {
 			target.invisible++;
 			com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onInvisible(target); //transformation, Invisibility Shadows
-			if (target instanceof Hero && ((Hero) target).subClass == HeroSubClass.ASSASSIN){
+			if (target instanceof Hero && ((Hero) target).subClass.is(HeroSubClass.ASSASSIN)){
 				Buff.affect(target, Preparation.class);
 			}
 			if (target instanceof Hero && ((Hero) target).hasTalent(Talent.PROTECTIVE_SHADOWS)){

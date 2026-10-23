@@ -150,7 +150,12 @@ public class ExoKnife extends MeleeWeapon implements AlchemyWeapon {
     }
 
     @Override
-    protected DuelistAbility duelistAbility() {
+    protected void duelistAbility(Hero hero, Integer target) {
+    	RkaAbility.DuelistAbility a = rkaAbility();
+    	if (a != null) a.execute(hero, target, this);
+    }
+    
+    protected RkaAbility.DuelistAbility rkaAbility() {
         return new ExoEffect();
     }
 
@@ -173,7 +178,7 @@ public class ExoKnife extends MeleeWeapon implements AlchemyWeapon {
         return info;
     }
 
-    public static class ExoEffect extends MeleeAbility {
+    public static class ExoEffect extends RkaAbility.MeleeAbility {
 
         @Override public float accMulti() { return 1f; }
 
@@ -185,13 +190,12 @@ public class ExoKnife extends MeleeWeapon implements AlchemyWeapon {
                     Char ch = Actor.findChar(i);
                     if (ch != null && ch.alignment != Char.Alignment.ALLY && ch.isAlive()){
                         Buff.affect(ch, Paralysis.class, 10f);
-                        Buff.affect(ch, Shockwave.ShockForceStunHold.class, 10f);
                         ShieldHalo shield = new ShieldHalo(ch.sprite);
                         GameScene.effect(shield);
                         shield.putOut();
                         Viscosity.DeferedDamage deferred = Buff.affect( ch, Viscosity.DeferedDamage.class );
                         int amount = weapon().damageRoll(hero) * 5;
-                        deferred.postpone(amount);
+                        deferred.extend(amount);
 
                         ch.sprite.showStatus( CharSprite.WARNING, Messages.get(Viscosity.class, "deferred", amount) );
                     }

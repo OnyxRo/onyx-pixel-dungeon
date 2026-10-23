@@ -1,4 +1,5 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -29,7 +30,7 @@ import com.watabou.utils.PathFinder;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class LuminousCutlass extends MeleeWeapon implements Talent.SpellbladeForgeryWeapon, AlchemyWeapon {
+public class LuminousCutlass extends MeleeWeapon implements RkaSpellblade, AlchemyWeapon {
 
     {
         image = ItemSpriteSheet.LUMINOUS_CUTLASS;
@@ -113,7 +114,12 @@ public class LuminousCutlass extends MeleeWeapon implements Talent.SpellbladeFor
     }
 
     @Override
-    protected DuelistAbility duelistAbility() {
+    protected void duelistAbility(Hero hero, Integer target) {
+    	RkaAbility.DuelistAbility a = rkaAbility();
+    	if (a != null) a.execute(hero, target, this);
+    }
+    
+    protected RkaAbility.DuelistAbility rkaAbility() {
         return new ShortCircuit();
     }
 
@@ -136,7 +142,7 @@ public class LuminousCutlass extends MeleeWeapon implements Talent.SpellbladeFor
         return info;
     }
 
-    public static class ShortCircuit extends MeleeAbility {
+    public static class ShortCircuit extends RkaAbility.MeleeAbility {
 
         @Override
         public void afterHit(Char enemy, boolean hit) {

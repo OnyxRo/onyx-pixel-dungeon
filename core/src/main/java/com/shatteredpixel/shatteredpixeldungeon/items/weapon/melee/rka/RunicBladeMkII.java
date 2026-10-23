@@ -42,7 +42,7 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class RunicBladeMkII extends MeleeWeapon implements Talent.SpellbladeForgeryWeapon, AlchemyWeapon {
+public class RunicBladeMkII extends MeleeWeapon implements RkaSpellblade, AlchemyWeapon {
 
     private static final String AC_ZAP = "ZAP";
 
@@ -203,7 +203,6 @@ public class RunicBladeMkII extends MeleeWeapon implements Talent.SpellbladeForg
                                                         enemy.damage(dmg, curBlade);
                                                         if (curUser.subClass.is(HeroSubClass.GLADIATOR)) Buff.affect( curUser, Combo.class ).hit( enemy );
                                                         curBlade.proc(curUser, enemy, dmg);
-                                                        Buff.affect(enemy, Talent.AntiMagicBuff.class, 6f);
                                                         Sample.INSTANCE.play(Assets.Sounds.HIT_MAGIC);
                                                     } else {
                                                         enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
@@ -325,7 +324,7 @@ public class RunicBladeMkII extends MeleeWeapon implements Talent.SpellbladeForg
     @Override
     public int proc(Char attacker, Char defender, int damage) {
         if (!charged){
-            attacker.buff(RunicCooldown.class).time -= 1;
+            if (attacker.buff(RunicCooldown.class) != null) attacker.buff(RunicCooldown.class).shorten(1f);
             defender.sprite.emitter().burst(RunicParticle.FACTORY, Random.Int(10, 15));
         }
         return super.proc(attacker, defender, damage);
@@ -336,6 +335,8 @@ public class RunicBladeMkII extends MeleeWeapon implements Talent.SpellbladeForg
     }
 
     public static class RunicCooldown extends FlavourBuff {
+
+        public void shorten(float t) { spend(-t); }
 
         @Override
         public void detach() {
@@ -390,13 +391,12 @@ public class RunicBladeMkII extends MeleeWeapon implements Talent.SpellbladeForg
     protected void duelistAbility(Hero hero, Integer target) {
         //we apply here because of projecting
         RunicBlade.RunicSlashTracker tracker = Buff.affect(hero, RunicBlade.RunicSlashTracker.class, 5f + delayFactor(hero));
-        boolean abilityUsed = duelistAbility().execute(hero, target, this);
+        boolean abilityUsed = rkaAbility().execute(hero, target, this);
         if (!abilityUsed) tracker.detach();
     }
 
-    @Override
-    protected DuelistAbility duelistAbility() {
-        return new MeleeAbility(1);
+    protected RkaAbility.DuelistAbility rkaAbility() {
+        return new RkaAbility.MeleeAbility(1);
     }
 
     @Override

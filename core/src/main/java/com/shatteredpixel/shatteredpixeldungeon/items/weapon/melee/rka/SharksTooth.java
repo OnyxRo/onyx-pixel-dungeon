@@ -91,7 +91,7 @@ public class SharksTooth extends MeleeWeapon implements AlchemyWeapon {
         damage = (int) Math.round(damage * Math.pow(1.25f, dist - 1));
 
         if (dist > 1 && !defender.properties().contains(Char.Property.IMMOVABLE)){
-            attacker.spend(-delayFactor(attacker));
+            RkaAbility.spend(attacker, -delayFactor(attacker));
 
             Ballistica chain = new Ballistica(attacker.pos, defender.pos, Ballistica.PROJECTILE);
 
@@ -114,7 +114,7 @@ public class SharksTooth extends MeleeWeapon implements AlchemyWeapon {
                         Effects.Type.CHAIN,
                         new Callback() {
                             public void call() {
-                                attacker.spend(SharksTooth.this.delayFactor(attacker));
+                                RkaAbility.spend(attacker, SharksTooth.this.delayFactor(attacker));
                                 Actor.add(new Pushing(defender, defender.pos, newPosFinal, new Callback() {
                                     public void call() {
                                         defender.pos = newPosFinal;
@@ -132,7 +132,7 @@ public class SharksTooth extends MeleeWeapon implements AlchemyWeapon {
                             }
                         }));
             } else {
-                attacker.spend(SharksTooth.this.delayFactor(attacker));
+                RkaAbility.spend(attacker, SharksTooth.this.delayFactor(attacker));
             }
         }
 
