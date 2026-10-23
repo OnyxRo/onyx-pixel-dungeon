@@ -273,6 +273,10 @@ public class BuffIndicator extends Component {
 	public static final int ARROW_ATTACHED = 10164;
 	public static final int ARROW_EMPOWER  = 10165;
 	public static final int JUGGLING       = 10166;
+	//deranged, DERanged PD's buff icons, drawn from its own sheets (see BuffIcon)
+	public static final int DR_SCAM        = 20131;
+	public static final int DR_WARP        = 20132;
+	public static final int DR_PARRY       = 20135;
 
 	//rebluearchive, Re Blue Archive PD's buff icons, drawn from its own sheets
 	public static final int RBA = 50000;

@@ -92,6 +92,11 @@ public abstract class ArmorAbility implements Bundlable {
 
 	protected abstract void activate( ClassArmor armor, Hero hero, Integer target );
 
+	//deranged, lets DERanged PD's Omni-Ability fire the ability it holds
+	public final void activateFor( ClassArmor armor, Hero hero, Integer target ){
+		activate(armor, hero, target);
+	}
+
 	public String name(){
 		return Messages.get(this, "name");
 	}

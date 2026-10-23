@@ -41,7 +41,7 @@ public class TomatoPlant extends FoodPlant {
 	@Override
 	public void activate( Char ch ) {
 		Dungeon.level.drop( new Tomato(), pos ).sprite.drop( pos );
-		if (ch instanceof Hero && ((Hero) ch).subClass == HeroSubClass.WARDEN) {
+		if (ch instanceof Hero && ((Hero) ch).subClass.is(HeroSubClass.WARDEN)) {
 			Buff.affect(ch, KetchupImbue.class, KetchupImbue.DURATION);
 		} else {
 			Buff.affect(ch, Ketchup.class, 20f);

@@ -119,7 +119,7 @@ public class Skeleton extends Mob {
 						damage -= Random.NormalIntRange(min, 2 * min); //apply twice
 						damage = Math.max(damage, 0);
 					} else if (ch == Dungeon.hero
-							&& Dungeon.hero.heroClass != HeroClass.CLERIC
+							&& !Dungeon.hero.heroClass.is(HeroClass.CLERIC)
 							&& Dungeon.hero.hasTalent(Talent.SHIELD_OF_LIGHT)
 							&& TargetHealthIndicator.instance.target() == this) {
 						//33/50%
@@ -130,7 +130,7 @@ public class Skeleton extends Mob {
 
 					if (ch.buff(HolyWard.HolyArmBuff.class) != null){
 						//doubled
-						damage -= Dungeon.hero.subClass == HeroSubClass.PALADIN ? 6 : 2;
+						damage -= Dungeon.hero.subClass.is(HeroSubClass.PALADIN) ? 6 : 2;
 					}
 				}
 

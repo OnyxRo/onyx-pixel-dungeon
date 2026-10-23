@@ -2239,7 +2239,7 @@ public class TransformationTalents {
 	//Be Inconstant (negative), a weapon picked up may be equipped at once
 	public static void onWeaponPickedUp(Hero h, Item item){
 		int pts = h.pointsNegative(Talent.BE_INCONSTANT);
-		if (pts > 0 && item instanceof MeleeWeapon && h.subClass != com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.CHAMPION
+		if (pts > 0 && item instanceof MeleeWeapon && !h.subClass.is(HeroSubClass.CHAMPION)
 				&& 10*pts > Random.Int(100) && !item.isEquipped(h)){
 			((MeleeWeapon) item).doEquip(h);
 		}

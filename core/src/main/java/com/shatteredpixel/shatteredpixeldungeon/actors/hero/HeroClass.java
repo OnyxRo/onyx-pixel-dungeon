@@ -141,7 +141,14 @@ public enum HeroClass {
 	RBA_YUZU( HeroSubClass.RBA_AVANT_GARDE_KUN, HeroSubClass.RBA_GAME_START ),
 	RBA_IZUNA( HeroSubClass.RBA_SWITCHING, HeroSubClass.RBA_CHASE ),
 	RBA_MIKA( HeroSubClass.RBA_CALL_OF_STAR, HeroSubClass.RBA_LITTLE_ANGRY ),
-	RBA_MARI( HeroSubClass.RBA_DEVOUT_PRAYER, HeroSubClass.RBA_SYMBOL_OF_PEACE );
+	RBA_MARI( HeroSubClass.RBA_DEVOUT_PRAYER, HeroSubClass.RBA_SYMBOL_OF_PEACE ),
+	//deranged, DERanged PD's Rat King, who counts as every class of Shattered and Re-ARranged
+	RAT_KING( HeroSubClass.KING );
+
+	//deranged, the Rat King counts as the classes he shares, everyone else only as themselves
+	public boolean is( HeroClass cls ){
+		return this == cls || (this == RAT_KING && DerangedKing.sharesClass(cls));
+	}
 
 	//the Summoner has two pictures, one is chosen each time the game starts
 	private static final String SUMMONER_SPLASH = Math.random() < 0.5 ? Assets.Splashes.SUMMONER : Assets.Splashes.SORCERESS;
@@ -268,6 +275,9 @@ public enum HeroClass {
 			case RBA_ARIS: case RBA_NONOMI: case RBA_MIYAKO: case RBA_HOSHINO: case RBA_SHIROKO: case RBA_NOA:
 			case RBA_MIYU: case RBA_YUZU: case RBA_IZUNA: case RBA_MIKA: case RBA_MARI:
 				RBAHeroes.init( this, hero );
+			//deranged
+			case RAT_KING:
+				DerangedKing.init( hero );
 				break;
 		}
 
@@ -393,6 +403,9 @@ public enum HeroClass {
 				return Badges.Badge.MASTERY_TANK;
 			case TOWERPRIEST:
 				return Badges.Badge.MASTERY_TOWERPRIEST;
+			//deranged
+			case RAT_KING:
+				return Badges.Badge.MASTERY_RAT_KING;
 		}
 		return null;
 	}
@@ -816,6 +829,9 @@ public enum HeroClass {
 				return new ArmorAbility[]{new Endure(), new Shockwave(), new HeroicLeap()};
 			case TOWERPRIEST:
 				return new ArmorAbility[]{new SpiritHawk(), new WarpBeacon(), new SmokeBomb()};
+			//deranged
+			case RAT_KING:
+				return DerangedKing.armorAbilities();
 			case DM400:
 				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.dm400.Routine(),
 						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.dm400.Discharge_Gas(),
@@ -887,6 +903,9 @@ public enum HeroClass {
 				return Assets.Sprites.TANK;
 			case TOWERPRIEST:
 				return Assets.Sprites.PRIEST;
+			//deranged
+			case RAT_KING:
+				return Assets.Sprites.RAT_KING_HERO;
 		}
 	}
 
@@ -952,6 +971,9 @@ public enum HeroClass {
 				return Assets.Splashes.WARRIOR;
 			case TOWERPRIEST:
 				return Assets.Splashes.CLERIC;
+			//deranged
+			case RAT_KING:
+				return Assets.Splashes.RAT_KING;
 		}
 	}
 	
@@ -1021,6 +1043,9 @@ public enum HeroClass {
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_TANK);
 			case TOWERPRIEST:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_TOWERPRIEST);
+			//deranged, a score of 250 000 in one run, as the mod's text says
+			case RAT_KING:
+				return Badges.isUnlocked(Badges.Badge.HIGH_SCORE_4);
 		}
 	}
 	

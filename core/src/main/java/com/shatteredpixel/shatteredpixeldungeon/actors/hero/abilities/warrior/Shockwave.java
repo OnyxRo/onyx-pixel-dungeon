@@ -127,7 +127,7 @@ public class Shockwave extends ArmorAbility {
 											|| (ch instanceof Mimic && ch.alignment == Char.Alignment.NEUTRAL);
 									damage = hero.attackProc(ch, damage);
 									ch.damage(damage, hero);
-									if (hero.subClass == HeroSubClass.GLADIATOR && wasEnemy){
+									if (hero.subClass.is(HeroSubClass.GLADIATOR) && wasEnemy){
 										Buff.affect( hero, Combo.class ).hit( ch );
 									}
 									com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.shockwaveHit(hero, ch); //rearranged

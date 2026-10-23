@@ -72,7 +72,7 @@ public class Pickaxe extends MeleeWeapon {
 		}
 		//rearranged, the Adventurer melts the pickaxe into a battle shovel to make the miner's tool
 		if (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith.Quest.completed()
-				&& hero.heroClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.ADVENTURER) {
+				&& hero.heroClass.is(com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.ADVENTURER)) {
 			actions.add(AC_INFUSE);
 		}
 		return actions;

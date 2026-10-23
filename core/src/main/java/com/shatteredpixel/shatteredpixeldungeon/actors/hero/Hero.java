@@ -217,7 +217,7 @@ public class Hero extends Char {
 
 	//Magic Ling PD, assassins and freerunners count as each other
 	public boolean isSubclass(HeroSubClass sc) {
-		if (this.subClass == HeroSubClass.ASSASSIN || this.subClass == HeroSubClass.FREERUNNER) return true;
+		if (this.subClass.is(HeroSubClass.ASSASSIN) || this.subClass.is(HeroSubClass.FREERUNNER)) return true;
 		return sc == this.subClass;
 	}
 	public ArmorAbility armorAbility = null;
@@ -431,6 +431,7 @@ public class Hero extends Char {
 		}
 		HT += BAHero.bonusHT(this); //bluearchive
 		HT = com.shatteredpixel.shatteredpixeldungeon.RearrangedChallenges.baseHT(HT); //rearranged, Superman
+		HT = com.shatteredpixel.shatteredpixeldungeon.actors.DerangedChar.heroHT(this, HT); //deranged, No HP
 		if (subClass.is(HeroSubClass.WATERSLIME)){
 			HT += (int) Math.round(0.5 * lvl * (1 + pointsInTalent(Talent.WATER_BODY)));
 		}
@@ -663,6 +664,8 @@ public class Hero extends Char {
 				}
 			}
 		}
+		//deranged, the Rat King's talents stand for other heroes' talents
+		if (heroClass == HeroClass.RAT_KING) return DerangedKing.borrowedPoints(this, talent);
 		return 0;
 	}
 
@@ -673,6 +676,7 @@ public class Hero extends Char {
 			}
 		}
 		Talent.onTalentUpgraded(this, talent);
+		DerangedKing.onTalentUpgraded(this, talent); //deranged
 	}
 
 	public int talentPointsSpent(int tier){
@@ -684,6 +688,7 @@ public class Hero extends Char {
 	}
 
 	public int talentPointsAvailable(int tier){
+		if (heroClass == HeroClass.RAT_KING) return DerangedKing.talentPointsAvailable(this, tier); //deranged
 		if (lvl < (Talent.tierLevelThresholds[tier] - 1)
 			|| (tier == 3 && subClass == HeroSubClass.NONE && heroClass != HeroClass.FREEMAN)
 			|| (tier == 4 && armorAbility == null)) {
@@ -745,13 +750,13 @@ public class Hero extends Char {
 	//Transformation PD. The buffs and action buttons that come with a subclass. Called when the subclass is chosen and when a run loads.
 	public void ensureSubclassBuffs() {
 		//rearranged, the buffs that run Re-ARranged's subclasses
-		if (subClass == HeroSubClass.ENGINEER) Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Build.class);
-		if (subClass == HeroSubClass.HORSEMAN && buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HorseRiding.class) == null) {
+		if (subClass.is(HeroSubClass.ENGINEER)) Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Build.class);
+		if (subClass.is(HeroSubClass.HORSEMAN) && buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HorseRiding.class) == null) {
 			Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HorseRiding.class).set();
 		}
-		if (subClass == HeroSubClass.CRUSADER) Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Pray.class);
-		if (subClass == HeroSubClass.MEDICALOFFICER) Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Command.class);
-		if (subClass == HeroSubClass.SHARPSHOOTER) Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SharpShooterBuff.class);
+		if (subClass.is(HeroSubClass.CRUSADER)) Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Pray.class);
+		if (subClass.is(HeroSubClass.MEDICALOFFICER)) Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Command.class);
+		if (subClass.is(HeroSubClass.SHARPSHOOTER)) Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SharpShooterBuff.class);
 		if (subClass.is(HeroSubClass.PIOUS)) {
 			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason reason = Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.class);
 			com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator.setAction(reason);
@@ -796,6 +801,7 @@ public class Hero extends Char {
 		Buff.affect( this, Regeneration.class );
 		Buff.affect( this, Hunger.class );
 		Buff.affect( this, MpRegen.class );
+		com.shatteredpixel.shatteredpixeldungeon.actors.DerangedChar.live(this); //deranged, Forget Path
 		//Dragonic PD, the Dragon Knight sears raw meat
 		if (heroClass == HeroClass.DRAGONKNIGHT) Buff.affect( this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sear.class );
 		ensureSubclassBuffs();
@@ -843,11 +849,11 @@ public class Hero extends Char {
 		Invisibility.dispel();
 		belongings.thrownWeapon = null;
 
-		if (hit && subClass == HeroSubClass.GLADIATOR && wasEnemy){
+		if (hit && subClass.is(HeroSubClass.GLADIATOR) && wasEnemy){
 			Buff.affect( this, Combo.class ).hit( enemy );
 		}
 
-		if (hit && heroClass == HeroClass.DUELIST && wasEnemy){
+		if (hit && heroClass.is(HeroClass.DUELIST) && wasEnemy){
 			Buff.affect( this, Sai.ComboStrikeTracker.class).addHit( attackTarget );
 		}
 
@@ -898,7 +904,7 @@ public class Hero extends Char {
 					&& belongings.abilityWeapon != wep && buff(MonkEnergy.MonkAbility.UnarmedAbilityTracker.class) == null){
 
 				//non-duelist benefit for precise assault, can stack with liquid agility
-				if (heroClass != HeroClass.DUELIST) {
+				if (!heroClass.is(HeroClass.DUELIST)) {
 					//persistent +10%/20%/30% ACC for other heroes
 					accuracy *= 1f + 0.1f * pointsInTalent(Talent.PRECISE_ASSAULT);
 				}
@@ -1177,7 +1183,7 @@ public class Hero extends Char {
 			Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG, 0.75f, 1.2f);
 		}
 
-		if (heroClass != HeroClass.DUELIST
+		if (!heroClass.is(HeroClass.DUELIST)
 				&& hasTalent(Talent.WEAPON_RECHARGING)
 				&& (buff(Recharging.class) != null || buff(ArtifactRecharge.class) != null)){
 			dmg = Math.round(dmg * (1.025f + .025f*pointsInTalent(Talent.WEAPON_RECHARGING)));
@@ -1673,7 +1679,7 @@ public class Hero extends Char {
 				//standing in high grass
 				(Dungeon.level.map[pos] == Terrain.HIGH_GRASS ||
 				//standing in furrowed grass and not huntress
-				(heroClass != HeroClass.HUNTRESS && subClass != HeroSubClass.SPECIALIST && Dungeon.level.map[pos] == Terrain.FURROWED_GRASS) ||
+				(!heroClass.is(HeroClass.HUNTRESS) && !subClass.is(HeroSubClass.SPECIALIST) && Dungeon.level.map[pos] == Terrain.FURROWED_GRASS) ||
 				//standing on a plant
 				Dungeon.level.plants.get(pos) != null);
 	}
@@ -2199,7 +2205,7 @@ public class Hero extends Char {
 
 		if (attackTarget.isAlive() && canAttack(attackTarget) && attackTarget.invisible == 0) {
 
-			if (heroClass != HeroClass.DUELIST
+			if (!heroClass.is(HeroClass.DUELIST)
 					&& hasTalent(Talent.AGGRESSIVE_BARRIER)
 					&& buff(Talent.AggressiveBarrierCooldown.class) == null
 					&& (HP / (float)HT) <= 0.5f){
@@ -2272,7 +2278,7 @@ public class Hero extends Char {
 			Buff.affect(this, Perks.PerkHoldFast.class).pos = pos;
 		}
 		if (hasTalent(Talent.HOLD_FAST)){
-			if (heroClass != HeroClass.WARRIOR || buff(BrokenSeal.WarriorShield.class) != null) {
+			if (!heroClass.is(HeroClass.WARRIOR) || buff(BrokenSeal.WarriorShield.class) != null) {
 				Buff.affect(this, HoldFast.class).pos = pos;
 			}
 		}
@@ -2333,7 +2339,7 @@ public class Hero extends Char {
 				damage = buff(BodyForm.BodyFormBuff.class).enchant().proc(new WornShortsword(), this, enemy, damage);
 			}
 			if (enemy.isAlive() && buff(HolyWeapon.HolyWepBuff.class) != null) {
-				int dmg = subClass == HeroSubClass.PALADIN ? 6 : 2;
+				int dmg = subClass.is(HeroSubClass.PALADIN) ? 6 : 2;
 				enemy.damage(Math.round(dmg * Weapon.Enchantment.genericProcChanceMultiplier(this)), HolyWeapon.INSTANCE);
 			}
 			if (enemy.isAlive() && buff(Smite.SmiteTracker.class) != null) {
@@ -2389,7 +2395,7 @@ public class Hero extends Char {
 		damage = Talent.onSlimeDefense( this, enemy, damage );
 		damage = TransformationTalents.onDefenseProc( this, enemy, damage );
 		
-		if (damage > 0 && subClass == HeroSubClass.BERSERKER){
+		if (damage > 0 && subClass.is(HeroSubClass.BERSERKER)){
 			Berserk berserk = Buff.affect(this, Berserk.class);
 			berserk.damage(damage);
 		}
@@ -2402,7 +2408,7 @@ public class Hero extends Char {
 				damage = buff(BodyForm.BodyFormBuff.class).glyph().proc(new ClothArmor(), enemy, this, damage);
 			}
 			if (buff(HolyWard.HolyArmBuff.class) != null){
-				int blocking = subClass == HeroSubClass.PALADIN ? 3 : 1;
+				int blocking = subClass.is(HeroSubClass.PALADIN) ? 3 : 1;
 				damage -= Math.round(blocking * Armor.Glyph.genericProcChanceMultiplier(enemy));
 			}
 		}
@@ -2549,6 +2555,7 @@ public class Hero extends Char {
 
 		//we ceil this one to avoid letting the player easily take 0 dmg from tenacity early
 		dmg = (int)Math.ceil(dmg * RingOfTenacity.damageMultiplier( this ));
+		com.shatteredpixel.shatteredpixeldungeon.actors.DerangedChar.onHeroDamaged(this, dmg); //deranged, No HP
 
 		//Transformation PD talents that react to a hit (Alchemy Shield, Dying Will, the Friar's sanity loss)
 		dmg = Talent.onHeroDamage( this, dmg, src );
@@ -2779,7 +2786,7 @@ public class Hero extends Char {
 				buff(GreaterHaste.class).spendMove();
 			}
 
-			if (subClass == HeroSubClass.FREERUNNER){
+			if (subClass.is(HeroSubClass.FREERUNNER)){
 				Buff.affect(this, Momentum.class).gainStack();
 			}
 			SummoningHooks.onStep(this); //summoning
@@ -3277,6 +3284,7 @@ public class Hero extends Char {
 		
 		if (HP <= 0){
 			if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Undead.class) != null) return true; //rearranged
+			if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.KromerNoDeath.class) != null) return true; //deranged
 			if (berserk == null) berserk = buff(Berserk.class);
 			return berserk != null && berserk.berserking();
 		} else {
@@ -3406,11 +3414,11 @@ public class Hero extends Char {
 			spend( 0 ); //rearranged, a critical hit while awake or a flash slash is free
 		}
 
-		if (hit && subClass == HeroSubClass.GLADIATOR && wasEnemy){
+		if (hit && subClass.is(HeroSubClass.GLADIATOR) && wasEnemy){
 			Buff.affect( this, Combo.class ).hit(attackTarget);
 		}
 
-		if (hit && heroClass == HeroClass.DUELIST && wasEnemy){
+		if (hit && heroClass.is(HeroClass.DUELIST) && wasEnemy){
 			Buff.affect( this, Sai.ComboStrikeTracker.class).addHit( attackTarget );
 		}
 
@@ -3600,7 +3608,7 @@ public class Hero extends Char {
 		boolean smthFound = false;
 
 		boolean circular = pointsInTalent(Talent.WIDE_SEARCH) == 1;
-		int distance = heroClass == HeroClass.ROGUE ? 2 : 1;
+		int distance = heroClass.is(HeroClass.ROGUE) ? 2 : 1;
 		if (hasTalent(Talent.WIDE_SEARCH)) distance++;
 		distance += BAHero.searchBonus(this); //bluearchive
 		if (pointsInTalent(Talent.BA_WIDER_SEARCH) == 1) circular = true; //bluearchive

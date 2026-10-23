@@ -80,6 +80,17 @@ public class AbyssalSpawner extends AbyssalMob {
 		return true;
 	}
 
+	//deranged, in DERanged PD a spawner leaves a red crystal, three of them brew a potion of strength
+	@Override
+	public float lootChance() {
+		return 1f;
+	}
+
+	@Override
+	public com.shatteredpixel.shatteredpixeldungeon.items.Item createLoot() {
+		return new com.shatteredpixel.shatteredpixeldungeon.items.quest.RedCrystal();
+	}
+
 	private float spawnCooldown = 0;
 
 	public boolean spawnRecorded = false;

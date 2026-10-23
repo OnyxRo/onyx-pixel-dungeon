@@ -87,7 +87,7 @@ public class Sheath extends Item {
 
     public static boolean isFlashSlash() {
         Hero hero = Dungeon.hero;
-        return hero.subClass == HeroSubClass.MASTER &&
+        return hero.subClass.is(HeroSubClass.MASTER) &&
                     hero.buff(Sheathing.class) != null &&
                     hero.buff(FlashSlashCooldown.class) == null &&
                     hero.buff(DashAttackTracker.class) == null;
@@ -106,7 +106,7 @@ public class Sheath extends Item {
             if (super.attachTo(target)){
                 if (hero != null) {
                     Dungeon.observe();
-                    if (hero.subClass == HeroSubClass.MASTER && hero.buff(DashAttackCooldown.class) == null) {
+                    if (hero.subClass.is(HeroSubClass.MASTER) && hero.buff(DashAttackCooldown.class) == null) {
                         ActionIndicator.setAction(this);
                     }
                 }
@@ -128,7 +128,7 @@ public class Sheath extends Item {
 
         @Override
         public boolean act() {
-            if (hero.subClass == HeroSubClass.MASTER) {
+            if (hero.subClass.is(HeroSubClass.MASTER)) {
                 if (hero.buff(DashAttackCooldown.class) == null) {
                     ActionIndicator.setAction(this);
                 } else {
@@ -171,7 +171,7 @@ public class Sheath extends Item {
         public void storeInBundle(Bundle bundle) {
             super.storeInBundle(bundle);
             bundle.put( POS, pos );
-            bundle.put( CAN_DASH, (hero.subClass == HeroSubClass.MASTER && hero.buff(DashAttackCooldown.class) == null) );
+            bundle.put( CAN_DASH, (hero.subClass.is(HeroSubClass.MASTER) && hero.buff(DashAttackCooldown.class) == null) );
         }
 
         @Override

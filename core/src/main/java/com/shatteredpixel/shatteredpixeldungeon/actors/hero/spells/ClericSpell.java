@@ -86,7 +86,7 @@ public abstract class ClericSpell {
 		}
 		tome.spendCharge(chargeUse(hero));
 		if (tome.triggersArtifactTalents()) Talent.onArtifactUsed(hero); //transformation, not for the rubbings tome
-		if (hero.subClass == HeroSubClass.PALADIN){
+		if (hero.subClass.is(HeroSubClass.PALADIN)){
 			if (this != HolyWeapon.INSTANCE && hero.buff(HolyWeapon.HolyWepBuff.class) != null){
 				hero.buff(HolyWeapon.HolyWepBuff.class).extend(10*chargeUse(hero));
 			}
@@ -141,10 +141,10 @@ public abstract class ClericSpell {
 			RearrangedSpells.addSpells(cleric, 2, spells); //rearranged
 		} else if (tier == 3){
 
-			if (cleric.subClass == HeroSubClass.PRIEST) {
+			if (cleric.subClass.is(HeroSubClass.PRIEST)) {
 				spells.add(Radiance.INSTANCE);
 
-			} else if (cleric.subClass == HeroSubClass.PALADIN){
+			} else if (cleric.subClass.is(HeroSubClass.PALADIN)){
 				spells.add(Smite.INSTANCE);
 			}
 

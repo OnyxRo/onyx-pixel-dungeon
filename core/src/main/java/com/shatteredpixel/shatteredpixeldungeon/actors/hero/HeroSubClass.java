@@ -152,11 +152,13 @@ public enum HeroSubClass {
 	RBA_CALL_OF_STAR(HeroIcon.RBA_CALL_OF_STAR),
 	RBA_LITTLE_ANGRY(HeroIcon.RBA_LITTLE_ANGRY),
 	RBA_DEVOUT_PRAYER(HeroIcon.RBA_DEVOUT_PRAYER),
-	RBA_SYMBOL_OF_PEACE(HeroIcon.RBA_SYMBOL_OF_PEACE);
+	RBA_SYMBOL_OF_PEACE(HeroIcon.RBA_SYMBOL_OF_PEACE),
+	//deranged, DERanged PD's Rat King, who takes on other subclasses through his talents
+	KING(HeroIcon.DR_KING);
 
-	//Transformation PD asks this of subclasses (its Rat King hero shares them all)
+	//Transformation PD asks this of subclasses. DERanged PD's King counts as every subclass he has the talent for
 	public boolean is(HeroSubClass sub) {
-		return this == sub;
+		return this == sub || (this == KING && DerangedKing.sharesSubclass(sub));
 	}
 
 	int icon;

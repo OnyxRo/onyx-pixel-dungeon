@@ -135,7 +135,7 @@ public class ChaliceOfBlood extends Artifact {
 		damage = com.shatteredpixel.shatteredpixeldungeon.actors.CommunityHooks.necklaceBlock(hero, damage); //Community PD, Necklace of Ice
 
 		if (hero.buff(MagicImmune.class) != null && hero.buff(HolyWard.HolyArmBuff.class) != null){
-			damage -= hero.subClass == HeroSubClass.PALADIN ? 3 : 1;
+			damage -= hero.subClass.is(HeroSubClass.PALADIN) ? 3 : 1;
 		}
 
 		WandOfLivingEarth.RockArmor rockArmor = hero.buff(WandOfLivingEarth.RockArmor.class);

@@ -180,7 +180,7 @@ public abstract class Level implements Bundlable {
 	public boolean[] mapped;
 	public boolean[] discoverable;
 
-	public int viewDistance = Dungeon.isChallenged( Challenges.DARKNESS ) ? 2 : 8;
+	public int viewDistance = Dungeon.isChallenged( Challenges.DARKNESS ) ? 2 : (Dungeon.isChallenged( Challenges.FORGET_PATH ) ? 6 : 8); //deranged
 	
 	public boolean[] heroFOV;
 	
@@ -1561,7 +1561,7 @@ public abstract class Level implements Bundlable {
 
 			//grass is see-through by some specific entities, but not during the fungi quest
 			if (!(Dungeon.level instanceof  MiningLevel) || Blacksmith.Quest.Type() != Blacksmith.Quest.FUNGI){
-				if ((c instanceof Hero && ((Hero) c).subClass == HeroSubClass.WARDEN) || com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.seesThroughGrass(c) //bluearchive
+				if ((c instanceof Hero && ((Hero) c).subClass.is(HeroSubClass.WARDEN)) || com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.seesThroughGrass(c) //bluearchive
 						|| com.shatteredpixel.shatteredpixeldungeon.RBAHooks.seesThroughGrass(c) //rebluearchive, Miyu
 						|| (c instanceof Hero && ((Hero) c).pointsInTalent(Talent.MECHANICAL_GOGGLES) >= 2)
 						|| c instanceof YogFist.SoiledFist || c instanceof GnollGeomancer) {
@@ -1684,7 +1684,7 @@ public abstract class Level implements Bundlable {
 					mindVisRange = 1 + ((Hero) c).pointsInTalent(Talent.HEIGHTENED_SENSES);
 				}
 				if (c.buff(DivineSense.DivineSenseTracker.class) != null) {
-					if (((Hero) c).heroClass == HeroClass.CLERIC) {
+					if (((Hero) c).heroClass.is(HeroClass.CLERIC)) {
 						mindVisRange = 4 + 4 * ((Hero) c).pointsInTalent(Talent.DIVINE_SENSE);
 					} else {
 						mindVisRange = 1 + 2 * ((Hero) c).pointsInTalent(Talent.DIVINE_SENSE);

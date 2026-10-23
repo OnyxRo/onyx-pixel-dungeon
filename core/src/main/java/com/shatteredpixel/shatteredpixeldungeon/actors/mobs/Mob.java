@@ -975,7 +975,7 @@ public abstract class Mob extends Char {
 
 	@Override
 	public int defenseSkill( Char enemy ) {
-		if (buff(GuidingLight.Illuminated.class) != null && Dungeon.hero.heroClass == HeroClass.CLERIC){
+		if (buff(GuidingLight.Illuminated.class) != null && Dungeon.hero.heroClass.is(HeroClass.CLERIC)){
 			//if the attacker is the cleric, they must be using a weapon they have the str for
 			if (enemy instanceof Hero){
 				Hero h = (Hero) enemy;
@@ -1090,6 +1090,7 @@ public abstract class Mob extends Char {
 			speed *= 1.15f+0.15f*Dungeon.hero.pointsInTalent(Talent.EFFICIENT_ORDER); //Transformation PD, the DM400
 		}
 		speed *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.mobSpeed(this);
+		if (Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.FORGET_PATH)) speed *= 1.25f; //deranged
 		return speed * AscensionChallenge.enemySpeedModifier(this);
 	}
 
@@ -1211,7 +1212,7 @@ public abstract class Mob extends Char {
 					}
 				}
 
-				if (Dungeon.hero.subClass == HeroSubClass.MONK){
+				if (Dungeon.hero.subClass.is(HeroSubClass.MONK)){
 					Buff.affect(Dungeon.hero, MonkEnergy.class).gainEnergy(this);
 				}
 			}
@@ -1276,7 +1277,7 @@ public abstract class Mob extends Char {
 						&& Random.Float() < 0.34f + 0.33f* Dungeon.hero.pointsInTalent(Talent.LETHAL_MOMENTUM)){
 					Buff.affect(Dungeon.hero, Talent.LethalMomentumTracker.class, 0f);
 				}
-				if (Dungeon.hero.heroClass != HeroClass.DUELIST
+				if (!Dungeon.hero.heroClass.is(HeroClass.DUELIST)
 						&& Dungeon.hero.hasTalent(Talent.LETHAL_HASTE)
 						&& Dungeon.hero.buff(Talent.LethalHasteCooldown.class) == null){
 					Buff.affect(Dungeon.hero, Talent.LethalHasteCooldown.class, 100f);
@@ -1370,13 +1371,13 @@ public abstract class Mob extends Char {
 					Dungeon.level.drop(Generator.random(), pos).sprite.drop();
 				}
 			}
-			if (Dungeon.hero.heroClass == HeroClass.MAGE && Random.Float() < 0.33f) {
+			if (Dungeon.hero.heroClass.is(HeroClass.MAGE) && Random.Float() < 0.33f) {
 				Dungeon.level.drop(Generator.random(Generator.Category.SCROLL), pos).sprite.drop();
 			}
-			if (Dungeon.hero.heroClass == HeroClass.ROGUE && Random.Float() < 0.10f) {
+			if (Dungeon.hero.heroClass.is(HeroClass.ROGUE) && Random.Float() < 0.10f) {
 				Dungeon.level.drop(new com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb(), pos).sprite.drop();
 			}
-			if (Dungeon.hero.heroClass == HeroClass.HUNTRESS && Random.Float() < 0.08f) {
+			if (Dungeon.hero.heroClass.is(HeroClass.HUNTRESS) && Random.Float() < 0.08f) {
 				int quantity = Random.IntRange(1, 3);
 				Dungeon.hero.sprite.showStatus( 0x44CCFF, "%+d", quantity );
 				Dungeon.energy += quantity;

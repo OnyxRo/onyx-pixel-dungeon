@@ -529,6 +529,10 @@ public class ModRoster {
 		add( "rebluearchive", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.fox.RBANiko.class, 0, 1, 99 );
 		add( "rebluearchive", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.fox.RBAKurumi.class, 0, 1, 99 );
 		add( "rebluearchive", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.fox.RBAOtogi.class, 0, 1, 99 );
+		//deranged, DERanged PD. Ech came only with a special seed and the dark matter slime only as a base for
+		//the darkest elf's slimes, so neither spawns by depth
+		add( "deranged", Ech.class, 0, 1, 99 );
+		add( "deranged", DarkSlime.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

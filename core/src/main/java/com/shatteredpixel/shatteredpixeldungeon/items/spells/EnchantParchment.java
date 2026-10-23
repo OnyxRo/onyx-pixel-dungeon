@@ -47,7 +47,7 @@ public class EnchantParchment extends InventorySpell {
     @Override
     protected boolean usableOnItem(Item item) {
         if (glyph == null && enchantment == null){
-            return ((item instanceof Armor && ((Armor) item).glyph != null) || (item instanceof Weapon && ((Weapon) item).enchantment != null) && (!(item instanceof Wand) || Dungeon.hero.heroClass == HeroClass.MAGE));
+            return ((item instanceof Armor && ((Armor) item).glyph != null) || (item instanceof Weapon && ((Weapon) item).enchantment != null) && (!(item instanceof Wand) || Dungeon.hero.heroClass.is(HeroClass.MAGE)));
         }
         else if (glyph != null){
             return item instanceof Armor;

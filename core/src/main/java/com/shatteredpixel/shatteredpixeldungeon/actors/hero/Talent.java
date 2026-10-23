@@ -1155,7 +1155,17 @@ public enum Talent {
 	RBA_MARI_ARMOR2_3(50342, 4),
 	RBA_MARI_ARMOR3_1(50343, 4),
 	RBA_MARI_ARMOR3_2(50344, 4),
-	RBA_MARI_ARMOR3_3(50345, 4);
+	RBA_MARI_ARMOR3_3(50345, 4),
+	//deranged, DERanged PD's Rat King. Icons of 20000 and up come from its own sheet (interfaces/deranged)
+	RK_ROYAL_PRIVILEGE(20572), RK_ROYAL_FOCUS(20616), RK_ROYAL_INTUITION(20573), RK_ROYAL_PERCEPTIVITY(20617), RK_KINGS_WISDOM(20574), RK_AMBUSH(20618), RK_NOBLE_CAUSE(20575), RK_WELL_PROTECTED(20619), RK_EXTRA_POWER(20576), RK_EXTRA_BULK(20620), RK_ROYAL_MEAL(20577),
+	RK_ROYAL_FEAST(20621), RK_RESTORATION(20578), RK_TEMPORARY_DRAUGHT(20622), RK_POWER_WITHIN(20579), RK_PERFECT_COLLECTION(20623), RK_KINGS_VISION(20580), RK_KINGS_WRATH(20624), RK_PURSUIT(20581), RK_THE_PROTECTOR(20625), RK_ENERGY_SURGE(20582), RK_NOBLE_CALL(20626),
+	RK_BERSERKER(20583, 3), RK_GLADIATOR(20584, 3), RK_VETERAN(20585, 3), RK_BATTLEMAGE(20627, 3), RK_WARLOCK(20628, 3), RK_WIZARD(20629, 3),
+	RK_ASSASSIN(20671, 3), RK_FREERUNNER(20672, 3), RK_CHASER(20673, 3), RK_SNIPER(20586, 3), RK_WARDEN(20587, 3), RK_FIGHTER(20588, 3),
+	RK_CHAMPION(20630, 3), RK_MONK(20631, 3), RK_FENCER(20632, 3), RK_PRIEST(20674, 3), RK_PALADIN(20675, 3), RK_ENCHANTER(20676, 3),
+	RK_OUTLAW(20589, 3), RK_GUNSLINGER(20590, 3), RK_SPECIALIST(20591, 3), RK_SLASHER(20633, 3), RK_MASTER(20634, 3), RK_SLAYER(20635, 3),
+	RK_ENGINEER(20677, 3), RK_EXPLORER(20678, 3), RK_RESEARCHER(20679, 3), RK_DEATHKNIGHT(20592, 3), RK_HORSEMAN(20593, 3), RK_CRUSADER(20594, 3),
+	RK_SAVIOR(20636, 3), RK_THERAPIST(20637, 3), RK_MEDICALOFFICER(20638, 3), RK_BOWMASTER(20680, 3), RK_JUGGLER(20681, 3), RK_SHARPSHOOTER(20682, 3),
+	RK_AFTERSHOCK(20595, 4), RK_RAT_BLAST(20596, 4), RK_SMOKE_AND_MIRRORS(20597, 4), RK_SEA_OF_BLADES(20598, 4);
 
 	public static class ImprovisedProjectileCooldown extends FlavourBuff{
 		public int icon() { return BuffIndicator.TIME; }
@@ -1498,6 +1508,9 @@ public enum Talent {
 					return 26;
 				case FREEMAN:
 					return com.shatteredpixel.shatteredpixeldungeon.ui.TalentIcon.TRANSFORMATION_BASE + 510;
+				//deranged
+				case RAT_KING:
+					return 250;
 			}
 		} else {
 			return icon;
@@ -1939,7 +1952,7 @@ public enum Talent {
 				healing = Math.min(Math.max((int)(0.15 * (hero.HT - hero.HP)), 5), 25);
 			}
 			if (hero.hasTalent(ORIGINAL_MONSTER)) healing = (int)(healing * 1.5);
-			if (hero.subClass == HeroSubClass.WARDEN) {
+			if (hero.subClass.is(HeroSubClass.WARDEN)) {
 				Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Healing.class).setHeal(healing, 0, 1);
 			} else {
 				Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass.Health.class).boost(healing);
@@ -2420,7 +2433,7 @@ public enum Talent {
 		}
 
 		//for metamorphosis
-		if (talent == IRON_WILL && hero.heroClass != HeroClass.WARRIOR){
+		if (talent == IRON_WILL && !hero.heroClass.is(HeroClass.WARRIOR)){
 			Buff.affect(hero, BrokenSeal.WarriorShield.class);
 		}
 
@@ -2462,7 +2475,7 @@ public enum Talent {
 			Buff.affect(hero, Talent.ProtectiveShadowsTracker.class);
 		}
 
-		if (talent == LIGHT_CLOAK && hero.heroClass == HeroClass.ROGUE){
+		if (talent == LIGHT_CLOAK && hero.heroClass.is(HeroClass.ROGUE)){
 			for (Item item : Dungeon.hero.belongings.backpack){
 				if (item instanceof CloakOfShadows){
 					if (!hero.belongings.lostInventory() || item.keptThroughLostInventory()) {
@@ -2492,7 +2505,7 @@ public enum Talent {
 			}
 		}
 
-		if (talent == LIGHT_READING && hero.heroClass == HeroClass.CLERIC){
+		if (talent == LIGHT_READING && hero.heroClass.is(HeroClass.CLERIC)){
 			for (Item item : Dungeon.hero.belongings.backpack){
 				if (item instanceof HolyTome){
 					if (!hero.belongings.lostInventory() || item.keptThroughLostInventory()) {
@@ -2599,7 +2612,7 @@ public enum Talent {
 			}
 		}
 		if (hero.hasTalent(FOCUSED_MEAL)){
-			if (hero.heroClass == HeroClass.DUELIST){
+			if (hero.heroClass.is(HeroClass.DUELIST)){
 				//0.67/1 charge for the duelist
 				Buff.affect( hero, MeleeWeapon.Charger.class ).gainCharge((hero.pointsInTalent(FOCUSED_MEAL)+1)/3f);
 				ScrollOfRecharging.charge( hero );
@@ -2609,7 +2622,7 @@ public enum Talent {
 			}
 		}
 		if (hero.hasTalent(SATIATED_SPELLS)){
-			if (hero.heroClass == HeroClass.CLERIC) {
+			if (hero.heroClass.is(HeroClass.CLERIC)) {
 				Buff.affect(hero, SatiatedSpellsTracker.class);
 			} else {
 				//3/5 shielding, delayed up to 10 turns
@@ -2622,7 +2635,7 @@ public enum Talent {
 			}
 		}
 		if (hero.hasTalent(ENLIGHTENING_MEAL)){
-			if (hero.heroClass == HeroClass.CLERIC) {
+			if (hero.heroClass.is(HeroClass.CLERIC)) {
 				HolyTome tome = hero.belongings.getItem(HolyTome.class);
 				if (tome != null) {
 					// 2/3 of a charge at +1, 1 full charge at +2
@@ -2792,7 +2805,7 @@ public enum Talent {
 			Sample.INSTANCE.play( Assets.Sounds.MELD );
 		}
 		if (hero.hasTalent(RECALL_INSCRIPTION) && Scroll.class.isAssignableFrom(cls) && cls != ScrollOfUpgrade.class){
-			if (hero.heroClass == HeroClass.CLERIC){
+			if (hero.heroClass.is(HeroClass.CLERIC)){
 				Buff.prolong(hero, RecallInscription.UsedItemTracker.class, hero.pointsInTalent(RECALL_INSCRIPTION) == 2 ? 300 : 10).item = cls;
 			} else {
 				// 10/15%
@@ -2807,7 +2820,7 @@ public enum Talent {
 	public static void onRunestoneUsed( Hero hero, int pos, Class<?extends Item> cls ){
 		RBATalents.onRunestoneUsed(hero); //rebluearchive
 		if (hero.hasTalent(RECALL_INSCRIPTION) && Runestone.class.isAssignableFrom(cls)){
-			if (hero.heroClass == HeroClass.CLERIC){
+			if (hero.heroClass.is(HeroClass.CLERIC)){
 				Buff.prolong(hero, RecallInscription.UsedItemTracker.class, hero.pointsInTalent(RECALL_INSCRIPTION) == 2 ? 300 : 10).item = cls;
 			} else {
 
@@ -2830,13 +2843,13 @@ public enum Talent {
 			Buff.prolong(hero, EnhancedRings.class, 3f*hero.pointsInTalent(ENHANCED_RINGS));
 		}
 
-		if (Dungeon.hero.heroClass != HeroClass.CLERIC
+		if (!Dungeon.hero.heroClass.is(HeroClass.CLERIC)
 				&& Dungeon.hero.hasTalent(Talent.DIVINE_SENSE)){
 			Buff.prolong(Dungeon.hero, DivineSense.DivineSenseTracker.class, Dungeon.hero.cooldown()+1);
 		}
 
 		// 10/20/30%
-		if (Dungeon.hero.heroClass != HeroClass.CLERIC
+		if (!Dungeon.hero.heroClass.is(HeroClass.CLERIC)
 				&& Dungeon.hero.hasTalent(Talent.CLEANSE)
 				&& Random.Int(10) < Dungeon.hero.pointsInTalent(Talent.CLEANSE)){
 			boolean removed = false;
@@ -3268,6 +3281,10 @@ public enum Talent {
 			case GUNNER: case SAMURAI: case ADVENTURER: case KNIGHT: case MEDIC: case ARCHER:
 				RearrangedTalents.addClassTalents(cls, 1, tierTalents);
 				break;
+			//deranged
+			case RAT_KING:
+				DerangedKing.addClassTalents(1, tierTalents);
+				break;
 			//summoning, Summoning PD gave the Conjurer no talents of her own, these are Shattered's picked to suit her
 			case CONJURER:
 				Collections.addAll(tierTalents, HEARTY_MEAL, EMPOWERING_MEAL, SCHOLARS_INTUITION, NATURES_BOUNTY);
@@ -3355,6 +3372,10 @@ public enum Talent {
 			case GUNNER: case SAMURAI: case ADVENTURER: case KNIGHT: case MEDIC: case ARCHER:
 				RearrangedTalents.addClassTalents(cls, 2, tierTalents);
 				break;
+			//deranged
+			case RAT_KING:
+				DerangedKing.addClassTalents(2, tierTalents);
+				break;
 			//summoning
 			case CONJURER:
 				Collections.addAll(tierTalents, INVIGORATING_MEAL, LIQUID_NATURE, ARCANE_VISION, HEIGHTENED_SENSES, SHIELD_BATTERY);
@@ -3439,6 +3460,9 @@ public enum Talent {
 			//rearranged
 			case GUNNER: case SAMURAI: case ADVENTURER: case KNIGHT: case MEDIC: case ARCHER:
 				RearrangedTalents.addClassTalents(cls, 3, tierTalents);
+				break;
+			//deranged, the Rat King has no class talents in tier 3, his subclass brings them
+			case RAT_KING:
 				break;
 			//summoning
 			case CONJURER:
@@ -3610,6 +3634,10 @@ public enum Talent {
 			case ENGINEER: case EXPLORER: case RESEARCHER: case DEATHKNIGHT: case HORSEMAN: case CRUSADER:
 			case SAVIOR: case THERAPIST: case MEDICALOFFICER: case BOWMASTER: case JUGGLER: case SHARPSHOOTER:
 				RearrangedTalents.addSubclassTalents(cls, tierTalents);
+				break;
+			//deranged
+			case KING:
+				DerangedKing.addSubclassTalents(tierTalents);
 				break;
 			//summoning, Shattered talents picked for Summoning PD's Conjurer subclasses
 			case SOUL_REAVER:

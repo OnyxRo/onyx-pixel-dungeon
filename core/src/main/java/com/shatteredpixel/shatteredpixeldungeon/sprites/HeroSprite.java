@@ -91,6 +91,13 @@ public class HeroSprite extends CharSprite {
 	
 	public void updateArmor() {
 
+		//deranged, DERanged PD's Rat King has his own frame layout
+		if (Dungeon.hero.heroClass == HeroClass.RAT_KING && Dungeon.hero.buff(HeroDisguise.class) == null){
+			RatKingHeroSprite.setup(this);
+			if (Dungeon.hero.isAlive()) idle(); else die();
+			return;
+		}
+
 		TextureFilm film = new TextureFilm( tiers(), Dungeon.hero.tier(), FRAME_WIDTH, FRAME_HEIGHT );
 		//rebluearchive, the students are drawn 12 by 17 with one look for every armor
 		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.isStudent(Dungeon.hero)
@@ -217,6 +224,7 @@ public class HeroSprite extends CharSprite {
 			avatar.frame( avatar.texture.uvRect( 0, 0, FRAME_WIDTH, RBASprites.STUDENT_HEIGHT ) );
 			return avatar;
 		}
+		if (cl == HeroClass.RAT_KING) return RatKingHeroSprite.avatar(); //deranged
 		
 		RectF patch = tiers().get( armorTier );
 		Image avatar = new Image( cl.spritesheet() );

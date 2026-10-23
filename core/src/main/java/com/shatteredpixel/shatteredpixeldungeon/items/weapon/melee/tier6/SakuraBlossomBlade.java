@@ -73,7 +73,7 @@ public class SakuraBlossomBlade extends AssassinsBlade {
 		if (isEquipped(Dungeon.hero)
 				&& !hasCurseEnchant()
 				&& Dungeon.hero.buff(HolyWeapon.HolyWepBuff.class) != null
-				&& (Dungeon.hero.subClass != HeroSubClass.PALADIN || enchantment == null)) {
+				&& (!Dungeon.hero.subClass.is(HeroSubClass.PALADIN) || enchantment == null)) {
 			return Messages.get(HolyWeapon.class, "ench_name", baseName);
 		}
 		return enchantment != null && (cursedKnown || !enchantment.curse())

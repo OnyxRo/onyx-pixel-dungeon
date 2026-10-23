@@ -298,11 +298,11 @@ public class RuinBow extends BowWeapon implements AlchemyWeapon {
                 Dungeon.hero.buff(PenetrationShotBuff.class).detach();
             }
 
-            if (Dungeon.hero.subClass != HeroSubClass.BOWMASTER) {
+            if (!Dungeon.hero.subClass.is(HeroSubClass.BOWMASTER)) {
                 Buff.affect(Dungeon.hero, BowFatigue.class).countUp(1);
             }
 
-            if (Dungeon.hero.subClass == HeroSubClass.BOWMASTER) {
+            if (Dungeon.hero.subClass.is(HeroSubClass.BOWMASTER)) {
                 Buff.affect(Dungeon.hero, BowMasterSkill.class).shoot();
             }
 

@@ -360,7 +360,7 @@ public abstract class Char extends Actor {
 		c.spend( 1 / c.speed() );
 
 		if (c == Dungeon.hero){
-			if (Dungeon.hero.subClass == HeroSubClass.FREERUNNER){
+			if (Dungeon.hero.subClass.is(HeroSubClass.FREERUNNER)){
 				Buff.affect(Dungeon.hero, Momentum.class).gainStack();
 			}
 
@@ -498,7 +498,7 @@ public abstract class Char extends Actor {
 			if (this instanceof Hero){
 				Hero h = (Hero)this;
 				if (h.belongings.attackingWeapon() instanceof MissileWeapon
-						&& h.subClass == HeroSubClass.SNIPER
+						&& h.subClass.is(HeroSubClass.SNIPER)
 						&& !Dungeon.level.adjacent(h.pos, enemy.pos)){
 					dr = 0;
 				}
@@ -554,7 +554,7 @@ public abstract class Char extends Actor {
 					dmg += com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.searingLight(1 + 2*Dungeon.hero.pointsInTalent(Talent.SEARING_LIGHT)); //rearranged
 				}
 				if (this == Dungeon.hero) com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.wardingLight(Dungeon.hero); //rearranged
-				if (this != Dungeon.hero && Dungeon.hero.subClass == HeroSubClass.PRIEST){
+				if (this != Dungeon.hero && Dungeon.hero.subClass.is(HeroSubClass.PRIEST)){
 					enemy.damage(5+Dungeon.hero.lvl, GuidingLight.INSTANCE);
 				}
 			}
@@ -832,7 +832,7 @@ public abstract class Char extends Actor {
 			acuRoll *= buff.evasionAndAccuracyFactor();
 		}
 		acuRoll *= AscensionChallenge.statModifier(attacker);
-		if (Dungeon.hero.heroClass != HeroClass.CLERIC
+		if (!Dungeon.hero.heroClass.is(HeroClass.CLERIC)
 				&& Dungeon.hero.hasTalent(Talent.BLESS)
 				&& attacker.alignment == Alignment.ALLY){
 			// + 3%/5%
@@ -852,7 +852,7 @@ public abstract class Char extends Actor {
 		}
 		defRoll *= AscensionChallenge.statModifier(defender);
 		if (defender.buff(Talent.XiaDef.class) != null) defRoll *= 1.5f; //Transformation PD, the Ninja
-		if (Dungeon.hero.heroClass != HeroClass.CLERIC
+		if (!Dungeon.hero.heroClass.is(HeroClass.CLERIC)
 				&& Dungeon.hero.hasTalent(Talent.BLESS)
 				&& defender.alignment == Alignment.ALLY){
 			// + 3%/5%
@@ -907,6 +907,7 @@ public abstract class Char extends Actor {
 		for (ChampionEnemy buff : buffs(ChampionEnemy.class)){
 			buff.onAttackProc( enemy );
 		}
+		DerangedChar.attackProc(this, enemy); //deranged
 		if (this instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob){
 			damage = com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.mobAttackProc((com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob) this, enemy, damage);
 		}
@@ -927,7 +928,7 @@ public abstract class Char extends Actor {
 			damage -= Random.NormalIntRange(min, 2*min);
 			damage = Math.max(damage, 0);
 		} else if (this == Dungeon.hero
-				&& Dungeon.hero.heroClass != HeroClass.CLERIC
+				&& !Dungeon.hero.heroClass.is(HeroClass.CLERIC)
 				&& Dungeon.hero.hasTalent(Talent.SHIELD_OF_LIGHT)
 				&& TargetHealthIndicator.instance.target() == enemy){
 			//33/50%
@@ -1127,6 +1128,7 @@ public abstract class Char extends Actor {
 		if (this.buff(Doom.class) != null && !isImmune(Doom.class)){
 			damage *= 1.67f;
 		}
+		damage *= DerangedChar.damageMult(this, src); //deranged
 		if (alignment != Alignment.ALLY && this.buff(DeathMark.DeathMarkTracker.class) != null){
 			damage *= 1.25f;
 		}
@@ -1260,7 +1262,7 @@ public abstract class Char extends Actor {
 
 			//special case for sniper when using ranged attacks
 			if (src == Dungeon.hero
-					&& Dungeon.hero.subClass == HeroSubClass.SNIPER
+					&& Dungeon.hero.subClass.is(HeroSubClass.SNIPER)
 					&& !Dungeon.level.adjacent(Dungeon.hero.pos, pos)
 					&& Dungeon.hero.belongings.attackingWeapon() instanceof MissileWeapon){
 				icon = FloatingText.PHYS_DMG_NO_BLOCK;
@@ -1565,6 +1567,7 @@ public abstract class Char extends Actor {
 		}
 		timeScale *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.timeScale(this); //bluearchive
 		timeScale = TowerChar.timeScale(this, timeScale); //tower
+		timeScale *= DerangedChar.timeScale(this); //deranged
 
 		super.spend( time / timeScale );
 	}

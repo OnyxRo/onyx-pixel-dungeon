@@ -146,7 +146,7 @@ public class ForceCube extends MissileWeapon {
 		}
 
 		//if we're applying sniper's mark, prioritize giving it to the primary target of the attack
-		if (curUser.subClass == HeroSubClass.SNIPER && primaryTarget != null && primaryTarget.isActive()){
+		if (curUser.subClass.is(HeroSubClass.SNIPER) && primaryTarget != null && primaryTarget.isActive()){
 			Actor.add(new Actor() {
 
 				{

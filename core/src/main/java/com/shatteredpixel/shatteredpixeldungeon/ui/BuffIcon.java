@@ -55,6 +55,8 @@ public class BuffIcon extends Image {
 
 	private static TextureFilm raSmallFilm, raLargeFilm;
 
+	private static TextureFilm drSmallFilm, drLargeFilm;
+
 	private static TextureFilm baSmallFilm, baLargeFilm;
 
 	private static TextureFilm rbaSmallFilm, rbaLargeFilm;
@@ -81,6 +83,18 @@ public class BuffIcon extends Image {
 			} else {
 				if (baSmallFilm == null) baSmallFilm = new TextureFilm(texture, SML_SIZE, SML_SIZE);
 				frame(baSmallFilm.get(icon - 30000));
+			}
+			return;
+		}
+		//deranged, icons of 20000 and up come from DERanged PD's own sheets
+		if (icon >= 20000 && icon < 30000){
+			texture( large ? Assets.Interfaces.DR_BUFFS_LARGE : Assets.Interfaces.DR_BUFFS_SMALL );
+			if (large){
+				if (drLargeFilm == null) drLargeFilm = new TextureFilm(texture, LRG_SIZE, LRG_SIZE);
+				frame(drLargeFilm.get(icon - 20000));
+			} else {
+				if (drSmallFilm == null) drSmallFilm = new TextureFilm(texture, SML_SIZE, SML_SIZE);
+				frame(drSmallFilm.get(icon - 20000));
 			}
 			return;
 		}

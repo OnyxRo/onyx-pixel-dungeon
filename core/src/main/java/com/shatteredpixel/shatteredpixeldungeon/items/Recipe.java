@@ -187,6 +187,8 @@ public abstract class Recipe {
 	};
 	
 	private static Recipe[] oneIngredientRecipes = new Recipe[]{
+		//deranged, three red crystals make a potion of strength (one stack, so a one ingredient recipe)
+		new com.shatteredpixel.shatteredpixeldungeon.items.quest.RedCrystal.StrengthRecipe(),
 		new Scroll.ScrollToStone(),
 		new ExoticPotion.PotionToExotic(),
 		new ExoticScroll.ScrollToExotic(),
@@ -296,6 +298,12 @@ public abstract class Recipe {
 		//Community PD
 		new com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.FrostfireBrew.Recipe(),
 		new com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.LeanyElixir.Recipe(),
+		//deranged, DERanged PD's Kromer brews
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.ScammingSpell.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.KromerScroll.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.DoNotDieElixir.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.KromerPotion.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.Pipisfusion.Recipe(),
 	};
 
 	private static Recipe[] threeIngredientRecipes = new Recipe[]{
@@ -378,8 +386,8 @@ public abstract class Recipe {
 		} else if (item instanceof Wand) {
 			return item.cursedKnown && !item.cursed;
 		} else {
-			//other items can be unidentified, but not cursed
-			return !item.cursed;
+			//other items can be unidentified, but not cursed (DERanged's Kromer is always cursed)
+			return !item.cursed || item instanceof com.shatteredpixel.shatteredpixeldungeon.items.quest.Kromer;
 		}
 	}
 }

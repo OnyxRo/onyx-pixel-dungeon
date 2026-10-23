@@ -55,6 +55,8 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 	}
 
 	protected static boolean identifiedByUse = false;
+	//deranged, DERanged PD's Mysterious Merchant sells a metamorphosis, then no scroll is read
+	public static boolean merchant = false;
 	
 	@Override
 	public void doRead() {
@@ -65,11 +67,12 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 		} else {
 			identifiedByUse = false;
 		}
+		merchant = false;
 		GameScene.show(new WndMetamorphChoose());
 	}
 
 	public static void onMetamorph( Talent oldTalent, Talent newTalent ){
-		if (curItem instanceof ScrollOfMetamorphosis) {
+		if (!merchant && curItem instanceof ScrollOfMetamorphosis) {
 			((ScrollOfMetamorphosis) curItem).readAnimation();
 			Sample.INSTANCE.play(Assets.Sounds.READ);
 		}
@@ -79,6 +82,10 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 
 		if (Dungeon.hero.hasTalent(newTalent)) {
 			Talent.onTalentUpgraded(Dungeon.hero, newTalent);
+		}
+		if (merchant) {
+			merchant = false;
+			com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MysteryMerchant.onMetamorphSold(oldTalent, newTalent); //deranged
 		}
 	}
 

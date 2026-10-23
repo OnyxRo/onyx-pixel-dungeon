@@ -1343,6 +1343,29 @@ public enum Catalog {
 		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SR.RBASR_T5.class);
 		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SR.RBAWineRedAdmire.class);
 		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.quick.RBAAssassinsKunai.class);
+		//items ported from deranged
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.AluminumSword.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.NuclearHatchet.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.RunicBladeMkII.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.ConstructWand.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.BloomingPick.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.LuminousCutlass.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.MoltenStrife.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.ElementalDirk.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.DreadSlicer.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.SharksTooth.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.ExoKnife.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.TheReaper.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.Starsmasher.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.rka.RoyalBrand.class);
+		BREWS_ELIXIRS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.DoNotDieElixir.class);
+		BREWS_ELIXIRS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.KromerPotion.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.KromerScroll.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.Pipisfusion.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.ScammingSpell.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.quest.Kromer.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.quest.RedCrystal.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.bags.CheesyCheest.class);
 
 
 	}

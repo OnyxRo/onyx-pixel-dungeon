@@ -131,6 +131,10 @@ public abstract class SpecialRoom extends Room {
 	public static void initForFloor(){
 		floorSpecials = (ArrayList<Class<?extends Room>>) runSpecials.clone();
 		
+		//deranged, DERanged PD's Mysterious Merchant, once in each set of five floors
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MysteryMerchant.Stats.roomNeeded()){
+			floorSpecials.add(0, MysteryMerchantRoom.class);
+		}
 		//Ryuse's PD, a rat nest on the last sewer floor
 		if (Dungeon.depth == 4){
 			floorSpecials.add(0, RatNestRoom.class);
@@ -178,10 +182,16 @@ public abstract class SpecialRoom extends Room {
 			return new PitRoom();
 			
 		} else if (floorSpecials.contains(LaboratoryRoom.class)) {
-		
+
 			useType(LaboratoryRoom.class);
 			return new LaboratoryRoom();
-		
+
+		} else if (floorSpecials.contains(MysteryMerchantRoom.class)) { //deranged
+
+			useType(MysteryMerchantRoom.class);
+			com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MysteryMerchant.Stats.roomPlaced();
+			return new MysteryMerchantRoom();
+
 		} else {
 			
 			if (Dungeon.bossLevel(Dungeon.depth + 1)){

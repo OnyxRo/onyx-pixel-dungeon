@@ -44,7 +44,7 @@ public class WheatPlant extends FoodPlant {
 			Dungeon.level.drop( new Wheat(), pos ).sprite.drop( pos );
 		}
 
-		if (ch instanceof Hero && ((Hero) ch).subClass == HeroSubClass.WARDEN && Random.Float() > 0.5f) {
+		if (ch instanceof Hero && ((Hero) ch).subClass.is(HeroSubClass.WARDEN) && Random.Float() > 0.5f) {
 			Dungeon.level.drop( new Wheat(), pos ).sprite.drop( pos );
 		}
 

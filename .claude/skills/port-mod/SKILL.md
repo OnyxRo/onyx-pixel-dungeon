@@ -243,3 +243,8 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **Find the hooks with `rebluearchive-hunks.py`** (copy it and point it at the new mod), it shows only the changed hunks that name something the mod added, a few hundred lines instead of thousands.
 - **Icon offsets in use.** Re-ARranged 10000, Blue Archive 30000, Re Blue Archive 50000. Check the highest offset first in `TalentIcon`, `BuffIcon` and `HeroIcon.pick`.
 - **Merging main after a parallel port** that appended to the same enum or list, take main's file and reapply your own small edits, keep both sides only for plain appended lines.
+## Added after DERanged PD (2026-10-22)
+
+- **A hero that counts as other classes** (DERanged's Rat King) needs no edits in each effect. `HeroClass.is` and `HeroSubClass.is` answer for him, and `python -I scripts/deranged-loosen.py` rewrites `x.heroClass == HeroClass.Y` and `x.subClass == HeroSubClass.Y` into `is()` calls in game logic folders. Extend its lists if another hero shares classes.
+- **Talents that stand for other talents** go in one table with one hook in `Hero.pointsInTalent` (see `DerangedKing.BORROWED`), built from the mod's two argument `hasTalent` and `pointsInTalent` calls with a small script.
+- **Python helpers on Windows files.** Normalize CRLF before multi line replaces, or use `edit.py` specs, which handle it.

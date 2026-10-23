@@ -33,7 +33,7 @@ public class RearrangedSpells {
 		if (tier == 2) {
 			if (cleric.hasTalent(Talent.DIVINE_BLAST)) spells.add(DivineBlast.INSTANCE);
 		} else if (tier == 3) {
-			if (cleric.subClass == HeroSubClass.ENCHANTER) spells.add(SpellBurst.INSTANCE);
+			if (cleric.subClass.is(HeroSubClass.ENCHANTER)) spells.add(SpellBurst.INSTANCE);
 			if (cleric.hasTalent(Talent.DIVINE_RAY)) spells.add(DivineRay.INSTANCE);
 			if (cleric.hasTalent(Talent.HOLY_BOMB)) spells.add(HolyBombSpell.INSTANCE);
 			if (cleric.hasTalent(Talent.RA_RESURRECTION)) spells.add(RaResurrection.INSTANCE);

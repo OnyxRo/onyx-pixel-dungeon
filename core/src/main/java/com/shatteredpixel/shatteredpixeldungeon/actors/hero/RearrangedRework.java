@@ -197,7 +197,7 @@ public class RearrangedRework {
 	}
 
 	public static boolean harmonized( Hero hero ){
-		if (hero.subClass != HeroSubClass.MONK) return false;
+		if (!hero.subClass.is(HeroSubClass.MONK)) return false;
 		MonkEnergy energy = hero.buff(MonkEnergy.class);
 		return energy != null && energy.harmonized(hero);
 	}
@@ -261,7 +261,7 @@ public class RearrangedRework {
 
 	//Hero.rest, the Chaser fades from sight while she waits
 	public static void onRest( Hero hero ){
-		if (hero.subClass == HeroSubClass.CHASER
+		if (hero.subClass.is(HeroSubClass.CHASER)
 				&& hero.buff(Talent.ChaseCooldown.class) == null
 				&& hero.buff(Invisibility.class) == null
 				&& hero.buff(CloakOfShadows.cloakStealth.class) == null ) {
@@ -366,7 +366,7 @@ public class RearrangedRework {
 
 	//Hero.defenseProc
 	public static void defenseProc( Hero hero, Char enemy ){
-		if (hero.subClass == HeroSubClass.GLADIATOR && Random.Float() < hero.pointsInTalent(OFFENSIVE_DEFENSE)/3f) {
+		if (hero.subClass.is(HeroSubClass.GLADIATOR) && Random.Float() < hero.pointsInTalent(OFFENSIVE_DEFENSE)/3f) {
 			Buff.affect(hero, Combo.class).hit(enemy);
 		}
 		if (hero.hasTalent(EMERGENCY_ESCAPE) && Random.Float() < hero.pointsInTalent(EMERGENCY_ESCAPE)/50f) {
@@ -424,10 +424,10 @@ public class RearrangedRework {
 
 	//Hero.onAttackComplete, after the hit is rolled
 	public static void afterAttack( Hero hero, Char target, boolean hit, boolean wasEnemy ){
-		if (hit && hero.subClass == HeroSubClass.BATTLEMAGE && hero.belongings.attackingWeapon() instanceof MagesStaff && hero.hasTalent(BATTLE_MAGIC) && wasEnemy) {
+		if (hit && hero.subClass.is(HeroSubClass.BATTLEMAGE) && hero.belongings.attackingWeapon() instanceof MagesStaff && hero.hasTalent(BATTLE_MAGIC) && wasEnemy) {
 			Buff.affect( hero, MagicalCombo.class).hit( target );
 		}
-		if (!hit && hero.belongings.weapon == null && hero.subClass == HeroSubClass.FIGHTER && Random.Int(5) == 0 && hero.pointsInTalent(SWIFT_MOVEMENT) > 1) {
+		if (!hit && hero.belongings.weapon == null && hero.subClass.is(HeroSubClass.FIGHTER) && Random.Int(5) == 0 && hero.pointsInTalent(SWIFT_MOVEMENT) > 1) {
 			Buff.prolong(hero, EvasiveMove.class, 0.9999f);
 		}
 	}
@@ -486,7 +486,7 @@ public class RearrangedRework {
 			hero.buff(Talent.SkilledHandTracker.class).detach();
 			Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 		}
-		if (hero.hasTalent(SKILLED_HAND) && hero.heroClass != HeroClass.DUELIST) {
+		if (hero.hasTalent(SKILLED_HAND) && !hero.heroClass.is(HeroClass.DUELIST)) {
 			damage += Random.NormalIntRange(0, 1+hero.pointsInTalent(SKILLED_HAND));
 		}
 		if (enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)) {
@@ -524,7 +524,7 @@ public class RearrangedRework {
 			hero.buff(PowerOfLife.PowerOfLifeBarrier.class).proc(damage);
 		}
 		if (enemy.alignment != Char.Alignment.ALLY
-				&& hero.heroClass != HeroClass.CLERIC
+				&& !hero.heroClass.is(HeroClass.CLERIC)
 				&& hero.hasTalent(DIVINE_BLAST)
 				&& Random.Float() < 0.2f * hero.pointsInTalent(DIVINE_BLAST)){
 			Elastic.pushEnemy(wep, hero, enemy, 1);
@@ -534,7 +534,7 @@ public class RearrangedRework {
 
 	//Talent.onAttackProc, Followup Strike from an unarmed Fighter stuns
 	public static void followupStrike( Hero hero, Char enemy ){
-		if (hero.belongings.weapon == null && hero.subClass == HeroSubClass.FIGHTER) {
+		if (hero.belongings.weapon == null && hero.subClass.is(HeroSubClass.FIGHTER)) {
 			Buff.affect( enemy, Paralysis.class, 1f );
 		}
 	}
@@ -553,7 +553,7 @@ public class RearrangedRework {
 	//wands and artifacts used by a hero other than the Cleric, Warding Light
 	public static void wardingLightItem(){
 		Hero hero = Dungeon.hero;
-		if (hero != null && hero.heroClass != HeroClass.CLERIC
+		if (hero != null && !hero.heroClass.is(HeroClass.CLERIC)
 				&& hero.hasTalent(WARDING_LIGHT)
 				&& hero.buff(Talent.WardingLightCooldown.class) == null){
 			Buff.affect(hero, Barrier.class).setShield(1+2*hero.pointsInTalent(WARDING_LIGHT));
@@ -609,7 +609,7 @@ public class RearrangedRework {
 
 	//Mob.defenseProc, when the Chaser surprises an enemy
 	public static void chaserSurprise( final Hero hero, Mob mob ){
-		if (hero.subClass != HeroSubClass.CHASER) return;
+		if (!hero.subClass.is(HeroSubClass.CHASER)) return;
 		if (hero.hasTalent(CHAIN_CLOCK) && hero.buff(Talent.ChainCooldown.class) == null){
 			new FlavourBuff() {
 				{
@@ -704,7 +704,7 @@ public class RearrangedRework {
 
 	//Regeneration, Accumulation for heroes other than the Duelist
 	public static float regenDelay( Char target, float delay ){
-		if (target instanceof Hero && ((Hero)target).hasTalent(ACCUMULATION) && ((Hero) target).heroClass != HeroClass.DUELIST) {
+		if (target instanceof Hero && ((Hero)target).hasTalent(ACCUMULATION) && !((Hero) target).heroClass.is(HeroClass.DUELIST)) {
 			delay /= 1f+0.1f*((Hero)target).pointsInTalent(ACCUMULATION);
 		}
 		return delay;
@@ -743,7 +743,7 @@ public class RearrangedRework {
 
 	//Shockwave, the Veteran tackles whoever it hit beside him
 	public static void shockwaveHit( Hero hero, Char ch ){
-		if (hero.subClass == HeroSubClass.VETERAN && Dungeon.level.adjacent(ch.pos, hero.pos) && hero.buff(Tackle.class) == null) {
+		if (hero.subClass.is(HeroSubClass.VETERAN) && Dungeon.level.adjacent(ch.pos, hero.pos) && hero.buff(Tackle.class) == null) {
 			Buff.prolong(hero, Tackle.class, 1).set(ch.id());
 		}
 	}
@@ -796,7 +796,7 @@ public class RearrangedRework {
 	}
 
 	public static void magicalCircle( Hero user, int charges ){
-		if (user.subClass == HeroSubClass.BATTLEMAGE && user.hasTalent(MAGICAL_CIRCLE)) {
+		if (user.subClass.is(HeroSubClass.BATTLEMAGE) && user.hasTalent(MAGICAL_CIRCLE)) {
 			Buff.affect(user, MagicalCircle.class).setup(user.pos, charges*3+1);
 		}
 	}
@@ -809,7 +809,7 @@ public class RearrangedRework {
 		if (hero.hasTalent(MAGICAL_CIRCLE) && hero.buff(MagicalCircle.class) != null) {
 			multi += 1;
 		}
-		if (hero.subClass == HeroSubClass.WIZARD) {
+		if (hero.subClass.is(HeroSubClass.WIZARD)) {
 			//the mod wrote max(10, books) here, which made wands charge at once, 5% for each book up to ten is what it describes
 			multi *= (float) Math.pow(1.05f, Math.min(10, hero.belongings.getAllItems(SpellBook.class).size()));
 		}

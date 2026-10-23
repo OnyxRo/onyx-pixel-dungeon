@@ -186,6 +186,10 @@ abstract public class ClassArmor extends Armor {
 			case TOWERPRIEST:
 				classArmor = new ClericArmor();
 				break;
+			//deranged
+			case RAT_KING:
+				classArmor = new RatKingArmor();
+				break;
 		}
 		
 		classArmor.level(armor.trueLevel());

@@ -67,7 +67,7 @@ public class LiquidMetal extends Item {
 		ArrayList<String> actions = super.actions( hero );
 		actions.add( AC_APPLY );
 		//rearranged, the Gunner can cast a new gun from liquid metal
-		if (hero.heroClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.GUNNER) {
+		if (hero.heroClass.is(com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.GUNNER)) {
 			actions.add( AC_MAKE );
 		}
 		if (hero.hasTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.MIDAS_TOUCH)){
