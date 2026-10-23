@@ -125,6 +125,10 @@ if [ $QUICK -eq 0 ]; then
   run "RearrangedChallengesTest" RearrangedChallengesTest; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY rearranged)" | tail -12 | sed 's/^/  /'
   [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
+  #polished, Honeyed Meat, the Polished PD changes option, Brittle, Electrified, blast trap, Well of Change
+  run "PolishedTest" PolishedTest; rc=$?
+  tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|HEADLESS|SUMMARY polished)" | tail -10 | sed 's/^/  /'
+  [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
   #rearranged, the Re-ARranged heroes option, its rework of Shattered's six heroes
   run "RearrangedReworkTest" RearrangedReworkTest; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY rearranged)" | tail -12 | sed 's/^/  /'
