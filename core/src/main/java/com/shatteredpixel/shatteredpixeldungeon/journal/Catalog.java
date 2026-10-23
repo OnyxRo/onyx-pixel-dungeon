@@ -1258,6 +1258,49 @@ public enum Catalog {
 		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.XunStoneHammer.class);
 		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.XunHeavyFlail.class);
 
+		//items ported from xun
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.DoorPlank.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.EmptyPot.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.GemPowder.class);
+		GLYPHS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Dizziness.class);
+		GLYPHS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Freezingglyph.class);
+		GLYPHS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Vengeance.class);
+		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ElementalMask.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.bags.FoodPocket.class);
+		BOMBS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.bombs.AdrenalineBomb.class);
+		BOMBS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.bombs.PhantomBomb.class);
+		BOMBS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.bombs.StenchBomb.class);
+		BOMBS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.bombs.WarpBomb.class);
+		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.Tribute.class);
+		BREWS_ELIXIRS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.ConfusionBrew.class);
+		BREWS_ELIXIRS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.HeatBrew.class);
+		BREWS_ELIXIRS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.RegrowingBrew.class);
+		BREWS_ELIXIRS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.TrackingBrew.class);
+		BREWS_ELIXIRS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfAmnesia.class);
+		BREWS_ELIXIRS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfConcealment.class);
+		BREWS_ELIXIRS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfCrashCourse.class);
+		BREWS_ELIXIRS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfOverdraft.class);
+		BREWS_ELIXIRS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfEnlightening.class);
+		BREWS_ELIXIRS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfMana.class);
+		RINGS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfVision.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.CorruptionSpell.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.Extract.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.MagicBan.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.Scout.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.SummonWraith.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.Uptier.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.Watchtower.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.ConstantEnergy.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.ConstantRecharge.class);
+		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.MagicalTran.class);
+		TRINKETS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.trinkets.CursedCoin.class);
+		TRINKETS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MagicalGem.class);
+		TRINKETS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MemberCard.class);
+		TRINKETS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.trinkets.SolidifiedMetal.class);
+		TRINKETS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.trinkets.StoneofIntelligence.class);
+		TRINKETS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.trinkets.WornLock.class);
+		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfAvalanche.class);
+
 
 	}
 

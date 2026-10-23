@@ -646,6 +646,12 @@ public class Hero extends Char {
 		return pointsInTalent( talent );
 	}
 
+	//xun, Xun's PD's elixir of crash course raises the base skills the way a level up does
+	public void xunIncSkills(int attack, int defense){
+		attackSkill += attack;
+		defenseSkill += defense;
+	}
+
 	public int pointsInTalent( Talent talent ){
 		for (LinkedHashMap<Talent, Integer> tier : talents){
 			for (Talent f : tier.keySet()){

@@ -52,7 +52,8 @@ public class FrozenCarpaccio extends Food {
 	}
 
 	public static void effect(Hero hero){
-		switch (Random.Int( 5 )) {
+		//xun, with a food pouch frozen meat always gives one of its benefits
+		switch (com.shatteredpixel.shatteredpixeldungeon.actors.XunHooks.hasFoodPocket(hero) ? Random.Int( 4 ) : Random.Int( 5 )) {
 			case 0:
 				GLog.i( Messages.get(FrozenCarpaccio.class, "invis") );
 				Buff.affect( hero, Invisibility.class, Invisibility.DURATION );

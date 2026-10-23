@@ -53,6 +53,7 @@ public class MysteryMeat extends Food {
 
 	public static void effect(Hero hero){
 		if (hero.hasTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.AID_STOMACH)) return; //transformation, Aid Stomach
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.XunHooks.hasFoodPocket(hero)) return; //xun, a food pouch keeps raw meat clean
 		effect(hero, true);
 	}
 

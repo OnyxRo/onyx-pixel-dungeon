@@ -67,7 +67,7 @@ public class UnstableBrew extends Brew {
 		return AC_CHOOSE;
 	}
 
-	private static HashMap<Class<? extends Potion>, Float> potionChances = new HashMap<>();
+	public static HashMap<Class<? extends Potion>, Float> potionChances = new HashMap<>(); //public for Xun's PD's elemental mask
 	static {
 		potionChances.put(PotionOfHealing.class, 3f);
 		potionChances.put(PotionOfMindVision.class, 2f);

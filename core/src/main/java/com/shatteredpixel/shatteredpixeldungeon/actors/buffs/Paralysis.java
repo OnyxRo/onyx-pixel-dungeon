@@ -50,6 +50,12 @@ public class Paralysis extends FlavourBuff {
 	
 	public void processDamage( int damage ){
 		if (target == null) return;
+		//xun, the wand of avalanche's rocks don't shake a paralysed target awake
+		if (target.buff(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfAvalanche.ParalysisContinueTracker.class) != null){
+			Buff.detach(target, com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfAvalanche.ParalysisContinueTracker.class);
+			Buff.detach(target, ParalysisResist.class);
+			return;
+		}
 		ParalysisResist resist = target.buff(ParalysisResist.class);
 		if (resist == null){
 			resist = Buff.affect(target, ParalysisResist.class);

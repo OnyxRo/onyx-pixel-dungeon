@@ -234,6 +234,20 @@ public abstract class Recipe {
 		//transformation
 		new com.shatteredpixel.shatteredpixeldungeon.items.spells.TransformSpell.Recipe(),
 		new com.shatteredpixel.shatteredpixeldungeon.items.spells.MetamorphosisPrism.Recipe(),
+		//xun, Xun's PD
+		new com.shatteredpixel.shatteredpixeldungeon.items.GemPowder.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.HeatBrew.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.RegrowingBrew.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.TrackingBrew.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.ConfusionBrew.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfEnlightening.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfMana.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfConcealment.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.Watchtower.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.MagicBan.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.Scout.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.ConstantRecharge.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.ConstantEnergy.Recipe(),
 	};
 	
 	private static Recipe[] twoIngredientRecipes = new Recipe[]{
@@ -274,6 +288,15 @@ public abstract class Recipe {
 		new com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfTalent.Recipe(),
 		new com.shatteredpixel.shatteredpixeldungeon.items.spells.UpgradeDust.Recipe(),
 		new com.shatteredpixel.shatteredpixeldungeon.items.spells.UnstableIdentification.Recipe(),
+		//xun, Xun's PD
+		new com.shatteredpixel.shatteredpixeldungeon.items.EmptyPot.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfOverdraft.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfCrashCourse.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfAmnesia.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.CorruptionSpell.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.MagicalTran.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.SummonWraith.Recipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.spells.Uptier.Recipe(),
 	};
 	
 	private static Recipe[] threeIngredientRecipes = new Recipe[]{
@@ -344,6 +367,11 @@ public abstract class Recipe {
 		//transformation, corpse dust goes into the Necronomicon while the hero carries a rubbings tome
 		if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.quest.CorpseDust && com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero != null
 				&& com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero.belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.spells.RubbingsTome.class) != null) return true;
+		//xun, Xun's PD grinds unequipped rings into gem powder
+		if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring && com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero != null
+				&& !item.isEquipped(com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero)){
+			return item.isIdentified() && !item.cursed;
+		}
 		//only upgradeable thrown weapons and wands allowed among equipment items
 		if (item instanceof EquipableItem){
 			return item.cursedKnown && !item.cursed &&

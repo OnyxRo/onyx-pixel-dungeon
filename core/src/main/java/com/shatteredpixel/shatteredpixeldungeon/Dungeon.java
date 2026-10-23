@@ -192,7 +192,9 @@ public class Dungeon {
 		MEDIC_HP,
 		//summoning, Summoning PD's phantom gear and spectre rat drops
 		PHANTOM_EQUIP,
-		SPECTRE_RAT;
+		SPECTRE_RAT,
+		//xun, Xun's PD's food pouch
+		FOOD_POCKET;
 
 		public int count = 0;
 

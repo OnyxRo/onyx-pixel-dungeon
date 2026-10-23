@@ -203,6 +203,7 @@ public abstract class RegularPainter extends Painter {
 	protected void paintDoors( Level l, ArrayList<Room> rooms ) {
 
 		float hiddenDoorChance = Math.min(1f, hiddenDoorChance(l) * com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.noDoorFactor()); //transformation, No Door
+		hiddenDoorChance = Math.max(0, hiddenDoorChance - com.shatteredpixel.shatteredpixeldungeon.items.trinkets.WornLock.revealHiddenDoorChance()); //xun, broken lock
 
 		HashMap<Room, Room> roomMerges = new HashMap<>();
 

@@ -66,6 +66,7 @@ public class Ring extends KindofMisc {
 			put("quartz",ItemSpriteSheet.RING_QUARTZ);
 			put("agate",ItemSpriteSheet.RING_AGATE);
 			put("diamond",ItemSpriteSheet.RING_DIAMOND);
+			put("jade",ItemSpriteSheet.RING_JADE); //xun, a gem for Xun's PD's ring of vision
 		}
 	};
 	
@@ -190,6 +191,13 @@ public class Ring extends KindofMisc {
 			desc = super.info();
 		}
 
+		//xun, Xun's PD's gem powder
+		if (powderBonus == 1){
+			desc += "\n\n" + Messages.get(Ring.class, "powder_one");
+		} else if (powderBonus > 1){
+			desc += "\n\n" + Messages.get(Ring.class, "powder_many", powderBonus);
+		}
+
 		if (cursed && isEquipped( Dungeon.hero )) {
 			desc += "\n\n" + Messages.get(Ring.class, "cursed_worn");
 			
@@ -236,14 +244,32 @@ public class Ring extends KindofMisc {
 		return null;
 	}
 	
+	//xun, levels from Xun's PD's gem powder, lost again one per real upgrade like arcane resin on wands
+	public int powderBonus = 0;
+
+	@Override
+	public int level() {
+		return super.level() + powderBonus;
+	}
+
+	@Override
+	public com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing glowing() {
+		if (powderBonus == 0) return super.glowing();
+		return new com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing(0xFFFFFF, 1f/(float)powderBonus);
+	}
+
 	@Override
 	public Item upgrade() {
 		super.upgrade();
-		
+
 		if (Random.Int(3) == 0) {
 			cursed = false;
 		}
-		
+
+		if (powderBonus > 0){ //xun
+			powderBonus--;
+		}
+
 		return this;
 	}
 	
@@ -330,12 +356,14 @@ public class Ring extends KindofMisc {
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
 		bundle.put( LEVELS_TO_ID, levelsToID );
+		bundle.put( "xun_powder", powderBonus ); //xun
 	}
 
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
 		levelsToID = bundle.getFloat( LEVELS_TO_ID );
+		powderBonus = bundle.getInt( "xun_powder" ); //xun
 	}
 	
 	public void onHeroGainExp( float levelPercent, Hero hero ){

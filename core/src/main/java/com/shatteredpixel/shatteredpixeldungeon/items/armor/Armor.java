@@ -972,7 +972,9 @@ public class Armor extends EquipableItem {
 				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Weight.class,
 				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Chaotic.class,
 				//rearranged
-				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Afterimage.class };
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Afterimage.class,
+				//xun, Xun's PD
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Freezingglyph.class };
 
 		public static final Class<?>[] rare = new Class<?>[]{
 				Affection.class, AntiMagic.class, Thorns.class,
@@ -980,7 +982,9 @@ public class Armor extends EquipableItem {
 				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.FreezeTime.class,
 				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Teleport.class,
 				//rearranged
-				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Satisfying.class };
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Satisfying.class,
+				//xun, Xun's PD
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Vengeance.class };
 
 		public static final float[] typeChances = new float[]{
 				50, //12.5% each
@@ -993,7 +997,9 @@ public class Armor extends EquipableItem {
 				Multiplicity.class, Stench.class, Overgrowth.class, Bulk.class,
 				com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Binding.class,
 				//Lovecraft PD
-				com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Clumsy.class
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Clumsy.class,
+				//xun, Xun's PD
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Dizziness.class
 		};
 		
 		public abstract int proc( Armor armor, Char attacker, Char defender, int damage );

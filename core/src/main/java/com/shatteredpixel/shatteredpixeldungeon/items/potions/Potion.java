@@ -142,6 +142,7 @@ public class Potion extends Item {
 		
 		//elixirs
 		canThrowPots.add(ElixirOfHoneyedHealing.class);
+		canThrowPots.add(com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfOverdraft.class); //xun
 	}
 	
 	protected static ItemStatusHandler<Potion> handler;

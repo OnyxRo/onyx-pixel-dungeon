@@ -454,6 +454,7 @@ public class Assets {
 		public static final String MASTERY  = "sounds/mastery.mp3";
 		public static final String PUFF     = "sounds/puff.mp3";
 		public static final String ROCKS    = "sounds/rocks.mp3";
+		public static final String XUN_BUILD = "sounds/xun/build.mp3"; //xun, Xun's PD
 		public static final String BURNING  = "sounds/burning.mp3";
 		public static final String FALLING  = "sounds/falling.mp3";
 		public static final String GHOST    = "sounds/ghost.mp3";

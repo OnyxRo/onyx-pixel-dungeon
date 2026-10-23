@@ -372,6 +372,7 @@ public class ShopRoom extends SpecialRoom {
 		//we can use a random long for the seed as it will be the same long every time
 		Random.pushGenerator(Random.Long());
 			Random.shuffle(itemsToSpawn);
+			com.shatteredpixel.shatteredpixeldungeon.actors.XunHooks.improveShopItems(itemsToSpawn); //xun, gold member card
 		Random.popGenerator();
 
 		return itemsToSpawn;
@@ -385,6 +386,7 @@ public class ShopRoom extends SpecialRoom {
 		if (!Dungeon.LimitedDrops.SCROLL_HOLDER.dropped()) bags.put(new ScrollHolder(), 0);
 		if (!Dungeon.LimitedDrops.POTION_BANDOLIER.dropped()) bags.put(new PotionBandolier(), 0);
 		if (!Dungeon.LimitedDrops.MAGICAL_HOLSTER.dropped()) bags.put(new MagicalHolster(), 0);
+		if (!Dungeon.LimitedDrops.FOOD_POCKET.dropped()) bags.put(new com.shatteredpixel.shatteredpixeldungeon.items.bags.FoodPocket(), 0); //xun
 
 		if (bags.isEmpty()) return null;
 
@@ -415,6 +417,8 @@ public class ShopRoom extends SpecialRoom {
 			Dungeon.LimitedDrops.POTION_BANDOLIER.drop();
 		} else if (bestBag instanceof MagicalHolster){
 			Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
+		} else if (bestBag instanceof com.shatteredpixel.shatteredpixeldungeon.items.bags.FoodPocket){
+			Dungeon.LimitedDrops.FOOD_POCKET.drop(); //xun
 		}
 
 		return bestBag;

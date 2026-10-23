@@ -472,7 +472,7 @@ public class Generator {
 					WandOfTransfusion.class,
 					WandOfCorruption.class,
 					WandOfRegrowth.class };
-			WAND.defaultProbs = new float[]{ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
+			WAND.defaultProbs = new float[]{ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
 			WAND.probs = WAND.defaultProbs.clone();
 			
 			//see generator.randomWeapon
@@ -488,7 +488,9 @@ public class Generator {
 					Cudgel.class,
 					Warpick.class, //from Devoted Pixel Dungeon,
 					//xun, Xun's PD
-					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Fork.class
+					com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Fork.class,
+					//xun, Xun's PD
+					com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfAvalanche.class
 			};
 			WEP_T1.defaultProbs = new float[]{ 2, 0, 2, 2, 2, 2, 2, 1 };
 			WEP_T1.probs = WEP_T1.defaultProbs.clone();
@@ -770,7 +772,7 @@ public class Generator {
 					RingOfSharpshooting.class,
 					RingOfTenacity.class,
 					RingOfWealth.class};
-			RING.defaultProbs = new float[]{ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
+			RING.defaultProbs = new float[]{ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
 			RING.probs = RING.defaultProbs.clone();
 			
 			ARTIFACT.classes = new Class<?>[]{
@@ -786,9 +788,13 @@ public class Generator {
 					SkeletonKey.class,
 					TalismanOfForesight.class,
 					TimekeepersHourglass.class,
-					UnstableSpellbook.class
+					UnstableSpellbook.class,
+					//xun, Xun's PD
+					com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfVision.class,
+					//xun, Xun's PD
+					com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ElementalMask.class
 			};
-			ARTIFACT.defaultProbs = new float[]{ 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1 };
+			ARTIFACT.defaultProbs = new float[]{ 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1 };
 			ARTIFACT.probs = ARTIFACT.defaultProbs.clone();
 
 			HELMET.classes = new Class<?>[]{
@@ -843,9 +849,16 @@ public class Generator {
 					ShardOfOblivion.class,
 					ChaoticCenser.class,
 					FerretTuft.class,
-					CrackedSpyglass.class
+					CrackedSpyglass.class,
+					//xun, Xun's PD
+					com.shatteredpixel.shatteredpixeldungeon.items.trinkets.WornLock.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.trinkets.StoneofIntelligence.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MemberCard.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MagicalGem.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.trinkets.CursedCoin.class,
+					com.shatteredpixel.shatteredpixeldungeon.items.trinkets.SolidifiedMetal.class
 			};
-			TRINKET.defaultProbs = new float[]{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+			TRINKET.defaultProbs = new float[]{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 			TRINKET.probs = TRINKET.defaultProbs.clone();
 
 			RearrangedLoot.apply(); //rearranged, Re-ARranged PD's weapons, trinkets and new categories

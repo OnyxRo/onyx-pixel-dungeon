@@ -1175,7 +1175,7 @@ public abstract class Mob extends Char {
 
 				AscensionChallenge.processEnemyKill(this);
 				
-				int exp = Dungeon.hero.lvl <= maxLvl + com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.fastBreak() ? com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.bonusExp(EXP) : 0;
+				int exp = Dungeon.hero.lvl <= maxLvl + com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.fastBreak() + com.shatteredpixel.shatteredpixeldungeon.items.trinkets.StoneofIntelligence.LootandExpinc() ? com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.bonusExp(EXP) : 0; //xun, stone of intelligence
 
 				//during ascent, under-levelled enemies grant 10 xp each until level 30
 				// after this enemy kills which reduce the amulet curse still grant 10 effective xp
@@ -1310,6 +1310,7 @@ public abstract class Mob extends Char {
 			}
 		}
 		com.shatteredpixel.shatteredpixeldungeon.RearrangedChallenges.onMobDied(this); //rearranged, Cursed Dungeon
+		com.shatteredpixel.shatteredpixeldungeon.actors.XunHooks.onMobDied(this); //xun, cursed coin and the barricade curse
 	}
 
 	//from Transformation PD, the mod's own subclasses call this with their own base chance
@@ -1380,7 +1381,7 @@ public abstract class Mob extends Char {
 			gold.doPickUp(Dungeon.hero);
 		}
 
-		if (Dungeon.hero.lvl > maxLvl + 2 + com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.fastBreak()) return;
+		if (Dungeon.hero.lvl > maxLvl + 2 + com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.fastBreak() + com.shatteredpixel.shatteredpixeldungeon.items.trinkets.StoneofIntelligence.LootandExpinc()) return; //xun, stone of intelligence
 
 		MasterThievesArmband.StolenTracker stolen = buff(MasterThievesArmband.StolenTracker.class);
 		if (stolen == null || !stolen.itemWasStolen()) {
@@ -1463,7 +1464,7 @@ public abstract class Mob extends Char {
 			item = (Item)loot;
 
 		}
-		return item;
+		return com.shatteredpixel.shatteredpixeldungeon.actors.XunHooks.replaceDrop(item); //xun, magical gem and solidified metal
 	}
 
 	//how many mobs this one should count as when determining spawning totals

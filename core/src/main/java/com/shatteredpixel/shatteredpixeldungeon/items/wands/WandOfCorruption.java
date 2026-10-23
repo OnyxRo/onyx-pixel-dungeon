@@ -219,7 +219,7 @@ public class WandOfCorruption extends Wand {
 		}
 	}
 	
-	private void corruptEnemy( Mob enemy ){
+	public void corruptEnemy( Mob enemy ){ //public for Xun's PD's twisting crystal
 		//cannot re-corrupt or doom an enemy, so give them a major debuff instead
 		if(enemy.buff(Corruption.class) != null || enemy.buff(Doom.class) != null){
 			GLog.w( Messages.get(this, "already_corrupted") );
