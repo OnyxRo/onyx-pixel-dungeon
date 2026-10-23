@@ -97,6 +97,7 @@ public abstract class ExoticScroll extends Scroll {
 		
 		regToExo.put(ScrollOfTransmutation.class, ScrollOfMetamorphosis.class);
 		exoToReg.put(ScrollOfMetamorphosis.class, ScrollOfTransmutation.class);
+		exoToReg.put(BAScrollOfTalentReset.class, ScrollOfTransmutation.class); //bluearchive, its exotic transmutation, reached from the catalog only
 
 		//from Shittened PD
 		regToExo.put(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfShit.class, ScrollOfEnshittification.class);

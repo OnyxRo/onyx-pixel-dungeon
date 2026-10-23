@@ -70,6 +70,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.BAThrowingSet;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Lucky;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.BASuperNova;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.BAGun;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.HG.BAHG;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SG.BASG;
@@ -341,10 +342,13 @@ public class BAHero {
 	}
 
 	public static float stealthBonus( Hero hero ){
+		float bonus = 0;
 		if (hero.heroClass == HeroClass.BA_MIYU) {
-			return 1 + hero.lvl/9f + hero.pointsInTalent(Talent.BA_BLURRY_FIGURE);
+			bonus += 1 + hero.lvl/9f + hero.pointsInTalent(Talent.BA_BLURRY_FIGURE);
 		}
-		return 0;
+		//the mod gave this through worn armor
+		if (hero.belongings.armor() != null) bonus += armorStealth(hero);
+		return bonus;
 	}
 
 	public static int searchBonus( Hero hero ){
@@ -494,7 +498,140 @@ public class BAHero {
 		}
 	}
 
+	// ---- weapons ----
+
+	public static int throwMasterStr(){
+		return Dungeon.hero == null ? 0 : Dungeon.hero.pointsInTalent(Talent.BA_THROW_MASTER);
+	}
+
+	/** Noa throws to a cell up to 2 tiles away (more with projecting) even past enemies, the mod's own rule. */
+	public static boolean noaThrow( Hero user, int dst, boolean projecting ){
+		if (user.heroClass != HeroClass.BA_NOA) return false;
+		int maxDist = 2;
+		if (projecting) maxDist += Math.round(4 * com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon.Enchantment.genericProcChanceMultiplier(user));
+		return (Dungeon.level.passable[dst] || Dungeon.level.avoid[dst]) && Dungeon.level.distance(user.pos, dst) <= maxDist;
+	}
+
+	//Izuna's explosion talent, a thrown weapon that misses blasts the cell it lands on
+	public static void missedThrow( Hero user, int cell, Object src ){
+		if (!user.hasTalent(Talent.BA_EXPLOSION_1) || Actor.findChar(cell) != null) return;
+		com.watabou.noosa.audio.Sample.INSTANCE.play( com.shatteredpixel.shatteredpixeldungeon.Assets.Sounds.BLAST );
+		WandOfBlastWave.BlastWave.blast(cell);
+		for (int i : com.watabou.utils.PathFinder.NEIGHBOURS8){
+			Char ch = Actor.findChar(cell + i);
+			if (ch != null && ch.pos == cell + i) {
+				Ballistica trajectory = new Ballistica(ch.pos, ch.pos + i, Ballistica.MAGIC_BOLT);
+				WandOfBlastWave.throwChar(ch, trajectory, user.pointsInTalent(Talent.BA_EXPLOSION_1), false, true, src);
+			}
+		}
+	}
+
+	public static void missileProc( Char attacker, Char defender ){
+		if (attacker == Dungeon.hero && Dungeon.hero.subClass == HeroSubClass.BA_IZUNA_EX_EXPLOSION && defender instanceof Mob
+				&& !(defender instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC) && defender.isAlive()) {
+			Buff.affect(Dungeon.hero, BABlastMissile.class).hit((Mob)defender);
+		}
+	}
+
+	public static float durability(){
+		return Dungeon.hero == null ? 1f : 1 + Dungeon.hero.pointsInTalent(Talent.BA_DURABLE_THROW)/3f;
+	}
+
+	/** Noa's handguns are one level higher in her hands. */
+	public static int hgBonus( MeleeWeapon wep ){
+		return Dungeon.hero != null && Dungeon.hero.heroClass == HeroClass.BA_NOA && wep instanceof BAHG ? 1 : 0;
+	}
+
+	//Blue Archive PD's gun decks, seven guns per tier with equal chances, found by students other than Aris
+	private static final String GUNS = "com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.";
+	public static Class<?>[] gunTier( int tier ){
+		String[] kinds = {"AR", "GL", "HG", "MG", "SG", "SMG", "SR"};
+		Class<?>[] out = new Class<?>[kinds.length];
+		for (int i = 0; i < kinds.length; i++){
+			try {
+				out[i] = Class.forName(GUNS + kinds[i] + ".BA" + kinds[i] + "_tier" + tier);
+			} catch (ClassNotFoundException e){
+				throw new RuntimeException(e);
+			}
+		}
+		return out;
+	}
+
+	/** A random gun of a tier from 1 to 5, rolled like a melee weapon of that tier. */
+	public static MeleeWeapon randomGun( int tier ){
+		Class<?>[] tierGuns = gunTier(Math.max(1, Math.min(5, tier)));
+		MeleeWeapon w = (MeleeWeapon) com.watabou.utils.Reflection.newInstance(tierGuns[Random.Int(tierGuns.length)]);
+		return (MeleeWeapon) w.random();
+	}
+
+	public static float missileSpeed( Object item ){
+		if (!(item instanceof BAGun.Bullet)) return 1.5f; //the spirit kunai and shuriken fly like spirit arrows
+		float speed = 3f;
+		Hero hero = Dungeon.hero;
+		if (hero != null && hero.hasTalent(Talent.BA_DOUBLE_BARREL_3)) speed *= 1+0.5f*hero.pointsInTalent(Talent.BA_DOUBLE_BARREL_3);
+		if (hero != null && hero.hasTalent(Talent.BA_SNIPING_BULLET_1) && hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BASnipingBullet.class) != null) {
+			speed *= 1+0.5f*hero.pointsInTalent(Talent.BA_SNIPING_BULLET_1);
+		}
+		return speed;
+	}
+
 	// ---- Level ----
+
+	public static void onGrassTrampled( Hero hero ){
+		if (!BAHeroes.isBA(hero)) return;
+		if (hero.hasTalent(Talent.BA_INHERENT_WILDNESS)) {
+			Buff.prolong(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility.class, 1+hero.pointsInTalent(Talent.BA_INHERENT_WILDNESS));
+			com.watabou.noosa.audio.Sample.INSTANCE.play( com.shatteredpixel.shatteredpixeldungeon.Assets.Sounds.MELD );
+		}
+		if (hero.hasTalent(Talent.BA_NATURE_FRIENDLY)) {
+			Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin.class).set(1+hero.pointsInTalent(Talent.BA_NATURE_FRIENDLY), 3);
+		}
+		if (hero.hasTalent(Talent.BA_HIDE_ON_BUSH)) {
+			Buff.prolong(hero, Haste.class, 1+hero.pointsInTalent(Talent.BA_HIDE_ON_BUSH));
+		}
+		if (hero.pointsInTalent(Talent.BA_SNIPERS_INTUITION) > 1 && Random.Float() < 0.20f) {
+			Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision.class, 1f);
+		}
+	}
+
+	/** Miyu walks through grass like the Huntress, leaving it furrowed. */
+	public static boolean furrowsGrass( Char ch ){
+		return ch instanceof Hero && ((Hero) ch).heroClass == HeroClass.BA_MIYU;
+	}
+
+	/** Miyu's sniper's intuition at +3 sees through grass, as the Warden does. */
+	public static boolean seesThroughGrass( Char ch ){
+		return ch instanceof Hero && ((Hero) ch).pointsInTalent(Talent.BA_SNIPERS_INTUITION) > 2;
+	}
+
+	public static float viewDistMulti( Hero hero ){
+		return 1f + 0.25f * hero.pointsInTalent(Talent.BA_SNIPING_BULLET_2);
+	}
+
+	public static int mindVisionRange( Hero hero, int range ){
+		if (hero.hasTalent(Talent.BA_INTELLIGENCE)) range = Math.max(range, 1 + hero.pointsInTalent(Talent.BA_INTELLIGENCE));
+		if (hero.hasTalent(Talent.BA_SNIPERS_INTUITION)) range = Math.max(range, 2);
+		return range;
+	}
+
+	public static float regenDelay( Char target ){
+		if (target instanceof Hero && ((Hero) target).hasTalent(Talent.BA_HEALING_FACTOR)) {
+			return (8 - ((Hero) target).pointsInTalent(Talent.BA_HEALING_FACTOR)) / 8f;
+		}
+		return 1f;
+	}
+
+	/** Hoshino's foresight eyes, a chance of a secret hint on arriving, like the Rogue's foresight. */
+	public static int foresightPoints( Hero hero ){
+		return hero.pointsInTalent(Talent.BA_FORESIGHT_EYES);
+	}
+
+	public static float armorStealth( Hero hero ){
+		if (hero == null) return 0;
+		float bonus = hero.pointsInTalent(Talent.BA_BASIC_NINJUTSU);
+		if (hero.heroClass == HeroClass.BA_IZUNA) bonus += 2;
+		return bonus;
+	}
 
 	public static void onLevelEnter(){
 		if (Dungeon.hero != null && Dungeon.hero.hasTalent(Talent.BA_GAME_START_1)) {

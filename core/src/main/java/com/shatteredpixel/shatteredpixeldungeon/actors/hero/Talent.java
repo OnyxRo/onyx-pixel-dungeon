@@ -2107,6 +2107,7 @@ public enum Talent {
 	}
 
 	public static void onTalentUpgraded( Hero hero, Talent talent ){
+		BATalents.onTalentUpgraded(hero, talent); //bluearchive
 		RearrangedTalents.onTalentUpgraded(hero, talent); //rearranged
 		TransformationTalents.onTalentUpgraded(hero, talent);
 		if (talent == MIDAS_TOUCH && hero.hasTalent(MIDAS_TOUCH)){
@@ -2222,6 +2223,7 @@ public enum Talent {
 	public static class NatureBerriesDropped extends CounterBuff{{revivePersists = true;}};
 
 	public static void onFoodEaten( Hero hero, float foodVal, Item foodSource ){
+		BATalents.onFoodEaten(hero); //bluearchive
 		RearrangedTalents.onFoodEaten(hero, foodVal, foodSource); //rearranged
 		TransformationTalents.onFoodEaten(hero, foodSource);
 		onSlimeFoodEaten(hero);
@@ -2365,6 +2367,7 @@ public enum Talent {
 	}
 
 	public static float itemIDSpeedFactor( Hero hero, Item item ){
+		if (BAHeroes.isBA(hero)) return BATalents.itemIDSpeedFactor(hero, item); //bluearchive
 		float manaSense = manaSenseFactor(hero, item);
 		if (manaSense != 1f) return manaSense * itemIDSpeedFactorBase(hero, item);
 		return itemIDSpeedFactorBase(hero, item);
@@ -2484,6 +2487,7 @@ public enum Talent {
 	}
 
 	public static void onScrollUsed( Hero hero, int pos, float factor, Class<?extends Item> cls ){
+		BATalents.onScrollUsed(hero); //bluearchive
 		RearrangedTalents.onScrollUsed(hero, pos, factor); //rearranged
 		TransformationTalents.onScrollUsed(hero);
 		if (hero.hasTalent(INSCRIBED_POWER)){
@@ -2557,6 +2561,7 @@ public enum Talent {
 	}
 
 	public static void onItemEquipped( Hero hero, Item item ){
+		BATalents.onItemEquipped(hero, item); //bluearchive
 		RearrangedTalents.onItemEquipped(hero, item); //rearranged
 		boolean identify = false;
 		if (hero.pointsInTalent(VETERANS_INTUITION) == 2 && item instanceof Armor){
@@ -2588,6 +2593,7 @@ public enum Talent {
 	}
 
 	public static void onItemCollected( Hero hero, Item item ){
+		BATalents.onItemCollected(hero, item); //bluearchive
 		RearrangedTalents.onItemCollected(hero, item); //rearranged
 		TransformationTalents.onItemCollected(hero, item);
 		if (hero.pointsInTalent(THIEFS_INTUITION) == 2){
@@ -2596,6 +2602,7 @@ public enum Talent {
 	}
 
 	public static int onAttackProc( Hero hero, Char enemy, int dmg ){
+		dmg = BATalents.onAttackProc(hero, enemy, dmg); //bluearchive
 		dmg = RearrangedRework.dashAttack(hero, dmg); //rearranged
 		if (hero.hasTalent(STRENGTH_GREATEST)){
 			dmg += Hero.heroDamageIntRange( 0, hero.pointsInTalent(STRENGTH_GREATEST) );

@@ -760,7 +760,7 @@ public class Item implements Bundlable {
 									Buff.affect(curUser, Talent.ImprovisedProjectileCooldown.class, 50f);
 								}
 							}
-							if (user.buff(Talent.LethalMomentumTracker.class) != null){
+							if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.freeAttack(user)){ user.next(); } else if (user.buff(Talent.LethalMomentumTracker.class) != null){ //bluearchive, Miyu
 								user.buff(Talent.LethalMomentumTracker.class).detach();
 								user.next();
 							} else {
@@ -822,7 +822,7 @@ public class Item implements Bundlable {
 									Buff.affect(curUser, Talent.ImprovisedProjectileCooldown.class, 50f);
 								}
 							}
-							if (user.buff(Talent.LethalMomentumTracker.class) != null){
+							if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.freeAttack(user)){ user.next(); } else if (user.buff(Talent.LethalMomentumTracker.class) != null){ //bluearchive, Miyu
 								user.buff(Talent.LethalMomentumTracker.class).detach();
 								user.next();
 							} else {

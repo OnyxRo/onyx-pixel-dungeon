@@ -678,6 +678,7 @@ public abstract class Level implements Bundlable {
 
 		Mob m = Reflection.newInstance(mobsToSpawn.remove(0));
 		ChampionEnemy.rollForChampion(m);
+		if (m.buff(ChampionEnemy.class) == null) com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BAQuestEnemy.rollForQuest(m); //bluearchive
 		return m;
 	}
 
@@ -1127,6 +1128,7 @@ public abstract class Level implements Bundlable {
 		if (web != null){
 			web.clear(pos);
 		}
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.onLevelEnter(); //bluearchive, Yuzu's game start, the mod put it where terrain is destroyed
 	}
 
 	//Transformation PD, bombs knock down region decorations
@@ -1556,7 +1558,7 @@ public abstract class Level implements Bundlable {
 
 			//grass is see-through by some specific entities, but not during the fungi quest
 			if (!(Dungeon.level instanceof  MiningLevel) || Blacksmith.Quest.Type() != Blacksmith.Quest.FUNGI){
-				if ((c instanceof Hero && ((Hero) c).subClass == HeroSubClass.WARDEN)
+				if ((c instanceof Hero && ((Hero) c).subClass == HeroSubClass.WARDEN) || com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.seesThroughGrass(c) //bluearchive
 						|| (c instanceof Hero && ((Hero) c).pointsInTalent(Talent.MECHANICAL_GOGGLES) >= 2)
 						|| c instanceof YogFist.SoiledFist || c instanceof GnollGeomancer) {
 					if (blocking == null) {
@@ -1594,6 +1596,7 @@ public abstract class Level implements Bundlable {
 			float viewDist = c.viewDistance;
 			if (c instanceof Hero){
 				viewDist *= 1f + 0.25f*((Hero) c).pointsInTalent(Talent.FARSIGHT);
+				viewDist *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.viewDistMulti((Hero) c); //bluearchive
 				if (((Hero) c).hasTalent(Talent.MECHANICAL_GOGGLES)) {
 					viewDist *= 1.25f;
 				}
@@ -1682,6 +1685,7 @@ public abstract class Level implements Bundlable {
 					}
 				}
 				mindVisRange = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedChar.mindVisionRange((Hero) c, mindVisRange); //rearranged
+				mindVisRange = com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.mindVisionRange((Hero) c, mindVisRange); //bluearchive
 				mindVisRange = Math.max(mindVisRange, EyeOfNewt.mindVisionRange());
 			}
 

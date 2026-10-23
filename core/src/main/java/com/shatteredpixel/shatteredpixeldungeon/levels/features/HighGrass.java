@@ -60,7 +60,7 @@ public class HighGrass {
 		
 		if (level.map[pos] == Terrain.FURROWED_GRASS){
 			if (ch instanceof Hero && (((Hero) ch).heroClass == HeroClass.HUNTRESS
-					|| ((Hero) ch).heroClass == HeroClass.ADVENTURER || ((Hero) ch).subClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.SPECIALIST)){
+					|| ((Hero) ch).heroClass == HeroClass.ADVENTURER || ((Hero) ch).heroClass == HeroClass.BA_MIYU || ((Hero) ch).subClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.SPECIALIST)){
 				//Do nothing
 				freezeTrample = true;
 			} else {
@@ -69,7 +69,7 @@ public class HighGrass {
 			
 		} else {
 			if (ch instanceof Hero && (((Hero) ch).heroClass == HeroClass.HUNTRESS
-					|| ((Hero) ch).heroClass == HeroClass.ADVENTURER || ((Hero) ch).subClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.SPECIALIST)){
+					|| ((Hero) ch).heroClass == HeroClass.ADVENTURER || ((Hero) ch).heroClass == HeroClass.BA_MIYU || ((Hero) ch).subClass == com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass.SPECIALIST)){
 				if(((Hero) ch).hasTalent(Talent.BARKSKIN)){
 					Barkskin.conditionallyAppend(ch, (((Hero) ch).lvl* ((Hero) ch).pointsInTalent(Talent.BARKSKIN))/3, 1 );
 				}
@@ -168,6 +168,7 @@ public class HighGrass {
 			}
 			if (ch instanceof Hero) {
 				com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedChar.onGrassTrampled((Hero) ch); //rearranged
+				com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.onGrassTrampled((Hero) ch); //bluearchive
 			}
 			
 		}

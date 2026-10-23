@@ -429,6 +429,7 @@ public class Hero extends Char {
 		} else {
 			HT = 20 + 5*(lvl-1) + HTBoost;
 		}
+		HT += BAHero.bonusHT(this); //bluearchive
 		HT = com.shatteredpixel.shatteredpixeldungeon.RearrangedChallenges.baseHT(HT); //rearranged, Superman
 		if (subClass.is(HeroSubClass.WATERSLIME)){
 			HT += (int) Math.round(0.5 * lvl * (1 + pointsInTalent(Talent.WATER_BODY)));
@@ -935,6 +936,8 @@ public class Hero extends Char {
 		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Reason.class) != null && hasTalent(Talent.HUMAN_GLORY)){
 			accuracy *= 1f + 0.1f * pointsInTalent(Talent.HUMAN_GLORY);
 		}
+		if (BAHero.doubleTap(this, target, wep)) return INFINITE_ACCURACY; //bluearchive
+		accuracy = BAHero.accuracy(this, target, wep, accuracy); //bluearchive
 		accuracy = RearrangedHero.accuracy(this, wep, accuracy); //rearranged
 		if (accuracy == Float.POSITIVE_INFINITY) return INFINITE_ACCURACY;
 
@@ -993,6 +996,7 @@ public class Hero extends Char {
 		}
 
 		evasion *= Talent.stanceFactor(this, 1);
+		evasion *= BAHero.evasionMulti(this); //bluearchive
 		//Transformation PD, the Friar
 		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Suffering.Ecstasy.class) != null){
 			evasion *= 0.5f;
@@ -1126,6 +1130,7 @@ public class Hero extends Char {
 			dr += buff(Perks.PerkHoldFast.class).armorBonus();
 		}
 		dr += RearrangedHero.bonusDR(this); //rearranged
+		dr += BAHero.drBonus(this); //bluearchive
 
 		dr = TransformationTalents.armor(this, dr); //Transformation PD talent catalog
 		
@@ -1234,6 +1239,7 @@ public class Hero extends Char {
 		speed = RearrangedHero.speed(this, speed); //rearranged
 
 		speed *= TransformationTalents.speed(this); //Transformation PD talent catalog
+		speed *= BAHero.speedMulti(this); //bluearchive
 		speed = AscensionChallenge.modifyHeroSpeed(speed);
 		speed = SummoningHooks.speed(this, speed); //summoning
 
@@ -1248,6 +1254,7 @@ public class Hero extends Char {
 		if (RingOfForce.fightingUnarmed(this))  return true;
 		if (STR() < ((Weapon)w).STRReq())       return false;
 		if (w instanceof Flail)                 return false;
+		if (w instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SG.BASG.SGBullet) return false; //bluearchive
 		if (SummoningHooks.blocksSurpriseAttack(this)) return false; //summoning
 		if (w instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.alchemy.ChainFlail) return false; //rearranged
 		if (w instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon
@@ -1285,6 +1292,7 @@ public class Hero extends Char {
 	}
 	
 	public float attackDelay() {
+		if (BAHero.freeAttack(this)) return 0; //bluearchive
 		if (buff(Talent.LethalMomentumTracker.class) != null){
 			buff(Talent.LethalMomentumTracker.class).detach();
 			return 0;
@@ -1563,6 +1571,7 @@ public class Hero extends Char {
 
 		RearrangedHero.onAct(this); //rearranged
 
+		BAHero.onAct(this); //bluearchive
 		return actResult;
 	}
 
@@ -2347,12 +2356,14 @@ public class Hero extends Char {
 		}
 
 		damage = RearrangedHero.attackProc(this, enemy, wep, damage); //rearranged
+		damage = BAHero.attackProc(this, enemy, damage, wep); //bluearchive
 
 		return damage;
 	}
 	
 	@Override
 	public int defenseProc( Char enemy, int damage ) {
+		damage = BAHero.defenseProc(this, enemy, damage); //bluearchive
 
 		//Cursed PD's guard turns a blow aside, see Defense
 		if (guardProc( enemy, damage )) return 0;
@@ -2515,6 +2526,7 @@ public class Hero extends Char {
 
 		dmg = Math.round(damage);
 		dmg = RearrangedHero.damageTaken(this, dmg, src); //rearranged
+		dmg = BAHero.magicShield(this, dmg, src); //bluearchive
 
 		//we ceil this one to avoid letting the player easily take 0 dmg from tenacity early
 		dmg = (int)Math.ceil(dmg * RingOfTenacity.damageMultiplier( this ));
@@ -2547,8 +2559,10 @@ public class Hero extends Char {
 			if (isAlive()) {
 				if (flashIntensity >= 1/6f) {
 					Sample.INSTANCE.play(Assets.Sounds.HEALTH_CRITICAL, 1/3f + flashIntensity * 2f);
+					BAHero.healthYell(this, true); //bluearchive
 				} else {
 					Sample.INSTANCE.play(Assets.Sounds.HEALTH_WARN, 1/3f + flashIntensity * 4f);
+					BAHero.healthYell(this, false); //bluearchive
 				}
 				//hero gets interrupted on taking serious damage, regardless of any other factor
 				interrupt();
@@ -2754,6 +2768,7 @@ public class Hero extends Char {
 			move(step);
 
 			spend( delay / speed() );
+			if (BAHero.onMove(this)) spend( -delay / speed() ); //bluearchive
 			RearrangedRework.afterStep(this, delay / speed()); //rearranged, Quick Step
 			justMoved = true; //rearranged
 			
@@ -2975,6 +2990,7 @@ public class Hero extends Char {
 				GLog.newLine();
 				GLog.p( Messages.get(this, "new_level") );
 				sprite.showStatus( CharSprite.POSITIVE, Messages.get(Hero.class, "level_up") );
+				BAHero.levelUpYell(this); //bluearchive
 				Sample.INSTANCE.play( levelUpSound() );
 				if (lvl < Talent.tierLevelThresholds[Talent.MAX_TALENT_TIERS+1]){
 					GLog.newLine();
@@ -3168,6 +3184,7 @@ public class Hero extends Char {
 				
 		Dungeon.hero.belongings.identify();
 
+		BAHero.dieYell(Dungeon.hero); //bluearchive
 		int pos = Dungeon.hero.pos;
 
 		ArrayList<Integer> passable = new ArrayList<>();
@@ -3546,7 +3563,7 @@ public class Hero extends Char {
 	//rearranged, the Specialist's stealth talent, gun attachments, obfuscation on the Knight's shield
 	@Override
 	public float stealth() {
-		return RearrangedHero.stealth(this, super.stealth());
+		return RearrangedHero.stealth(this, super.stealth()) + BAHero.stealthBonus(this); //bluearchive
 	}
 
 	public boolean search( boolean intentional ) {
@@ -3558,6 +3575,8 @@ public class Hero extends Char {
 		boolean circular = pointsInTalent(Talent.WIDE_SEARCH) == 1;
 		int distance = heroClass == HeroClass.ROGUE ? 2 : 1;
 		if (hasTalent(Talent.WIDE_SEARCH)) distance++;
+		distance += BAHero.searchBonus(this); //bluearchive
+		if (pointsInTalent(Talent.BA_WIDER_SEARCH) == 1) circular = true; //bluearchive
 		
 		boolean foresight = buff(Foresight.class) != null;
 		boolean foresightScan = foresight && !Dungeon.level.mapped[pos];
@@ -3639,6 +3658,7 @@ public class Hero extends Char {
 							chance = com.shatteredpixel.shatteredpixeldungeon.items.trinkets.BrokenMagnifyingGlass.doorNoticeChance(); //rearranged
 						}
 
+						if (!foresight && !intentional) chance *= BAHero.searchChance(this); //bluearchive
 						//don't want to let the player search though hidden doors in tutorial
 						if (SPDSettings.intro()){
 							chance = 0;

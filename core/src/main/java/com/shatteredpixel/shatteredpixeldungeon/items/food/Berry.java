@@ -41,6 +41,7 @@ public class Berry extends Food {
 
 	@Override
 	protected float eatingTime(){
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.BATalents.fastMeal(Dungeon.hero)) return 0; //bluearchive
 		if (Dungeon.hero.hasTalent(Talent.IRON_STOMACH)
 				|| Dungeon.hero.hasTalent(Talent.ENERGIZING_MEAL)
 				|| Dungeon.hero.hasTalent(Talent.MYSTICAL_MEAL)

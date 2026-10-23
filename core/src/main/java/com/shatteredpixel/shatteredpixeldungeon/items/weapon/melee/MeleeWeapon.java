@@ -425,7 +425,7 @@ public class MeleeWeapon extends Weapon {
 	private static boolean evaluatingTwinUpgrades = false;
 	@Override
 	public int buffedLvl() {
-		if (!evaluatingTwinUpgrades && Dungeon.hero != null && isEquipped(Dungeon.hero) && Dungeon.hero.hasTalent(Talent.TWIN_UPGRADES)){
+		if (!evaluatingTwinUpgrades && Dungeon.hero != null && isEquipped(Dungeon.hero) && (Dungeon.hero.hasTalent(Talent.TWIN_UPGRADES) || Dungeon.hero.hasTalent(Talent.BA_DOUBLE_BARREL_1))){ //bluearchive, Noa's double barrel
 			KindOfWeapon other = null;
 			if (Dungeon.hero.belongings.weapon() != this) other = Dungeon.hero.belongings.weapon();
 			if (Dungeon.hero.belongings.secondWep() != this) other = Dungeon.hero.belongings.secondWep();
@@ -436,14 +436,14 @@ public class MeleeWeapon extends Weapon {
 				evaluatingTwinUpgrades = false;
 
 				//weaker weapon needs to be 2/1/0 tiers lower, based on talent level
-				if ((tier + (3 - Dungeon.hero.pointsInTalent(Talent.TWIN_UPGRADES))) <= ((MeleeWeapon) other).tier
+				if ((tier + (3 - Math.max(Dungeon.hero.pointsInTalent(Talent.TWIN_UPGRADES), Dungeon.hero.pointsInTalent(Talent.BA_DOUBLE_BARREL_1)))) <= ((MeleeWeapon) other).tier
 						&& otherLevel > super.buffedLvl()) {
 					return otherLevel;
 				}
 
 			}
 		}
-		return super.buffedLvl();
+		return super.buffedLvl() + com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.hgBonus(this); //bluearchive
 	}
 
 	@Override

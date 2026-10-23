@@ -509,6 +509,7 @@ public abstract class Char extends Actor {
 
 				//rearranged, piercing arrows, bullet armor factors, the Samurai's shadow blade
 				dr = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedChar.heroArmorPierce(h, enemy, dr);
+				dr = com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.enemyDR(this, enemy, dr); //bluearchive
 				if (h.buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.samurai.ShadowBlade.shadowBladeTracker.class) != null && Random.Int(2) == 0) {
 					if (h.hasTalent(Talent.CRITICAL_SHADOW)) {
 						dmgBonus += Random.NormalIntRange(0, 5*h.pointsInTalent(Talent.CRITICAL_SHADOW));
@@ -573,6 +574,7 @@ public abstract class Char extends Actor {
 				}
 			}
 
+			dmg *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.damageMulti(this, enemy); //bluearchive
 			for (ChampionEnemy buff : buffs(ChampionEnemy.class)){
 				dmg *= buff.meleeDamageFactor();
 			}
@@ -746,6 +748,7 @@ public abstract class Char extends Actor {
 		} else if (!Char.hasProp(enemy, Property.OBJECT)) {
 
 			if (enemy instanceof Hero) com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.onHeroDodged((Hero) enemy); //rearranged
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.onDodge(enemy); //bluearchive
 
 			if (enemy.sprite != null){
 				if (hitMissIcon != -1){
@@ -1278,7 +1281,7 @@ public abstract class Char extends Actor {
 			}
 			hitMissIcon = -1;
 
-			sprite.showStatusWithIcon(CharSprite.NEGATIVE, Integer.toString(dmg + shielded), icon);
+			sprite.showStatusWithIcon(CharSprite.NEGATIVE, com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.damageText(Integer.toString(dmg + shielded)), icon); //bluearchive
 
 			if (ironWill) Perks.ironWillBlast((Hero) this, dmg, src);
 		}
@@ -1314,6 +1317,7 @@ public abstract class Char extends Actor {
 	public void destroy() {
 		HP = 0;
 		Actor.remove( this );
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.onCharDie(this); //bluearchive
 
 		for (Char ch : Actor.chars().toArray(new Char[0])){
 			if (ch.buff(Charm.class) != null && ch.buff(Charm.class).object == id()){
@@ -1542,6 +1546,7 @@ public abstract class Char extends Actor {
 		if (buff( Speed.class ) != null) {
 			timeScale *= 2.0f;
 		}
+		timeScale *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.timeScale(this); //bluearchive
 		timeScale = TowerChar.timeScale(this, timeScale); //tower
 
 		super.spend( time / timeScale );

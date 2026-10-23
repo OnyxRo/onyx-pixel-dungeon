@@ -254,7 +254,9 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		}
 		
 		do {
-			n = (Weapon)Generator.randomUsingDefaults(c);
+			//bluearchive, Blue Archive's guns turn into other guns of their tier
+			if (w instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.BAGun) n = com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.randomGun(((MeleeWeapon)w).tier);
+			else n = (Weapon)Generator.randomUsingDefaults(c);
 		} while (Challenges.isItemBlocked(n) || n.getClass() == w.getClass());
 
 		n.level(0);
