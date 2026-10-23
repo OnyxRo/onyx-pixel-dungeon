@@ -81,13 +81,13 @@ public class RearrangedLoot {
 						SR_T5.class, GL_T5.class, RL_T5.class, FT_T5.class, LG_T5.class, GreatBow.class },
 				new float[]{ 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2 });
 
-		set(Category.WEP_AL_T3, new Class<?>[]{ SpearNShield.class }, new float[]{ 0 });
+		set(Category.WEP_AL_T3, new Class<?>[]{ SpearNShield.class, ObsidianKnife.class }, new float[]{ 0, 0 }); //Obsidian Knife from Re-ReARranged
 		set(Category.WEP_AL_T4, new Class<?>[]{ UnholyBible.class }, new float[]{ 0 });
 		set(Category.WEP_AL_T5, new Class<?>[]{ TrueRunicBlade.class, ChainWhip.class, UnformedBlade.class }, new float[]{ 0, 0, 0 });
 		set(Category.WEP_AL_T6, new Class<?>[]{ AR_T6.class, SR_T6.class, HG_T6.class, GL_T6.class, RL_T6.class, ChainFlail.class, ForceGlove.class,
 				Lance.class, ObsidianShield.class, DualGreatSword.class, HugeSword.class, MeisterHammer.class, BeamSaber.class, SharpKatana.class,
-				AssassinsSpear.class }, new float[15]);
-		set(Category.WEP_AL_T7, new Class<?>[]{ LanceNShield.class, TacticalShield.class, HolySword.class }, new float[]{ 0, 0, 0 });
+				AssassinsSpear.class, LunarBlade.class, ObsidianBow.class }, new float[17]); //last two from Re-ReARranged
+		set(Category.WEP_AL_T7, new Class<?>[]{ LanceNShield.class, TacticalShield.class, HolySword.class, RuinBow.class }, new float[]{ 0, 0, 0, 0 }); //Ruin Bow from Re-ReARranged
 		set(Category.WEP_SP, new Class<?>[]{ BattleShovel.class, MinersTool.class, EnhancedMachete.class }, new float[]{ 0, 0, 0 });
 		set(Category.MIS_SP, new Class<?>[]{ Cross.class, PotOThunder.class }, new float[]{ 0, 0 });
 

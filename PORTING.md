@@ -400,3 +400,9 @@ Cloned into `~/mod-sources/<key>` (keys in `scripts/mods.txt`), each run through
 | Sandbox PD | sandboxpd | 2.1.3 | GPL-3.0 | none (its sheets add editor tiles) | 4 (editor monsters) | 3 | 18 | none | A level editor. 333 of its 401 classes are the editor |
 
 Port order, smallest first. The first five are game modes or tools and only get a line in the left out list. Then Estranged, Re-ReARranged, Polished, Community, Elektrocheckers, DERanged, Blue Archive, Xun's, Re Blue Archive, Sandbox PD.
+
+### Estranged PD (2026-10-22, key `estranged`)
+Nothing came in. Its only new item, the Weapon Catalyst, is an empty stub in the mod (no picture, the apply action only removes it). Its three new buffs (`CountCooldownBuff`, `ElementalBullet`, `TargetingAction`) belong to its reworks of Re-ARranged's own heroes and guns, which change how Re-ARranged plays, so they stay out. `AlternatingTrapsRoom` stays out too, it needs room code from a newer Shattered.
+
+### Re-ReARranged PD (2026-10-22, key `rerearranged`)
+Four alchemy weapons, crafted with the Blueprint like Re-ARranged's others. Ruin Bow (tier 7, its arrows pierce and hit harder for each enemy passed), Moonlight Katana (`LunarBlade`, tier 6, freezes on every sixth hit), Obsidian Knife (tier 3 alchemy, deep bleeding) and Obsidian Bow (tier 6, bleeding arrows). Added to `RearrangedLoot` with weight 0 like the other alchemy weapons, the Blueprint now matches the mod's (recipes 17 to 26). Text is the mod's own. Left out, the Weapon Catalyst (an empty stub), `AlternatingTrapsRoom`, and its reworks of Re-ARranged's heroes. `port-strings.py` now also reads a mod's `new_messages` folder, which is where Re-ARranged forks keep their newer text.

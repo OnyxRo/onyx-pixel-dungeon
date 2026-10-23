@@ -33,17 +33,9 @@ for f in sorted(set(files)):
     prefixes.setdefault(key.split('.')[0], set()).add(key)
 
 total = 0
-for bundle, keys in prefixes.items():
-    src = MOD + MSG + bundle + '/' + bundle + '.properties'
-    # Magic Ling keeps Chinese in the plain file and English in <bundle>_en.properties
-    if os.path.exists(LP(MOD + MSG + bundle + '/' + bundle + '_en.properties')):
-        src = MOD + MSG + bundle + '/' + bundle + '_en.properties'
-    if not os.path.exists(LP(src)):
-        # older mods keep text under resources/<package path>/messages
-        hits = glob.glob(LP(MOD + 'core/src/main/resources') + '/**/*messages/' + bundle + '/' + bundle + '.properties', recursive=True)
-        if hits: src = hits[0]
-    dst = ROOT + MSG + bundle + '/' + bundle + '.properties'
-    if not os.path.exists(LP(src)) or not os.path.exists(dst): continue
+
+def copy_from(src, dst, keys, bundle):
+    global total
     s = rd(dst); nl = '\r\n' if '\r\n' in s else '\n'
     have = set(re.findall(r'^([^#=\s][^=]*)=', s, flags=re.M))
     add = []
@@ -59,4 +51,20 @@ for bundle, keys in prefixes.items():
         io.open(dst, 'w', encoding='utf-8', newline='').write(s)
         total += len(add)
         print(bundle, len(add))
+
+for bundle, keys in prefixes.items():
+    dst = ROOT + MSG + bundle + '/' + bundle + '.properties'
+    if not os.path.exists(dst): continue
+    # Re-ARranged and its forks keep their newer text in new_messages, which wins over messages
+    nm = MOD + 'core/src/main/assets/new_messages/' + bundle + '/' + bundle + '.properties'
+    if os.path.exists(LP(nm)): copy_from(nm, dst, keys, bundle)
+    src = MOD + MSG + bundle + '/' + bundle + '.properties'
+    # Magic Ling keeps Chinese in the plain file and English in <bundle>_en.properties
+    if os.path.exists(LP(MOD + MSG + bundle + '/' + bundle + '_en.properties')):
+        src = MOD + MSG + bundle + '/' + bundle + '_en.properties'
+    if not os.path.exists(LP(src)):
+        # older mods keep text under resources/<package path>/messages
+        hits = glob.glob(LP(MOD + 'core/src/main/resources') + '/**/*messages/' + bundle + '/' + bundle + '.properties', recursive=True)
+        if hits: src = hits[0]
+    if os.path.exists(LP(src)): copy_from(src, dst, keys, bundle)
 print('strings added', total)
