@@ -112,6 +112,8 @@ public class Dungeon {
 		//from Magic Ling PD, the Cold Magic Rat's potions and the Skeleton Demon's dragon's breath
 		ICERAT_HP,
 		WISP_PHANTOM_FIRE,
+		//from Magic Ling PD, the High Necromancer's scroll drops
+		scrollDropCount,
 		//from Shittened PD
 		FOODCRATE,
 		TWINGO_ALBUM,

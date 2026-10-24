@@ -1500,6 +1500,8 @@ public enum Catalog {
 		POTIONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLightningShiledX.class);
 		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.RiceDumplings.class);
 		BREWS_ELIXIRS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfNukeCole.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.galaxy.SliverLockSword.class);
+		POTIONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlameX.class);
 		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfGodIce.class);
 		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfSun.class);
 		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.hightwand.WandOfHightHunderStorm.class);

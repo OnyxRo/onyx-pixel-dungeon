@@ -17,6 +17,11 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.tumulus.Roger;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.notsync.ClearElemtGuardNPC;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.notsync.ClearElemtGuard;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.dragon.PirahaKing;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.notsync.FayiNa;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.bossrush.Rival;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.dragon.RiceRat;
 
@@ -605,6 +610,18 @@ public class ModRoster {
 		add( "magicling", GreenStingCV.class, 0, 1, 99 );
 		add( "magicling", NewDM720.class, 0, 1, 99 );
 		add( "magicling", PylonCS.class, 0, 1, 99 );
+		add( "magicling", HighNecromancer.class, 0, 1, 99 );
+		add( "magicling", NecroAcolyte.class, 1, 16, 17 );
+		add( "magicling", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.tumulus.Wisp.class, 0, 12, 13 );
+		add( "magicling", FayiNa.class, 0, 1, 99 );
+		add( "magicling", PirahaKing.class, 0, 1, 99 );
+		add( "magicling", SothothNPC.class, 0, 1, 99 );
+		add( "magicling", ClearElemtGuard.class, 0, 1, 99 );
+		add( "magicling", ClearElemtGuardNPC.class, 0, 1, 99 );
+		add( "magicling", EndYog.class, 0, 1, 99 );
+		add( "magicling", RandomBlueFire.class, 0, 1, 99 );
+		add( "magicling", RandomBlueFireDE.class, 0, 1, 99 );
+		add( "magicling", Roger.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

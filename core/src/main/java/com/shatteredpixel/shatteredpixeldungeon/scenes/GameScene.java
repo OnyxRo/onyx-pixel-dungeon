@@ -1732,6 +1732,15 @@ public class GameScene extends PixelScene {
 		scene.add(menu);
 	}
 	
+	//magicling, sizes the mod's dialog window (WndDialog) reads to stay clear of the toolbar and status pane
+	public static float ToolbarHeight(){
+		return scene == null || scene.toolbar == null ? 0 : scene.toolbar.height();
+	}
+
+	public static float StatusHeight(){
+		return scene == null || scene.status == null ? 0 : scene.status.height();
+	}
+
 	//magicling, Magic Ling's bosses call this when their fight starts. The mod also showed a title banner, here it only starts the level's boss music
 	public static void bossReady() {
 		if (scene == null) return; //headless tests

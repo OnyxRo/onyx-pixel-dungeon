@@ -493,9 +493,10 @@ public class WorldShuffle {
 						new com.shatteredpixel.shatteredpixeldungeon.levels.ColdChestBossLevel(),
 						new com.shatteredpixel.shatteredpixeldungeon.levels.GreenStlingBossLevel(),
 						new com.shatteredpixel.shatteredpixeldungeon.levels.nosync.DeepShadowLevel() };
-				//floor 15, DM-720 and its pylons
+				//floor 15, DM-720 and its pylons, and Roger in the ancient tomb
 				case 15: return new Level[]{
-						new com.shatteredpixel.shatteredpixeldungeon.levels.CaveTwoBossLevel() };
+						new com.shatteredpixel.shatteredpixeldungeon.levels.CaveTwoBossLevel(),
+						new com.shatteredpixel.shatteredpixeldungeon.levels.tomb.RogerBossLevel() };
 				default: return new Level[0];
 			}
 		}
