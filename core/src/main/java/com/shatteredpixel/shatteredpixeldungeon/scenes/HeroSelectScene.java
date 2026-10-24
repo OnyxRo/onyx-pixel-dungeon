@@ -263,24 +263,27 @@ public class HeroSelectScene extends PixelScene {
 				btnHeight += 6;
 			}
 
+			//with many classes, use narrower buttons and as many rows as needed so every class fits
 			int cols = (int)Math.ceil(heroBtns.size()/2f);
-			float curX = insets.left + (leftArea - btnWidth * cols + (cols-1))/2f;
+			if (btnWidth * cols + (cols-1) > leftArea){
+				btnWidth = HeroBtn.MIN_WIDTH;
+				cols = Math.max(1, (int)((leftArea + 1) / (btnWidth + 1)));
+			}
+			int rows = (int)Math.ceil(heroBtns.size()/(float)cols);
+			if (rows > 2){
+				btnHeight = HeroBtn.HEIGHT - 4;
+				cols = (int)Math.ceil(heroBtns.size()/(float)rows);
+				uiSpacing = Math.min(uiSpacing, 6);
+			}
 			float curY = title.bottom() + uiSpacing;
 
-			int count = 0;
-			for (StyledButton button : heroBtns){
-				button.setRect(curX, curY, btnWidth, btnHeight);
+			for (int i = 0; i < heroBtns.size(); i++){
+				int row = i / cols;
+				int inRow = Math.min(cols, heroBtns.size() - row*cols);
+				float rowX = insets.left + (leftArea - btnWidth * inRow - (inRow-1))/2f;
+				StyledButton button = heroBtns.get(i);
+				button.setRect(rowX + (i % cols) * (btnWidth+1), curY + row * (btnHeight+1), btnWidth, btnHeight);
 				align(button);
-				curX += btnWidth+1;
-				count++;
-				if (count >= (1+heroBtns.size())/2){
-					curX -= btnWidth*count + count;
-					curY += btnHeight+1;
-					if (heroBtns.size()%2 != 0){
-						curX += btnWidth/2f;
-					}
-					count = 0;
-				}
 			}
 
 			heroName = renderTextBlock(9);
@@ -329,16 +332,23 @@ public class HeroSelectScene extends PixelScene {
 
 			int btnWidth = HeroBtn.MIN_WIDTH;
 
-			float curX = insets.left + (w - btnWidth * heroBtns.size()) / 2f;
-			if (curX > 0) {
-				btnWidth += Math.min(curX / (heroBtns.size() / 2f), 15);
-				curX = insets.left + (w - btnWidth * heroBtns.size()) / 2f;
+			//rows along the bottom, as many as needed so every class fits
+			int cols = Math.max(1, Math.min(heroBtns.size(), (int)(w / btnWidth)));
+			int rows = (int)Math.ceil(heroBtns.size()/(float)cols);
+			cols = (int)Math.ceil(heroBtns.size()/(float)rows);
+			float spare = w - btnWidth * cols;
+			if (spare > 0) {
+				btnWidth += Math.min(spare / cols, 15);
 			}
-			float curY = insets.top + h - HeroBtn.HEIGHT + 3;
+			float bottomY = insets.top + h - HeroBtn.HEIGHT + 3;
 
-			for (StyledButton button : heroBtns) {
-				button.setRect(curX, curY, btnWidth, HeroBtn.HEIGHT + insets.bottom);
-				curX += btnWidth;
+			for (int i = 0; i < heroBtns.size(); i++) {
+				int row = i / cols;
+				int inRow = Math.min(cols, heroBtns.size() - row*cols);
+				float rowX = insets.left + (w - btnWidth * inRow) / 2f;
+				float rowY = bottomY - (rows - 1 - row) * HeroBtn.HEIGHT;
+				float rowH = row == rows-1 ? HeroBtn.HEIGHT + insets.bottom : HeroBtn.HEIGHT;
+				heroBtns.get(i).setRect(rowX + (i % cols) * btnWidth, rowY, btnWidth, rowH);
 			}
 
 			//add a darkening bar along bottom
@@ -351,7 +361,7 @@ public class HeroSelectScene extends PixelScene {
 				add(blocker);
 			}
 
-			title.setPos(insets.left + (w - title.width()) / 2f, insets.top + (h - HeroBtn.HEIGHT - title.height() - 4));
+			title.setPos(insets.left + (w - title.width()) / 2f, heroBtns.get(0).top() - 3 - title.height() - 4);
 
 			btnOptions.setRect(heroBtns.get(0).left() + 16, Camera.main.height-HeroBtn.HEIGHT-16, 20, 21);
 			optionsPane.setPos(heroBtns.get(0).left(), 0);
@@ -467,7 +477,7 @@ public class HeroSelectScene extends PixelScene {
 			startBtn.text(Messages.titleCase(cl.title()));
 			startBtn.setSize(startBtn.reqWidth() + 8, 21);
 
-			startBtn.setPos((Camera.main.width - startBtn.width())/2f, (Camera.main.height - insets.bottom - HeroBtn.HEIGHT + 2 - startBtn.height()));
+			startBtn.setPos((Camera.main.width - startBtn.width())/2f, (heroBtns.get(0).top() - 1 - startBtn.height()));
 			PixelScene.align(startBtn);
 
 			infoButton.visible = infoButton.active = true;

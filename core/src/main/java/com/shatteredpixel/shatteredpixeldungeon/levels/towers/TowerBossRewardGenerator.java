@@ -91,7 +91,7 @@ public final class TowerBossRewardGenerator {
 
     @SuppressWarnings("unchecked")
     private static Class<? extends MeleeWeapon> selectTierSixWeaponClassFromCurrentGenerator() {
-        Class<?>[] pool = Generator.Category.WEAPON.classes;
+        Class<?>[] pool = Generator.Category.WEP_T6.classes;
         return (Class<? extends MeleeWeapon>) pool[Random.Int(pool.length)];
     }
 
