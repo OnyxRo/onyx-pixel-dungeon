@@ -48,9 +48,9 @@ public class MissileTower extends Mob {
 		EXP = 0;
 
 		properties.add(Property.INORGANIC);
-		properties.add(Property.IMMOVABLE);
+		properties.add(Property.IMMOVABLE);
 
-		defenseSkill = 0;
+		defenseSkill = 0;
 
 		WANDERING = new Wandering();
 		state = WANDERING;
@@ -73,14 +73,11 @@ public class MissileTower extends Mob {
 	}
 
 	public void createWeapon( boolean useDecks ){
-		if (useDecks) {
-			mis = (MissileWeapon) Generator.random(Generator.Category.MISSILE);
-		} else {
-			mis = (MissileWeapon) Generator.randomUsingDefaults(Generator.Category.MISSILE);
-		}
+		//the MISSILE category can also give Combusted's thrown melee weapons, which are not MissileWeapons
+		mis = Generator.randomMissile( !useDecks );
 		mis.cursed = false;
 		mis.enchant( Enchantment.random() );
-		mis.quantity(mis.quantity() + 1);
+		mis.quantity(mis.quantity() + 1);
 	}
 	
 	private static final String MISSILE = "missile";
@@ -142,9 +139,9 @@ public class MissileTower extends Mob {
 	
 	@Override
 	public void die( Object cause ) {
-		Dungeon.level.drop(mis, pos ).sprite.drop();
+		Dungeon.level.drop(mis, pos ).sprite.drop();
 		super.die( cause );
-	}
+	}
 
 	@Override
 	public void destroy() {

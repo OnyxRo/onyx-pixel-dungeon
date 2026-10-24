@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor.Glyph;
@@ -186,9 +187,7 @@ public class Rival extends Mob implements Callback {
             wand.identify();
 
             //missile
-            do {
-                missile = (MissileWeapon)Generator.random(Generator.Category.MISSILE);
-            } while (missile.cursed);
+            missile = randomMissile();
 
             defenseSkill = (int)(armor.evasionFactor( this, 7 + lvl ));
         } else {
@@ -535,7 +534,7 @@ public class Rival extends Mob implements Callback {
                             break;
                     }
                     HP = HT;
-                    missile = (MissileWeapon)Generator.random(Generator.Category.MISSILE);
+                    missile = randomMissile();
                     return;
                 case PHASE_5:
                     if (level instanceof DeepShadowLevel) ((DeepShadowLevel)level).progress();
@@ -643,4 +642,13 @@ public class Rival extends Mob implements Callback {
         }
     }
 
+
+    //magicling, the missile deck here also holds thrown melee weapons from other mods (Combusted's hand axe), which are not MissileWeapons
+    private static MissileWeapon randomMissile() {
+        for (int i = 0; i < 50; i++) {
+            Item it = Generator.random(Generator.Category.MISSILE);
+            if (it instanceof MissileWeapon && !it.cursed) return (MissileWeapon) it;
+        }
+        return new com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnife();
+    }
 }
