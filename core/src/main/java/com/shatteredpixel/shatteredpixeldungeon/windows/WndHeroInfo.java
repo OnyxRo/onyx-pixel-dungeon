@@ -272,6 +272,14 @@ public class WndHeroInfo extends WndTabbed {
 							new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
 					break;
 			}
+			//ported classes can have more or fewer description paragraphs than icons, match them up
+			if (icons.length != info.length) {
+				Image[] fitted = new Image[info.length];
+				for (int i = 0; i < fitted.length; i++) {
+					fitted[i] = i < icons.length ? icons[i] : new Image();
+				}
+				icons = fitted;
+			}
 			for (Image im : icons) {
 				add(im);
 			}

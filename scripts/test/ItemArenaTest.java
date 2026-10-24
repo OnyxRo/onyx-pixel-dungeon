@@ -109,7 +109,7 @@ public class ItemArenaTest {
 		if (item == null) { MobArenaTest.fail( cls, "has no public constructor without arguments", null ); return; }
 
 		if (missing( item.name() ) || item.name().startsWith( "items." )) MobArenaTest.fail( cls, "has no name string", null );
-		if (missing( item.desc() ) || item.desc().startsWith( "items." )) MobArenaTest.fail( cls, "has no description string", null );
+		if (missing( item.desc() ) || item.desc().startsWith( "items." )) MobArenaTest.fail( cls, "has no description string (" + item.desc() + ")", null );
 		if (item.image() == 0 && !cls.getSimpleName().equals( "Gold" )) MobArenaTest.warn( cls, "uses picture 0, the placeholder" );
 
 		//save and reload

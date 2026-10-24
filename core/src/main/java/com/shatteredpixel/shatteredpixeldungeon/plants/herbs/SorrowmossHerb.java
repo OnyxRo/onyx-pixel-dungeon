@@ -55,6 +55,7 @@ public class SorrowmossHerb extends Herb {
 
     @Override
     public String desc() {
+        if (seed == null || com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion.SeedToPotion.types.get(seed.getClass()) == null) return Messages.get(this, "desc");
         return Messages.get(this, "desc") + "\n\n" + Messages.get(Herb.class, "seed_used", this.seed.name()) + "\n" + Messages.get(com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion.SeedToPotion.types.get(this.seed.getClass()), "herbdesc");
     }
 }
