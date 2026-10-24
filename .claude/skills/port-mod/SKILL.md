@@ -7,9 +7,14 @@ description: Port monsters, weapons or items from another Pixel Dungeon mod into
 
 Everything here exists because porting Reforged cost about 40 minutes, most of it waste. Follow the order below and a batch of monsters takes a few minutes.
 
+## Step zero, fix open crashes
+
+Before porting anything, run `python -I scripts/crashes.py`. If it lists any open crash, invoke the `fix-bugs` skill and fix them first, then start the port. Fold the fixes into the port's check and commit (or commit them on their own if they touch unrelated code). Tell Onyx at the end which crashes were fixed. If the list is empty, say nothing and go on.
+
 ## The short version
 
 ```
+python -I scripts/crashes.py                     open crashes first, fix them with the fix-bugs skill
 scripts/get-mod.sh <key>                         clone the mod (scripts/get-mod.sh --list shows keys)
 python -I scripts/mod-report.py ~/mod-sources/<key> --all     what is portable, what is hard
 python -I scripts/port-mob.py <key> <roster key> Mob1 Mob2 ...   port the easy ones in one command

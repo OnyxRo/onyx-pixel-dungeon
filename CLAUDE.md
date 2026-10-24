@@ -17,6 +17,7 @@ His writing rules apply to anything written for him, including commit messages, 
 ## Working rules
 
 - Read PORTING.md at the start of every session and update it at the end of every task.
+- At the start of every task (porting, features, anything that changes game code), run `python -I scripts/crashes.py`. If any crash is open, fix it first with the `fix-bugs` skill, then do the task. Tell Onyx which crashes were fixed in the final message.
 - To check a port, use `scripts/check.sh --new` (headless, seconds) and then `scripts/arena.sh` once (one picture of everything new, 16 seconds). Do not use the full screenshot tour for monsters, it spawns each ported monster one at a time and takes ten minutes. The tour (`scripts/gallery.sh`) is for worlds and windows only, with the separate save folder.
 - For any task that starts with "Port", invoke the `port-mod` skill (`.claude/skills/port-mod/SKILL.md`) first. It has the tools, the order of work and the mistakes to avoid. Rewrite it when you learn something that would have saved time.
 - Write files that contain backslashes with the Write or Edit tools, not shell heredocs. Run Python as `python -I`.
