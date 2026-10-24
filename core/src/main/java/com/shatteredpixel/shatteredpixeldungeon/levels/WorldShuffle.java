@@ -478,6 +478,13 @@ public class WorldShuffle {
 			//Transformation PD's tower bosses, one for each floor from 10 down. Floor 5 keeps Shattered's Goo.
 			return depth >= 10 && depth % 5 == 0 ? new Level[]{ new com.shatteredpixel.shatteredpixeldungeon.levels.towers.TransformationRunBossLevel() } : new Level[0];
 		}
+		if (world >= 0 && world < LOGOS.length && MAGIC_LING.equals(LOGOS[world])) {
+			//magicling, the mod's three floor 5 fights. The Slime Prince in the sewers, Sky Goo in the jungle, the Crab King on the shore
+			return depth == 5 ? new Level[]{
+					new com.shatteredpixel.shatteredpixeldungeon.levels.SLMKingLevel(),
+					new com.shatteredpixel.shatteredpixeldungeon.levels.nosync.SkyGooBossLevel(),
+					new com.shatteredpixel.shatteredpixeldungeon.levels.nosync.CrabKingBossLevel() } : new Level[0];
+		}
 		Level single = world >= 0 && world < LOGOS.length ? modBossLevel( world, depth ) : null;
 		return single == null ? new Level[0] : new Level[]{ single };
 	}
@@ -506,6 +513,13 @@ public class WorldShuffle {
 			int pick = forcedVariant >= 0 ? forcedVariant : (int)((Math.abs( Dungeon.seed ) / 7 + depth) & 1);
 			//a third variant is the final arena, only built when asked for by name (the boss test), never by the seed
 			return both[forcedVariant >= 0 ? pick % both.length : pick % Math.min(both.length, 2)];
+		}
+		if (world >= 0 && world < LOGOS.length && MAGIC_LING.equals(LOGOS[world])) {
+			//magicling, one of its floor 5 fights, picked by the dungeon seed so the floor is the same each time it is built
+			Level[] ml = modBossVariants( world, depth );
+			if (ml.length == 0) return null;
+			int pick = forcedVariant >= 0 ? forcedVariant : (int)((Math.abs( Dungeon.seed ) / 7 + depth) % ml.length);
+			return ml[pick % ml.length];
 		}
 		if (world >= 0 && world < LOGOS.length && DEEP.equals(LOGOS[world])) {
 			//Deep's Elder Shroom guards the end of its Forest, its Shaman Leader the end of the Gnoll Camp

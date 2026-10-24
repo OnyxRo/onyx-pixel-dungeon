@@ -60,7 +60,7 @@ public class BossArenaTest {
 				Level[] variants = WorldShuffle.modBossVariants( world, depth );
 				for (int v = 0; v < variants.length; v++) {
 				String name = variants[v].getClass().getSimpleName();
-				if (!only.isEmpty() && !name.contains( only )) continue;
+				if (!only.isEmpty() && java.util.Arrays.stream( only.split(",") ).noneMatch( name::contains )) continue; //BOSS_ONLY=A,B runs several
 				current = name + " on floor " + depth;
 				fightStart = System.currentTimeMillis();
 				WorldShuffle.forcedVariant = v;

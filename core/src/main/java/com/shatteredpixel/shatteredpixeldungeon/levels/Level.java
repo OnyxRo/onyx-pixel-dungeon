@@ -492,6 +492,17 @@ public abstract class Level implements Bundlable {
 	public void playLevelMusic(){
 		//do nothing by default
 	}
+
+	//magicling, Magic Ling's boss levels pick their fight music here, GameScene.bossReady calls it. By default the stage's Shattered boss track
+	public void playBossMusic(){
+		String track;
+		if (Dungeon.depth <= 5)       track = Assets.Music.SEWERS_BOSS;
+		else if (Dungeon.depth <= 10) track = Assets.Music.PRISON_BOSS;
+		else if (Dungeon.depth <= 15) track = Assets.Music.CAVES_BOSS;
+		else if (Dungeon.depth <= 20) track = Assets.Music.CITY_BOSS;
+		else                          track = Assets.Music.HALLS_BOSS;
+		com.watabou.noosa.audio.Music.INSTANCE.play( track, true );
+	}
 	
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {

@@ -188,6 +188,7 @@ public class Assets {
 	}
 
 	public static class Music {
+		public static final String JUNGLE_FOREST = "music/magicling/Level1.ogg"; //ported, magicling
 		public static final String PESTILENCE_BOSS = "music/transformation/pestilence_boss.ogg"; //ported, transformation
 		public static final String DEATH_KNIGHT_BOSS = "music/transformation/death_knight_boss.ogg"; //ported, transformation
 		public static final String TOWER = "music/transformation/tower.ogg"; //ported, transformation
@@ -575,6 +576,7 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String CRAB_KING = "sprites/boss/overworld/magicling/giantcrab.png"; //ported, magicling
 		public static final String ANIMATIONS_SUN = "sprites/items/Animation/magicling/Sun.png"; //ported, magicling
 		public static final String EVIL_SPAWN = "sprites/magicling/spawne_evil.png"; //ported, magicling
 		public static final String LATS = "sprites/boss/magicling/sts_lasher.png"; //ported, magicling

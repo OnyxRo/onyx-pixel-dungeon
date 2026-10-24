@@ -55,6 +55,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.Goolem;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.Terminator;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.GangBoss;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.ShamanLeader;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.notsync.CrabKing;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.bossrush.SkyGoo;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -586,6 +588,10 @@ public class ModRoster {
 		add( "magicling", SothothLasher.class, 0, 1, 99 );
 		add( "magicling", DemonFodder.class, 0, 1, 99 );
 		add( "magicling", SlimePrincess.class, 0, 1, 99 );
+		add( "magicling", SlimeKing.class, 0, 1, 99 );
+		add( "magicling", SlimeKingMob.class, 0, 1, 99 );
+		add( "magicling", CrabKing.class, 0, 1, 99 );
+		add( "magicling", SkyGoo.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

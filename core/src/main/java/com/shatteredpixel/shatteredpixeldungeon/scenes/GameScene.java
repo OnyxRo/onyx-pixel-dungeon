@@ -1732,6 +1732,12 @@ public class GameScene extends PixelScene {
 		scene.add(menu);
 	}
 	
+	//magicling, Magic Ling's bosses call this when their fight starts. The mod also showed a title banner, here it only starts the level's boss music
+	public static void bossReady() {
+		if (scene == null) return; //headless tests
+		Dungeon.level.playBossMusic();
+	}
+
 	public static void bossSlain() {
 		if (scene == null) return; //headless tests
 		if (Dungeon.hero.isAlive()) {

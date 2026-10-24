@@ -210,6 +210,11 @@ SPS_RULES = [
     ('Magic Ling mob.properties field', r'\b(mob|enemy|ch)\.properties\.contains', r'\1.properties().contains'),
     ('Magic Ling ColorTargetedCell', r'new ColorTargetedCell\(', 'com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell.colored('),
     ('Magic Ling Speck.ROT', r'\bSpeck\.ROT\b', 'Speck.TOXIC'),
+    ('Magic Ling Speck.DIED', r'\bSpeck\.DIED\b', 'Speck.DUST'),
+    ('Magic Ling Music.playModeBGM', r'\bMusic\.playModeBGM\(', 'Music.INSTANCE.play('),
+    ('Magic Ling champions this game lacks', r'\bChampionEnemy\.(?:Bomber|Halo|HealRight|Sider|LongSider|Middle|Big)\.class\b', 'ChampionEnemy.Blazing.class'),
+    ('Magic Ling Window.SKYBULE_COLOR', r'\bWindow\.SKYBULE_COLOR\b', '0x00FFFF'),
+    ('Magic Ling Blindness.set', r'\(\(Blindness\)\s*Buff\.affect\(\s*(\w+)\s*,\s*Blindness\.class\s*\)\)\.set\(\s*([^)]+?)\s*\)', r'Buff.prolong( \1, Blindness.class, \2 )'),
     ('Magic Ling Beam.DeathRayS', r'\bBeam\.DeathRayS\b', 'Beam.DeathRay'),
     ('Magic Ling GameScene.scene.add', r'\bGameScene\.scene\.add\(', 'com.watabou.noosa.Game.scene().add('),
     # Goblins PD (Shattered 0.3 base), static Level arrays are instance fields now

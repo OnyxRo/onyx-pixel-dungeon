@@ -157,6 +157,18 @@ if added:
     anchor = nl + '\t}' + nl + nl + '\t/** Every monster on the roster'
     i = s.index(anchor)
     s = s[:i] + nl + nl.join(added) + s[i:]
+    # monsters in a subpackage (actors/mobs/bosses/notsync) need an import, or ModRoster does not compile
+    src_root = ROOT + '/' + PK
+    for n in names:
+        for dp, dn, fn in os.walk(src_root + 'actors'):
+            if n + '.java' in fn:
+                pkg = os.path.relpath(dp, ROOT + '/core/src/main/java').replace(os.sep, '.').replace('/', '.')
+                if pkg.endswith('actors.mobs'): break
+                imp = 'import %s.%s;' % (pkg, n)
+                if imp not in s and ('import %s.*;' % pkg) not in s:
+                    j = s.index(nl + 'import ')
+                    s = s[:j] + nl + imp + s[j:]
+                break
     wr(rost, s)
 print('added to ModRoster:', len(added))
 
