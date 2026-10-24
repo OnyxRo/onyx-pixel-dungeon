@@ -174,3 +174,4 @@ KingAxe
 HellBurning
 HellFire
 RandomChest
+IceCyanBlueSquareCoin

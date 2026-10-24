@@ -32,6 +32,19 @@ public class MagicLingStats {
 	public static int KillMazeMimic;
 	public static int goldRefogreCount;
 
+	//the mod kept this in its settings file, it counts boss weapon drops so every third kill gives one for sure
+	private static final int[] bossWeaponCount = new int[6];
+	public static int BossWeaponCount1() { return bossWeaponCount[1]; }
+	public static void BossWeaponCount1( int value ) { bossWeaponCount[1] = value; }
+	public static int BossWeaponCount2() { return bossWeaponCount[2]; }
+	public static void BossWeaponCount2( int value ) { bossWeaponCount[2] = value; }
+	public static int BossWeaponCount3() { return bossWeaponCount[3]; }
+	public static void BossWeaponCount3( int value ) { bossWeaponCount[3] = value; }
+	public static int BossWeaponCount4() { return bossWeaponCount[4]; }
+	public static void BossWeaponCount4( int value ) { bossWeaponCount[4] = value; }
+	public static int BossWeaponCount5() { return bossWeaponCount[5]; }
+	public static void BossWeaponCount5( int value ) { bossWeaponCount[5] = value; }
+
 	public static void reset() {
 		survey_research_points = 0;
 		unLockedFireDargon = false;

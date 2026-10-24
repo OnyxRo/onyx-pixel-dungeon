@@ -576,6 +576,10 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String CLEAR = "sprites/magicling/clearelemt.png"; //ported, magicling
+		public static final String QLPH = "sprites/boss/magicling/crivus2.png"; //ported, magicling
+		public static final String QLPH_LASHER = "sprites/boss/magicling/crivus2lasher.png"; //ported, magicling
+		public static final String CFAS = "sprites/boss/magicling/FruitsCrivus.png"; //ported, magicling
 		public static final String CRAB_KING = "sprites/boss/overworld/magicling/giantcrab.png"; //ported, magicling
 		public static final String ANIMATIONS_SUN = "sprites/items/Animation/magicling/Sun.png"; //ported, magicling
 		public static final String EVIL_SPAWN = "sprites/magicling/spawne_evil.png"; //ported, magicling

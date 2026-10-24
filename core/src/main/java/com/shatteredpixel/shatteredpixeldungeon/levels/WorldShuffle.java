@@ -479,8 +479,11 @@ public class WorldShuffle {
 			return depth >= 10 && depth % 5 == 0 ? new Level[]{ new com.shatteredpixel.shatteredpixeldungeon.levels.towers.TransformationRunBossLevel() } : new Level[0];
 		}
 		if (world >= 0 && world < LOGOS.length && MAGIC_LING.equals(LOGOS[world])) {
-			//magicling, the mod's three floor 5 fights. The Slime Prince in the sewers, Sky Goo in the jungle, the Crab King on the shore
+			//magicling, the mod's floor 5 fights. Qliphoth and Crivus Fruits in the jungle (the mod's usual pick), the Slime Prince
+			//in the sewers, Sky Goo in the jungle, the Crab King on the shore
 			return depth == 5 ? new Level[]{
+					new com.shatteredpixel.shatteredpixeldungeon.levels.ForestPoisonBossLevel(),
+					new com.shatteredpixel.shatteredpixeldungeon.levels.ForestBossLevel(),
 					new com.shatteredpixel.shatteredpixeldungeon.levels.SLMKingLevel(),
 					new com.shatteredpixel.shatteredpixeldungeon.levels.nosync.SkyGooBossLevel(),
 					new com.shatteredpixel.shatteredpixeldungeon.levels.nosync.CrabKingBossLevel() } : new Level[0];

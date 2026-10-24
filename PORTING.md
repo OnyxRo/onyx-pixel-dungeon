@@ -224,6 +224,30 @@ Left out of this batch. DM-275 (its bomb toss needs sprite and Bomb changes), Ne
 
 Fixed on the way. Six Magic Ling slime sprites from batch 1 (Orange, Lt, Qs, Lg, Sn, Sz) named pictures under `Boss/` that were never copied, so those slimes would have crashed the game. The pictures are in `sprites/magicling/` now. `check-sprites.py` now checks textures named by a plain path too.
 
+## Magic Ling PD, fourth batch, the first bosses (2026-10-24)
+
+Groundwork that the rest of Magic Ling's bosses will need, then six bosses on top of it.
+
+Groundwork, each a small shim marked "magicling". `actors/Boss.java` is a cut down copy of the mod's boss base class (boss properties and immunities, the stat block from `initBaseStatus` and `initStatus`, the health bar on reload, the champion rolls). Its ice coin and prop rewards, hard mode extras and night damage bonus were left out, and its stat block is kept per boss, where the mod shared one static block between all bosses. `GameScene.bossReady` calls the new `Level.playBossMusic`, which plays the stage's Shattered boss track unless a level overrides it. Boss rush mode, the plot and the minigames stay out, and `Statistics.bossRushMode` is always false through `MagicLingStats`. `MagicLingStats.BossWeaponCount1` to `5` stand in for the mod's settings counters. New rename rows turn ice coins into gold, the holiday checks and kill badges into false, `Random.getRandomElement` into `Random.element`, `PathFinder.NEIGHBOURS49` into `NEIGHBOURS25`, and a few colours, bolts and champions into ours. `PotionOfPurityLing` (the gas neutralizing potion of the jungle arenas) is its own class, the mod kept it inside its purity potion.
+
+Bosses, all on floor 5 of a Magic Ling world, all weight 0 on `ModRoster` so only their arenas and the sandbox spawn them.
+
+| Boss | Arena | Notes |
+| --- | --- | --- |
+| Qliphoth | `ForestPoisonBossLevel` | The mod's usual floor 5 boss. Summons the Clear Elemental and lashers |
+| Crivus Fruits | `ForestBossLevel` | Lashers, purity potions in the arena |
+| Slime Prince | `SLMKingLevel` | A sewer floor with the Slime Prince in a boss room. The second version (`SlimeKingMob`) is sandbox only |
+| Sky Goo | `nosync/SkyGooBossLevel` | The mod's boss rush jungle fight |
+| Crab King | `nosync/CrabKingBossLevel` | Unfinished in the mod, see below |
+
+`WorldShuffle.modBossVariants` lists the five arenas for Magic Ling worlds and `modBossLevel` picks one by the dungeon seed, so a run always gets the same one. To try another, start a new sandbox run. Magic Ling is not in `bossPlaytested`, so normal runs keep Shattered's Goo until Onyx has played them. To play one in the sandbox, force a Magic Ling world in the Floors and worlds panel and skip to floor 5. No floor 10 or 20 boss yet, so `dropProgressionItem` needed nothing.
+
+Fixes to the mod's code. The Crab King had only its stats and its arena had no way down and blocked the way up. It now seals the fight, shows its health bar, comes back twice as its Reloop Life text says, and the stairs down on the middle pedestal open when it dies. The Qliphoth arena kept its exit inside a wall until the fight ended, so climbing back from floor 6 would have put the hero in the wall. Its exit now sits in the middle of the arena from the start, opens when Qliphoth is gone, and both stairs are drawn. The Slime Prince and Sky Goo levels popped a random generator nobody had pushed, which crashed the level build. Sky Goo cast the floor to its own arena on death, which crashed anywhere else. The Slime Prince picture was missing.
+
+Checks. `BossArenaTest` plays all five arenas with no failures and no warnings left. The deaths, seals and unseals stop at headless limits (sprites and effects), so the end of each fight still needs a look in the sandbox. None of it has been seen on screen yet.
+
+Left for later. The floor 10 to 25 bosses (Dwarf General, Dwarf Master, DM-720, Cerberus, the Magic Girl fights, Yog Real and others) need the mod's dialog windows or minigames first. `mod-report.py --all` lists them.
+
 ## Magic Ling PD, third batch (2026-10-24)
 
 The next fifteen percent of the Magic Ling port, 7 monsters and 17 items.

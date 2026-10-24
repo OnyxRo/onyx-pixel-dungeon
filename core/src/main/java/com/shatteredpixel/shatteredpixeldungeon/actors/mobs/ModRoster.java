@@ -592,6 +592,11 @@ public class ModRoster {
 		add( "magicling", SlimeKingMob.class, 0, 1, 99 );
 		add( "magicling", CrabKing.class, 0, 1, 99 );
 		add( "magicling", SkyGoo.class, 0, 1, 99 );
+		add( "magicling", CrivusFruits.class, 0, 1, 99 );
+		add( "magicling", CrivusFruitsLasher.class, 0, 1, 99 );
+		add( "magicling", Qliphoth.class, 0, 1, 99 );
+		add( "magicling", QliphothLasher.class, 0, 1, 99 );
+		add( "magicling", ClearElemental.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

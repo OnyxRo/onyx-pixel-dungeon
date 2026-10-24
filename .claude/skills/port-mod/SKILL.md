@@ -263,6 +263,12 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **Before a big copy, list each monster's missing imports** (a short loop over its import lines, checking which classes we lack). A monster whose list names a boss, a boss level or a window will drag the whole system in. Drop it from the batch or put that class in `port-skip.txt` first, then fix the few broken lines by hand.
 - **If the copied files still show the mod's names** (`Statistics.bossRushMode` and the like) after a port, the rename rows did not run. Check which list in `renames.py` holds them. Only the plain `RENAMES` list runs on every mod.
 - **Mod sprites that name a picture by a plain path** (`texture("Boss/SLMKING0.png")`) are not covered by the Assets check. `check-sprites.py` lists them now, copy each picture to `sprites/<key>/` and change the path.
+## Added after Magic Ling batch 4, bosses (2026-10-24)
+- **Magic Ling bosses extend `actors/Boss`**, which is in core now with `GameScene.bossReady` and `Level.playBossMusic`. Port a boss with `port-mob.py ... --weight=0`, then copy its level by hand and run `apply-renames.py` on it. A short list of each boss's missing imports first (as in batch 2) shows which ones drag in windows.
+- **Read every mod boss level for three traps.** A `Random.popGenerator()` with no push before it (crashes the build), an exit transition in cell 0 or only added after the fight (the hero lands in a wall coming back up), and casts of `Dungeon.level` to the boss's own level in the boss's `die` (crashes in the sandbox anywhere else).
+- **`BOSS_ONLY=A,B,C scripts/check.sh --new`** runs the boss test on several arenas in one go.
+- **A boss test warning "never started a fight by walking"** can come from a door check, the test moves the hero without closing doors behind it. Accept `OPEN_DOOR` in the level's trigger.
+
 ## Added after Magic Ling batch 3 (2026-10-24)
 - **mod-report's "easy monster" list can hold items.** Magic Ling keeps weapons and books under `actors/mobs/bosses/galaxy`. Check that each class extends a Mob before `port-mob.py`, and that the class is not commented out (Nxhy Guard was).
 - **If port-item.py leaves many "cannot find symbol ItemSpriteSheet.X" errors,** the picture step failed quietly. Run `port-itemsprites.py . ~/mod-sources/<key>/ NAMES...` by hand and read its error.
