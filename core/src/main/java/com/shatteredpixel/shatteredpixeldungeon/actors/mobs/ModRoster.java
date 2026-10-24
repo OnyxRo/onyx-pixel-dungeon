@@ -578,6 +578,14 @@ public class ModRoster {
 		add( "magicling", KagenoNusujin.class, 1, 1, 99 );
 		add( "magicling", SkullShaman.class, 1, 1, 99 );
 		add( "magicling", GnollShiled.class, 1, 1, 99 );
+
+		add( "magicling", RedMurderer.class, 1, 11, 18 );
+		add( "magicling", AoReadyDragon.class, 0, 1, 99 );
+		add( "magicling", DM275.class, 1, 12, 17 );
+		add( "magicling", SpawnEvil.class, 0, 1, 99 );
+		add( "magicling", SothothLasher.class, 0, 1, 99 );
+		add( "magicling", DemonFodder.class, 0, 1, 99 );
+		add( "magicling", SlimePrincess.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

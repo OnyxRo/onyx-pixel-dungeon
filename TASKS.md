@@ -26,6 +26,7 @@ The cloud routine does the first unchecked task and checks it off. Smallest firs
 - [ ] Batched. Port Magic Ling PD monsters (about 350 files) and weapons (74), about 30 monsters per run.
   - Batch 1 (2026-10-17), 81 easy monsters, the weapons and items.
   - Batch 2 (2026-10-23, the first ten percent of the big port), 27 monsters, see PORTING.md.
+  - Batch 3 (2026-10-24, fifteen percent more), 7 monsters and 17 weapons, wands and items, see PORTING.md.
   - Left, about 85 monsters, nearly all bosses, plot NPCs and minigame monsters that need the mod's Boss class, its boss levels or its windows. Next easiest are DM-275, Necro Acolyte and Bleed Crystal (dropped from batch 2, see PORTING.md), then Army Flag and Green Diamond Mimic.
 - [x] Infrastructure, done 2026-10-14 as `scripts/port-item.py` (all item kinds) and `scripts/test/ItemArenaTest.java`. Original text, build `scripts/port-weapon.py` the way `port-mob.py` works (copy the weapon and its item sprite, close dependencies, copy strings, add to the journal catalog and the loot tables, headless check), and add weapon checks to `MobArenaTest` (stats roll, enchantments, save and reload). Re-ARranged alone has 97 weapons, so this pays off quickly.
 - [x] Matt Edition leftovers. Done 2026-10-15 except the Seven Sins mode and armor magic levels (see PORTING.md). Ported the wands, Throwing Chains, Icy Core, Binding curses, Potion of Vitality, the animation speed setting, the Friendly Thief quest with the Thieves Guild branch and the Ice Caves branch.

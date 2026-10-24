@@ -1484,6 +1484,26 @@ public enum Catalog {
 		TRINKETS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.trinkets.WornLock.class);
 		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfAvalanche.class);
 
+		//items ported from magicling
+		ENCHANTMENTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.HaloBlazing.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.BoomSword.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.KingSword.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.LifeTreeSword.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RedBloodMoon.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WhiteBlastSword.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.legend.DiedCrossBow.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.thanks.GrilledHerring.class);
+		TIPPED_DARTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.HaloDart.class);
+		TIPPED_DARTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.LightDart.class);
+		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.LightFood.class);
+		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.PotionOfLightningShiled.class);
+		POTIONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLightningShiledX.class);
+		FOOD.addItems(com.shatteredpixel.shatteredpixeldungeon.items.food.RiceDumplings.class);
+		BREWS_ELIXIRS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfNukeCole.class);
+		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfGodIce.class);
+		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfSun.class);
+		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.hightwand.WandOfHightHunderStorm.class);
+
 
 	}
 

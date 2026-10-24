@@ -104,3 +104,7 @@ The crash box hid every crash for weeks behind "Invalid message with quotes", so
 ## 2026-10-23 Magic Ling batch 2
 
 The first copy pulled in 265 files (bosses, boss levels, windows) because Army Flag reaches the Dwarf General and two potions reach the Champion buff. Undoing and copying again cost about 15 minutes. Then none of the Magic Ling rename rows fired, because they sat in the SPS list, which only runs on SPS code. Fixes. `renames.apply` now always runs the rows named "Magic Ling", the boss and treasure classes that drag everything in are in `port-skip.txt`, and `check-sprites.py` now catches textures named by a plain path (it found six old slime sprites that would have crashed).
+
+## 2026-10-24 Magic Ling batch 3
+
+`port-item.py` printed "copying item pictures" and copied nothing, because the picture tool looked for Magic Ling's sheet in the wrong folder and its error was hidden. 25 picture errors followed. Fix, `port-itemsprites.py` checks `sprites/items/items.png`. Also the computer slept during a check and a second check started on top of it, which mixed the logs. Run one check at a time and wait for it.

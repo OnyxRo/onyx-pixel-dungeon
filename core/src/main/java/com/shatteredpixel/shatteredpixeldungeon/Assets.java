@@ -575,6 +575,12 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String ANIMATIONS_SUN = "sprites/items/Animation/magicling/Sun.png"; //ported, magicling
+		public static final String EVIL_SPAWN = "sprites/magicling/spawne_evil.png"; //ported, magicling
+		public static final String LATS = "sprites/boss/magicling/sts_lasher.png"; //ported, magicling
+		public static final String SLIMEPRINCESS = "sprites/boss/magicling/SlimePrincess.png"; //ported, magicling
+		public static final String EVIL = "sprites/magicling/demon_fodder.png"; //ported, magicling
+		public static final String AOREADY = "sprites/magicling/aodragon.png"; //ported, magicling
 		public static final String VAMPIRE = "sprites/hollow/magicling/vampire.png"; //ported, magicling
 		public static final String TURTLE = "sprites/ancity/magicling/cltb.png"; //ported, magicling
 		public static final String THREEBUG = "sprites/ancity/magicling/threeleafbug.png"; //ported, magicling
@@ -589,6 +595,7 @@ public class Assets {
 		public static final String CRSTA = "sprites/magicling/crstalspawn.png"; //ported, magicling
 		public static final String GHOST_HE = "sprites/hollow/magicling/ghost_halloween.png"; //ported, magicling
 		public static final String DM275 = "sprites/magicling/dm275-RPG.png"; //ported, magicling
+		public static final String ML_MUDTHIEF = "sprites/magicling/thief2.png"; //ported, magicling
 		public static final String COLDRAT = "sprites/magicling/coldrat.png"; //ported, magicling
 		public static final String BTSLIMH = "sprites/hollow/magicling/butcher.png"; //ported, magicling
 		public static final String NECROBLUE = "sprites/magicling/bluenecromancer.png"; //ported, magicling

@@ -258,3 +258,6 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **Before a big copy, list each monster's missing imports** (a short loop over its import lines, checking which classes we lack). A monster whose list names a boss, a boss level or a window will drag the whole system in. Drop it from the batch or put that class in `port-skip.txt` first, then fix the few broken lines by hand.
 - **If the copied files still show the mod's names** (`Statistics.bossRushMode` and the like) after a port, the rename rows did not run. Check which list in `renames.py` holds them. Only the plain `RENAMES` list runs on every mod.
 - **Mod sprites that name a picture by a plain path** (`texture("Boss/SLMKING0.png")`) are not covered by the Assets check. `check-sprites.py` lists them now, copy each picture to `sprites/<key>/` and change the path.
+## Added after Magic Ling batch 3 (2026-10-24)
+- **mod-report's "easy monster" list can hold items.** Magic Ling keeps weapons and books under `actors/mobs/bosses/galaxy`. Check that each class extends a Mob before `port-mob.py`, and that the class is not commented out (Nxhy Guard was).
+- **If port-item.py leaves many "cannot find symbol ItemSpriteSheet.X" errors,** the picture step failed quietly. Run `port-itemsprites.py . ~/mod-sources/<key>/ NAMES...` by hand and read its error.

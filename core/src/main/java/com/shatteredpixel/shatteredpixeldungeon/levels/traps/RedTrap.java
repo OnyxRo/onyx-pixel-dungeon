@@ -40,12 +40,15 @@ public class RedTrap extends Trap {
                     }
                 } while (pos == -1 || Dungeon.level.secret[pos]);
 
+                //no free cell on small floors (the mod moved the monster to cell -1 and crashed)
+                if (pos != -1) {
                     ch.pos = pos;
                     if (ch instanceof Mob && ((Mob) ch).state == ((Mob) ch).HUNTING) {
                         ((Mob) ch).state = ((Mob) ch).WANDERING;
                     }
                     ch.sprite.place(ch.pos);
                     ch.sprite.visible = Dungeon.level.heroFOV[pos];
+                }
 
             }
         }

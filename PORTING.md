@@ -224,6 +224,20 @@ Left out of this batch. DM-275 (its bomb toss needs sprite and Bomb changes), Ne
 
 Fixed on the way. Six Magic Ling slime sprites from batch 1 (Orange, Lt, Qs, Lg, Sn, Sz) named pictures under `Boss/` that were never copied, so those slimes would have crashed the game. The pictures are in `sprites/magicling/` now. `check-sprites.py` now checks textures named by a plain path too.
 
+## Magic Ling PD, third batch (2026-10-24)
+
+The next fifteen percent of the Magic Ling port, 7 monsters and 17 items.
+
+Monsters, on `ModRoster` under "magicling". Red Murderer (floors 11 to 18, its own `RedMurdererSprite` on the mod's mud thief sheet, since our MurdererSprite is Matt Edition's) and DM-275 (floors 12 to 17, throws lit fire bombs) spawn in Magic Ling worlds. Ao Ready Dragon, Spawn Evil, Sothoth Lasher, Demon Fodder and the Slime Princess are weight 0, so only the sandbox spawns them, because the mod only makes them in its own rooms and boss fights. The Slime Princess is a boss with no arena here. Demon Fodder brings the Lightning Flower plant (`AikeLaier`), which uses the Starflower seed picture. Placeholder text for Ao Ready Dragon.
+
+Items, in the journal catalog. Weapons Boom Sword, King Sword, Life Tree Sword, Red Blood Moon, White Blast Sword, Died Cross Bow, Grilled Herring, Halo Dart, Light Dart, the Halo Blazing enchantment. Wands of God Ice, Sun and High Thunder Storm. Light Food, Rice Dumplings (placeholder text), Potion of Lightning Shield and its X version, Elixir of Nuke Cole. Also the Champion Hero buff they share, and the Unless Flower, Worst Blizzard, Worst Storm Cloud, Sun Fire and Halo Fire buffs and blobs they use.
+
+Swaps. The mod's shop and animation tags on items (ThanksItem, AnimationItem, LengedsItem) and ice coin prices were dropped. White Blast Sword charges from its own `proc`, since the mod's weapon hit hook is not here. Rice Dumplings give Adrenaline where the mod used its own Fury. Light Dart and the Lightning Flower give a Blazing champion where the mod gave its Halo champion. Missing icons became Fire, Frost and Bless.
+
+Left out. Nxhy Guard (the whole class is commented out in the mod), Abyss Book (its menu does nothing), Sliver Lock Sword (needs the mod's weapon animation system), Ancity Armor (needs the mod's second glyph slot), Old Sun Shadow (needs the mod's mage class window).
+
+Tool fix. `port-itemsprites.py` now finds Magic Ling's item sheet at `sprites/items/items.png`. Before this, `port-item.py` copied Magic Ling items with no pictures and no error.
+
 ## Magic Ling PD weapons and items (2026-10-17)
 
 Ported Magic Ling's melee weapons, missiles, enchantments, wands, food, potions, props (trinkets, `items/props`, simplified `Prop` that rolls from a class list instead of the mod's Statistics pools) and quest items. check.sh --new passes (ItemArenaTest clean).
