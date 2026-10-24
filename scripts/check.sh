@@ -176,8 +176,9 @@ if [ $QUICK -eq 0 ]; then
   [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
 fi
 
-# mod boss fights, walked through headless. Skipped in --quick runs.
-if [ $QUICK -eq 0 ]; then
+# mod boss fights, walked through headless. Skipped in --quick runs, unless BOSS_ONLY names some arenas
+# (BOSS_ONLY=ColdChest,CaveTwo FAST=1 scripts/check.sh --quick Mob1 Mob2 checks a boss batch in one short run)
+if [ $QUICK -eq 0 ] || [ -n "${BOSS_ONLY:-}" ]; then
   #BOSS_ONLY=Void scripts/check.sh --new runs only the boss levels whose class name contains Void
   run "BossArenaTest" BossArenaTest ${BOSS_ONLY:-}; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|WARN|HEADLESS|SUMMARY boss)" | sed 's/^/  /' | tail -30

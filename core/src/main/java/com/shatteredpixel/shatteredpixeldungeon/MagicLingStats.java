@@ -31,6 +31,8 @@ public class MagicLingStats {
 	public static boolean TPDoorDieds = false;
 	public static int KillMazeMimic;
 	public static int goldRefogreCount;
+	public static int fuckGeneratorAlone;
+	public static boolean dm720Fight = false;
 
 	//the mod kept this in its settings file, it counts boss weapon drops so every third kill gives one for sure
 	private static final int[] bossWeaponCount = new int[6];
@@ -68,5 +70,7 @@ public class MagicLingStats {
 		TPDoorDieds = false;
 		KillMazeMimic = 0;
 		goldRefogreCount = 0;
+		fuckGeneratorAlone = 0;
+		dm720Fight = false;
 	}
 }

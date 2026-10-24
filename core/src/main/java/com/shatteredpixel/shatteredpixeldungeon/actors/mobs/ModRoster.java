@@ -17,6 +17,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.bossrush.Rival;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.dragon.RiceRat;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.dragon.PiraLand;
@@ -597,6 +598,13 @@ public class ModRoster {
 		add( "magicling", Qliphoth.class, 0, 1, 99 );
 		add( "magicling", QliphothLasher.class, 0, 1, 99 );
 		add( "magicling", ClearElemental.class, 0, 1, 99 );
+		add( "magicling", Rival.class, 0, 1, 99 );
+		add( "magicling", DCrystal.class, 0, 1, 99 );
+		add( "magicling", DiamondKnight.class, 0, 1, 99 );
+		add( "magicling", DimandKing.class, 0, 1, 99 );
+		add( "magicling", GreenStingCV.class, 0, 1, 99 );
+		add( "magicling", NewDM720.class, 0, 1, 99 );
+		add( "magicling", PylonCS.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

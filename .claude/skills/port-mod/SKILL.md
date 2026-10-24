@@ -269,6 +269,11 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **`BOSS_ONLY=A,B,C scripts/check.sh --new`** runs the boss test on several arenas in one go.
 - **A boss test warning "never started a fight by walking"** can come from a door check, the test moves the hero without closing doors behind it. Accept `OPEN_DOOR` in the level's trigger.
 
+## Added after Magic Ling batch 5 (2026-10-24)
+- **A full compile takes about 12 minutes now and `check.sh --new` about an hour.** For a boss batch run `BOSS_ONLY=A,B FAST=1 scripts/check.sh --quick Boss1 Boss2` once, then rerun single tests without compiling with `scripts/test-one.sh BossArenaTest A,B`, `test-one.sh WorldShuffleTest 30` or `test-one.sh MobArenaTest Boss1`. Never start a second check while one runs, they share `build/check.log` and `build/fast`.
+- **Guard every cast of the floor to a boss's own arena** in one go with a small regex script (state reads fall back to null or a won state, statement calls get `if (Dungeon.level instanceof X)`, position reads fall back to -1). MobArenaTest spawns bosses on an ordinary floor and fails on each unguarded cast.
+- **A boss arena whose exit sits in cell 0 until the fight ends** fails WorldShuffleTest. Use the cell the mod opens as stairs later, sealed in the walls until then.
+
 ## Added after Magic Ling batch 3 (2026-10-24)
 - **mod-report's "easy monster" list can hold items.** Magic Ling keeps weapons and books under `actors/mobs/bosses/galaxy`. Check that each class extends a Mob before `port-mob.py`, and that the class is not commented out (Nxhy Guard was).
 - **If port-item.py leaves many "cannot find symbol ItemSpriteSheet.X" errors,** the picture step failed quietly. Run `port-itemsprites.py . ~/mod-sources/<key>/ NAMES...` by hand and read its error.

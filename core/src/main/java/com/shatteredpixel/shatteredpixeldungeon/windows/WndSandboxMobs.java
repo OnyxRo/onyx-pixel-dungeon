@@ -62,7 +62,9 @@ public class WndSandboxMobs extends Window {
 			//Matt Edition's unused boss, built for the Dwarf King's throne room
 			"DarkKing",
 			//Dragonic's Dragon, tied to its boss level
-			"Dragon"
+			"Dragon",
+			//Magic Ling's floor 10 and 15 bosses, tied to their arenas
+			"DCrystal", "DiamondKnight", "DimandKing", "GreenStingCV", "NewDM720", "PylonCS"
 	));
 
 	public static boolean safeToSpawn( Class<?> cls ){

@@ -34,6 +34,8 @@ public class Assets {
 	}
 
 	public static class Environment {
+		public static final String TILES_COLDCHEST = "environment/magicling/tiles_coldchest.png"; //ported, magicling
+		public static final String TILES_COLD = "environment/magicling/tiles_cold.png"; //ported, magicling
 		public static final String SEWER_SP = "environment/custom_tiles/ryuse/sewers_special.png"; //ported, ryuse
 		public static final String EYE_OF_WISDOM_TILE = "environment/custom_tiles/ryuse/eye_of_wisdom_tiles.png"; //ported, ryuse
 		public static final String CAPYNEST_SP = "environment/custom_tiles/shittened/capybaranest.png"; //ported, shittened
@@ -188,6 +190,11 @@ public class Assets {
 	}
 
 	public static class Music {
+		public static final String PRISON_BRANCH_BOSS = "music/boss/magicling/Boss2_branch.ogg"; //ported, magicling
+		public static final String BGM_4 = "music/magicling/Level4.ogg"; //ported, magicling
+		public static final String DIAMAND_KING_INTRO = "music/boss/magicling/Diamd_Boss.ogg"; //ported, magicling
+		public static final String BGM_2 = "music/magicling/Level2.ogg"; //ported, magicling
+		public static final String BGM_3 = "music/magicling/Level3.ogg"; //ported, magicling
 		public static final String JUNGLE_FOREST = "music/magicling/Level1.ogg"; //ported, magicling
 		public static final String PESTILENCE_BOSS = "music/transformation/pestilence_boss.ogg"; //ported, transformation
 		public static final String DEATH_KNIGHT_BOSS = "music/transformation/death_knight_boss.ogg"; //ported, transformation
@@ -576,6 +583,10 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String PYLONCS = "sprites/magicling/pylonks.png"; //ported, magicling
+		public static final String DM720 = "sprites/magicling/dm720.png"; //ported, magicling
+		public static final String DIMK = "sprites/boss/magicling/DimandKing.png"; //ported, magicling
+		public static final String DREA = "sprites/boss/magicling/DCrstal.png"; //ported, magicling
 		public static final String CLEAR = "sprites/magicling/clearelemt.png"; //ported, magicling
 		public static final String QLPH = "sprites/boss/magicling/crivus2.png"; //ported, magicling
 		public static final String QLPH_LASHER = "sprites/boss/magicling/crivus2lasher.png"; //ported, magicling

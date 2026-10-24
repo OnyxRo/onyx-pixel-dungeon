@@ -1781,6 +1781,11 @@ public abstract class Char extends Actor {
 	}
 	
 	protected final HashSet<Class> immunities = new HashSet<>();
+
+	//magicling, lets a boss make the monsters it summons immune to something
+	public void addImmunity( Class c ){
+		immunities.add( c );
+	}
 	
 	//summoning, Summoning PD helpers
 	public boolean isWet(){

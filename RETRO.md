@@ -112,3 +112,7 @@ Three things cost rounds. ModRoster did not compile because the bosses live in s
 ## 2026-10-24 Magic Ling batch 3
 
 `port-item.py` printed "copying item pictures" and copied nothing, because the picture tool looked for Magic Ling's sheet in the wrong folder and its error was hidden. 25 picture errors followed. Fix, `port-itemsprites.py` checks `sprites/items/items.png`. Also the computer slept during a check and a second check started on top of it, which mixed the logs. Run one check at a time and wait for it.
+
+## 2026-10-24 Magic Ling batch 5, floor 10 and 15 bosses
+
+`check.sh --new` ran every suite for about an hour (a full javac build is about 12 minutes here, then 25 test suites), and a second check started before the first ended, so both wrote the same log. Fix, `BOSS_ONLY=... FAST=1 scripts/check.sh --quick Mob1 Mob2` now runs the named boss arenas too, and `scripts/test-one.sh BossArenaTest A,B` or `test-one.sh WorldShuffleTest 30` rerun a test without compiling. The port-mod skill says so. A wait loop that greps a file only written at the end never finishes, wait on `build/check.log` ending in "full log".

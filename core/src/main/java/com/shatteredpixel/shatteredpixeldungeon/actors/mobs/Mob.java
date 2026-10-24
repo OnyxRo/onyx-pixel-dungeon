@@ -2192,5 +2192,6 @@ public abstract class Mob extends Char {
 	public static void clearHeldAllies(){
 		heldAllies.clear();
 	}
+	//magicling, marks monsters its spawn tools leave out
+	public interface NoMobSpawn {}
 }
-

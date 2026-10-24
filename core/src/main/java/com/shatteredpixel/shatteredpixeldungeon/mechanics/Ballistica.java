@@ -65,6 +65,31 @@ public class Ballistica {
 	private int reflectTimes = 0;
 
 
+	//magicling, direction from one cell to the next (dx + dy*3) and one step along it
+	public static int direction(int from, int to) {
+		int w = Dungeon.level.width();
+		int dx = Integer.compare(to % w, from % w);
+		int dy = Integer.compare(to / w, from / w);
+		return dx + dy * 3;
+	}
+
+	public static int step(int pos, int dir) {
+		int w = Dungeon.level.width();
+		int x = pos % w;
+		int y = pos / w;
+		switch (dir) {
+			case 0: x--; break;
+			case 1: x++; break;
+			case 3: y--; break;
+			case 4: y++; break;
+			case -1: x--; y--; break;
+			case 2: x++; y--; break;
+			case -2: x--; y++; break;
+			case 5: x++; y++; break;
+		}
+		return x + y * w;
+	}
+
 	public Ballistica( int from, int to, int params ){
 		sourcePos = from;
 		collisionProperties = params;

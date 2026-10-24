@@ -481,12 +481,23 @@ public class WorldShuffle {
 		if (world >= 0 && world < LOGOS.length && MAGIC_LING.equals(LOGOS[world])) {
 			//magicling, the mod's floor 5 fights. Qliphoth and Crivus Fruits in the jungle (the mod's usual pick), the Slime Prince
 			//in the sewers, Sky Goo in the jungle, the Crab King on the shore
-			return depth == 5 ? new Level[]{
-					new com.shatteredpixel.shatteredpixeldungeon.levels.ForestPoisonBossLevel(),
-					new com.shatteredpixel.shatteredpixeldungeon.levels.ForestBossLevel(),
-					new com.shatteredpixel.shatteredpixeldungeon.levels.SLMKingLevel(),
-					new com.shatteredpixel.shatteredpixeldungeon.levels.nosync.SkyGooBossLevel(),
-					new com.shatteredpixel.shatteredpixeldungeon.levels.nosync.CrabKingBossLevel() } : new Level[0];
+			switch (depth) {
+				case 5: return new Level[]{
+						new com.shatteredpixel.shatteredpixeldungeon.levels.ForestPoisonBossLevel(),
+						new com.shatteredpixel.shatteredpixeldungeon.levels.ForestBossLevel(),
+						new com.shatteredpixel.shatteredpixeldungeon.levels.SLMKingLevel(),
+						new com.shatteredpixel.shatteredpixeldungeon.levels.nosync.SkyGooBossLevel(),
+						new com.shatteredpixel.shatteredpixeldungeon.levels.nosync.CrabKingBossLevel() };
+				//floor 10, the Diamond Knight's chest maze, the Diamond King and the Rival in the deep shadow
+				case 10: return new Level[]{
+						new com.shatteredpixel.shatteredpixeldungeon.levels.ColdChestBossLevel(),
+						new com.shatteredpixel.shatteredpixeldungeon.levels.GreenStlingBossLevel(),
+						new com.shatteredpixel.shatteredpixeldungeon.levels.nosync.DeepShadowLevel() };
+				//floor 15, DM-720 and its pylons
+				case 15: return new Level[]{
+						new com.shatteredpixel.shatteredpixeldungeon.levels.CaveTwoBossLevel() };
+				default: return new Level[0];
+			}
 		}
 		Level single = world >= 0 && world < LOGOS.length ? modBossLevel( world, depth ) : null;
 		return single == null ? new Level[0] : new Level[]{ single };
@@ -518,7 +529,7 @@ public class WorldShuffle {
 			return both[forcedVariant >= 0 ? pick % both.length : pick % Math.min(both.length, 2)];
 		}
 		if (world >= 0 && world < LOGOS.length && MAGIC_LING.equals(LOGOS[world])) {
-			//magicling, one of its floor 5 fights, picked by the dungeon seed so the floor is the same each time it is built
+			//magicling, one of its fights for the floor, picked by the dungeon seed so the floor is the same each time it is built
 			Level[] ml = modBossVariants( world, depth );
 			if (ml.length == 0) return null;
 			int pick = forcedVariant >= 0 ? forcedVariant : (int)((Math.abs( Dungeon.seed ) / 7 + depth) % ml.length);

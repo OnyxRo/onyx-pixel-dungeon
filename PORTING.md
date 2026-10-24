@@ -248,6 +248,27 @@ Checks. `BossArenaTest` plays all five arenas with no failures and no warnings l
 
 Left for later. The floor 10 to 25 bosses (Dwarf General, Dwarf Master, DM-720, Cerberus, the Magic Girl fights, Yog Real and others) need the mod's dialog windows or minigames first. `mod-report.py --all` lists them.
 
+## Magic Ling PD, fifth batch, floor 10 and 15 bosses (2026-10-24)
+
+Seven more monsters, all bosses or their helpers, with four arenas. All weight 0 on `ModRoster` under "magicling", so only their arenas and the sandbox spawn them.
+
+| Floor | Boss | Arena | Notes |
+| --- | --- | --- | --- |
+| 10 | Diamond Knight, with the D Crystals | `ColdChestBossLevel` | A chest maze. Emptying the chests moves the hero on, then the knight. Its sword (`SDBSword`) and the maze's MIME items came along |
+| 10 | Diamond King, or its harder form `GreenStingCV` | `GreenStlingBossLevel` | Summons slimes, bats and golems in phases |
+| 10 | Rival | `nosync/DeepShadowLevel` | A copy of the hero with its own weapons and wand, fought over five changing maps (`levels/arenas/ArenasA` to `E`) |
+| 15 | DM-720 and its pylons (`PylonCS`) | `CaveTwoBossLevel` | The mod's second DM fight |
+
+`WorldShuffle.modBossVariants` now has a list per floor for Magic Ling (5, 10 and 15), picked by the dungeon seed as before. The floor 10 arenas hand out Tengu's mask through `dropProgressionItem` when the fight is won. Magic Ling is still not in `bossPlaytested`, so normal runs keep Shattered's bosses. To play one, start a sandbox run, force a Magic Ling world and skip to floor 10 or 15. A new sandbox run may roll a different arena.
+
+Shims, each marked "magicling". `Mob.NoMobSpawn` (an empty marker), `Ballistica.direction` and `step`, `Char.addImmunity`, `MagicLingStats.fuckGeneratorAlone` and `dm720Fight`. The six arena bosses are on the sandbox spawn list's unsafe list, since they reach into their own levels.
+
+Swaps and cuts. The DM-720 arena had an anti cheat prompt that opened a web page and closed the game, it is gone and the boss always spawns normally. The Rival's venom wand became a Wand of Corrosion. The Diamond Knight's kill badge and the mod's random mode do nothing. The maze's Ankh check (the mod's `spankh` flag) treats every Ankh as a normal one. The Diamond King and DM-720 bolts use the crystal shard and corrosion bolts.
+
+Fixes to the mod's code. The chest maze kept its exit in cell 0 until the fight ended, so its exit is now the cell the end map opens as stairs, and its entrance and exit were added twice. The Diamond King's arena popped a random generator nobody had pushed, the same crash as the floor 5 arenas.
+
+Checks. MobArenaTest passes all seven (after guarding every cast of the floor to the boss's own arena, so they also work when the sandbox spawns them elsewhere, though they stay on the unsafe list). BossArenaTest builds and plays all four arenas with no failures. Two fights stop at headless limits before the unseal (Diamond King, DM-720), and the chest maze fight never started when the test walked the maze, so check in the sandbox that walking up to the boss door starts it. WorldShuffleTest is clean. None of it has been seen on screen yet.
+
 ## Magic Ling PD, third batch (2026-10-24)
 
 The next fifteen percent of the Magic Ling port, 7 monsters and 17 items.
