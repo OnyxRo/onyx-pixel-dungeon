@@ -19,10 +19,10 @@ public class ClearElemtGuardGirlSprites extends MobSprite {
         run.frames( frames, 4,5,6,7,8,9 );
 
         attack = new MovieClip.Animation( 14, false );
-        attack.frames( frames, 10,11,12,13,14 );
+        attack.frames( frames, 6,7,8,9 ); //magicling, the sheet has 10 frames, the mod named frames past its end
 
         die = new MovieClip.Animation( 11, false );
-        die.frames( frames,  15,16,17,18 );
+        die.frames( frames, 7,8,9 );
 
         play( idle );
     }

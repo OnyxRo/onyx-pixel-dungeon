@@ -1506,6 +1506,9 @@ public enum Catalog {
 		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfSun.class);
 		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.hightwand.WandOfHightHunderStorm.class);
 
+		//items ported from magicling
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.legend.KingAxe.class);
+
 
 	}
 

@@ -252,6 +252,9 @@ SPS_RULES = [
     ('Magic Ling black keys become golden keys', r'\bnew\s+BlackKey\(', 'new com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey('),
     ('Magic Ling black key import', r'(?m)^import\s+[\w.]+\.BlackKey;[ \t]*\r?\n', ''),
     ('Magic Ling black chests become locked chests', r'\bHeap\.Type\.BLACK\b', 'Heap.Type.LOCKED_CHEST'),
+    ('Magic Ling static import of the sign tile', r'(?m)^import\s+static\s+com\.shatteredpixel\.shatteredpixeldungeon\.levels\.Terrain\.SIGN(?:_SP)?;[ \t]*\r?\n', ''),
+    ('Magic Ling sign tiles', r'(?<![\w.])(?:Terrain\.)?SIGN_SP\b', 'Terrain.EMPTY_DECO'),
+    ('Magic Ling second weapon charges', r'\bcharger\.secondCharges\s*\+\s*charger\.secondPartialCharge\b', 'charger.charges + charger.partialCharge'),
     ('Magic Ling blue potion icon', r'\bItemSpriteSheet\.Icons\.POTION_BLUE\b', 'ItemSpriteSheet.Icons.POTION_DRGBREATH'),
     # Goblins PD (Shattered 0.3 base), static Level arrays are instance fields now
     ('Goblins, Level.adjacent and distance are instance methods', r'\bLevel\.(adjacent|distance)\(', r'Dungeon.level.\1('),

@@ -497,6 +497,9 @@ public class WorldShuffle {
 				case 15: return new Level[]{
 						new com.shatteredpixel.shatteredpixeldungeon.levels.CaveTwoBossLevel(),
 						new com.shatteredpixel.shatteredpixeldungeon.levels.tomb.RogerBossLevel() };
+				//floor 20, the Dwarf General in his parliament
+				case 20: return new Level[]{
+						new com.shatteredpixel.shatteredpixeldungeon.levels.DwarfGeneralBossLevel() };
 				default: return new Level[0];
 			}
 		}

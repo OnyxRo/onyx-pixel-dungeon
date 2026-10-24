@@ -517,6 +517,7 @@ public class Assets {
 	}
 
 	public static class Splashes {
+		public static final String DG = "splashes/magicling/general_portraits.png"; //ported, magicling
 		public static final String YTZY = "splashes/magicling/YetYogR.png"; //ported, magicling
 		public static final String FAYINA_0 = "splashes/firedragon/magicling/guard_npc_portraits(0).png"; //ported, magicling
 		public static final String FYNX = "splashes/magicling/guard_portraits.png"; //ported, magicling
@@ -587,6 +588,8 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String DGS = "sprites/boss/magicling/dwarf_general.png"; //ported, magicling
+		public static final String DFL = "sprites/boss/magicling/army_flag.png"; //ported, magicling
 		public static final String YETYOG = "sprites/npc/magicling/yetyogyears.png"; //ported, magicling
 		public static final String SOTS = "sprites/boss/magicling/yog_sts.png"; //ported, magicling
 		public static final String ROGER = "sprites/tumulus/boss/magicling/roger.png"; //ported, magicling

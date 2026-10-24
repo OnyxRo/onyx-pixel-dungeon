@@ -175,3 +175,5 @@ HellBurning
 HellFire
 RandomChest
 IceCyanBlueSquareCoin
+SmallLeafHardDungeon
+WaterSoul
