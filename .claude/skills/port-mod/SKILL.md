@@ -299,3 +299,9 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - Anything that runs inside `Level.create` must only use the level it is handed. `Level.getTransition(int)`, `Dungeon.level` and `Dungeon.hero.pos` still belong to the previous floor there.
 - Water and grass fill rates near 1 never finish painting (`Patch.generate` loops). Cap any multiplier on them.
 - A headless test for modes should call `TestBoot.stubWindow()`, give the hero a large health pool, spawn Shattered's own monsters (`MobSpawner.getMobRotation`) and count sprite or game screen crashes as HEADLESS. Give it a watchdog thread so a hang prints where it is stuck.
+
+## Added after the game modes (2026-10-25)
+- **Mods that only change how a run plays** (shorter dungeons, starting kits, stat sliders, challenge packs) go in as game modes. `GameModes.register(id, mod, maxLevel, group)` adds one, `GameModes.on(id)` checks it, the Game modes window lists it with text from `gamemodes.<id>` and `gamemodes.<id>_desc` in misc.properties. A changed floor order goes through `GameModes.nextDepth` and `prevDepth`, never `depth + 1`.
+- **Static blocks must not call into another new class** that has its own static state. Two classes that read each other while loading throw ExceptionInInitializerError on first use, which crashes every new run.
+- **Upgrading a thrown weapon resets its stack size.** Call `upgrade(n)` before `quantity(n)`.
+- **`Dungeon.init` resets the random generators.** Code that builds runs in a loop (the Radar search) must use its own `java.util.Random`, not push and pop the game's.

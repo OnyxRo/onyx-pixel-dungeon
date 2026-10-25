@@ -139,3 +139,9 @@ Three things cost rounds. ModRoster did not compile because the bosses live in s
 - The headless test first failed every mode for harness reasons (the hero died at depth 12 and dropped items with no sprites, hits touched the missing key handler). `TestBoot.stubWindow()`, a big health pool and counting sprite crashes as HEADLESS fixed it. New tests should start from those three.
 - Slippery Floor hung floor building in watery worlds (water fill over 100 percent). The test now has a two minute watchdog that prints where it hung.
 - A test run that was moved to the background kept writing the same log as the next run, and left two java processes behind. Stop the old task and its java before starting another.
+
+## 2026-10-25, game modes (Half, Even Shorter, Radar, Custom PD kits)
+- Two new classes read each other from their static blocks (GameModes listed Playstyles' names, Playstyles refreshed from GameModes), so every new run would have crashed. Only the headless test showed it. The skill now says to keep static blocks free of calls into other new classes, and GameModesTest runs in check.sh.
+- Upgrading a thrown weapon resets its stack size, so `quantity(20).upgrade(20)` gave three stones. Noted in the skill.
+- Starting a run calls `Random.resetGenerators`, so a push before `Dungeon.init` breaks the pop after. The seed search uses its own `java.util.Random`.
+- Splitting the work three ways (modes here, Xun and Too Cruel on worktrees) kept the shared files apart, only Food.java and TASKS.md conflicted.
