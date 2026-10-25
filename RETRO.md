@@ -128,3 +128,9 @@ Three things cost rounds. ModRoster did not compile because the bosses live in s
 - The first copy pulled in 226 files and whole mod systems (buff scanner, coin shops, a dream level). Undoing and blocking those cost one extra copier run, the skill now says to do that at once past 150 files.
 - About 100 errors were mod counters and settings, fixed one by one in earlier batches. New `stats-shim.py` adds them all from the mod's declarations.
 - The tour had no way to picture one special floor. Added `-Donyx.gallery.label`.
+## 2026-10-25, Too Cruel PD Trials
+- The mod is Kotlin, so nothing could be copied, about 5000 lines were translated by hand. Keeping every hook in one `TooCruel.java` and one line calls in shared files made the 71 shared edits one `edit.py` spec that applied in a single pass.
+- Level changes that ran while a floor was built crashed on `Level.getTransition(int)`, which reads `Dungeon.level`, the old floor. Code that runs inside `Level.create` must only use the level it is handed.
+- The headless test first failed every mode for harness reasons (the hero died at depth 12 and dropped items with no sprites, hits touched the missing key handler). `TestBoot.stubWindow()`, a big health pool and counting sprite crashes as HEADLESS fixed it. New tests should start from those three.
+- Slippery Floor hung floor building in watery worlds (water fill over 100 percent). The test now has a two minute watchdog that prints where it hung.
+- A test run that was moved to the background kept writing the same log as the next run, and left two java processes behind. Stop the old task and its java before starting another.

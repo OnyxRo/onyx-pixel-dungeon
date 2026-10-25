@@ -332,6 +332,7 @@ public abstract class Level implements Bundlable {
 		
 		createMobs();
 		createItems();
+		com.shatteredpixel.shatteredpixeldungeon.TooCruel.postCreate(this); //toocruel
 
 		Random.popGenerator();
 	}
@@ -700,7 +701,7 @@ public abstract class Level implements Bundlable {
 	public Mob createMob() {
 		if (mobsToSpawn == null || mobsToSpawn.isEmpty()) {
 			//ported worlds can bring their own mod's monsters, see WorldShuffle
-			mobsToSpawn = WorldShuffle.mobRotation(this, Dungeon.depth);
+			mobsToSpawn = WorldShuffle.mobRotation(this, com.shatteredpixel.shatteredpixeldungeon.TooCruel.mobDepth(Dungeon.depth)); //toocruel, Invasion
 			//Community PD has no worlds, its monsters join any floor (level feelings, rare alts)
 			com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CommunitySpawner.adjust(mobsToSpawn, this);
 		}
@@ -786,6 +787,7 @@ public abstract class Level implements Bundlable {
 		if (locked){
 			return false;
 		}
+		if (!com.shatteredpixel.shatteredpixeldungeon.TooCruel.canTransition(this, hero, transition)) return false; //toocruel
 
 		beforeTransition();
 		InterlevelScene.curTransition = transition;
@@ -801,6 +803,7 @@ public abstract class Level implements Bundlable {
 
 	//some buff effects have special logic or are cancelled from the hero before transitioning levels
 	public static void beforeTransition(){
+		com.shatteredpixel.shatteredpixeldungeon.TooCruel.beforeTransition(); //toocruel, Thoughtless
 
 		//time freeze effects need to resolve their pressed cells before transitioning
 		TimekeepersHourglass.timeFreeze timeFreeze = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
@@ -961,6 +964,7 @@ public abstract class Level implements Bundlable {
 		}
 		//Pixel Dungeon Reforged, the Horde challenge brings wandering monsters twice as often
 		if (Dungeon.isChallenged(Challenges.HORDE)) cooldown /= 2f;
+		cooldown = com.shatteredpixel.shatteredpixeldungeon.TooCruel.respawnCooldown(this, cooldown); //toocruel
 		return cooldown * Dungeon.respawnBoost * com.shatteredpixel.shatteredpixeldungeon.RBAHooks.respawnFactor() / DimensionalSundial.spawnMultiplierAtCurrentTime(); //rebluearchive, Mari
 	}
 
@@ -1622,6 +1626,7 @@ public abstract class Level implements Bundlable {
 				}
 			}
 
+			blocking = com.shatteredpixel.shatteredpixeldungeon.TooCruel.blockingFov(Dungeon.level, c, modifiableBlocking, blocking); //toocruel
 			if (blocking == null){
 				blocking = Dungeon.level.losBlocking;
 			}
@@ -1793,6 +1798,7 @@ public abstract class Level implements Bundlable {
 				for (int i : PathFinder.NEIGHBOURS9) heroMindFov[a.pos+i] = true;
 			}
 			com.shatteredpixel.shatteredpixeldungeon.RBAHooks.markMindVision(c, heroMindFov); //rebluearchive
+			com.shatteredpixel.shatteredpixeldungeon.TooCruel.markMindVision(this, heroMindFov); //toocruel
 
 			//set mind vision chars
 			for (Mob mob : mobs) {

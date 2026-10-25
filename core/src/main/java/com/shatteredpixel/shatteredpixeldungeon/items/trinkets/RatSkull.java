@@ -46,6 +46,7 @@ public class RatSkull extends Trinket {
 	}
 
 	public static float exoticChanceMultiplier(){
+		if (com.shatteredpixel.shatteredpixeldungeon.TooCruel.rareChance() > 0) return com.shatteredpixel.shatteredpixeldungeon.TooCruel.rareChance(); //toocruel, Mutagen
 		return exoticChanceMultiplier(trinketLevel(RatSkull.class));
 	}
 

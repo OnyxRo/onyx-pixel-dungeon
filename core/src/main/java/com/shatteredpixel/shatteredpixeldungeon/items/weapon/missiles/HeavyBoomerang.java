@@ -69,6 +69,7 @@ public class HeavyBoomerang extends MissileWeapon {
 
 	@Override
 	protected void rangedHit(Char enemy, int cell) {
+		if (com.shatteredpixel.shatteredpixeldungeon.TooCruel.rerollMissile(this, cell)) return; //toocruel, Pandemonium
 		decrementDurability();
 		if (durability > 0){
 			Buff.append(Dungeon.hero, CircleBack.class).setup(this, cell, Dungeon.hero.pos, Dungeon.depth, Dungeon.branch);

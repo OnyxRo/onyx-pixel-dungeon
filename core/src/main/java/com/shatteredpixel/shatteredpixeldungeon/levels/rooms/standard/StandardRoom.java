@@ -193,6 +193,7 @@ public abstract class StandardRoom extends Room {
 
 	//Matt Edition. Branch floors can pick their rooms from another depth's pool
 	public static StandardRoom createRoom(int depth){
+		if (com.shatteredpixel.shatteredpixeldungeon.TooCruel.on(com.shatteredpixel.shatteredpixeldungeon.TooCruel.PARADOX_LEVELGEN)) return Reflection.newInstance(Random.element(rooms)); //toocruel
 		return Reflection.newInstance(rooms.get(Random.chances(chances[Math.min(depth, chances.length - 1)])));
 	}
 	

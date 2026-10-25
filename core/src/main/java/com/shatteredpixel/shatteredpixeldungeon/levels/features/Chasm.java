@@ -97,6 +97,7 @@ public class Chasm implements Hero.Doom {
 	}
 	
 	public static void heroFall( int pos ) {
+		if (com.shatteredpixel.shatteredpixeldungeon.TooCruel.chasmFall()) return; //toocruel, Extermination
 		
 		jumpConfirmed = false;
 				

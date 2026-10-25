@@ -450,6 +450,7 @@ public class Dungeon {
 		
 		GamesInProgress.selectedClass.initHero( hero );
 		GameModes.applyStartKits( hero ); //custom pd starting kits
+		TooCruel.postInit( hero ); //toocruel
 	}
 
 	public static boolean isChallenged( int mask ) {
@@ -661,13 +662,14 @@ public class Dungeon {
 	//is usually the dungeon depth, but can be set to 26 when ascending
 	public static int scalingDepth(){
 		if (Dungeon.hero != null && Dungeon.hero.buff(AscensionChallenge.class) != null){
-			return 26;
+			return 26 + TooCruel.depthBonus(); //toocruel, Deeper Danger
 		} else {
-			return depth;
+			return depth + TooCruel.depthBonus(); //toocruel
 		}
 	}
 
 	public static boolean interfloorTeleportAllowed(){
+		if (TooCruel.blockInterfloor()) return false; //toocruel, Crumbled Stairs
 		if (Dungeon.branch == BRANCH_ARENA || Dungeon.branch == BRANCH_BLACK
 				|| Dungeon.level instanceof com.shatteredpixel.shatteredpixeldungeon.levels.ThievesGuildLevel
 				|| Dungeon.level.locked
@@ -735,6 +737,7 @@ public class Dungeon {
 		hero.viewDistance += com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunHeroes.viewBonus(hero); //xun, the Explorer sees a tile further
 		
 		hero.curAction = hero.lastAction = null;
+		TooCruel.switchLevel( hero ); //toocruel
 
 		observe();
 		try {

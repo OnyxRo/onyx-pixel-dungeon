@@ -69,7 +69,7 @@ public class Fire extends Blob {
 
 					}
 
-				} else if (freeze == null || freeze.volume <= 0 || freeze.cur[cell] <= 0) {
+				} else if ((freeze == null || freeze.volume <= 0 || freeze.cur[cell] <= 0) && !com.shatteredpixel.shatteredpixeldungeon.TooCruel.on(com.shatteredpixel.shatteredpixeldungeon.TooCruel.ETERNAL_FLAMES)) { //toocruel
 
 					if (flamable[cell]
 							&& (cur[cell-1] > 0
@@ -87,6 +87,7 @@ public class Fire extends Blob {
 					fire = 0;
 				}
 
+				if (cur[cell] > 0 && com.shatteredpixel.shatteredpixeldungeon.TooCruel.on(com.shatteredpixel.shatteredpixeldungeon.TooCruel.ETERNAL_FLAMES)) fire = 4; //toocruel, Eternal Flames
 				volume += (off[cell] = fire);
 			}
 		}

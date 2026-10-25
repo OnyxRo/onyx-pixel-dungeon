@@ -94,7 +94,11 @@ public class Random {
 	}
 	
 	//returns a triangularly distributed float in the range [min, max)
+	//Too Cruel PD's Crooked Die, many rolls give their highest result, set by TooCruel.refresh in core
+	public static boolean crookedDie = false;
+
 	public static float NormalFloat( float min, float max ) {
+		if (crookedDie) return max; //toocruel
 		return min + ((Float(max - min) + Float(max - min))/2f);
 	}
 
@@ -136,12 +140,14 @@ public class Random {
 	//returns a triangularly distributed int in the range [min, max]
 	//this makes results more likely as they get closer to the middle of the range
 	public static int NormalIntRange( int min, int max ) {
+		if (crookedDie) return max; //toocruel
 		return min + (int)((Float() + Float()) * (max - min + 1) / 2f);
 	}
 
 	//returns an inverse triangularly distributed int in the range [min, max]
 	//this makes results more likely as they get further from the middle of the range
 	public static int InvNormalIntRange( int min, int max ){
+		if (crookedDie) return max; //toocruel
 		float roll1 = Float(), roll2 = Float();
 		if (Math.abs(roll1-0.5f) >= Math.abs(roll2-0.5f)){
 			return min + (int)(roll1*(max - min + 1));

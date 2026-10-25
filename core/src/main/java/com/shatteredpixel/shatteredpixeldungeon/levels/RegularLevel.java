@@ -241,13 +241,14 @@ public abstract class RegularLevel extends Level {
 		if (Dungeon.isChallenged(Challenges.HORDE)) {
 			mobs *= 2;
 		}
+		mobs = (int)(mobs * com.shatteredpixel.shatteredpixeldungeon.TooCruel.mobsMult()); //toocruel
 		return mobs;
 	}
 	
 	@Override
 	protected void createMobs() {
 		//on floor 1, 8 pre-set mobs are created so the player can get level 2.
-		int mobsToSpawn = (Dungeon.depth == 1 ? 8 : mobLimit()) + Dungeon.additionalMobs;
+		int mobsToSpawn = (Dungeon.depth == 1 ? (int)(8 * com.shatteredpixel.shatteredpixeldungeon.TooCruel.mobsMult()) : mobLimit()) + Dungeon.additionalMobs; //toocruel
 
 		ArrayList<Room> stdRooms = new ArrayList<>();
 		for (Room room : rooms) {

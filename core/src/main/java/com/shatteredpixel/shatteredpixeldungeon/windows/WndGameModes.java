@@ -162,6 +162,24 @@ public class WndGameModes extends Window {
 				pos = items.bottom() + 2*GAP;
 			}
 
+			//toocruel, the mod's built in trials turn on a set of its modes
+			if (mod.equals(GameModes.MOD_TOOCRUEL)){
+				RedButton trials = new RedButton( Messages.get(WndGameModes.class, "trials") ){
+					@Override
+					protected void onClick() {
+						ShatteredPixelDungeon.scene().addToFront( new WndTrials( new Runnable() {
+							@Override
+							public void run() {
+								refreshAll();
+							}
+						} ) );
+					}
+				};
+				trials.setRect( 0, pos, WIDTH, BTN_HEIGHT );
+				content.add( trials );
+				pos = trials.bottom() + 2*GAP;
+			}
+
 			for (final GameModes.Mode mode : GameModes.MODES){
 				if (!mode.mod.equals(mod)) continue;
 
@@ -254,6 +272,71 @@ public class WndGameModes extends Window {
 				sb.append('\n');
 			}
 			summary.text( sb.length() == 0 ? Messages.get(WndGameModes.class, "no_playstyle") : sb.toString().trim(), WIDTH );
+		}
+	}
+
+	//toocruel, the list of Too Cruel PD's trials, grouped by difficulty
+	public static class WndTrials extends Window {
+
+		public WndTrials( final Runnable onApplied ){
+			super();
+
+			int maxHeight = (int)(Camera.main.height * 0.8f);
+			resize( WIDTH, maxHeight );
+
+			ScrollPane pane = new ScrollPane( new Component() );
+			add( pane );
+			pane.setRect( 0, 0, WIDTH, maxHeight );
+			Component content = pane.content();
+
+			RenderedTextBlock title = PixelScene.renderTextBlock( Messages.get(WndGameModes.class, "trials"), 9 );
+			title.hardlight( TITLE_COLOR );
+			title.setPos( (WIDTH - title.width()) / 2, 0 );
+			PixelScene.align( title );
+			content.add( title );
+
+			RenderedTextBlock desc = PixelScene.renderTextBlock( Messages.get(WndGameModes.class, "trials_desc"), 6 );
+			desc.maxWidth( WIDTH );
+			desc.setPos( 0, title.bottom() + GAP );
+			content.add( desc );
+
+			float pos = desc.bottom() + 2*GAP;
+			for (String group : com.shatteredpixel.shatteredpixeldungeon.TooCruel.TRIAL_GROUPS){
+				RenderedTextBlock head = PixelScene.renderTextBlock( Messages.get(WndGameModes.class, "trials_" + group), 8 );
+				head.hardlight( TITLE_COLOR );
+				head.setPos( 0, pos + GAP );
+				content.add( head );
+				pos = head.bottom() + GAP;
+
+				for (final com.shatteredpixel.shatteredpixeldungeon.TooCruel.Trial t : com.shatteredpixel.shatteredpixeldungeon.TooCruel.TRIALS){
+					if (!t.group.equals(group)) continue;
+					RedButton btn = new RedButton( t.name ){
+						@Override
+						protected void onClick() {
+							ShatteredPixelDungeon.scene().addToFront( new WndOptions( t.name,
+									Messages.get(WndGameModes.class, "trial_confirm", com.shatteredpixel.shatteredpixeldungeon.TooCruel.trialSummary(t)),
+									Messages.get(WndGameModes.class, "trial_yes"), Messages.get(WndGameModes.class, "trial_no") ){
+								@Override
+								protected void onSelect( int index ) {
+									if (index == 0){
+										com.shatteredpixel.shatteredpixeldungeon.TooCruel.applyTrial( t );
+										if (onApplied != null) onApplied.run();
+										WndTrials.this.hide();
+									}
+								}
+							});
+						}
+					};
+					btn.setRect( 0, pos, WIDTH, BTN_HEIGHT );
+					content.add( btn );
+					pos = btn.bottom() + 1;
+				}
+			}
+
+			int height = (int)Math.min(maxHeight, pos);
+			resize( WIDTH, height );
+			content.setSize( WIDTH, pos );
+			pane.setRect( 0, 0, WIDTH, height );
 		}
 	}
 }

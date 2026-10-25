@@ -632,6 +632,7 @@ public abstract class Char extends Actor {
 			dmg = TowerChar.attackDamage(this, dmg); //tower
 			dmg = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.attackDamage(this, enemy, dmg); //rebluearchive
 
+			dmg = com.shatteredpixel.shatteredpixeldungeon.TooCruel.attackDamage(this, enemy, dmg); //toocruel
 			int effectiveDamage = enemy.defenseProc( this, Math.round(dmg) );
 			//do not trigger on-hit logic if defenseProc returned a negative value
 			if (effectiveDamage >= 0) {
@@ -650,6 +651,7 @@ public abstract class Char extends Actor {
 				effectiveDamage = com.shatteredpixel.shatteredpixeldungeon.PolishedPD.brittleTaken(enemy, effectiveDamage); //polished, Brittle
 
 				effectiveDamage = attackProc(enemy, effectiveDamage);
+				com.shatteredpixel.shatteredpixeldungeon.TooCruel.afterHit(this, enemy, effectiveDamage); //toocruel
 			}
 			if (visibleFight) {
 				if (effectiveDamage > 0 || !enemy.blockSound(Random.Float(0.96f, 1.05f))) {
@@ -861,6 +863,7 @@ public abstract class Char extends Actor {
 			defRoll *= 1.01f + 0.02f*Dungeon.hero.pointsInTalent(Talent.BLESS);
 		}
 		defRoll *= FerretTuft.evasionMultiplier();
+		defRoll *= com.shatteredpixel.shatteredpixeldungeon.TooCruel.defRollMult(attacker, defender); //toocruel
 
 		if (acuRoll >= defRoll){
 			hitMissIcon = FloatingText.getHitReasonIcon(attacker, acuRoll, defender, defRoll);
@@ -894,6 +897,7 @@ public abstract class Char extends Actor {
 		//summoning, monsters from Summoning PD give a fixed armor value, rolled from 20 to 80 percent
 		int fixedArmor = defenseValue();
 		if (fixedArmor > 0) dr += Random.NormalIntRange( Math.round(fixedArmor * 0.2f), Math.round(fixedArmor * 0.8f) );
+		dr += com.shatteredpixel.shatteredpixeldungeon.TooCruel.drBonus(this); //toocruel
 
 		return dr;
 	}
@@ -984,6 +988,7 @@ public abstract class Char extends Actor {
 		speed *= Swiftness.speedBoost(this, glyphLevel(Swiftness.class));
 		speed *= Flow.speedBoost(this, glyphLevel(Flow.class));
 		speed *= Bulk.speedBoost(this, glyphLevel(Bulk.class));
+		speed = com.shatteredpixel.shatteredpixeldungeon.TooCruel.speed(this, speed); //toocruel
 		//rearranged, the Researcher's sticky ooze
 		if (this.alignment != Alignment.ALLY && buff(Ooze.class) != null && Dungeon.hero != null
 				&& Dungeon.hero.hasTalent(Talent.STICKY_OOZE)) speed *= 1-0.1f*Dungeon.hero.pointsInTalent(Talent.STICKY_OOZE);
@@ -1063,6 +1068,7 @@ public abstract class Char extends Actor {
 			return;
 		}
 		dmg = TowerChar.damageTaken(this, dmg, src); //tower
+		if (dmg >= 0) dmg = com.shatteredpixel.shatteredpixeldungeon.TooCruel.incomingDamage(this, dmg, src); //toocruel
 		if (dmg < 0) return;
 
 		if (!(src instanceof LifeLink || src instanceof Hunger) && buff(LifeLink.class) != null){
@@ -1137,6 +1143,7 @@ public abstract class Char extends Actor {
 			damage *= 1.25f;
 		}
 		damage = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.damageFactor(this, damage, src); //rebluearchive
+		damage = com.shatteredpixel.shatteredpixeldungeon.TooCruel.damageMultiplier(this, damage, src); //toocruel
 
 		//two separate things can convert dmg to bleed, we handle that here
 		//we do this before modifiers are applied back to dmg as we don't want to stack them twice (from this and bleed)
@@ -1218,6 +1225,7 @@ public abstract class Char extends Actor {
 
 		dmg = Math.max(0, modifyPreShieldDamage(dmg, src)); //Transformation PD
 		dmg = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.damageReduction(this, dmg, src); //rebluearchive
+		dmg = com.shatteredpixel.shatteredpixeldungeon.TooCruel.beforeShield(this, dmg, src); if (dmg < 0) return; //toocruel
 		int shielded = dmg;
 		dmg = ShieldBuff.processDamage(this, dmg, src);
 		shielded -= dmg;
@@ -1257,6 +1265,7 @@ public abstract class Char extends Actor {
 			((Char) src).buff(Kinetic.KineticTracker.class).detach();
 		}
 		
+		com.shatteredpixel.shatteredpixeldungeon.TooCruel.damageTaken(this, dmg, src); //toocruel
 		if (sprite != null) {
 			//defaults to normal damage icon if no other ones apply
 			int                                                         icon = FloatingText.PHYS_DMG;
@@ -1456,6 +1465,7 @@ public abstract class Char extends Actor {
 
 	public void die( Object src ) {
 		notifyDeathListeners();
+		com.shatteredpixel.shatteredpixeldungeon.TooCruel.onDeath(this, src); //toocruel
 		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onAllyDie(this); //Transformation PD talent catalog
 		//something else is forcing death, so remove death mark to prevent conflicts
 		if (buff(DeathMark.DeathMarkTracker.class) != null){
@@ -1731,15 +1741,16 @@ public abstract class Char extends Actor {
 		}
 		
 		Dungeon.level.occupyCell(this );
+		com.shatteredpixel.shatteredpixeldungeon.TooCruel.onMove(this, step, travelling); //toocruel
 	}
-	
+
 	public int distance( Char other ) {
 		return Dungeon.level.distance( pos, other.pos );
 	}
 
 	public boolean[] modifyPassable( boolean[] passable){
 		//do nothing by default, but some chars can pass over terrain that others can't
-		return passable;
+		return com.shatteredpixel.shatteredpixeldungeon.TooCruel.modifyPassable(this, passable); //toocruel, Moles
 	}
 	
 	public void onMotionComplete() {
@@ -1825,7 +1836,8 @@ public abstract class Char extends Actor {
 	//similar to isImmune, but only factors in damage.
 	//Is used in AI decision-making
 	public boolean isInvulnerable( Class effect ){
-		return buff(Challenge.SpectatorFreeze.class) != null || buff(Invulnerability.class) != null;
+		return buff(Challenge.SpectatorFreeze.class) != null || buff(Invulnerability.class) != null
+				|| com.shatteredpixel.shatteredpixeldungeon.TooCruel.isInvulnerable(this, effect); //toocruel
 	}
 
 	protected HashSet<Property> properties = new HashSet<>();

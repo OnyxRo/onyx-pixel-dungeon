@@ -46,6 +46,7 @@ public class ExoticCrystals extends Trinket {
 	}
 
 	public static float consumableExoticChance(){
+		if (com.shatteredpixel.shatteredpixeldungeon.TooCruel.on(com.shatteredpixel.shatteredpixeldungeon.TooCruel.EXOTIC_GOODS)) return 1f; //toocruel
 		return consumableExoticChance(trinketLevel(ExoticCrystals.class));
 	}
 

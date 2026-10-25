@@ -171,6 +171,7 @@ public class Bomb extends Item {
 
 	@Override
 	public boolean doPickUp(Hero hero, int pos) {
+		if (com.shatteredpixel.shatteredpixeldungeon.TooCruel.blockBombPickup(this)) return false; //toocruel, Bombermob
 		if (fuse != null) {
 			GLog.w( Messages.get(this, "snuff_fuse") );
 			fuse.snuff();

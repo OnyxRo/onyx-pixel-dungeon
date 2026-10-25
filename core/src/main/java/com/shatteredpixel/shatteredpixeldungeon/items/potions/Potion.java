@@ -322,6 +322,7 @@ public class Potion extends Item {
 		hero.spend( TIME_TO_DRINK );
 		hero.busy();
 		apply( hero );
+		com.shatteredpixel.shatteredpixeldungeon.TooCruel.onDrink( this, hero ); //toocruel, Intoxication
 		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onPotionDrunk( hero, this ); //transformation
 		
 		Sample.INSTANCE.play( Assets.Sounds.DRINK );

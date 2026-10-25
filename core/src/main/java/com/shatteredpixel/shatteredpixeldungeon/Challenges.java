@@ -137,6 +137,7 @@ public class Challenges {
 	}
 
 	public static boolean isItemBlocked( Item item ){
+		if (TooCruel.isItemBlocked(item)) return true; //toocruel
 
 		if (Dungeon.isChallenged(NO_HERBALISM) && item instanceof Dewdrop){
 			return true;

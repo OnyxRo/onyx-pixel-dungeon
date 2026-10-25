@@ -90,6 +90,11 @@ say "== sprite frames"
 python -I scripts/check-sprites.py 2>&1 | grep -E "^(.*\.java:|SUMMARY)" | sed 's/^/  /' | tail -12
 [ "${PIPESTATUS[0]}" -eq 0 ] && say "  passed" || { say "  FAILED"; FAIL=1; }
 
+#toocruel, every Too Cruel PD mode on its own, floors, monsters, blows, a death, save and reload. Runs in --quick too
+run "TooCruelTest" TooCruelTest; rc=$?
+tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|INFO mode|SUMMARY toocruel)" | tail -14 | sed 's/^/  /'
+[ $rc -eq 0 ] && say "  passed" || say "  FAILED"
+
 if [ $QUICK -eq 0 ]; then
   run "WorldShuffleTest ($SEEDS seeds)" WorldShuffleTest "$SEEDS"; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|floors generated|ported monsters)" | tail -6 | sed 's/^/  /'

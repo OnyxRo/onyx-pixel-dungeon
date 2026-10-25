@@ -62,6 +62,7 @@ public class Hunger extends Buff implements Hero.Doom {
 
 	@Override
 	public boolean act() {
+		if (com.shatteredpixel.shatteredpixeldungeon.TooCruel.steelBody()) { diactivate(); return true; } //toocruel, Certainty of Steel
 
 		if (Dungeon.level.locked
 				|| target.buff(WellFed.class) != null
@@ -171,6 +172,7 @@ public class Hunger extends Buff implements Hero.Doom {
 	}
 
 	public void affectHunger(float energy, boolean overrideLimits ) {
+		if (com.shatteredpixel.shatteredpixeldungeon.TooCruel.steelBody()) return; //toocruel
 
 		if (energy < 0 && target.buff(WellFed.class) != null){
 			target.buff(WellFed.class).left += energy;

@@ -111,6 +111,7 @@ public class SpiritBow extends Weapon {
 
 	@Override
 	public int proc(Char attacker, Char defender, int damage) {
+		com.shatteredpixel.shatteredpixeldungeon.TooCruel.spiritBowShot(this); //toocruel, Pandemonium
 
 		if (attacker.buff(NaturesPower.naturesPowerTracker.class) != null && !sniperSpecial){
 

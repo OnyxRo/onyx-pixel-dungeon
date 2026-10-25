@@ -65,6 +65,7 @@ public class Regeneration extends Buff {
 	
 	@Override
 	public boolean act() {
+		if (com.shatteredpixel.shatteredpixeldungeon.TooCruel.steelBody()) { diactivate(); return true; } //toocruel, Certainty of Steel
 		if (target.isAlive()) {
 
 			//if other trinkets ever get buffs like this should probably make the buff attaching

@@ -118,6 +118,7 @@ public abstract class Trap implements Bundlable {
 	}
 
 	public void disarm(){
+		if (com.shatteredpixel.shatteredpixeldungeon.TooCruel.keepTrap(this)) return; //toocruel, Duplicator and Repeater
 		active = false;
 		Dungeon.level.disarmTrap(pos);
 	}

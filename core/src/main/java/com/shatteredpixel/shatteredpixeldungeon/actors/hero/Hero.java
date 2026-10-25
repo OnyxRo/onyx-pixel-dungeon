@@ -813,6 +813,7 @@ public class Hero extends Char {
 		//Dragonic PD, the Dragon Knight sears raw meat
 		if (heroClass == HeroClass.DRAGONKNIGHT) Buff.affect( this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sear.class );
 		ensureSubclassBuffs();
+		com.shatteredpixel.shatteredpixeldungeon.TooCruel.heroLive(this); //toocruel
 	}
 	
 	public int tier() {
@@ -1214,6 +1215,7 @@ public class Hero extends Char {
 
 	//damage rolls that come from the hero can have their RNG influenced by clover
 	public static int heroDamageIntRange(int min, int max ){
+		if (com.shatteredpixel.shatteredpixeldungeon.TooCruel.on(com.shatteredpixel.shatteredpixeldungeon.TooCruel.ROTTEN_LUCK)) return com.shatteredpixel.shatteredpixeldungeon.TooCruel.rottenLuck(min, max); //toocruel
 		if (Random.Float() < ThirteenLeafClover.alterHeroDamageChance()){
 			return ThirteenLeafClover.alterDamageRoll(min, max);
 		} else {
@@ -1286,6 +1288,7 @@ public class Hero extends Char {
 
 	@Override
 	public boolean canSurpriseAttack(){
+		if (com.shatteredpixel.shatteredpixeldungeon.TooCruel.on(com.shatteredpixel.shatteredpixeldungeon.TooCruel.PREPARED_ENEMIES)) return false; //toocruel
 		KindOfWeapon w = belongings.attackingWeapon();
 		if (!(w instanceof Weapon))             return true;
 		if (RingOfForce.fightingUnarmed(this))  return true;
@@ -1395,6 +1398,7 @@ public class Hero extends Char {
 	@Override
 	public void spendConstant(float time) {
 		justMoved = false; //rearranged
+		com.shatteredpixel.shatteredpixeldungeon.TooCruel.heroSpent(this, time); //toocruel
 		super.spendConstant(time);
 	}
 
@@ -2826,6 +2830,7 @@ public class Hero extends Char {
 			RearrangedHero.onStep(this); //rearranged
 			RBAHero.onStep(this); //rebluearchive
 
+			step = com.shatteredpixel.shatteredpixeldungeon.TooCruel.heroMove(this, step); //toocruel, Slippery Floor
 			sprite.move(pos, step);
 			move(step);
 
@@ -2947,6 +2952,7 @@ public class Hero extends Char {
 	}
 	
 	public void earnExp( int exp, Class source ) {
+		exp = com.shatteredpixel.shatteredpixeldungeon.TooCruel.earnExp(this, exp, source); //toocruel
 
 		//xp granted by ascension challenge is only for on-exp gain effects
 		if (source != AscensionChallenge.class) {

@@ -631,6 +631,7 @@ public abstract class Wand extends Item {
 			if (removed) new Flare( 6, 32 ).color(0xFF4CD2, true).show( Dungeon.hero.sprite, 2f );
 		}
 
+		com.shatteredpixel.shatteredpixeldungeon.TooCruel.wandUsed(curUser, this); //toocruel, Pandemonium
 		Invisibility.dispel();
 		updateQuickslot();
 

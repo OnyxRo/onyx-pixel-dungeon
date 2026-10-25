@@ -51,6 +51,7 @@ public class PotionOfShielding extends ExoticPotion {
 			Buff.affect(hero, Barrier.class).setShield((int) (0.6f * hero.HT + 10));
 			hero.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString((int) (0.6f * hero.HT + 10)), FloatingText.SHIELDING );
 		}
+		com.shatteredpixel.shatteredpixeldungeon.TooCruel.onShielding( hero ); //toocruel, Thunderstruck
 	}
 
 	//rearranged, what this potion does on an arrow dipped in it

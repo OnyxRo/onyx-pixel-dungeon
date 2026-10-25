@@ -141,6 +141,7 @@ public class GameModes {
 				KIT_ROCC, KIT_ROXX, KIT_STARTER, KIT_KNOWLEDGE}){
 			MODES.add(new Mode(kit, MOD_CUSTOM, 1, null));
 		}
+		TooCruel.register(); //toocruel
 	}
 
 	//other ports add their modes here, Too Cruel's modifiers among them
@@ -172,6 +173,7 @@ public class GameModes {
 		Mode mode = get(id);
 		if (mode == null) return;
 		lvl = Math.max(0, Math.min(mode.maxLevel, lvl));
+		TooCruel.onSet(id, lvl); //toocruel, what a mode needs and what it conflicts with
 		if (lvl == 0){
 			active.remove(id);
 			return;
@@ -222,6 +224,7 @@ public class GameModes {
 			if (levels[i] > 0) active.put(ids[i], levels[i]);
 		}
 		Playstyles.refresh();
+		TooCruel.refresh(); //toocruel
 	}
 
 	public static void loadSettings(){

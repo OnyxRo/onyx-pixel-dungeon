@@ -102,7 +102,7 @@ public class SuperNovaTracker extends Buff {
 			PixelScene.shake( 5, 2f );
 			for (int i = 0; i < Dungeon.level.length(); i++){
 				if (fieldOfView[i] && !Dungeon.level.solid[i]){
-					new Bomb.ConjuredBomb().explode(i); //yes, a bomb at every cell
+					com.shatteredpixel.shatteredpixeldungeon.TooCruel.novaBomb(harmsAllies).explode(i); //yes, a bomb at every cell //toocruel, Constellation
 					//this means that something in the blast effectively takes:
 					//9x bomb dmg when fully inside
 					//6x when along straight edge

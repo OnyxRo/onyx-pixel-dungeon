@@ -147,6 +147,7 @@ public class Item implements Bundlable {
 
 	public boolean doPickUp(Hero hero, int pos) {
 		if (collect( hero.belongings.backpack )) {
+			com.shatteredpixel.shatteredpixeldungeon.TooCruel.onPickUp(this); //toocruel, Complete Knowledge
 			com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onItemPickedUp(hero); //transformation
 			com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onWeaponPickedUp(hero, this); //transformation, Be Inconstant
 			
@@ -184,7 +185,8 @@ public class Item implements Bundlable {
 		GameScene.cancel();
 		curUser = hero;
 		curItem = this;
-		
+		if (com.shatteredpixel.shatteredpixeldungeon.TooCruel.actionBanned(this, action)) return; //toocruel, Curse Magnet
+
 		if (action.equals( AC_DROP )) {
 			
 			if (hero.belongings.backpack.contains(this) || isEquipped(hero)) {

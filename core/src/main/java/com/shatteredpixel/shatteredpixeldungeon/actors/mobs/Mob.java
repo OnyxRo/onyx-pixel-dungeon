@@ -219,6 +219,7 @@ public abstract class Mob extends Char {
 			float percent = HP / (float) HT;
 			HT = Math.round(HT * AscensionChallenge.statModifier(this));
 			HP = Math.round(HT * percent);
+			com.shatteredpixel.shatteredpixeldungeon.TooCruel.mobFirstAdded(this); //toocruel
 			firstAdded = false;
 		}
 	}
@@ -381,6 +382,7 @@ public abstract class Mob extends Char {
 			return true;
 		}
 
+		com.shatteredpixel.shatteredpixeldungeon.TooCruel.mobBeforeAct(this, enemyInFOV); //toocruel
 		AiState curState = state;
 		boolean result = state.act( enemyInFOV, justAlerted );
 
@@ -704,6 +706,7 @@ public abstract class Mob extends Char {
 	}
 
 	private boolean cellIsPathable( int cell ){
+		if (com.shatteredpixel.shatteredpixeldungeon.TooCruel.molesPathable(this, cell)) return true; //toocruel, Moles
 		if (!Dungeon.level.passable[cell]){
 			if (flying || buff(Amok.class) != null){
 				if (!Dungeon.level.avoid[cell]){

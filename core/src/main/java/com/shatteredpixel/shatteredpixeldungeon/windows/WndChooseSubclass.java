@@ -99,7 +99,7 @@ public class WndChooseSubclass extends Window {
 
 		float pos = message.bottom() + 3*GAP;
 
-		for (HeroSubClass subCls : hero.heroClass.subClasses()){
+		for (HeroSubClass subCls : com.shatteredpixel.shatteredpixeldungeon.TooCruel.subclassChoice(hero)){ //toocruel, Multiclassing
 			RedButton btnCls = new RedButton( subCls.shortDesc(), 6 ) {
 				@Override
 				protected void onClick() {

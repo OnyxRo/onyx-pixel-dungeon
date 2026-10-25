@@ -1748,6 +1748,7 @@ public class GameScene extends PixelScene {
 	}
 
 	public static void bossSlain() {
+		com.shatteredpixel.shatteredpixeldungeon.TooCruel.onBossSlain(); //toocruel
 		if (scene == null) return; //headless tests
 		if (Dungeon.hero.isAlive()) {
 			//Shittened PD, the banner is sometimes a joke

@@ -115,6 +115,7 @@ public class TengusMask extends Item {
 		curUser.busy();
 		
 		curUser.subClass = way;
+		com.shatteredpixel.shatteredpixeldungeon.TooCruel.subclassPicked(curUser); //toocruel, Multiclassing
 		Talent.initSubclassTalents(curUser);
 
 		//summoning, each Conjurer subclass from Summoning PD brings five spells

@@ -37,8 +37,9 @@ public class MobSpawner extends Actor {
 
 	@Override
 	protected boolean act() {
+		if (com.shatteredpixel.shatteredpixeldungeon.TooCruel.noRespawn()) { diactivate(); return true; } //toocruel, Infertility
 
-		if (Dungeon.level.mobCount() < Dungeon.level.mobLimit()) {
+		if (Dungeon.level.mobCount() < Dungeon.level.mobLimit() || com.shatteredpixel.shatteredpixeldungeon.TooCruel.noMobCap()) { //toocruel
 
 			if (Dungeon.level.spawnMob(12)){
 				spend(Dungeon.level.respawnCooldown());

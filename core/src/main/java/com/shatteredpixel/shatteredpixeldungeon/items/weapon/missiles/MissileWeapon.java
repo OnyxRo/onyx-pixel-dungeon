@@ -527,6 +527,7 @@ abstract public class MissileWeapon extends Weapon {
 	}
 	
 	protected void rangedHit( Char enemy, int cell ){
+		if (com.shatteredpixel.shatteredpixeldungeon.TooCruel.rerollMissile(this, cell)) return; //toocruel, Pandemonium
 		decrementDurability();
 		if (durability > 0 && !spawnedForEffect){
 			//ALL projectiles stick to the vault boss elemental, as it has custom logic for it

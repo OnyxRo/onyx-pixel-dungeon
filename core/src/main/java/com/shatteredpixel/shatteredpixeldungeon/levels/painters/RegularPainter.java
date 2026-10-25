@@ -51,7 +51,7 @@ public abstract class RegularPainter extends Painter {
 	private int waterSmoothness;
 	
 	public RegularPainter setWater(float fill, int smoothness){
-		waterFill = fill;
+		waterFill = com.shatteredpixel.shatteredpixeldungeon.TooCruel.waterFill(fill); //toocruel
 		waterSmoothness = smoothness;
 		return this;
 	}
@@ -60,7 +60,7 @@ public abstract class RegularPainter extends Painter {
 	private int grassSmoothness;
 	
 	public RegularPainter setGrass(float fill, int smoothness){
-		grassFill = fill;
+		grassFill = fill * com.shatteredpixel.shatteredpixeldungeon.TooCruel.grassMult(); //toocruel
 		grassSmoothness = smoothness;
 		return this;
 	}
@@ -70,7 +70,7 @@ public abstract class RegularPainter extends Painter {
 	private float[] trapChances;
 	
 	public RegularPainter setTraps(int num, Class<?>[] classes, float[] chances){
-		nTraps = num;
+		nTraps = Math.round(num * com.shatteredpixel.shatteredpixeldungeon.TooCruel.trapsMult()); //toocruel
 		trapClasses = (Class<? extends Trap>[]) classes;
 		trapChances = chances;
 		return this;
