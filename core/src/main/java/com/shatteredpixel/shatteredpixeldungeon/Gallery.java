@@ -132,6 +132,13 @@ public class Gallery {
 			}
 		}
 
+		//-Donyx.gallery.only=heroselect opens the hero select screen and picks every hero class in turn
+		if ("heroselect".equals(System.getProperty("onyx.gallery.only"))) {
+			Dungeon.sandbox = true;
+			Game.switchScene( com.shatteredpixel.shatteredpixeldungeon.scenes.HeroSelectScene.class );
+			return;
+		}
+
 		//the full run bot plays a normal run, not a sandbox one
 		Dungeon.sandbox = !"fullrun".equals(System.getProperty("onyx.gallery.only"));
 		//-Donyx.gallery.class=ZEALOT plays the tour as another hero class
@@ -614,6 +621,33 @@ public class Gallery {
 		time = 0;
 		shot = false;
 		Game.switchScene( InterlevelScene.class );
+	}
+
+	private static int heroStep = -1;
+	private static float heroTime = 0;
+
+	/** Called once per frame on the hero select screen. Picks each hero class a few frames apart, [HERO] lines show the last one picked. */
+	public static void onHeroSelect( com.shatteredpixel.shatteredpixeldungeon.scenes.HeroSelectScene scene ){
+		if (!active() || !"heroselect".equals(System.getProperty("onyx.gallery.only"))) return;
+		heroTime += Game.elapsed;
+		if (heroTime < 0.4f) return;
+		heroTime = 0;
+		HeroClass[] all = HeroClass.values();
+		if (heroStep >= 0 && heroStep < all.length) {
+			System.out.println("[HERO] drawn " + all[heroStep].name());
+			if (heroStep == 0 || all[heroStep].name().startsWith("RBA_ARIS") || all[heroStep] == HeroClass.RAT_KING) {
+				capture("hero_" + all[heroStep].name());
+			}
+		}
+		heroStep++;
+		if (heroStep >= all.length) {
+			System.out.println("[HERO] done");
+			Gdx.app.exit();
+			return;
+		}
+		System.out.println("[HERO] picking " + all[heroStep].name());
+		scene.gallerySelect(all[heroStep]);
+		System.out.println("[HERO] picked " + all[heroStep].name());
 	}
 
 	private static void capture( String name ){

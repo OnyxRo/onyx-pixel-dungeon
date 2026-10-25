@@ -431,6 +431,11 @@ public class HeroSelectScene extends PixelScene {
 		}
 	}
 
+	//for the screenshot tour
+	public void gallerySelect(HeroClass cl){
+		setSelectedHero(cl);
+	}
+
 	private void setSelectedHero(HeroClass cl){
 		GamesInProgress.selectedClass = cl;
 		GamesInProgress.randomizedClass = false;
@@ -504,6 +509,7 @@ public class HeroSelectScene extends PixelScene {
 	@Override
 	public void update() {
 		super.update();
+		com.shatteredpixel.shatteredpixeldungeon.Gallery.onHeroSelect(this);
 		if (SPDSettings.intro() && Rankings.INSTANCE.totalNumber > 0){
 			SPDSettings.intro(false);
 		}
@@ -594,7 +600,7 @@ public class HeroSelectScene extends PixelScene {
 
 			this.cl = cl;
 
-			icon(new Image(cl.spritesheet(), 0, 90, 12, 15));
+			icon(cl.selectIcon());
 
 		}
 

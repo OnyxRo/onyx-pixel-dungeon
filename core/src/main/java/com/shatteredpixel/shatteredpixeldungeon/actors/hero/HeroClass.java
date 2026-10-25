@@ -933,6 +933,14 @@ public enum HeroClass {
 		}
 	}
 
+	//the small picture on the hero select button. Re Blue Archive's sheets keep the standing hero in the top row,
+	//the Rat King's frames are 16 wide, every other sheet has Shattered's icon cell
+	public com.watabou.noosa.Image selectIcon(){
+		if (RBAHero.isStudent(this)) return new com.watabou.noosa.Image(spritesheet(), 0, 0, 12, 17); //rebluearchive
+		if (this == RAT_KING) return new com.watabou.noosa.Image(spritesheet(), 0, 0, 16, 17); //deranged
+		return new com.watabou.noosa.Image(spritesheet(), 0, 90, 12, 15);
+	}
+
 	public String splashArt(){
 		if (BAHeroes.isBA(this)) return BAHeroes.splashArt(this); //bluearchive
 		if (RBAHero.isStudent(this)) return RBAHeroes.splashArt(this); //rebluearchive
