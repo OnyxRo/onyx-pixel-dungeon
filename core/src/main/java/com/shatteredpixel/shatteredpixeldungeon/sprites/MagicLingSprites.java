@@ -68,4 +68,12 @@ public class MagicLingSprites {
 	//the mod's diamond mimic had its own rows, here it borrows the crystal mimic's
 	public static class Dimand extends MimicSprite.Crystal {
 	}
+
+	//the green diamond mimic, the mod drew it on a mimic sheet row ours does not have, so it is the crystal mimic tinted green
+	public static class Green extends MimicSprite.Crystal {
+		public Green() {
+			super();
+			tint( 0x33CC55, 0.5f );
+		}
+	}
 }

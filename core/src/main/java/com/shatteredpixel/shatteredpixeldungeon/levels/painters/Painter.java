@@ -43,6 +43,19 @@ public abstract class Painter {
 		level.map[cell] = value;
 	}
 	
+	//magicling, fills a circle of cells, Magic Ling's rooms call it
+	public static void drawCircle( Level level, Point center, int radius, int terrain ) {
+		for (int x = center.x - radius; x <= center.x + radius; x++) {
+			for (int y = center.y - radius; y <= center.y + radius; y++) {
+				int dx = x - center.x;
+				int dy = y - center.y;
+				if (dx * dx + dy * dy <= radius * radius) {
+					set( level, x, y, terrain );
+				}
+			}
+		}
+	}
+
 	public static void set( Level level, int x, int y, int value ) {
 		set( level, x + y * level.width(), value );
 	}

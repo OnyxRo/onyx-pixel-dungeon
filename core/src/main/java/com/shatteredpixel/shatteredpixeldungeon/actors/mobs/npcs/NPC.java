@@ -35,6 +35,22 @@ public abstract class NPC extends Mob {
 		state = PASSIVE;
 	}
 
+	//magicling, older Shattered NPCs push items off the cell they stand on, Magic Ling's still call this
+	protected void throwItem() {
+		com.shatteredpixel.shatteredpixeldungeon.items.Heap heap = Dungeon.level.heaps.get( pos );
+		if (heap != null && heap.type == com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type.HEAP) {
+			int n;
+			int tries = 20;
+			do {
+				n = pos + com.watabou.utils.PathFinder.NEIGHBOURS8[com.watabou.utils.Random.Int( 8 )];
+			} while (!Dungeon.level.passable[n] && !Dungeon.level.avoid[n] && --tries > 0);
+			if (tries > 0) {
+				com.shatteredpixel.shatteredpixeldungeon.items.Heap dropped = Dungeon.level.drop( heap.pickUp(), n );
+				if (dropped.sprite != null) dropped.sprite.drop( pos );
+			}
+		}
+	}
+
 	@Override
 	protected boolean act() {
 		if (Dungeon.level.heroFOV[pos]){

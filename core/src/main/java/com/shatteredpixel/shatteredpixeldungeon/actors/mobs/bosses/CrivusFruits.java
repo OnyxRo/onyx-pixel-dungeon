@@ -425,18 +425,22 @@ public class CrivusFruits extends Boss {
         int blobs = Random.chances(new float[]{0, 0, 6, 3, 1});
         for (int i = 0; i < blobs; i++){
             int ofs;
+            int ofsTries = 50;
             do {
                 ofs = PathFinder.NEIGHBOURS8[Random.Int(3)];
-            } while (!Dungeon.level.passable[pos + ofs]);
+            } while (!Dungeon.level.passable[pos + ofs] && --ofsTries > 0);
+            if (ofsTries <= 0) ofs = 0;
             Dungeon.level.drop( new CrivusFruitsFood(), pos + ofs ).sprite.drop( pos );
         }
 
         int flakes = Random.chances(new float[]{0, 0, 6, 3, 1});
         for (int i = 0; i < flakes; i++){
             int ofs;
+            int ofsTries = 50;
             do {
                 ofs = PathFinder.NEIGHBOURS8[Random.Int(4)];
-            } while (!Dungeon.level.passable[pos + ofs]);
+            } while (!Dungeon.level.passable[pos + ofs] && --ofsTries > 0);
+            if (ofsTries <= 0) ofs = 0;
             Dungeon.level.drop( new CrivusFruitsFlake(), pos + ofs ).sprite.drop( pos );
         }
 

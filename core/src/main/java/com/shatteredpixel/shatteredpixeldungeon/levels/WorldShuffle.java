@@ -487,19 +487,26 @@ public class WorldShuffle {
 						new com.shatteredpixel.shatteredpixeldungeon.levels.ForestBossLevel(),
 						new com.shatteredpixel.shatteredpixeldungeon.levels.SLMKingLevel(),
 						new com.shatteredpixel.shatteredpixeldungeon.levels.nosync.SkyGooBossLevel(),
-						new com.shatteredpixel.shatteredpixeldungeon.levels.nosync.CrabKingBossLevel() };
+						new com.shatteredpixel.shatteredpixeldungeon.levels.nosync.CrabKingBossLevel(),
+						new com.shatteredpixel.shatteredpixeldungeon.levels.nosync.ForestHardBossLevel() };
 				//floor 10, the Diamond Knight's chest maze, the Diamond King and the Rival in the deep shadow
 				case 10: return new Level[]{
 						new com.shatteredpixel.shatteredpixeldungeon.levels.ColdChestBossLevel(),
 						new com.shatteredpixel.shatteredpixeldungeon.levels.GreenStlingBossLevel(),
 						new com.shatteredpixel.shatteredpixeldungeon.levels.nosync.DeepShadowLevel() };
-				//floor 15, DM-720 and its pylons, and Roger in the ancient tomb
+				//floor 15, DM-720 and its pylons, Roger in the ancient tomb, the Magic Girl in the cold caves and the Fire Magic Girl in the hall
 				case 15: return new Level[]{
 						new com.shatteredpixel.shatteredpixeldungeon.levels.CaveTwoBossLevel(),
-						new com.shatteredpixel.shatteredpixeldungeon.levels.tomb.RogerBossLevel() };
-				//floor 20, the Dwarf General in his parliament
+						new com.shatteredpixel.shatteredpixeldungeon.levels.tomb.RogerBossLevel(),
+						new com.shatteredpixel.shatteredpixeldungeon.levels.CavesGirlDeadLevel(),
+						new com.shatteredpixel.shatteredpixeldungeon.levels.ShopBossLevel() };
+				//floor 20, the Dwarf General in his parliament and the Dwarf Master
 				case 20: return new Level[]{
-						new com.shatteredpixel.shatteredpixeldungeon.levels.DwarfGeneralBossLevel() };
+						new com.shatteredpixel.shatteredpixeldungeon.levels.DwarfGeneralBossLevel(),
+						new com.shatteredpixel.shatteredpixeldungeon.levels.DwarfMasterBossLevel() };
+				//floor 25, Yog in its harder form
+				case 25: return new Level[]{
+						new com.shatteredpixel.shatteredpixeldungeon.levels.YogGodHardBossLevel() };
 				default: return new Level[0];
 			}
 		}

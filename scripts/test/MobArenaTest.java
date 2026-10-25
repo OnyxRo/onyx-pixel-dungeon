@@ -205,6 +205,11 @@ public class MobArenaTest {
 		if (t != null) {
 			StackTraceElement[] st = t.getStackTrace();
 			for (int i = 0; i < Math.min(5, st.length); i++) System.out.println( "        at " + st[i] );
+			//a stack overflow's top frames are the loop itself, the bottom ones show what started it
+			if (t instanceof StackOverflowError && st.length > 5) {
+				System.out.println( "        ... where it started:" );
+				for (int i = Math.max(5, st.length - 12); i < st.length; i++) System.out.println( "        at " + st[i] );
+			}
 			if (t.getCause() != null) System.out.println( "        caused by " + t.getCause() );
 		}
 	}

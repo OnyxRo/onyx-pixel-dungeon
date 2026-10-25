@@ -479,9 +479,11 @@ public class Qliphoth extends Boss {
         int blobs = Random.chances(new float[]{0, 0, 6, 3, 1});
         for (int i = 0; i < blobs; i++){
             int ofs;
+            int ofsTries = 50;
             do {
                 ofs = PathFinder.NEIGHBOURS8[Random.Int(6)];
-            } while (!Dungeon.level.passable[pos + ofs]);
+            } while (!Dungeon.level.passable[pos + ofs] && --ofsTries > 0);
+            if (ofsTries <= 0) ofs = 0;
             Dungeon.level.drop( new CrivusFruitsFood(), pos + ofs ).sprite.drop( pos );
         }
 
@@ -492,9 +494,11 @@ public class Qliphoth extends Boss {
         int flakes = Random.chances(new float[]{0, 0, 6, 3, 1});
         for (int i = 0; i < flakes; i++){
             int ofs;
+            int ofsTries = 50;
             do {
                 ofs = PathFinder.NEIGHBOURS8[Random.Int(6)];
-            } while (!Dungeon.level.passable[pos + ofs]);
+            } while (!Dungeon.level.passable[pos + ofs] && --ofsTries > 0);
+            if (ofsTries <= 0) ofs = 0;
             Dungeon.level.drop( new CrivusFruitsFlake(), pos + ofs ).sprite.drop( pos );
         }
 

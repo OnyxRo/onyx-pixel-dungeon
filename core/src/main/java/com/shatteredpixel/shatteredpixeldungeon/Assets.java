@@ -190,6 +190,9 @@ public class Assets {
 	}
 
 	public static class Music {
+		public static final String BGM_BOSSEND = "music/boss/magicling/yogend.ogg"; //ported, magicling
+		public static final String BGM_5 = "music/magicling/Level5.ogg"; //ported, magicling
+		public static final String IFWAR = "music/magicling/Ice&Fire.ogg"; //ported, magicling
 		public static final String PRISON_BRANCH_BOSS = "music/boss/magicling/Boss2_branch.ogg"; //ported, magicling
 		public static final String BGM_4 = "music/magicling/Level4.ogg"; //ported, magicling
 		public static final String DIAMAND_KING_INTRO = "music/boss/magicling/Diamd_Boss.ogg"; //ported, magicling
@@ -588,6 +591,16 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String SKY_DEAD = "sprites/magicling/skydead.png"; //ported, magicling
+		public static final String CFZS = "sprites/boss/overworld/magicling/qliphoth_ex.png"; //ported, magicling
+		public static final String CRSTAL = "sprites/magicling/crstal.png"; //ported, magicling
+		public static final String KEEPERKING = "sprites/npc/magicling/ShopKing.png"; //ported, magicling
+		public static final String MGAS = "sprites/magicling/icemagicgirl.png"; //ported, magicling
+		public static final String MGAS_BIG = "sprites/boss/magicling/IceSlowGirl.png"; //ported, magicling
+		public static final String ICEALICE = "sprites/boss/magicling/IceFireCrstal.png"; //ported, magicling
+		public static final String FRAS = "sprites/boss/magicling/FireWitch.png"; //ported, magicling
+		public static final String FREA = "sprites/boss/magicling/FireCrstal.png"; //ported, magicling
+		public static final String MONKDIED = "sprites/magicling/monkdied.png"; //ported, magicling
 		public static final String DGS = "sprites/boss/magicling/dwarf_general.png"; //ported, magicling
 		public static final String DFL = "sprites/boss/magicling/army_flag.png"; //ported, magicling
 		public static final String YETYOG = "sprites/npc/magicling/yetyogyears.png"; //ported, magicling

@@ -177,3 +177,14 @@ RandomChest
 IceCyanBlueSquareCoin
 SmallLeafHardDungeon
 WaterSoul
+NullDiedTO
+BossRushBloodGold
+JAmulet
+ShopLimitLock
+WndKingShop
+WndRushShop
+WndRushTradeItem
+DistressSignalNesting
+ColorTargetedCell
+EndingBlade
+RandomBuff

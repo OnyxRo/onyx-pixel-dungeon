@@ -33,6 +33,23 @@ public class MagicLingStats {
 	public static int goldRefogreCount;
 	public static int fuckGeneratorAlone;
 	public static boolean dm720Fight = false;
+	//added in the Magic Ling finish, the mod's random mode, timers and story flags, all left at their defaults
+	public static boolean RandMode = false;
+	public static boolean NoTime = false;
+	public static boolean fireGirlAnary = false;
+	public static boolean TrueYogNoDied = false;
+	public static boolean winGame = false;
+	public static int LenaAnaryTotal;
+	public static boolean beatMerchant = false;
+	public static boolean stoleItem = false;
+	public static boolean Tomb_Reach = false;
+	public static int AbyssCityRules;
+	public static boolean isSmallLeaf = false;
+	public static boolean mustTengu = false;
+	public static boolean mimicking = false;
+	public static int difficultyDLCEXLevel;
+	public static int CrivusbossTeleporter;
+	public static boolean gooFight = false;
 
 	//the mod kept this in its settings file, it counts boss weapon drops so every third kill gives one for sure
 	private static final int[] bossWeaponCount = new int[6];

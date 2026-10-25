@@ -493,6 +493,19 @@ public abstract class Level implements Bundlable {
 		//do nothing by default
 	}
 
+	//magicling, Magic Ling's boss arenas move the hero on once a chest or heap at heappos is emptied
+	public void teleportHeroIfHeapEmpty( Char ch, int targetPos, int heappos ) {
+		com.shatteredpixel.shatteredpixeldungeon.items.Heap heap = heaps.get( heappos );
+		if (heap == null || heap.isEmpty()) {
+			com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation.appear( ch, targetPos );
+			if (ch instanceof com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero) {
+				((com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero) ch).interrupt();
+			}
+			Dungeon.observe();
+			GameScene.updateFog();
+		}
+	}
+
 	//magicling, Magic Ling's boss levels pick their fight music here, GameScene.bossReady calls it. By default the stage's Shattered boss track
 	public void playBossMusic(){
 		String track;

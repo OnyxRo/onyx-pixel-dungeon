@@ -17,6 +17,11 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.notsync.CrivusStarFruitsLasher;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.notsync.CrivusStarFruits;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.FireMagicDiedNPC;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NullDied;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Nxhy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.tumulus.Roger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.notsync.ClearElemtGuardNPC;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.notsync.ClearElemtGuard;
@@ -626,6 +631,22 @@ public class ModRoster {
 		add( "magicling", ArmyFlag.class, 0, 1, 99 );
 		add( "magicling", DwarfGeneralNPC.class, 0, 1, 99 );
 		add( "magicling", DwarfGeneralNTNPC.class, 0, 1, 99 );
+		add( "magicling", MagicGirlDead.class, 0, 1, 99 );
+		add( "magicling", FireMagicDied.class, 0, 1, 99 );
+		add( "magicling", DwarfMaster.class, 0, 1, 99 );
+		add( "magicling", YogReal.class, 0, 1, 99 );
+		add( "magicling", Nxhy.class, 0, 1, 99 );
+		add( "magicling", NullDied.class, 0, 1, 99 );
+		add( "magicling", FireMagicDiedNPC.class, 0, 1, 99 );
+		add( "magicling", CrystalDiedTower.class, 0, 1, 99 );
+		add( "magicling", CrystalLingTower.class, 0, 1, 99 );
+		add( "magicling", TurbidFlameCore.class, 0, 1, 99 );
+		add( "magicling", CrivusStarFruits.class, 0, 1, 99 );
+		add( "magicling", CrivusStarFruitsLasher.class, 0, 1, 99 );
+		add( "magicling", SkyDead.class, 0, 1, 99 );
+		add( "magicling", DMZERO.class, 0, 1, 99 );
+		add( "magicling", GreenDiamndMimic.class, 0, 1, 99 );
+		add( "magicling", NewBlackHost.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

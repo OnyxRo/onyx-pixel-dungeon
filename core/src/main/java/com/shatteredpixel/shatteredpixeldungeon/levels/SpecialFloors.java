@@ -118,6 +118,9 @@ public class SpecialFloors {
 		add( "Re-ARranged PD", "Temple, the deep halls", rearranged( TempleLevel::new, 14 ) );
 		add( "Re-ARranged PD", "Temple sanctum, the sentries", rearranged( TempleLastLevel::new, 14 ) );
 		add( "Re-ARranged PD", "Room past the labs, the old amulet", rearranged( NewLastLevel::new, 26 ) );
+
+		add( "Magic Ling PD", "Sky Dead's side branch", com.shatteredpixel.shatteredpixeldungeon.levels.minilevels.MiniSkyShadowBossLevel::new );
+		add( "Magic Ling PD", "DM-Zero, the boss rush finale", com.shatteredpixel.shatteredpixeldungeon.levels.DM920BossLevel::new );
 	}
 
 	/** Re-ARranged PD's levels read the floor number, so it is set before they are built. */
