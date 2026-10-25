@@ -126,6 +126,9 @@ public class GameModes {
 	public static final String MOD_CUSTOM   = "Custom Pixel Dungeon";
 	public static final String MOD_TOOCRUEL = "Too Cruel Pixel Dungeon Trials";
 
+	//the modes of the current run, or the picks on the hero select screen before a run starts
+	public static final LinkedHashMap<String, Integer> active = new LinkedHashMap<>();
+
 	public static final ArrayList<Mode> MODES = new ArrayList<>();
 
 	static {
@@ -155,9 +158,6 @@ public class GameModes {
 		for (Mode m : MODES) if (!mods.contains(m.mod)) mods.add(m.mod);
 		return mods;
 	}
-
-	//the modes of the current run, or the picks on the hero select screen before a run starts
-	public static final LinkedHashMap<String, Integer> active = new LinkedHashMap<>();
 
 	public static int level( String id ){
 		Integer lvl = active.get(id);

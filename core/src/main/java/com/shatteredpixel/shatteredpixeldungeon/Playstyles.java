@@ -76,8 +76,11 @@ public class Playstyles {
 	private static final float[] values = new float[STAT_COUNT];
 	private static boolean any = false;
 
+	//neutral until GameModes calls refresh, refreshing here would read GameModes before it is set up
 	static {
-		refresh();
+		java.util.Arrays.fill(values, 1f);
+		values[VISION] = 0;
+		values[XRAY] = 0;
 	}
 
 	public static void refresh(){

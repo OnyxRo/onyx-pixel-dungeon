@@ -142,6 +142,10 @@ if [ $QUICK -eq 0 ]; then
   run "PolishedTest" PolishedTest; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|HEADLESS|SUMMARY polished)" | tail -10 | sed 's/^/  /'
   [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
+  #game modes, Half PD, Even Shorter PD, Radar's playstyles and seed search, Custom PD's starting kits
+  run "GameModesTest" GameModesTest; rc=$?
+  tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|INFO radar|SUMMARY gamemodes)" | tail -12 | sed 's/^/  /'
+  [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
   #rearranged, the Re-ARranged heroes option, its rework of Shattered's six heroes
   run "RearrangedReworkTest" RearrangedReworkTest; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY rearranged)" | tail -12 | sed 's/^/  /'
