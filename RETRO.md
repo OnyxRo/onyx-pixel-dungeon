@@ -145,3 +145,6 @@ Three things cost rounds. ModRoster did not compile because the bosses live in s
 - Upgrading a thrown weapon resets its stack size, so `quantity(20).upgrade(20)` gave three stones. Noted in the skill.
 - Starting a run calls `Random.resetGenerators`, so a push before `Dungeon.init` breaks the pop after. The seed search uses its own `java.util.Random`.
 - Splitting the work three ways (modes here, Xun and Too Cruel on worktrees) kept the shared files apart, only Food.java and TASKS.md conflicted.
+
+## 2026-10-25, hero select freeze
+- The freeze looked like a memory problem at first (the PC was low on memory). A tour step that picks every hero plus one jstack found the endless layout loop in a few minutes. The tour now has `-Donyx.gallery.only=heroselect`, and HeroArtTest catches blank hero icons headless.

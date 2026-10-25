@@ -333,6 +333,7 @@ public class HeroSelectScene extends PixelScene {
 			btnOptions.setRect(startBtn.right(), startBtn.top(), 20, 21);
 			optionsPane.setPos(btnOptions.right(), btnOptions.top() - optionsPane.height() - 2);
 			align(optionsPane);
+			startRowY = startBtn.top();
 		} else {
 			background.visible = false;
 
@@ -431,6 +432,20 @@ public class HeroSelectScene extends PixelScene {
 		}
 	}
 
+	//the Start button row sits under the hero's text, moved down when the text is long (landscape only)
+	private float startRowY = -1;
+
+	private void placeStartRow( float y ){
+		if (startRowY < 0) return;
+		startBtn.setPos(startBtn.left(), y);
+		btnFade.setPos(btnFade.left(), y);
+		btnOptions.setPos(btnOptions.left(), y);
+		optionsPane.setPos(optionsPane.left(), btnOptions.top() - optionsPane.height() - 2);
+		align(startBtn);
+		align(btnFade);
+		align(optionsPane);
+	}
+
 	//for the screenshot tour
 	public void gallerySelect(HeroClass cl){
 		setSelectedHero(cl);
@@ -454,6 +469,7 @@ public class HeroSelectScene extends PixelScene {
 		float leftPortion = Math.max(100, (Camera.main.width - insets.left - insets.right)/3f);
 
 		if (landscape()) {
+			placeStartRow(startRowY);
 
 			heroName.text(Messages.titleCase(cl.title()));
 			heroName.hardlight(Window.TITLE_COLOR);
@@ -465,11 +481,15 @@ public class HeroSelectScene extends PixelScene {
 			heroDesc.setPos(insets.left +(leftPortion - heroDesc.width())/2f, heroName.bottom() + 5);
 			align(heroDesc);
 
-			while(startBtn.top() < heroDesc.bottom()){
+			//stops at half the screen, a description with forced line breaks never gets short enough and this used to hang
+			while(startBtn.top() < heroDesc.bottom() && heroDesc.maxWidth() < Math.max(leftPortion - 10, Camera.main.width / 2f)){
 				heroDesc.maxWidth(heroDesc.maxWidth()+10);
 				heroDesc.setPos(Math.max(insets.left, (leftPortion - heroDesc.width())/2f), heroName.bottom() + 5);
 				align(heroDesc);
 			}
+			placeStartRow(heroDesc.bottom() + 2 > startRowY
+					? Math.min(heroDesc.bottom() + 2, Camera.main.height - insets.bottom - startBtn.height())
+					: startRowY);
 
 			btnFade.visible = btnFade.active = true;
 
