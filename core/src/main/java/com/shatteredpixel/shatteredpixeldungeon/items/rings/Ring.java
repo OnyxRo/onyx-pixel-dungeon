@@ -444,6 +444,7 @@ public class Ring extends KindofMisc {
 
 	//just used for ring descriptions
 	public int soloBonus(){
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.cursedRingWorks(this)) return Ring.this.level()+2; //xun, Cursed Power
 		if (cursed){
 			return Math.min( 0, Ring.this.level()-2 );
 		} else {
@@ -453,6 +454,7 @@ public class Ring extends KindofMisc {
 
 	//just used for ring descriptions
 	public int soloBuffedBonus(){
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.cursedRingWorks(this)) return Ring.this.buffedLvl()+2; //xun, Cursed Power
 		if (cursed){
 			return Math.min( 0, Ring.this.buffedLvl()-2 );
 		} else {

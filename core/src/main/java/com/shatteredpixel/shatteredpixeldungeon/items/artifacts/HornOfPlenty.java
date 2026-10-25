@@ -131,6 +131,7 @@ public class HornOfPlenty extends Artifact {
 			satietyPerCharge /= 3;
 		}
 
+		if (!com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.toilsomeMeal(hero, satietyPerCharge * chargesToUse, Food.TIME_TO_EAT)) //xun
 		Buff.affect(hero, Hunger.class).satisfy(satietyPerCharge * chargesToUse);
 
 		Statistics.foodEaten++;
@@ -150,12 +151,14 @@ public class HornOfPlenty extends Artifact {
 		Sample.INSTANCE.play(Assets.Sounds.EAT);
 		GLog.i( Messages.get(this, "eat") );
 
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.eatsWhileActing(hero)) hero.next(); else //xun, Toilsome Meal
 		if (Dungeon.hero.hasTalent(Talent.IRON_STOMACH)
 				|| Dungeon.hero.hasTalent(Talent.ENERGIZING_MEAL)
 				|| Dungeon.hero.hasTalent(Talent.MYSTICAL_MEAL)
 				|| Dungeon.hero.hasTalent(Talent.INVIGORATING_MEAL)
 				|| Dungeon.hero.hasTalent(Talent.FOCUSED_MEAL)
-				|| Dungeon.hero.hasTalent(Talent.ENLIGHTENING_MEAL)){
+				|| Dungeon.hero.hasTalent(Talent.ENLIGHTENING_MEAL)
+				|| com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.fastMeal(Dungeon.hero)){ //xun
 			hero.spend(Food.TIME_TO_EAT - 2);
 		} else {
 			hero.spend(Food.TIME_TO_EAT);

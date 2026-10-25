@@ -121,6 +121,7 @@ public abstract class WellWater extends Blob {
 				
 				Level.set( cell, Terrain.EMPTY_WELL );
 				GameScene.updateMap( cell );
+				com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.wellEmptied( water, cell ); //xun, Dig the Well
 
 				if (water.landmark() != null) {
 					if (water.volume <= 0) {

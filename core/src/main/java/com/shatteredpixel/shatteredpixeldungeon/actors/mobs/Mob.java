@@ -336,9 +336,10 @@ public abstract class Mob extends Char {
 	
 	@Override
 	protected boolean act() {
-		
+
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.riverErosion(this); //xun
 		super.act();
-		
+
 		com.shatteredpixel.shatteredpixeldungeon.mechanics.Cycles.scale( this );
 		boolean justAlerted = alerted;
 		alerted = false;
@@ -543,6 +544,7 @@ public abstract class Mob extends Char {
 				newEnemy = true;
 			}
 		}
+		if (!newEnemy && com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.barricadeInSight(this, enemy)) newEnemy = true; //xun, Aggressive Roadblock
 
 		if ( newEnemy ) {
 
@@ -651,6 +653,7 @@ public abstract class Mob extends Char {
 						}
 					}
 				}
+				closest = com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.preferBarricade(this, closest, enemies); //xun
 
 				return closest;
 			}
@@ -929,6 +932,7 @@ public abstract class Mob extends Char {
 		float delay = 1f;
 		if ( buff(Adrenaline.class) != null) delay /= 1.5f;
 		if ( buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Acceleration.class ) != null) delay /= com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Acceleration.multiplier(this);
+		delay *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.weakenedDelay(this); //xun, Bluring Body
 		return delay;
 	}
 	
@@ -1134,6 +1138,7 @@ public abstract class Mob extends Char {
 
 		if (!isInvulnerable(src.getClass())) {
 			if (state == SLEEPING && !com.shatteredpixel.shatteredpixeldungeon.actors.XunHooks.pacified(this)) { //xun, peaceful
+				dmg = com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.wokenByDamage(this, dmg, src); //xun
 				state = WANDERING;
 			}
 			if (!(src instanceof Corruption) && state != FLEEING) {
@@ -1306,6 +1311,7 @@ public abstract class Mob extends Char {
 		boolean soulMarked = buff(SoulMark.class) != null;
 
 		com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.onMobDie(this, cause); //bluearchive
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.beforeMobDies(this); //xun, Corpse Decay and Soul Caging
 		super.die( cause );
 
 		if (!(this instanceof Wraith)
@@ -1362,6 +1368,7 @@ public abstract class Mob extends Char {
 	}
 	
 	public void rollToDropLoot(){
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.liquidCollecting(this); //xun
 		com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.questLoot(this); //bluearchive
 		//Cursed PD's lucky badge, extra loot from every kill while its buff lasts
 		com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LuckyBadgeBuff luckyBuff = Dungeon.hero == null ? null : Dungeon.hero.buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LuckyBadgeBuff.class );
@@ -1649,7 +1656,7 @@ public abstract class Mob extends Char {
 				target = Dungeon.level.randomDestination( Mob.this );
 			}
 
-			spend(TIME_TO_WAKE_UP);
+			spend(TIME_TO_WAKE_UP * com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.wakeUpFactor()); //xun, Sleeping In
 		}
 	}
 

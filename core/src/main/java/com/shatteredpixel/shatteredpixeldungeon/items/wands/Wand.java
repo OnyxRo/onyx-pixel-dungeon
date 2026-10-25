@@ -580,6 +580,7 @@ public abstract class Wand extends Item {
 		}
 
 		com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.fuelAfterZap(curUser, this); //summoning
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.favoriteWorkCharge(this); //xun
 
 		//remove magic charge at a higher priority, if we are benefiting from it are and not the
 		//wand that just applied it
@@ -635,7 +636,7 @@ public abstract class Wand extends Item {
 		Invisibility.dispel();
 		updateQuickslot();
 
-		curUser.spendAndNext( TIME_TO_ZAP );
+		curUser.spendAndNext( TIME_TO_ZAP / com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.plagueSpeed(curUser, 2) ); //xun, Plague Eucharist
 	}
 	
 	@Override
@@ -792,6 +793,7 @@ public abstract class Wand extends Item {
 							return;
 						}
 
+						com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.magicalVent(curUser, target, false); //xun
 						float shield = curUser.HT * (0.04f*curWand.curCharges);
 						if (curUser.pointsInTalent(Talent.SHIELD_BATTERY) == 2) shield *= 1.5f;
 						Buff.affect(curUser, Barrier.class).setShield(Math.round(shield));
@@ -818,8 +820,9 @@ public abstract class Wand extends Item {
 					QuickSlotButton.target(Actor.findChar(cell));
 				
 				if (curWand.tryToZap(curUser, target)) {
-					
+
 					curUser.busy();
+					com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.magicalVent(curUser, target, true); //xun
 
 					//backup barrier logic
 					//This triggers before the wand zap, mostly so the barrier helps vs skeletons
@@ -955,6 +958,8 @@ public abstract class Wand extends Item {
 			float turnsToCharge = (float) (BASE_CHARGE_DELAY
 					+ (scalingAddition * Math.pow(scalingFactor, missingCharges)));
 			if (Wand.this.modify == Modification.STATIC_CHARGE) turnsToCharge /= 2f; //xun
+			if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.toolWandMod(Modification.STATIC_CHARGE)) turnsToCharge /= 2f; //xun, Multi Modify
+			turnsToCharge /= com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.cursedWandCharge(Wand.this); //xun, Cursed Power
 
 			if (Regeneration.regenOn())
 				partialCharge += (1f/turnsToCharge) * (target == Dungeon.hero ? com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.wandRechargeFactor() : 1f) * RingOfEnergy.wandChargeMultiplier(target)

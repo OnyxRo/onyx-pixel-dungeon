@@ -544,6 +544,8 @@ public class Armor extends EquipableItem {
 	public float evasionFactor( Char owner, float evasion ){
 		if (testingNoArmDefSkill) return evasion;
 		if (modify == Modification.DEFLECTION) evasion *= 1.5f; //xun
+		if (owner == Dungeon.hero && com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.toolArmorMod(Modification.DEFLECTION)) evasion *= 1.5f; //xun, Multi Modify
+		evasion *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.favoriteWork(owner, modify != null); //xun
 		
 		if (hasGlyph(Stone.class, owner) && !Stone.testingEvasion()){
 			return 0;
@@ -578,6 +580,7 @@ public class Armor extends EquipableItem {
 
 	public float speedFactor( Char owner, float speed ){
 		if (modify == Modification.EXOSKELETON) speed *= 1.25f; //xun
+		if (owner == Dungeon.hero && com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.toolArmorMod(Modification.EXOSKELETON)) speed *= 1.25f; //xun, Multi Modify
 		
 		if (owner instanceof Hero) {
 			int aEnc = STRReq() - ((Hero) owner).STR();
@@ -649,6 +652,7 @@ public class Armor extends EquipableItem {
 
 		//xun, the Engineer's armor modifications wear down as the hero is hit
 		if (modify == Modification.WEAKNESS_ENHANCE) damage = Math.max(0, damage - Math.round(DRMax() * 0.25f));
+		if (defender == Dungeon.hero && com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.toolArmorMod(Modification.WEAKNESS_ENHANCE)) damage = Math.max(0, damage - Math.round(DRMax() * 0.25f)); //xun, Multi Modify
 		if (modify == Modification.EXPLOSIVE && attacker != null && attacker.isAlive()){
 			//the charge goes off against the attacker only, so the wearer is not caught in it
 			com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter.center(attacker.pos).burst(com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle.FACTORY, 10);

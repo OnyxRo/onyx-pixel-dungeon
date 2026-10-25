@@ -996,6 +996,7 @@ public abstract class Level implements Bundlable {
 		Mob mob = createMob();
 		if (mob.state != mob.PASSIVE) {
 			mob.state = mob.WANDERING;
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.lullaby(mob); //xun
 		}
 		int tries = 30;
 		do {
@@ -1467,7 +1468,7 @@ public abstract class Level implements Bundlable {
 			}
 			
 			//characters which are not the hero or a sheep 'soft' press cells
-			pressCell( ch.pos, ch instanceof Hero || ch instanceof Sheep);
+			pressCell( ch.pos, ch instanceof Hero || ch instanceof Sheep || com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.pressesHard(ch)); //xun, Sensitive Pedal
 		} else {
 			if (map[ch.pos] == Terrain.DOOR){
 				Door.enter( ch.pos );
@@ -1510,6 +1511,10 @@ public abstract class Level implements Bundlable {
 			
 		case Terrain.WELL:
 			WellWater.affectCell( cell );
+			break;
+
+		case Terrain.EMPTY_WELL:
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.digTheWell( cell ); //xun
 			break;
 			
 		case Terrain.DOOR:
@@ -1719,6 +1724,7 @@ public abstract class Level implements Bundlable {
 				if (((Hero) c).hasTalent(Talent.HEIGHTENED_SENSES)) {
 					mindVisRange = 1 + ((Hero) c).pointsInTalent(Talent.HEIGHTENED_SENSES);
 				}
+				mindVisRange = Math.max(mindVisRange, com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.windingPorch((Hero) c)); //xun
 				if (c.buff(DivineSense.DivineSenseTracker.class) != null) {
 					if (((Hero) c).heroClass.is(HeroClass.CLERIC)) {
 						mindVisRange = 4 + 4 * ((Hero) c).pointsInTalent(Talent.DIVINE_SENSE);

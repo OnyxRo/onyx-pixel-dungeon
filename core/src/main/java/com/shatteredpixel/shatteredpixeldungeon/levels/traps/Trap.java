@@ -104,7 +104,7 @@ public abstract class Trap implements Bundlable {
 			com.shatteredpixel.shatteredpixeldungeon.Statistics.trapsActivated++;
 			if (com.shatteredpixel.shatteredpixeldungeon.Statistics.trapsActivated >= 5)
 				com.shatteredpixel.shatteredpixeldungeon.Badges.validateXunUnlock(com.shatteredpixel.shatteredpixeldungeon.Badges.Badge.UNLOCK_ENGINEER);
-			activate();
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.activateTrap(this); //xun, Friendly Mechanism, calls activate()
 		}
 	}
 
@@ -166,5 +166,10 @@ public abstract class Trap implements Bundlable {
 	//this buff is used to keep track of hazards recently affecting a character
 	public static class HazardAssistTracker extends FlavourBuff{
 		public static final float DURATION = 50f;
+		@Override
+		protected void postpone( float time ) {
+			super.postpone(time);
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.onHazard(target); //xun, Sensitive Pedal
+		}
 	}
 }

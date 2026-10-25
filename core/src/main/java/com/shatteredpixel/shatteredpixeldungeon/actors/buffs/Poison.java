@@ -116,10 +116,11 @@ public class Poison extends Buff implements Hero.Doom, Buff.DOTbuff {
 	public boolean act() {
 		if (target.isAlive()) {
 			
+			if (!com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.poisonHarmless(target)) //xun, the Plague God
 			target.damage( (int)(left / 3) + 1, this );
 			spend( TICK );
 			
-			if ((left -= TICK) <= 0) {
+			if ((left = com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.poisonLeft(target, left)) <= 0) { //xun, Homemade Drug
 				detach();
 			}
 			target.needsIncomingDOTUpdate = true;

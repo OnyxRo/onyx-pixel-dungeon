@@ -402,6 +402,7 @@ abstract public class MissileWeapon extends Weapon {
 			}
 		}
 		com.shatteredpixel.shatteredpixeldungeon.RBAHooks.onMissileThrown(curUser); //rebluearchive
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.afterMissileThrown(cell); //xun, Thrown Evil and Ballistica Calculation
 	}
 
 	@Override
@@ -432,6 +433,7 @@ abstract public class MissileWeapon extends Weapon {
 			availableUsesToID =  Math.max(usesLeftToID, 0);
 		}
 
+		damage = com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.ballisticaDamage(attacker, damage); //xun
 		int result = super.proc(attacker, defender, damage);
 		com.shatteredpixel.shatteredpixeldungeon.RBAHooks.afterMissileHit(this, attacker, defender); //rebluearchive
 
@@ -519,6 +521,7 @@ abstract public class MissileWeapon extends Weapon {
 	@Override
 	public float castDelay(Char user, int cell) {
 		if (com.shatteredpixel.shatteredpixeldungeon.RBAHooks.instantThrow(user)) return 0; //rebluearchive, Izuna
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.ballisticaFree(user)) return 0; //xun, Ballistica Calculation
 		if (Actor.findChar(cell) != null && Actor.findChar(cell) != user){
 			return delayFactor( user );
 		} else {

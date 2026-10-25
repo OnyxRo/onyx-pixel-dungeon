@@ -2474,6 +2474,7 @@ public enum Talent {
 		RBATalents.onTalentUpgraded(hero, talent); //rebluearchive
 		RearrangedTalents.onTalentUpgraded(hero, talent); //rearranged
 		TransformationTalents.onTalentUpgraded(hero, talent);
+		XunTalents.onTalentUpgraded(hero, talent); //xun
 		if (talent == MIDAS_TOUCH && hero.hasTalent(MIDAS_TOUCH)){
 			Dungeon.level.drop(new com.shatteredpixel.shatteredpixeldungeon.items.LiquidMetal().quantity(20 * hero.pointsInTalent(MIDAS_TOUCH)), hero.pos).sprite.drop(hero.pos);
 		}

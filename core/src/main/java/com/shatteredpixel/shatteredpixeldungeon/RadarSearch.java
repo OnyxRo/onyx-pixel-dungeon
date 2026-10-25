@@ -36,7 +36,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
-import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -67,6 +66,9 @@ public class RadarSearch {
 
 	public volatile int checked = 0;
 	public volatile boolean cancelled = false;
+	//seeds whose floors failed to build, for the tests
+	public volatile int failed = 0;
+	public volatile Exception lastError;
 
 	//returns the seed found, or -1
 	public long search(){
@@ -81,11 +83,12 @@ public class RadarSearch {
 
 		HeroClass cls = GamesInProgress.selectedClass;
 		String customSeed = SPDSettings.customSeed();
-		Random.pushGenerator();
+		//its own random numbers, starting a run resets the game's
+		java.util.Random rolls = new java.util.Random();
 		try {
 			for (int attempt = 0; attempt < MAX_SEEDS && !cancelled; attempt++){
 				checked = attempt + 1;
-				long seed = Random.Long(DungeonSeed.TOTAL_SEEDS);
+				long seed = Math.floorMod(rolls.nextLong(), DungeonSeed.TOTAL_SEEDS);
 				ArrayList<String>[] found = itemsBy(seed, maxDepth, cls);
 				if (found == null) continue;
 
@@ -106,7 +109,6 @@ public class RadarSearch {
 				if (ok) return seed;
 			}
 		} finally {
-			Random.popGenerator();
 			SPDSettings.customSeed(customSeed);
 			GamesInProgress.selectedClass = cls;
 		}
@@ -157,6 +159,8 @@ public class RadarSearch {
 			}
 		} catch (Exception e){
 			//a floor that fails to build only costs this seed
+			failed++;
+			lastError = e;
 			return null;
 		}
 		return found;

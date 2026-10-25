@@ -124,6 +124,11 @@ Three things cost rounds. ModRoster did not compile because the bosses live in s
 - port-mob.py crashed on mixed line endings in ModRoster, its anchor is a regex now. port-prefix.py took Chinese text, it prefers the mod's `_en` file now.
 - Guarding arena casts by hand is now `guard-casts.py`, and translating leftover Chinese is `find-untranslated.py` plus translator agents.
 
+## 2026-10-25, Xun's PD talent completion
+- The worktree started on an old commit without the Xun port. Check `git log --oneline -1` against main before reading anything, a reset to main fixed it.
+- Comparing which files reference each talent in the mod and here (a short script over both trees) found the partly wired talents in one pass. It also showed that the Wraith's class ability and the Grenadier's subclass ability were never ported, which no talent list would show.
+- A headless talent test on a generated level caught four problems the hero test cannot see (the Plague God's poison immunity blocking homemade drug, sprite calls in headless drops, the well drop not pressing the cell outside a game scene).
+
 ## 2026-10-24, Magic Ling town
 - The first copy pulled in 226 files and whole mod systems (buff scanner, coin shops, a dream level). Undoing and blocking those cost one extra copier run, the skill now says to do that at once past 150 files.
 - About 100 errors were mod counters and settings, fixed one by one in earlier batches. New `stats-shim.py` adds them all from the mod's declarations.

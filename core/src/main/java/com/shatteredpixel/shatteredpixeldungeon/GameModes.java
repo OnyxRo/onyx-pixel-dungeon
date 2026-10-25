@@ -431,12 +431,13 @@ public class GameModes {
 			if (hero.belongings.getItem(ScrollHolder.class) == null) give(hero, new ScrollHolder());
 		}
 
+		//upgrading thrown weapons resets the stack size, so the count comes after
 		if (on(KIT_ROCC)){
-			give(hero, new ThrowingStone().quantity(1).upgrade(16));
+			give(hero, new ThrowingStone().upgrade(16).quantity(1));
 		}
 
 		if (on(KIT_ROXX)){
-			give(hero, new ThrowingStone().quantity(20).upgrade(20));
+			give(hero, new ThrowingStone().upgrade(20).quantity(20));
 		}
 
 		if (on(KIT_STARTER)){

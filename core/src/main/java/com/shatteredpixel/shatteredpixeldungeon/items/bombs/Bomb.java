@@ -94,6 +94,7 @@ public class Bomb extends Item {
 	}
 
 	public Fuse fuse;
+	public boolean xunGrenadier = false; //xun, thrown lit by Xun's PD's Grenadier
 
 	//FIXME using a static variable for this is kinda gross, should be a better way
 	protected static boolean lightingFuse = false;
@@ -119,7 +120,7 @@ public class Bomb extends Item {
 	}
 
 	protected int explosionRange(){
-		return 1;
+		return 1 + Math.max(0, level()); //xun, Xun's PD's upgraded bombs blast a tile further
 	}
 
 	@Override
@@ -160,10 +161,11 @@ public class Bomb extends Item {
 
 	@Override
 	public void onThrow( int cell ) {
+		xunGrenadier = !subBomb && com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.onBombThrown(this, lightingFuse, curUser); //xun
 		if (subBomb) {
 			Actor.addDelayed(fuse = createFuse().ignite(this), finaldelay);
 		} else if (!Dungeon.level.pit[ cell ] && lightingFuse) {
-			Actor.addDelayed(fuse = createFuse().ignite(this), finaldelay);
+			Actor.addDelayed(fuse = createFuse().ignite(this), xunGrenadier ? 0 : finaldelay); //xun, the Grenadier's bombs go off at once
 			if (fuseTriggerClass != null) ((FuseBuff) com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(Dungeon.hero, fuseTriggerClass)).set(cell);
 		}
 		super.onThrow( cell );
@@ -218,7 +220,7 @@ public class Bomb extends Item {
 					CellEmitter.get(i).burst(SmokeParticle.FACTORY, 4);
 				}
 
-				if (Dungeon.level.flamable[i]) {
+				if (Dungeon.level.flamable[i] && com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.bombBurnsTerrain(this, i)) { //xun
 					Dungeon.level.destroy(i);
 					GameScene.updateMap(i);
 					terrainAffected = true;
@@ -227,7 +229,7 @@ public class Bomb extends Item {
 				//destroys items / triggers bombs caught in the blast.
 				Heap heap = Dungeon.level.heaps.get(i);
 				if (heap != null && !subBomb && destroyItem()) {
-					heap.explode();
+					com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.bombHeap(this, heap); //xun, calls heap.explode()
 				}
 			}
 			
@@ -239,7 +241,7 @@ public class Bomb extends Item {
 				}
 
 				int dmg = minDamage >= 0 ? Random.NormalIntRange(minDamage, maxDamage) : com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.bombDamage(Random.NormalIntRange(4 + Dungeon.scalingDepth(), 12 + 3*Dungeon.scalingDepth()));
-				dmg -= ch.drRoll();
+				dmg = com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.bombDamage(this, ch, cell, dmg); //xun, takes off armor and adds the Grenadier talents
 
 				if (subBomb) dmg = (int)(dmg * 0.33f);
 
@@ -285,6 +287,7 @@ public class Bomb extends Item {
 			if (terrainAffected) {
 				Dungeon.observe();
 			}
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.afterBombExploded(this); //xun
 		}
 	}
 	
@@ -335,11 +338,13 @@ public class Bomb extends Item {
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
 		bundle.put( FUSE, fuse );
+		bundle.put( "xun_grenadier", xunGrenadier ); //xun
 	}
 
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
+		xunGrenadier = bundle.getBoolean( "xun_grenadier" ); //xun
 		if (bundle.contains( FUSE ))
 			Actor.add( fuse = ((Fuse)bundle.get(FUSE)).ignite(this) );
 	}
