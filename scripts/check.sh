@@ -130,6 +130,10 @@ if [ $QUICK -eq 0 ]; then
   run "XunHeroesTest" TransformationHeroesTest EXPLORER WRAITH ENGINEER; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|LIMIT|SUMMARY Transformation)" | tail -12 | sed 's/^/  /'
   [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
+  #xun, the talents wired into shared code (debuffs, traps, bombs, food, sleep, wells)
+  run "XunTalentsTest" XunTalentsTest; rc=$?
+  tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY xun)" | tail -12 | sed 's/^/  /'
+  [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
   #rearranged, the six hero classes of Re-ARranged PD, text, talents, subclasses, abilities
   run "RearrangedHeroesTest" RearrangedHeroesTest; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY rearranged)" | tail -12 | sed 's/^/  /'

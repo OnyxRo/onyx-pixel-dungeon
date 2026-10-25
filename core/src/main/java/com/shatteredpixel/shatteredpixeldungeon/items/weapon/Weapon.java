@@ -166,6 +166,7 @@ abstract public class Weapon extends KindOfWeapon {
 				|| modify == Modification.PNEUMATICS)
 			decreaseModDurability();
 		if (modify == Modification.SHARP_BLADE) damage = Math.max(damage, Math.round((min() + max()) / 2f));
+		damage = com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.toolWeaponProc(this, attacker, defender, damage); //xun, Multi Modify
 
 		if (special != null && attacker.buff(MagicImmune.class) == null) {
 			damage = special.proc(this, attacker, defender, damage);
@@ -381,12 +382,15 @@ abstract public class Weapon extends KindOfWeapon {
 		}
 
 		if (modify == Modification.PNEUMATICS) ACC *= 1.25f; //xun
+		if (owner == com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero && com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.toolWeaponMod(this, Modification.PNEUMATICS)) ACC *= 1.25f; //xun, Multi Modify
+		ACC *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.favoriteWork(owner, modify != null); //xun
 		return encumbrance > 0 ? (float)(ACC / Math.pow( 1.5, encumbrance )) : ACC;
 	}
 	
 	@Override
 	public float delayFactor( Char owner ) {
 		float xunMod = modify == Modification.BATTLE_MODULE ? 1.25f : modify == Modification.PNEUMATICS ? 0.625f : 1f; //xun
+		if (owner == com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero && com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.toolWeaponMod(this, Modification.PNEUMATICS)) xunMod *= 0.625f; //xun, Multi Modify
 		return xunMod * baseDelay(owner) * (1f/speedMultiplier(owner));
 	}
 
@@ -438,6 +442,7 @@ abstract public class Weapon extends KindOfWeapon {
 		}
 		reach += com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RearrangedWeapons.bonusReach(owner); //rearranged
 		if (modify == Modification.LONG_HANDLE) reach++; //xun
+		if (owner == com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero && com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.toolWeaponMod(this, Modification.LONG_HANDLE)) reach++; //xun, Multi Modify
 		if (hasEnchant(Projecting.class, owner)){
 			return reach + Math.round(Enchantment.genericProcChanceMultiplier(owner));
 		} else {

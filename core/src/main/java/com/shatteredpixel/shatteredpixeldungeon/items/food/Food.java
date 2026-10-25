@@ -104,7 +104,7 @@ public class Food extends Item {
 			SpellSprite.show( hero, SpellSprite.FOOD );
 			eatSFX();
 			
-			hero.spend( eatingTime() );
+			if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.eatsWhileActing(hero)) hero.next(); else hero.spend( eatingTime() ); //xun, Toilsome Meal
 
 			Dungeon.level.onHeroConsumableUsed(hero, this);
 			Talent.onFoodEaten(hero, energy, this);
@@ -156,7 +156,8 @@ public class Food extends Item {
 			|| Dungeon.hero.hasTalent(Talent.IMPREGNABLE_MEAL)
 			|| Dungeon.hero.hasTalent(Talent.HEALING_MEAL)
 			|| Dungeon.hero.hasTalent(Talent.FIGHTING_MEAL)
-			|| com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.fastMeal(Dungeon.hero)){
+			|| com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.fastMeal(Dungeon.hero)
+			|| com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.fastMeal(Dungeon.hero)){ //xun
 			return com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.eatingTime(Dungeon.hero, TIME_TO_EAT - 2);
 		} else {
 			return com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.eatingTime(Dungeon.hero, TIME_TO_EAT);
@@ -200,6 +201,7 @@ public class Food extends Item {
 		}
 
 		foodVal *= com.shatteredpixel.shatteredpixeldungeon.GameModes.foodMult(); //even shorter halves food
+		if (!com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.toilsomeMeal(hero, foodVal, eatingTime())) //xun
 		Buff.affect(hero, Hunger.class).satisfy(foodVal);
 		com.shatteredpixel.shatteredpixeldungeon.RearrangedChallenges.onEat(hero); //rearranged, food clears Fatigue
 

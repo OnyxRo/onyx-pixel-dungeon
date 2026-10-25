@@ -99,6 +99,7 @@ public class Heap implements Bundlable {
 	public LinkedList<Item> items = new LinkedList<>();
 	
 	public void open( Hero hero ) {
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.onHeapOpened(this); //xun, Ancestral Tribute
 		switch (type) {
 		case TOMB:
 			Wraith.spawnAround( hero.pos );
@@ -313,6 +314,7 @@ public class Heap implements Bundlable {
 				if (item.unique || item.isUpgradable() || item instanceof EquipableItem){
 					continue;
 				}
+				if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.bombSparesItem(item)) continue; //xun, Explosion Proof
 
 				if (item instanceof Potion) {
 					items.remove(item);

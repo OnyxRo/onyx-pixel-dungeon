@@ -1127,6 +1127,7 @@ public abstract class Char extends Actor {
 		}
 		if (this.buff(MagicalSleep.class) != null && !XunHooks.pacified(this)){ //xun, peaceful
 			Buff.detach(this, MagicalSleep.class);
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.heroWoken(this, (int) damage); //xun
 		}
 		XunHooks.endPeace(this); //xun
 		if (this.buff(Doom.class) != null && !isImmune(Doom.class)){
@@ -1455,6 +1456,7 @@ public abstract class Char extends Actor {
 	}
 
 	public void die( Object src ) {
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.charismaRevive(this, src)) return; //xun, Charisma
 		notifyDeathListeners();
 		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onAllyDie(this); //Transformation PD talent catalog
 		//something else is forcing death, so remove death mark to prevent conflicts
@@ -1465,6 +1467,7 @@ public abstract class Char extends Actor {
 				&& !(this instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.KetchupSplat)) {
 			Ketchupify();
 		}
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.scapegoat(this); //xun
 		destroy();
 		if (src != Chasm.class && sprite != null) {
 			sprite.die();
@@ -1578,6 +1581,7 @@ public abstract class Char extends Actor {
 		timeScale *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.timeScale(this); //bluearchive
 		timeScale = TowerChar.timeScale(this, timeScale); //tower
 		timeScale *= DerangedChar.timeScale(this); //deranged
+		timeScale *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.timeScale(this); //xun, the Wavechaser in water
 
 		super.spend( time / timeScale );
 	}

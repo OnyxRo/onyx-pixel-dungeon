@@ -107,7 +107,7 @@ public class TrapChoose extends Buff implements ActionIndicator.Action {
         traps.put(TeleportationTrap.class, 4);
         traps.put(FlockTrap.class, 4);
 
-        int point = ((Hero)target).pointsInTalent(Talent.TRAP_MASTER);
+        int point = ((Hero)target).pointsInTalent(Talent.XUN_TRAP_MASTER);
         if (point >= 1){
             traps.put(GatewayTrap.class, 5);
             traps.put(GeyserTrap.class, 6);

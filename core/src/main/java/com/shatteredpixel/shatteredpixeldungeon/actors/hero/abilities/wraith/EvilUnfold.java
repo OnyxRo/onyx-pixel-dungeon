@@ -77,7 +77,7 @@ public class EvilUnfold extends ArmorAbility {
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.BUFFED_NERF, Talent.ARMY_OF_DEATH, Talent.STRANGLING, Talent.IMMORTAL_EVIL, Talent.HEROIC_ENERGY};
+		return new Talent[]{Talent.BUFFED_NERF, Talent.XUN_ARMY_OF_DEATH, Talent.STRANGLING, Talent.IMMORTAL_EVIL, Talent.HEROIC_ENERGY};
 	}
 
 	public static class Evil extends FlavourBuff {
@@ -122,7 +122,7 @@ public class EvilUnfold extends ArmorAbility {
 			if (!debuffs.isEmpty()) Buff.prolong(c, debuffs.get(Random.Int(debuffs.size())), 10f);
 
 			if (dmg >= c.HP
-					&& Random.Float() < 0.2f + 0.15f * ((Hero)target).pointsInTalent(Talent.ARMY_OF_DEATH)
+					&& Random.Float() < 0.2f + 0.15f * ((Hero)target).pointsInTalent(Talent.XUN_ARMY_OF_DEATH)
 					&& !c.isImmune(Corruption.class) && c.alignment == Char.Alignment.ENEMY
 					&& c instanceof Mob && c.isAlive()){
 				Corruption.corruptionHeal(c);
