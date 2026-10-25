@@ -60,7 +60,7 @@ public abstract class DamageWand extends Wand{
 			Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG, 0.75f, 1.2f);
 		}
 		dmg += Math.round(dmg * com.shatteredpixel.shatteredpixeldungeon.Statistics.elixirManaDrunk * 0.1f); //xun, elixir of mana
-		return dmg;
+		return com.shatteredpixel.shatteredpixeldungeon.Playstyles.magicDamage(dmg); //radar
 	}
 
 	@Override

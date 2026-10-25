@@ -156,6 +156,12 @@ public class HeroSelectScene extends PixelScene {
 
 				if (GamesInProgress.selectedClass == null) return;
 
+				//radar, try seeds until one holds the items asked for
+				if (SPDSettings.customSeed().isEmpty() && com.shatteredpixel.shatteredpixeldungeon.RadarSearch.hasRequirements()){
+					ShatteredPixelDungeon.scene().addToFront(new com.shatteredpixel.shatteredpixeldungeon.windows.WndRadarSearch());
+					return;
+				}
+
 				Dungeon.hero = null;
 				Dungeon.daily = Dungeon.dailyReplay = false;
 				Dungeon.initSeed();
@@ -416,7 +422,7 @@ public class HeroSelectScene extends PixelScene {
 	private void updateOptionsColor(){
 		if (!SPDSettings.customSeed().isEmpty()){
 			btnOptions.icon().hardlight(1f, 1.5f, 0.67f);
-		} else if (!Dungeon.chosenMods.isEmpty()){
+		} else if (!Dungeon.chosenMods.isEmpty() || com.shatteredpixel.shatteredpixeldungeon.GameModes.count() > 0){
 			btnOptions.icon().hardlight(0.67f, 1f, 1.5f);
 		} else if (SPDSettings.challenges() != 0 || SPDSettings.difficulty() != 2){
 			btnOptions.icon().hardlight(2f, 1.33f, 0.5f);
@@ -873,6 +879,26 @@ public class HeroSelectScene extends PixelScene {
 			modeButton.icon(Icons.get(Icons.STAIRS));
 			add(modeButton);
 			buttons.add(modeButton);
+
+			//game modes from Half PD, Even Shorter PD, Radar, Custom PD and Too Cruel PD
+			final StyledButton gameModesButton = new StyledButton(Chrome.Type.BLANK, com.shatteredpixel.shatteredpixeldungeon.windows.WndGameModes.label(), 6){
+				@Override
+				protected void onClick() {
+					final StyledButton self = this;
+					ShatteredPixelDungeon.scene().addToFront(new com.shatteredpixel.shatteredpixeldungeon.windows.WndGameModes(
+							new com.shatteredpixel.shatteredpixeldungeon.windows.WndGameModes.Listener() {
+						@Override
+						public void onChanged() {
+							self.text(com.shatteredpixel.shatteredpixeldungeon.windows.WndGameModes.label());
+							updateOptionsColor();
+						}
+					}));
+				}
+			};
+			gameModesButton.leftJustify = true;
+			gameModesButton.icon(Icons.get(Icons.CHALLENGE_GREY));
+			add(gameModesButton);
+			buttons.add(gameModesButton);
 
 			int unlockedCount = 0;
 			for (HeroClass cls : HeroClass.values()){

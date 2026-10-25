@@ -1352,6 +1352,7 @@ public abstract class Mob extends Char {
 		dropBonus += com.shatteredpixel.shatteredpixeldungeon.items.spells.RNGManipulator.LuckBoost.luckBoost() / 10000f; //Community PD, luck manipulator
 
 		dropBonus += com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.lootMulti()-1f; //rebluearchive, Yuzu's shop
+		dropBonus = com.shatteredpixel.shatteredpixeldungeon.Playstyles.lootChance(dropBonus); //radar, luck
 
 		//rearranged, the pink gem trinket
 		return lootChance * dropBonus * com.shatteredpixel.shatteredpixeldungeon.items.trinkets.PinkGem.dropChanceMultiplier();

@@ -695,7 +695,7 @@ public class InterlevelScene extends PixelScene {
 			Dungeon.depth  = curTransition.destDepth;
 			Dungeon.branch = curTransition.destBranch;
 		} else {
-			Dungeon.depth++;
+			Dungeon.depth = com.shatteredpixel.shatteredpixeldungeon.GameModes.nextDepth(Dungeon.depth); //half and even shorter skip floors
 		}
 		fallUsesTransition = false;
 		curTransition = null;
@@ -833,7 +833,7 @@ public class InterlevelScene extends PixelScene {
 		
 		Mob.holdAllies( Dungeon.level );
 
-		SpecialRoom.resetPitRoom(Dungeon.depth+1);
+		SpecialRoom.resetPitRoom(com.shatteredpixel.shatteredpixeldungeon.GameModes.nextDepth(Dungeon.depth));
 
 		Level level = Dungeon.newLevel();
 		Dungeon.switchLevel( level, level.entrance() );

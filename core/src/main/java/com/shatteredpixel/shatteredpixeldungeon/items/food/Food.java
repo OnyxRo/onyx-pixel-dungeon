@@ -199,6 +199,7 @@ public class Food extends Item {
 			GLog.n( Messages.get(Hunger.class, "cursedhorn") );
 		}
 
+		foodVal *= com.shatteredpixel.shatteredpixeldungeon.GameModes.foodMult(); //even shorter halves food
 		Buff.affect(hero, Hunger.class).satisfy(foodVal);
 		com.shatteredpixel.shatteredpixeldungeon.RearrangedChallenges.onEat(hero); //rearranged, food clears Fatigue
 

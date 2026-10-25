@@ -794,6 +794,8 @@ public abstract class Char extends Actor {
 	public static boolean hit( Char attacker, Char defender, float accMulti, boolean magic ) {
 		float acuStat = attacker.attackSkill( defender ) * com.shatteredpixel.shatteredpixeldungeon.mechanics.Cycles.skill( attacker );
 		float defStat = defender.defenseSkill( attacker ) * com.shatteredpixel.shatteredpixeldungeon.mechanics.Cycles.skill( defender );
+		acuStat = com.shatteredpixel.shatteredpixeldungeon.Playstyles.accuracy(attacker, acuStat); //radar
+		defStat = com.shatteredpixel.shatteredpixeldungeon.Playstyles.evasion(defender, defStat); //radar
 
 		if (defender instanceof Hero && ((Hero) defender).damageInterrupt){
 			((Hero) defender).interrupt();

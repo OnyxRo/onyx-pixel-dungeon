@@ -63,7 +63,7 @@ public class PotionOfHealing extends Potion {
 		} else {
 			//starts out healing 30 hp, equalizes with hero health total at level 11
 			Healing healing = Buff.affect(ch, Healing.class);
-			healing.setHeal((int) (0.8f * ch.HT + 14), 0.25f, 0, true);
+			healing.setHeal((int) ((0.8f * ch.HT + 14) * com.shatteredpixel.shatteredpixeldungeon.GameModes.healingMult()), 0.25f, 0, true); //even shorter halves it
 			if (ch == Dungeon.hero){
 				GLog.p( Messages.get(PotionOfHealing.class, "heal") );
 			}

@@ -894,6 +894,12 @@ public class Generator {
 			{0,  0,  0, 20, 80}
 	};
 
+	//even shorter only finds tier 1 to 3 gear
+	private static float[] tierProbs( int floorSet ){
+		float[] modes = com.shatteredpixel.shatteredpixeldungeon.GameModes.tierProbs(floorSet);
+		return modes != null ? modes : floorSetTierProbs[floorSet];
+	}
+
 	private static boolean usingFirstDeck = false;
 	private static HashMap<Category,Float> defaultCatProbs = new LinkedHashMap<>();
 	private static HashMap<Category,Float> categoryProbs = new LinkedHashMap<>();
@@ -1066,7 +1072,7 @@ public class Generator {
 
 		floorSet = (int)GameMath.gate(0, floorSet, floorSetTierProbs.length-1);
 		
-		Armor a = (Armor)Reflection.newInstance(Category.ARMOR.classes[Random.chances(floorSetTierProbs[floorSet])]);
+		Armor a = (Armor)Reflection.newInstance(Category.ARMOR.classes[Random.chances(tierProbs(floorSet))]);
 		a.random();
 		return a;
 	}
@@ -1085,7 +1091,7 @@ public class Generator {
 
 	public static Item randomStaff(){
 		int floorSet = (int)GameMath.gate(0, Dungeon.depth / 5, floorSetTierProbs.length-1);
-		int tier = Random.chances(floorSetTierProbs[floorSet]);
+		int tier = Random.chances(tierProbs(floorSet));
 		//the froggit staff tier is the Conjurer's own, a found staff is one tier up
 		tier = Math.max(1, tier);
 		Class<?>[] choices = Category.STAFF_TIERS[Math.min(tier, Category.STAFF_TIERS.length - 1)];
@@ -1106,11 +1112,11 @@ public class Generator {
 		floorSet = (int)GameMath.gate(0, floorSet, floorSetTierProbs.length-1);
 
 		MeleeWeapon w;
-		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHeroes.usesGuns()) return com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.randomGun(1 + Random.chances(floorSetTierProbs[floorSet])); //bluearchive
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHeroes.usesGuns()) return com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.randomGun(1 + Random.chances(tierProbs(floorSet))); //bluearchive
 		if (useDefaults){
-			w = (MeleeWeapon) randomUsingDefaults(wepTiers[Random.chances(floorSetTierProbs[floorSet])]);
+			w = (MeleeWeapon) randomUsingDefaults(wepTiers[Random.chances(tierProbs(floorSet))]);
 		} else {
-			w = (MeleeWeapon) random(wepTiers[Random.chances(floorSetTierProbs[floorSet])]);
+			w = (MeleeWeapon) random(wepTiers[Random.chances(tierProbs(floorSet))]);
 		}
 		return w;
 	}
@@ -1141,9 +1147,9 @@ public class Generator {
 
 		MissileWeapon w;
 		if (useDefaults){
-			w = (MissileWeapon)randomUsingDefaults(misTiers[Random.chances(floorSetTierProbs[floorSet])]);
+			w = (MissileWeapon)randomUsingDefaults(misTiers[Random.chances(tierProbs(floorSet))]);
 		} else {
-			w = (MissileWeapon)random(misTiers[Random.chances(floorSetTierProbs[floorSet])]);
+			w = (MissileWeapon)random(misTiers[Random.chances(tierProbs(floorSet))]);
 		}
 		return w;
 	}

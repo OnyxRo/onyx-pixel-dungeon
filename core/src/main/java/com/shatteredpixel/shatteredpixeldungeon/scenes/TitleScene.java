@@ -179,6 +179,7 @@ public class TitleScene extends PixelScene {
 		Dungeon.daily = Dungeon.dailyReplay = false;
 		Dungeon.sandbox = false;
 		Dungeon.chosenMods.clear();
+		com.shatteredpixel.shatteredpixeldungeon.GameModes.loadSettings();
 
 		btnJournal = new StyledButton(GREY_TR, Messages.get(this, "journal")){
 			@Override

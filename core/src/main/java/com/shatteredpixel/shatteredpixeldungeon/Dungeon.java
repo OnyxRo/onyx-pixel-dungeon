@@ -449,6 +449,7 @@ public class Dungeon {
 		Badges.reset();
 		
 		GamesInProgress.selectedClass.initHero( hero );
+		GameModes.applyStartKits( hero ); //custom pd starting kits
 	}
 
 	public static boolean isChallenged( int mask ) {
@@ -746,7 +747,7 @@ public class Dungeon {
 	}
 
 	public static void dropToChasm( Item item ) {
-		int depth = Dungeon.depth + 1;
+		int depth = GameModes.nextDepth(Dungeon.depth);
 		ArrayList<Item> dropped = Dungeon.droppedItems.get( depth );
 		if (dropped == null) {
 			Dungeon.droppedItems.put( depth, dropped = new ArrayList<>() );
@@ -879,6 +880,7 @@ public class Dungeon {
 			bundle.put( SANDBOX_OFF_MODS, sandboxOffMods.toArray(new String[0]) );
 			bundle.put( SANDBOX_SALT, sandboxSalt );
 			bundle.put( CHOSEN_MODS, chosenMods.toArray(new String[0]) );
+			GameModes.store( bundle );
 			bundle.put( LAST_PLAYED, lastPlayed = Game.realTime);
 			bundle.put( CHALLENGES, challenges );
 			bundle.put( DIFFICULTY, difficulty );
@@ -1003,6 +1005,7 @@ public class Dungeon {
 		sandboxSight = !bundle.contains( SANDBOX_SIGHT ) || bundle.getBoolean( SANDBOX_SIGHT );
 		sandboxSalt = bundle.contains( SANDBOX_SALT ) ? bundle.getInt( SANDBOX_SALT ) : 0;
 		sandboxOnceWorld = -1;
+		GameModes.restore( bundle );
 		chosenMods.clear();
 		if (bundle.contains( CHOSEN_MODS )) {
 			chosenMods.addAll( java.util.Arrays.asList( bundle.getStringArray( CHOSEN_MODS ) ) );

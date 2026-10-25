@@ -292,6 +292,7 @@ public abstract class Level implements Bundlable {
 				Dungeon.LimitedDrops.TRINKET_CATA.drop();
 				addItemToSpawn( new TrinketCatalyst());
 			}
+			com.shatteredpixel.shatteredpixeldungeon.GameModes.topUpDrops(this); //half, the drops of skipped floors
 			//rearranged, a bullet belt for each set of five floors
 			if ( Dungeon.beltNeeded() ) {
 				Dungeon.LimitedDrops.BULLET_BELT.drop();
@@ -1638,6 +1639,7 @@ public abstract class Level implements Bundlable {
 				viewDist *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.viewDistanceFactor((Hero) c); //transformation, Shortsighted
 				viewDist = Math.max(1, viewDist + com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.viewDelta((Hero) c));
 				viewDist = Math.max(1, viewDist + com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfVision.visionBonus()); //xun, ring of vision
+				viewDist = com.shatteredpixel.shatteredpixeldungeon.Playstyles.vision((int) viewDist); //radar
 			}
 			
 			ShadowCaster.castShadow( cx, cy, width(), fieldOfView, blocking, Math.round(viewDist) );
@@ -1723,6 +1725,7 @@ public abstract class Level implements Bundlable {
 				mindVisRange = com.shatteredpixel.shatteredpixeldungeon.RBAHooks.mindVisionRange((Hero) c, mindVisRange); //rebluearchive
 				mindVisRange = com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.mindVisionRange((Hero) c, mindVisRange); //bluearchive
 				mindVisRange = Math.max(mindVisRange, EyeOfNewt.mindVisionRange());
+				mindVisRange = com.shatteredpixel.shatteredpixeldungeon.Playstyles.xray(mindVisRange); //radar
 			}
 
 			if (mindVisRange >= 1) {

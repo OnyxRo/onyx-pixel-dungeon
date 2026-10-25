@@ -81,12 +81,12 @@ public class LevelTransition extends Rect implements Bundlable {
 		this.type = type;
 		switch (type){
 			case REGULAR_ENTRANCE: default:
-				destDepth = Dungeon.depth-1;
+				destDepth = com.shatteredpixel.shatteredpixeldungeon.GameModes.prevDepth(Dungeon.depth); //half and even shorter skip floors
 				destBranch = Dungeon.branch;
 				destType = Type.REGULAR_EXIT;
 				break;
 			case REGULAR_EXIT:
-				destDepth = Dungeon.depth+1;
+				destDepth = com.shatteredpixel.shatteredpixeldungeon.GameModes.nextDepth(Dungeon.depth); //half and even shorter skip floors
 				destBranch = Dungeon.branch;
 				destType = Type.REGULAR_ENTRANCE;
 				break;

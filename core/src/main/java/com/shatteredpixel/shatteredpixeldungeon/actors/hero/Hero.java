@@ -437,6 +437,7 @@ public class Hero extends Char {
 		}
 		//Pixel Dungeon Reforged, x1.1 easy, x1.0 medium, x0.9 hard, x0.8 impossible
 		HT = Math.round(HT * (1.2f - 0.1f * Dungeon.difficulty));
+		HT = com.shatteredpixel.shatteredpixeldungeon.Playstyles.maxHP(HT); //radar
 		float multiplier = RingOfMight.HTMultiplier(this);
 		HT = Math.round(multiplier * HT);
 		HT = com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.maxHP(this, HT);
@@ -1161,6 +1162,7 @@ public class Hero extends Char {
 		dr += RBAHero.bonusDR(this); //rebluearchive
 
 		dr = TransformationTalents.armor(this, dr); //Transformation PD talent catalog
+		dr = com.shatteredpixel.shatteredpixeldungeon.Playstyles.armor(dr); //radar
 		
 		return dr;
 	}
@@ -1201,6 +1203,10 @@ public class Hero extends Char {
 		//summoning, Summoning PD's soul weakness and the Soul Reaver hit softer, their minions do the work
 		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.powers.SoulWeakness.class) != null) dmg /= 4;
 		if (subClass == HeroSubClass.SOUL_REAVER) dmg = Math.round(dmg * 0.75f);
+
+		//radar, playstyle damage, thrown weapons count as ranged
+		dmg = wep instanceof MissileWeapon ? com.shatteredpixel.shatteredpixeldungeon.Playstyles.rangedDamage(this, dmg)
+				: com.shatteredpixel.shatteredpixeldungeon.Playstyles.meleeDamage(this, dmg);
 
 		if (dmg < 0) dmg = 0;
 		return dmg;
@@ -1272,6 +1278,7 @@ public class Hero extends Char {
 		speed = AscensionChallenge.modifyHeroSpeed(speed);
 		speed = SummoningHooks.speed(this, speed); //summoning
 		speed *= XunHeroes.speedFactor(this); //xun
+		speed = com.shatteredpixel.shatteredpixeldungeon.Playstyles.moveSpeed(speed); //radar
 
 		return speed;
 		
@@ -1347,7 +1354,7 @@ public class Hero extends Char {
 
 			float armed = delay * belongings.attackingWeapon().delayFactor( this );
 			if ( buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Furor.class ) != null) armed /= 4f;
-			return armed;
+			return com.shatteredpixel.shatteredpixeldungeon.Playstyles.attackDelay(armed); //radar
 			
 		} else {
 			//Normally putting furor speed on unarmed attacks would be unnecessary
@@ -3013,7 +3020,7 @@ public class Hero extends Char {
 				buff(Talent.WandPreservationCounter.class).detach();
 			}
 
-			if (lvl < MAX_LEVEL) {
+			if (lvl < com.shatteredpixel.shatteredpixeldungeon.GameModes.maxLevel()) { //even shorter caps the level
 				lvl++;
 				levelUp = true;
 				TransformationTalents.onLevelUp(this); //Transformation PD talent catalog
@@ -3068,7 +3075,7 @@ public class Hero extends Char {
 	}
 	
 	public static int maxExp( int lvl ){
-		return 5 + lvl * 5;
+		return com.shatteredpixel.shatteredpixeldungeon.GameModes.maxExp(lvl, 5 + lvl * 5); //half
 	}
 	
 	public boolean isStarving() {

@@ -489,7 +489,7 @@ public class Armor extends EquipableItem {
 	}
 
 	public int DRMax(int lvl){
-		if (Dungeon.isChallenged(Challenges.NO_ARMOR)){
+		if (Dungeon.isChallenged(Challenges.NO_ARMOR) || com.shatteredpixel.shatteredpixeldungeon.GameModes.weakArmor()){
 			return 1 + tier + lvl + augment.defenseFactor(lvl);
 		}
 
@@ -525,7 +525,7 @@ public class Armor extends EquipableItem {
 	}
 
 	public int DRMin(int lvl){
-		if (Dungeon.isChallenged(Challenges.NO_ARMOR)){
+		if (Dungeon.isChallenged(Challenges.NO_ARMOR) || com.shatteredpixel.shatteredpixeldungeon.GameModes.weakArmor()){
 			return 0;
 		}
 
