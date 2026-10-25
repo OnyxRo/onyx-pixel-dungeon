@@ -292,3 +292,10 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **A mod's missing counters and settings** (`Statistics.X`, `SPDSettings.X()`) go in with `python -I scripts/stats-shim.py build/fj.log` after a compile. It copies each declaration from the mod into `MagicLingStats` (point it at another class for another mod), rewrites the references and adds rename rows. It took 200 errors to 50 in one step.
 - **When the copier pulls in more than 150 files, undo and block first.** Delete the untracked files, `git checkout` Assets.java, trace who drags each system in from the `missing-imports.py --depth=5` tree, add those to `port-skip.txt`, then copy again.
 - **See one special floor with the tour.** `JAVA_TOOL_OPTIONS="-Donyx.gallery.only=allbosses -Donyx.gallery.label=<text>" scripts/gallery.sh "Onyx Gallery"`, it compiles with Gradle first. The pictures land in a folder of that name in the repo, delete it afterwards.
+
+## Added after Too Cruel PD Trials (2026-10-25)
+
+- A Kotlin mod cannot go through the copier. Read its hook files first (`hooks/*.kt`), list every place the mod's Java calls them, and give each its own one line call into a single helper class. All 71 shared edits then fit one `edit.py` spec.
+- Anything that runs inside `Level.create` must only use the level it is handed. `Level.getTransition(int)`, `Dungeon.level` and `Dungeon.hero.pos` still belong to the previous floor there.
+- Water and grass fill rates near 1 never finish painting (`Patch.generate` loops). Cap any multiplier on them.
+- A headless test for modes should call `TestBoot.stubWindow()`, give the hero a large health pool, spawn Shattered's own monsters (`MobSpawner.getMobRotation`) and count sprite or game screen crashes as HEADLESS. Give it a watchdog thread so a hang prints where it is stuck.
