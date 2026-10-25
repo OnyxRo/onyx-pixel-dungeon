@@ -621,11 +621,11 @@ public class SothothEyeDied extends Boss {
 
         Dungeon.level.drop(new Gold().quantity(1000), pos).sprite.drop();
 
-//        SPDSettings.unlockItem("avatars_warrior_3");
-//        SPDSettings.unlockItem("avatars_mage_3");
-//        SPDSettings.unlockItem("avatars_rogue_3");
-//        SPDSettings.unlockItem("avatars_huntress_3");
-//        SPDSettings.unlockItem("avatars_duelist_3");
+//        com.shatteredpixel.shatteredpixeldungeon.MagicLingStats.unlockItem("avatars_warrior_3");
+//        com.shatteredpixel.shatteredpixeldungeon.MagicLingStats.unlockItem("avatars_mage_3");
+//        com.shatteredpixel.shatteredpixeldungeon.MagicLingStats.unlockItem("avatars_rogue_3");
+//        com.shatteredpixel.shatteredpixeldungeon.MagicLingStats.unlockItem("avatars_huntress_3");
+//        com.shatteredpixel.shatteredpixeldungeon.MagicLingStats.unlockItem("avatars_duelist_3");
 
         ;
         cause = new EndYog();

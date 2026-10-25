@@ -316,7 +316,15 @@ Text. 19 lines the mod's English file left in Chinese were translated by hand (R
 
 Checks. MobArenaTest passes every new monster. BossArenaTest builds and plays every new arena with no failures. Fights that start by talking to someone (Dwarf General, Fire Magic Girl, Saka Fish, Sothoth, Yog) and some deaths stop at headless limits, so check them in the sandbox. None of it has been seen on screen yet.
 
-Left out, on purpose. The mod's town (its Zero hub, the hotel and their 25 or so characters and shops), the holiday and five year anniversary characters and rooms, the rooms on its hollow floors and its town story chain (sleeping Cerberus, Silence's altar, the lantern fire, the love room, Gudazi), the boss rush and random mode shops, the Dragon Girl's book library and the third hollow minigame (the all search hunt). `scripts/missing-mobs.py magicling` lists them, 52 characters, nearly all in the town.
+Left out, on purpose. The holiday and five year anniversary characters and rooms, the rooms on its hollow floors and its town story chain (sleeping Cerberus, Silence's altar, the lantern fire, the love room, Gudazi), the boss rush and random mode shops, the Dragon Girl's book library and the third hollow minigame (the all search hunt). `scripts/missing-mobs.py magicling` lists them, 52 characters, nearly all in the town.
+
+## Magic Ling PD, the town (2026-10-24)
+
+The mod's town (`NormalZeroFiveLevel`, its floor 0, a snowy port with a tavern, a campfire, a magic circle and shops) and the hotel beside it (`minilevels/HotelNoramlLevel`) are special floors now, "Town, the mod's home port and its people" and "Hotel beside the town" in the sandbox Floors panel. The town's dock is the way up and its north stairs the way down, its side door leads to the hotel and the hotel's door back to the town. 62 characters came with them (the townspeople, the five year anniversary guests and the hotel guests), each with its story dialog, all weight 0 on `ModRoster` so the sandbox spawn list has them too.
+
+Changes from the mod. The town showed some characters only after the mod's badges or in its own test builds, here everyone is there. The four shops took the mod's ice coins, which this game does not have. Their goods on the floor sell for gold, Nyz, Waloke and the dream shop repeat their story dialog instead of opening the coin shop, and Luo White says her stall only takes ice coins. Ice heal from the lantern fire heals ordinary health. The boss rush and random mode gate, the skin shop and the Scroll of Teletation were left out. Characters the mod gave a reward through a holiday item get an ordinary random item. The mod's counters and settings these characters read are in `MagicLingStats`, added by the new `scripts/stats-shim.py` straight from the mod's own declarations.
+
+Checks. MobArenaTest passes all 62 characters, WorldShuffleTest builds both floors, and a tour picture (`-Donyx.gallery.only=allbosses -Donyx.gallery.label=Town`, a new tour option) shows the town drawn with its people. Not played on screen yet.
 
 ## Magic Ling PD weapons and items (2026-10-17)
 

@@ -105,4 +105,39 @@ public class MagicLingStats {
 		fuckGeneratorAlone = 0;
 		dm720Fight = false;
 	}
+
+	//added by scripts/stats-shim.py from the mod's Statistics and SPDSettings
+	public static int BzmdrCJHeroSTR = 0;
+	public static int BzmdrCJHeroViewDistance = 0;
+	public static boolean CatFirst = false;
+	public static boolean OnlyBloodUpgrade = false;
+	public static boolean PinkFox = false;
+	public static int gdzHelpDungeon;
+	public static int hcDialogLevel;
+	public static boolean moonlowgetAloneRoom;
+	public static boolean onlyLing = false;
+	public static int zeroItemLevel;
+	private static boolean _catSee = false;
+	public static boolean CatSee() { return _catSee; }
+	public static void CatSee( boolean value ) { _catSee = value; }
+	private static int _recordFlowerChallengs = 0;
+	public static int RecordFlowerChallengs() { return _recordFlowerChallengs; }
+	public static void RecordFlowerChallengs( int value ) { _recordFlowerChallengs = value; }
+	private static boolean _smallLeafGetCoin = false;
+	public static boolean SmallLeafGetCoin() { return _smallLeafGetCoin; }
+	public static void SmallLeafGetCoin( boolean value ) { _smallLeafGetCoin = value; }
+	private static boolean _smallLeafHCGetCoin = false;
+	public static boolean SmallLeafHCGetCoin() { return _smallLeafHCGetCoin; }
+	public static void SmallLeafHCGetCoin( boolean value ) { _smallLeafHCGetCoin = value; }
+	private static boolean _blood = false;
+	public static boolean blood() { return _blood; }
+	public static void blood( boolean value ) { _blood = value; }
+	private static int _currentBGM = 3;
+	public static int currentBGM() { return _currentBGM; }
+	public static void currentBGM( int value ) { _currentBGM = value; }
+	private static String _unlockItem = "";
+	public static String unlockItem() { return _unlockItem; }
+	public static void unlockItem( String itemName ) { _unlockItem = itemName; }
+	public static void unlockItem( String itemName, boolean allowMulti ) { }
+	public static void unlockItem( String itemName, boolean allowMulti, int limit ) { }
 }

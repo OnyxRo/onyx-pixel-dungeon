@@ -497,6 +497,16 @@ public class Gallery {
 			}
 			for (int i = 0; i < com.shatteredpixel.shatteredpixeldungeon.levels.SpecialFloors.LIST.size(); i++) TARGETS.add( new int[]{ 1, i, 0, 0 } );
 			for (int d : new int[]{ 5, 10, 15, 20, 25, 26 }) TARGETS.add( new int[]{ 2, 0, d, 0 } );
+			//-Donyx.gallery.label=Town keeps only the special floors whose label contains that text
+			String label = System.getProperty( "onyx.gallery.label" );
+			if (label != null) {
+				ArrayList<int[]> keep = new ArrayList<>();
+				for (int[] t : TARGETS) {
+					if (t[0] == 1 && com.shatteredpixel.shatteredpixeldungeon.levels.SpecialFloors.LIST.get( t[1] ).label.contains( label )) keep.add( t );
+				}
+				TARGETS.clear();
+				TARGETS.addAll( keep );
+			}
 			int from = Integer.getInteger( "onyx.gallery.from", 0 ), count = Integer.getInteger( "onyx.gallery.count", Integer.MAX_VALUE );
 			ArrayList<int[]> part = new ArrayList<>( TARGETS.subList( Math.min( from, TARGETS.size() ), (int)Math.min( (long)TARGETS.size(), (long)from + count ) ) );
 			TARGETS.clear();

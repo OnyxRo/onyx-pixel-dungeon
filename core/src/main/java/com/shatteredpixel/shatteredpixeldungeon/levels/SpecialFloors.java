@@ -123,6 +123,8 @@ public class SpecialFloors {
 		add( "Magic Ling PD", "DM-Zero, the boss rush finale", com.shatteredpixel.shatteredpixeldungeon.levels.DM920BossLevel::new );
 		add( "Magic Ling PD", "Sothoth boss, the galaxy key", com.shatteredpixel.shatteredpixeldungeon.levels.spical.GalaxyKeyBossLevel::new );
 		add( "Magic Ling PD", "White Yan boss, the peach blossom hall", com.shatteredpixel.shatteredpixeldungeon.levels.spical.PeachGodBossLevel::new );
+		add( "Magic Ling PD", "Town, the mod's home port and its people", com.shatteredpixel.shatteredpixeldungeon.levels.NormalZeroFiveLevel::new );
+		add( "Magic Ling PD", "Hotel beside the town", com.shatteredpixel.shatteredpixeldungeon.levels.minilevels.HotelNoramlLevel::new );
 		add( "Magic Ling PD", "Fire Dragon boss, the lava caves", com.shatteredpixel.shatteredpixeldungeon.levels.LaveCavesBossLevel::new );
 		add( "Magic Ling PD", "Hollow theatre, Morpheus and the minigames", com.shatteredpixel.shatteredpixeldungeon.levels.hollow.TheatreLevel::new );
 		add( "Magic Ling PD", "Cerberus boss, the hollow river", com.shatteredpixel.shatteredpixeldungeon.levels.hollow.CerDogBossLevel::new );

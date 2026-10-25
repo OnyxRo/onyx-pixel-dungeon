@@ -34,6 +34,10 @@ public class Assets {
 	}
 
 	public static class Environment {
+		public static final String JORCT_ZERO = "environment/custom_tiles/main/magicling/zero.png"; //ported, magicling
+		public static final String WATER_ZERO = "environment/magicling/water_zero.png"; //ported, magicling
+		public static final String TILES_ZERO = "environment/custom_tiles/main/magicling/tiles_zero.png"; //ported, magicling
+		public static final String HOTEL_ZERO = "environment/custom_tiles/main/magicling/zero2.png"; //ported, magicling
 		public static final String TILES_FIRE = "environment/magicling/tiles_fire.png"; //ported, magicling
 		public static final String LAVACAVE_OP = "environment/custom_tiles/magicling/lavecave_behind.png"; //ported, magicling
 		public static final String LAVACAVE_OP_HRAD = "environment/custom_tiles/magicling/lavecave_behind_hard.png"; //ported, magicling
@@ -214,6 +218,9 @@ public class Assets {
 	}
 
 	public static class Music {
+		public static final String TOWN = "music/magicling/town.ogg"; //ported, magicling
+		public static final String PRACH = "music/magicling/peach.ogg"; //ported, magicling
+		public static final String SAND = "music/magicling/Sand.ogg"; //ported, magicling
 		public static final String DRAGON_LING = "music/boss/magicling/Boss-dragon.ogg"; //ported, magicling
 		public static final String BGM_1A = "music/magicling/Level1_FireCave.ogg"; //ported, magicling
 		public static final String PACMAN = "music/hollow/magicling/pacman_10yearold_mix.ogg"; //ported, magicling
@@ -555,6 +562,33 @@ public class Assets {
 	}
 
 	public static class Splashes {
+		public static final String LENA = "splashes/magicling/Lena_portraits.png"; //ported, magicling
+		public static final String YXF = "splashes/magicling/huntress_portraits.png"; //ported, magicling
+		public static final String COON = "splashes/magicling/⑨.png"; //ported, magicling
+		public static final String MORUOS = "splashes/magicling/mruos_portraits.png"; //ported, magicling
+		public static final String LINP = "splashes/magicling/Ling_portraits.png"; //ported, magicling
+		public static final String JIT = "splashes/magicling/JIT_portraits.png"; //ported, magicling
+		public static final String GDZ = "splashes/magicling/gdz_portraits.png"; //ported, magicling
+		public static final String XMS_GDZ = "splashes/magicling/Xmas_gdz_portraits.png"; //ported, magicling
+		public static final String YSGDZ = "splashes/magicling/gdz_yeas.png"; //ported, magicling
+		public static final String GQGDZ = "splashes/magicling/gdz_plus.png"; //ported, magicling
+		public static final String SERENE = "splashes/magicling/serene_portraits.png"; //ported, magicling
+		public static final String MT_CJ = "splashes/magicling/mint_cj_portraits.png"; //ported, magicling
+		public static final String MT = "splashes/magicling/mint_portraits.png"; //ported, magicling
+		public static final String PIANO = "splashes/magicling/piano_portraits.png"; //ported, magicling
+		public static final String WINTERBELL = "splashes/magicling/winter_bell_portraits.png"; //ported, magicling
+		public static final String WTX = "splashes/magicling/yan_portraits.png"; //ported, magicling
+		public static final String HK = "splashes/magicling/hk.png"; //ported, magicling
+		public static final String LMOON = "splashes/magicling/lowmoon_portraits.png"; //ported, magicling
+		public static final String GDZPLS = "splashes/magicling/gdz_goldplus.png"; //ported, magicling
+		public static final String MOON = "splashes/magicling/moon_portraits.png"; //ported, magicling
+		public static final String NYZ = "splashes/magicling/nyz_portraits.png"; //ported, magicling
+		public static final String COMPLEX = "splashes/magicling/complex.png"; //ported, magicling
+		public static final String BLUECJ = "splashes/magicling/blue_cj.png"; //ported, magicling
+		public static final String SMLF = "splashes/magicling/smallleaf_portraits.png"; //ported, magicling
+		public static final String CHOCO = "splashes/magicling/choco_portraits.png"; //ported, magicling
+		public static final String BZMR = "splashes/magicling/bzmdr_portraits.png"; //ported, magicling
+		public static final String ATRP = "splashes/magicling/ATRI_portraits.png"; //ported, magicling
 		public static final String Silence_0 = "splashes/hollow/Silence/magicling/silence_portraits(0).png"; //ported, magicling
 		public static final String Silence_2 = "splashes/hollow/Silence/magicling/silence_portraits(2).png"; //ported, magicling
 		public static final String Silence_3 = "splashes/hollow/Silence/magicling/silence_portraits(3).png"; //ported, magicling
@@ -652,6 +686,41 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String PINKFOX = "sprites/npc/magicling/pinkfox.png"; //ported, magicling
+		public static final String LXFCJ = "sprites/npc/magicling/lostwhitecj.png"; //ported, magicling
+		public static final String CJBL = "sprites/npc/magicling/blue_cj.png"; //ported, magicling
+		public static final String HEALRIGH = "sprites/magicling/healfire.png"; //ported, magicling
+		public static final String TOMB = "sprites/npc/magicling/tomb.png"; //ported, magicling
+		public static final String SKSH = "sprites/npc/magicling/skin_shop.png"; //ported, magicling
+		public static final String ZAKO = "sprites/npc/magicling/zako.png"; //ported, magicling
+		public static final String YUYE = "sprites/npc/magicling/yuye.png"; //ported, magicling
+		public static final String XR = "sprites/npc/magicling/Xiayuan.png"; //ported, magicling
+		public static final String WHITE = "sprites/npc/magicling/whiteling.png"; //ported, magicling
+		public static final String SMALLEAF = "sprites/npc/magicling/smallleaf.png"; //ported, magicling
+		public static final String PIA = "sprites/npc/magicling/PianoLe.png"; //ported, magicling
+		public static final String NYZD = "sprites/npc/magicling/nyz.png"; //ported, magicling
+		public static final String MORUS = "sprites/npc/magicling/mruos.png"; //ported, magicling
+		public static final String MOLX = "sprites/npc/magicling/lowmoon.png"; //ported, magicling
+		public static final String MOONC = "sprites/npc/magicling/mooncat.png"; //ported, magicling
+		public static final String MINT = "sprites/npc/magicling/mint.png"; //ported, magicling
+		public static final String LXF = "sprites/npc/magicling/lostwhite.png"; //ported, magicling
+		public static final String LanFire = "sprites/npc/magicling/lanfire.png"; //ported, magicling
+		public static final String KUSUMI = "sprites/npc/magicling/kusumi.png"; //ported, magicling
+		public static final String KONG = "sprites/npc/magicling/ChineseGongFu.png"; //ported, magicling
+		public static final String JIT = "sprites/npc/magicling/JIT.png"; //ported, magicling
+		public static final String ICEGIRL_NPC = "sprites/npc/magicling/icemagicgirl.png"; //ported, magicling
+		public static final String HK = "sprites/npc/magicling/hk.png"; //ported, magicling
+		public static final String GUDAZI = "sprites/npc/magicling/gdz.png"; //ported, magicling
+		public static final String FIREGIRL_NPC = "sprites/npc/magicling/firemagicgirl.png"; //ported, magicling
+		public static final String LEZI = "sprites/npc/magicling/le_zi.png"; //ported, magicling
+		public static final String DOGMUSIC = "sprites/npc/magicling/ken_chan.png"; //ported, magicling
+		public static final String DEEP = "sprites/npc/magicling/deepsea.png"; //ported, magicling
+		public static final String CHOCO = "sprites/npc/magicling/choco.png"; //ported, magicling
+		public static final String BZ = "sprites/npc/magicling/bzmder.png"; //ported, magicling
+		public static final String ATRI = "sprites/npc/magicling/ATRI.png"; //ported, magicling
+		public static final String ARCHETTO = "sprites/npc/magicling/avrt_princess.png"; //ported, magicling
+		public static final String AG = "sprites/npc/magicling/ag.png"; //ported, magicling
+		public static final String DKGirl = "sprites/npc/magicling/DKGirl.png"; //ported, magicling
 		public static final String KUSUMI_MG = "sprites/npc/magicling/kusumi_mg.png"; //ported, magicling
 		public static final String ANIMATIONS_DARKSUN = "sprites/items/Animation/magicling/singular_point.png"; //ported, magicling
 		public static final String GOLD_CRAB = "sprites/gold/magicling/crab.png"; //ported, magicling

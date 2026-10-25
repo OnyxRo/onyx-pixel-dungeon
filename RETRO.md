@@ -123,3 +123,8 @@ Three things cost rounds. ModRoster did not compile because the bosses live in s
 - A boss that looped forever inside its death cost a 15 minute wait. MobArenaTest now prints where a stack overflow started, and a rename row caps the mod's endless drop loops.
 - port-mob.py crashed on mixed line endings in ModRoster, its anchor is a regex now. port-prefix.py took Chinese text, it prefers the mod's `_en` file now.
 - Guarding arena casts by hand is now `guard-casts.py`, and translating leftover Chinese is `find-untranslated.py` plus translator agents.
+
+## 2026-10-24, Magic Ling town
+- The first copy pulled in 226 files and whole mod systems (buff scanner, coin shops, a dream level). Undoing and blocking those cost one extra copier run, the skill now says to do that at once past 150 files.
+- About 100 errors were mod counters and settings, fixed one by one in earlier batches. New `stats-shim.py` adds them all from the mod's declarations.
+- The tour had no way to picture one special floor. Added `-Donyx.gallery.label`.
