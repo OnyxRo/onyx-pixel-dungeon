@@ -194,7 +194,7 @@ public class Artifact extends KindofMisc {
 	public String status() {
 		
 		//if the artifact isn't IDed, or is cursed, don't display anything
-		if (!isIdentified() || cursed){
+		if (!isIdentified() || (cursed && !com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.artifactCurseIgnored())){ //xun, Cursed Power
 			return null;
 		}
 
@@ -279,7 +279,8 @@ public class Artifact extends KindofMisc {
 		}
 
 		public boolean isCursed() {
-			return target.buff(MagicImmune.class) == null && cursed;
+			return target.buff(MagicImmune.class) == null && cursed
+					&& !com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.artifactCurseIgnored(); //xun, Cursed Power
 		}
 
 		public void charge(Hero target, float amount){

@@ -1335,6 +1335,7 @@ public class Hero extends Char {
 		//Dragonic PD, Fortify also speeds up attacks
 		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Fortify.class) != null) delay *= 0.75f;
 		delay = SummoningHooks.attackDelay(this, delay); //summoning
+		delay /= XunTalents.plagueSpeed(this, 3); //xun, Plague Eucharist
 
 		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ninja.OneSword.OKU_OneSword.class) != null
 				&& belongings.attackingWeapon() instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon){
@@ -2440,6 +2441,7 @@ public class Hero extends Char {
 
 		damage = RearrangedHero.defenseProc(this, enemy, damage); //rearranged
 		damage = RBAHero.defenseProc(this, enemy, damage); //rebluearchive
+		XunTalents.interruptMeal(this); //xun, Toilsome Meal
 
 		return super.defenseProc( enemy, damage );
 	}
@@ -2572,6 +2574,7 @@ public class Hero extends Char {
 
 		//Transformation PD talents that react to a hit (Alchemy Shield, Dying Will, the Friar's sanity loss)
 		dmg = Talent.onHeroDamage( this, dmg, src );
+		XunTalents.onHeroDamaged( this, dmg, src ); //xun, Psionic Blast
 
 		int preHP = HP + shielding();
 		if (src instanceof Hunger) preHP -= shielding();

@@ -180,9 +180,10 @@ public class Hunger extends Buff implements Hero.Doom {
 
 		float oldLevel = level;
 
+		energy = com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.hungerEnergy(energy); //xun, Eat Little and Often
 		level -= energy;
 		if (level < 0 && !overrideLimits) {
-			level = 0;
+			level = com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.hungerFloor(level); //xun
 		} else if (level > STARVING) {
 			float excess = level - STARVING;
 			level = STARVING;

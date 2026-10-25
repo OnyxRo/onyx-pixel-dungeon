@@ -92,5 +92,6 @@ public class ScrollOfMagicMapping extends Scroll {
 	
 	public static void discover( int cell ) {
 		CellEmitter.get( cell ).start( Speck.factory( Speck.DISCOVER ), 0.1f, 4 );
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.secretForesight(); //xun, Secret Foresight
 	}
 }

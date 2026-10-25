@@ -93,7 +93,9 @@ public class Buff extends Actor {
 	}
 	
 	public void detach() {
-		if (target.remove( this ) && target.sprite != null) fx( false );
+		boolean removed = target.remove( this ); //xun
+		if (removed && target.sprite != null) fx( false );
+		if (removed) com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.onBuffDetached(this); //xun, the Wraith gains a buff when a debuff wears off
 	}
 	
 	@Override

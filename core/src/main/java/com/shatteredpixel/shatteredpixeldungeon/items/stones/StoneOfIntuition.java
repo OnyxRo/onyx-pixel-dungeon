@@ -130,7 +130,8 @@ public class StoneOfIntuition extends InventoryStone {
 					}
 					if (!anonymous) {
 						Catalog.countUse(StoneOfIntuition.class);
-						if (curUser.buff(IntuitionUseTracker.class) == null) {
+						if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.keepIntuitionStone(item.getClass() == curGuess)) {} //xun, Fine Intuition
+						else if (curUser.buff(IntuitionUseTracker.class) == null) {
 							Buff.affect(curUser, IntuitionUseTracker.class);
 						} else {
 							curItem.detach(curUser.belongings.backpack);

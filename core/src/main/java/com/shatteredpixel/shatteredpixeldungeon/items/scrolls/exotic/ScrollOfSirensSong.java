@@ -129,6 +129,14 @@ public class ScrollOfSirensSong extends ExoticScroll {
 			announced = true;
 		}
 
+		//xun, Charisma +3 heals charmed creatures each turn
+		public float xunToHeal = 0;
+		@Override
+		public boolean act() {
+			if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.charismaHeal(this)) { spend(TICK); return true; }
+			return super.act();
+		}
+
 		//transformation, an enthralled creature loses the Necronomicon's soul bound mark
 		@Override
 		public boolean attachTo(com.shatteredpixel.shatteredpixeldungeon.actors.Char target) {

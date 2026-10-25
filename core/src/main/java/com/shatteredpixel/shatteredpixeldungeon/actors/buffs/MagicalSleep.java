@@ -32,12 +32,13 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 public class MagicalSleep extends Buff {
 
 	private static final float STEP = 1f;
+	public float xunPartialHeal = 0; //xun, Sleepwalking
 
 	@Override
 	public boolean attachTo( Char target ) {
 		if (!target.isImmune(Sleep.class) && super.attachTo( target )) {
 			
-			target.paralysed++;
+			if (!com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.sleepwalks(target)) target.paralysed++; //xun
 			
 			if (target.alignment == Char.Alignment.ALLY) {
 				if (target.HP == target.HT) {
@@ -49,7 +50,7 @@ public class MagicalSleep extends Buff {
 				}
 			}
 
-			if (target instanceof Mob) {
+			if (target instanceof Mob && !com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.sleepwalks(target)) { //xun
 				((Mob) target).state = ((Mob) target).SLEEPING;
 			}
 
@@ -61,13 +62,14 @@ public class MagicalSleep extends Buff {
 
 	@Override
 	public boolean act(){
-		if (target instanceof Mob && ((Mob) target).state != ((Mob) target).SLEEPING){
+		if (target instanceof Mob && ((Mob) target).state != ((Mob) target).SLEEPING
+				&& !com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.sleepwalks(target)){ //xun
 			detach();
 			return true;
 		}
 		if (target.alignment == Char.Alignment.ALLY) {
-			target.HP = Math.min(target.HP+1, target.HT);
-			if (target instanceof  Hero) ((Hero) target).resting = true;
+			target.HP = Math.min(target.HP + com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.sleepHeal(this), target.HT); //xun
+			if (target instanceof  Hero && !com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.sleepwalks(target)) ((Hero) target).resting = true; //xun
 			if (target.HP == target.HT) {
 				if (target instanceof  Hero) GLog.p(Messages.get(this, "wakeup"));
 				detach();
@@ -79,7 +81,7 @@ public class MagicalSleep extends Buff {
 
 	@Override
 	public void detach() {
-		if (target.paralysed > 0) {
+		if (target.paralysed > 0 && !com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.sleepwalks(target)) { //xun
 			target.paralysed--;
 		}
 		if (target instanceof Hero) {

@@ -81,6 +81,7 @@ public class Waterskin extends Item {
 		if (volume > 0) {
 			actions.add( AC_DRINK );
 		}
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.waterskinActions(hero, actions); //xun, Blood Intuition
 		return actions;
 	}
 
@@ -88,6 +89,7 @@ public class Waterskin extends Item {
 	public void execute( final Hero hero, String action ) {
 
 		super.execute( hero, action );
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.waterskinAction(hero, this, action)) return; //xun
 
 		if (action.equals( AC_DRINK )) {
 

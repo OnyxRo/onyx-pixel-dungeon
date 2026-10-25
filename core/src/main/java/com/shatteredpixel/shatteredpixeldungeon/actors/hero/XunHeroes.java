@@ -97,6 +97,10 @@ public class XunHeroes {
 	public static void ensureBuffs( Hero hero ){
 		if (hero.heroClass == HeroClass.ENGINEER && hero.buff(Pulse.class) == null)
 			ActionIndicator.setAction(Buff.affect(hero, Pulse.class));
+		if (hero.hasTalent(Talent.ACID_RAIN) && hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AcidRain.class) == null)
+			ActionIndicator.setAction(Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AcidRain.class));
+		if (hero.pointsInTalent(Talent.HOMEMADE_DRUG) >= 2 && hero.buff(XunTalents.HomemadeDrugTracker.class) == null)
+			Buff.affect(hero, XunTalents.HomemadeDrugTracker.class);
 		switch (hero.subClass){
 			case WAVECHASER:
 				if (hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WhirlpoolBuff.class) == null)
@@ -129,7 +133,8 @@ public class XunHeroes {
 	public static float speedFactor( Hero hero ){
 		float s = XunTalents.speed(hero);
 		if (hero.heroClass != HeroClass.EXPLORER || hero.flying) return s;
-		return terrain(hero) == Terrain.WATER ? 1.15f * s : s;
+		//the Wavechaser swims through Char.spend instead, which speeds up everything he does in water
+		return terrain(hero) == Terrain.WATER && hero.subClass != HeroSubClass.WAVECHASER ? 1.15f * s : s;
 	}
 
 	public static float accuracyFactor( Hero hero ){

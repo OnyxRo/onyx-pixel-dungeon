@@ -51,7 +51,7 @@ public class DisintegrationTrap extends Trap {
 
 	@Override
 	public void activate() {
-		Char target = Actor.findChar(pos);
+		Char target = com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.aimedTrapStart(Actor.findChar(pos)); //xun
 
 		//find the closest char that can be aimed at
 		//can't target beyond view distance, with a min of 6 (torch range)
@@ -63,7 +63,7 @@ public class DisintegrationTrap extends Trap {
 				if (!ch.isAlive()) continue;
 				float curDist = Dungeon.level.trueDistance(pos, ch.pos);
 				//invis targets are considered to be at max range
-				if (ch.invisible > 0) curDist = Math.max(curDist, range);
+				if (ch.invisible > 0 || com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.trapperUnseen(ch)) curDist = Math.max(curDist, range); //xun
 				Ballistica bolt = new Ballistica(pos, ch.pos, Ballistica.PROJECTILE);
 				if (bolt.collisionPos == ch.pos
 						&& ( curDist < closestDist || (curDist == closestDist && target instanceof Hero))){

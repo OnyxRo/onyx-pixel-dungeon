@@ -1404,6 +1404,7 @@ public class Dungeon {
 		}
 
 		ch.modifyPassable(passable);
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.trapperPassable(ch, passable); //xun, Sensitive Pedal
 
 		if (chars) {
 			for (Char c : Actor.chars()) {
