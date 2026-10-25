@@ -116,3 +116,10 @@ Three things cost rounds. ModRoster did not compile because the bosses live in s
 ## 2026-10-24 Magic Ling batch 5, floor 10 and 15 bosses
 
 `check.sh --new` ran every suite for about an hour (a full javac build is about 12 minutes here, then 25 test suites), and a second check started before the first ended, so both wrote the same log. Fix, `BOSS_ONLY=... FAST=1 scripts/check.sh --quick Mob1 Mob2` now runs the named boss arenas too, and `scripts/test-one.sh BossArenaTest A,B` or `test-one.sh WorldShuffleTest 30` rerun a test without compiling. The port-mod skill says so. A wait loop that greps a file only written at the end never finishes, wait on `build/check.log` ending in "full log".
+
+## 2026-10-24, Magic Ling finish
+- mod-report missed six monsters behind name clashes. New `missing-mobs.py` finds them from the class tree.
+- Writing rename rows with shell heredocs broke backslashes three times. New `add-renames.py` takes rows from a file and checks renames.py still imports.
+- A boss that looped forever inside its death cost a 15 minute wait. MobArenaTest now prints where a stack overflow started, and a rename row caps the mod's endless drop loops.
+- port-mob.py crashed on mixed line endings in ModRoster, its anchor is a regex now. port-prefix.py took Chinese text, it prefers the mod's `_en` file now.
+- Guarding arena casts by hand is now `guard-casts.py`, and translating leftover Chinese is `find-untranslated.py` plus translator agents.

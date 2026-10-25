@@ -1,0 +1,100 @@
+package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.legend;
+
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
+
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WellFed;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Mace;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+
+public class RiceSword extends MeleeWeapon {
+
+    {
+        image = ItemSpriteSheet.RICESWORD;
+        hitSound = Assets.Sounds.HIT_STAB;
+        hitSoundPitch = 1.3f;
+        tier = 5;
+        RCH = 2;
+    }
+
+    
+    public int iceCoinValue() {
+        if (false){
+            return (int) (200 * 0.9f);
+        }
+        return 200;
+    }
+
+
+    @Override
+    public int proc(Char attacker, Char defender, int damage) {
+
+        if (attacker instanceof Hero) {
+            Hero hero = (Hero) attacker;
+            Char enemy = hero.enemy();
+            if (enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)) {
+                Buff.affect(defender, Hex.class, 2+buffedLvl()/4f);
+            }
+        }
+
+        return super.proc(attacker, defender, damage);
+    }
+    @Override
+    public int min(int lvl) {
+        return tier + lvl * 3;
+    }
+
+    @Override
+    public int max(int lvl) {
+        Hunger hungerBuff = hero.buff(Hunger.class);
+
+        if(hero != null && hungerBuff != null){
+            if(hero.buff(WellFed.class) != null){
+                return 5*(tier+1) + lvl * Math.max(0, hungerBuff.hunger() / 150) + lvl;
+            } else {
+                return 5*(tier+1) + lvl * Math.max(0, hungerBuff.hunger() / 200) + lvl;
+            }
+        } else {
+            return 5*(tier+1) + lvl * lvl;
+        }
+
+    }
+
+    @Override
+	public String targetingPrompt() {
+		return Messages.get(this, "prompt");
+	}
+
+	@Override
+	protected void duelistAbility(Hero hero, Integer target) {
+		//+(4+1.5*lvl) damage, roughly +55% base dmg, +75% scaling
+		int dmgBoost = augment.damageFactor(4 + Math.round(1.5f*buffedLvl()));
+		Mace.heavyBlowAbility(hero, target, 1, dmgBoost, this);
+	}
+
+	@Override
+	public String abilityInfo() {
+		int dmgBoost = levelKnown ? 4 + Math.round(1.5f*buffedLvl()) : 4;
+		if (levelKnown){
+			return Messages.get(this, "ability_desc", augment.damageFactor(min()+dmgBoost), augment.damageFactor(max()+dmgBoost));
+		} else {
+			return Messages.get(this, "typical_ability_desc", min(0)+dmgBoost, max(0)+dmgBoost);
+		}
+	}
+
+	public String upgradeAbilityStat(int level){
+		int dmgBoost = 4 + Math.round(1.5f*level);
+		return augment.damageFactor(min(level)+dmgBoost) + "-" + augment.damageFactor(max(level)+dmgBoost);
+	}
+
+}

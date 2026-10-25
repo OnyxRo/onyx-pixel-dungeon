@@ -1782,6 +1782,9 @@ public abstract class Char extends Actor {
 	
 	protected final HashSet<Class> immunities = new HashSet<>();
 
+	//magicling, the Dead Bomb enchantment marks a target that will die for good
+	public boolean TrueDied = false;
+
 	//magicling, lets a boss make the monsters it summons immune to something
 	public void addImmunity( Class c ){
 		immunities.add( c );

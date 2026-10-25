@@ -1299,6 +1299,10 @@ public class Dungeon {
 				if (Char.hasProp(m, Char.Property.OBJECT)){
 					continue;
 				}
+				//a mod monster summoned with no room can be left at an invalid cell
+				if (m.pos <= level.width() || m.pos >= level.length() - level.width() - 1){
+					continue;
+				}
 
 				BArray.or( level.visited, level.heroFOV, m.pos - 1 - level.width(), 3, level.visited );
 				BArray.or( level.visited, level.heroFOV, m.pos - 1, 3, level.visited );

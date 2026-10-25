@@ -1505,12 +1505,35 @@ public enum Catalog {
 		BREWS_ELIXIRS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfNukeCole.class);
 		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.galaxy.SliverLockSword.class);
 		POTIONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlameX.class);
+		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.hightwand.WandOfBlueFuck.class);
+		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfScale.class);
 		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfGodIce.class);
 		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfSun.class);
 		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.hightwand.WandOfHightHunderStorm.class);
 
 		//items ported from magicling
 		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.legend.KingAxe.class);
+
+		//items ported from magicling
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.BloodthirstyThorn.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.spdtomlpd.CursedBlade.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.spdtomlpd.DoomsdayScepter.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagicTorch.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.spdtomlpd.MorningStar.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.spdtomlpd.NailingSpear.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.legend.RiceSword.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.legend.ForestBow.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.IceFishSword.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.spdtomlpd.SouthPointSword.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.legend.ClearSword.class);
+		ENCHANTMENTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.DeadBomb.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.IceDewVialSword.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.IceSan.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.spdtomlpd.LifeCutter.class);
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.VoidSword.class);
+		BREWS_ELIXIRS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.GhostLingElixir.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.quest.KillSwarm.class);
+		BOMBS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.bombs.LaserPython.class);
 
 
 	}

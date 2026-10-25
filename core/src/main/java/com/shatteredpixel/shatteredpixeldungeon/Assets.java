@@ -652,6 +652,8 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String KUSUMI_MG = "sprites/npc/magicling/kusumi_mg.png"; //ported, magicling
+		public static final String ANIMATIONS_DARKSUN = "sprites/items/Animation/magicling/singular_point.png"; //ported, magicling
 		public static final String GOLD_CRAB = "sprites/gold/magicling/crab.png"; //ported, magicling
 		public static final String GOLD_GNOLL = "sprites/gold/magicling/gnoll.png"; //ported, magicling
 		public static final String FRDG = "sprites/boss/magicling/fireDragon.png"; //ported, magicling

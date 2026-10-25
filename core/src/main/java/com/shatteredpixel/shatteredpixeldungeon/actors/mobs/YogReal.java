@@ -583,7 +583,8 @@ public class YogReal extends Boss {
         Dungeon.level.drop(new com.shatteredpixel.shatteredpixeldungeon.items.Gold(30),pos);
 
        for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-            if (mob.alignment == Alignment.ENEMY && mob != this) {
+            //magicling, two Yogs on one floor (the sandbox) killed each other back forever
+            if (mob.alignment == Alignment.ENEMY && mob != this && !(mob instanceof YogReal) && mob.isAlive()) {
                 mob.die( cause );
             }
         }

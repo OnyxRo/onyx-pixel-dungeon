@@ -59,6 +59,7 @@ public class MagicLingStats {
 	public static int getAlLSearchScore;
 	public static int moveBoxScoreMax;
 	public static boolean godGirl = false;
+	public static int ChaicBlood;
 	private static int moveBoxRecord, pacManRecord;
 	public static int MoveBoxScore() { return moveBoxRecord; }
 	public static void MoveBoxScore( int value ) { moveBoxRecord = Math.max(moveBoxRecord, value); }
