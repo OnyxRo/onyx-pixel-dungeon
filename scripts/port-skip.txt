@@ -188,3 +188,6 @@ DistressSignalNesting
 ColorTargetedCell
 EndingBlade
 RandomBuff
+DragonGirlBlue
+WndDragonGirlBlue
+AncityStone

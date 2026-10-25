@@ -494,12 +494,13 @@ public class WorldShuffle {
 						new com.shatteredpixel.shatteredpixeldungeon.levels.ColdChestBossLevel(),
 						new com.shatteredpixel.shatteredpixeldungeon.levels.GreenStlingBossLevel(),
 						new com.shatteredpixel.shatteredpixeldungeon.levels.nosync.DeepShadowLevel() };
-				//floor 15, DM-720 and its pylons, Roger in the ancient tomb, the Magic Girl in the cold caves and the Fire Magic Girl in the hall
+				//floor 15, DM-720 and its pylons, Roger in the ancient tomb, the Magic Girl in the cold caves, the Fire Magic Girl in the hall and the Saka Fish in the ancient city
 				case 15: return new Level[]{
 						new com.shatteredpixel.shatteredpixeldungeon.levels.CaveTwoBossLevel(),
 						new com.shatteredpixel.shatteredpixeldungeon.levels.tomb.RogerBossLevel(),
 						new com.shatteredpixel.shatteredpixeldungeon.levels.CavesGirlDeadLevel(),
-						new com.shatteredpixel.shatteredpixeldungeon.levels.ShopBossLevel() };
+						new com.shatteredpixel.shatteredpixeldungeon.levels.ShopBossLevel(),
+						new com.shatteredpixel.shatteredpixeldungeon.levels.AncientMysteryCityBossLevel() };
 				//floor 20, the Dwarf General in his parliament and the Dwarf Master
 				case 20: return new Level[]{
 						new com.shatteredpixel.shatteredpixeldungeon.levels.DwarfGeneralBossLevel(),

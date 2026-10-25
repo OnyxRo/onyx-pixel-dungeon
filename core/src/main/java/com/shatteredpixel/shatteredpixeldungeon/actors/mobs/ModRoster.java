@@ -647,6 +647,9 @@ public class ModRoster {
 		add( "magicling", DMZERO.class, 0, 1, 99 );
 		add( "magicling", GreenDiamndMimic.class, 0, 1, 99 );
 		add( "magicling", NewBlackHost.class, 0, 1, 99 );
+		add( "magicling", SakaFishBoss.class, 0, 1, 99 );
+		add( "magicling", DictFish.class, 0, 1, 99 );
+		add( "magicling", RoomStone.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

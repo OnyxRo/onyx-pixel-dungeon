@@ -852,6 +852,9 @@ public enum Catalog {
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.books.bookslist.HellFireBooks.class);
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.books.playbookslist.BzmdrBooks.class);
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.books.playbookslist.DeYiZiBooks.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.galaxy.AbyssBook.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.galaxy.PaoPaoBook.class);
+		ARMOR.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.custom.AncityArmor.class);
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.books.playbookslist.MoneyMoreBooks.class);
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.books.playbookslist.PinkRandomBooks.class);
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.books.questbookslist.HollowCityBook.class);

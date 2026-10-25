@@ -277,6 +277,10 @@ SPS_RULES = [
     ('Magic Ling static imports of later counters', r'\bimport\s+static\s+com\.shatteredpixel\.shatteredpixeldungeon\.Statistics\.(gooFight|CrivusbossTeleporter|RandMode|NoTime|TrueYogNoDied|winGame|difficultyDLCEXLevel);', r'import static com.shatteredpixel.shatteredpixeldungeon.MagicLingStats.\1;'),
     ('Magic Ling bare salt water tile', r'(?<![\w.])SALT_WATER\b', 'Terrain.WATER'),
     ('Magic Ling static import of salt water', r'(?m)^import\s+static\s+com\.shatteredpixel\.shatteredpixeldungeon\.levels\.Terrain\.SALT_WATER;[ \t]*\r?\n', ''),
+    ('Magic Ling property changes on another monster', r'\b(?!this\b)(\w+)\.properties\.(add|remove)\(', lambda m: m.group(1) + ('.addProperty(' if m.group(2) == 'add' else '.removeProperty(')),
+    ('Magic Ling water soul elixir', r'\bnew\s+WaterSoul\(\)', 'new com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.AquaBrew()'),
+    ('Magic Ling water soul import', r'(?m)^import\s+[\w.]+\.WaterSoul;[ \t]*\r?\n', ''),
+    ('Magic Ling frost fire bolt', r'\bMagicMissile\.FROSTFIRE\b', 'MagicMissile.FROST'),
     ('Magic Ling blue potion icon', r'\bItemSpriteSheet\.Icons\.POTION_BLUE\b', 'ItemSpriteSheet.Icons.POTION_DRGBREATH'),
     # Goblins PD (Shattered 0.3 base), static Level arrays are instance fields now
     ('Goblins, Level.adjacent and distance are instance methods', r'\bLevel\.(adjacent|distance)\(', r'Dungeon.level.\1('),

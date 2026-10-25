@@ -34,6 +34,8 @@ public class Assets {
 	}
 
 	public static class Environment {
+		public static final String WATER_ANCIENT = "environment/magicling/water5.png"; //ported, magicling
+		public static final String TILES_ANCIENT = "environment/magicling/tiles_ancient.png"; //ported, magicling
 		public static final String TILES_COLDCHEST = "environment/magicling/tiles_coldchest.png"; //ported, magicling
 		public static final String TILES_COLD = "environment/magicling/tiles_cold.png"; //ported, magicling
 		public static final String SEWER_SP = "environment/custom_tiles/ryuse/sewers_special.png"; //ported, ryuse
@@ -190,6 +192,8 @@ public class Assets {
 	}
 
 	public static class Music {
+		public static final String SKBJY = "music/boss/magicling/Boss-Saka.ogg"; //ported, magicling
+		public static final String ANCITY = "music/magicling/Level_Ancity.ogg"; //ported, magicling
 		public static final String BGM_BOSSEND = "music/boss/magicling/yogend.ogg"; //ported, magicling
 		public static final String BGM_5 = "music/magicling/Level5.ogg"; //ported, magicling
 		public static final String IFWAR = "music/magicling/Ice&Fire.ogg"; //ported, magicling
@@ -591,6 +595,10 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String DragonBlueGirl = "sprites/npc/magicling/smallblue.png"; //ported, magicling
+		public static final String SKFS = "sprites/boss/magicling/SakaFishBoss.png"; //ported, magicling
+		public static final String ROOMSTONE = "sprites/boss/magicling/RoomStone.png"; //ported, magicling
+		public static final String DICT = "sprites/boss/magicling/DictFish.png"; //ported, magicling
 		public static final String SKY_DEAD = "sprites/magicling/skydead.png"; //ported, magicling
 		public static final String CFZS = "sprites/boss/overworld/magicling/qliphoth_ex.png"; //ported, magicling
 		public static final String CRSTAL = "sprites/magicling/crstal.png"; //ported, magicling
