@@ -1,0 +1,55 @@
+package com.shatteredpixel.shatteredpixeldungeon.items.books.bookslist;
+
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionHero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.books.Books;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
+
+public class GrassKingBooks extends Books {
+    private static final String Read	= "Read";
+    {
+        image = ItemSpriteSheet.GREENBOOKS;
+        unique= true;
+    }
+
+    @Override
+    public void execute(final Hero hero, String action) {
+        super.execute(hero, action);
+        for (Buff b : hero.buffs(ChampionHero.class)) {
+            if (b != null) {
+                GLog.w(Messages.get(Books.class, "your_character"));
+                return;
+            }
+        }
+        if (action.equals(Read)) {
+            com.shatteredpixel.shatteredpixeldungeon.MagicLingStats.readBooks++;
+            ;
+            Sample.INSTANCE.play(Assets.Sounds.READ);
+            switch (Random.Int(5)) {
+                case 0:
+                case 1:
+                case 2:
+                    Buff.affect(hero, Barkskin.class).set( Random.Int(0,21), 5 );
+                    detach(hero.belongings.backpack);
+                    GLog.p(Messages.get(this, "blees"));
+                    break;
+                case 3:
+                case 4:
+                case 5:
+                    Buff.affect(hero, ChampionHero.Giant.class, ChampionHero.DURATION);
+                    detach(hero.belongings.backpack);
+                    GLog.p(Messages.get(this, "anmazing"));
+                    break;
+            }
+        }
+    }
+}

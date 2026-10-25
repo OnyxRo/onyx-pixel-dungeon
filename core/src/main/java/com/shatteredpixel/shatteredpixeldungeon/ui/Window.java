@@ -61,6 +61,15 @@ public class Window extends Group implements Signal.Listener<KeyEvent> {
 	public static final int BLUE_COLOR = 0x0000FF;
 	public static final int RED_COLOR = 0xFF0000;
 	public static final int GREEN_COLOR = 0x00FF00;
+	//magicling, the rest of Magic Ling's named colours, its code reads them from Window
+	public static final int R_COLOR = 0xFF0000;
+	public static final int G_COLOR = 0x00FF00;
+	public static final int DeepPK_COLOR = 0x792F9E;
+	public static final int MLPD_COLOR = 0x00FFFF;
+	public static final int GDX_COLOR = 0xE44D3C;
+	public static final int SKYBULE_COLOR = 0x00FFFF;
+	public static final int CYELLOW = 0xFFFF00;
+	public static final int CBLACK = 0x808080;
 	
 	public Window() {
 		this( 0, 0, Chrome.get( Chrome.Type.WINDOW ) );

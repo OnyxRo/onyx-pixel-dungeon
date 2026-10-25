@@ -56,6 +56,11 @@ abstract public class Boss extends Mob {
 		baseHT = ht;
 		baseMinDef = mid;
 		baseMaxDef = mad;
+		//a boss that calls initStatus first got the previous boss's block in the mod, here it gets its own
+		if (HT == 0) {
+			defenseSkill = Math.round(eva);
+			HP = HT = Math.round(ht);
+		}
 	}
 
 	protected void initStatus(int exp) {

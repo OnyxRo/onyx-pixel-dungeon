@@ -50,6 +50,20 @@ public class MagicLingStats {
 	public static int difficultyDLCEXLevel;
 	public static int CrivusbossTeleporter;
 	public static boolean gooFight = false;
+	//the hollow's minigames and towers, scores are kept for the run only
+	public static int RepaierTowerCount;
+	public static int miniGamesTotalLevel;
+	public static int getMoveBoxScore;
+	public static int readBooks;
+	public static int getPacManScore;
+	public static int getAlLSearchScore;
+	public static int moveBoxScoreMax;
+	public static boolean godGirl = false;
+	private static int moveBoxRecord, pacManRecord;
+	public static int MoveBoxScore() { return moveBoxRecord; }
+	public static void MoveBoxScore( int value ) { moveBoxRecord = Math.max(moveBoxRecord, value); }
+	public static int PacManScore() { return pacManRecord; }
+	public static void PacManScore( int value ) { pacManRecord = Math.max(pacManRecord, value); }
 
 	//the mod kept this in its settings file, it counts boss weapon drops so every third kill gives one for sure
 	private static final int[] bossWeaponCount = new int[6];

@@ -89,6 +89,9 @@ for name, rel in picked.items():
     old_key = rel[:-5].replace('/', '.').lower()
     new_key = (rel[:-5][:-len(name)] + PREFIX + name).replace('/', '.').lower()
     src = MOD + MSG + bundle + '/' + bundle + '.properties'
+    #mods whose default bundle is Chinese (Magic Ling) keep English in <bundle>_en.properties, prefer that
+    if os.path.exists(LP(MOD + MSG + bundle + '/' + bundle + '_en.properties')):
+        src = MOD + MSG + bundle + '/' + bundle + '_en.properties'
     if not os.path.exists(LP(src)):
         hits = glob.glob(LP(MOD + 'core/src/main/resources') + '/**/messages/' + bundle + '/' + bundle + '.properties', recursive=True)
         if hits: src = hits[0]

@@ -119,8 +119,16 @@ public class SpecialFloors {
 		add( "Re-ARranged PD", "Temple sanctum, the sentries", rearranged( TempleLastLevel::new, 14 ) );
 		add( "Re-ARranged PD", "Room past the labs, the old amulet", rearranged( NewLastLevel::new, 26 ) );
 
-		add( "Magic Ling PD", "Sky Dead's side branch", com.shatteredpixel.shatteredpixeldungeon.levels.minilevels.MiniSkyShadowBossLevel::new );
+		add( "Magic Ling PD", "Sky Dead boss, the side branch", com.shatteredpixel.shatteredpixeldungeon.levels.minilevels.MiniSkyShadowBossLevel::new );
 		add( "Magic Ling PD", "DM-Zero, the boss rush finale", com.shatteredpixel.shatteredpixeldungeon.levels.DM920BossLevel::new );
+		add( "Magic Ling PD", "Sothoth boss, the galaxy key", com.shatteredpixel.shatteredpixeldungeon.levels.spical.GalaxyKeyBossLevel::new );
+		add( "Magic Ling PD", "White Yan boss, the peach blossom hall", com.shatteredpixel.shatteredpixeldungeon.levels.spical.PeachGodBossLevel::new );
+		add( "Magic Ling PD", "Fire Dragon boss, the lava caves", com.shatteredpixel.shatteredpixeldungeon.levels.LaveCavesBossLevel::new );
+		add( "Magic Ling PD", "Hollow theatre, Morpheus and the minigames", com.shatteredpixel.shatteredpixeldungeon.levels.hollow.TheatreLevel::new );
+		add( "Magic Ling PD", "Cerberus boss, the hollow river", com.shatteredpixel.shatteredpixeldungeon.levels.hollow.CerDogBossLevel::new );
+		add( "Magic Ling PD", "Morpheus boss, the hollow core and its towers", com.shatteredpixel.shatteredpixeldungeon.levels.hollow.MorpheusBossLevel::new );
+		add( "Magic Ling PD", "Hollow minigame, the ghost chase", com.shatteredpixel.shatteredpixeldungeon.levels.hollow.PacmanHollowActorLevel::new );
+		add( "Magic Ling PD", "Hollow minigame, the box pushing puzzle", com.shatteredpixel.shatteredpixeldungeon.levels.hollow.MoveBoxHollowActorLevel::new );
 	}
 
 	/** Re-ARranged PD's levels read the floor number, so it is set before they are built. */
@@ -153,6 +161,15 @@ public class SpecialFloors {
 	 * Builds this level in place of the next floor and moves the hero to it. Only works in a sandbox run,
 	 * which always builds floors fresh and never keeps them.
 	 */
+	//magicling, leaves a special floor for an ordinary floor at the same depth, the hollow's plots call it where the mod jumped to its own deep floors
+	public static void leave(){
+		Dungeon.sandboxSpecial = null;
+		Level.beforeTransition();
+		InterlevelScene.mode = InterlevelScene.Mode.SANDBOX;
+		InterlevelScene.returnDepth = Dungeon.depth;
+		Game.switchScene( InterlevelScene.class );
+	}
+
 	public static void travel( Supplier<Level> make ){
 		Dungeon.sandboxSpecial = make;
 		Level.beforeTransition();

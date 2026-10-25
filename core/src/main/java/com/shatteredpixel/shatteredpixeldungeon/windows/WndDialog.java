@@ -53,6 +53,11 @@ public class WndDialog extends Window {
 
     public static Plot settedPlot = null;
 
+    //magicling, the plots place their buttons above the dialog box, Window.chrome is protected here
+    public com.watabou.noosa.NinePatch chromeBox() {
+        return chrome;
+    }
+
     public PointerArea area = null;
 
     public SkipIndicator skip = null;

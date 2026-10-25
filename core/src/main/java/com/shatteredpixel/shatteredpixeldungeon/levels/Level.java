@@ -206,6 +206,8 @@ public abstract class Level implements Bundlable {
 
 	//when a boss level has become locked.
 	public boolean locked = false;
+	//magicling, set on the hollow's box pushing floor, see Hero.getCloser
+	public boolean onlyBoxMove = false;
 	
 	public HashSet<Mob> mobs;
 	public SparseArray<Heap> heaps;
@@ -1737,9 +1739,11 @@ public abstract class Level implements Bundlable {
 						continue;
 					}
 					int p = mob.pos;
+					//a mod monster summoned with no room can be left at an invalid cell
+					if (p < 0 || p >= length()) continue;
 					if (!fieldOfView[p] && (distance(c.pos, p) <= mindVisRange || (ally != null && distance(ally.pos, p) <= mindVisRange))) {
 						for (int i : PathFinder.NEIGHBOURS9) {
-							heroMindFov[mob.pos + i] = true;
+							if (mob.pos + i >= 0 && mob.pos + i < length()) heroMindFov[mob.pos + i] = true;
 						}
 					}
 				}

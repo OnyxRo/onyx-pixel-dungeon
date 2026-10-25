@@ -17,6 +17,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.notsync.DiedClearElemet;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.peach.SoulCrystal;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.notsync.CrivusStarFruitsLasher;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.notsync.CrivusStarFruits;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.FireMagicDiedNPC;
@@ -61,6 +63,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.tumulus.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.galaxy.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.hollow.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.hollow.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.Assassin;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.Goolem;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.Terminator;
@@ -627,6 +630,7 @@ public class ModRoster {
 		add( "magicling", RandomBlueFire.class, 0, 1, 99 );
 		add( "magicling", RandomBlueFireDE.class, 0, 1, 99 );
 		add( "magicling", Roger.class, 0, 1, 99 );
+		add( "magicling", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.peach.WhiteYan.class, 0, 1, 99 );
 		add( "magicling", DwarfGeneral.class, 0, 1, 99 );
 		add( "magicling", ArmyFlag.class, 0, 1, 99 );
 		add( "magicling", DwarfGeneralNPC.class, 0, 1, 99 );
@@ -650,6 +654,45 @@ public class ModRoster {
 		add( "magicling", SakaFishBoss.class, 0, 1, 99 );
 		add( "magicling", DictFish.class, 0, 1, 99 );
 		add( "magicling", RoomStone.class, 0, 1, 99 );
+		add( "magicling", Sothoth.class, 0, 1, 99 );
+		add( "magicling", SothothEyeDied.class, 0, 1, 99 );
+		add( "magicling", SoulCrystal.class, 0, 1, 99 );
+		add( "magicling", DeadDogCerberus.class, 0, 1, 99 );
+		add( "magicling", BleedCrystal.class, 0, 1, 99 );
+		add( "magicling", Cerberus.class, 0, 1, 99 );
+		add( "magicling", Typhon.class, 0, 1, 99 );
+		add( "magicling", DeathRong.class, 0, 1, 99 );
+		add( "magicling", ZeroBoat.class, 0, 1, 99 );
+		add( "magicling", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.hollow.Morphs.class, 0, 1, 99 );
+		add( "magicling", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.hollow.MyCoreHeart.class, 0, 1, 99 );
+		add( "magicling", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.hollow.Nyarlathotep.class, 0, 1, 99 );
+		add( "magicling", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.hollow.ShubNiggurath.class, 0, 1, 99 );
+		add( "magicling", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.hollow.TowerGods.class, 0, 1, 99 );
+		add( "magicling", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.hollow.TowerMachine.class, 0, 1, 99 );
+		add( "magicling", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.hollow.TowerMind.class, 0, 1, 99 );
+		add( "magicling", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.hollow.TowerTime.class, 0, 1, 99 );
+		add( "magicling", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.hollow.YogSoul.class, 0, 1, 99 );
+		add( "magicling", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.hollow.bad.TowerGodsBad.class, 0, 1, 99 );
+		add( "magicling", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.hollow.bad.TowerMachineBad.class, 0, 1, 99 );
+		add( "magicling", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.hollow.bad.TowerMindBad.class, 0, 1, 99 );
+		add( "magicling", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.hollow.bad.TowerTimeBad.class, 0, 1, 99 );
+		add( "magicling", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.hollow.minigame.Ghost_Anger.class, 0, 1, 99 );
+		add( "magicling", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.hollow.minigame.Ghost_Junko.class, 0, 1, 99 );
+		add( "magicling", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.hollow.minigame.Ghost_Pink.class, 0, 1, 99 );
+		add( "magicling", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.hollow.minigame.Ghost_Smart.class, 0, 1, 99 );
+		add( "magicling", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.hollow.MorphsNPC.class, 0, 1, 99 );
+		add( "magicling", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.hollow.SliceGirl.class, 0, 1, 99 );
+		add( "magicling", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.MLFireDragon.class, 0, 1, 99 );
+		add( "magicling", DiedClearElemet.ClearElemetalBlood.class, 0, 1, 99 );
+		add( "magicling", DiedClearElemet.ClearElemetalDark.class, 0, 1, 99 );
+		add( "magicling", DiedClearElemet.ClearElemetalGreen.class, 0, 1, 99 );
+		add( "magicling", DiedClearElemet.ClearElemetalPure.class, 0, 1, 99 );
+		add( "magicling", DiedClearElemet.ClearElemetalGold.class, 0, 1, 99 );
+		add( "magicling", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.gold.GnollBlind.class, 0, 1, 99 );
+		add( "magicling", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.gold.GnollThrower.class, 0, 1, 99 );
+		add( "magicling", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.gold.GnollTwilight.class, 0, 1, 99 );
+		add( "magicling", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.gold.HermitCrab.class, 0, 1, 99 );
+		add( "magicling", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.gold.HermitCrabNoShell.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

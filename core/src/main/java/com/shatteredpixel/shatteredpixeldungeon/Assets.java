@@ -34,6 +34,26 @@ public class Assets {
 	}
 
 	public static class Environment {
+		public static final String TILES_FIRE = "environment/magicling/tiles_fire.png"; //ported, magicling
+		public static final String LAVACAVE_OP = "environment/custom_tiles/magicling/lavecave_behind.png"; //ported, magicling
+		public static final String LAVACAVE_OP_HRAD = "environment/custom_tiles/magicling/lavecave_behind_hard.png"; //ported, magicling
+		public static final String TILES_HOLLOW_CS = "environment/magicling/tiles_halloween-cs.png"; //ported, magicling
+		public static final String TILES_THEATRE = "environment/custom_tiles/magicling/theatre.png"; //ported, magicling
+		public static final String GHOST_HOUSE = "environment/custom_tiles/magicling/ghost_house.png"; //ported, magicling
+		public static final String TILES_MORGALAXY = "environment/magicling/tiles_morpheus.png"; //ported, magicling
+		public static final String GALAXY_BACKGROUND = "environment/custom_tiles/magicling/galaxy_background.png"; //ported, magicling
+		public static final String WATER_GHOST = "environment/magicling/water8.png"; //ported, magicling
+		public static final String TILES_GHOST = "environment/magicling/tiles_ghost.png"; //ported, magicling
+		public static final String HOLLOW_PO = "environment/custom_tiles/magicling/cerberus_above.png"; //ported, magicling
+		public static final String HOLLOW_OP = "environment/custom_tiles/magicling/cerberus_behind.png"; //ported, magicling
+		public static final String WATER_HOLLOW = "environment/magicling/water7.png"; //ported, magicling
+		public static final String TILES_HOLLOW = "environment/magicling/tiles_halloween.png"; //ported, magicling
+		public static final String PEACH_BOSS = "environment/peach/magicling/peach_boss.png"; //ported, magicling
+		public static final String TILES_CITY_CS = "environment/magicling/tiles_city-cs.png"; //ported, magicling
+		public static final String GALAXY_WATER = "environment/yog/magicling/starry.png"; //ported, magicling
+		public static final String GALAXY_TILED = "environment/yog/magicling/tiles_bubble.png"; //ported, magicling
+		public static final String GALAXY_AE = "environment/yog/magicling/bubble_above.png"; //ported, magicling
+		public static final String GALAXY_BD = "environment/yog/magicling/bubble_behind.png"; //ported, magicling
 		public static final String WATER_ANCIENT = "environment/magicling/water5.png"; //ported, magicling
 		public static final String TILES_ANCIENT = "environment/magicling/tiles_ancient.png"; //ported, magicling
 		public static final String TILES_COLDCHEST = "environment/magicling/tiles_coldchest.png"; //ported, magicling
@@ -113,6 +133,8 @@ public class Assets {
 	}
 
 	public static class Interfaces {
+		public static final String BLACK_RECT = "interfaces/magicling/black_rect.png"; //ported, magicling
+		public static final String SCORE_BAR = "interfaces/magicling/scoreboard.png"; //ported, magicling
 		public static final String ARCS_BG  = "interfaces/arcs1.png";
 		public static final String ARCS_FG  = "interfaces/arcs2.png";
 
@@ -192,6 +214,15 @@ public class Assets {
 	}
 
 	public static class Music {
+		public static final String DRAGON_LING = "music/boss/magicling/Boss-dragon.ogg"; //ported, magicling
+		public static final String BGM_1A = "music/magicling/Level1_FireCave.ogg"; //ported, magicling
+		public static final String PACMAN = "music/hollow/magicling/pacman_10yearold_mix.ogg"; //ported, magicling
+		public static final String MORP_BOSS = "music/hollow/magicling/morpheus.ogg"; //ported, magicling
+		public static final String MOVEBOX = "music/hollow/magicling/movebox.ogg"; //ported, magicling
+		public static final String BOSSDOG = "music/boss/magicling/dogboss.ogg"; //ported, magicling
+		public static final String HOLLOW_CITY_HARD = "music/hollow/magicling/Mischief_Managed.ogg"; //ported, magicling
+		public static final String YOGGOD = "music/rgjt/magicling/god.ogg"; //ported, magicling
+		public static final String YOGALXY = "music/rgjt/magicling/galaxy.ogg"; //ported, magicling
 		public static final String SKBJY = "music/boss/magicling/Boss-Saka.ogg"; //ported, magicling
 		public static final String ANCITY = "music/magicling/Level_Ancity.ogg"; //ported, magicling
 		public static final String BGM_BOSSEND = "music/boss/magicling/yogend.ogg"; //ported, magicling
@@ -524,6 +555,32 @@ public class Assets {
 	}
 
 	public static class Splashes {
+		public static final String Silence_0 = "splashes/hollow/Silence/magicling/silence_portraits(0).png"; //ported, magicling
+		public static final String Silence_2 = "splashes/hollow/Silence/magicling/silence_portraits(2).png"; //ported, magicling
+		public static final String Silence_3 = "splashes/hollow/Silence/magicling/silence_portraits(3).png"; //ported, magicling
+		public static final String Silence_4 = "splashes/hollow/Silence/magicling/silence_portraits(4).png"; //ported, magicling
+		public static final String Silence_1 = "splashes/hollow/Silence/magicling/silence_portraits(1).png"; //ported, magicling
+		public static final String Morphs_8 = "splashes/hollow/Morphs/magicling/morpheus_portraits(8).png"; //ported, magicling
+		public static final String Morphs_7 = "splashes/hollow/Morphs/magicling/morpheus_portraits(7).png"; //ported, magicling
+		public static final String Morphs_6 = "splashes/hollow/Morphs/magicling/morpheus_portraits(6).png"; //ported, magicling
+		public static final String Morphs_5 = "splashes/hollow/Morphs/magicling/morpheus_portraits(5).png"; //ported, magicling
+		public static final String Morphs_1 = "splashes/hollow/Morphs/magicling/morpheus_portraits(1).png"; //ported, magicling
+		public static final String Morphs_0 = "splashes/hollow/Morphs/magicling/morpheus_portraits(0).png"; //ported, magicling
+		public static final String Morphs_2 = "splashes/hollow/Morphs/magicling/morpheus_portraits(2).png"; //ported, magicling
+		public static final String Morphs_4 = "splashes/hollow/Morphs/magicling/morpheus_portraits(4).png"; //ported, magicling
+		public static final String Morphs_3 = "splashes/hollow/Morphs/magicling/morpheus_portraits(3).png"; //ported, magicling
+		public static final String MOSRDX_3 = "splashes/hollow/Morphs/magicling/morpheus_portraits(3).png"; //ported, magicling
+		public static final String MOSRDX_0 = "splashes/hollow/Morphs/magicling/morpheus_portraits(0).png"; //ported, magicling
+		public static final String MOSRDX_2 = "splashes/hollow/Morphs/magicling/morpheus_portraits(2).png"; //ported, magicling
+		public static final String MOSRDX_1 = "splashes/hollow/Morphs/magicling/morpheus_portraits(1).png"; //ported, magicling
+		public static final String TYPHON = "splashes/hollow/Typhon/magicling/typhon_portraits.png"; //ported, magicling
+		public static final String KARONG_6 = "splashes/hollow/DeathRong/magicling/death_portraits(6).png"; //ported, magicling
+		public static final String KARONG_5 = "splashes/hollow/DeathRong/magicling/death_portraits(5).png"; //ported, magicling
+		public static final String KARONG_4 = "splashes/hollow/DeathRong/magicling/death_portraits(4).png"; //ported, magicling
+		public static final String KARONG_0 = "splashes/hollow/DeathRong/magicling/death_portraits(0).png"; //ported, magicling
+		public static final String KARONG_3 = "splashes/hollow/DeathRong/magicling/death_portraits(3).png"; //ported, magicling
+		public static final String KARONG_2 = "splashes/hollow/DeathRong/magicling/death_portraits(2).png"; //ported, magicling
+		public static final String KARONG_1 = "splashes/hollow/DeathRong/magicling/death_portraits(1).png"; //ported, magicling
 		public static final String DG = "splashes/magicling/general_portraits.png"; //ported, magicling
 		public static final String YTZY = "splashes/magicling/YetYogR.png"; //ported, magicling
 		public static final String FAYINA_0 = "splashes/firedragon/magicling/guard_npc_portraits(0).png"; //ported, magicling
@@ -595,6 +652,31 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String GOLD_CRAB = "sprites/gold/magicling/crab.png"; //ported, magicling
+		public static final String GOLD_GNOLL = "sprites/gold/magicling/gnoll.png"; //ported, magicling
+		public static final String FRDG = "sprites/boss/magicling/fireDragon.png"; //ported, magicling
+		public static final String DER = "sprites/boss/magicling/DiedElement.png"; //ported, magicling
+		public static final String MAGEHAND = "sprites/npc/magicling/mage_hand.png"; //ported, magicling
+		public static final String MINDCODE = "sprites/hollow/magicling/messy_code.png"; //ported, magicling
+		public static final String SWTICH = "sprites/hollow/magicling/Silence_Witch.png"; //ported, magicling
+		public static final String GHOST_MINI = "sprites/hollow/minigame/magicling/ghosts.png"; //ported, magicling
+		public static final String BOX_MINI = "sprites/hollow/minigame/magicling/box.png"; //ported, magicling
+		public static final String YOG_SOUL = "sprites/hollow/magicling/yogsoul.png"; //ported, magicling
+		public static final String SHUBNIGGURATH = "sprites/hollow/magicling/shub_niggurath.png"; //ported, magicling
+		public static final String NYARLATHOTEP = "sprites/hollow/magicling/nyarlathotep.png"; //ported, magicling
+		public static final String MYSTIC_CORE = "sprites/hollow/magicling/mystic_core.png"; //ported, magicling
+		public static final String TowerTime = "sprites/hollow/magicling/tower_time.png"; //ported, magicling
+		public static final String TowerMind = "sprites/hollow/magicling/tower_mind.png"; //ported, magicling
+		public static final String TowerMachine = "sprites/hollow/magicling/tower_machine.png"; //ported, magicling
+		public static final String TowerGods = "sprites/hollow/magicling/tower_gods.png"; //ported, magicling
+		public static final String MPHON = "sprites/hollow/magicling/morpheus.png"; //ported, magicling
+		public static final String YOW_SENTRY = "sprites/boss/magicling/yellow_star.png"; //ported, magicling
+		public static final String BOAT = "sprites/hollow/magicling/boat.png"; //ported, magicling
+		public static final String TYPHON = "sprites/hollow/magicling/typhon.png"; //ported, magicling
+		public static final String ZEROBOAT = "sprites/hollow/magicling/death.png"; //ported, magicling
+		public static final String NCSBR = "sprites/hollow/magicling/New_Cerberus.png"; //ported, magicling
+		public static final String CSBR = "sprites/hollow/magicling/Cerberus.png"; //ported, magicling
+		public static final String WHITEYAN = "sprites/npc/magicling/whitepinkgirl.png"; //ported, magicling
 		public static final String DragonBlueGirl = "sprites/npc/magicling/smallblue.png"; //ported, magicling
 		public static final String SKFS = "sprites/boss/magicling/SakaFishBoss.png"; //ported, magicling
 		public static final String ROOMSTONE = "sprites/boss/magicling/RoomStone.png"; //ported, magicling

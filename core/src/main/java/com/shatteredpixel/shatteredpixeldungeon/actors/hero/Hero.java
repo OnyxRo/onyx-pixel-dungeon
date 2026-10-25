@@ -2719,6 +2719,17 @@ public class Hero extends Char {
 		}
 		
 		int step = -1;
+
+		//magicling, the hollow's box pushing floor only allows one straight step at a time
+		if (Dungeon.level != null && Dungeon.level.onlyBoxMove) {
+			int w = Dungeon.level.width();
+			int dx = (target % w) - (pos % w);
+			int dy = (target / w) - (pos / w);
+			if (Math.abs(dx) + Math.abs(dy) != 1) {
+				sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "not_move"));
+				return false;
+			}
+		}
 		
 		if (Dungeon.level.adjacent( pos, target )) {
 

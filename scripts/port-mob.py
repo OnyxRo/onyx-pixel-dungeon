@@ -154,8 +154,11 @@ for n in names:
     line = '\t\tadd( "%s", %s.class, %s, %s, %s );' % (KEY, n, opts.get('--weight', 1), opts.get('--min', 1), opts.get('--max', 99))
     added.append(line)
 if added:
-    anchor = nl + '\t}' + nl + nl + '\t/** Every monster on the roster'
-    i = s.index(anchor)
+    #find the end of the roster list whatever the line endings are (a hand edit can leave them mixed)
+    m = re.search(r'\r?\n\t\}\r?\n\r?\n\t/\*\* Every monster on the roster', s)
+    if not m:
+        sys.exit('ModRoster: could not find the end of the roster list')
+    i = m.start()
     s = s[:i] + nl + nl.join(added) + s[i:]
     # monsters in a subpackage (actors/mobs/bosses/notsync) need an import, or ModRoster does not compile
     src_root = ROOT + '/' + PK

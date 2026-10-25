@@ -191,3 +191,8 @@ RandomBuff
 DragonGirlBlue
 WndDragonGirlBlue
 AncityStone
+GameRules
+MageHand
+MageHandControlBuff
+MageHandSprite
+MagicAbsorb
