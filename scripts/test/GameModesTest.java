@@ -135,8 +135,9 @@ public class GameModesTest {
 			newRun( 15, GameModes.KIT_CAPE, GameModes.KIT_MORSTOR, GameModes.KIT_ROXX );
 			check( Dungeon.hero.belongings.artifact instanceof CapeOfThorns || Dungeon.hero.belongings.misc instanceof CapeOfThorns, "Cape of Thorns is worn" );
 			check( has( ScrollHolder.class ), "MorStor gives a scroll holder" );
-			ThrowingStone stones = Dungeon.hero.belongings.getItem( ThrowingStone.class );
-			check( stones != null && stones.level() == 20, "Roxx gives +20 throwing stones" );
+			boolean roxx = false;
+			for (Item i : Dungeon.hero.belongings) if (i instanceof ThrowingStone && i.level() == 20 && i.quantity() == 20) roxx = true;
+			check( roxx, "Roxx gives twenty +20 throwing stones" );
 			for (String kit : new String[]{ GameModes.KIT_CURSED, GameModes.KIT_FACTS, GameModes.KIT_MODERN, GameModes.KIT_ROCC, GameModes.KIT_STARTER, GameModes.KIT_KNOWLEDGE }) {
 				int before = 0;
 				newRun( 16 );
@@ -155,8 +156,21 @@ public class GameModesTest {
 			RadarSearch search = new RadarSearch();
 			long seed = search.search();
 			check( seed >= 0, "Radar finds a seed with a ration on floor 1" );
+			check( search.failed == 0, "Radar seeds build without errors" );
 			System.out.println( "INFO radar checked " + search.checked + " seeds" );
 			RadarSearch.items( 0, old );
+
+			//timing of a deep search, only when asked with -Dradar.timing=true
+			if (Boolean.getBoolean( "radar.timing" )) {
+				String old3 = RadarSearch.items( 3 );
+				RadarSearch.items( 3, "no item has this name" );
+				final RadarSearch slow = new RadarSearch();
+				new Thread( () -> { try { Thread.sleep( 30000 ); } catch (InterruptedException ignored) {} slow.cancelled = true; } ).start();
+				slow.search();
+				System.out.println( "INFO radar timing, " + slow.checked + " seeds to floor 10 in 30 seconds, " + slow.failed + " failed" );
+				if (slow.lastError != null) slow.lastError.printStackTrace( System.out );
+				RadarSearch.items( 3, old3 );
+			}
 		} catch (Throwable t) {
 			failures++;
 			System.out.println( "FAIL: threw " + t );
