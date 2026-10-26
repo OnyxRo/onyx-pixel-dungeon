@@ -185,6 +185,8 @@ public class ForestPoisonBossLevel extends Level {
     private List<Integer> wood_b_pos = new ArrayList<>(Arrays.asList(739,771,805,773));
     private List<Integer> wood_c_pos = new ArrayList<>(Arrays.asList(649,617,651,683));
     private List<Integer> wood_d_pos = new ArrayList<>(Arrays.asList(250,282,316,284));
+    private boolean teleporting = false;
+
     @Override
     public void occupyCell( Char ch ) {
         super.occupyCell(ch);
@@ -238,9 +240,16 @@ public class ForestPoisonBossLevel extends Level {
                             pos = 680;
                             break;
                     }
-                    ScrollOfTeleportation.teleportToLocation(boss, pos);
-                    CellEmitter.get(boss.pos).burst(Speck.factory(Speck.LIGHT), 10);
+                    //reset before moving, the teleport calls occupyCell again and used to loop forever
                     ((Qliphoth) boss).boss_teleport = 0;
+                    if (teleporting) continue;
+                    teleporting = true;
+                    try {
+                        ScrollOfTeleportation.teleportToLocation(boss, pos);
+                    } finally {
+                        teleporting = false;
+                    }
+                    CellEmitter.get(boss.pos).burst(Speck.factory(Speck.LIGHT), 10);
                 } else {
                     ((Qliphoth) boss).boss_teleport++;
                 }

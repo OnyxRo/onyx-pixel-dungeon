@@ -238,8 +238,17 @@ public class ColdChestBossLevel extends Level {
         WorldShuffle.dropProgressionItem(this);
     }
 
+    //a boss teleport inside here calls occupyCell again, the guard stops it looping forever
+    private boolean occupying = false;
+
     @Override
     public void occupyCell(Char ch) {
+        if (occupying) { super.occupyCell(ch); return; }
+        occupying = true;
+        try { occupyCellGuarded(ch); } finally { occupying = false; }
+    }
+
+    private void occupyCellGuarded(Char ch) {
         super.occupyCell(ch);
         //magicling, the mod measured from the old entrance field, which is always 0 here
         boolean isTrue = ch.pos == LDBossDoor && ch == Dungeon.hero && distance(ch.pos, entrance()) >= 2;
