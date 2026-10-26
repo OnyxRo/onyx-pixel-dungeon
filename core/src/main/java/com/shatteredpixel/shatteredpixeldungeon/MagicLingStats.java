@@ -140,4 +140,30 @@ public class MagicLingStats {
 	public static void unlockItem( String itemName ) { _unlockItem = itemName; }
 	public static void unlockItem( String itemName, boolean allowMulti ) { }
 	public static void unlockItem( String itemName, boolean allowMulti, int limit ) { }
+
+	//the mod saved these with its run, without this a boss fight's phase was lost on reload and carried into the next run
+	public static void storeInBundle( com.watabou.utils.Bundle bundle ) {
+		for (java.lang.reflect.Field f : MagicLingStats.class.getFields()) {
+			int m = f.getModifiers();
+			if (!java.lang.reflect.Modifier.isStatic(m) || java.lang.reflect.Modifier.isFinal(m)) continue;
+			try {
+				if (f.getType() == boolean.class) bundle.put("mling_" + f.getName(), f.getBoolean(null));
+				else if (f.getType() == int.class) bundle.put("mling_" + f.getName(), f.getInt(null));
+			} catch (IllegalAccessException ignored) { }
+		}
+	}
+
+	public static void restoreFromBundle( com.watabou.utils.Bundle bundle ) {
+		reset();
+		for (java.lang.reflect.Field f : MagicLingStats.class.getFields()) {
+			int m = f.getModifiers();
+			if (!java.lang.reflect.Modifier.isStatic(m) || java.lang.reflect.Modifier.isFinal(m)) continue;
+			String key = "mling_" + f.getName();
+			if (!bundle.contains(key)) continue;
+			try {
+				if (f.getType() == boolean.class) f.setBoolean(null, bundle.getBoolean(key));
+				else if (f.getType() == int.class) f.setInt(null, bundle.getInt(key));
+			} catch (IllegalAccessException ignored) { }
+		}
+	}
 }

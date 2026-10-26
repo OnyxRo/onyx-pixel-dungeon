@@ -383,6 +383,8 @@ public class CrivusStarFruits extends Boss implements Hero.Doom {
 
     protected void triggerEnrage() {
         if (!hasRaged) {
+            //set first, the teleport below checks isAlive, which used to start the enrage again and again
+            hasRaged = true;
             Buff.affect(this, Rage.class).setShield(80);
             if (Dungeon.level.heroFOV[pos]) {
                 ScrollOfTeleportation.teleportToLocation(this, 577);

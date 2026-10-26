@@ -114,7 +114,8 @@ public class ForestHardBossLevel extends Level {
         Mob[] mobs = Dungeon.level.mobs.toArray(new Mob[0]);
         Mob[] mobsx = Dungeon.level.mobs.toArray(new Mob[0]);
         if (mobs.length == 1) {
-            if (mobs[0] instanceof CrivusStarFruits && !crivusfruitslevel2 && mobs[0].HP == 280) {
+            //the mod also wanted exactly 280 HP here, a fight that lost that could never reach phase two
+            if (mobs[0] instanceof CrivusStarFruits && !crivusfruitslevel2) {
                 com.shatteredpixel.shatteredpixeldungeon.MagicLingStats.crivusfruitslevel2 = true;
                 mobs[0].HP = 200;
                 for (Mob boss : Dungeon.level.mobs.toArray(new Mob[0])) {

@@ -400,6 +400,7 @@ public class Dungeon {
 		Random.resetGenerators();
 		
 		Statistics.reset();
+		MagicLingStats.reset();
 		com.shatteredpixel.shatteredpixeldungeon.RBAHooks.reset(); //rebluearchive
 		Notes.reset();
 
@@ -945,6 +946,7 @@ public class Dungeon {
 			com.shatteredpixel.shatteredpixeldungeon.levels.rooms.modifierunlocks.ModifierUnlockRoom.storeRoomsInBundle( bundle );
 			
 			Statistics.storeInBundle( bundle );
+			MagicLingStats.storeInBundle( bundle );
 			RBAShims.store( bundle ); //rebluearchive
 			Notes.storeInBundle( bundle );
 			Generator.storeInBundle( bundle );
@@ -1138,6 +1140,7 @@ public class Dungeon {
 		energy = bundle.getInt( ENERGY );
 
 		Statistics.restoreFromBundle( bundle );
+		MagicLingStats.restoreFromBundle( bundle );
 		RBAShims.restore( bundle ); //rebluearchive
 		Generator.restoreFromBundle( bundle );
 
