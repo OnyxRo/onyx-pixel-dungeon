@@ -300,6 +300,9 @@ public class ColdChestBossLevel extends Level {
         switch (pro) {
             case GO_START:
                 seal();
+                //a fight left or rebuilt in the sandbox kept the maze counters, which skipped the maze next time
+                MagicLingStats.KillMazeMimic = 0;
+                MagicLingStats.TPDoorDieds = false;
 
                 DiamondKnight bossx = new DiamondKnight();
                 bossx.state = bossx.WANDERING;

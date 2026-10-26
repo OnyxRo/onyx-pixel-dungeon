@@ -247,6 +247,11 @@ public class ForestHardBossLevel extends Level {
     public void seal() {
         super.seal();
 
+        //a fight left or rebuilt in the sandbox kept phase two switched on, which made the first vines take no damage
+        com.shatteredpixel.shatteredpixeldungeon.MagicLingStats.crivusfruitslevel2 = false;
+        com.shatteredpixel.shatteredpixeldungeon.MagicLingStats.crivusfruitslevel3 = false;
+        com.shatteredpixel.shatteredpixeldungeon.MagicLingStats.CrivusbossTeleporter = 0;
+
         for (int i : ForestBossLasherPos) {
             CrivusStarFruitsLasher csp = new CrivusStarFruitsLasher();
             csp.pos = i;
