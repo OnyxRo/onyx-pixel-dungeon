@@ -845,6 +845,9 @@ public class WndJournal extends WndTabbed {
 
 			}
 
+			//a catalog entry of some other kind has no picture, skip it instead of crashing
+			if (sprite == null) continue;
+
 			String finalTitle = title;
 			String finalDesc = desc;
 			ScrollingGridPane.GridItem gridItem = new ScrollingGridPane.GridItem(sprite) {

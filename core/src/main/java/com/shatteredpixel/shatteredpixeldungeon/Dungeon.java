@@ -324,6 +324,8 @@ public class Dungeon {
 	public static HashSet<String> chosenMods = new HashSet<>();
 	//the world every newly built floor is forced into during a sandbox run, or -1 to shuffle as normal
 	public static int sandboxWorld = -1;
+	/** A sandbox run made of boss floors only, see BossCrawl. Set by the title screen, so init leaves it alone. */
+	public static boolean bossCrawl = false;
 	//god mode for sandbox runs. The hero takes no damage, cannot die and never gets hungry
 	public static boolean sandboxGod = true;
 
@@ -410,6 +412,7 @@ public class Dungeon {
 		generatedLevels.clear();
 
 		sandboxWorld = -1;
+		BossCrawl.step = 0;
 		sandboxGod = true;
 		sandboxSight = true;
 		sandboxOffMods.clear();
@@ -478,9 +481,12 @@ public class Dungeon {
 		//a world picked for this one floor wins over the forced world, and is used up by it
 		int forcedWorld = sandbox ? (sandboxOnceWorld != -1 ? sandboxOnceWorld : sandboxWorld) : -1;
 		sandboxOnceWorld = -1;
+		Level crawl = sandbox && bossCrawl && branch == 0 ? BossCrawl.build(depth) : null;
 		if (sandbox && sandboxSpecial != null) {
 			level = sandboxSpecial.get();
 			sandboxSpecial = null;
+		} else if (crawl != null) {
+			level = crawl;
 		} else if (branch == 0 && sandbox && forcedWorld != -1 && WorldShuffle.canForce(depth)) {
 			level = WorldShuffle.create(forcedWorld);
 		} else if (branch == 0 && sandbox && WorldShuffle.modBossLevel(forcedWorld, depth) != null) {
@@ -878,6 +884,8 @@ public class Dungeon {
 			bundle.put( "bullet", bullet ); //rearranged
 			bundle.put( "templeCompleted", templeCompleted );
 			bundle.put( SANDBOX_WORLD, sandboxWorld );
+			bundle.put( "boss_crawl", bossCrawl );
+			bundle.put( "boss_crawl_step", BossCrawl.step );
 			bundle.put( SANDBOX_GOD, sandboxGod );
 			bundle.put( SANDBOX_SIGHT, sandboxSight );
 			bundle.put( SANDBOX_OFF_MODS, sandboxOffMods.toArray(new String[0]) );
@@ -1004,6 +1012,8 @@ public class Dungeon {
 		bullet = bundle.getInt( "bullet" ); //rearranged
 		templeCompleted = bundle.getBoolean( "templeCompleted" );
 		sandboxWorld = bundle.contains( SANDBOX_WORLD ) ? bundle.getInt( SANDBOX_WORLD ) : -1;
+		bossCrawl = bundle.getBoolean( "boss_crawl" );
+		BossCrawl.step = bundle.getInt( "boss_crawl_step" );
 		sandboxGod = !bundle.contains( SANDBOX_GOD ) || bundle.getBoolean( SANDBOX_GOD );
 		sandboxSight = !bundle.contains( SANDBOX_SIGHT ) || bundle.getBoolean( SANDBOX_SIGHT );
 		sandboxSalt = bundle.contains( SANDBOX_SALT ) ? bundle.getInt( SANDBOX_SALT ) : 0;

@@ -66,6 +66,11 @@ import java.util.ArrayList;
 
 public class SoulOfYendor extends Artifact implements AlchemyScene.ToolkitLike {
 
+    private static final int[] USE_ICONS = {ItemSpriteSheet.ARTIFACT_HORN1, ItemSpriteSheet.ARTIFACT_TOOLKIT,
+                                ItemSpriteSheet.ARTIFACT_CHAINS, ItemSpriteSheet.ARTIFACT_SANDALS, ItemSpriteSheet.ARTIFACT_HOURGLASS,
+                                ItemSpriteSheet.ARTIFACT_SPELLBOOK, ItemSpriteSheet.ARTIFACT_ARMBAND};
+
+
     private static final String AC_USE = "USE";
     private static final String AC_USEAGAIN = "USEAGAIN";
     public int lastAction = -1;
@@ -135,10 +140,6 @@ public class SoulOfYendor extends Artifact implements AlchemyScene.ToolkitLike {
                             Messages.get(SoulOfYendor.class, "timekeeper_hourglass"),
                             Messages.get(SoulOfYendor.class, "unstable_spellbook"),
                             Messages.get(SoulOfYendor.class, "master_armband")){
-                        private final int[] icons = {ItemSpriteSheet.ARTIFACT_HORN1, ItemSpriteSheet.ARTIFACT_TOOLKIT,
-                                ItemSpriteSheet.ARTIFACT_CHAINS, ItemSpriteSheet.ARTIFACT_SANDALS, ItemSpriteSheet.ARTIFACT_HOURGLASS,
-                                ItemSpriteSheet.ARTIFACT_SPELLBOOK, ItemSpriteSheet.ARTIFACT_ARMBAND};
-
                         @Override
                         protected boolean hasIcon(int index) {
                             return true;
@@ -146,7 +147,8 @@ public class SoulOfYendor extends Artifact implements AlchemyScene.ToolkitLike {
 
                         @Override
                         protected com.watabou.noosa.Image getIcon(int index) {
-                            return new ItemSprite(icons[index]);
+                            //kept in SoulOfYendor, since WndOptions asks for icons before this window's own fields are set
+                            return new ItemSprite(USE_ICONS[index]);
                         }
 
                         @Override

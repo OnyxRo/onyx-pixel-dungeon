@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.BossCrawl;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
@@ -634,11 +635,13 @@ public class InterlevelScene extends PixelScene {
 			Mob.clearHeldAllies();
 			Dungeon.init();
 			GameLog.wipe();
+			//a boss crawl starts on the floor of its first boss
+			if (Dungeon.sandbox && Dungeon.bossCrawl) Dungeon.depth = BossCrawl.current()[1];
 
 			//When debugging, we may start a game at a later depth to quickly test something
 			// if this happens, the games quickly generates all prior levels on branch 0 first,
 			// which ensures levelgen consistency with a regular game that was played to that depth.
-			if (DeviceCompat.isDebug()){
+			if (DeviceCompat.isDebug() && !Dungeon.bossCrawl){
 				int trueDepth = Dungeon.depth;
 				int trueBranch = Dungeon.branch;
 				for (int i = 1; i < trueDepth + (trueBranch == 0 ? 0 : 1); i++){
@@ -665,6 +668,17 @@ public class InterlevelScene extends PixelScene {
 			Dungeon.saveAll();
 
 			Level level;
+			//a boss crawl goes from each boss floor's exit straight to the next boss, built fresh
+			if (Dungeon.sandbox && Dungeon.bossCrawl && BossCrawl.current() != null && Dungeon.depth == BossCrawl.current()[1]
+					&& curTransition.destDepth > Dungeon.depth && BossCrawl.step + 1 < BossCrawl.stops().size()) {
+				BossCrawl.step++;
+				Dungeon.depth = BossCrawl.current()[1];
+				Dungeon.branch = 0;
+				curTransition = null;
+				level = Dungeon.newLevel();
+				Dungeon.switchLevel( level, level.entrance() );
+				return;
+			}
 			Dungeon.depth = curTransition.destDepth;
 			Dungeon.branch = curTransition.destBranch;
 

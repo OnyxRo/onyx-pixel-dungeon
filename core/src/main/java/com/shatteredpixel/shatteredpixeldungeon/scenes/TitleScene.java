@@ -70,6 +70,7 @@ public class TitleScene extends PixelScene {
 
 	private StyledButton btnPlay;
 	private StyledButton btnSandbox;
+	private StyledButton btnCrawl;
 	private StyledButton btnSupport;
 	private StyledButton btnRankings;
 	private StyledButton btnJournal;
@@ -165,6 +166,25 @@ public class TitleScene extends PixelScene {
 		btnSandbox.icon(Icons.get(Icons.STAIRS));
 		add(btnSandbox);
 
+		//a sandbox run of boss floors only, easiest to hardest, see BossCrawl
+		btnCrawl = new StyledButton(GREY_TR, Messages.get(this, "boss_crawl")){
+			@Override
+			protected void onClick() {
+				int slot = GamesInProgress.firstEmpty();
+				if (slot == -1){
+					ShatteredPixelDungeon.scene().add(new WndMessage(Messages.get(TitleScene.class, "sandbox_full")));
+					return;
+				}
+				Dungeon.sandbox = true;
+				Dungeon.bossCrawl = true;
+				GamesInProgress.selectedClass = null;
+				GamesInProgress.curSlot = slot;
+				ShatteredPixelDungeon.switchScene(HeroSelectScene.class);
+			}
+		};
+		btnCrawl.icon(Icons.get(Icons.SKULL));
+		add(btnCrawl);
+
 		btnSupport = new SupportButton(GREY_TR, Messages.get(this, "support"));
 		add(btnSupport);
 
@@ -178,6 +198,7 @@ public class TitleScene extends PixelScene {
 		add(btnRankings);
 		Dungeon.daily = Dungeon.dailyReplay = false;
 		Dungeon.sandbox = false;
+		Dungeon.bossCrawl = false;
 		Dungeon.chosenMods.clear();
 		com.shatteredpixel.shatteredpixeldungeon.GameModes.loadSettings();
 
@@ -228,7 +249,8 @@ public class TitleScene extends PixelScene {
 			btnSettings.setRect(btnRankings.left(), btnRankings.bottom() + GAP, btnRankings.width(), BTN_HEIGHT);
 			btnChanges.setRect(btnSettings.right()+2, btnSettings.top(), btnRankings.width(), BTN_HEIGHT);
 			btnAbout.setRect(btnChanges.right()+2, btnSettings.top(), btnRankings.width(), BTN_HEIGHT);
-			btnSandbox.setRect(btnPlay.left(), btnSettings.bottom() + GAP, btnAbout.right() - btnPlay.left(), BTN_HEIGHT);
+			btnSandbox.setRect(btnPlay.left(), btnSettings.bottom() + GAP, btnPlay.width(), BTN_HEIGHT);
+			btnCrawl.setRect(btnSupport.left(), btnSandbox.top(), btnSupport.width(), BTN_HEIGHT);
 		} else {
 			btnPlay.setRect(btnAreaLeft, insets.top + topRegion+GAP, buttonAreaWidth, BTN_HEIGHT);
 			align(btnPlay);
@@ -239,7 +261,8 @@ public class TitleScene extends PixelScene {
 			btnChanges.setRect(btnNews.right()+2, btnNews.top(), btnNews.width(), BTN_HEIGHT);
 			btnSettings.setRect(btnNews.left(), btnNews.bottom()+GAP, btnRankings.width(), BTN_HEIGHT);
 			btnAbout.setRect(btnSettings.right()+2, btnSettings.top(), btnSettings.width(), BTN_HEIGHT);
-			btnSandbox.setRect(btnPlay.left(), btnSettings.bottom()+GAP, btnPlay.width(), BTN_HEIGHT);
+			btnSandbox.setRect(btnPlay.left(), btnSettings.bottom()+GAP, btnSettings.width(), BTN_HEIGHT);
+			btnCrawl.setRect(btnAbout.left(), btnSandbox.top(), btnAbout.width(), BTN_HEIGHT);
 		}
 
 		tagline = PixelScene.renderTextBlock(Messages.get(this, "tagline"), 8);
@@ -334,6 +357,7 @@ public class TitleScene extends PixelScene {
 
 		btnPlay.enable(alpha != 0);
 		btnSandbox.enable(alpha != 0);
+		btnCrawl.enable(alpha != 0);
 		btnSupport.enable(alpha != 0);
 		btnRankings.enable(alpha != 0);
 		btnJournal.enable(alpha != 0);
@@ -344,6 +368,7 @@ public class TitleScene extends PixelScene {
 
 		btnPlay.alpha(alpha);
 		btnSandbox.alpha(alpha);
+		btnCrawl.alpha(alpha);
 		btnSupport.alpha(alpha);
 		btnRankings.alpha(alpha);
 		btnJournal.alpha(alpha);

@@ -691,3 +691,7 @@ Checks. `scripts/test/TooCruelTest.java` (in `check.sh`, also with `--quick`) ch
 ## Bot check of the play tasks (2026-10-26)
 
 Full check.sh passed. The allbosses tour covered floors 0 to 251 of 448. Fixed `CaveTwoBossLevel` clearing pylon energy that was never seeded, and `SurfaceTownLevel.create` not setting `customTerrain`, which crashed the save on arrival. Still open, tour floors 252 to 448, AirChallengeBossLevel vision errors at the map edge, and fullrun games as the new heroes.
+
+## Boss crawl (2026-10-26)
+
+Title screen button "Boss crawl" (beside Sandbox) starts a sandbox run of boss floors only (`BossCrawl`, `Dungeon.bossCrawl`, saved as `boss_crawl` and `boss_crawl_step`). Stops are every boss from `WorldShuffle.modBossVariants`, one per level class, ordered floor 5 to 25 with Shattered's own boss first on each floor. The run starts on the first boss and each boss floor's exit builds the next stop (`InterlevelScene.descend`). After the last boss the exit works normally. Built and checked headless only, not seen on screen yet.
