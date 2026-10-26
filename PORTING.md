@@ -269,6 +269,8 @@ Fixes to the mod's code. The chest maze kept its exit in cell 0 until the fight 
 
 Checks. MobArenaTest passes all seven (after guarding every cast of the floor to the boss's own arena, so they also work when the sandbox spawns them elsewhere, though they stay on the unsafe list). BossArenaTest builds and plays all four arenas with no failures. Two fights stop at headless limits before the unseal (Diamond King, DM-720), and the chest maze fight never started when the test walked the maze, so check in the sandbox that walking up to the boss door starts it. WorldShuffleTest is clean. The arena picture shows all of them drawn and acting. It also found a crash, the Rival picks a random missile weapon and the missile deck can hand out Combusted's thrown hand axe, which is not a missile weapon. Fixed in the Rival and in Tower PD's Missile Tower, which had the same cast (1 time in 20 when it built its weapon). Not yet seen on screen by Onyx.
 
+Mimic maze (2026-10-26). The Diamond Knight's portal sends the hero to floor 10 branch 4, which was never ported, so it built an empty dead end room and the fight could not go on. Ported the mod's `MiniChestMazeLevel` (`levels/minilevels/`) with its five rooms, `Painter.drawRectangle` and `drawCrossWithOuterFill`, and the maze kill count in `Mimic.rollToDropLoot` (`MagicLingStats.KillMazeMimic`, five kills bring the portal back). `MagicLingStats.RandomMimicItem` picks which chest room holds the gold coin. `MimicMazeTest` in check.sh builds the maze and checks five mimics are in reach. Not played on screen yet.
+
 ## Magic Ling PD, third batch (2026-10-24)
 
 The next fifteen percent of the Magic Ling port, 7 monsters and 17 items.

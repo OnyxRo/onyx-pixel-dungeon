@@ -44,6 +44,40 @@ public abstract class Painter {
 	}
 	
 	//magicling, fills a circle of cells, Magic Ling's rooms call it
+	//magicling, used by the mimic maze rooms
+	public static void drawRectangle(Level level, Point center, int width, int height, int terrain, boolean fillCorners, int cornerTerrain) {
+		int left = center.x - width / 2;
+		int right = center.x + width / 2;
+		int top = center.y - height / 2;
+		int bottom = center.y + height / 2;
+
+		fill(level, left, top, width, 1, terrain);
+		fill(level, left, bottom, width, 1, terrain);
+		fill(level, left, top + 1, 1, height - 2, terrain);
+		fill(level, right, top + 1, 1, height - 2, terrain);
+
+		if (fillCorners) {
+			set(level, left, top, cornerTerrain);
+			set(level, right, top, cornerTerrain);
+			set(level, left, bottom, cornerTerrain);
+			set(level, right, bottom, cornerTerrain);
+		}
+	}
+
+	public static void drawCrossWithOuterFill(Level level, Point center, int size, int terrain,boolean pointcenter,int pointterrain) {
+		if (pointcenter) set(level, center.x, center.y, pointterrain);
+
+		int left = center.x - size / 2;
+		int right = center.x + size / 2;
+		int top = center.y - size / 2;
+		int bottom = center.y + size / 2;
+
+		set(level, left, center.y, terrain);
+		set(level, right, center.y, terrain);
+		set(level, center.x, top, terrain);
+		set(level, center.x, bottom, terrain);
+	}
+
 	public static void drawCircle( Level level, Point center, int radius, int terrain ) {
 		for (int x = center.x - radius; x <= center.x + radius; x++) {
 			for (int y = center.y - radius; y <= center.y + radius; y++) {

@@ -438,19 +438,29 @@ public class HeroIcon extends Image {
 	public static final int DR_BLOCKING     = DR + 99;
 	private static TextureFilm drFilm;
 
+	//a mod icon number past the end of its sheet gives no frame, show the first Shattered icon instead of crashing
+	private void safeFrame( com.watabou.utils.RectF rect ){
+		if (rect == null){
+			texture( Assets.Interfaces.HERO_ICONS );
+			if (film == null) film = new TextureFilm(texture, SIZE, SIZE);
+			rect = film.get(0);
+		}
+		frame(rect);
+	}
+
 	private void pick( int icon ){
 		//rebluearchive, checked first as its numbers are the highest
 		if (icon >= RBA){
 			texture( Assets.Interfaces.RBA_HERO_ICONS );
 			if (rbaFilm == null) rbaFilm = new TextureFilm(texture, SIZE, SIZE);
-			frame(rbaFilm.get(icon - RBA));
+			safeFrame(rbaFilm.get(icon - RBA));
 			return;
 		}
 		//bluearchive
 		if (icon >= BA){
 			texture( Assets.Interfaces.BA_HERO_ICONS );
 			if (baFilm == null) baFilm = new TextureFilm(texture, SIZE, SIZE);
-			frame(baFilm.get(icon - BA));
+			safeFrame(baFilm.get(icon - BA));
 			return;
 		}
 		//rearranged, the mod's sheet keeps spell action icons 48 cells on, not 32
@@ -459,26 +469,26 @@ public class HeroIcon extends Image {
 		if (icon >= DR && icon < DR + 10000){
 			texture( Assets.Interfaces.DR_HERO_ICONS );
 			if (drFilm == null) drFilm = new TextureFilm(texture, SIZE, SIZE);
-			frame(drFilm.get(icon - DR));
+			safeFrame(drFilm.get(icon - DR));
 			return;
 		}
 		//xun, icons of 40000 and up come from Xun's PD's own sheet
 		if (icon >= XUN){
 			texture( Assets.Interfaces.XUN_HERO_ICONS );
 			if (xunFilm == null) xunFilm = new TextureFilm(texture, SIZE, SIZE);
-			frame(xunFilm.get(icon - XUN));
+			safeFrame(xunFilm.get(icon - XUN));
 			return;
 		}
 		if (icon >= RA){
 			texture( Assets.Interfaces.RA_HERO_ICONS );
 			if (raFilm == null) raFilm = new TextureFilm(texture, SIZE, SIZE);
-			frame(raFilm.get(icon - RA));
+			safeFrame(raFilm.get(icon - RA));
 			return;
 		}
 		if (film == null){
 			film = new TextureFilm(texture, SIZE, SIZE);
 		}
-		frame(film.get(icon));
+		safeFrame(film.get(icon));
 	}
 
 	//rebluearchive, an icon by number, for Re Blue Archive PD's miracles, shop goods and console contents

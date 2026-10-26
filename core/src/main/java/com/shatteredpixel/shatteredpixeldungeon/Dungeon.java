@@ -582,6 +582,9 @@ public class Dungeon {
 			} else {
 				level = new DeadEndLevel();
 			}
+		} else if (branch == 4 && (depth == 10 || depth == 11 || depth == 13)) {
+			//magicling, the Diamond Knight's portal leads to its mimic maze
+			level = new com.shatteredpixel.shatteredpixeldungeon.levels.minilevels.MiniChestMazeLevel();
 		} else {
 			level = new DeadEndLevel();
 		}

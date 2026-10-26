@@ -271,11 +271,22 @@ public class Mimic extends Mob {
 	@Override
 	public void rollToDropLoot(){
 		
+		//magicling, once the mimic maze is won its mimics drop nothing
+		com.shatteredpixel.shatteredpixeldungeon.actors.buffs.status.FoundChest foundChest = Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.status.FoundChest.class);
 		if (items != null) {
 			for (Item item : items) {
-				Dungeon.level.drop( item, pos ).sprite.drop();
+				if (foundChest != null && foundChest.NoLoot == 10) {
+					Dungeon.dropToChasm( item );
+				} else {
+					Dungeon.level.drop( item, pos ).sprite.drop();
+				}
 			}
 			items = null;
+		}
+
+		//magicling, mimics killed in the Diamond Knight's maze open its way out
+		if (Dungeon.level instanceof com.shatteredpixel.shatteredpixeldungeon.levels.minilevels.MiniChestMazeLevel){
+			com.shatteredpixel.shatteredpixeldungeon.MagicLingStats.KillMazeMimic++;
 		}
 		super.rollToDropLoot();
 	}

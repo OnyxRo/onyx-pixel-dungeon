@@ -151,3 +151,10 @@ Three things cost rounds. ModRoster did not compile because the bosses live in s
 
 ## 2026-10-26 bot check of the play tasks
 The allbosses tour got killed twice by Claude Code for low memory on this 8 GB machine while a browser was open. Close browsers first and pass -Xmx900m in JAVA_TOOL_OPTIONS. When the shell is killed the game keeps running as an orphan, stop it by hand. Another session was editing files and compiling at the same time, so commit only your own files.
+
+## 2026-10-26 Desktop update hung
+
+The hook update after the boss crawl commit hung for 40 minutes after Gradle wrote the jar (the Gradle java process never exited), so the app kept the old build and the boss crawl button was missing. Killing that java process and running auto-update-desktop.ps1 -Force fixed it. If auto-update.log shows "building" with no "desktop app updated" after 15 minutes, check for a stuck java process first.
+
+## 2026-10-26 Mimic maze portal
+A portal leading to an empty walled room means a branch number nobody gave a level to, so Dungeon.newLevel fell back to DeadEndLevel. Grep the mod's LevelRules.createBranchLevel for every destBranch a ported boss or NPC uses. The java command line is too long for bash, run single tests through check.sh.

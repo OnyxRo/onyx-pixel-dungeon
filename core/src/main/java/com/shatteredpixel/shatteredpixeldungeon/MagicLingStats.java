@@ -30,6 +30,8 @@ public class MagicLingStats {
 	public static int GoldMobLimit;
 	public static boolean TPDoorDieds = false;
 	public static int KillMazeMimic;
+	//which chest room of the mimic maze holds the gold coin, rolled per run as in the mod
+	public static boolean RandomMimicItem;
 	public static int goldRefogreCount;
 	public static int fuckGeneratorAlone;
 	public static boolean dm720Fight = false;
@@ -101,6 +103,7 @@ public class MagicLingStats {
 		GoldMobLimit = 0;
 		TPDoorDieds = false;
 		KillMazeMimic = 0;
+		RandomMimicItem = com.watabou.utils.Random.NormalIntRange(0,100)>=45;
 		goldRefogreCount = 0;
 		fuckGeneratorAlone = 0;
 		dm720Fight = false;
