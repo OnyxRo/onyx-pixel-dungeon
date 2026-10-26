@@ -146,14 +146,15 @@ public class DimandKingSprite extends MobSprite {
             super();
 
             texture( Dungeon.hero.heroClass.spritesheet() );
-            updateArmor( 7 );
+            //magicling used row 7, which is blank on the hero sheets, so the boss bar portrait showed nothing
+            updateArmor( Dungeon.hero.tier() );
             idle();
         }
 
         @Override
         public void link( Char ch ) {
             super.link( ch );
-            updateArmor( ((DiamondKnight)ch).armTier );
+            updateArmor( Dungeon.hero.tier() );
         }
 
         public void updateArmor( int tier ) {
@@ -179,10 +180,10 @@ public class DimandKingSprite extends MobSprite {
             super.update();
             if (flashTime <= 0) {
                 float interval = (Game.timeTotal % 9) / 3f;
-                tint(0,
-                        interval > 1 ? Math.max(0.9f, 1 - interval) : interval,
-                        interval < 1 ? Math.min(153 + interval * 72, 255) : Math.max(153 - (interval - 1) * 72, 128),
-                        0.5f);
+                //the mod passed 0 to 255 values here, which painted the copy solid blue and hid it on blue floors
+                tint(interval > 2 ? interval - 2 : Math.max(0, 1 - interval),
+                        interval > 1 ? Math.max(0, 2 - interval) : interval,
+                        interval > 2 ? Math.max(0, 3 - interval) : interval - 1, 0.5f);
             }
         }
 
