@@ -190,6 +190,10 @@ public class ForestBossLevel extends Level {
     public void seal() {
         super.seal();
 
+        //a fight left or rebuilt in the sandbox kept phase two switched on, so the phase two vines never came
+        com.shatteredpixel.shatteredpixeldungeon.MagicLingStats.crivusfruitslevel2 = false;
+        com.shatteredpixel.shatteredpixeldungeon.MagicLingStats.crivusfruitslevel3 = false;
+
         for (int i : ForestBossLasherPos) {
             CrivusFruitsLasher csp = new CrivusFruitsLasher();
             csp.pos = i;

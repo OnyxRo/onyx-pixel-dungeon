@@ -48,6 +48,13 @@ public class CrivusFruitsLasher extends Mob {
         properties.add(Property.MINIBOSS);
     }
 
+    //marked as soon as it appears, a vine killed before its first turn used to take nothing off the boss
+    @Override
+    protected void onAdd() {
+        super.onAdd();
+        Buff.affect(this,CrivusFruits.DiedDamager.class);
+    }
+
     @Override
     protected boolean canAttack( Char enemy ) {
         if(Dungeon.isChallenged(Challenges.STRONGER_BOSSES) && com.shatteredpixel.shatteredpixeldungeon.MagicLingStats.crivusfruitslevel2){

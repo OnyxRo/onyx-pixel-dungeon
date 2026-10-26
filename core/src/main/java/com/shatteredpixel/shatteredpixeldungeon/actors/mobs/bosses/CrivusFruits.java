@@ -308,7 +308,8 @@ public class CrivusFruits extends Boss {
         }
 
         //三阶段
-        if(HP==36){
+        //the mod wanted exactly 36, two vines dying together or a hit at 36 skipped past it and the fight stalled. HT drops to 35 below, so this runs once
+        if(HP<=36 && HT > 35){
             alignment = Alignment.ENEMY;
             GameScene.flash(0x80009c9c);
             HP=HT=35;
