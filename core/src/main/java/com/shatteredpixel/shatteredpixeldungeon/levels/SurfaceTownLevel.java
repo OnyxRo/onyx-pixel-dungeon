@@ -149,6 +149,7 @@ public class SurfaceTownLevel extends Level {
 		plants = new com.watabou.utils.SparseArray<>();
 		traps = new com.watabou.utils.SparseArray<>();
 		customTiles = new ArrayList<>();
+		customTerrain = new ArrayList<>();
 		customWalls = new ArrayList<>();
 
 		build();

@@ -687,3 +687,7 @@ Left out, and why.
 
 Checks. `scripts/test/TooCruelTest.java` (in `check.sh`, also with `--quick`) checks text, dependencies, conflicts and every trial, then turns each mode on alone, builds floors 1, 4 and 12, spawns monsters, trades blows, kills one, lets the hero's Too Cruel buffs act, and saves and reloads the floor, hero and modes. It also builds three floors with each hard and extreme trial. Nothing has been seen on screen yet. Play a few trials in the sandbox, Fort Knox with Extermination, Racing The Death's trail, Thoughtless's warning window and the Trials window itself.
 - 2026-10-25. Hero select froze when a Re Blue Archive student was picked. The loop that widens the hero text until it fits above the Start button never ended for a three paragraph text. It now stops at half the screen and moves the Start row down when needed. The students and DERanged's Rat King showed blank buttons, their sheets keep the standing hero in the top row (`HeroClass.selectIcon`). `scripts/test/HeroArtTest.java` checks every class's icon cell and splash, and `-Donyx.gallery.only=heroselect` picks every hero in a real window.
+
+## Bot check of the play tasks (2026-10-26)
+
+Full check.sh passed. The allbosses tour covered floors 0 to 251 of 448. Fixed `CaveTwoBossLevel` clearing pylon energy that was never seeded, and `SurfaceTownLevel.create` not setting `customTerrain`, which crashed the save on arrival. Still open, tour floors 252 to 448, AirChallengeBossLevel vision errors at the map edge, and fullrun games as the new heroes.

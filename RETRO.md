@@ -148,3 +148,6 @@ Three things cost rounds. ModRoster did not compile because the bosses live in s
 
 ## 2026-10-25, hero select freeze
 - The freeze looked like a memory problem at first (the PC was low on memory). A tour step that picks every hero plus one jstack found the endless layout loop in a few minutes. The tour now has `-Donyx.gallery.only=heroselect`, and HeroArtTest catches blank hero icons headless.
+
+## 2026-10-26 bot check of the play tasks
+The allbosses tour got killed twice by Claude Code for low memory on this 8 GB machine while a browser was open. Close browsers first and pass -Xmx900m in JAVA_TOOL_OPTIONS. When the shell is killed the game keeps running as an orphan, stop it by hand. Another session was editing files and compiling at the same time, so commit only your own files.
