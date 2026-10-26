@@ -200,6 +200,12 @@ public class DesktopLauncher {
 		config.setWindowIcon("icons/icon_16.png", "icons/icon_32.png", "icons/icon_48.png",
 				"icons/icon_64.png", "icons/icon_128.png", "icons/icon_256.png");
 
-		new Lwjgl3Application(new ShatteredPixelDungeon(new DesktopPlatformSupport()), config);
+		new Lwjgl3Application(new ShatteredPixelDungeon(new DesktopPlatformSupport()), config){
+			//a music streaming error stops the song instead of closing the game, see SafeAudio
+			@Override
+			public com.badlogic.gdx.backends.lwjgl3.audio.Lwjgl3Audio createAudio( Lwjgl3ApplicationConfiguration config ) {
+				return new SafeAudio( super.createAudio( config ) );
+			}
+		};
 	}
 }
