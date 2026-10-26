@@ -1014,11 +1014,15 @@ public enum HeroClass {
 		}
 	}
 	
+	public static final boolean UNLOCK_ALL_FOR_NOW = true;
+
 	public boolean isUnlocked(){
 		//always unlock on debug builds
 		if (DeviceCompat.isDebug()) return true;
 		//and in sandbox runs
 		if (Dungeon.sandbox) return true;
+		//for now every hero is open in normal runs too, delete this line to bring the badge unlocks back
+		if (UNLOCK_ALL_FOR_NOW) return true;
 		//rebluearchive, the students are open from the start as in the mod
 		if (RBAHero.isStudent(this)) return true;
 
