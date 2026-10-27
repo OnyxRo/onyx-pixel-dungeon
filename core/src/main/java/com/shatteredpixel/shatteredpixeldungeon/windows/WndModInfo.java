@@ -42,7 +42,7 @@ public class WndModInfo extends WndTitledMessage {
 	}
 
 	private static String mod( Level level ){
-		return Messages.get(level.getClass(), "mod");
+		return WorldShuffle.modName(WorldShuffle.modWorldOf(level));
 	}
 
 	private static Image icon( Level level ){

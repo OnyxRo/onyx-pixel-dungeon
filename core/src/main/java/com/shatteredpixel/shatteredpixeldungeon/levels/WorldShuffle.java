@@ -374,13 +374,26 @@ public class WorldShuffle {
 
 	/** The asset path of the icon of the mod a floor's world comes from, or null for Shattered's own worlds. */
 	public static String modLogo( Level level ){
+		int world = modWorldOf(level);
+		return world >= 0 && world < LOGOS.length ? LOGOS[world] : null;
+	}
+
+	//the logo of a floor's own world only, for gameplay (monsters, traps), a mod boss floor keeps Shattered's rules
+	private static String worldLogo( Level level ){
 		int world = worldOf(level);
 		return world >= 0 && world < LOGOS.length ? LOGOS[world] : null;
 	}
 
-	/** The mod a ported world comes from, without the "Pixel Dungeon" part, like "Devoted". */
+	/** The world a floor belongs to for its mod logo. A ported world itself, or the world whose mod supplied a boss floor. */
+	public static int modWorldOf( Level level ){
+		int world = worldOf(level);
+		if (world >= 0) return world;
+		return level.modWorld >= 0 && level.modWorld < LOGOS.length && LOGOS[level.modWorld] != null ? level.modWorld : -1;
+	}
+
+	/** The mod a ported world or mod boss floor comes from, without the "Pixel Dungeon" part, like "Devoted". */
 	public static String modShortName( Level level ){
-		return Messages.get(level.getClass(), "mod").replace(" Pixel Dungeon", "");
+		return modName(modWorldOf(level)).replace(" Pixel Dungeon", "");
 	}
 
 	/**
@@ -388,16 +401,16 @@ public class WorldShuffle {
 	 * monsters for that depth. Every other floor uses Shattered's.
 	 */
 	public static java.util.ArrayList<Class<? extends com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob>> mobRotation( Level level, int depth ){
-		if (Dungeon.branch == 0 && DEVOTED.equals(modLogo(level))) {
+		if (Dungeon.branch == 0 && DEVOTED.equals(worldLogo(level))) {
 			return com.shatteredpixel.shatteredpixeldungeon.actors.mobs.altregion.DevotedSpawner.getMobRotation(depth);
 		}
-		if (Dungeon.branch == 0 && MATT.equals(modLogo(level))) {
+		if (Dungeon.branch == 0 && MATT.equals(worldLogo(level))) {
 			return com.shatteredpixel.shatteredpixeldungeon.actors.mobs.MattSpawner.getMobRotation(level);
 		}
-		if (Dungeon.branch == 0 && LOVECRAFT.equals(modLogo(level))) {
+		if (Dungeon.branch == 0 && LOVECRAFT.equals(worldLogo(level))) {
 			return com.shatteredpixel.shatteredpixeldungeon.actors.mobs.LovecraftSpawner.getMobRotation(depth);
 		}
-		if (Dungeon.branch == 0 && MAGIC_LING.equals(modLogo(level))) {
+		if (Dungeon.branch == 0 && MAGIC_LING.equals(worldLogo(level))) {
 			return com.shatteredpixel.shatteredpixeldungeon.actors.mobs.MagicLingSpawner.getMobRotation(depth);
 		}
 		//any other mod with monsters on the roster
@@ -418,7 +431,7 @@ public class WorldShuffle {
 
 	/** The mod a world comes from as a short key like "reforged", or null for Shattered's own worlds. */
 	public static String modKey( Level level ){
-		String logo = modLogo(level);
+		String logo = worldLogo(level);
 		if (logo == null) return null;
 		return logo.substring(logo.lastIndexOf('/') + 1).replace(".png", "");
 	}
@@ -520,6 +533,12 @@ public class WorldShuffle {
 	 * Devoted has one boss for each of its five worlds, on the same floors as Shattered's.
 	 */
 	public static Level modBossLevel( int world, int depth ){
+		Level level = modBossLevelFor( world, depth );
+		if (level != null) level.modWorld = world;
+		return level;
+	}
+
+	private static Level modBossLevelFor( int world, int depth ){
 		if (world >= 0 && world < LOGOS.length && REFORGED.equals(LOGOS[world])) {
 			//Reforged only has the one boss floor, the Rat Usurper in place of Goo
 			//normal runs keep the Usurper they have played. A sandbox run, or the boss test, may get Reforged's Goo fight too.

@@ -54,11 +54,11 @@ public class ModIntro extends Component {
 		logo.scale.set( LOGO_SIZE / logo.height );
 		add( logo );
 
-		world = PixelScene.renderTextBlock( Messages.titleCase(WorldShuffle.menuName(WorldShuffle.worldOf(level))), 9 );
+		world = PixelScene.renderTextBlock( Messages.titleCase(WorldShuffle.menuName(WorldShuffle.modWorldOf(level))), 9 );
 		world.hardlight( Window.TITLE_COLOR );
 		add( world );
 
-		mod = PixelScene.renderTextBlock( Messages.get(this, "from", Messages.get(level.getClass(), "mod")), 7 );
+		mod = PixelScene.renderTextBlock( Messages.get(this, "from", WorldShuffle.modName(WorldShuffle.modWorldOf(level))), 7 );
 		add( mod );
 
 		width = Math.max( LOGO_SIZE, Math.max( world.width(), mod.width() ) );

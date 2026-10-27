@@ -180,6 +180,9 @@ public abstract class Level implements Bundlable {
 	public boolean[] mapped;
 	public boolean[] discoverable;
 
+	//the shuffle world whose mod supplied this boss floor, -1 for any other floor. Shows that mod's logo on the boss floor
+	public int modWorld = -1;
+
 	public int viewDistance = Dungeon.isChallenged( Challenges.DARKNESS ) ? 2 : (Dungeon.isChallenged( Challenges.FORGET_PATH ) ? 6 : 8); //deranged
 	
 	public boolean[] heroFOV;
@@ -525,6 +528,7 @@ public abstract class Level implements Bundlable {
 	public void restoreFromBundle( Bundle bundle ) {
 
 		version = bundle.getInt( VERSION );
+		modWorld = bundle.contains( "mod_world" ) ? bundle.getInt( "mod_world" ) : -1;
 		wave = bundle.getInt( "tower_wave" );
 		mode = com.shatteredpixel.shatteredpixeldungeon.windows.WndModes.Modes.values()[bundle.getInt( "tower_mode" )];
 		
@@ -641,6 +645,7 @@ public abstract class Level implements Bundlable {
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		bundle.put( VERSION, Game.versionCode );
+		bundle.put( "mod_world", modWorld );
 		if (wave != 0) bundle.put( "tower_wave", wave );
 		if (mode != com.shatteredpixel.shatteredpixeldungeon.windows.WndModes.Modes.NORMAL) bundle.put( "tower_mode", mode.ordinal() );
 		bundle.put( WIDTH, width );
