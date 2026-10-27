@@ -79,7 +79,8 @@ public class DragonBossLevel extends Level {
 	public static final int WIDTH = 32;
 	
 	public static final int LEFT	= (WIDTH - HALL_WIDTH) / 2;
-	public static final int CENTER	= (HALL_HEIGHT +4)* WIDTH + ((HALL_WIDTH/2)+2);
+	//the middle of the hall. Dragonic had (HALL_HEIGHT + 4) rows here, which put the dragon in the entrance room behind the locked door
+	public static final int CENTER	= (TOP + HALL_HEIGHT/2) * WIDTH + ((HALL_WIDTH/2)+2);
 	
 	private int arenaDoor = 42+25*32;
 	private int startFireMaze;
@@ -254,13 +255,11 @@ public class DragonBossLevel extends Level {
 
 			}
 			unseal(); //Dragonic ended the game here, in this game the way down opens. Done first so nothing later can leave the floor sealed
+			//the end map (with the way down) goes in before the death, changing the map clears the floor's items and would take the dragon's drops with it
+			changeMap(MAP_END);
+			state = State.WON;
 			dragon.die(Dungeon.hero);
 			dragon.sprite.kill();
-			changeMap(MAP_END);
-			unseal(); //Dragonic ended the game here, in this game the way down opens
-
-
-			state = State.WON;
 			break;
 		case WON:
             break;
@@ -478,7 +477,7 @@ public class DragonBossLevel extends Level {
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, T, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, W, W, W, W, W, W, W, W, X, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, W, W, W, W, W, W, W, D, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, e, e, e, e, e, e, e, E, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
@@ -615,7 +614,7 @@ public class DragonBossLevel extends Level {
 					W, W, C, C, C, C, C, C, C, C, e, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, C, C, C, C, C, C, C, C, e, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, C, C, C, C, C, C, C, C, e, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, W, W, W, W, W, W, W, W, D, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, W, W, W, W, W, W, W, X, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,

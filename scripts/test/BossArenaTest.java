@@ -256,6 +256,18 @@ public class BossArenaTest {
 			boolean hit = quietly( level::progress );
 			cutShort |= hit;
 			System.out.println( "INFO: Dragon step from " + was + " limit hit " + hit + " sealed " + level.locked );
+			if (was == com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.State.START) {
+				//the dragon has to appear in the hall the hero just walked into, not behind the locked door, and its jump has to land there too
+				int hallEnd = com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.TOP + com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.HALL_HEIGHT;
+				int[] cells = { com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.dragon.pos, com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.getTelePos() };
+				for (int c : cells) {
+					int row = c / level.width();
+					if (row < com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.TOP || row >= hallEnd || level.map[c] != com.shatteredpixel.shatteredpixeldungeon.levels.Terrain.EMPTY) {
+						System.out.println( "FAIL: Dragon on cell " + c + " (row " + row + ") is outside the hall" );
+						failures++;
+					}
+				}
+			}
 			trail.append( " > " ).append( com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.state );
 			if (com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.state == was) {
 				//a step that stopped at a headless limit (a null sprite) leaves the state behind, move it on by hand so the later phases and the unseal still run
