@@ -50,15 +50,17 @@ public class FinalLevel extends Level{
                 seal();
                 pro = State.BrokenSeal;
                 break;
+            //abyssalnite, the groups were never saved, so after a reload they were empty and this crashed.
+            //The next sleeping pillar of each group is found on the level instead
             case BrokenSeal:
-                groupA.get(2).activate();
-                groupB.get(0).activate();
+                activateNext(true);
+                activateNext(false);
                 pro = State.PillarsNext;
                 break;
             case PillarsNext:
-                groupA.get(3).activate();
-                groupB.get(1).activate();
-                groupB.get(2).activate();
+                activateNext(true);
+                activateNext(false);
+                activateNext(false);
                 pro = State.PillarsFinal;
                 break;
             case Cthulhu:
@@ -285,6 +287,7 @@ public class FinalLevel extends Level{
     public void storeInBundle(Bundle bundle) {
         super.storeInBundle(bundle);
         bundle.put(cooldowndelay,roundCounter);
+        if (pro != null) bundle.put("fight_state", pro); //abyssalnite never saved it, a reload lost the fight's progress
 
     }
     /** 重新载入游戏后也可以工作 */
@@ -292,6 +295,20 @@ public class FinalLevel extends Level{
     public void restoreFromBundle(Bundle bundle) {
         super.restoreFromBundle(bundle);
         roundCounter = bundle.getInt(cooldowndelay);
+        if (bundle.contains("fight_state")) pro = bundle.getEnum("fight_state", State.class);
+        else if (locked) pro = Statistics.killcount < 2 ? State.BrokenSeal
+                : Statistics.killcount < 4 ? State.PillarsNext : State.PillarsFinal; //older saves, judged by pillars killed
+    }
+
+    private void activateNext( boolean elemental ){
+        ArrayList<SeptiumPillar> sleeping = new ArrayList<>();
+        for (Mob mob : mobs.toArray(new Mob[0])){
+            if (!(mob instanceof SeptiumPillar) || mob.alignment != Char.Alignment.NEUTRAL) continue;
+            boolean a = mob instanceof SeptiumPillar.WindPillar || mob instanceof SeptiumPillar.WaterPillar
+                    || mob instanceof SeptiumPillar.GroundPillar || mob instanceof SeptiumPillar.FlamePillar;
+            if (a == elemental) sleeping.add((SeptiumPillar) mob);
+        }
+        if (!sleeping.isEmpty()) Random.element(sleeping).activate();
     }
 
     public ArrayList<SeptiumPillar> groupA = new ArrayList<>();
@@ -300,6 +317,8 @@ public class FinalLevel extends Level{
     @Override
     public void seal(){
         super.seal();
+        //the pillar count is a run statistic, a fight started again in the same run must count from zero
+        Statistics.killcount = 0;
 
         /** 我们使用了一个全局统计类来为A组添加怪组，同时通过直接指定怪组添加进去 */
         //1
