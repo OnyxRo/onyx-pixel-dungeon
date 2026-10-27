@@ -41,7 +41,7 @@ public class BossCrawl {
 						//several worlds of one mod share the same boss, keep it once
 						if (seen.add( depth + ":" + vs[v].getClass().getName() )) {
 							stops.add( new int[]{ w, depth, v } );
-							names.add( WorldShuffle.modName( w ) + ", " + readable( vs[v].getClass().getSimpleName() ) );
+							names.add( WorldShuffle.modName( w ).replace( " Pixel Dungeon", "" ) + ", " + readable( vs[v].getClass().getSimpleName() ) );
 						}
 					}
 				}

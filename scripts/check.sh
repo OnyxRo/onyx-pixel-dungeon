@@ -119,6 +119,10 @@ if [ $QUICK -eq 0 ]; then
   run "BranchLevelTest" BranchLevelTest 12; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY branch)" | tail -8 | sed 's/^/  /'
   [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
+  #the boss crawl, every stop must build the boss the Pick a boss list names
+  run "BossCrawlTest" BossCrawlTest; rc=$?
+  tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY boss crawl)" | tail -8 | sed 's/^/  /'
+  [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
   #the Diamond Knight's portal, floor 10 branch 4 must be the mimic maze with five mimics in reach
   run "MimicMazeTest" MimicMazeTest 8; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY maze)" | tail -8 | sed 's/^/  /'

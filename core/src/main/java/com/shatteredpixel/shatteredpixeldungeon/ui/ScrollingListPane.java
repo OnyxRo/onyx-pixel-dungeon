@@ -78,6 +78,11 @@ public class ScrollingListPane extends ScrollPane {
 		float pos = 0;
 		for (Component item : items){
 			item.setRect(0, pos, width, ITEM_HEIGHT);
+			//a label that wraps to more lines makes its row taller, or its lower line hangs over the next row
+			//and a click there picks the wrong entry
+			if (item instanceof ListItem && ((ListItem) item).label.height() + 4 > ITEM_HEIGHT) {
+				item.setRect(0, pos, width, ((ListItem) item).label.height() + 4);
+			}
 			pos += item.height();
 		}
 
