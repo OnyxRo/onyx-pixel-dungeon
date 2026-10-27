@@ -151,9 +151,11 @@ public class Dragon extends Mob {
 		if(beforeHitHP > 9*HT/10 && HP <= 9*HT/10){
 			HP = 9*(HT/10)-1;
 			yell(Messages.get(this, "fireattack"));
-			int oppositeHero = enemy.pos + (enemy.pos - this.pos);
-			Ballistica trajectory = new Ballistica(enemy.pos, oppositeHero, Ballistica.MAGIC_BOLT);
-			WandOfBlastWave.throwChar(enemy, trajectory, 5, true, true, this);
+			//a hit from a wand or a thrown weapon can come before the dragon has picked a target
+			Char foe = enemy != null ? enemy : Dungeon.hero;
+			int oppositeHero = foe.pos + (foe.pos - this.pos);
+			Ballistica trajectory = new Ballistica(foe.pos, oppositeHero, Ballistica.MAGIC_BOLT);
+			WandOfBlastWave.throwChar(foe, trajectory, 5, true, true, this);
 			fireCooldown = 0;
 
 		}
@@ -180,21 +182,28 @@ public class Dragon extends Mob {
 			//jump();
 		}
 
-		//phase 2 of the fight is over
-		//the fight only ends in the arena. Dragonic skipped the maze when the dragon reached half health before the hero
-		//found the trap, which loaded the arena under the hero (often over the chasm) and added a second dragon
-		if (beforeHitHP > HT/2 && HP <= HT/2 && DragonBossLevel.state != DragonBossLevel.State.FIGHT_ARENA){
-			HP = (HT/2)+1;
-		} else if (beforeHitHP > HT/2 && HP <= HT/2){
-			HP = (HT/2)-1;
-			((DragonBossLevel)Dungeon.level).progress();
-			BossHealthBar.bleed(true);
+		//phase 2 of the fight is over. At half health the dragon pulls the hero into the maze. Dragonic only opened the
+		//maze from a trap tile hidden in the hall's wall, which players never found, and skipped the maze at half health
+		//by loading the arena under the hero (often over the chasm) with a second dragon
+		if (beforeHitHP > HT/2 && HP <= HT/2){
+			if (DragonBossLevel.state == DragonBossLevel.State.FIRE_ATTACK) {
+				HP = (HT/2)-1;
+				BossHealthBar.bleed(true);
+				((DragonBossLevel)Dungeon.level).startMaze();
+				return;
+			} else if (DragonBossLevel.state != DragonBossLevel.State.FIGHT_ARENA) {
+				HP = (HT/2)+1;
+			} else {
+				BossHealthBar.bleed(true);
+			}
 		}
 
-		//phase 3 of the fight is over
-		if (HP == 0 && beforeHitHP <= HT/2) {
+		//phase 3, the arena is a fight to the end. isAlive stays true at 0 health, the level finishes the dragon off
+		if (HP == 0 && DragonBossLevel.state == DragonBossLevel.State.FIGHT_ARENA) {
 			((DragonBossLevel)Dungeon.level).progress();
 			return;
+		} else if (HP == 0) {
+			HP = 1;
 		}
 
 

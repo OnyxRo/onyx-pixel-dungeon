@@ -271,6 +271,21 @@ public class DragonBossLevel extends Level {
 
 	}
 
+	//the cell of the trap in the hall's east wall, which is also where the maze begins
+	private static final int MAZE_START = 24 * WIDTH + 19;
+
+	/** Called by the dragon at half health. Puts the hero on the maze's first cell and opens the maze. */
+	public void startMaze(){
+		if (state != State.FIRE_ATTACK) return;
+		Dungeon.hero.interrupt();
+		if (Dungeon.hero.sprite != null) Dungeon.hero.sprite.interruptMotion();
+		Dungeon.hero.pos = MAZE_START;
+		if (Dungeon.hero.sprite != null) Dungeon.hero.sprite.place( MAZE_START );
+		startFireMaze = MAZE_START;
+		progress();
+		Dungeon.observe();
+	}
+
 	private void clearEntities(Room safeArea){
 		for (Heap heap : heaps.values()){
 			if (safeArea == null || !safeArea.inside(cellToPoint(heap.pos))){
