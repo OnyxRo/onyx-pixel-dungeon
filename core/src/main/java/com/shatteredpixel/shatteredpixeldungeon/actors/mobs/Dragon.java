@@ -427,18 +427,6 @@ public class Dragon extends Mob {
 		if (Dungeon.level.heroFOV[newPos]) CellEmitter.get( newPos ).burst( Speck.factory( Speck.WOOL ), 6 );
 			Sample.INSTANCE.play( Assets.Sounds.PUFF );
 		hasJumped = true;
-		for (int i = 1; i <= 5; i++) {
-			Dungeon.level.passable[(CENTER)] = true;
-			Dungeon.level.passable[(CENTER) + i] = true;
-			Dungeon.level.passable[(CENTER) - i] = true;
-
-		}
-		for (int i = 1; i <= 5; i++) {
-			Dungeon.level.passable[(pos)] = false;
-			Dungeon.level.passable[(pos) + i] = false;
-			Dungeon.level.passable[(pos) - i] = false;
-
-		}
 		spend(attackDelay());
 	}
 	

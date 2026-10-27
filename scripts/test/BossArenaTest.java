@@ -269,6 +269,14 @@ public class BossArenaTest {
 				}
 			}
 			trail.append( " > " ).append( com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.state );
+			//no invisible walls, every plain floor tile of the current map can be walked on (the dragon used to block five tiles each side of him)
+			for (int c = 0; c < level.length(); c++) {
+				if (level.map[c] == com.shatteredpixel.shatteredpixeldungeon.levels.Terrain.EMPTY && !level.passable[c]) {
+					System.out.println( "FAIL: Dragon " + com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.state + " floor cell " + c + " is blocked but looks open" );
+					failures++;
+					break;
+				}
+			}
 			if (com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.state == was) {
 				//a step that stopped at a headless limit (a null sprite) leaves the state behind, move it on by hand so the later phases and the unseal still run
 				if (!cutShort) break;

@@ -178,12 +178,6 @@ public class DragonBossLevel extends Level {
 			dragon.state = dragon.HUNTING;
 			dragon.pos =  CENTER; //in the middle of the fight room
 			GameScene.add( dragon );
-			for (int i = 1; i <= 5; i++) {
-				passable[(dragon.pos)] = false;
-				passable[(dragon.pos) + i] = false;
-				passable[(dragon.pos) - i] = false;
-
-			}
 			for (int i=0; i < PathFinder.NEIGHBOURS8.length; i++) {
 				GameScene.add( Blob.seed( dragon.pos + PathFinder.NEIGHBOURS8[i], 30, Fire.class ) );
 			}
@@ -236,12 +230,6 @@ public class DragonBossLevel extends Level {
 			//a dragon still on the floor would get a second sprite
 			if (!mobs.contains(dragon)) GameScene.add(dragon);
 			dragon.notice();
-			for (int i = 1; i <= 5; i++) {
-				passable[(dragon.pos)] = false;
-				passable[(dragon.pos) + i] = false;
-				passable[(dragon.pos) - i] = false;
-
-			}
 			GameScene.flash(0xFFFFFF);
 			Sample.INSTANCE.play(Assets.Sounds.BLAST);
 
@@ -251,12 +239,6 @@ public class DragonBossLevel extends Level {
 
 
 		case FIGHT_ARENA:
-			for (int i = 1; i <= 5; i++) {
-				passable[(dragon.pos)] = true;
-				passable[(dragon.pos) + i] = true;
-				passable[(dragon.pos) - i] = true;
-
-			}
 			unseal(); //Dragonic ended the game here, in this game the way down opens. Done first so nothing later can leave the floor sealed
 			//the end map (with the way down) goes in before the death, changing the map clears the floor's items and would take the dragon's drops with it
 			changeMap(MAP_END);
