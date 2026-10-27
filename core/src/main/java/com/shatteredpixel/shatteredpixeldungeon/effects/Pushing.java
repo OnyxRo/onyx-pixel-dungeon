@@ -64,9 +64,19 @@ public class Pushing extends Actor {
 		this.callback = callback;
 	}
 	
-	//Transformation PD asks for an immediate start, here it simply joins the actors
+	//Transformation PD asks for an immediate start. The caller keeps its own turn open until the callback runs
+	//(the Death Knight's leap), so waiting for this push to get an actor turn would freeze the game forever
 	public void startImmediately() {
 		Actor.add( this );
+		if (sprite != null && sprite.parent != null) {
+			if (Dungeon.level.heroFOV[from] || Dungeon.level.heroFOV[to]){
+				sprite.visible = true;
+			}
+			if (effect == null) effect = new Effect();
+		} else {
+			Actor.remove( this );
+			if (callback != null) callback.call();
+		}
 	}
 
 	@Override
