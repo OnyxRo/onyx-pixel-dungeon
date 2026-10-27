@@ -579,12 +579,12 @@ public class Rival extends Mob implements Callback {
         String desc = super.description();
 
         if(Dungeon.hero != null){
-            desc += Messages.get(this, "weapon", weapon.toString() );
-            desc += Messages.get(this, "armor", armor.toString() );
-            desc += Messages.get(this, "ring", misc1.toString() );
-            desc += Messages.get(this, "ring", misc2.toString() );
-            desc += Messages.get(this, "wand", wand.toString() );
-            desc += Messages.get(this, "missile", missile.toString() );
+            desc += Messages.get(this, "weapon", weapon.title() );
+            desc += Messages.get(this, "armor", armor.title() );
+            desc += Messages.get(this, "ring", misc1.title() );
+            desc += Messages.get(this, "ring", misc2.title() );
+            desc += Messages.get(this, "wand", wand.title() );
+            desc += Messages.get(this, "missile", missile.title() );
             desc += Messages.get(this, "ankhs");
         } else {
             desc += "";

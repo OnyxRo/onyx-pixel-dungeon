@@ -158,7 +158,8 @@ public class DimandKingSprite extends MobSprite {
         }
 
         public void updateArmor( int tier ) {
-            TextureFilm film = new TextureFilm( HeroSprite.tiers(), 7, FRAME_WIDTH, FRAME_HEIGHT );
+            //the mod always read row 7 here, which is blank on every hero sheet
+            TextureFilm film = new TextureFilm( HeroSprite.tiers(), Math.max( 0, Math.min( tier, 6 ) ), FRAME_WIDTH, FRAME_HEIGHT );
 
             idle = new Animation( 1, true );
             idle.frames( film, 0, 0, 0, 1, 0, 0, 1, 1 );

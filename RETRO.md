@@ -158,3 +158,6 @@ The hook update after the boss crawl commit hung for 40 minutes after Gradle wro
 
 ## 2026-10-26 Mimic maze portal
 A portal leading to an empty walled room means a branch number nobody gave a level to, so Dungeon.newLevel fell back to DeadEndLevel. Grep the mod's LevelRules.createBranchLevel for every destBranch a ported boss or NPC uses. The java command line is too long for bash, run single tests through check.sh.
+
+## 2026-10-26 Invisible hero copies
+The first fix changed what the copy sprite asked for, but its updateArmor ignored the argument and still read blank row 7, so it shipped broken. Reading code missed it twice. A tour mode that logged the sprite frame rectangle found it in one run. For any "invisible" monster, log frame, alpha, tint and texture before guessing, and grep for the same hard coded row in sibling sprites.

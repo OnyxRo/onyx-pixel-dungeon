@@ -177,6 +177,13 @@ public class Gallery {
 			return;
 		}
 
+		//-Donyx.gallery.only=diamond walks the Diamond Knight fight (Magic Ling) through its phases by hand and
+		//pictures each one, [DIAM] lines give the boss's HP, phase, sprite and alpha
+		if ("diamond".equals(System.getProperty("onyx.gallery.only"))) {
+			diamond();
+			return;
+		}
+
 		//-Donyx.gallery.only=final opens Abyssalnite's final arena (Cthulhu) once and leaves the window open to play
 		if ("final".equals(System.getProperty("onyx.gallery.only"))) {
 			if (!stayDone && time > 1.5f && Dungeon.hero != null && Dungeon.hero.ready) {
@@ -610,6 +617,92 @@ public class Gallery {
 			target++;
 			targetStage = 0;
 			time = 0;
+		}
+	}
+
+	private static int diamondStep = 0;
+
+	private static com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.DiamondKnight diamondBoss(){
+		for (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob m : Dungeon.level.mobs) {
+			if (m instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.DiamondKnight) {
+				return (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.DiamondKnight) m;
+			}
+		}
+		return null;
+	}
+
+	private static boolean diamondInScene( com.watabou.noosa.Gizmo g ){
+		while (g.parent != null) g = g.parent;
+		return g == Game.scene();
+	}
+
+	private static void diamondLog( String what ){
+		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.DiamondKnight b = diamondBoss();
+		com.shatteredpixel.shatteredpixeldungeon.levels.ColdChestBossLevel l = (com.shatteredpixel.shatteredpixeldungeon.levels.ColdChestBossLevel) Dungeon.level;
+		System.out.println( "[DIAM] " + what + " state " + l.pro + (b == null ? " no boss" : " HP " + b.HP + "/" + b.HT + " phase " + b.phase + " pos " + b.pos
+				+ " sprite " + (b.sprite == null ? "null" : b.sprite.getClass().getSimpleName() + " alpha " + b.sprite.alpha() + " visible " + b.sprite.visible
+				+ " parent " + (b.sprite.parent != null) + " xy " + b.sprite.x + "," + b.sprite.y
+				+ " frame " + b.sprite.frame().left + "," + b.sprite.frame().top + "," + b.sprite.frame().right + "," + b.sprite.frame().bottom + " cls2 " + b.sprite.getClass().getName() + " ox " + b.sprite.origin.x + " wh " + b.sprite.width + "x" + b.sprite.height + " scale " + b.sprite.scale
+				+ " mul " + b.sprite.rm + "," + b.sprite.gm + "," + b.sprite.bm + "," + b.sprite.am + " add " + b.sprite.ra + "," + b.sprite.ga + "," + b.sprite.ba + "," + b.sprite.aa
+				+ " tex " + (b.sprite.texture == null ? "null" : b.sprite.texture.width + "x" + b.sprite.texture.height)
+				+ " tier " + Dungeon.hero.tier() + " cls " + Dungeon.hero.heroClass
+				+ " inScene " + diamondInScene( b.sprite )) ) );
+	}
+
+	private static void diamond(){
+		if (Dungeon.hero != null) Dungeon.hero.HP = Dungeon.hero.HT;
+		if (diamondStep == 0) {
+			if (time < 1.5f || Dungeon.hero == null || !Dungeon.hero.ready) return;
+			diamondStep = 1;
+			com.shatteredpixel.shatteredpixeldungeon.levels.SpecialFloors.travel(
+					com.shatteredpixel.shatteredpixeldungeon.levels.ColdChestBossLevel::new );
+			time = 0;
+			return;
+		}
+		if (!(Dungeon.level instanceof com.shatteredpixel.shatteredpixeldungeon.levels.ColdChestBossLevel)) { time = 0; return; }
+		com.shatteredpixel.shatteredpixeldungeon.levels.ColdChestBossLevel l = (com.shatteredpixel.shatteredpixeldungeon.levels.ColdChestBossLevel) Dungeon.level;
+		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.DiamondKnight b = diamondBoss();
+		//turns only pass while the hero acts
+		if (diamondStep >= 2 && Dungeon.hero.ready) Dungeon.hero.rest( false );
+		try {
+			if (diamondStep == 1 && time > 2f) {
+				diamondStep = 2;
+				l.progress();
+				diamondLog( "fight started" );
+			} else if (diamondStep == 2 && time > 4f) {
+				diamondStep = 3;
+				diamondLog( "before maze" );
+				capture( "diam_1_start" );
+				if (b != null) b.damage( b.HP - 355, Dungeon.hero );
+			} else if (diamondStep == 3 && time > 6f) {
+				diamondStep = 4;
+				diamondLog( "maze opened" );
+				capture( "diam_2_maze" );
+				com.shatteredpixel.shatteredpixeldungeon.MagicLingStats.TPDoorDieds = true;
+				com.shatteredpixel.shatteredpixeldungeon.MagicLingStats.KillMazeMimic = 5;
+				l.occupyCell( Dungeon.hero );
+			} else if (diamondStep == 4 && time > 8f) {
+				diamondStep = 5;
+				diamondLog( "after maze" );
+				capture( "diam_3_aftermaze" );
+				if (b != null) b.damage( b.HP - 238, Dungeon.hero );
+			} else if (diamondStep == 5 && time > 10f) {
+				diamondStep = 6;
+				diamondLog( "at 240" );
+				capture( "diam_4_240" );
+				if (b != null) b.damage( b.HP - 195, Dungeon.hero );
+			} else if (diamondStep == 6 && time > 13f) {
+				diamondStep = 7;
+				diamondLog( "copy phase" );
+				capture( "diam_5_copy" );
+			} else if (diamondStep == 7 && time > 14f) {
+				System.out.println( "[DIAM] done" );
+				Gdx.app.exit();
+			}
+		} catch (Throwable e) {
+			System.out.println( "[DIAM] FAIL at step " + diamondStep + " " + e );
+			e.printStackTrace( System.out );
+			diamondStep++;
 		}
 	}
 

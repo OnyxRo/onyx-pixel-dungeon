@@ -297,10 +297,10 @@ public class BlackSoul extends Mob implements Callback {
     public String info() {
         String desc = super.info();
 
-        desc += Messages.get(this, "weapon", weapon.toString() );
-        desc += Messages.get(this, "armor", armor.toString() );
-        desc += Messages.get(this, "wand", wand.toString() );
-        desc += Messages.get(this, "missile", missile.toString() );
+        desc += Messages.get(this, "weapon", weapon.title() );
+        desc += Messages.get(this, "armor", armor.title() );
+        desc += Messages.get(this, "wand", wand.title() );
+        desc += Messages.get(this, "missile", missile.title() );
         desc += Messages.get(this, "gold", gold );
 
         return desc;

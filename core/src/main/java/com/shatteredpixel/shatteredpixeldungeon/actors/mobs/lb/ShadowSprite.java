@@ -26,7 +26,8 @@ public class ShadowSprite extends MobSprite {
         }
 
 
-        TextureFilm film = new TextureFilm(HeroSprite.tiers(), 7, 12, 15);
+        //magicling read row 7, blank on this game's hero sheets. Row 6 is the top armor look
+        TextureFilm film = new TextureFilm(HeroSprite.tiers(), 6, 12, 15);
 
         idle = new Animation(1, true);
         idle.frames(film, 0, 0, 0, 1, 0, 0, 1, 1);
