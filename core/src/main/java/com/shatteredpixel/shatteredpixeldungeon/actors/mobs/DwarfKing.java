@@ -156,9 +156,22 @@ public class DwarfKing extends Mob {
 		if (phase == 3) BossHealthBar.bleed(true);
 	}
 
+	//abyssalnite's NewCityBossLevel also hosts this king, its throne and summoning spots are its own
+	private static int throne(){
+		return Dungeon.level instanceof com.shatteredpixel.shatteredpixeldungeon.levels.NewCityBossLevel
+				? com.shatteredpixel.shatteredpixeldungeon.levels.NewCityBossLevel.throne : CityBossLevel.throne;
+	}
+
+	private static int summoningPos(){
+		if (Dungeon.level instanceof com.shatteredpixel.shatteredpixeldungeon.levels.NewCityBossLevel){
+			return ((com.shatteredpixel.shatteredpixeldungeon.levels.NewCityBossLevel)Dungeon.level).getSummoningPos();
+		}
+		return ((CityBossLevel)Dungeon.level).getSummoningPos();
+	}
+
 	@Override
 	protected boolean act() {
-		if (pos == CityBossLevel.throne){
+		if (pos == throne()){
 			throwItems();
 		}
 
@@ -351,7 +364,7 @@ public class DwarfKing extends Mob {
 
 	private boolean summonSubject( int delay, Class<?extends Mob> type ){
 		Summoning s = new Summoning();
-		s.pos = ((CityBossLevel)Dungeon.level).getSummoningPos();
+		s.pos = summoningPos();
 		if (s.pos == -1) return false;
 		s.summon = type;
 		s.delay = delay;
@@ -520,7 +533,7 @@ public class DwarfKing extends Mob {
 			if (HP <= (Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 100 : 50)) {
 				HP = (Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 100 : 50);
 				sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "invulnerable"));
-				ScrollOfTeleportation.appear(this, CityBossLevel.throne);
+				ScrollOfTeleportation.appear(this, throne());
 				properties.add(Property.IMMOVABLE);
 				phase = 2;
 				summonsMade = 0;
@@ -578,15 +591,15 @@ public class DwarfKing extends Mob {
 
 		super.die( cause );
 
-		Heap h = Dungeon.level.heaps.get(CityBossLevel.throne);
+		Heap h = Dungeon.level.heaps.get(throne());
 		if (h != null) {
 			for (Item i : h.items) {
-				Dungeon.level.drop(i, CityBossLevel.throne + Dungeon.level.width());
+				Dungeon.level.drop(i, throne() + Dungeon.level.width());
 			}
 			h.destroy();
 		}
 
-		if (pos == CityBossLevel.throne){
+		if (pos == throne()){
 			Dungeon.level.drop(new KingsCrown(), pos + Dungeon.level.width()).sprite.drop(pos);
 		} else {
 			Dungeon.level.drop(new KingsCrown(), pos).sprite.drop();

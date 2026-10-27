@@ -119,7 +119,8 @@ public class Gorgon extends GoldMob {
         @Override
         public boolean act() {
 
-            if (Lv >= 100){
+            //god mode keeps the hero alive, so this would log the death line and fail the run every turn
+            if (Lv >= 100 && !(target == Dungeon.hero && Dungeon.godMode())){
                 target.die(null);
                 Dungeon.fail( getClass() );
                 GLog.n( Messages.capitalize(Messages.get(Gorgon.Petrification.class, "ondeath")) );
