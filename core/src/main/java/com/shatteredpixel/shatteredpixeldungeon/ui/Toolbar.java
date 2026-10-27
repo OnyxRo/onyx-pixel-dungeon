@@ -333,7 +333,16 @@ public class Toolbar extends Component {
 					}
 				}
 			}
-			
+
+			//Ryuse's PD, the inventory pane has no room for the helmet and the extra armor, artifact and ring slots,
+			//so a right click opens the full backpack window, which shows them (a long press keeps the quick bag)
+			@Override
+			protected void onRightClick() {
+				if (Dungeon.hero != null && Dungeon.hero.ready && !GameScene.cancel()) {
+					GameScene.show(new WndBag(Dungeon.hero.belongings.backpack));
+				}
+			}
+
 			@Override
 			public GameAction keyAction() {
 				return SPDAction.INVENTORY;
