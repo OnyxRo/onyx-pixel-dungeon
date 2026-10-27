@@ -39,6 +39,8 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndSettings;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndCompendium;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndModInfo;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndSandbox;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndPlaylist;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndPlaylists;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndSongs;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndSandboxFloor;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndSandboxItems;
@@ -359,6 +361,24 @@ public class Gallery {
 				capture( "hotkey_random_" + Dungeon.level.getClass().getSimpleName() );
 				uiStep++;
 				return;
+			case 12:
+				//a sample playlist, in the gallery's own settings
+				SongPlayer.createPlaylist( "Upbeat" );
+				if (SongPlayer.playlist( "Upbeat" ).isEmpty()) {
+					int n = 0;
+					for (SongPlayer.Song s : SongPlayer.modSongs()) {
+						if (n++ >= 4) break;
+						SongPlayer.togglePlaylist( "Upbeat", s.path );
+					}
+				}
+				uiWindow = new WndPlaylists();
+				break;
+			case 13: uiWindow = new WndPlaylist( "Upbeat" ); break;
+			case 14:
+				WndSongs.addingTo = "Upbeat";
+				uiWindow = new WndSongs();
+				WndSongs.addingTo = null;
+				break;
 			default:
 				Gdx.app.exit();
 				return;
@@ -817,7 +837,19 @@ public class Gallery {
 				dragonStep = 8;
 				dragonLog( "end" );
 				capture( "drag_6_end" );
-			} else if (dragonStep == 8 && time > 20f) {
+				//stand next to the way down so the picture shows it
+				int exit = Dungeon.level.exit();
+				dragonMove( exit - w );
+				System.out.println( "[DRAG] exit cell " + exit + " terrain " + Dungeon.level.map[exit] + " transition " + Dungeon.level.getTransition( exit )
+						+ " passable " + Dungeon.level.passable[exit] + " mapped " + Dungeon.level.mapped[exit] + " visited " + Dungeon.level.visited[exit] );
+			} else if (dragonStep == 8 && time > 21f) {
+				dragonStep = 9;
+				capture( "drag_7_exit" );
+				com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene.resetMap();
+			} else if (dragonStep == 9 && time > 21.6f) {
+				dragonStep = 10;
+				capture( "drag_8_exit_redrawn" );
+			} else if (dragonStep == 10 && time > 22f) {
 				System.out.println( "[DRAG] done" );
 				Gdx.app.exit();
 			}

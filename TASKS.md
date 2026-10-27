@@ -67,3 +67,4 @@ The cloud routine does the first unchecked task and checks it off. Smallest firs
 - [ ] Bot check of the sandbox play tasks (2026-10-26). All headless tests passed. The every boss floor tour checked floors 0 to 251 and fixed two crashes (a Caves pylon dying before it powered up, and arriving at Transformation's Surface town). Floors 252 to 448 still need a tour run, the window was hidden for that part. Air challenge boss floor logs vision errors at the map edge (caught, not a crash). Hero bot games not run yet.
 
 - [x] Boss crawl option on the title screen, bosses easiest to hardest (2026-10-26)
+- [x] Song playlists. Name a playlist, add or remove songs, play it in order or shuffled (2026-10-27)

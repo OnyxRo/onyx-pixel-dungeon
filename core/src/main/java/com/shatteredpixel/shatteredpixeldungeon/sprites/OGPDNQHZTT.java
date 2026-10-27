@@ -9,7 +9,7 @@ import com.watabou.noosa.TextureFilm;
 
 public class OGPDNQHZTT extends MobSprite {
     public OGPDNQHZTT() {
-        this.texture("sprites/rat.png");
+        this.texture("sprites/magicling/rat.png");
         TextureFilm var1 = new TextureFilm(this.texture, 16, 15);
         this.idle = new Animation(2, true);
         Animation var2 = this.idle;

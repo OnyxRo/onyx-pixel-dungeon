@@ -64,6 +64,9 @@ public class WndSongs extends Window {
 	private static final String DEVOTED   = "Devoted Pixel Dungeon";
 
 	private static boolean likedOnly = false;
+
+	/** While set, the mark on each song adds it to or takes it out of this playlist instead of liking it. */
+	public static String addingTo = null;
 	private static String query = "";
 
 	/** Set while a song or shuffle was picked from the list, null while floors play their own music. */
@@ -89,7 +92,10 @@ public class WndSongs extends Window {
 
 		int height = (int)Math.min( 200, PixelScene.uiCamera.height - 40 );
 
-		RenderedTextBlock title = PixelScene.renderTextBlock( Messages.get(this, "title"), 12 );
+		if (addingTo != null && !SongPlayer.hasPlaylist( addingTo )) addingTo = null;
+
+		RenderedTextBlock title = PixelScene.renderTextBlock( addingTo == null ? Messages.get(this, "title")
+				: Messages.get(this, "adding_title", addingTo), addingTo == null ? 12 : 9 );
 		title.hardlight( TITLE_COLOR );
 		title.setPos( (WIDTH - title.width()) / 2, 0 );
 		PixelScene.align(title);
@@ -130,6 +136,21 @@ public class WndSongs extends Window {
 
 		final LinkedHashMap<String, ArrayList<Song>> groups = songs();
 
+		if (addingTo != null) {
+			RedButton done = new RedButton( Messages.get(this, "adding_done"), 7 ) {
+				@Override
+				protected void onClick() {
+					String name = addingTo;
+					addingTo = null;
+					hide();
+					GameScene.show( new WndPlaylist( name ) );
+				}
+			};
+			done.setRect( 0, top, WIDTH, BTN_H );
+			add( done );
+			top += BTN_H + GAP;
+		} else {
+
 		RedButton shuffleAll = new RedButton( Messages.get(this, "shuffle_all"), 7 ) {
 			@Override
 			protected void onClick() {
@@ -163,6 +184,18 @@ public class WndSongs extends Window {
 		add( shuffleLiked );
 		top += BTN_H + GAP;
 
+		RedButton lists = new RedButton( Messages.get(this, "playlists"), 7 ) {
+			@Override
+			protected void onClick() {
+				hide();
+				GameScene.show( new WndPlaylists() );
+			}
+		};
+		lists.setRect( 0, top, WIDTH, BTN_H );
+		add( lists );
+		top += BTN_H + GAP;
+		}
+
 		//the window has to be at its final size before the list is placed, or the list draws off centre
 		resize( WIDTH, height );
 
@@ -170,7 +203,7 @@ public class WndSongs extends Window {
 		add( list );
 		list.setRect( 0, top, WIDTH, height - top );
 
-		list.addItem( new ScrollingListPane.ListItem( Icons.get(Icons.REPEAT), Messages.get(this, "floor_music") ) {
+		if (addingTo == null) list.addItem( new ScrollingListPane.ListItem( Icons.get(Icons.REPEAT), Messages.get(this, "floor_music") ) {
 			@Override
 			public boolean onClick( float x, float y ) {
 				if (!inside( x, y )) return false;
@@ -204,6 +237,13 @@ public class WndSongs extends Window {
 		list.setRect( 0, top, WIDTH, height - top );
 	}
 
+	@Override
+	public void onBackPressed() {
+		//closing the window ends adding, so the next time it opens it likes songs again
+		addingTo = null;
+		super.onBackPressed();
+	}
+
 	private void reopen(){
 		hide();
 		GameScene.show( new WndSongs() );
@@ -219,8 +259,12 @@ public class WndSongs extends Window {
 			super( Icons.get(Icons.AUDIO), song.name );
 			this.song = song;
 			if (song.path.equals( SongPlayer.current )) hardlight( TITLE_COLOR );
-			heart = Icons.get( SongPlayer.isLiked( song.path ) ? Icons.CHECKED : Icons.UNCHECKED );
+			heart = Icons.get( marked() ? Icons.CHECKED : Icons.UNCHECKED );
 			add( heart );
+		}
+
+		private boolean marked(){
+			return addingTo != null ? SongPlayer.inPlaylist( addingTo, song.path ) : SongPlayer.isLiked( song.path );
 		}
 
 		@Override
@@ -237,10 +281,11 @@ public class WndSongs extends Window {
 		public boolean onClick( float x, float y ) {
 			if (!inside( x, y )) return false;
 			if (x > this.x + width - 16) {
-				SongPlayer.toggleLiked( song.path );
+				if (addingTo != null) SongPlayer.togglePlaylist( addingTo, song.path );
+				else SongPlayer.toggleLiked( song.path );
 				remove( heart );
 				heart.destroy();
-				heart = Icons.get( SongPlayer.isLiked( song.path ) ? Icons.CHECKED : Icons.UNCHECKED );
+				heart = Icons.get( marked() ? Icons.CHECKED : Icons.UNCHECKED );
 				add( heart );
 				layout();
 				return true;
@@ -252,8 +297,15 @@ public class WndSongs extends Window {
 		}
 	}
 
+	/** Every song by its path, for showing the songs of a playlist by name. */
+	static LinkedHashMap<String, Song> byPath() {
+		LinkedHashMap<String, Song> all = new LinkedHashMap<>();
+		for (ArrayList<Song> g : songs().values()) for (Song s : g) all.put( s.path, s );
+		return all;
+	}
+
 	//every song, grouped by the mod it came from
-	private static LinkedHashMap<String, ArrayList<Song>> songs() {
+	static LinkedHashMap<String, ArrayList<Song>> songs() {
 		LinkedHashMap<String, ArrayList<Song>> groups = new LinkedHashMap<>();
 		groups.put( SHATTERED, new ArrayList<Song>() );
 		HashSet<String> seen = new HashSet<>();
