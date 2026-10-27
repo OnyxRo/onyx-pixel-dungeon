@@ -715,3 +715,5 @@ Boss crawl lock and picker (2026-10-26). `InterlevelScene.crawlRedirect` keeps a
 Old sign id (2026-10-26). Shattered 0.8 used tile id 23 for a solid sign, current Shattered reuses 23 as `CUSTOM_DECO` and `Terrain.SIGN` is a new walkable id 41. Abyssalnite code that says `Terrain.SIGN` therefore got walkable tiles. Its DM-300 gate was passable, so `NewCavesBossLevel` thought the gate was already broken and never started the fight. Its Dwarf King arena pillars (`NewCityBossLevel`) were walkable too. Both now use `CUSTOM_DECO`. Mods on Shattered 2.x or later (Magic Ling) mean the new sign and were left alone. Check this for any port from a base before 1.0.
 
 Save slot portrait (2026-10-27, crash 2e6b0862). Saves and rankings made before the `Hero.tier` cap keep armor tiers past 6, so `HeroSprite.avatar` clamps the tier as well.
+
+Shared DM-300 sprite (2026-10-27, crash a1d08c38). `DM300Sprite` called `DM300.onZapComplete` and `onSlamComplete` by cast, which crashed for Abyssalnite's `NewDM300`. It now checks the owner type.
