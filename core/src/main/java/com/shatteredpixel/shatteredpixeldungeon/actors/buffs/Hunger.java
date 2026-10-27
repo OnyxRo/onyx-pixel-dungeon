@@ -64,6 +64,19 @@ public class Hunger extends Buff implements Hero.Doom {
 	public boolean act() {
 		if (com.shatteredpixel.shatteredpixeldungeon.TooCruel.steelBody()) { diactivate(); return true; } //toocruel, Certainty of Steel
 
+		//the glowing pool in Magic Ling's town (the boss crawl's village) heals 10 a turn and keeps hunger away
+		if (target instanceof Hero && target.isAlive()
+				&& com.shatteredpixel.shatteredpixeldungeon.levels.NormalZeroFiveLevel.inHealingPool( target.pos )) {
+			int heal = Math.min( 10, target.HT - target.HP );
+			if (heal > 0) {
+				target.HP += heal;
+				if (target.sprite != null) target.sprite.showStatusWithIcon( com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite.POSITIVE,
+						Integer.toString( heal ), com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText.HEALING );
+			}
+			spend(TICK);
+			return true;
+		}
+
 		if (Dungeon.level.locked
 				|| target.buff(WellFed.class) != null
 				|| SPDSettings.intro()

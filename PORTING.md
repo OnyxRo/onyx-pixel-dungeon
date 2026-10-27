@@ -763,3 +763,13 @@ Boss crawl ending (2026-10-27). After the last boss (Magic Ling's dragon) the ex
 - Banned songs (`banned_songs` in settings) never come up in shuffle all, shuffle liked or playlist play and shuffle. Banning the song a shuffle is playing skips it. Picking a banned song by hand still plays it, and floor music ignores bans.
 - Music cutting out. Building the Songs window froze the game long enough for the music to stall. Two causes. The song list was rebuilt on every open (it makes a level for every world and checks every music file), now built once and kept (`WndSongs.songs()`). And `ScrollingListPane` laid out every row after each row was added, about 45,000 layouts for 300 songs, now `holdLayout` lets a window add every row first.
 - UI tour steps 15 to 17 show the three new windows. The tour also logs a sprite crash from `WhiteYanBossSprite` (frame missing), not looked into.
+
+## Boss crawl segments and the town (2026-10-27)
+- The boss crawl is an ordinary run now (`Dungeon.sandbox` is false, so no god mode, full sight or sandbox panel, and deaths end it). `Dungeon.newLevel` and `InterlevelScene.crawlRedirect` only check `Dungeon.bossCrawl`. Old crawl saves keep their sandbox flag.
+- `BossCrawl.stops` puts a town stop (world -3, `NormalZeroFiveLevel`, Magic Ling's floor 0) before each floor's bosses, so a crawl goes town, floor 5 bosses, town, floor 10 bosses and so on, then the Amulet. The town is built at that segment's depth. Its north stairs go on to the first boss, the dock rebuilds the town, the hotel door works (`crawlRedirect` lets `sandboxSpecial` trips through).
+- Arriving in a town stop, the first one included, gives `BossCrawl.SEGMENT_GOLD` (1500), `payForSegment`.
+- `CrawlMerchant` stands by the dock (cell 939) in every copy of the town. `WndCrawlShop` lists the whole journal catalog with a search, price is `value() * 5` with a floor of 50, clicking an item shows its text and a Buy button. Items come identified.
+- The pond by the dock glows (`NormalZeroFiveLevel.addVisuals`, blue particles on every water tile). `Hunger.act` heals 10 health a turn and skips hunger while the hero stands in it (`NormalZeroFiveLevel.inHealingPool`).
+- `BossCrawlTest` builds all 58 stops and checks each town has the merchant and the pool.
+
+Journal crash (crash c700eb41). The journal catalog called `info()` on items it had seen, from the title screen where there is no hero. `Staff.info` read the hero, and the new `ItemSpriteTest` check found 75 more catalog items doing the same (Magic Ling bows, soul reaver spells, hero spells and others). `WndJournal.catalogText` now falls back to the plain description when `info()` fails, `Staff.info` is guarded, and `ItemSpriteTest` runs the catalog text of every item with no hero.

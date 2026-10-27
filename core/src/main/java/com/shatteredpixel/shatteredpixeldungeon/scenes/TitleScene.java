@@ -166,7 +166,7 @@ public class TitleScene extends PixelScene {
 		btnSandbox.icon(Icons.get(Icons.STAIRS));
 		add(btnSandbox);
 
-		//a sandbox run of boss floors only, easiest to hardest, see BossCrawl
+		//a run of boss floors only, easiest to hardest, with the town and its merchant between segments, see BossCrawl
 		btnCrawl = new StyledButton(GREY_TR, Messages.get(this, "boss_crawl")){
 			@Override
 			protected void onClick() {
@@ -175,7 +175,7 @@ public class TitleScene extends PixelScene {
 					ShatteredPixelDungeon.scene().add(new WndMessage(Messages.get(TitleScene.class, "sandbox_full")));
 					return;
 				}
-				Dungeon.sandbox = true;
+				Dungeon.sandbox = false;
 				Dungeon.bossCrawl = true;
 				GamesInProgress.selectedClass = null;
 				GamesInProgress.curSlot = slot;

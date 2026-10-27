@@ -44,6 +44,14 @@ public class ItemSpriteTest {
 					failures++;
 					System.out.println( "FAIL: " + cls.getName() + " image " + item.image + " is not on the item sheet" );
 				}
+				//the journal shows item text from the title screen, before any hero exists
+				com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero = null;
+				try {
+					com.shatteredpixel.shatteredpixeldungeon.windows.WndJournal.catalogText( item );
+				} catch (Throwable t) {
+					failures++;
+					System.out.println( "FAIL: " + cls.getName() + " journal text with no hero, " + t );
+				}
 				if (item instanceof Ring) ((Ring) item).anonymize();
 				else if (item instanceof Potion) ((Potion) item).anonymize();
 				else if (item instanceof Scroll) ((Scroll) item).anonymize();

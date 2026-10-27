@@ -686,6 +686,47 @@ public class NormalZeroFiveLevel extends Level {
             drop( new ElixirOfMight(),735 );
             drop( com.shatteredpixel.shatteredpixeldungeon.items.Generator.random(), 761  );
         }
+
+        //the boss crawl's merchant, by the dock and the glowing pool, sells every item and never runs out
+        com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.CrawlMerchant merchant = new com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.CrawlMerchant();
+        merchant.pos = 939;
+        mobs.add(merchant);
+    }
+
+    //the pond by the dock glows blue. Standing in it heals 10 health a turn and stops hunger, see Hunger.act
+    public static boolean inHealingPool( int cell ) {
+        Level level = Dungeon.level;
+        return level instanceof NormalZeroFiveLevel && cell >= 0 && cell < level.length() && level.map[cell] == WATER;
+    }
+
+    private static final com.watabou.noosa.particles.Emitter.Factory POOL_GLOW = new com.watabou.noosa.particles.Emitter.Factory() {
+        @Override
+        public void emit( com.watabou.noosa.particles.Emitter emitter, int index, float x, float y ) {
+            com.watabou.noosa.particles.PixelParticle p = (com.watabou.noosa.particles.PixelParticle) emitter.recycle( com.watabou.noosa.particles.PixelParticle.Shrinking.class );
+            p.reset( x, y, Random.oneOf( 0x55CCFF, 0x88EEFF, 0x3399FF ), 2, Random.Float( 0.8f, 1.6f ) );
+            p.speed.set( 0, -Random.Float( 3, 8 ) );
+            p.am = 0.9f;
+        }
+
+        @Override
+        public boolean lightMode() {
+            return true;
+        }
+    };
+
+    @Override
+    public com.watabou.noosa.Group addVisuals() {
+        super.addVisuals();
+        for (int i = 0; i < length(); i++) {
+            if (map[i] == WATER) {
+                com.watabou.noosa.particles.Emitter glow = new com.watabou.noosa.particles.Emitter();
+                com.watabou.utils.PointF c = com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap.tileToWorld( i );
+                glow.pos( c.x, c.y, com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap.SIZE, com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap.SIZE );
+                glow.pour( POOL_GLOW, 0.25f );
+                visuals.add( glow );
+            }
+        }
+        return visuals;
     }
 
     //magicling, the side door leads to the hotel (another special floor), the other stairs work as usual

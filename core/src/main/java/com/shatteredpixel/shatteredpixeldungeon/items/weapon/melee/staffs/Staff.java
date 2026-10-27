@@ -547,7 +547,7 @@ public class Staff extends Weapon implements Tierable {
 
         if (isIdentified()) {
             float robeBonus = 1f;
-            if (Dungeon.hero.buff(Attunement.class) != null) robeBonus = Attunement.empowering();
+            if (Dungeon.hero != null && Dungeon.hero.buff(Attunement.class) != null) robeBonus = Attunement.empowering();
             info += "\n\n" + Messages.get(Staff.class, "stats_known",
                     tier,
                     STRReq(),
@@ -555,12 +555,12 @@ public class Staff extends Weapon implements Tierable {
                     augment.damageFactor(Math.round(minionmax()*robeBonus)),
                     (hp(level())),
                     requiredAttunement());
-            if (STRReq() > Dungeon.hero.STR()) {
+            if (Dungeon.hero != null && STRReq() > Dungeon.hero.STR()) {
                 info += " " + Messages.get(Staff.class, "too_heavy_uh");
             }
         } else {
             info += "\n\n" + Messages.get(Staff.class, "stats_unknown", tier, min(0), max(0), STRReq(0), minionMin(0), minionMax(0), hp(0));
-            if (STRReq(0) > Dungeon.hero.STR()) {
+            if (Dungeon.hero != null && STRReq(0) > Dungeon.hero.STR()) {
                 info += " " + Messages.get(MeleeWeapon.class, "probably_too_heavy");
             }
         }
@@ -585,7 +585,7 @@ public class Staff extends Weapon implements Tierable {
             info += " " + Messages.get(enchantment, "desc");
         }
 
-        if (cursed && isEquipped( Dungeon.hero )) {
+        if (cursed && Dungeon.hero != null && isEquipped( Dungeon.hero )) {
             info += "\n\n" + Messages.get(Weapon.class, "cursed_worn");
         } else if (cursedKnown && cursed) {
             info += "\n\n" + Messages.get(Weapon.class, "cursed");

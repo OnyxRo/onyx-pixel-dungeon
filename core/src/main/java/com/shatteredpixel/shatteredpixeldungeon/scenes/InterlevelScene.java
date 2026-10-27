@@ -633,7 +633,9 @@ public class InterlevelScene extends PixelScene {
 	//leave the boss's depth (stairs, falling, the sandbox floor skip, a picked boss) puts the hero at the entrance
 	//of a fresh copy of the current boss. Side areas at the boss's own depth (the mimic maze) work as normal.
 	private boolean crawlRedirect() throws IOException {
-		if (!Dungeon.sandbox || !Dungeon.bossCrawl || Dungeon.hero == null || BossCrawl.current() == null) return false;
+		if (!Dungeon.bossCrawl || Dungeon.hero == null || BossCrawl.current() == null) return false;
+		//the town's side door to the hotel and back
+		if (mode == Mode.SANDBOX && Dungeon.sandboxSpecial != null) return false;
 		int stopDepth = BossCrawl.current()[1];
 		int dest;
 		switch (mode) {
@@ -660,6 +662,7 @@ public class InterlevelScene extends PixelScene {
 		Mob.holdAllies( Dungeon.level );
 		Dungeon.saveAll();
 		if (next) BossCrawl.step++;
+		if (next && BossCrawl.inTown()) BossCrawl.payForSegment();
 		fallUsesTransition = false;
 		curTransition = null;
 		Dungeon.sandboxSpecial = null;
@@ -677,7 +680,10 @@ public class InterlevelScene extends PixelScene {
 			Dungeon.init();
 			GameLog.wipe();
 			//a boss crawl starts on the floor of its first boss
-			if (Dungeon.sandbox && Dungeon.bossCrawl) Dungeon.depth = BossCrawl.current()[1];
+			if (Dungeon.bossCrawl) {
+				Dungeon.depth = BossCrawl.current()[1];
+				if (BossCrawl.inTown()) BossCrawl.payForSegment();
+			}
 
 			//When debugging, we may start a game at a later depth to quickly test something
 			// if this happens, the games quickly generates all prior levels on branch 0 first,

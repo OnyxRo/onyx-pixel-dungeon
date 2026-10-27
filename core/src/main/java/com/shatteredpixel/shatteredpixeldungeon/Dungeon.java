@@ -324,7 +324,7 @@ public class Dungeon {
 	public static HashSet<String> chosenMods = new HashSet<>();
 	//the world every newly built floor is forced into during a sandbox run, or -1 to shuffle as normal
 	public static int sandboxWorld = -1;
-	/** A sandbox run made of boss floors only, see BossCrawl. Set by the title screen, so init leaves it alone. */
+	/** A run made of boss floors only, see BossCrawl. Set by the title screen, so init leaves it alone. */
 	public static boolean bossCrawl = false;
 	//god mode for sandbox runs. The hero takes no damage, cannot die and never gets hungry
 	public static boolean sandboxGod = true;
@@ -482,8 +482,9 @@ public class Dungeon {
 		//a world picked for this one floor wins over the forced world, and is used up by it
 		int forcedWorld = sandbox ? (sandboxOnceWorld != -1 ? sandboxOnceWorld : sandboxWorld) : -1;
 		sandboxOnceWorld = -1;
-		Level crawl = sandbox && bossCrawl && branch == 0 ? BossCrawl.build(depth) : null;
-		if (sandbox && sandboxSpecial != null) {
+		Level crawl = bossCrawl && branch == 0 ? BossCrawl.build(depth) : null;
+		//the boss crawl's town has a side door to the hotel, which travels the way the sandbox does
+		if ((sandbox || bossCrawl) && sandboxSpecial != null) {
 			level = sandboxSpecial.get();
 			sandboxSpecial = null;
 		} else if (crawl != null) {

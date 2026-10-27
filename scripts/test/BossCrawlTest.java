@@ -17,7 +17,8 @@ public class BossCrawlTest {
 		GamesInProgress.selectedClass = HeroClass.WARRIOR;
 		Dungeon.seed = 4242;
 		Dungeon.init();
-		Dungeon.sandbox = true;
+		//a boss crawl is an ordinary run since 2026-10-27
+		Dungeon.sandbox = false;
 		Dungeon.bossCrawl = true;
 		int failures = 0;
 		for (int i = 0; i < BossCrawl.stops().size(); i++) {
@@ -31,6 +32,17 @@ public class BossCrawlTest {
 				String want = BossCrawl.name( i );
 				String wantCls = want.substring( want.lastIndexOf( ", " ) + 2 ).replace( " ", "" ).toLowerCase();
 				boolean ok = s[0] == -2 ? built.equals( "LastLevel" ) : s[0] == -1 || built.toLowerCase().replace( "level", "" ).equals( wantCls );
+				if (s[0] == -3) {
+					//the town between segments, with the merchant and the glowing pool
+					boolean merchant = false;
+					for (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob m : l.mobs)
+						if (m instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.CrawlMerchant) merchant = true;
+					Dungeon.level = l;
+					boolean pool = com.shatteredpixel.shatteredpixeldungeon.levels.NormalZeroFiveLevel.inHealingPool( 21 + 35*l.width() );
+					ok = built.equals( "NormalZeroFiveLevel" ) && merchant && pool
+							&& l.passable[939] && com.shatteredpixel.shatteredpixeldungeon.windows.WndCrawlShop.price( new com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing() ) > 0;
+					if (!ok) System.out.println( "FAIL: town merchant " + merchant + " pool " + pool );
+				}
 				System.out.println( (ok ? "ok " : "FAIL: ") + i + " " + want + " built " + built );
 				if (!ok) failures++;
 			} catch (Throwable t) {

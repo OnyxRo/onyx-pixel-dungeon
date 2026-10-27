@@ -777,12 +777,7 @@ public class WndJournal extends WndTabbed {
 					desc += "\n\n" + Messages.get(item, "discover_hint");
 				} else {
 					title = Messages.titleCase( item.name() );
-					//some items don't include direct stats, generally when they're not applicable
-					if (item instanceof ClassArmor || item instanceof SpiritBow){
-						desc += item.desc();
-					} else {
-						desc += item.info();
-					}
+					desc += catalogText( item );
 
 					if (Catalog.useCount(itemClass) > 1) {
 						if (item.isUpgradable() || item instanceof Artifact) {
@@ -1156,4 +1151,24 @@ public class WndJournal extends WndTabbed {
 
 	}
 	
+
+	/**
+	 * An item's text for the journal catalog. The journal opens from the title screen, where there is no hero,
+	 * and many mod items read the hero in info(), so those fall back to the plain description (crash c700eb41).
+	 */
+	public static String catalogText( Item item ){
+		//some items don't include direct stats, generally when they're not applicable
+		if (!(item instanceof ClassArmor || item instanceof SpiritBow)) {
+			try {
+				return item.info();
+			} catch (RuntimeException e) {
+				//falls through to the description
+			}
+		}
+		try {
+			return item.desc();
+		} catch (RuntimeException e) {
+			return "";
+		}
+	}
 }
