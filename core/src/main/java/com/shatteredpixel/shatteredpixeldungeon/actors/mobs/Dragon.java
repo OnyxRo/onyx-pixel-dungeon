@@ -469,6 +469,14 @@ public class Dragon extends Mob {
 		public boolean act(boolean enemyInFOV, boolean justAlerted) {
 			enemySeen = enemyInFOV;
 
+			if (enemy == null || !enemy.isAlive()) {
+				enemy = chooseEnemy();
+				if (enemy == null) {
+					spend( TICK );
+					return true;
+				}
+			}
+
 			if (hasJumped && DragonBossLevel.state==DragonBossLevel.State.FIRE_ATTACK) {
 				return doAttack(enemy);
 			}
@@ -494,7 +502,8 @@ public class Dragon extends Mob {
 						return doAttack(enemy);
 					}
 				} else {
-					chooseEnemy();
+					Char newEnemy = chooseEnemy();
+					if (newEnemy != null) enemy = newEnemy;
 					target = enemy.pos;
 					if(DragonBossLevel.state==DragonBossLevel.State.FIRE_ATTACK && !canAttack(enemy)){
 						fireCooldown = 0;
