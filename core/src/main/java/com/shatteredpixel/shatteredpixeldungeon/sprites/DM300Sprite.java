@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM300;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewDM300;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle;
@@ -94,7 +95,10 @@ public class DM300Sprite extends MobSprite {
 				new Callback() {
 					@Override
 					public void call() {
-						((DM300)ch).onZapComplete();
+						//Abyssalnite's NewDM300 shares this sprite
+						if (ch instanceof DM300)            ((DM300)ch).onZapComplete();
+						else if (ch instanceof NewDM300)    ((NewDM300)ch).onZapComplete();
+						else                                ch.next();
 					}
 				} );
 		Sample.INSTANCE.play( Assets.Sounds.GAS );
@@ -119,7 +123,8 @@ public class DM300Sprite extends MobSprite {
 		}
 
 		if (anim == slam){
-			((DM300)ch).onSlamComplete();
+			if (ch instanceof DM300)            ((DM300)ch).onSlamComplete();
+			else if (ch instanceof NewDM300)    ((NewDM300)ch).onSlamComplete();
 		}
 
 		super.onComplete( anim );
