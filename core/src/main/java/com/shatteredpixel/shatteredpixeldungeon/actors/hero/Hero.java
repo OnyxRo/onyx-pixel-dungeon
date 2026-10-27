@@ -821,7 +821,8 @@ public class Hero extends Char {
 		if (armor instanceof ClassArmor){
 			return 6;
 		} else if (armor != null){
-			return armor.tier;
+			//only picks the hero's look, the sheets have rows 0 to 6 and some mod armors go past tier 6
+			return Math.max( 0, Math.min( armor.tier, 6 ) );
 		} else {
 			return 0;
 		}
