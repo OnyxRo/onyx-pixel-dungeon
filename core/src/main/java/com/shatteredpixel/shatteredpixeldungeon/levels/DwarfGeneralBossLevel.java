@@ -215,6 +215,7 @@ public class DwarfGeneralBossLevel extends Level {
     }
 
     protected boolean build() {
+        com.shatteredpixel.shatteredpixeldungeon.MagicLingStats.dwarfKill = false; //a fresh fight, the last one's goodbye no longer applies
         setSize(WIDTH, HEIGHT);
         map = code_map.clone();
 

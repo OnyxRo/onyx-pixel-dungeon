@@ -44,6 +44,18 @@ public class DwarfGeneralSprite extends MobSprite {
         play(idle);
     }
 
+    @Override
+    public void link( com.shatteredpixel.shatteredpixeldungeon.actors.Char ch ) {
+        super.link( ch );
+        //magicling, the lying down idle is only for Thorin after the goodbye. dwarfKill stays on after a fight,
+        //so a rematch boss kept replaying his death frames whenever he stood still
+        if (!(ch instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.bosses.DwarfGeneralNTNPC) && !idle.looped) {
+            idle = new MovieClip.Animation(4, true);
+            idle.frames(new TextureFilm(texture, 32, 32), 0, 1, 2, 3);
+            play(idle);
+        }
+    }
+
     public void skills( int cell ) {
         ((MissileSprite)parent.recycle( MissileSprite.class )).
                 reset( this, cell, new DwDart(), new Callback() {
