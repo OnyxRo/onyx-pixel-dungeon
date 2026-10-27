@@ -197,8 +197,10 @@ public class DragonBossLevel extends Level {
 
             Actor.remove(dragon);
             mobs.remove(dragon);
-            HealthIndicator.instance.target(null);
-            dragon.sprite.kill();
+            //HealthIndicator.instance is null in this game, Dragonic crashed here on the trap and left the floor half changed
+            if (HealthIndicator.instance != null) HealthIndicator.instance.target(null);
+            if (dragon.sprite != null) dragon.sprite.kill();
+            dragon.yell(Messages.get(Dragon.class, "maze"));
 
             Room maze = new MazeRoom();
             maze.set(21, 1, 31, 22);
@@ -231,7 +233,8 @@ public class DragonBossLevel extends Level {
 			}
 
 			dragon.state = dragon.HUNTING;
-			GameScene.add(dragon);
+			//a dragon still on the floor would get a second sprite
+			if (!mobs.contains(dragon)) GameScene.add(dragon);
 			dragon.notice();
 			for (int i = 1; i <= 5; i++) {
 				passable[(dragon.pos)] = false;
@@ -613,8 +616,8 @@ public class DragonBossLevel extends Level {
 					W, W, C, C, C, C, C, C, C, C, e, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, C, C, C, C, C, C, C, C, e, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, C, C, C, C, C, C, C, C, e, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, C, C, C, C, C, C, C, C, e, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, W, W, W, W, W, W, W, W, X, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, C, C, C, C, C, C, C, C, X, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,

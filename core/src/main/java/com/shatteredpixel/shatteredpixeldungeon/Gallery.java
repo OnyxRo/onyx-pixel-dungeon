@@ -184,6 +184,13 @@ public class Gallery {
 			return;
 		}
 
+		//-Donyx.gallery.only=dragon walks the Dragon fight (Dragonic) through its phases by hand and pictures each one,
+		//[DRAG] lines give the state, the dragon's HP and cell and how many dragon sprites are on screen
+		if ("dragon".equals(System.getProperty("onyx.gallery.only"))) {
+			dragon();
+			return;
+		}
+
 		//-Donyx.gallery.only=final opens Abyssalnite's final arena (Cthulhu) once and leaves the window open to play
 		if ("final".equals(System.getProperty("onyx.gallery.only"))) {
 			if (!stayDone && time > 1.5f && Dungeon.hero != null && Dungeon.hero.ready) {
@@ -703,6 +710,121 @@ public class Gallery {
 			System.out.println( "[DIAM] FAIL at step " + diamondStep + " " + e );
 			e.printStackTrace( System.out );
 			diamondStep++;
+		}
+	}
+
+	private static int dragonStep = 0;
+
+	private static int dragonSprites( com.watabou.noosa.Group g ){
+		int n = 0;
+		java.util.List<com.watabou.noosa.Gizmo> members;
+		try {
+			java.lang.reflect.Field f = com.watabou.noosa.Group.class.getDeclaredField( "members" );
+			f.setAccessible( true );
+			members = new java.util.ArrayList<>( (java.util.List<com.watabou.noosa.Gizmo>) f.get( g ) );
+		} catch (Exception e) {
+			return -1;
+		}
+		for (com.watabou.noosa.Gizmo m : members) {
+			if (m instanceof com.shatteredpixel.shatteredpixeldungeon.sprites.DragonSprite && m.alive && m.visible) n++;
+			else if (m instanceof com.watabou.noosa.Group) n += dragonSprites( (com.watabou.noosa.Group) m );
+		}
+		return n;
+	}
+
+	private static void dragonLog( String what ){
+		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Dragon d = com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.dragon;
+		System.out.println( "[DRAG] " + what + " state " + com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.state
+				+ (d == null ? " no dragon" : " HP " + d.HP + "/" + d.HT + " pos " + d.pos + " inLevel " + Dungeon.level.mobs.contains( d ))
+				+ " hero " + Dungeon.hero.pos + " sprites " + dragonSprites( Game.scene() ) + " exit " + Dungeon.level.exit() + " sealed " + Dungeon.level.locked );
+	}
+
+	private static void dragonMove( int cell ){
+		Dungeon.hero.pos = cell;
+		Dungeon.hero.sprite.place( cell );
+		Dungeon.level.occupyCell( Dungeon.hero );
+		Dungeon.observe();
+	}
+
+	private static void dragonHurt( int toHP ){
+		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Dragon d = com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.dragon;
+		if (d != null && d.HP > toHP) d.damage( d.HP - toHP, Dungeon.hero );
+	}
+
+	private static void dragon(){
+		if (Dungeon.hero != null) Dungeon.hero.HP = Dungeon.hero.HT;
+		if (dragonStep == 0) {
+			if (time < 1.5f || Dungeon.hero == null || !Dungeon.hero.ready) return;
+			dragonStep = 1;
+			com.shatteredpixel.shatteredpixeldungeon.levels.SpecialFloors.travel(
+					com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel::new );
+			time = 0;
+			return;
+		}
+		if (!(Dungeon.level instanceof com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel)) { time = 0; return; }
+		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Dragon d = com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.dragon;
+		int w = Dungeon.level.width();
+		//turns only pass while the hero acts
+		if (dragonStep >= 2 && Dungeon.hero.ready) Dungeon.hero.rest( false );
+		try {
+			if (dragonStep == 1 && time > 2f) {
+				dragonStep = 2;
+				capture( "drag_0_arrive" );
+				dragonMove( 20 * w + 10 );
+				dragonLog( "walked into the hall" );
+			} else if (dragonStep == 2 && time > 5f) {
+				dragonStep = 3;
+				dragonLog( "fire rings" );
+				capture( "drag_1_rings" );
+				//the rings have to finish before the dragon can pass three quarters, as in play
+				java.lang.reflect.Field f = d.getClass().getDeclaredField( "fireComplete" );
+				f.setAccessible( true );
+				f.setBoolean( d, true );
+				dragonHurt( 3 * (d.HT / 4) + 1 );
+				dragonHurt( 3 * (d.HT / 4) - 2 );
+				dragonLog( "jumped" );
+			} else if (dragonStep == 3 && time > 7f) {
+				dragonStep = 4;
+				dragonLog( "fire wave" );
+				capture( "drag_2_jump" );
+			} else if (dragonStep == 4 && time > 10f) {
+				dragonStep = 5;
+				dragonLog( "fire wave later" );
+				capture( "drag_3_wave" );
+				if ("half".equals( System.getProperty( "onyx.gallery.dragon" ) )) {
+					//the other way out of stage two, beating the dragon to half before reaching the trap
+					dragonHurt( d.HT / 2 - 1 );
+					dragonLog( "hurt to half" );
+				} else {
+					dragonMove( 24 * w + 19 );
+					dragonLog( "stepped on the trap" );
+				}
+			} else if (dragonStep == 5 && time > 13f) {
+				dragonStep = 6;
+				dragonLog( "maze" );
+				capture( "drag_4_maze" );
+				if (com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.state == com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.State.MAZE) {
+					dragonMove( 3 * w + 21 );
+					dragonLog( "left the maze" );
+				}
+			} else if (dragonStep == 6 && time > 16f) {
+				dragonStep = 7;
+				dragonLog( "arena" );
+				capture( "drag_5_arena" );
+				dragonHurt( 0 );
+				dragonLog( "dragon beaten" );
+			} else if (dragonStep == 7 && time > 19f) {
+				dragonStep = 8;
+				dragonLog( "end" );
+				capture( "drag_6_end" );
+			} else if (dragonStep == 8 && time > 20f) {
+				System.out.println( "[DRAG] done" );
+				Gdx.app.exit();
+			}
+		} catch (Throwable e) {
+			System.out.println( "[DRAG] FAIL at step " + dragonStep + " " + e );
+			e.printStackTrace( System.out );
+			dragonStep++;
 		}
 	}
 

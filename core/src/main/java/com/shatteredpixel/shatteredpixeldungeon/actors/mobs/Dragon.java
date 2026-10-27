@@ -181,12 +181,12 @@ public class Dragon extends Mob {
 		}
 
 		//phase 2 of the fight is over
-		if (beforeHitHP > HT/2 && HP <= HT/2){
+		//the fight only ends in the arena. Dragonic skipped the maze when the dragon reached half health before the hero
+		//found the trap, which loaded the arena under the hero (often over the chasm) and added a second dragon
+		if (beforeHitHP > HT/2 && HP <= HT/2 && DragonBossLevel.state != DragonBossLevel.State.FIGHT_ARENA){
+			HP = (HT/2)+1;
+		} else if (beforeHitHP > HT/2 && HP <= HT/2){
 			HP = (HT/2)-1;
-			yell(Messages.get(this, "maze"));
-			if(DragonBossLevel.state== DragonBossLevel.State.FIRE_ATTACK){
-				DragonBossLevel.state = DragonBossLevel.State.MAZE;
-			}
 			((DragonBossLevel)Dungeon.level).progress();
 			BossHealthBar.bleed(true);
 		}
@@ -218,7 +218,7 @@ public class Dragon extends Mob {
 			beacon.upgrade();
 		}
 		
-		yell( Messages.get(Tengu.class, "defeated") );
+		yell( Messages.get(this, "won") );
 	}
 
 	@Override
@@ -441,7 +441,8 @@ public class Dragon extends Mob {
 		if (HP == HT) {
 			yell(Messages.get(this, "start"));
 		} else {
-			yell(Messages.get(Tengu.class, "notice_face", Dungeon.hero.name()));
+			//only reached when the dragon comes back for the arena. Dragonic used Tengu's notice_face line here, which this game does not have
+			yell(Messages.get(this, "arena"));
 		}
 	}
 	
