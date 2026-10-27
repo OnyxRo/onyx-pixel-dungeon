@@ -426,7 +426,7 @@ public class InterlevelScene extends PixelScene {
 
 						Actor.fixTime();
 
-						switch (mode) {
+						if (!crawlRedirect()) switch (mode) {
 							case DESCEND:
 								descend();
 								break;
@@ -629,6 +629,47 @@ public class InterlevelScene extends PixelScene {
 
 	}
 
+	//A boss crawl only has boss floors. The boss floor's exit goes on to the next boss, anything else that would
+	//leave the boss's depth (stairs, falling, the sandbox floor skip, a picked boss) puts the hero at the entrance
+	//of a fresh copy of the current boss. Side areas at the boss's own depth (the mimic maze) work as normal.
+	private boolean crawlRedirect() throws IOException {
+		if (!Dungeon.sandbox || !Dungeon.bossCrawl || Dungeon.hero == null || BossCrawl.current() == null) return false;
+		int stopDepth = BossCrawl.current()[1];
+		int dest;
+		switch (mode) {
+			case DESCEND: case ASCEND:
+				if (curTransition == null) return false;
+				dest = curTransition.destDepth;
+				break;
+			case FALL:
+				dest = fallUsesTransition && curTransition != null ? curTransition.destDepth : Dungeon.depth + 1;
+				break;
+			case RETURN:
+				dest = returnDepth;
+				break;
+			case SANDBOX:
+				dest = -1;
+				break;
+			default:
+				return false;
+		}
+		boolean next = mode == Mode.DESCEND && Dungeon.branch == 0 && Dungeon.depth == stopDepth
+				&& curTransition.destBranch == 0 && dest > stopDepth && BossCrawl.step + 1 < BossCrawl.stops().size();
+		if (!next && dest == stopDepth) return false;
+
+		Mob.holdAllies( Dungeon.level );
+		Dungeon.saveAll();
+		if (next) BossCrawl.step++;
+		fallUsesTransition = false;
+		curTransition = null;
+		Dungeon.sandboxSpecial = null;
+		Dungeon.branch = 0;
+		Dungeon.depth = BossCrawl.current()[1];
+		Level level = Dungeon.newLevel();
+		Dungeon.switchLevel( level, level.entrance() );
+		return true;
+	}
+
 	private void descend() throws IOException {
 
 		if (Dungeon.hero == null) {
@@ -668,17 +709,6 @@ public class InterlevelScene extends PixelScene {
 			Dungeon.saveAll();
 
 			Level level;
-			//a boss crawl goes from each boss floor's exit straight to the next boss, built fresh
-			if (Dungeon.sandbox && Dungeon.bossCrawl && BossCrawl.current() != null && Dungeon.depth == BossCrawl.current()[1]
-					&& curTransition.destDepth > Dungeon.depth && BossCrawl.step + 1 < BossCrawl.stops().size()) {
-				BossCrawl.step++;
-				Dungeon.depth = BossCrawl.current()[1];
-				Dungeon.branch = 0;
-				curTransition = null;
-				level = Dungeon.newLevel();
-				Dungeon.switchLevel( level, level.entrance() );
-				return;
-			}
 			Dungeon.depth = curTransition.destDepth;
 			Dungeon.branch = curTransition.destBranch;
 
@@ -704,15 +734,6 @@ public class InterlevelScene extends PixelScene {
 		Dungeon.saveAll();
 
 		Level level;
-		//a boss crawl has no floors between its bosses, falling puts the hero back on a fresh copy of the boss floor
-		if (Dungeon.sandbox && Dungeon.bossCrawl && BossCrawl.current() != null && Dungeon.depth == BossCrawl.current()[1]) {
-			fallUsesTransition = false;
-			curTransition = null;
-			Dungeon.branch = 0;
-			level = Dungeon.newLevel();
-			Dungeon.switchLevel( level, level.entrance() );
-			return;
-		}
 		if (fallUsesTransition && curTransition != null) {
 			//Matt Edition. Falling on floor 14 drops into the Ice Caves instead of the next floor down
 			Dungeon.depth  = curTransition.destDepth;

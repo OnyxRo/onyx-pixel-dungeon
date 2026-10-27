@@ -123,6 +123,17 @@ public class WndSandbox extends Window {
 			}
 		}, null );
 
+		//a boss crawl picks its boss here, the floor skip would only rebuild the current one
+		if (Dungeon.bossCrawl) {
+			addRow( new RedButton( Messages.get(WndBossCrawl.class, "title") ) {
+				@Override
+				protected void onClick() {
+					hide();
+					GameScene.show( new WndBossCrawl() );
+				}
+			}, null );
+		}
+
 		addRow( new RedButton( Messages.get(WndSongs.class, "title") ) {
 			@Override
 			protected void onClick() {

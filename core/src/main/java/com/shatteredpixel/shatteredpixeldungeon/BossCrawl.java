@@ -23,23 +23,59 @@ public class BossCrawl {
 
 	//each stop is { world, depth, variant }, world -1 is Shattered's own boss
 	private static ArrayList<int[]> stops;
+	//a readable name for each stop, in the same order
+	private static ArrayList<String> names;
 
 	public static ArrayList<int[]> stops(){
 		if (stops == null) {
 			stops = new ArrayList<>();
+			names = new ArrayList<>();
 			HashSet<String> seen = new HashSet<>();
+			String[] shattered = { "Sewer boss", "Prison boss", "Caves boss", "City boss", "Halls boss" };
 			for (int depth = 5; depth <= 25; depth += 5) {
 				stops.add( new int[]{ -1, depth, 0 } );
+				names.add( "Shattered " + shattered[depth/5 - 1] );
 				for (int w = 0; w < WorldShuffle.worldCount(); w++) {
 					Level[] vs = WorldShuffle.modBossVariants( w, depth );
 					for (int v = 0; v < vs.length; v++) {
 						//several worlds of one mod share the same boss, keep it once
-						if (seen.add( depth + ":" + vs[v].getClass().getName() )) stops.add( new int[]{ w, depth, v } );
+						if (seen.add( depth + ":" + vs[v].getClass().getName() )) {
+							stops.add( new int[]{ w, depth, v } );
+							names.add( WorldShuffle.modName( w ) + ", " + readable( vs[v].getClass().getSimpleName() ) );
+						}
 					}
 				}
 			}
 		}
 		return stops;
+	}
+
+	/** The readable name of stop i, the mod and the boss floor's class name spelled out. */
+	public static String name( int i ){
+		stops();
+		return i >= 0 && i < names.size() ? names.get( i ) : "";
+	}
+
+	//ShopBossLevel becomes "Shop boss"
+	private static String readable( String cls ){
+		String n = cls.endsWith( "Level" ) ? cls.substring( 0, cls.length() - 5 ) : cls;
+		StringBuilder b = new StringBuilder();
+		for (int i = 0; i < n.length(); i++) {
+			char c = n.charAt( i );
+			if (i > 0 && Character.isUpperCase( c ) && !Character.isUpperCase( n.charAt( i - 1 ) )) b.append( ' ' );
+			b.append( i > 0 ? Character.toLowerCase( c ) : c );
+		}
+		return b.toString();
+	}
+
+	/** Moves the run to stop i, its boss floor built fresh. */
+	public static void jumpTo( int i ){
+		if (i < 0 || i >= stops().size()) return;
+		step = i;
+		Level.beforeTransition();
+		com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene.mode = com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene.Mode.SANDBOX;
+		com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene.returnDepth = stops().get( i )[1];
+		com.watabou.noosa.Game.switchScene( com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene.class );
 	}
 
 	/** The stop the run is on, or null once every boss is done. */
