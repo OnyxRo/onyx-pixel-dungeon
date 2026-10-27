@@ -214,8 +214,11 @@ public class WndSongs extends Window {
 			}
 		} );
 
+		list.holdLayout = true;
 		String q = query.toLowerCase();
 		boolean any = false;
+		SongItem playing = null;
+		String now = SongPlayer.nowPlaying();
 		for (java.util.Map.Entry<String, ArrayList<Song>> group : groups.entrySet()) {
 			String mod = group.getKey().replace(" Pixel Dungeon", "");
 			boolean titled = false;
@@ -227,14 +230,20 @@ public class WndSongs extends Window {
 					titled = true;
 				}
 				any = true;
-				list.addItem( new SongItem( song ) );
+				SongItem item = new SongItem( song );
+				if (song.path.equals( now )) playing = item;
+				list.addItem( item );
 			}
 		}
 		if (!any) {
 			list.addItem( new ScrollingListPane.ListItem( null, Messages.get(this, "none") ) );
 		}
 
+		list.holdLayout = false;
 		list.setRect( 0, top, WIDTH, height - top );
+
+		//open on the song playing now, a little below the top so its mod title shows
+		if (playing != null) list.scrollTo( 0, playing.top() - 2 * playing.height() );
 	}
 
 	@Override
@@ -249,44 +258,85 @@ public class WndSongs extends Window {
 		GameScene.show( new WndSongs() );
 	}
 
-	/** A song in the list. The right edge likes or unlikes it, the rest plays it. */
+	//each of the three marks on the right of a song takes this much room
+	private static final int MARK_W = 15;
+
+	/**
+	 * A song in the list. On the right, from left to right, the add button picks a playlist for it,
+	 * the cross bans it from shuffles and the box likes it. The rest of the row plays it.
+	 * While adding to a playlist only the box shows, and it adds or takes out the song.
+	 */
 	private static class SongItem extends ScrollingListPane.ListItem {
 
 		private final Song song;
-		private Image heart;
+		private Image heart, ban, plus;
 
 		SongItem( Song song ) {
 			super( Icons.get(Icons.AUDIO), song.name );
 			this.song = song;
-			if (song.path.equals( SongPlayer.current )) hardlight( TITLE_COLOR );
-			heart = Icons.get( marked() ? Icons.CHECKED : Icons.UNCHECKED );
-			add( heart );
+			if (song.path.equals( SongPlayer.nowPlaying() )) hardlight( TITLE_COLOR );
+			else if (addingTo == null && SongPlayer.isBanned( song.path )) label.alpha( 0.4f );
+			refreshMarks();
 		}
 
-		private boolean marked(){
-			return addingTo != null ? SongPlayer.inPlaylist( addingTo, song.path ) : SongPlayer.isLiked( song.path );
+		private void refreshMarks(){
+			for (Image i : new Image[]{ heart, ban, plus }) {
+				if (i != null) {
+					remove( i );
+					i.destroy();
+				}
+			}
+			if (addingTo != null) {
+				heart = Icons.get( SongPlayer.inPlaylist( addingTo, song.path ) ? Icons.CHECKED : Icons.UNCHECKED );
+				ban = plus = null;
+				add( heart );
+			} else {
+				heart = Icons.get( SongPlayer.isLiked( song.path ) ? Icons.CHECKED : Icons.UNCHECKED );
+				ban = Icons.get( Icons.CLOSE );
+				if (!SongPlayer.isBanned( song.path )) ban.alpha( 0.3f );
+				plus = Icons.get( Icons.PLUS );
+				add( heart );
+				add( ban );
+				add( plus );
+			}
 		}
 
 		@Override
 		protected void layout() {
 			super.layout();
 			if (heart == null) return;
-			label.maxWidth( (int)(width - 16 - 1 - 14) );
-			heart.x = x + width - heart.width() - 2;
-			heart.y = y + 1 + (height() - 1 - heart.height()) / 2f;
-			PixelScene.align( heart );
+			int marks = addingTo != null ? 1 : 3;
+			label.maxWidth( (int)(width - 16 - 1 - MARK_W * marks) );
+			Image[] row = { heart, ban, plus };
+			for (int i = 0; i < marks; i++) {
+				Image m = row[i];
+				m.x = x + width - MARK_W * i - (MARK_W + m.width()) / 2f;
+				m.y = y + 1 + (height() - 1 - m.height()) / 2f;
+				PixelScene.align( m );
+			}
 		}
 
 		@Override
 		public boolean onClick( float x, float y ) {
 			if (!inside( x, y )) return false;
-			if (x > this.x + width - 16) {
-				if (addingTo != null) SongPlayer.togglePlaylist( addingTo, song.path );
-				else SongPlayer.toggleLiked( song.path );
-				remove( heart );
-				heart.destroy();
-				heart = Icons.get( marked() ? Icons.CHECKED : Icons.UNCHECKED );
-				add( heart );
+			float fromRight = this.x + width - x;
+			if (addingTo != null && fromRight < MARK_W) {
+				SongPlayer.togglePlaylist( addingTo, song.path );
+				refreshMarks();
+				layout();
+				return true;
+			}
+			if (addingTo == null && fromRight < MARK_W * 3) {
+				if (fromRight < MARK_W) {
+					SongPlayer.toggleLiked( song.path );
+				} else if (fromRight < MARK_W * 2) {
+					SongPlayer.toggleBanned( song.path );
+					label.alpha( SongPlayer.isBanned( song.path ) ? 0.4f : 1f );
+					GLog.i( Messages.get(WndSongs.class, SongPlayer.isBanned( song.path ) ? "banned" : "unbanned", song.name) );
+				} else {
+					GameScene.show( new WndAddToPlaylist( song ) );
+				}
+				refreshMarks();
 				layout();
 				return true;
 			}
@@ -297,15 +347,32 @@ public class WndSongs extends Window {
 		}
 	}
 
-	/** Every song by its path, for showing the songs of a playlist by name. */
+	private static LinkedHashMap<String, ArrayList<Song>> songCache = null;
+	private static LinkedHashMap<String, Song> pathCache = null;
+
+	/** Every song by its path, for showing songs by name. Built once, like the list itself. */
 	public static LinkedHashMap<String, Song> byPath() {
-		LinkedHashMap<String, Song> all = new LinkedHashMap<>();
-		for (ArrayList<Song> g : songs().values()) for (Song s : g) all.put( s.path, s );
-		return all;
+		if (pathCache == null) {
+			pathCache = new LinkedHashMap<>();
+			for (ArrayList<Song> g : songs().values()) for (Song s : g) pathCache.put( s.path, s );
+		}
+		return pathCache;
 	}
 
-	//every song, grouped by the mod it came from
+	/** A song's name, or its file name when it is not in the list. */
+	public static String nameOf( String path ) {
+		Song s = byPath().get( path );
+		return s != null ? s.name : pretty( path );
+	}
+
+	//every song, grouped by the mod it came from. Building it looks at every music file and makes
+	//a level for every world, which stalled the game long enough to cut the music, so it is built once
 	static LinkedHashMap<String, ArrayList<Song>> songs() {
+		if (songCache == null) songCache = buildSongs();
+		return songCache;
+	}
+
+	private static LinkedHashMap<String, ArrayList<Song>> buildSongs() {
 		LinkedHashMap<String, ArrayList<Song>> groups = new LinkedHashMap<>();
 		groups.put( SHATTERED, new ArrayList<Song>() );
 		HashSet<String> seen = new HashSet<>();

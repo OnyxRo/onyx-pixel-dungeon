@@ -52,17 +52,20 @@ public class ScrollingListPane extends ScrollPane {
 		addItem( new ListItem(icon, iconText, text) );
 	}
 
+	/** While true, adding rows does not lay out the whole list each time. Set it false and call setRect when done. */
+	public boolean holdLayout = false;
+
 	public void addItem( ListItem item ){
 		content.add(item);
 		items.add(item);
-		layout();
+		if (!holdLayout) layout();
 	}
 
 	public void addTitle( String text ){
 		ListTitle title = new ListTitle(text);
 		content.add(title);
 		items.add(title);
-		layout();
+		if (!holdLayout) layout();
 	}
 
 	@Override

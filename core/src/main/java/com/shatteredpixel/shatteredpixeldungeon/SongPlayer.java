@@ -77,6 +77,48 @@ public class SongPlayer {
 		SPDSettings.put( KEY_LIKED, sb.toString() );
 	}
 
+	// banned songs, never picked by any shuffle or playlist, though they still play when picked by hand
+
+	private static final String KEY_BANNED = "banned_songs";
+	private static LinkedHashSet<String> banned = null;
+
+	private static LinkedHashSet<String> bannedSet(){
+		if (banned == null) {
+			banned = new LinkedHashSet<>();
+			for (String p : SPDSettings.getString( KEY_BANNED, "", 200000 ).split( "\\|" )) {
+				if (!p.isEmpty()) banned.add( p );
+			}
+		}
+		return banned;
+	}
+
+	public static boolean isBanned( String path ){
+		return bannedSet().contains( path );
+	}
+
+	/** Bans or unbans a song. Banning the song a shuffle or playlist is playing skips to the next one. */
+	public static void toggleBanned( String path ){
+		if (!bannedSet().remove( path )) bannedSet().add( path );
+		StringBuilder sb = new StringBuilder();
+		for (String p : bannedSet()) sb.append( p ).append( '|' );
+		SPDSettings.put( KEY_BANNED, sb.toString() );
+		if (isBanned( path ) && path.equals( current ) && shuffle != Shuffle.OFF) skip();
+	}
+
+	/** The song playing now, picked or the floor's own, or null when nothing plays. */
+	public static String nowPlaying(){
+		return current != null ? current : Music.INSTANCE.currentTrack();
+	}
+
+	// the playlist the add button picks first, the last one a song was added to
+
+	private static final String KEY_LAST_PLAYLIST = "song_last_playlist";
+
+	public static String lastPlaylist(){
+		String name = SPDSettings.getString( KEY_LAST_PLAYLIST, "", 200 );
+		return hasPlaylist( name ) ? name : null;
+	}
+
 	// playlists, each a name and its songs in order, kept in the settings file
 
 	private static final String KEY_PLAYLISTS = "song_playlists";
@@ -173,7 +215,10 @@ public class SongPlayer {
 	public static void togglePlaylist( String name, String path ){
 		ArrayList<String> songs = playlistMap().get( name );
 		if (songs == null) return;
-		if (!songs.remove( path )) songs.add( path );
+		if (!songs.remove( path )) {
+			songs.add( path );
+			SPDSettings.put( KEY_LAST_PLAYLIST, name );
+		}
 		savePlaylist( name );
 
 		//Onyx's badges, a playlist with songs from 5 mods
@@ -239,9 +284,13 @@ public class SongPlayer {
 		if (songs.isEmpty()) return;
 		playingList = name;
 		shuffle = shuffled ? Shuffle.PLAYLIST : Shuffle.IN_ORDER;
-		int i = Math.max( 0, Math.min( start, songs.size() - 1 ) );
-		if (shuffled && start < 0) i = Random.Int( songs.size() );
-		playListSong( songs.get( i ) );
+		if (start < 0) {
+			//no song picked by hand, so the first pick follows the ban list like every later one
+			current = null;
+			nextInList();
+			return;
+		}
+		playListSong( songs.get( Math.min( start, songs.size() - 1 ) ) );
 	}
 
 	private static void playListSong( String path ){
@@ -249,49 +298,78 @@ public class SongPlayer {
 		Music.INSTANCE.playOnce( path, new Runnable() {
 			@Override
 			public void run() {
-				if ((shuffle != Shuffle.PLAYLIST && shuffle != Shuffle.IN_ORDER) || playingList == null) return;
-				ArrayList<String> songs = playlist( playingList );
-				if (songs.isEmpty()) {
-					clear();
-					return;
-				}
-				String pick;
-				if (shuffle == Shuffle.PLAYLIST) {
-					pick = songs.get( Random.Int( songs.size() ) );
-					for (int tries = 0; tries < 5 && songs.size() > 1 && pick.equals( current ); tries++) {
-						pick = songs.get( Random.Int( songs.size() ) );
-					}
-				} else {
-					//a song taken out while it played sends the list back to the top
-					pick = songs.get( (songs.indexOf( current ) + 1) % songs.size() );
-				}
-				playListSong( pick );
+				nextInList();
 			}
 		} );
 	}
 
-	private static void next( final ArrayList<Song> pool ){
-		if (shuffle != Shuffle.ALL && shuffle != Shuffle.LIKED) return;
-		Song pick = pool.get( Random.Int( pool.size() ) );
-		if (pool.size() > 1) {
-			for (int tries = 0; tries < 5 && pick.path.equals( current ); tries++) {
-				pick = pool.get( Random.Int( pool.size() ) );
+	private static void nextInList(){
+		if ((shuffle != Shuffle.PLAYLIST && shuffle != Shuffle.IN_ORDER) || playingList == null) return;
+		ArrayList<String> all = playlist( playingList );
+		ArrayList<String> songs = new ArrayList<>();
+		for (String p : all) if (!isBanned( p )) songs.add( p );
+		if (songs.isEmpty()) {
+			clear();
+			return;
+		}
+		String pick;
+		if (shuffle == Shuffle.PLAYLIST) {
+			pick = songs.get( Random.Int( songs.size() ) );
+			for (int tries = 0; tries < 5 && songs.size() > 1 && pick.equals( current ); tries++) {
+				pick = songs.get( Random.Int( songs.size() ) );
 			}
+		} else {
+			//the next song after the current one that is not banned, back to the top at the end
+			pick = songs.get( 0 );
+			for (int i = all.indexOf( current ) + 1; i > 0 && i < all.size(); i++) {
+				if (!isBanned( all.get( i ) )) {
+					pick = all.get( i );
+					break;
+				}
+			}
+		}
+		playListSong( pick );
+	}
+
+	//the songs shuffle all or shuffle liked picks from
+	private static ArrayList<Song> shufflePool = null;
+
+	private static void next( ArrayList<Song> pool ){
+		if (shuffle != Shuffle.ALL && shuffle != Shuffle.LIKED) return;
+		shufflePool = pool;
+		//the liked and banned lists may have changed while a song played
+		ArrayList<Song> now = new ArrayList<>();
+		for (Song s : pool) {
+			if (isBanned( s.path )) continue;
+			if (shuffle == Shuffle.LIKED && !isLiked( s.path )) continue;
+			now.add( s );
+		}
+		if (now.isEmpty()) {
+			clear();
+			return;
+		}
+		Song pick = now.get( Random.Int( now.size() ) );
+		for (int tries = 0; tries < 5 && now.size() > 1 && pick.path.equals( current ); tries++) {
+			pick = now.get( Random.Int( now.size() ) );
 		}
 		current = pick.path;
 		Music.INSTANCE.playOnce( pick.path, new Runnable() {
 			@Override
 			public void run() {
-				//the liked list may have changed while a song played
-				ArrayList<Song> now = pool;
-				if (shuffle == Shuffle.LIKED) {
-					ArrayList<Song> likedNow = new ArrayList<>();
-					for (Song s : pool) if (isLiked( s.path )) likedNow.add( s );
-					if (!likedNow.isEmpty()) now = likedNow;
-				}
-				next( now );
+				next( shufflePool );
 			}
 		} );
+	}
+
+	/** Whether a shuffle or playlist is running, so there is a next song to skip to. */
+	public static boolean canSkip(){
+		return shuffle != Shuffle.OFF;
+	}
+
+	/** Moves a shuffle or playlist on to its next song. */
+	public static void skip(){
+		if (shuffle == Shuffle.PLAYLIST || shuffle == Shuffle.IN_ORDER) nextInList();
+		else if (shufflePool != null) next( shufflePool );
 	}
 
 	/** Go back to each floor's own music. */
@@ -299,5 +377,6 @@ public class SongPlayer {
 		current = null;
 		shuffle = Shuffle.OFF;
 		playingList = null;
+		shufflePool = null;
 	}
 }

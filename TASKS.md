@@ -71,3 +71,4 @@ The cloud routine does the first unchecked task and checks it off. Smallest firs
 - [x] Song playlists. Name a playlist, add or remove songs, play it in order or shuffled (2026-10-27)
 - [x] Twelve new Onyx badges with the onyx gem icon (2026-10-27). World Hopper, Mod Sampler, Every Floor a New World, Boss Buffet, Complete All Bosses, Curious, Sharpshooter, Inscribed, True Love, Capybara Friend, Short Story, Mixtape
 - [ ] Sandbox can't earn badges, so play a normal run to see the new Onyx badges pop up (World Hopper by floor 14 or so, Mod Sampler, Capybara Friend if a sewer floor has the nest)
+- [x] Songs. Name of the song playing at the top left (click it to like, ban, skip or add mid game), list opens on the playing song, add button on every song that defaults to the last playlist used, ban button that keeps a song out of every shuffle, and no more music cut out when clicking in the Songs window (2026-10-27)

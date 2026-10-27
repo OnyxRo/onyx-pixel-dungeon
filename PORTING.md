@@ -756,3 +756,10 @@ Twelve badges of the game's own, all drawn with the onyx gem from the app icon (
 - Jackpot (cell 160) has no picture in the sheet, it was blank before this work.
 
 Boss crawl ending (2026-10-27). After the last boss (Magic Ling's dragon) the exit rebuilt the dragon forever, since there was no next stop. `BossCrawl.stops` now ends with the Amulet floor (world -2, depth 26, Shattered's `LastLevel`, named "The Amulet of Yendor"). Taking the Amulet and leaving ends the run as a win, and `Rankings.submit` now ranks a boss crawl win (other sandbox runs are still never ranked). The order of the other stops is unchanged. Checked headless with `BossCrawlTest`, not seen on screen yet.
+
+## Songs, part two (2026-10-27)
+- Now playing. `ui/NowPlaying` sits under the mod logo at the top left (or at the top when there is no logo) and shows `SongPlayer.nowPlaying()`, the picked song or the floor's own track (`Music.currentTrack()`). Clicking it opens `WndNowPlaying` (like, ban, add to playlist, skip during a shuffle or playlist, all songs).
+- Every row in `WndSongs` has three marks on the right, add (`WndAddToPlaylist`, top button is the last playlist a song was added to, `song_last_playlist` in settings), ban and like. The list opens scrolled to the song playing now.
+- Banned songs (`banned_songs` in settings) never come up in shuffle all, shuffle liked or playlist play and shuffle. Banning the song a shuffle is playing skips it. Picking a banned song by hand still plays it, and floor music ignores bans.
+- Music cutting out. Building the Songs window froze the game long enough for the music to stall. Two causes. The song list was rebuilt on every open (it makes a level for every world and checks every music file), now built once and kept (`WndSongs.songs()`). And `ScrollingListPane` laid out every row after each row was added, about 45,000 layouts for 300 songs, now `holdLayout` lets a window add every row first.
+- UI tour steps 15 to 17 show the three new windows. The tour also logs a sprite crash from `WhiteYanBossSprite` (frame missing), not looked into.

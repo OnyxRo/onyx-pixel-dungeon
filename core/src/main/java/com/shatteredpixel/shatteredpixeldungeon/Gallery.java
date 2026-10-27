@@ -39,6 +39,8 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndSettings;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndCompendium;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndModInfo;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndSandbox;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndAddToPlaylist;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndNowPlaying;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndPlaylist;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndPlaylists;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndSongs;
@@ -379,6 +381,13 @@ public class Gallery {
 				uiWindow = new WndSongs();
 				WndSongs.addingTo = null;
 				break;
+			case 15:
+				//a song picked by hand, so the name shows at the top left, then its mid game window
+				SongPlayer.play( SongPlayer.modSongs().get( 40 ).path );
+				uiWindow = new WndNowPlaying( SongPlayer.nowPlaying() );
+				break;
+			case 16: uiWindow = new WndAddToPlaylist( WndSongs.byPath().get( SongPlayer.nowPlaying() ) ); break;
+			case 17: uiWindow = new WndSongs(); break;
 			default:
 				Gdx.app.exit();
 				return;

@@ -116,6 +116,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.ResumeIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RightClickMenu;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StatusPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ModIntro;
+import com.shatteredpixel.shatteredpixeldungeon.ui.NowPlaying;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Tag;
@@ -519,6 +520,12 @@ public class GameScene extends PixelScene {
 			align(modName);
 			add(modName);
 		}
+
+		//the song playing now sits under the mod logo, clicking it likes, bans or adds the song mid game
+		NowPlaying nowPlaying = new NowPlaying();
+		nowPlaying.camera = uiCamera;
+		nowPlaying.setRect( insets.left + 3, screentop + (modLogo != null ? 20 : 2), 120, 10 );
+		add( nowPlaying );
 
 		float extraRight = uiCamera.width - (menuBarMaxLeft + MenuPane.WIDTH);
 		if (extraRight > 0){

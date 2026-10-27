@@ -72,7 +72,7 @@ public class WndPlaylist extends Window {
 		RedButton play = new RedButton( Messages.get(this, "play"), 7 ) {
 			@Override
 			protected void onClick() {
-				start( 0, false );
+				start( -1, false );
 			}
 		};
 		play.setRect( 0, top, half, BTN_H );

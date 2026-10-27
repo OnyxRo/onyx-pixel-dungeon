@@ -285,6 +285,7 @@ public enum Music {
 		try {
 			fadeTime = fadeTotal = -1;
 
+			currentTrack = track;
 			player = createPlayer(track);
 			player.setLooping(looping);
 			player.setVolume(volumeWithFade());
@@ -307,6 +308,13 @@ public enum Music {
 	}
 
 	private boolean paused = false;
+
+	private String currentTrack;
+
+	/** The track the player holds now, or null when nothing is loaded. */
+	public synchronized String currentTrack(){
+		return player != null ? currentTrack : null;
+	}
 
 	public synchronized boolean paused(){
 		return paused;
