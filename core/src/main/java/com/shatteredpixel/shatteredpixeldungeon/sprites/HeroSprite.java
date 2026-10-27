@@ -226,7 +226,8 @@ public class HeroSprite extends CharSprite {
 		}
 		if (cl == HeroClass.RAT_KING) return RatKingHeroSprite.avatar(); //deranged
 		
-		RectF patch = tiers().get( armorTier );
+		//saves and rankings from before the Hero.tier cap can hold mod armor tiers past the last sheet row
+		RectF patch = tiers().get( Math.max( 0, Math.min( armorTier, 6 ) ) );
 		Image avatar = new Image( cl.spritesheet() );
 		RectF frame = avatar.texture.uvRect( 1, 0, FRAME_WIDTH, FRAME_HEIGHT );
 		frame.shift( patch.left, patch.top );
