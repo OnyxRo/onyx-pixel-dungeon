@@ -506,6 +506,7 @@ public class GameScene extends PixelScene {
 				@Override
 				protected void onClick() {
 					GameScene.show( new WndModInfo( Dungeon.level ) );
+					Badges.validateModInfoRead( WorldShuffle.modName( WorldShuffle.modWorldOf( Dungeon.level ) ) );
 				}
 			};
 			modButton.camera = uiCamera;
@@ -720,6 +721,7 @@ public class GameScene extends PixelScene {
 
 			//every floor a new world: name ported worlds and the mod they come from
 			WorldShuffle.announce(Dungeon.level);
+			Badges.validateWorldVisited(Dungeon.level);
 
 			if (Dungeon.branch == 0 && WorldShuffle.modLogo(Dungeon.level) != null) {
 				ModIntro intro = new ModIntro( Dungeon.level );
@@ -1749,6 +1751,7 @@ public class GameScene extends PixelScene {
 
 	public static void bossSlain() {
 		com.shatteredpixel.shatteredpixeldungeon.TooCruel.onBossSlain(); //toocruel
+		Badges.validateBossFloor();
 		if (scene == null) return; //headless tests
 		if (Dungeon.hero.isAlive()) {
 			//Shittened PD, the banner is sometimes a joke

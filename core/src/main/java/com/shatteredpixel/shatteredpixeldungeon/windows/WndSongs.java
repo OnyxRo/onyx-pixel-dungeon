@@ -298,7 +298,7 @@ public class WndSongs extends Window {
 	}
 
 	/** Every song by its path, for showing the songs of a playlist by name. */
-	static LinkedHashMap<String, Song> byPath() {
+	public static LinkedHashMap<String, Song> byPath() {
 		LinkedHashMap<String, Song> all = new LinkedHashMap<>();
 		for (ArrayList<Song> g : songs().values()) for (Song s : g) all.put( s.path, s );
 		return all;

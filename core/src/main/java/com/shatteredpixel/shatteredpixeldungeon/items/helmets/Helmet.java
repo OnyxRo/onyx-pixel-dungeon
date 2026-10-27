@@ -69,6 +69,7 @@ public class Helmet extends EquipableItem {
 		activate(hero);
 		hero.updateHT(false);
 		Dungeon.observe();
+		if (inscription != null && !inscription.curse()) com.shatteredpixel.shatteredpixeldungeon.Badges.validateInscribed();
 
 		hero.spendAndNext(timeToEquip(hero));
 		return true;

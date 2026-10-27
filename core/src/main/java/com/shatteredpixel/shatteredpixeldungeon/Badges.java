@@ -334,7 +334,21 @@ public class Badges {
 		KETCHUP                     ( 141 ),
 		JACKPOT                     ( 160 ),
 		NIGHTMARE_SLAIN             ( 161 ), //summoning
-		SPIRIT_SLAIN                ( 162 ); //summoning
+		SPIRIT_SLAIN                ( 162 ), //summoning
+
+		//Onyx's Pixel Dungeon, all drawn with the onyx gem
+		WORLD_HOPPER                ( 163 ),
+		MOD_SAMPLER                 ( 164 ),
+		EVERY_WORLD                 ( 165, BadgeType.GLOBAL ),
+		BOSS_BUFFET                 ( 166 ),
+		ALL_BOSSES                  ( 167, BadgeType.GLOBAL ),
+		CURIOUS                     ( 168, BadgeType.GLOBAL ),
+		SHARPSHOOTER                ( 169 ),
+		INSCRIBED                   ( 170 ),
+		TRUE_LOVE                   ( 171, BadgeType.GLOBAL ),
+		CAPYBARA_FRIEND             ( 172 ),
+		SHORT_STORY                 ( 173 ),
+		MIXTAPE                     ( 174, BadgeType.GLOBAL );
 
 		public boolean meta;
 
@@ -444,6 +458,7 @@ public class Badges {
 			try {
 				Bundle bundle = FileUtils.bundleFromFile( BADGES_FILE );
 				global = restore( bundle );
+				restoreProgress( bundle );
 
 			} catch (IOException e) {
 				global = new HashSet<>();
@@ -460,6 +475,7 @@ public class Badges {
 			
 			Bundle bundle = new Bundle();
 			store( bundle, global );
+			storeProgress( bundle );
 			
 			try {
 				FileUtils.bundleToFile(BADGES_FILE, bundle);
@@ -1279,6 +1295,135 @@ public class Badges {
 		}
 	}
 
+	//Onyx's Pixel Dungeon badges. Progress that builds up over many runs is kept in badges.dat beside the badges.
+	private static final java.util.HashSet<String> worldsSeen = new java.util.HashSet<>();
+	private static final java.util.HashSet<String> bossFloorsBeaten = new java.util.HashSet<>();
+	private static final java.util.HashSet<String> modInfoRead = new java.util.HashSet<>();
+	private static final java.util.HashSet<String> loverQuests = new java.util.HashSet<>();
+
+	private static void restoreProgress( Bundle bundle ){
+		restoreSet( bundle, "onyx_worlds", worldsSeen );
+		restoreSet( bundle, "onyx_bosses", bossFloorsBeaten );
+		restoreSet( bundle, "onyx_modinfo", modInfoRead );
+		restoreSet( bundle, "onyx_lover", loverQuests );
+	}
+
+	private static void restoreSet( Bundle bundle, String key, java.util.HashSet<String> set ){
+		set.clear();
+		if (bundle != null && bundle.contains( key )) java.util.Collections.addAll( set, bundle.getStringArray( key ) );
+	}
+
+	private static void storeProgress( Bundle bundle ){
+		bundle.put( "onyx_worlds", worldsSeen.toArray( new String[0] ) );
+		bundle.put( "onyx_bosses", bossFloorsBeaten.toArray( new String[0] ) );
+		bundle.put( "onyx_modinfo", modInfoRead.toArray( new String[0] ) );
+		bundle.put( "onyx_lover", loverQuests.toArray( new String[0] ) );
+	}
+
+	//progress across runs only counts where badges can be earned
+	private static boolean countsProgress(){
+		return !Dungeon.sandbox && Dungeon.customSeedText.isEmpty();
+	}
+
+	private static void addProgress( java.util.HashSet<String> set, String entry ){
+		loadGlobal();
+		if (countsProgress() && set.add( entry )) saveNeeded = true;
+	}
+
+	private static void validateOnce( Badge badge ){
+		if (!local.contains( badge )) {
+			local.add( badge );
+			displayBadge( badge );
+		}
+	}
+
+	/** Called on arriving on a floor. World Hopper, Mod Sampler and Every Floor a New World. */
+	public static void validateWorldVisited( com.shatteredpixel.shatteredpixeldungeon.levels.Level level ){
+		if (level == null || Dungeon.branch != 0) return;
+		int world = com.shatteredpixel.shatteredpixeldungeon.levels.WorldShuffle.worldOf( level );
+		if (world < 0) return;
+		String name = com.shatteredpixel.shatteredpixeldungeon.levels.WorldShuffle.worldClassName( world );
+		Statistics.worldsVisited.add( name );
+		addProgress( worldsSeen, name );
+
+		if (Statistics.worldsVisited.size() >= 10) validateOnce( Badge.WORLD_HOPPER );
+
+		java.util.HashSet<String> mods = new java.util.HashSet<>();
+		boolean everyWorld = true;
+		int count = com.shatteredpixel.shatteredpixeldungeon.levels.WorldShuffle.worldCount();
+		for (int w = 0; w < count; w++){
+			String cls = com.shatteredpixel.shatteredpixeldungeon.levels.WorldShuffle.worldClassName( w );
+			if (w > com.shatteredpixel.shatteredpixeldungeon.levels.WorldShuffle.HALLS && Statistics.worldsVisited.contains( cls )) {
+				mods.add( com.shatteredpixel.shatteredpixeldungeon.levels.WorldShuffle.modName( w ) );
+			}
+			if (!worldsSeen.contains( cls )) everyWorld = false;
+		}
+		if (mods.size() >= 6) validateOnce( Badge.MOD_SAMPLER );
+		if (everyWorld) displayBadge( Badge.EVERY_WORLD );
+	}
+
+	/** Called whenever a boss falls. Boss Buffet and Complete All Bosses. */
+	public static void validateBossFloor(){
+		com.shatteredpixel.shatteredpixeldungeon.levels.Level level = Dungeon.level;
+		if (level == null || Dungeon.branch != 0 || !Dungeon.bossLevel()) return;
+		String mod = level.modWorld >= 0
+				? com.shatteredpixel.shatteredpixeldungeon.levels.WorldShuffle.modName( level.modWorld )
+				: "Shattered Pixel Dungeon";
+		Statistics.bossModsBeaten.add( mod );
+		if (Statistics.bossModsBeaten.size() >= 3) validateOnce( Badge.BOSS_BUFFET );
+
+		addProgress( bossFloorsBeaten, level.getClass().getName() );
+		if (bossFloorsBeaten.containsAll( com.shatteredpixel.shatteredpixeldungeon.levels.WorldShuffle.runBossFloors() )) {
+			displayBadge( Badge.ALL_BOSSES );
+		}
+	}
+
+	/** Called when a mod's summary window opens. Curious, for reading 10 of them. */
+	public static void validateModInfoRead( String mod ){
+		addProgress( modInfoRead, mod );
+		if (modInfoRead.size() >= 10) displayBadge( Badge.CURIOUS );
+	}
+
+	/** Called for each enemy that dies. Sharpshooter, 5 gun kills on one floor. */
+	public static void validateGunKill( Object cause ){
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero hero = Dungeon.hero;
+		boolean gun = cause instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.Gun
+				|| (cause == hero && hero != null
+					&& hero.belongings.thrownWeapon instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.Gun.Bullet);
+		if (!gun) return;
+		String floor = Dungeon.branch + "/" + Dungeon.depth;
+		if (!floor.equals( Statistics.gunKillsFloor )) {
+			Statistics.gunKillsFloor = floor;
+			Statistics.gunKills = 0;
+		}
+		Statistics.gunKills++;
+		if (Statistics.gunKills >= 5) validateOnce( Badge.SHARPSHOOTER );
+	}
+
+	/** Called when an inscription goes onto a helmet. */
+	public static void validateInscribed(){
+		validateOnce( Badge.INSCRIBED );
+	}
+
+	/** Called when the Ghost's quest is finished. True Love, all three of the lover's quests as the Summoner. */
+	public static void validateLoverQuest( int type ){
+		if (Dungeon.hero == null || Dungeon.hero.heroClass != HeroClass.SUMMONER) return;
+		addProgress( loverQuests, Integer.toString( type ) );
+		if (loverQuests.contains( "1" ) && loverQuests.contains( "2" ) && loverQuests.contains( "3" )) {
+			displayBadge( Badge.TRUE_LOVE );
+		}
+	}
+
+	/** Called when the hero steps into a capybara nest. */
+	public static void validateCapybaraNest(){
+		validateOnce( Badge.CAPYBARA_FRIEND );
+	}
+
+	/** Called when a playlist changes. Mixtape, songs from 5 different mods in one playlist. */
+	public static void validateMixtape( java.util.Collection<String> mods ){
+		if (new java.util.HashSet<>( mods ).size() >= 5) displayBadge( Badge.MIXTAPE );
+	}
+
 	//Shittened PD
 	public static void validateVictoryWithSaul() {
 		Badge badge = Badge.VICTORY_SAUL;
@@ -1539,6 +1684,10 @@ public class Badges {
 		}
 
 		validateNotShittened();
+
+		if (GameModes.on( GameModes.HALF ) || GameModes.on( GameModes.EVEN_SHORTER )) {
+			validateOnce( Badge.SHORT_STORY );
+		}
 
 		badge = victoryClassBadges.get(Dungeon.hero.heroClass);
 		if (badge == null) return;

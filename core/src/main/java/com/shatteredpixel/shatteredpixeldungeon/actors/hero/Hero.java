@@ -3355,6 +3355,16 @@ public class Hero extends Char {
 	public void move(int step, boolean travelling) {
 		boolean wasHighGrass = Dungeon.level.map[step] == Terrain.HIGH_GRASS;
 
+		//Onyx's badges, stepping into a capybara nest
+		if (Dungeon.level.customTiles != null) for (com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap tiles : Dungeon.level.customTiles){
+			if (tiles instanceof com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.CapybaraNestRoom.NestTiles) {
+				int x = step % Dungeon.level.width(), y = step / Dungeon.level.width();
+				if (x >= tiles.tileX && x < tiles.tileX + tiles.tileW && y >= tiles.tileY && y < tiles.tileY + tiles.tileH) {
+					Badges.validateCapybaraNest();
+				}
+			}
+		}
+
 		//Lovecraft PD insanity, the hero stumbles and hurts themself half the time
 		if (isInsane() && isAlive() && Random.Int( 2 ) == 0){
 			damage( 1, this );

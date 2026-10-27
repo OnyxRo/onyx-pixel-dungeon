@@ -110,7 +110,17 @@ public class Statistics {
 	public static boolean Hollow_Holiday = false, Tomb_Reach = false; //Magic Ling quest book flags
 	public static boolean FirstActive = false, SecondActive = false, ThirdActive = false, FourthActive = false;
 	
+	//Onyx's badges, the worlds and the boss floors' mods seen this run, and gun kills on the current floor
+	public static java.util.HashSet<String> worldsVisited = new java.util.HashSet<>();
+	public static java.util.HashSet<String> bossModsBeaten = new java.util.HashSet<>();
+	public static int gunKills = 0;
+	public static String gunKillsFloor = "";
+
 	public static void reset() {
+		worldsVisited.clear();
+		bossModsBeaten.clear();
+		gunKills = 0;
+		gunKillsFloor = "";
 		killcount = 0;
 		rituals = 0;
 		FirstActive = SecondActive = ThirdActive = FourthActive = false;
@@ -218,6 +228,10 @@ public class Statistics {
 	private static final String ASCENDED		= "ascended";
 	
 	public static void storeInBundle( Bundle bundle ) {
+		bundle.put( "onyx_worlds", worldsVisited.toArray(new String[0]) );
+		bundle.put( "onyx_bossmods", bossModsBeaten.toArray(new String[0]) );
+		bundle.put( "onyx_gunkills", gunKills );
+		bundle.put( "onyx_gunfloor", gunKillsFloor );
 		bundle.put( "septiumkills", killcount );
 		bundle.put( "rituals", rituals );
 		bundle.put( "septiumfirst", FirstActive );
@@ -291,6 +305,12 @@ public class Statistics {
 	}
 	
 	public static void restoreFromBundle( Bundle bundle ) {
+		worldsVisited.clear();
+		bossModsBeaten.clear();
+		if (bundle.contains( "onyx_worlds" )) java.util.Collections.addAll( worldsVisited, bundle.getStringArray( "onyx_worlds" ) );
+		if (bundle.contains( "onyx_bossmods" )) java.util.Collections.addAll( bossModsBeaten, bundle.getStringArray( "onyx_bossmods" ) );
+		gunKills = bundle.getInt( "onyx_gunkills" );
+		gunKillsFloor = bundle.contains( "onyx_gunfloor" ) ? bundle.getString( "onyx_gunfloor" ) : "";
 		killcount = bundle.getInt( "septiumkills" );
 		rituals = bundle.getInt( "rituals" );
 		FirstActive = bundle.getBoolean( "septiumfirst" );

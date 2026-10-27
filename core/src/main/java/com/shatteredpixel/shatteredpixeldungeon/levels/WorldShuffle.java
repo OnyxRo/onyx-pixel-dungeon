@@ -447,6 +447,41 @@ public class WorldShuffle {
 		return WORLDS.length;
 	}
 
+	/** The class name of a world, how the badges remember which worlds were visited. */
+	public static String worldClassName( int world ){
+		return world >= 0 && world < WORLDS.length ? WORLDS[world].getName() : null;
+	}
+
+	private static java.util.LinkedHashSet<String> runBossFloors = null;
+
+	/**
+	 * Every boss floor a normal run can reach, as class names. Shattered's five, and every fight of the mods whose
+	 * boss floors are on in normal runs (see bossPlaytested). Used by the badge for beating every boss.
+	 */
+	public static java.util.LinkedHashSet<String> runBossFloors(){
+		if (runBossFloors != null) return runBossFloors;
+		java.util.LinkedHashSet<String> floors = new java.util.LinkedHashSet<>();
+		floors.add( SewerBossLevel.class.getName() );
+		floors.add( PrisonBossLevel.class.getName() );
+		floors.add( CavesBossLevel.class.getName() );
+		floors.add( CityBossLevel.class.getName() );
+		floors.add( HallsBossLevel.class.getName() );
+		java.util.HashSet<String> modsDone = new java.util.HashSet<>();
+		for (int w = HALLS + 1; w < WORLDS.length; w++){
+			if (LOGOS[w] == null || !bossPlaytested(w) || !modsDone.add(LOGOS[w])) continue;
+			for (int depth = 5; depth <= 25; depth += 5){
+				Level[] fights = modBossVariants( w, depth );
+				//normal runs keep Reforged's Usurper, and never roll Abyssalnite's or Cursed's third fight
+				int count = fights.length;
+				if (REFORGED.equals(LOGOS[w])) count = Math.min(count, 1);
+				if (ABYSSALNITE.equals(LOGOS[w]) || CURSED.equals(LOGOS[w])) count = Math.min(count, 2);
+				for (int i = 0; i < count; i++) floors.add( fights[i].getClass().getName() );
+			}
+		}
+		runBossFloors = floors;
+		return floors;
+	}
+
 	public static int homeWorld( int depth ){
 		return Math.max(0, Math.min(HALLS, (depth - 1) / 5));
 	}

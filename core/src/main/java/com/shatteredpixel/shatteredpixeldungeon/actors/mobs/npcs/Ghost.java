@@ -407,6 +407,7 @@ public class Ghost extends NPC {
 		}
 		
 		public static void complete() {
+			com.shatteredpixel.shatteredpixeldungeon.Badges.validateLoverQuest( type );
 			weapon = null;
 			armor = null;
 			

@@ -188,6 +188,7 @@ public class DwarfKing extends Mob {
 					Dungeon.level.unseal();
 					talk(Messages.get(this, "goodjob"));
 					Badges.validateFriend();
+					Badges.validateBossFloor();
 				}
 				spend(TICK);
 				return true;

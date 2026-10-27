@@ -175,6 +175,15 @@ public class SongPlayer {
 		if (songs == null) return;
 		if (!songs.remove( path )) songs.add( path );
 		savePlaylist( name );
+
+		//Onyx's badges, a playlist with songs from 5 mods
+		java.util.LinkedHashMap<String, Song> all = com.shatteredpixel.shatteredpixeldungeon.windows.WndSongs.byPath();
+		ArrayList<String> mods = new ArrayList<>();
+		for (String p : songs) {
+			Song s = all.get( p );
+			if (s != null) mods.add( s.mod );
+		}
+		Badges.validateMixtape( mods );
 	}
 
 	// songs from mods
