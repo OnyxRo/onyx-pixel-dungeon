@@ -128,13 +128,28 @@ public class Tengu extends Mob {
 		return false;
 	}
 
+	//cursed, Cursed PD's Tengu floor is an older copy of the prison arena with the same state names, so both
+	//are read by name. Anywhere else (the sandbox spawn list) there is no arena and no phase
+	private static String arenaState(){
+		if (Dungeon.level instanceof PrisonBossLevel) return ((PrisonBossLevel)Dungeon.level).state().name();
+		if (Dungeon.level instanceof com.shatteredpixel.shatteredpixeldungeon.levels.CursedTenguBossLevel)
+			return ((com.shatteredpixel.shatteredpixeldungeon.levels.CursedTenguBossLevel)Dungeon.level).state().name();
+		return "";
+	}
+
+	private static void progressArena(){
+		if (Dungeon.level instanceof PrisonBossLevel) ((PrisonBossLevel)Dungeon.level).progress();
+		else if (Dungeon.level instanceof com.shatteredpixel.shatteredpixeldungeon.levels.CursedTenguBossLevel)
+			((com.shatteredpixel.shatteredpixeldungeon.levels.CursedTenguBossLevel)Dungeon.level).progress();
+	}
+
 	@Override
 	public void damage(int dmg, Object src) {
 		if (!Dungeon.level.mobs.contains(this)){
 			return;
 		}
 
-		PrisonBossLevel.State state = ((PrisonBossLevel)Dungeon.level).state();
+		String state = arenaState();
 		
 		int hpBracket = HT / 8;
 
@@ -158,7 +173,7 @@ public class Tengu extends Mob {
 		}
 
 		//phase 2 of the fight is over
-		if (HP == 0 && state == PrisonBossLevel.State.FIGHT_ARENA) {
+		if (HP == 0 && state.equals("FIGHT_ARENA")) {
 			//let full attack action complete first
 			Actor.add(new Actor() {
 
@@ -169,7 +184,7 @@ public class Tengu extends Mob {
 				@Override
 				protected boolean act() {
 					Actor.remove(this);
-					((PrisonBossLevel)Dungeon.level).progress();
+					progressArena();
 					return true;
 				}
 			});
@@ -177,10 +192,10 @@ public class Tengu extends Mob {
 		}
 
 		//phase 1 of the fight is over
-		if (state == PrisonBossLevel.State.FIGHT_START && HP <= HT/2){
+		if (state.equals("FIGHT_START") && HP <= HT/2){
 			HP = (HT/2);
 			yell(Messages.get(this, "interesting"));
-			((PrisonBossLevel)Dungeon.level).progress();
+			progressArena();
 			BossHealthBar.bleed(true);
 
 		//if tengu has lost a certain amount of hp, jump
