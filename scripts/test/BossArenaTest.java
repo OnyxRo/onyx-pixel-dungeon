@@ -153,6 +153,7 @@ public class BossArenaTest {
 			return;
 		}
 		ArrayList<Mob> bosses = bossesIn( level );
+		final int arenaCell = hero.pos;
 		if (bosses.isEmpty()) {
 			warnings++;
 			System.out.println( "WARN: " + name + " on floor " + depth + " sealed but showed no boss in " + steps + " steps" );
@@ -180,6 +181,19 @@ public class BossArenaTest {
 				System.out.println( "FAIL: " + name + " on floor " + depth + " is still sealed after its boss died" );
 			}
 		}
+		//once unsealed, the hero must be able to walk from the arena onto a cell that is a working exit
+		//a death cut short by a headless limit never reached the unseal, run it here so the exit still gets checked
+		if (level.locked && cutShort && !bosses.isEmpty()) quietly( level::unseal );
+		if (!level.locked && !bosses.isEmpty()) {
+			String why = exitProblem( level, arenaCell );
+			if (why != null && why.startsWith( "the exit tile" )) {
+				failures++;
+				System.out.println( "FAIL: " + name + " on floor " + depth + " exit after the boss died, " + why );
+			} else if (why != null) {
+				warnings++;
+				System.out.println( "WARN: " + name + " on floor " + depth + " exit after the boss died, " + why + ". Kill the boss in the sandbox and walk out to check." );
+			}
+		}
 		if (depth == 10 || depth == 20) {
 			Class<?> reward = depth == 10 ? com.shatteredpixel.shatteredpixeldungeon.items.TengusMask.class
 					: com.shatteredpixel.shatteredpixeldungeon.items.KingsCrown.class;
@@ -191,6 +205,42 @@ public class BossArenaTest {
 				System.out.println( "FAIL: " + name + " on floor " + depth + " dropped no " + reward.getSimpleName() );
 			}
 		}
+	}
+
+	/** Null when an exit transition can be walked onto from start, otherwise what is wrong. */
+	static String exitProblem( Level level, int start ) {
+		com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition exit =
+				level.getTransition( com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition.Type.REGULAR_EXIT );
+		if (exit == null || exit.type != com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition.Type.REGULAR_EXIT) {
+			return "the floor has no exit";
+		}
+		//every exit tile must lead somewhere, stepping on a dead one looks like a broken door
+		for (int c = 0; c < level.length(); c++) {
+			if (level.map[c] == com.shatteredpixel.shatteredpixeldungeon.levels.Terrain.EXIT && level.getTransition( c ) == null) {
+				return "the exit tile at cell " + c + " does nothing when stepped on";
+			}
+		}
+		boolean[] seen = new boolean[level.length()];
+		ArrayDeque<Integer> queue = new ArrayDeque<>();
+		queue.add( start );
+		seen[start] = true;
+		int[] dirs = {-1, 1, -level.width(), level.width(), -level.width()-1, -level.width()+1, level.width()-1, level.width()+1};
+		while (!queue.isEmpty()) {
+			int cell = queue.poll();
+			if (exit.inside( cell )) return null;
+			for (int d : dirs) {
+				int n = cell + d;
+				if (n < 0 || n >= level.length() || seen[n]) continue;
+				if (Math.abs( n % level.width() - cell % level.width() ) > 1) continue;
+				boolean door = level.map[n] == com.shatteredpixel.shatteredpixeldungeon.levels.Terrain.LOCKED_DOOR
+						|| level.map[n] == com.shatteredpixel.shatteredpixeldungeon.levels.Terrain.DOOR
+						|| level.map[n] == com.shatteredpixel.shatteredpixeldungeon.levels.Terrain.LOCKED_EXIT; //opened by the boss's skeleton key
+				if (!(level.passable[n] || door)) continue;
+				seen[n] = true;
+				queue.add( n );
+			}
+		}
+		return "no walkable path reaches the exit at cell " + exit.cell() + " (tile " + level.map[exit.cell()] + ")";
 	}
 
 	/**

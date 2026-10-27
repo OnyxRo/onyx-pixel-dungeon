@@ -796,6 +796,33 @@ public abstract class Level implements Bundlable {
 				return transition;
 			}
 		}
+		return blockTransition(cell);
+	}
+
+	//levels from older mods paint a block of stair tiles but only name one cell as the entrance or exit,
+	//so any tile of that block uses the transition that sits in the same block
+	private LevelTransition blockTransition(int cell){
+		if (cell < 0 || cell >= length()) return null;
+		int tile = map[cell];
+		if (tile != Terrain.EXIT && tile != Terrain.UNLOCKED_EXIT && tile != Terrain.ENTRANCE && tile != Terrain.ENTRANCE_SP) return null;
+		boolean[] seen = new boolean[length()];
+		java.util.ArrayDeque<Integer> queue = new java.util.ArrayDeque<>();
+		queue.add(cell);
+		seen[cell] = true;
+		int searched = 0;
+		while (!queue.isEmpty() && searched++ < 64){
+			int c = queue.poll();
+			for (LevelTransition transition : transitions){
+				if (transition.inside(c)) return transition;
+			}
+			for (int n : PathFinder.NEIGHBOURS8){
+				int next = c + n;
+				if (next < 0 || next >= length() || seen[next] || map[next] != tile) continue;
+				if (Math.abs(next % width() - c % width()) > 1) continue;
+				seen[next] = true;
+				queue.add(next);
+			}
+		}
 		return null;
 	}
 

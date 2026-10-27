@@ -717,3 +717,5 @@ Old sign id (2026-10-26). Shattered 0.8 used tile id 23 for a solid sign, curren
 Save slot portrait (2026-10-27, crash 2e6b0862). Saves and rankings made before the `Hero.tier` cap keep armor tiers past 6, so `HeroSprite.avatar` clamps the tier as well.
 
 Shared DM-300 sprite (2026-10-27, crash a1d08c38). `DM300Sprite` called `DM300.onZapComplete` and `onSlamComplete` by cast, which crashed for Abyssalnite's `NewDM300`. It now checks the owner type.
+
+Wide stair blocks (2026-10-27). Levels from older mods paint a block of exit tiles but name one cell as `exit`, so only that cell worked (Abyssalnite DM-300, only the bottom middle of its 3 by 3 doorway). `Level.getTransition(cell)` now falls back to the transition in the same connected block of stair tiles, which also fixes old saves. `BossArenaTest` fails when an exit tile does nothing and warns when the exit cannot be walked to. Warnings left for Forge, Deep shadow, Sky Goo and the prison style floors, check them by playing.
