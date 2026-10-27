@@ -781,7 +781,13 @@ public class Gallery {
 			time = 0;
 			return;
 		}
-		if (!(Dungeon.level instanceof com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel)) { time = 0; return; }
+		if (dragonStep == 10 && !(Dungeon.level instanceof com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel) && time > 3f) {
+			System.out.println( "[DRAG] went down the exit to depth " + Dungeon.depth + ", " + Dungeon.level.getClass().getSimpleName() );
+			capture( "drag_9_below" );
+			Gdx.app.exit();
+			return;
+		}
+		if (!(Dungeon.level instanceof com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel)) { if (dragonStep != 10) time = 0; return; }
 		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Dragon d = com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.dragon;
 		int w = Dungeon.level.width();
 		//turns only pass while the hero acts
@@ -849,7 +855,12 @@ public class Gallery {
 			} else if (dragonStep == 9 && time > 21.6f) {
 				dragonStep = 10;
 				capture( "drag_8_exit_redrawn" );
-			} else if (dragonStep == 10 && time > 22f) {
+				int ex = Dungeon.level.exit();
+				System.out.println( "[DRAG] hero " + Dungeon.hero.pos + " fov " + Dungeon.level.heroFOV[ex] + " visited " + Dungeon.level.visited[ex]
+						+ " losBlocking " + Dungeon.level.losBlocking[ex] + " below " + Dungeon.level.map[ex + w] + " depth " + Dungeon.depth );
+				Dungeon.hero.handle( ex );
+			} else if (dragonStep == 10 && time > 24f) {
+				System.out.println( "[DRAG] after walking onto the exit, depth " + Dungeon.depth + " level " + Dungeon.level.getClass().getSimpleName() + " scene " + Game.scene().getClass().getSimpleName() );
 				System.out.println( "[DRAG] done" );
 				Gdx.app.exit();
 			}

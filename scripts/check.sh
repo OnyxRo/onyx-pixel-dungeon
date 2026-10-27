@@ -90,6 +90,11 @@ say "== sprite frames"
 python -I scripts/check-sprites.py 2>&1 | grep -E "^(.*\.java:|SUMMARY)" | sed 's/^/  /' | tail -12
 [ "${PIPESTATUS[0]}" -eq 0 ] && say "  passed" || { say "  FAILED"; FAIL=1; }
 
+#world tile sheets need see-through wall overhangs, solid ones hide the floor along every wall (and the stairs there)
+say "== wall overhangs"
+python -I scripts/fix-overhangs.py --check 2>&1 | sed 's/^/  /' | tail -12
+[ "${PIPESTATUS[0]}" -eq 0 ] && say "  passed" || { say "  FAILED"; FAIL=1; }
+
 #toocruel, every Too Cruel PD mode on its own, floors, monsters, blows, a death, save and reload. Runs in --quick too
 run "TooCruelTest" TooCruelTest; rc=$?
 tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|INFO mode|SUMMARY toocruel)" | tail -14 | sed 's/^/  /'
