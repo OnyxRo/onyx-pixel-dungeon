@@ -3,6 +3,7 @@ package com.shatteredpixel.shatteredpixeldungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.HallsBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.LastLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerBossLevel;
@@ -14,6 +15,7 @@ import java.util.HashSet;
 /**
  * Boss crawl, a sandbox run that is only boss floors. It starts on the easiest boss and every exit leads
  * to the next one, floor 5 bosses first and floor 25 bosses last, Shattered's own boss first on each floor.
+ * The last stop is the Amulet floor, taking the Amulet there ends the run and ranks it like a normal win.
  * Started from the Boss crawl button on the title screen, see Dungeon.bossCrawl.
  */
 public class BossCrawl {
@@ -21,7 +23,7 @@ public class BossCrawl {
 	/** Which stop the run is on, saved with the run. */
 	public static int step = 0;
 
-	//each stop is { world, depth, variant }, world -1 is Shattered's own boss
+	//each stop is { world, depth, variant }, world -1 is Shattered's own boss, world -2 the Amulet floor
 	private static ArrayList<int[]> stops;
 	//a readable name for each stop, in the same order
 	private static ArrayList<String> names;
@@ -46,6 +48,8 @@ public class BossCrawl {
 					}
 				}
 			}
+			stops.add( new int[]{ -2, 26, 0 } );
+			names.add( "The Amulet of Yendor" );
 		}
 		return stops;
 	}
@@ -87,7 +91,8 @@ public class BossCrawl {
 	public static Level build( int depth ){
 		int[] s = current();
 		if (s == null || s[1] != depth) return null;
-		Dungeon.sandboxWorld = s[0];
+		Dungeon.sandboxWorld = s[0] == -2 ? -1 : s[0];
+		if (s[0] == -2) return new LastLevel();
 		if (s[0] == -1) {
 			switch (depth) {
 				case 5:  return new SewerBossLevel();

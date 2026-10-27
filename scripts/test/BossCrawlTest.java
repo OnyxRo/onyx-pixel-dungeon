@@ -30,7 +30,7 @@ public class BossCrawlTest {
 				String built = l.getClass().getSimpleName();
 				String want = BossCrawl.name( i );
 				String wantCls = want.substring( want.lastIndexOf( ", " ) + 2 ).replace( " ", "" ).toLowerCase();
-				boolean ok = s[0] == -1 || built.toLowerCase().replace( "level", "" ).equals( wantCls );
+				boolean ok = s[0] == -2 ? built.equals( "LastLevel" ) : s[0] == -1 || built.toLowerCase().replace( "level", "" ).equals( wantCls );
 				System.out.println( (ok ? "ok " : "FAIL: ") + i + " " + want + " built " + built );
 				if (!ok) failures++;
 			} catch (Throwable t) {

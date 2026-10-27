@@ -86,8 +86,8 @@ public enum Rankings {
 
 	public void submit( boolean win, Object cause, boolean saul ) {
 
-		//sandbox runs are never ranked
-		if (Dungeon.sandbox) return;
+		//sandbox runs are never ranked, except a boss crawl that reached the end and took the Amulet
+		if (Dungeon.sandbox && !(win && Dungeon.bossCrawl)) return;
 
 		load();
 		
