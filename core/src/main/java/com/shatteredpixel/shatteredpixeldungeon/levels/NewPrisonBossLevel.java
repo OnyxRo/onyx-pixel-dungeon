@@ -796,7 +796,8 @@ public class NewPrisonBossLevel extends Level {
 
 	public void placeTrapsInTenguCell(float fill){
 
-		for (CustomTilemap vis : customTiles){
+		//a copy, removing a fading trap takes it out of customTiles (Shattered loops over a copy too)
+		for (CustomTilemap vis : customTiles.toArray(new CustomTilemap[0])){
 			if (vis instanceof FadingTraps){
 				((FadingTraps) vis).remove();
 			}
