@@ -326,6 +326,28 @@ public class Tengu extends Mob {
 				
 			}
 			
+		//cursed, Cursed PD's Tengu floor, jumps as the mod did. Phase one stays inside the small locked room,
+		//before this he jumped anywhere on the floor and left the hero alone behind the locked door
+		} else if (Dungeon.level instanceof com.shatteredpixel.shatteredpixeldungeon.levels.CursedTenguBossLevel) {
+			Level level = Dungeon.level;
+			int tries = 50;
+			if (arenaState().equals("FIGHT_START")) {
+				do {
+					newPos = Random.IntRange(3, 7) + level.width()*Random.IntRange(26, 30);
+				} while ((level.adjacent(newPos, enemy.pos) || Actor.findChar(newPos) != null) && --tries > 0);
+			} else {
+				do {
+					newPos = Random.Int(level.length());
+				} while ((level.solid[newPos] || level.distance(newPos, enemy.pos) < 8 || Actor.findChar(newPos) != null) && --tries > 0);
+			}
+			if (tries <= 0) newPos = pos;
+
+			if (level.heroFOV[pos]) CellEmitter.get( pos ).burst( Speck.factory( Speck.WOOL ), 6 );
+			sprite.move( pos, newPos );
+			move( newPos );
+			if (level.heroFOV[newPos]) CellEmitter.get( newPos ).burst( Speck.factory( Speck.WOOL ), 6 );
+			Sample.INSTANCE.play( Assets.Sounds.PUFF );
+
 		//if we're on another type of level
 		} else {
 			Level level = Dungeon.level;
