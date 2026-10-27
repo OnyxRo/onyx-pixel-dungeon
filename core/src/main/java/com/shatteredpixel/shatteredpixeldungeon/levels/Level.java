@@ -740,6 +740,7 @@ public abstract class Level implements Bundlable {
 	//Matt Edition. With no target id, plain (unnamed) transitions are preferred and named ones are a fallback.
 	//With a target id, the transition with that id is returned, preferring one of the right type.
 	public LevelTransition getTransition(LevelTransition.Type type, String targetId){
+		syncLegacyTransitions();
 		if (transitions.isEmpty()){
 			return null;
 		}
@@ -773,7 +774,23 @@ public abstract class Level implements Bundlable {
 		throw new RuntimeException("No transition with id '" + targetId + "' on depth " + Dungeon.depth + " branch " + Dungeon.branch);
 	}
 
+	//levels from mods on older Shattered set the entrance and exit cells directly, and their multi phase boss
+	//floors change them mid fight (a boss floor's exit only appears once the boss dies). The build time
+	//conversion in create misses those, so a missing one is added whenever transitions are looked up
+	private void syncLegacyTransitions(){
+		if (transitions == null) return;
+		boolean hasEntrance = false, hasExit = false;
+		for (LevelTransition t : transitions){
+			if (t.type == LevelTransition.Type.REGULAR_EXIT) hasExit = true;
+			if (t.type == LevelTransition.Type.REGULAR_ENTRANCE || t.type == LevelTransition.Type.BRANCH_ENTRANCE
+					|| t.type == LevelTransition.Type.SURFACE) hasEntrance = true;
+		}
+		if (!hasEntrance && entrance > 0 && entrance < length()) transitions.add( new LevelTransition( this, entrance, LevelTransition.Type.REGULAR_ENTRANCE ) );
+		if (!hasExit && exit > 0 && exit < length()) transitions.add( new LevelTransition( this, exit, LevelTransition.Type.REGULAR_EXIT ) );
+	}
+
 	public LevelTransition getTransition(int cell){
+		syncLegacyTransitions();
 		for (LevelTransition transition : transitions){
 			if (transition.inside(cell)){
 				return transition;

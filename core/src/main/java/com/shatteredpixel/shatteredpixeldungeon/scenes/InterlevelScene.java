@@ -690,7 +690,7 @@ public class InterlevelScene extends PixelScene {
 
 			LevelTransition destTransition = level.getTransition(curTransition.destType, curTransition.targetTransitionId);
 			curTransition = null;
-			Dungeon.switchLevel( level, destTransition.cell() );
+			Dungeon.switchLevel( level, destTransition != null ? destTransition.cell() : arrivalFallback( level ) );
 		}
 
 	}
@@ -704,6 +704,15 @@ public class InterlevelScene extends PixelScene {
 		Dungeon.saveAll();
 
 		Level level;
+		//a boss crawl has no floors between its bosses, falling puts the hero back on a fresh copy of the boss floor
+		if (Dungeon.sandbox && Dungeon.bossCrawl && BossCrawl.current() != null && Dungeon.depth == BossCrawl.current()[1]) {
+			fallUsesTransition = false;
+			curTransition = null;
+			Dungeon.branch = 0;
+			level = Dungeon.newLevel();
+			Dungeon.switchLevel( level, level.entrance() );
+			return;
+		}
 		if (fallUsesTransition && curTransition != null) {
 			//Matt Edition. Falling on floor 14 drops into the Ice Caves instead of the next floor down
 			Dungeon.depth  = curTransition.destDepth;
@@ -741,10 +750,10 @@ public class InterlevelScene extends PixelScene {
 		}
 
 		LevelTransition destTransition = level.getTransition(curTransition.destType, curTransition.targetTransitionId);
-		int heroPos = destTransition.cell();
+		int heroPos = destTransition != null ? destTransition.cell() : arrivalFallback( level );
 
 		//Matt Edition. Coming back up to a locked exit puts the hero below the door, not on it
-		if (level.map[destTransition.centerCell] == Terrain.LOCKED_EXIT) {
+		if (destTransition != null && level.map[destTransition.centerCell] == Terrain.LOCKED_EXIT) {
 			int belowDoor = destTransition.centerCell + level.width();
 			if (belowDoor < level.length() && level.passable[belowDoor]) {
 				heroPos = belowDoor;
@@ -753,6 +762,17 @@ public class InterlevelScene extends PixelScene {
 
 		curTransition = null;
 		Dungeon.switchLevel( level, heroPos );
+	}
+
+	//a floor with no stairs to arrive on (a mod boss floor mid fight) puts the hero at its entrance, or the
+	//first open cell, instead of crashing the move
+	private static int arrivalFallback( Level level ){
+		int e = level.entrance();
+		if (e > 0 && e < level.length() && level.passable[e]) return e;
+		for (int i = 0; i < level.length(); i++) {
+			if (level.passable[i] && !level.solid[i] && !level.pit[i]) return i;
+		}
+		return e;
 	}
 
 	private void returnTo() throws IOException {

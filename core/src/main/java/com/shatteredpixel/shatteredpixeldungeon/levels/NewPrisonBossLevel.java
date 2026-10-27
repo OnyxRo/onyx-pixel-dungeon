@@ -46,6 +46,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.quest.CeremonialCandle;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.MysteryHeart;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.HeavyBoomerang;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.PrisonPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.SewerPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
@@ -414,6 +415,15 @@ public class NewPrisonBossLevel extends Level {
 		}
 
 		exit = pointToCell(levelExit);
+
+		//abyssalnite, written for Shattered 0.8, which had no transitions. Same as Shattered's own prison floor,
+		//the exit sits in the wall, so its area reaches down to the floor in front of it
+		transitions.clear();
+		transitions.add(new LevelTransition(this, ENTRANCE_POS, LevelTransition.Type.REGULAR_ENTRANCE));
+		LevelTransition exitTransition = new LevelTransition(this, exit, LevelTransition.Type.REGULAR_EXIT);
+		exitTransition.right += 2;
+		exitTransition.bottom += 3;
+		transitions.add(exitTransition);
 	}
 
 	//keep track of removed items as the level is changed. Dump them back into the level at the end.
