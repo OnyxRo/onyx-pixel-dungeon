@@ -95,7 +95,7 @@ public class NewCavesBossLevel extends Level {
 		setSize(WIDTH, HEIGHT);
 
 		//These signs are visually overridden with custom tile visuals
-		Painter.fill(this, gate, Terrain.SIGN);
+		Painter.fill(this, gate, Terrain.CUSTOM_DECO); //abyssalnite, its Shattered 0.8 sign (id 23) was solid, here that id is CUSTOM_DECO and signs are walkable
 
 		//set up main boss arena
 		Painter.fillEllipse(this, mainArena, Terrain.EMPTY);
@@ -294,7 +294,7 @@ public class NewCavesBossLevel extends Level {
 	public void unseal() {
 		super.unseal();
 
-		blobs.get(PylonEnergy.class).fullyClear();
+		if (blobs.get(PylonEnergy.class) != null) blobs.get(PylonEnergy.class).fullyClear(); //none yet if no pylon was ever powered
 
 		set( entrance, Terrain.ENTRANCE );
 		int i = 14 + 13*width();
@@ -334,7 +334,7 @@ public class NewCavesBossLevel extends Level {
 		}
 
 		for( int i = (mainArena.top-1)*width; i <length; i++){
-			if (map[i] == Terrain.INACTIVE_TRAP || map[i] == Terrain.WATER || map[i] == Terrain.SIGN){
+			if (map[i] == Terrain.INACTIVE_TRAP || map[i] == Terrain.WATER || map[i] == Terrain.CUSTOM_DECO){
 				GameScene.add(Blob.seed(i, 1, PylonEnergy.class));
 			}
 		}

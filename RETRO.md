@@ -161,3 +161,6 @@ A portal leading to an empty walled room means a branch number nobody gave a lev
 
 ## 2026-10-26 Invisible hero copies
 The first fix changed what the copy sprite asked for, but its updateArmor ignored the argument and still read blank row 7, so it shipped broken. Reading code missed it twice. A tour mode that logged the sprite frame rectangle found it in one run. For any "invisible" monster, log frame, alpha, tint and texture before guessing, and grep for the same hard coded row in sibling sprites.
+
+## 2026-10-26 Fight that never started
+BossArenaTest passed for NewCavesBossLevel while the fight could never start in play, because the gate tile id changed meaning between Shattered 0.8 and now. Looking at a picture of the game window found it after two wrong guesses to Onyx. When a fight does not start, capture the window first, then check the trigger condition line by line against the live tile flags.

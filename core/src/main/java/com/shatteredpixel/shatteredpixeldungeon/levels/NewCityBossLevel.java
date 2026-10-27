@@ -136,7 +136,7 @@ public class NewCityBossLevel extends Level {
 		Painter.fillDiamond(this, arena, 1, Terrain.EMPTY);
 
 		Painter.fill(this, arena, 5, Terrain.EMPTY_SP);
-		Painter.fill(this, arena, 6, Terrain.SIGN);
+		Painter.fill(this, arena, 6, Terrain.CUSTOM_DECO); //abyssalnite, its Shattered 0.8 sign (id 23) was solid, here that id is CUSTOM_DECO
 
 		c = arena.center();
 		Painter.set(this, c.x-3, c.y, Terrain.STATUE);
@@ -465,7 +465,7 @@ public class NewCityBossLevel extends Level {
 						data[++i] = 13 * 8 + 3;
 
 						//mid row of DK's throne
-					}else if (map[i + 1] == Terrain.SIGN) {
+					}else if (map[i + 1] == Terrain.CUSTOM_DECO) {
 						data[i] = 14 * 8 + 1;
 						data[++i] = 14 * 8 + 2; //TODO finalize throne visuals
 						data[++i] = 14 * 8 + 3;
@@ -507,7 +507,7 @@ public class NewCityBossLevel extends Level {
 
 				//DK arena tiles
 			} else {
-				if (Dungeon.level.map[cell] == Terrain.SIGN){
+				if (Dungeon.level.map[cell] == Terrain.CUSTOM_DECO){
 					return Messages.get(NewCityBossLevel.class, "throne_name");
 				} else if (Dungeon.level.map[cell] == Terrain.PEDESTAL){
 					return Messages.get(NewCityBossLevel.class, "summoning_name");
@@ -533,7 +533,7 @@ public class NewCityBossLevel extends Level {
 
 			//DK arena tiles
 			} else {
-				if (Dungeon.level.map[cell] == Terrain.SIGN){
+				if (Dungeon.level.map[cell] == Terrain.CUSTOM_DECO){
 					return Messages.get(NewCityBossLevel.class, "throne_desc");
 				} else if (Dungeon.level.map[cell] == Terrain.PEDESTAL){
 					return Messages.get(NewCityBossLevel.class, "summoning_desc");
@@ -609,7 +609,7 @@ public class NewCityBossLevel extends Level {
 				//Statues that need to face left instead of right
 				if (map[i] == Terrain.STATUE && i%tileW > 7){
 					data[i-tileW] = 14*8 + 4;
-				} else if (map[i] == Terrain.SIGN){
+				} else if (map[i] == Terrain.CUSTOM_DECO){
 					data[i-tileW] = 13*8 + 5;
 				}
 
