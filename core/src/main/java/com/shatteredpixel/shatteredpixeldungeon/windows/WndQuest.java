@@ -29,7 +29,10 @@ public class WndQuest extends WndTitledMessage {
 	//Magic Ling PD, an NPC with several lines of talk, shown as one window
 	public static void chating( NPC questgiver, java.util.ArrayList<String> text ) {
 		if (text != null && !text.isEmpty()) {
-			com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene.show( new WndQuest( questgiver, String.join( "\n\n", text ) ) );
+			//NPCs call this from the actor thread when talked to, the window has to be built on the render thread
+			final String joined = String.join( "\n\n", text );
+			com.watabou.noosa.Game.runOnRenderThread( () ->
+					com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene.show( new WndQuest( questgiver, joined ) ) );
 		}
 	}
 
