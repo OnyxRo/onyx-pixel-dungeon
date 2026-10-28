@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/nocturne-b896147a-69a3-48c4-af67-3a1e855493ce/styles.css">
+<script src="_ds/nocturne-b896147a-69a3-48c4-af67-3a1e855493ce/_ds_bundle.js"></script>
+<style>body{margin:0;background:var(--color-bg)} a{color:var(--color-accent)} a:hover{color:var(--color-accent-300)} canvas{image-rendering:pixelated;display:block}</style>
+</helmet>
+<div style="max-width:1100px;padding:var(--space-8);display:flex;flex-direction:column;gap:var(--space-5);color:var(--color-text);font-family:var(--font-body)">
+  <header style="display:flex;flex-direction:column;gap:var(--space-2);max-width:680px">
+    <h1 style="margin:0">Cthulhu boss animations</h1>
+    <p style="margin:0;opacity:0.8;text-wrap:pretty">Eleven animations drawn at the arena's 16px pixel scale on top of the current pit art. Every floor tentacle comes out of a pitch black hole in broken floor, and the Void Grasp tentacle comes up out of plain floor. Sprout, slam and Void Grasp run at 12 fps on held frames, like the game's own sprites. The rest run at 24 fps.</p>
+  </header>
+  <div style="display:flex;gap:var(--space-2);flex-wrap:wrap">
+    <sc-for list="{{ anims }}" as="a" hint-placeholder-count="4">
+      <button class="{{ a.cls }}" onClick="{{ a.onClick }}">{{ a.label }}</button>
+    </sc-for>
+  </div>
+  <div style="display:flex;gap:var(--space-5);flex-wrap:wrap;align-items:center">
+    <div style="display:flex;gap:var(--space-2)">
+      <button class="btn btn-secondary" onClick="{{ togglePlay }}" style="font-size:12px;min-width:72px">{{ playLabel }}</button>
+      <button class="btn btn-secondary" onClick="{{ replay }}" style="font-size:12px">Replay</button>
+      <button class="{{ loopCls }}" onClick="{{ toggleLoop }}" style="font-size:12px">Loop</button>
+    </div>
+    <div style="display:flex;gap:var(--space-2)">
+      <button class="btn btn-secondary" onClick="{{ prevFrame }}" style="font-size:12px">◀ Frame</button>
+      <button class="btn btn-secondary" onClick="{{ nextFrame }}" style="font-size:12px">Frame ▶</button>
+    </div>
+    <div style="display:flex;gap:var(--space-2)">
+      <sc-for list="{{ speeds }}" as="z" hint-placeholder-count="3">
+        <button class="{{ z.cls }}" onClick="{{ z.onClick }}" style="font-size:12px">{{ z.label }}</button>
+      </sc-for>
+    </div>
+    <sc-if value="{{ hasOpts }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;gap:var(--space-2);align-items:center">
+        <span class="card-meta">{{ optLabel }}</span>
+        <sc-for list="{{ opts }}" as="o" hint-placeholder-count="3">
+          <button class="{{ o.cls }}" onClick="{{ o.onClick }}" style="font-size:12px">{{ o.label }}</button>
+        </sc-for>
+      </div>
+    </sc-if>
+    <div style="display:flex;gap:var(--space-2)">
+      <sc-for list="{{ views }}" as="v" hint-placeholder-count="2">
+        <button class="{{ v.cls }}" onClick="{{ v.onClick }}" style="font-size:12px">{{ v.label }}</button>
+      </sc-for>
+    </div>
+    <div style="display:flex;gap:var(--space-2)">
+      <sc-for list="{{ zooms }}" as="z" hint-placeholder-count="3">
+        <button class="{{ z.cls }}" onClick="{{ z.onClick }}" style="font-size:12px">{{ z.label }}</button>
+      </sc-for>
+    </div>
+  </div>
+  <div style="overflow:auto;max-height:80vh;border-radius:var(--radius-md);box-shadow:var(--shadow-sm);background:#000;align-self:flex-start;max-width:100%">
+    <canvas ref="{{ cvRef }}" width="320" height="220" style="width:{{ cssW }}px;height:{{ cssH }}px"></canvas>
+  </div>
+  <div style="display:flex;gap:var(--space-4);align-items:center;max-width:960px">
+    <input ref="{{ rgRef }}" type="range" min="0" max="1000" defaultValue="0" onInput="{{ onScrub }}" style="flex:1;accent-color:var(--color-accent)">
+    <span ref="{{ tmRef }}" class="card-meta" style="font-variant-numeric:tabular-nums;min-width:90px">0.00 s</span>
+  </div>
+  <p style="margin:0;max-width:680px;opacity:0.8;text-wrap:pretty">{{ desc }}</p>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const W=656,H=688,CX=328,PY=372,G=386;
+const TO=[12,27,14],TS=[[136,176,106],[91,134,74],[61,97,54],[39,66,42]],SUCK=[179,204,152];
+const HOLE=[[0,0,0],[42,32,38],[74,61,68],[107,90,98]],ROCK=[[93,85,96],[70,63,73],[50,44,53],[34,30,37]];
+const GOOP=[[222,220,214],[178,176,172],[134,132,130],[92,90,93],[52,50,55]],DUST=[132,118,122];
+const hash=(x,y)=>{let h=(x*374761393+y*668265263)|0;h=(h^(h>>>13))*1274126177|0;return((h^(h>>>16))>>>0)/4294967296};
+const cl=(v,a=0,b=1)=>v<a?a:v>b?b:v,ph=(t,a,b)=>cl((t-a)/(b-a)),eio=u=>u<.5?2*u*u:1-2*(1-u)*(1-u),eo=u=>1-Math.pow(1-u,3),ei=u=>u*u;
+const back=u=>{const c=2.4;return 1+(c+1)*Math.pow(u-1,3)+c*Math.pow(u-1,2)};
+const lerp=(a,b,u)=>a+(b-a)*u;
+const HURT=0.8,EYE_SLOW=1.3;
+const DUR={sprout:3.9,slam:1.5,grasp:3.6,scream:3,idle:6,hurt:HURT+3,eye:5.6,beam:3.2,mind:2.6,death:7,cleanse:3.4};const FPS={sprout:12,slam:12,grasp:12,scream:24,idle:24,hurt:24,eye:24,beam:24,mind:24,death:24,cleanse:24};
+const NAMES={sprout:'1. Tentacle sprouts and sinks',slam:'2. Tentacle slam',grasp:'3. Void Grasp',scream:'4. Scream',idle:'5. Idle',hurt:'6. Hurt and scream (next phase)',eye:'7. Third eye',beam:'8. Eye beam',mind:'9. Mind blast',death:'10. Death',cleanse:'11. Breaks a debuff'};
+const DESC={sprout:'The floor trembles and cracks, then breaks open onto a pitch black void. The tentacle writhes up out of the dark tip first, twisting side to side as it forces its way through, and settles. Then it writhes back down into the void and is gone, and the cracks and the black hole stay on the floor for the last part.',
+ slam:'Copied frame by frame from the whip GIF. The tentacle lifts and its top hangs forward, swings back over into a long arc behind, then the base snaps forward while the rest is still behind it, and the whole tentacle cracks down flat on the floor in one frame, cracking tiles and kicking up dust. It peels back up the way the whip does.',
+ grasp:'A tentacle comes straight up out of the plain floor under the adventurer and holds them in place. It wraps once round their torso, then bends out from behind their head at 70 degrees off upright and ends in a point. It does no damage. When the hold ends it sinks back into the floor and leaves no mark.',
+ beam:'Built like the death ray the game already uses. Purple motes spiral into the third eye leaving short trails while a purple glow swells round it. The eye fires a ray with a white core, red edges and a faint purple glow, which thins and fades over half a second while the screen shakes. It leaves a burnt streak in the tiles with embers that flicker out.',
+ mind:'Purple light gathers on his head and his eyes turn violet. Two purple rings pulse out across the arena, and as they pass the whole screen tints purple and wobbles in waves, the way confusion would feel, before it settles.',
+ cleanse:'His health bar, the same large boss bar every boss has, sits at the top of the screen with his name, Cthulhu the Cursed One, above it and the debuff icons from the game under it, burning, poison and weakness. Poison ticks his health down, shown darker at the end of the bar the way the game shows damage over time. A tentacle comes down from the top of the screen at the word Cursed, loops twice round the health bar, passing behind it and in front of it, then curls round the first debuff and crushes it until it cracks and shatters. It always breaks the first debuff and only that one. The tentacle pulls back the way it came and the other debuffs slide over to fill the gap.',
+ idle:'Slow breathing. The head and the tentacles of his face rise and settle one pixel over three seconds, and the floor tentacles rise with them. The wings shift on their own slower beat, so he never looks frozen.',
+ hurt:'The signal for the next phase. First a recoil, he flashes white, jolts up two pixels and tints red. Then he holds still and screams, his eyes flare and four shockwaves ripple across the arena.',
+ eye:'His forehead shudders and tears open down the middle. Green blood wells out of both sides of the wound, spreads over his face in splotches that stay there, and runs a short way down. The split peels slowly wide to reveal a third, huge eye while his other two eyes close. It opens, looks left and right, then stares ahead and glows.',
+ scream:'Cthulhu holds perfectly still while his eyes flare. Four shockwaves ripple the floor tiles across the arena and the screen shakes with each one.',
+ death:'Cthulhu shudders and his eyes flicker out, a crack runs down the ridge and the head splits in two over grey goop. The goop drips, colour drains, and the body slowly melts into a grey pool in the pit while the floor tentacles sink into their holes.'};
+const SPOTS=[[216,318],[440,318],[328,424]];const EXT=7;
+// Slam traced from the whip GIF, frame by frame. Each row is one 12 fps frame, 7 spine angles from base to tip.
+// 0 is upright, plus is toward the target, minus is away.
+const WHIP_IT=8/12,WHIPF=[[0,0,0,0,0,0,0],[0.1,0.1,0.15,0.25,0.35,0.45,0.5],[0.1,0.2,0.5,0.9,1.3,1.7,2],[-0.1,0.2,0.7,1.2,1.6,1.9,2],[-0.6,-0.7,-0.4,0.2,0.9,1.5,1.9],
+ [-1.1,-1.35,-1.5,-1.6,-1.7,-1.75,-1.75],[-0.6,-0.9,-1.2,-1.45,-1.6,-1.7,-1.75],[0.1,-0.3,-0.9,-1.4,-1.7,-1.75,-1.75],[1.45,1.55,1.6,1.5,1.6,1.65,1.6],
+ [1.57,1.6,1.6,1.6,1.6,1.6,1.6],[1.57,1.6,1.6,1.6,1.6,1.6,1.6],[1.57,1.6,1.6,1.6,1.6,1.6,1.6],[1.57,1.6,1.6,1.6,1.6,1.6,1.6],[1.3,1.45,1.55,1.6,1.6,1.6,1.6],
+ [0.4,0.7,1,1.3,1.5,1.6,1.6],[0.1,0.2,0.4,0.6,0.8,0.9,1],[0,0.05,0.1,0.15,0.2,0.2,0.2],[0,0,0,0,0,0,0]];
+const WHIP=t=>WHIPF[Math.min(WHIPF.length-1,Math.round(t*12))];
+const BLOOD=[[150,226,84],[96,178,52],[58,120,36],[34,74,26]],SCL=[[226,214,150],[190,174,112],[146,128,80]],FLESH=[[96,22,26],[60,12,16]];
+const GLY={'-':['000','000','111','000','000'],'4':['101','101','111','001','001'],'/':['001','001','010','100','100'],
+ '0':['111','101','101','101','111'],'1':['010','110','010','010','111'],'2':['111','001','111','100','111'],'3':['111','001','111','001','111'],'5':['111','100','111','001','111'],
+ '6':['111','100','111','101','111'],'7':['111','001','001','010','010'],'8':['111','101','111','101','111'],'9':['111','101','111','001','111'],
+ C:['111','100','100','100','111'],T:['111','010','010','010','010'],H:['101','101','111','101','101'],U:['101','101','101','101','111'],L:['100','100','100','100','111'],
+ E:['111','100','110','100','111'],R:['110','101','110','101','101'],S:['111','100','111','001','111'],D:['110','101','101','101','110'],O:['111','101','101','101','111'],N:['101','111','111','101','101']};
+const MIND=[[236,200,255],[186,110,240],[120,52,184]],RAY=[[255,255,255],[255,0,0],[128,0,255]],BEAM_E=[178,432];
+const VIEWS={close:{x:168,y:216,w:320,h:220},full:{x:0,y:0,w:W,h:H}};
+class Component extends DCLogic {
+  state={anim:'sprout',playing:true,loop:true,speed:1,view:'close',zoom:3,target:0,spot:0};
+  t=0;
+  cvRef=el=>{this.cv=el};rgRef=el=>{this.rg=el};tmRef=el=>{this.tm=el};
+  componentDidMount(){
+    try{const s=JSON.parse(localStorage.getItem('cthulhu-anims-v1')||'null');if(s&&DUR[s.anim]){this.t=s.t||0;this.state.anim=s.anim;this.forceUpdate()}}catch(e){}
+    try{const q=new URLSearchParams(location.search);if(DUR[q.get('anim')]){this.state.anim=q.get('anim');this.t=+q.get('t')||0;if(q.has('pause'))this.state.playing=false;this.forceUpdate()}}catch(e){}
+    const L=s=>new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src=s});
+    Promise.all([L('art/tiles_halls_x4.png'),L('art/pillar.png'),L('art/pit_alt_52.png'),fetch('art/arena.json').then(r=>r.json()),L('art/warrior.png'),L('art/target.png'),L('art/boss_hp.png'),L('art/large_buffs.png')]).then(([ti,pi,ov,m,hi,tg,hb,lb])=>{this.m=m;try{const sh=im=>{if(!im)return null;const c=document.createElement('canvas');c.width=im.width;c.height=im.height;const g=c.getContext('2d');g.drawImage(im,0,0);return {d:g.getImageData(0,0,im.width,im.height).data,w:im.width}};this.HPB=sh(hb);this.LB=sh(lb);if(tg){const c=document.createElement('canvas');c.width=16;c.height=16;const g=c.getContext('2d');g.drawImage(tg,0,0);this.TG=g.getImageData(0,0,16,16).data}if(hi){const c=document.createElement('canvas');c.width=hi.width;c.height=hi.height;const g=c.getContext('2d');g.drawImage(hi,0,0);this.HD=g.getImageData(0,0,c.width,c.height).data;this.HW=c.width}this.build(ti,pi,ov);this.ready=1}catch(e){console.error(e)}});
+    this.onKey=e=>{if(e.key==='ArrowLeft'||e.key===','){this.step(-1);e.preventDefault()}else if(e.key==='ArrowRight'||e.key==='.'){this.step(1);e.preventDefault()}};addEventListener('keydown',this.onKey);
+    this.last=performance.now();
+    const loop=()=>{this.raf=requestAnimationFrame(loop);const now=performance.now();const dt=Math.min(0.1,(now-this.last)/1000);this.last=now;if(!this.ready)return;
+      const S=this.state,D=DUR[S.anim];
+      if(S.playing){this.t+=dt*S.speed;if(this.t>D+0.6){if(S.loop)this.t=0;else{this.t=D;this.setState({playing:false})}}}
+      const tt=Math.min(this.t,D),fps=FPS[S.anim],fr=Math.floor(tt*fps);
+      const key=[S.anim,fr,S.target,S.spot,S.view].join();
+      if(key!==this.lastKey){this.lastKey=key;try{this.draw(fr/fps,fr)}catch(e){if(!this.err){this.err=1;console.error(e)}}}
+      if(this.rg)this.rg.value=String(Math.round(tt/D*1000));if(this.tm)this.tm.textContent='frame '+(fr+1)+' / '+(Math.floor(D*fps)+1)+'   '+tt.toFixed(2)+' / '+D.toFixed(1)+' s';
+      if(now-(this.saved||0)>500){this.saved=now;try{localStorage.setItem('cthulhu-anims-v1',JSON.stringify({anim:S.anim,t:tt}))}catch(e){}}};
+    loop();
+  }
+  step(d){const A=this.state.anim,fps=FPS[A],last=Math.floor(DUR[A]*fps);let f=Math.floor(Math.min(this.t,DUR[A])*fps+1e-6)+d;f=f<0?last:f>last?0:f;this.t=(f+0.01)/fps;this.lastKey=null;if(this.state.playing)this.setState({playing:false})}
+  componentWillUnmount(){cancelAnimationFrame(this.raf);removeEventListener('keydown',this.onKey)}
+  componentDidUpdate(){this.lastKey=null}
+  build(ti,pi,ov){
+    const fc=document.createElement('canvas');fc.width=W;fc.height=H;const x=fc.getContext('2d',{willReadFrequently:true});x.imageSmoothingEnabled=false;
+    const map=this.m.fight;x.fillStyle='#000';x.fillRect(0,0,W,H);
+    const tile=(i,X,Y)=>x.drawImage(ti,(i%16)*64,Math.floor(i/16)*64,64,64,X*16,Y*16,16,16);const solid=ch=>ch&&ch!=='V';
+    for(let Y=0;Y<43;Y++)for(let X=0;X<41;X++){const ch=map[Y][X];const pit=X>=18&&X<=22&&Y>=19&&Y<=23;
+      if(ch==='V'&&!pit){tile(Y>0&&solid(map[Y-1][X])?43:0,X,Y);continue}
+      if(pit){tile(1,X,Y);continue}tile(((X*31+Y*17)%11===0)?17:1,X,Y);
+      if(ch==='B')tile(35,X,Y);if(ch==='C')tile(11,X,Y);if(ch==='S')tile(7,X,Y)}
+    const PIL=[{x:33,y:8,off:0},{x:7,y:8,off:1},{x:7,y:34,off:2},{x:33,y:34,off:3},{x:20,y:2,off:4},{x:1,y:21,off:5},{x:39,y:21,off:6}];
+    if(pi)PIL.forEach((p,i)=>x.drawImage(pi,(i<2?p.off:7)*24,0,24,48,p.x*16-4,p.y*16+16-48,24,48));
+    this.floor=new Uint8ClampedArray(x.getImageData(0,0,W,H).data);
+    x.clearRect(0,0,W,H);x.drawImage(ov,0,0);const O=x.getImageData(0,0,W,H).data;
+    this.fc=fc;this.fctx=x;this.img=x.createImageData(W,H);
+    const N=W*H,lab=new Int32Array(N).fill(-1),comps=[];
+    const fill=(seed,ok,lb,id)=>{const st=[seed];lb[seed]=id;const px=[];while(st.length){const j=st.pop();px.push(j);const X=j%W,Y=(j/W)|0;for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){const XX=X+dx,YY=Y+dy;if(XX<0||YY<0||XX>=W||YY>=H)continue;const k=YY*W+XX;if(lb[k]<0&&ok(k)){lb[k]=id;st.push(k)}}}return px};
+    for(let i=0;i<N;i++){if(!O[i*4+3]||lab[i]>=0)continue;comps.push(fill(i,k=>O[k*4+3]>0,lab,comps.length))}
+    let bi=0;comps.forEach((c,i)=>{if(c.length>comps[bi].length)bi=i});
+    const mk=()=>({d:new Uint8ClampedArray(N*4),x0:W,y0:H,x1:-1,y1:-1});
+    const add=(L,i)=>{for(let k=0;k<4;k++)L.d[i*4+k]=O[i*4+k];const X=i%W,Y=(i/W)|0;if(X<L.x0)L.x0=X;if(X>L.x1)L.x1=X;if(Y<L.y0)L.y0=Y;if(Y>L.y1)L.y1=Y};
+    const rgb=i=>[O[i*4],O[i*4+1],O[i*4+2],O[i*4+3]];
+    const STATIC=mk(),RIM=mk(),BODY=mk();const gm=new Uint8Array(N);
+    for(let i=0;i<N;i++){const a=O[i*4+3];if(!a)continue;const [r,g,b]=rgb(i);const X=i%W,Y=(i/W)|0;
+      if(lab[i]===bi){const cre=a===255&&(g>r||(r>140&&g<120)||(r>200&&g>150)||(Y>=318&&Y<=331&&Math.abs(X-CX)<=20&&r<20&&g<20));if(cre)add(BODY,i);else add(STATIC,i);continue}
+      if(a<255||g>r)gm[i]=1;else{add(STATIC,i);if(r>=70)add(RIM,i)}}
+    const lab2=new Int32Array(N).fill(-1);const units=[];
+    for(let i=0;i<N;i++){if(!gm[i]||lab2[i]>=0)continue;const px=fill(i,k=>gm[k]===1,lab2,units.length+1);
+      if(px.length<80){px.forEach(k=>add(STATIC,k));continue}
+      const L=mk();px.forEach(k=>add(L,k));const base=new Int16Array(W).fill(-1);let sx=0,sy=0,n=0;
+      px.forEach(k=>{const X=k%W,Y=(k/W)|0;if(O[k*4+3]===255&&Y>base[X])base[X]=Y;sx+=X;sy+=Y;n++});
+      const b2=new Int16Array(W).fill(-1);for(let X=L.x0;X<=L.x1;X++){let m=-1;for(let d=-6;d<=6;d++){const v=base[X+d];if(v>m)m=v}b2[X]=m}
+      let by=0;px.forEach(k=>{if(O[k*4+3]===255){const Y=(k/W)|0;if(Y>by)by=Y}});let bx=0,bn=0;px.forEach(k=>{const Y=(k/W)|0;if(O[k*4+3]===255&&Y>=by-3){bx+=k%W;bn++}});
+      units.push({L,base:b2,cx:sx/n,cy:sy/n,bx:bx/bn,by,h:L.y1-L.y0})}
+    let el=[0,0,0],er=[0,0,0],top=H;
+    for(let y=BODY.y0;y<=BODY.y1;y++)for(let X=BODY.x0;X<=BODY.x1;X++){const i=(y*W+X)*4;if(!BODY.d[i+3])continue;if(BODY.d[i]>200&&BODY.d[i+1]<90){const e=X<CX?el:er;e[0]+=X;e[1]+=y;e[2]++}if((X===CX||X===CX-1)&&y<top)top=y}
+    this.eyes=[el,er].filter(e=>e[2]).map(e=>[e[0]/e[2],e[1]/e[2]]);this.top=top;
+    const eb=[[H,-1,W,-1],[H,-1,W,-1]];for(let y=BODY.y0;y<=BODY.y1;y++)for(let X=BODY.x0;X<=BODY.x1;X++){const i=(y*W+X)*4;if(BODY.d[i+3]&&BODY.d[i]>200&&BODY.d[i+1]<90){const b=eb[X<CX?0:1];if(y<b[0])b[0]=y;if(y>b[1])b[1]=y;if(X<b[2])b[2]=X;if(X>b[3])b[3]=X}}
+    eb.forEach(b=>{b[0]--;b[1]++;b[2]--;b[3]++});this.eyeBox=eb;
+    // Fill the dark specks inside both eyes with the eye red around them
+    const red=j=>BODY.d[j+3]&&BODY.d[j]>BODY.d[j+1]+30;
+    for(let pass=0;pass<2;pass++)eb.forEach(b=>{for(let y=b[0];y<=b[1];y++)for(let X=b[2];X<=b[3];X++){const i=(y*W+X)*4,d=BODY.d;if(!d[i+3]||d[i]>=60||d[i+1]>=60)continue;
+      const L=i-4,R=i+4,U=i-W*4,D=i+W*4,s=red(L)&&red(R)?L:red(U)&&red(D)?U:-1;if(s>=0)for(let q=0;q<3;q++)d[i+q]=d[s+q]}});
+    const low=units.filter(u=>u.cy>318).sort((a,b)=>a.cx-b.cx),up=units.filter(u=>u.cy<=318).sort((a,b)=>a.cx-b.cx);
+    this.targets=[low[0],low[low.length-1],up[0],up[up.length-1]].filter(Boolean);
+    units.sort((a,b)=>Math.hypot(a.cx-CX,a.cy-338)-Math.hypot(b.cx-CX,b.cy-338));
+    const lput=L=>(X,Y,c)=>{X=Math.floor(X);Y=Math.floor(Y);if(X<0||Y<0||X>=W||Y>=H)return;const i=(Y*W+X)*4;L.d[i]=c[0];L.d[i+1]=c[1];L.d[i+2]=c[2];L.d[i+3]=255;if(X<L.x0)L.x0=X;if(X>L.x1)L.x1=X;if(Y<L.y0)L.y0=Y;if(Y>L.y1)L.y1=Y};
+    const sput=lput(STATIC),rput=lput(RIM);
+    units.forEach((u,n)=>{let x0=W,x1=-1;for(let y=u.by-3;y<=u.by;y++)for(let X=u.L.x0;X<=u.L.x1;X++)if(u.L.d[(y*W+X)*4+3]===255){if(X<x0)x0=X;if(X>x1)x1=X}
+      u.hx=(x0+x1+1)/2;u.hy=u.by-0.5;u.rx=(x1-x0+1)/2+3.5;u.ry=Math.max(3,u.rx*0.42);
+      for(let y=Math.floor(u.hy-u.ry-3);y<=u.hy+u.ry+3;y++)for(let X=Math.floor(u.hx-u.rx-3);X<=u.hx+u.rx+3;X++){if(X<0||y<0||X>=W||y>=H)continue;const nx=(X+.5-u.hx)/(u.rx+2.5),ny=(y+.5-u.hy)/(u.ry+2.5);if(nx*nx+ny*ny<=1)RIM.d[(y*W+X)*4+3]=0}
+      const LD=u.L.d;for(let y=u.by-2;y<=u.by+EXT;y++)for(let X=x0-1;X<=x1+1;X++){const s=((u.by-3)*W+X)*4,t=(y*W+X)*4;for(let q=0;q<4;q++)LD[t+q]=LD[s+3]===255?LD[s+q]:0}
+      u.L.y1=Math.max(u.L.y1,u.by+EXT);u.hole={hx:u.hx,hy:u.hy,rx:u.rx,ry:u.ry};
+      this.voidHole(sput,u.hx,u.hy,u.rx,u.ry,n*7+3,1);this.voidHole(rput,u.hx,u.hy,u.rx,u.ry,n*7+3,2);
+      for(let k=0;k<3;k++){const a=hash(n,k+11)*6.28;this.crack(u.hx+Math.cos(a)*u.rx,u.hy+Math.sin(a)*u.ry,a,4+hash(k,n+5)*5,n*9+k,1,sput)}});
+    Object.assign(this,{STATIC,RIM,BODY,units});
+  }
+  P(x,y,c,a=255){x=Math.floor(x);y=Math.floor(y);if(x<0||y<0||x>=W||y>=H)return;const d=this.fb,i=(y*W+x)*4;if(a>=255){d[i]=c[0];d[i+1]=c[1];d[i+2]=c[2]}else{const k=a/255;d[i]+=(c[0]-d[i])*k;d[i+1]+=(c[1]-d[i+1])*k;d[i+2]+=(c[2]-d[i+2])*k}}
+  blit(L,ox=0,oy=0,fn){const d=L.d;for(let y=L.y0;y<=L.y1;y++)for(let x=L.x0;x<=L.x1;x++){const i=(y*W+x)*4,a=d[i+3];if(!a)continue;let c=[d[i],d[i+1],d[i+2]],X=x+ox,Y=y+oy;if(fn){const r=fn(x,y,c,a);if(!r)continue;if(typeof r[0]==='number')c=r;else{c=r[0];X=r[1];Y=r[2]}}this.P(X,Y,c,a)}}
+  bAt(fx,fy){const X=Math.floor(fx),Y=Math.floor(fy);if(X<0||Y<0||X>=W||Y>=H)return -1;const i=(Y*W+X)*4;return this.BODY.d[i+3]?i:-1}
+  renderBody(map,col){const B=this.BODY.d;for(let y=240;y<440;y++)for(let x=226;x<430;x++){const r=map(x,y);if(r==null||r===-1)continue;if(Array.isArray(r)){this.P(x,y,r);continue}const a=B[r+3];let c=[B[r],B[r+1],B[r+2]];if(col)c=col(c,r);this.P(x,y,c,a)}}
+  tentPts(bx,by,dx,dy,L,p0,c,w,sway,R0=5.2,Lref=38){const pts=[];let fx=0,fy=0,h=0;const px=-dy,py=dx,st=0.5,Lf=Math.max(L,Lref);
+    for(let s=0;s<=L;s+=st){const f=s/L;const phi=p0+c*f*f;fx+=Math.cos(phi)*dx*st;fy+=Math.cos(phi)*dy*st;h+=Math.sin(phi)*st;const lat=Math.sin(f*3.3)*w*f+sway*f*f;
+      pts.push([bx+fx+px*lat,by+fy+py*lat*0.7-h,1.3+R0*Math.max(0,1-(s+Lf-L)/Lf),s])}return pts}
+  drawTent(pts,shadow=true,flash=0){const P0=this.P.bind(this),P=flash?(x,y,c,a)=>P0(x,y,[lerp(c[0],255,flash),lerp(c[1],255,flash),lerp(c[2],255,flash)],a):P0;
+    if(shadow){const m=new Set();for(const [x,y,r] of pts){const R=Math.ceil(r);for(let j=-R;j<=R;j++)for(let i=-R;i<=R;i++)if(i*i+j*j<=r*r)m.add(Math.floor(x+i+2)+Math.floor(y+j+3)*W)}for(const k of m)P(k%W,(k/W)|0,[0,0,0],115)}
+    for(const [x,y,r] of pts){const R=Math.ceil(r+1),rr=(r+1)*(r+1);for(let j=-R;j<=R;j++)for(let i=-R;i<=R;i++)if(i*i+j*j<=rr)P(x+i,y+j,TO)}
+    for(let k=0;k<pts.length;k++){const [x,y,r,s]=pts[k];const a=pts[Math.max(0,k-1)],b=pts[Math.min(pts.length-1,k+1)];const ddx=b[0]-a[0],ddy=b[1]-a[1],l=Math.hypot(ddx,ddy)||1,nx=-ddy/l,ny=ddx/l;const R=Math.ceil(r),ring=Math.floor(s)%5===0;
+      for(let j=-R;j<=R;j++)for(let i=-R;i<=R;i++){if(i*i+j*j>r*r)continue;const u=cl((i*nx+j*ny)/r,-1,1),nz=Math.sqrt(1-u*u);const v=nx*u*-0.6+ny*u*-0.65+nz*0.45;let tn=v>.62?0:v>.3?1:v>.02?2:3;if(ring&&Math.abs(u)<0.9)tn=Math.min(3,tn+1);P(x+i,y+j,TS[tn])}
+      if(k%10===5&&r>1.8){const sx=x+nx*r*0.45,sy=y+ny*r*0.45;P(sx,sy,SUCK);P(sx+1,sy,SUCK);P(sx,sy+1,TS[2]);P(sx+1,sy+1,SUCK)}}}
+  spine(U,TH,C,kn=0){const h=Math.max(1,U.by-U.L.y0),n=h+3,X=[U.bx],Y=[U.by],A=[0];for(let k=1;k<=n;k++){const f=Math.min(1,k/h),q2=Math.min(1,f/0.28),a=TH*lerp(Math.pow(f,1.6),q2*q2*(3-2*q2),kn)+C*f*f*f;A.push(a);X.push(X[k-1]+Math.sin(a));Y.push(Y[k-1]-Math.cos(a))}return {X,Y,A,n}}
+  spineA(U,G){const h=Math.max(1,U.by-U.L.y0),n=h+3,N=G.length-1,X=[U.bx],Y=[U.by],A=[G[0]];for(let k=1;k<=n;k++){const f=Math.min(1,k/h)*N,i=Math.min(N-1,Math.floor(f)),a=lerp(G[i],G[i+1],f-i);A.push(a);X.push(X[k-1]+Math.sin(a));Y.push(Y[k-1]-Math.cos(a))}return {X,Y,A,n}}
+  bend(U,TH,C,ox=0,oy=0,d=0,shadow=true,kn=0,hole=null){const L=U.L,D=L.d,G=Array.isArray(TH),sp=G?this.spineA(U,TH):this.spine(U,TH,C,kn),q=1/3;const sa=shadow?cl(1-Math.abs(G?TH[TH.length-1]:TH)/0.6):0;const HP=(x,y,c,a)=>this.HP(hole,x,y,c,a);
+    for(let y=L.y0;y<=L.y1;y++)for(let x=L.x0;x<=L.x1;x++){const i=(y*W+x)*4,a=D[i+3];if(!a)continue;const c=[D[i],D[i+1],D[i+2]];
+      if(a<255){if(sa>0&&d===0)this.P(x+ox,y+oy,c,a*sa);continue}
+      for(let j=0;j<3;j++)for(let k=0;k<3;k++){const sy=y+j*q,sx=x+k*q;let s=U.by+1-sy-d;if(s<-EXT-2||(s<0&&!hole))continue;s=Math.min(s,sp.n-1);let a2,X,Y;const u=sx-U.bx;
+        if(s<0){const A0=sp.A[0],q3=Math.min(-s,3),ak=A0*(1-q3/3),am=(A0+ak)/2;a2=ak;X=sp.X[0]-q3*Math.sin(am);Y=sp.Y[0]+q3*Math.cos(am)+Math.max(0,-s-3);this.HP(hole,X+u*Math.cos(a2)+ox,Y+u*Math.sin(a2)-1+oy,c,255,1);continue}
+        else{const s0=Math.floor(s),fr=s-s0;a2=lerp(sp.A[s0],sp.A[s0+1],fr);X=lerp(sp.X[s0],sp.X[s0+1],fr);Y=lerp(sp.Y[s0],sp.Y[s0+1],fr)}HP(X+u*Math.cos(a2)+ox,Y+u*Math.sin(a2)-1+oy,c)}}}
+  shade(h,x,y,c,inside){if(!h)return c;x=Math.floor(x)+.5;y=Math.floor(y)+.5;const nx=(x-h.hx)/h.rx;if(Math.abs(nx)>1)return inside?null:c;const e=h.ry*Math.sqrt(1-nx*nx),fy=h.hy+e,ty=h.hy-e-2;
+    if(y>fy)return null;if(y<=ty)return c;const k=1-(0.12+0.8*(y-ty)/(fy-ty));return [c[0]*k,c[1]*k,c[2]*k]}
+  HP(h,x,y,c,a=255,inside){const r=this.shade(h,x,y,c,inside);if(r)this.P(x,y,r,a)}
+  tblit(U,ox=0,oy=0){this.blit(U.L,ox,oy,(x,y,c,a)=>a<255?c:this.shade(U.hole,x+ox,y+oy,c))}
+  voidHole(put,hx,hy,rx,ry,seed,part=0){if(rx<1)return;const R=Math.ceil(rx+2),Ry=Math.ceil(ry+2),e=1.6/Math.max(ry,1.5);
+    for(let y=Math.floor(hy-Ry);y<=hy+Ry;y++)for(let x=Math.floor(hx-R);x<=hx+R;x++){const nx=(x+.5-hx)/rx,ny=(y+.5-hy)/ry,th=Math.atan2(ny,nx),j=1+0.36*(hash(Math.round(th*4)+seed,seed)-0.5),r=Math.sqrt(nx*nx+ny*ny)/j;
+      if(r<=1){if(part!==2)put(x,y,[0,0,0])}else if(r<=1+e&&hash(x*7+seed,y*3)>0.3&&(part===0||(part===2)===(ny>0)))put(x,y,ny>0?ROCK[1]:ROCK[3])}}
+  crack(x,y,a,len,seed,fade=1,put){put=put||this.P.bind(this);for(let n=0;n<len;n++){if(fade>=1||hash(Math.floor(x),Math.floor(y))<fade)put(x,y,HOLE[0]);x+=Math.cos(a)*1.2+(hash(n,seed)-0.5)*1.4;y+=Math.sin(a)*0.7+(hash(seed,n)-0.5)*0.9}}
+  rocks(x0,y0,t0,t,n,seed,sp=40){const g=260;for(let k=0;k<n;k++){const tau=t-t0-hash(k,seed+3)*0.05;if(tau<0)continue;const a=hash(k,seed)*Math.PI*2,v=sp*(0.4+hash(seed,k)),vz=50+hash(k+9,seed)*70,tl=2*vz/g;if(tau>tl+0.5)continue;const tt=Math.min(tau,tl);
+    const x=x0+Math.cos(a)*v*tt,y=y0+Math.sin(a)*v*tt*0.6,z=Math.max(0,vz*tt-g*tt*tt/2);const big=hash(k,seed+1)>0.6;
+    if(z>1)this.P(x,y,[0,0,0],100);const Y=y-z;this.P(x,Y,ROCK[1]);this.P(x+1,Y,ROCK[2]);this.P(x,Y+1,ROCK[3]);this.P(x+1,Y+1,ROCK[3]);if(big){this.P(x,Y-1,ROCK[0]);this.P(x+1,Y-1,ROCK[1]);this.P(x+2,Y,ROCK[2])}}}
+  puff(x0,y0,t0,t,dur,size,seed){const tau=t-t0;if(tau<0||tau>dur)return;const u=tau/dur,rad=3+size*eo(u),cy=y0-u*5;const dens=0.6*(1-u);const R=Math.ceil(rad);
+    for(let j=-R;j<=R;j++)for(let i=-R;i<=R;i++){const d=Math.hypot(i,j*1.5);if(d>rad||d<rad*0.35*u)continue;const X=Math.floor(x0+i),Y=Math.floor(cy+j);if(hash(X*3+seed,Y*5)<dens)this.P(X,Y,hash(X,Y+seed)>0.5?DUST:[100,88,94],190)}}
+  draw(t,fr){const S=this.state,A=S.anim;this.fb=this.img.data;this.fb.set(this.floor);let sh=[0,0];const P=this.P.bind(this);
+    if(A==='sprout')this.drawSprout(t,fr);else if(A==='sink')this.drawSink(t,fr);else if(A==='slam')sh=this.drawSlam(t,fr);else if(A==='grasp')sh=this.drawGrasp(t,fr);else if(A==='idle')this.drawIdle(t);else if(A==='hurt')sh=t<HURT?this.drawHurt(t):this.drawScream(t-HURT,fr);else if(A==='eye')sh=this.drawEye(t,fr);else if(A==='beam')sh=this.drawBeam(t,fr);else if(A==='mind')sh=this.drawMind(t,fr);else if(A==='cleanse')sh=this.drawCleanse(t,fr);else if(A==='scream')sh=this.drawScream(t,fr);else sh=this.drawDeath(t,fr);
+    this.fctx.putImageData(this.img,0,0);const V=VIEWS[S.view],c=this.cv;if(!c)return;if(c.width!==V.w||c.height!==V.h){c.width=V.w;c.height=V.h}
+    const d=c.getContext('2d');d.imageSmoothingEnabled=false;d.fillStyle='#000';d.fillRect(0,0,V.w,V.h);d.drawImage(this.fc,V.x+sh[0],V.y+sh[1],V.w,V.h,0,0,V.w,V.h)}
+  base(tentFn,bodyFn){this.blit(this.STATIC);this.units.forEach((u,k)=>tentFn?tentFn(u,k):this.tblit(u));this.blit(this.RIM);if(bodyFn)bodyFn();else this.blit(this.BODY)}
+  spout(hx,hy,seed,cr,open,rise,TH,C,shadow){const P=this.P.bind(this);
+    for(let k=0;k<6;k++)this.crack(hx+Math.cos(k*1.05+seed)*3,hy+Math.sin(k*1.05+seed)*1.5,k*1.05+seed,cr,seed+k);
+    const rx=11*open,ry=4.6*open;this.voidHole(P,hx,hy,rx,ry,seed,1);
+    const U=this.state.spot===1?(this.targets[1]||this.targets[0]):this.targets[0];const h=U.by-U.L.y0;
+    if(rise>0)this.bend(U,TH,C,Math.round(hx-3-U.bx),Math.round(hy+0.5-U.by),Math.round(h*(1-rise)),shadow,0,{hx,hy,rx,ry});
+    this.voidHole(P,hx,hy,rx,ry,seed,2)}
+  drawSprout(t,fr){if(t>=2)return this.drawSink(t-2,fr);const [hx,hy]=SPOTS[this.state.spot]||SPOTS[0];const seed=this.state.spot*13+5;const P=this.P.bind(this);this.base();
+    const tr=ph(t,0,0.6),open=eo(ph(t,0.58,0.72));const cr=tr*12+open*5;
+    if(t<0.62)for(let k=0;k<7;k++){const a=hash(k,seed)*6.28,r=4+hash(seed,k)*9;const j=hash(k,fr)>0.5&&tr>0.2?1:0;const x=hx+Math.cos(a)*r,y=hy+Math.sin(a)*r*0.5-j;P(x,y,ROCK[1]);P(x+1,y,ROCK[3])}
+    if(t<0.62&&tr>0.3)this.puff(hx,hy,0.3,t,0.35,4,seed);
+    const u=ph(t,0.64,1.3),rise=fr<8?0:eo(u),A=fr<8?0:0.34*(1-ph(t,1.05,1.75)),w=fr*1.7;
+    this.spout(hx,hy,seed,cr,open,rise,A*Math.sin(w),-1.4*A*Math.sin(w+1.1),A<0.03);
+    this.puff(hx-4,hy,0.62,t,0.7,9,seed+1);this.puff(hx+5,hy+1,0.66,t,0.6,7,seed+2);
+    this.rocks(hx,hy,0.62,t,12,seed,45);return [0,0]}
+  drawSink(t,fr){const [hx,hy]=SPOTS[this.state.spot]||SPOTS[0];const seed=this.state.spot*13+5;this.base();
+    const u=ph(t,0.3,0.95),rise=1-ei(u),A=0.08*(1-ph(t,0,0.3))*Math.sin(fr*2.1)+0.3*Math.sin(Math.PI*u),w=fr*1.7;
+    this.spout(hx,hy,seed,17,1,rise,A*Math.sin(w),-1.4*A*Math.sin(w+1.1),t<0.3);
+    this.puff(hx-3,hy,0.3,t,0.5,6,seed+1);this.puff(hx+4,hy+1,0.85,t,0.6,7,seed+2);
+    this.rocks(hx,hy,0.9,t,5,seed+4,20);return [0,0]}
+  drawSlam(t,fr){const U=this.targets[this.state.target]||this.targets[0];const sd=U.bx<CX?-1:1;const IT=WHIP_IT,G=WHIP(fr/12);
+    const sp=this.spine(U,1.57*sd,0,1),pts=[];for(let i=4;i<sp.n;i+=2)pts.push([sp.X[i],sp.Y[i]]);const fade=t<IT?0:1-ph(t,IT+0.45,IT+0.85);
+    if(fade>0)pts.forEach((p,i)=>{if(i%4===2&&i>2)for(const s2 of [-1,1])this.crack(p[0],p[1]+2,s2*1.57+(hash(i,s2)-0.5),3+hash(i,7)*5,i*3+s2,fade)});
+    if(fade>0)this.crack(U.bx,U.by,sd>0?0:Math.PI,sp.n+4,91,fade);
+    this.blit(this.STATIC);this.units.forEach(u=>{if(u!==U)this.tblit(u)});
+    this.bend(U,G.map(a=>a*sd),0,0,0,0,true,0,U.hole);
+    this.blit(this.RIM);this.blit(this.BODY);
+    pts.forEach((p,i)=>{if(i%5===2)this.puff(p[0],p[1]+2,IT,t,0.6,6+i*0.2,i)});
+    const tip=pts[pts.length-1],mid=pts[Math.floor(pts.length*0.6)];this.rocks(mid[0],mid[1],IT,t,8,33,40);this.rocks(tip[0],tip[1],IT,t,6,51,35);
+    const fi=Math.round(IT*12),amp=fr>=fi&&fr<=fi+2?(fi+3-fr):0;return [amp*(fr%2?1:-1),amp>1?1:0]}
+  drawScream(t,fr){const P=this.P.bind(this),cy=345;const RS=[0.5,0.8,1.1,1.4],SPD=230,MAXR=470;
+    const rings=RS.map(ts=>(t-ts)*SPD).filter(R=>R>0&&R<MAXR);const src=this.floor,d=this.fb;
+    for(const R of rings){const amp=cl(1-R/MAXR),Ro=R+7,Ri=Math.max(0,R-7);
+      for(let y=Math.max(0,Math.floor(cy-Ro*0.72));y<=Math.min(H-1,cy+Ro*0.72);y++){const dy=(y+.5-cy)/0.72;if(Math.abs(dy)>Ro)continue;const xo=Math.sqrt(Ro*Ro-dy*dy),xi=Math.abs(dy)<Ri?Math.sqrt(Ri*Ri-dy*dy):0;
+        for(const [a,b] of [[CX-xo,CX-xi],[CX+xi,CX+xo]])for(let x=Math.max(0,Math.floor(a));x<=Math.min(W-1,Math.ceil(b));x++){const dx=x+.5-CX,e=Math.hypot(dx,dy),k=(e-R)/7;if(k<-1||k>1)continue;
+          const disp=Math.sin(k*Math.PI)*3*amp,sx=Math.round(x-dx/e*disp),sy=Math.round(y-dy/e*disp*0.72);if(sx<0||sy<0||sx>=W||sy>=H)continue;const si=(sy*W+sx)*4,di=(y*W+x)*4;const br=Math.round((1-Math.abs(k))*amp*3)*7;
+          d[di]=src[si]+br;d[di+1]=src[si+1]+br;d[di+2]=src[si+2]+br*1.3;if(Math.abs(e-R)<0.9&&hash(x,y)<amp+0.15){d[di]=176;d[di+1]=160;d[di+2]=198}}}}
+    for(let k=0;k<60;k++){const a=hash(k,3)*6.28,rho=40+hash(3,k)*300,px=CX+Math.cos(a)*rho,py=cy+Math.sin(a)*rho*0.72;for(const ts of RS){const tau=t-ts-rho/SPD;if(tau>0&&tau<0.5){const z=tau/0.5*7;P(px,py-z,DUST,220*(1-tau/0.5))}}}
+    const s=eo(ph(t,0.4,0.55))*(1-eio(ph(t,1.9,2.4)));
+    this.blit(this.STATIC);this.units.forEach(u=>this.tblit(u));this.blit(this.RIM);
+    this.blit(this.BODY,0,0,(x,y,c)=>s>0.3&&c[0]>200&&c[1]<90?[255,112,84]:c);
+    const g=s*(0.8+0.2*Math.sin(t*30));if(g>0.1)for(const [ex,ey] of this.eyes){const X0=ex,Y0=ey,rad=9*g;for(let y=Math.floor(Y0-rad);y<=Y0+rad;y++)for(let x=Math.floor(X0-rad);x<=X0+rad;x++){const dd=Math.hypot(x+.5-X0,(y+.5-Y0)*1.4)/rad;const band=dd<0.45?2:dd<1?1:0;if(!band)continue;const i=(y*W+x)*4;d[i]+=band*30;d[i+1]+=band*3}}
+    let amp=s>0.5?1:0;for(const ts of RS){const u=t-ts;if(u>=0&&u<0.35)amp=Math.max(amp,3*(1-u/0.35))}
+    return [Math.round(Math.sin(t*90)*amp),Math.round(Math.cos(t*71)*amp)]}
+  drawDeath(t,fr){const P=this.P.bind(this);const sj=t>0.15&&t<1.1?(hash(fr,9)>0.5?1:-1):0;const crackL=(PY-20-this.top)*eio(ph(t,0.5,1.1));
+    const sp=eo(ph(t,1.1,1.9)),a=0.14*sp,tx=5*sp,ca=Math.cos(a),sa=Math.sin(a);const m=eio(ph(t,2.4,6.2));const ds=cl(ph(t,1.3,3.6)*0.8+m*0.15);
+    const eyeOff=ph(t,1.0,1.3),flick=t>0.3&&t<1.0&&hash(fr,4)>0.65;const jag=y=>(hash(Math.floor(y/2),5)>0.5?1:0)-(hash(Math.floor(y/3),6)>0.6?1:0);const top=this.top;
+    this.blit(this.STATIC);
+    const pu=eo(ph(t,1.8,6.4));const pcx=CX,pcy=370,prx=6+56*pu,pry=prx*0.42;
+    const inPud=(x,y)=>{const th=Math.atan2(y-pcy,x-pcx),wob=1+0.07*Math.sin(5*th+t*1.5)+0.05*Math.sin(9*th-1);const nx=(x-pcx)/(prx*wob),ny=(y-pcy)/(pry*wob);return [nx*nx+ny*ny,nx,ny]};
+    if(pu>0){for(let y=Math.floor(pcy-pry*1.2);y<=pcy+pry*1.2;y++)for(let x=Math.floor(pcx-prx*1.2);x<=pcx+prx*1.2;x++){const [r2,nx,ny]=inPud(x+.5,y+.5);if(r2>1)continue;
+      let c=r2>1-2.4/Math.max(4,pry)?GOOP[4]:ny<-0.35?GOOP[1]:ny<0.3?GOOP[2]:GOOP[3];if(ny<-0.15&&nx<-0.1&&r2<0.8&&hash(x,y)>0.92)c=GOOP[0];P(x,y,c)}
+      for(let k=0;k<9;k++){const per=1.3,off=hash(k,1)*per,tt=t-2.6-off;if(tt<0)continue;const cyc=Math.floor(tt/per),tau=tt-cyc*per;const an=hash(k,cyc+7)*6.28,rh=0.2+hash(cyc,k+3)*0.55;const bx=pcx+Math.cos(an)*prx*rh,by=pcy+Math.sin(an)*pry*rh;
+        if(tau<0.8){const r=0.5+2*tau/0.8;for(let j=-3;j<=3;j++)for(let i=-3;i<=3;i++){const dd=Math.hypot(i,j);if(Math.abs(dd-r)<0.6)P(bx+i,by+j,j<0?GOOP[0]:GOOP[3])}}
+        else if(tau<1)for(let q=0;q<4;q++){const aa=q*1.57+0.7,rr=3+(tau-0.8)*12;P(bx+Math.cos(aa)*rr,by+Math.sin(aa)*rr*0.6,GOOP[1])}}}
+    this.units.forEach((u,k)=>{const s0=1.5+k*0.22,g=ph(t,s0,s0+0.5),sink=Math.round(eio(ph(t,s0+0.3,s0+1.5))*(u.h+8));
+      this.blit(u.L,0,0,(x,y,c,a)=>{const Y=y+sink;if(a<255&&sink>0)return null;const L=0.3*c[0]+0.59*c[1]+0.11*c[2];const k2=g*0.8,q=[lerp(c[0],L*0.92,k2),lerp(c[1],L,k2),lerp(c[2],L*0.94,k2)],r=a<255?q:this.shade(u.hole,x,Y,q);return r?[r,x,Y]:null})});
+    this.blit(this.RIM);
+    this.renderBody((x,y)=>{let px=x+.5-sj,py=y+.5;if(m>0){if(py<G){const s=1-m*(0.8+0.16*hash(Math.floor(px/2),77));py=G-(G-py)/s}px=CX+(px-CX)/(1+0.3*m)}
+      if(sp<=0)return this.bAt(px,py);
+      let qx=px+tx-CX,qy=py-PY;const lx=qx*ca-qy*sa+CX,ly=qx*sa+qy*ca+PY;qx=px-tx-CX;const rx=qx*ca+qy*sa+CX,ry=-qx*sa+qy*ca+PY;
+      const inL=lx<CX+jag(ly),inR=rx>=CX+jag(ry);if(inL){const i=this.bAt(lx,ly);if(i>=0)return i}if(inR){const i=this.bAt(rx,ry);if(i>=0)return i}
+      if(!inL&&!inR&&ly>top+2&&ly<PY&&(this.bAt(CX,ly)>=0||this.bAt(CX-1,ly)>=0)){const gw=tx+(PY-py)*sa+0.01,u=Math.abs(px-CX)/gw;const X=Math.floor(px),Y=Math.floor(py);
+        if(hash(X,Y)>0.93)return GOOP[0];if(hash(X+7,Y)<0.05)return GOOP[4];return u>0.72?GOOP[3]:u>0.35?GOOP[2]:(hash(X>>1,Y>>1)>0.7?GOOP[1]:GOOP[2])}
+      return -1},
+      c=>{if(c[0]>200&&c[1]<90){c=flick?[70,20,20]:[lerp(c[0],64,eyeOff),lerp(c[1],56,eyeOff),lerp(c[2],60,eyeOff)]}const L=0.3*c[0]+0.59*c[1]+0.11*c[2],k=1-0.15*m;return [lerp(c[0],L*0.92,ds)*k,lerp(c[1],L*1.02,ds)*k,lerp(c[2],L*0.94,ds)*k]});
+    if(sp<0.15&&crackL>0)for(let y=top;y<top+crackL;y++){const x=CX-1+jag(y)+sj;P(x,y,[10,18,10]);if(t>0.8&&hash(y,8)>0.6)P(x+1,y,GOOP[2])}
+    const df=1-ph(m,0.35,0.75);if(df>0)for(let k=0;k<9;k++){const t0=1.4+hash(k,3)*1.0;if(t<t0)continue;const x=Math.round(CX+(hash(k,1)-0.5)*2*Math.min(14,tx+8)),y0=Math.round(334+hash(k,2)*12),len=Math.min(18+hash(k,4)*16,(t-t0)*18);
+      for(let y=y0;y<y0+len;y++){if(hash(x,y)>df)continue;P(x,y,GOOP[2]);P(x+1,y,GOOP[3])}const ye=y0+len;if(hash(k,9)<df){P(x,ye,GOOP[1]);P(x+1,ye,GOOP[2]);P(x,ye+1,GOOP[2]);P(x+1,ye+1,GOOP[3]);P(x-1,ye,GOOP[3])}}
+    const amp=t>1.1&&t<1.45?2*(1-ph(t,1.1,1.45)):0;return [Math.round(Math.sin(t*80)*amp),Math.round(Math.cos(t*61)*amp)]}
+  hero(fr,x,y,flash=0,clipY=1e9){const D=this.HD;if(!D)return;const FW=12,FH=15,sx=fr*FW,sy=2*FH;
+    for(let j=0;j<FH;j++){if(y+j>clipY)break;for(let i=0;i<FW;i++){const k=((sy+j)*this.HW+sx+i)*4,a=D[k+3];if(!a)continue;const c=[D[k],D[k+1],D[k+2]];this.P(x+i,y+j,flash?[lerp(c[0],255,flash),lerp(c[1],50,flash),lerp(c[2],50,flash)]:c,a)}}}
+  text(str,x,y,c){for(const ch of str){const g=GLY[ch];if(g)for(let j=0;j<5;j++)for(let i=0;i<3;i++)if(g[j][i]==='1'){this.P(x+i+1,y+j+1,[0,0,0]);this.P(x+i,y+j,c)}x+=4}}
+  drawGrasp(t,fr){const P=this.P.bind(this),gx=328,gy=428,seed=41;this.base();
+    const tr=ph(t,0,0.5),open=eo(ph(t,0.45,0.6));
+    // No hole, the tentacle comes straight up out of the plain floor and the floor stays untouched after
+    const REL=2.6,Lmax=26,Lc=t<0.55?0:t<REL?Lmax*eo(ph(t,0.55,1.15)):Lmax*(1-eio(ph(t,REL,3.1)));
+    const sink=0,R=5.5,hy=gy-14+sink,neck=hy+6;
+    // Anything at head height goes behind the hero, so the top turn wraps behind the head
+    // One turn round the torso, then straight up behind the head, ending in a point that sticks out above it
+    const LW=16,TH0=-1.2,TH1=TH0+Math.PI*2,ex=gx+R*Math.cos(TH1),ey=gy-1-LW*0.5+R*0.25*Math.sin(TH1);
+    // After the wrap it bends out from behind the head, leaning 70 degrees off upright
+    let qx=ex,qy=ey;const back=[],front=[];for(let s2=0;s2<=Lc;s2+=0.5){const r=0.35+1.05*Math.pow(1-s2/Lmax,0.8);
+      if(s2<=LW){const th=TH0+(TH1-TH0)*s2/LW,rr=Math.min(R,0.8+s2*1.4),x=gx+rr*Math.cos(th),y=gy-1-s2*0.5+rr*0.25*Math.sin(th);(Math.sin(th)>0&&y>neck?front:back).push([x,y,r,s2])}
+      else{const a=Math.min(1,(s2-LW)/3)*70*Math.PI/180;qx+=Math.sin(a)*0.5;qy-=Math.cos(a)*0.5;back.push([qx,qy,r,s2])}}
+    if(back.length)this.drawTent(back,false);
+    this.hero([0,0,0,1,0,0,1,1][Math.floor(t)%8],gx-6,hy,0,gy);
+    if(front.length)this.drawTent(front,false);
+    this.puff(gx-4,gy,0.55,t,0.5,6,seed+1);this.puff(gx+4,gy,REL,t,0.5,5,seed+2);
+    return [0,0]}
+  drawIdle(t){const b=Math.round((1-Math.cos(t*Math.PI*2/3))/2),w=Math.round((1-Math.cos(t*Math.PI*2/4.2+1))/2);this.base(u=>this.tblit(u,0,-b),()=>this.renderBody((x,y)=>{const ad=Math.abs(x-CX);let sy=y;if(y<G-4)sy+=b;if(ad>30&&y<336)sy+=w;return this.bAt(x+.5,sy+.5)}))}
+  sheet(S,sx,sy,w,h,x,y,fn){if(!S)return;for(let j=0;j<h;j++)for(let i=0;i<w;i++){const k=((sy+j)*S.w+sx+i)*4,a=S.d[k+3];if(!a)continue;let c=[S.d[k],S.d[k+1],S.d[k+2]];if(fn){c=fn(i,j,c);if(!c)continue}this.P(x+i,y+j,c,a)}}
+  drawCleanse(t,fr){const V=VIEWS[this.state.view],ox=V.x,oy=V.y,vw=V.w,P=this.P.bind(this);this.base();
+    // The game's large boss bar, from boss_hp.png, laid out the way BossHealthBar does it, with the name above
+    const BX=ox+Math.round(vw/2-64),BY=oy+14,HX=BX+30,HY=BY+2,TK=[0.35,0.85,1.35],SH=1.9,HT=600;
+    let n=0,fl=0;for(const k of TK)if(t>=k){n++;if(t-k<0.08)fl=1}const hpv=430-12*n,dot=t<SH?36:0;
+    const name='CTHULHU THE CURSED ONE',NX=BX+64-Math.round(name.length*4/2),IX=HX+1,IY=HY+12;
+    // The path, down from the top of the screen at the word CURSED, two loops round the bar, then a curl round the first debuff
+    const sq=ph(t,1.5,SH),jit=sq>0?(fr%2?1:-1)*Math.round(sq*1.5):0,icx=IX+8+jit,icy=IY+8,yc=HY+4,RB=8.5,X0=NX+12*4+12,X1=IX+9,rc=10.5-1.5*sq,raw=[];
+    for(let k=0;k<=40;k++){const u=k/40;raw.push([X0+6*(1-u)*(1-u),lerp(oy-16,yc-RB,u),1])}
+    for(let k=1;k<=200;k++){const a=k/200*5*Math.PI;raw.push([lerp(X0,X1,a/(5*Math.PI)),yc-RB*Math.cos(a),Math.sin(a)>0?1:0])}
+    for(let k=1;k<=60;k++){const th=-Math.PI*0.35+k/60*Math.PI*1.75;raw.push([icx+rc*Math.cos(th),icy+rc*0.85*Math.sin(th),Math.sin(th)>0?1:0])}
+    const path=[raw[0]];for(const q of raw){const l=path[path.length-1],d=Math.hypot(q[0]-l[0],q[1]-l[1]);if(d<0.5)continue;const m=Math.ceil(d/0.5);for(let k=1;k<=m;k++)path.push([lerp(l[0],q[0],k/m),lerp(l[1],q[1],k/m),q[2]])}
+    const N=path.length,g=t<0.4?0:t<2.0?eo(ph(t,0.4,1.4)):1-eio(ph(t,2.0,2.9)),back=[],front=[];
+    for(let k=0;k<N*g;k++){const u=k/N,q=path[k];(q[2]?front:back).push([q[0],q[1],1.2+2.8*Math.pow(1-u,0.7),k*0.5])}
+    // Same look as the other tentacles, thick, outlined, banded and with suckers, the loops behind the bar hidden by it
+    if(back.length)this.drawTent(back,false);
+    this.text(name,NX,oy+4,[255,255,255]);this.sheet(this.HPB,0,16,128,30,BX,BY);
+    const hw=Math.round(96*hpv/HT),dw=Math.round(96*Math.min(dot,hpv)/HT);
+    this.sheet(this.HPB,0,46,hw,9,HX,HY,(i,j,c)=>fl?[lerp(c[0],255,0.6),lerp(c[1],255,0.6),lerp(c[2],255,0.6)]:i>=hw-dw?[c[0]*0.55,c[1]*0.55,c[2]*0.55]:c);
+    const ht=hpv+'/'+HT;this.text(ht,HX+48-Math.round(ht.length*4/2),HY+2,[255,255,255]);
+    const B=this.BODY.d,fx0=CX-44,fy0=this.top-4,FS=88/24;for(let j=0;j<24;j++)for(let i=0;i<24;i++){const k=(Math.floor(fy0+j*FS)*W+Math.floor(fx0+i*FS))*4;if(B[k+3]>200)P(BX+3+i,BY+3+j,[B[k],B[k+1],B[k+2]])}
+    // Debuff icons from large_buffs.png. It always breaks the first one, burning, and only that one
+    const ico=(id,x,y,fn,tint)=>this.sheet(this.LB,(id%16)*16,Math.floor(id/16)*16,16,16,Math.round(x),Math.round(y),(i,j,c)=>{if(tint)c=[c[0]*tint[0],c[1]*tint[1],c[2]*tint[2]];return fn?fn(i,j,c):c});
+    const sl=eio(ph(t,2.6,3.0));ico(3,lerp(IX+17,IX,sl),IY,null,[0.6,0.2,0.6]);ico(14,lerp(IX+34,IX+17,sl),IY);
+    if(t<SH)ico(2,icx-8,icy-8,(i,j,c)=>{if(t>SH-0.08)return [255,255,255];if(sq>0&&(i===j+2||i===12-Math.floor(j/2)||(j===9&&i<6))&&hash(i,j)<sq*1.4)return [10,8,12];return c});
+    if(front.length)this.drawTent(front,false);
+    if(t>=SH){const u=t-SH;if(u<0.8)this.sheet(this.LB,32,0,16,16,0,0,(i,j,c)=>{if(i%2||j%2)return null;const a=Math.atan2(j-8,i-8)+(hash(i,j)-0.5),v=30+hash(j,i)*50;
+      const X=icx-8+i+Math.cos(a)*v*u,Y=icy-8+j+Math.sin(a)*v*u*0.8-30*u+90*u*u,al=255*(1-u/0.8);P(X,Y,c,al);P(X+1,Y,c,al);P(X,Y+1,c,al);P(X+1,Y+1,c,al);return null})}
+    const amp=t>=SH&&t<SH+0.12?2:0;return [amp*(fr%2?1:-1),0]}
+  drawHurt(t){const wf=t<0.08?0.9:t<0.17?0.5:0,rf=t>=0.17?0.55*(1-ph(t,0.17,0.45)):0,dy=t>0.04&&t<0.16?-2:t<0.26&&t>0.04?-1:0;
+    this.blit(this.STATIC);this.units.forEach(u=>this.tblit(u));this.blit(this.RIM);
+    this.blit(this.BODY,0,dy,(x,y,c)=>wf?[lerp(c[0],255,wf),lerp(c[1],255,wf),lerp(c[2],255,wf)]:rf?[lerp(c[0],230,rf),lerp(c[1],40,rf),lerp(c[2],40,rf)]:c);
+    return t>0.04&&t<0.16?[1,0]:[0,0]}
+  drawEye(t0,fr,ov){const P=this.P.bind(this);
+    // The opening (split peeling wide and the eye opening) plays 30 percent slower than the rest
+    const E0=0.8,E1=2.6,t=t0<E0?t0:t0<E0+(E1-E0)*EYE_SLOW?E0+(t0-E0)/EYE_SLOW:t0-(E1-E0)*(EYE_SLOW-1);
+    const shut=eio(ph(t,1.6,2.6)),EB=this.eyeBox;
+    // The light in his two eyes fades the whole time before they close
+    const dim=ph(t,0,1.6)*0.7;
+    const lid=(c,r)=>{if(!(c[0]>c[1]+30||(c[0]>200&&c[1]>200)))return c;const x=(r/4)%W,y=(r/4-x)/W,b=EB[x<CX?0:1];if(y<b[0]||y>b[1]||x<b[2]||x>b[3])return c;
+      const cut=b[0]+shut*(b[1]-b[0]+1);if(y>=cut){const k=1-dim;return [c[0]*k+20*dim,c[1]*k,c[2]*k]}
+      if(y>=cut-1)return [24,40,24];const B=this.BODY.d,j=((b[0]-3)*W+x)*4;return B[j+3]&&B[j+1]>B[j]&&B[j+1]>40?[B[j]*0.85,B[j+1]*0.85,B[j+2]*0.85]:TS[3]};
+    const ey=this.eyes.length?this.eyes.reduce((a,e)=>a+e[1],0)/this.eyes.length:326;
+    const y0=this.top+5,y1=ey-5,ym=(y0+y1)/2,hh=(y1-y0)/2,sj=t>0.1&&t<0.9&&hash(fr,5)>0.5?(fr%2?1:-1):0;
+    const crk=eo(ph(t,0.3,0.8)),o=9*eo(ph(t,0.8,1.6)),L=eo(ph(t,1.8,2.6)),gz=t<2.8?0:t<3.4?-0.35*eio(ph(t,2.8,3.1)):t<4?lerp(-0.35,0.35,eio(ph(t,3.4,3.7))):0.35*(1-eio(ph(t,4,4.3))),glow=(ov!=null?ov:0.35*L+0.65*ph(t,4.1,4.6))*(0.8+0.2*Math.sin(t*12));
+    const os=y=>{const u=(y-y0)/(y1-y0);return u<0||u>1?0:o*Math.sin(Math.PI*u)};
+    const eyePix=(x,y,oy,ds)=>{if(ds>-1.3)return hash(x,y)>0.5?BLOOD[2]:FLESH[0];const nx=(x+.5-CX)/Math.max(o,1),ny=(y+.5-ym)/hh;if(Math.abs(ny)>L*Math.sqrt(Math.max(0,1-nx*nx))+0.02)return FLESH[1];
+      const ix=(x+.5-(CX+gz*o))/(o*0.6),iy=(y+.5-ym)/(hh*0.75),ir=ix*ix+iy*iy;
+      if(ir<1){if(Math.abs(x+.5-(CX+gz*o))<Math.max(0.7,o*0.11)&&Math.abs(iy)<0.85)return [0,0,0];if(ix<-0.3&&iy<-0.3&&ir<0.5)return [246,226,255];const g=glow*60;return ir>0.7?[112+g*0.5,46,168+g]:[170+g*0.4,86+g*0.3,232+g*0.3]}
+      const e=nx*nx+ny*ny;return e>0.75?SCL[2]:ny<-0.2?SCL[0]:SCL[1]};
+    this.base(null,()=>{this.renderBody((x,y)=>{let px=x+.5-sj,py=y+.5;const oy=os(py),d=px-CX,ad=Math.abs(d);
+        if(oy>0.3&&ad<24){const ds=(ad-oy)/(1-oy/24);if(ds<0)return eyePix(x-sj,y,oy,ds);px=CX+Math.sign(d)*ds}
+        return this.bAt(px,py)},lid);
+      if(o<0.5&&crk>0)for(let y=Math.round(ym-hh*crk);y<=ym+hh*crk;y++)P(CX-1+((hash(y>>1,5)>0.5)?1:0)+sj,y,[10,24,10]);
+      if(glow>0.05)for(let y=Math.floor(ym-hh*1.4);y<=ym+hh*1.4;y++)for(let x=Math.floor(CX-o*1.4);x<=CX+o*1.4;x++){const dd=Math.hypot((x+.5-CX)/(o*1.4),(y+.5-ym)/(hh*1.4));if(dd<1){const i=(y*W+x)*4;this.fb[i]+=glow*22*(1-dd);this.fb[i+2]+=glow*40*(1-dd)}}
+      // Goo ringing the open eye all the way round except the top third
+      const gr=eo(ph(t,1.4,2.4));if(gr>0)for(let y=Math.floor(y0);y<=y1+4;y++)for(let x=Math.floor(CX-o-5);x<=CX+o+5;x++){const py=y+.5,u=(py-y0)/(y1-y0);if(u<1/3)continue;
+        const e=u<=1?Math.abs(x+.5-CX)-os(py):Math.hypot(x+.5-CX,(py-y1)*1.3),th=(1+2.6*gr)*(0.6+0.7*hash(x>>1,y)),fadeIn=cl((u-1/3)/0.12);if(e<0||e>th*fadeIn||this.bAt(x+.5,py)<0)continue;
+        P(x,y,e>th*0.7?BLOOD[3]:e<1&&hash(x,y)>0.6?BLOOD[0]:hash(x,y+3)>0.5?BLOOD[1]:BLOOD[2])}
+      // Three trickles, one under each side of the eye and one from the bottom point
+      for(const sg of [-1,0,1]){const t0=sg?1.05:1.5,len=Math.min(15,Math.max(0,(t-t0)*12)),x=Math.round(CX+sg*o*0.55)-(sg?0:1);let xx=x;for(let y=Math.round(y1-1);y<y1-1+len;y++){if(hash(y>>2,sg+9)>0.7)xx+=hash(y,sg)>0.5?1:-1;xx=Math.max(x-2,Math.min(x+2,xx));P(xx,y,hash(xx,y)>0.6?BLOOD[0]:BLOOD[1])}if(len>0){const ye=y1-1+len;P(xx,ye,BLOOD[0]);P(xx+1,ye,BLOOD[1]);P(xx,ye+1,BLOOD[2]);P(xx+1,ye+1,BLOOD[2])}}
+      for(let k=0;k<46;k++){const te=0.85+Math.pow(hash(k,1),2)*2.4,u=t-te;if(u<0||u>1.1)continue;const sg=k%2?1:-1,yy=ym+(hash(k,2)-0.5)*hh*1.3,x0=CX+sg*os(yy),vx=sg*(14+hash(k,3)*30),vy=-(18+hash(k,4)*32),x=x0+vx*u,y=yy+vy*u+65*u*u;if(y>yy+40)continue;const c=BLOOD[k%3];P(x,y,c);P(x+1,y,c);P(x-sg,y-vy*0.02,BLOOD[2])}});
+    return sj?[sj,0]:[0,0]}
+  eyeAt(){const ey=this.eyes.length?this.eyes.reduce((a,e)=>a+e[1],0)/this.eyes.length:326;return [CX,(this.top+5+ey-5)/2]}
+  target(cx,cy,sc,a,c){const D=this.TG;if(!D||a<=0)return;for(let j=0;j<16;j++)for(let i=0;i<16;i++){const k=(j*16+i)*4;if(!D[k+3])continue;this.P(cx+(i-7.5)*sc,cy+(j-7.5)*sc,c,D[k+3]*a)}}
+  drawBeam(t,fr){const P=this.P.bind(this),[sx,sy]=this.eyeAt(),[ex,ey]=BEAM_E,dx=ex-sx,dy=ey-sy,len=Math.hypot(dx,dy),ux=dx/len,uy=dy/len,FIRE=1.3;
+    const burn=t>FIRE?1:0;if(burn){for(let y=Math.floor(Math.min(sy,ey)-6);y<=Math.max(sy,ey)+6;y++)for(let x=Math.floor(Math.min(sx,ex)-6);x<=Math.max(sx,ex)+6;x++){const px=x+.5-sx,py=y+.5-sy,u=px*ux+py*uy;if(u<70||u>len)continue;const d=Math.abs(px*uy-py*ux),wv=2.6+1.4*hash(Math.floor(u/3),7);if(d>wv)continue;
+      const i=(y*W+x)*4,k=d<1.2?0.12:0.4;this.fb[i]*=k;this.fb[i+1]*=k;this.fb[i+2]*=k;const em=1-ph(t,FIRE+0.4,3);if(em>0&&d<2&&hash(x,y+fr)>0.9)P(x,y,hash(x,y)>0.5?[255,140,40]:[255,210,90],255*em)}}
+    const chg=ph(t,0.1,1.3),flare=t>FIRE?1-ph(t,FIRE,FIRE+0.5):0;this.drawEye(4.4+(2.6-0.8)*(EYE_SLOW-1),fr,0.3+1.2*Math.max(chg,flare));
+    // Charge, purple motes spiral into the eye leaving short trails, and a purple glow swells round it
+    if(t<FIRE){const cg=ph(t,0.1,FIRE);for(let k=0;k<90;k++){const per=0.55,ph0=hash(k,3)*per;if(t<0.1+per-ph0)continue;const u=((t-0.1+ph0)%per)/per,a0=hash(k,1)*6.28,big=hash(k,5)>0.3;
+      for(let q=0;q<4;q++){const uu=Math.max(0,u-q*0.05),r=(16+hash(k,2)*26)*(1-eio(uu)),a=a0+uu*2.2,x=sx+Math.cos(a)*r,y=sy+Math.sin(a)*r*0.8,al=255*Math.min(1,uu*3)*(1-q/4);
+        const c=q===0?(u>0.75?MIND[0]:MIND[1]):MIND[2];P(x,y,c,al);if(big&&q===0){P(x+1,y,c,al);P(x,y+1,c,al);P(x+1,y+1,MIND[2],al)}}}
+      const R=3+7*cg+Math.sin(t*20)*cg;for(let y=Math.floor(sy-R);y<=sy+R;y++)for(let x=Math.floor(sx-R);x<=sx+R;x++){const d=Math.hypot(x+.5-sx,(y+.5-sy)*1.2)/R;if(d<1){const i=(y*W+x)*4,k=cg*(1-d);this.fb[i]+=k*60;this.fb[i+1]+=k*14;this.fb[i+2]+=k*110}}}
+    if(t>=FIRE&&flare>0){const p=flare,R=3*p;for(let y=Math.floor(Math.min(sy,ey)-4);y<=Math.max(sy,ey)+4;y++)for(let x=Math.floor(Math.min(sx,ex)-4);x<=Math.max(sx,ex)+4;x++){const px=x+.5-sx,py=y+.5-sy,u=px*ux+py*uy;if(u<0||u>len)continue;const d=Math.abs(px*uy-py*ux)/Math.max(p,0.2);
+      if(d<1)P(x,y,RAY[0],255*p);else if(d<2)P(x,y,RAY[1],128*p);else if(d<3)P(x,y,RAY[2],64*p)}
+      for(let k=0;k<14;k++){const u=t-FIRE,a=hash(k,9)*6.28,r=u*(30+hash(9,k)*40);if(u<0.5)P(ex+Math.cos(a)*r,ey+Math.sin(a)*r*0.6,k%2?RAY[1]:[255,160,80],255*(1-u/0.5))}}
+    const amp=t>=FIRE&&t<FIRE+0.25?2:0;return amp?[fr%2?amp:-amp,fr%3===0?1:0]:[0,0]}
+  drawMind(t,fr){const P=this.P.bind(this),[hx,hy]=[CX,this.top+10],gl=ph(t,0,0.5)*(1-ph(t,0.55,0.9));
+    this.base(null,()=>this.blit(this.BODY,0,0,(x,y,c)=>{if(c[0]>200&&c[1]<90&&gl+0.01>0){const k=Math.max(gl,t<1.2?0.6:0);return [lerp(c[0],200,k),lerp(c[1],90,k),lerp(c[2],255,k)]}return c}));
+    if(gl>0.02){for(let k=0;k<24;k++){const per=0.4,u=((t+hash(k,2)*per)%per)/per,a=hash(k,4)*6.28,r=30*(1-u);P(hx+Math.cos(a)*r,hy+Math.sin(a)*r*0.7,u>0.6?MIND[0]:MIND[1],255*gl*Math.min(1,u*3))}
+      for(let y=hy-14;y<=hy+14;y++)for(let x=hx-24;x<=hx+24;x++){const d=Math.hypot((x-hx)/24,(y-hy)/14);if(d<1){const i=(y*W+x)*4,k=gl*(1-d)*0.55;this.fb[i]=lerp(this.fb[i],186,k);this.fb[i+1]=lerp(this.fb[i+1],110,k);this.fb[i+2]=lerp(this.fb[i+2],240,k)}}}
+    const RS=[0.5,0.78],SPD=260,MAXR=470;
+    for(const ts of RS){const R=(t-ts)*SPD;if(R<=0||R>MAXR)continue;const a=cl(1-R/MAXR);for(let y=Math.max(0,Math.floor(hy-(R+3)*0.72));y<=Math.min(H-1,hy+(R+3)*0.72);y++){const dy=(y+.5-hy)/0.72;if(Math.abs(dy)>R+3)continue;
+      for(const sg of [-1,1]){const xo=Math.sqrt(Math.max(0,(R+3)*(R+3)-dy*dy)),xi=Math.abs(dy)<R-3?Math.sqrt((R-3)*(R-3)-dy*dy):0;for(let x=Math.floor(hx+sg*xi);sg>0?x<=hx+xo:x>=hx-xo;x+=sg){if(x<0||x>=W)continue;const e=Math.hypot(x+.5-hx,dy),k=Math.abs(e-R)/3;if(k>1)continue;P(x,y,k<0.35?MIND[0]:k<0.7?MIND[1]:MIND[2],255*a*(1-k*0.6)*0.8)}}}}
+    const tint=ph(t,0.6,0.75)*(1-ph(t,1.4,2.3)),wob=2.2*tint;
+    if(tint>0.01){const d=this.fb,src=new Uint8ClampedArray(d);for(let y=0;y<H;y++){const o=Math.round(Math.sin(y*0.13+t*11)*wob);for(let x=0;x<W;x++){const sxp=Math.min(W-1,Math.max(0,x-o)),i=(y*W+x)*4,j=(y*W+sxp)*4;d[i]=lerp(src[j],150,tint*0.3);d[i+1]=lerp(src[j+1],70,tint*0.3);d[i+2]=lerp(src[j+2],210,tint*0.3)}}}
+    return [0,0]}
+  renderVals(){const s=this.state,cls=on=>on?'btn btn-primary':'btn btn-secondary';const V=VIEWS[s.view];
+    const reset=o=>{this.t=0;this.lastKey=null;this.setState({playing:true,...o})};
+    const opts=s.anim==='slam'?['Lower left','Lower right','Upper left','Upper right'].map((l,i)=>({label:l,cls:cls(s.target===i),onClick:()=>reset({target:i})})):s.anim==='sprout'||s.anim==='sink'?['West','East','South'].map((l,i)=>({label:l,cls:cls(s.spot===i),onClick:()=>reset({spot:i})})):[];
+    return {cvRef:this.cvRef,rgRef:this.rgRef,tmRef:this.tmRef,cssW:V.w*s.zoom,cssH:V.h*s.zoom,desc:DESC[s.anim],
+      anims:Object.keys(DUR).map(k=>({label:NAMES[k],cls:cls(s.anim===k),onClick:()=>reset({anim:k})})),
+      playLabel:s.playing?'Pause':'Play',togglePlay:()=>{if(!s.playing&&this.t>=DUR[s.anim])this.t=0;this.setState({playing:!s.playing})},replay:()=>reset({}),
+      prevFrame:()=>this.step(-1),nextFrame:()=>this.step(1),
+      loopCls:cls(s.loop)+'',toggleLoop:()=>this.setState({loop:!s.loop}),
+      speeds:[0.25,0.5,1].map(v=>({label:v+'×',cls:cls(s.speed===v),onClick:()=>this.setState({speed:v})})),
+      hasOpts:opts.length>0,opts,optLabel:s.anim==='slam'?'Tentacle':'Spot',
+      views:[['close','Close-up'],['full','Full arena']].map(([k,l])=>({label:l,cls:cls(s.view===k),onClick:()=>this.setState({view:k,zoom:k==='full'?1:3})})),
+      zooms:[1,2,3].map(z=>({label:z+'× zoom',cls:cls(s.zoom===z),onClick:()=>this.setState({zoom:z})})),
+      onScrub:e=>{this.t=e.target.value/1000*DUR[s.anim];this.lastKey=null;if(s.playing)this.setState({playing:false})}}}
+}
+</script>
+</body>
+</html>

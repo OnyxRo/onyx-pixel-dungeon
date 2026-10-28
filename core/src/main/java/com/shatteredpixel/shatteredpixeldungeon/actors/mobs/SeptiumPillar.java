@@ -153,6 +153,7 @@ public abstract class SeptiumPillar extends Mob {
             GLog.n(Messages.get(this, "elements"));
             ((FinalLevel)Dungeon.level).progress();
         }
+        if (Dungeon.level instanceof FinalLevel) ((FinalLevel)Dungeon.level).checkPillars();
     }
 
 
@@ -348,7 +349,7 @@ public abstract class SeptiumPillar extends Mob {
         protected void zap() {
 
             spend(15f);
-            Buff.affect( hero, ChaosTime.class, 15f);
+            Buff.affect( hero, ChaosTime.class).extend( 15f );
             GLog.w(Messages.get( this, "message") );
 
         }

@@ -13,7 +13,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Rat;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.SeptiumPillar;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Snake;
+import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CthulhuArt;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CthulhuSprite;
+import com.watabou.noosa.Group;
+import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -116,11 +121,11 @@ public class FinalLevel extends Level{
             V,V,V,V,V,V,V,B,F,F,F,F,F,F,F,F,F,B,F,F,F,F,F,B,F,F,F,F,F,F,F,F,F,B,V,V,V,V,V,V,V,
             V,V,V,V,V,V,B,F,F,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,F,F,B,V,V,V,V,V,V,
             V,V,V,V,V,B,F,F,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,F,F,B,V,V,V,V,V,
-            V,V,V,V,F,F,F,F,F,B,F,F,F,F,F,F,F,F,V,V,V,V,V,F,F,F,F,F,F,F,F,B,F,F,F,F,F,V,V,V,V,
-            V,V,F,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,V,V,V,V,V,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,F,V,V,
-            V,C,F,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,V,V,V,V,V,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,F,C,V,
-            V,V,F,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,V,V,V,V,V,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,F,V,V,
-            V,V,V,V,F,F,F,F,F,B,F,F,F,F,F,F,F,F,V,V,V,V,V,F,F,F,F,F,F,F,F,B,F,F,F,F,F,V,V,V,V,
+            V,V,V,V,F,F,F,F,F,B,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,B,F,F,F,F,F,V,V,V,V,
+            V,V,F,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,F,V,V,
+            V,C,F,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,F,C,V,
+            V,V,F,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,F,V,V,
+            V,V,V,V,F,F,F,F,F,B,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,B,F,F,F,F,F,V,V,V,V,
             V,V,V,V,V,B,F,F,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,F,F,B,V,V,V,V,V,
             V,V,V,V,V,V,B,F,F,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,F,F,B,V,V,V,V,V,V,
             V,V,V,V,V,V,V,B,F,F,F,F,F,F,F,F,F,B,F,F,F,F,F,B,F,F,F,F,F,F,F,F,F,B,V,V,V,V,V,V,V,
@@ -176,11 +181,11 @@ public class FinalLevel extends Level{
             V,V,V,V,V,V,V,B,F,F,F,F,F,F,F,F,F,B,F,F,F,F,F,B,F,F,F,F,F,F,F,F,F,B,V,V,V,V,V,V,V,
             V,V,V,V,V,V,B,F,F,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,F,F,B,V,V,V,V,V,V,
             V,V,V,V,V,B,F,F,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,F,F,B,V,V,V,V,V,
-            V,V,V,V,F,F,F,F,F,B,F,F,F,F,F,F,F,F,V,V,V,V,V,F,F,F,F,F,F,F,F,B,F,F,F,F,F,V,V,V,V,
-            V,V,F,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,V,V,V,V,V,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,F,V,V,
-            V,C,F,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,V,V,V,V,V,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,F,C,V,
-            V,V,F,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,V,V,V,V,V,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,F,V,V,
-            V,V,V,V,F,F,F,F,F,B,F,F,F,F,F,F,F,F,V,V,V,V,V,F,F,F,F,F,F,F,F,B,F,F,F,F,F,V,V,V,V,
+            V,V,V,V,F,F,F,F,F,B,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,B,F,F,F,F,F,V,V,V,V,
+            V,V,F,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,F,V,V,
+            V,C,F,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,F,C,V,
+            V,V,F,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,F,V,V,
+            V,V,V,V,F,F,F,F,F,B,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,B,F,F,F,F,F,V,V,V,V,
             V,V,V,V,V,B,F,F,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,F,F,B,V,V,V,V,V,
             V,V,V,V,V,V,B,F,F,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,B,F,F,F,F,F,F,F,F,F,B,V,V,V,V,V,V,
             V,V,V,V,V,V,V,B,F,F,F,F,F,F,F,F,F,B,F,F,F,F,F,B,F,F,F,F,F,F,F,F,F,B,V,V,V,V,V,V,V,
@@ -288,6 +293,9 @@ public class FinalLevel extends Level{
         super.storeInBundle(bundle);
         bundle.put(cooldowndelay,roundCounter);
         if (pro != null) bundle.put("fight_state", pro); //abyssalnite never saved it, a reload lost the fight's progress
+        int[] v = new int[voids.size()];
+        for (int i = 0; i < v.length; i++) v[i] = voids.get(i);
+        bundle.put(VOIDS, v);
 
     }
     /** 重新载入游戏后也可以工作 */
@@ -295,9 +303,12 @@ public class FinalLevel extends Level{
     public void restoreFromBundle(Bundle bundle) {
         super.restoreFromBundle(bundle);
         roundCounter = bundle.getInt(cooldowndelay);
+        voids.clear();
+        if (bundle.contains(VOIDS)) for (int c : bundle.getIntArray(VOIDS)) voids.add(c);
         if (bundle.contains("fight_state")) pro = bundle.getEnum("fight_state", State.class);
         else if (locked) pro = Statistics.killcount < 2 ? State.BrokenSeal
                 : Statistics.killcount < 4 ? State.PillarsNext : State.PillarsFinal; //older saves, judged by pillars killed
+        buildFlagMaps(); //again, now the void holes and the fight state are known
     }
 
     private void activateNext( boolean elemental ){
@@ -379,4 +390,107 @@ public class FinalLevel extends Level{
 
 
 
+
+    //Cthulhu's pit. The 5x5 pit and the cells of his eight floor tentacles cannot be walked on while he lives.
+    //His tentacle strikes leave void holes that block a cell, at most MAX_VOIDS, the oldest closes when a new one opens.
+    private static final String VOIDS = "voids";
+    private static final int MAX_VOIDS = 10;
+    private static final int CENTRE = WIDTH*21+20;
+    private final ArrayList<Integer> voids = new ArrayList<>();
+    private final ArrayList<Image> voidImages = new ArrayList<>();
+
+    private static boolean inPit( int cell ){
+        int x = cell % WIDTH, y = cell / WIDTH;
+        return x >= 18 && x <= 22 && y >= 19 && y <= 23;
+    }
+
+    private static boolean isTentacle( int cell ){
+        for (int[] t : CthulhuArt.TENTACLES){
+            if (cell == (t[1] / 16) * WIDTH + t[0] / 16) return true;
+        }
+        return false;
+    }
+
+    private boolean bossAlive(){
+        return pro != State.End;
+    }
+
+    //a tap anywhere on his body attacks him
+    public static int aimAt( int cell ){
+        if (!(Dungeon.level instanceof FinalLevel) || !((FinalLevel) Dungeon.level).bossAlive() || !inPit( cell )) return cell;
+        Char ch = Actor.findChar( CENTRE );
+        return ch instanceof Cthulhu ? CENTRE : cell;
+    }
+
+    @Override
+    public void buildFlagMaps() {
+        super.buildFlagMaps();
+        if (voids == null) return; //called from the Level constructor chain before the fields are set
+        for (int i = 0; i < length(); i++){
+            if ((bossAlive() && (inPit( i ) || isTentacle( i ))) || voids.contains( i )){
+                passable[i] = false;
+                avoid[i] = false;
+            }
+        }
+    }
+
+    //returns true when a new hole was made
+    public boolean addVoid( int cell ){
+        if (!insideMap( cell ) || !passable[cell] || voids.contains( cell ) || cell == entrance) return false;
+        if (map[cell] != Terrain.EMPTY && map[cell] != Terrain.EMPTY_DECO && map[cell] != Terrain.EMPTY_SP && map[cell] != Terrain.GRASS) return false;
+        if (voids.size() >= MAX_VOIDS){
+            int old = voids.remove( 0 );
+            if (!voidImages.isEmpty()) voidImages.remove( 0 ).killAndErase();
+            passable[old] = true;
+        }
+        voids.add( cell );
+        passable[cell] = false;
+        avoid[cell] = false;
+        return true;
+    }
+
+    public void showVoid( int cell ){
+        if (!voids.contains( cell ) || visuals == null) return;
+        Image im = CthulhuSprite.Fx.still( "strike", CthulhuArt.STRIKE_W, CthulhuArt.STRIKE_H, CthulhuArt.STRIKE, CthulhuArt.STRIKE.length - 1,
+                (cell % WIDTH) * 16 + 8 + CthulhuArt.STRIKE_DX, (cell / WIDTH) * 16 + 14 + CthulhuArt.STRIKE_DY );
+        visuals.add( im );
+        //holes shown after a reload are made in order, so the oldest is always first
+        voidImages.add( im );
+    }
+
+    //every pillar is broken, Cthulhu wakes
+    public void checkPillars(){
+        if (pro == State.End || pro == State.Cthulhu) return;
+        for (Mob m : mobs){
+            if (m instanceof SeptiumPillar) return;
+        }
+        pro = State.Cthulhu;
+        for (Mob m : mobs.toArray( new Mob[0] )){
+            if (m instanceof Cthulhu) ((Cthulhu) m).wake();
+        }
+    }
+
+    //opens the pit and puts the way down where he was
+    public void cthulhuDefeated(){
+        pro = State.End;
+        unseal();
+        map[CENTRE] = Terrain.EXIT;
+        exit = CENTRE;
+        transitions.add( new LevelTransition( this, CENTRE, LevelTransition.Type.REGULAR_EXIT ) );
+        buildFlagMaps();
+        GameScene.updateMap( CENTRE );
+    }
+
+    @Override
+    public Group addVisuals() {
+        super.addVisuals();
+        visuals.add( new Image( CthulhuSprite.DIR + "pit.png" ) {{ x = CthulhuArt.PIT_X; y = CthulhuArt.PIT_Y; }} );
+        voidImages.clear();
+        for (int c : voids) showVoid( c );
+        if (pro == State.End){
+            visuals.add( CthulhuSprite.Fx.still( "death", CthulhuArt.BOSS_W, CthulhuArt.BOSS_H, CthulhuArt.DEATH, CthulhuArt.DEATH.length - 1,
+                    CthulhuArt.BOSS_X, CthulhuArt.BOSS_Y ) );
+        }
+        return visuals;
+    }
 }

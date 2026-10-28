@@ -29,6 +29,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BloodParticle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CthulhuArt;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CthulhuSprite;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoMob;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Image;
@@ -124,7 +126,7 @@ public class BossHealthBar extends Component {
 		}
 
 		if (boss != null && large) {
-			skull = boss.sprite();
+			skull = portrait(boss);
 		} else {
 			skull = new Image(asset, 64, 0, 6, 6);
 		}
@@ -230,6 +232,25 @@ public class BossHealthBar extends Component {
 		}
 	}
 
+	//Cthulhu's cleanse, a tentacle comes down over the large bar, loops round it and crushes the first debuff.
+	//onBreak runs when the debuff shatters, or straight away when the bar is not on screen
+	public static void cleanse(Callback onBreak){
+		if (instance == null || !instance.large || instance.parent == null || !instance.visible){
+			onBreak.call();
+			return;
+		}
+		float x = instance.bar.x + CthulhuArt.CLEANSE_DX, y = instance.bar.y + CthulhuArt.CLEANSE_DY;
+		instance.addToBack( new CthulhuSprite.Fx( "cleanse_back", CthulhuArt.CLEANSE_W, CthulhuArt.CLEANSE_H, CthulhuArt.CLEANSE_BACK, x, y ) );
+		instance.add( new CthulhuSprite.Fx( "cleanse_front", CthulhuArt.CLEANSE_W, CthulhuArt.CLEANSE_H, CthulhuArt.CLEANSE_FRONT, x, y ).at( CthulhuArt.CLEANSE_BREAK, onBreak ) );
+	}
+
+	//Cthulhu's sprite is the whole pit, the bar shows his head
+	private static Image portrait(Mob boss){
+		Image im = boss.sprite();
+		if (im instanceof CthulhuSprite) return new Image( CthulhuSprite.DIR + "idle1.png", 46, 42, 88, 88 );
+		return im;
+	}
+
 	public static void assignBoss(Mob boss){
 		assignBoss(boss, false);
 	}
@@ -243,7 +264,7 @@ public class BossHealthBar extends Component {
 					public void call() {
 						instance.remove(instance.skull);
 						instance.skull.destroy();
-						instance.skull = boss.sprite();
+						instance.skull = portrait(boss);
 						instance.add(instance.skull);
 						instance.layout();
 					}
@@ -264,7 +285,7 @@ public class BossHealthBar extends Component {
 								instance.remove(instance.skull);
 								instance.skull.destroy();
 							}
-							instance.skull = boss.sprite();
+							instance.skull = portrait(boss);
 							instance.add(instance.skull);
 						}
 						if (instance.buffs != null){
