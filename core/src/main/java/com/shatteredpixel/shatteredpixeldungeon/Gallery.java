@@ -693,6 +693,7 @@ public class Gallery {
 	}
 
 	private static int cthuStep = 0;
+	private static com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoMob cthuWnd;
 
 	private static com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Cthulhu cthuBoss(){
 		for (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob m : Dungeon.level.mobs)
@@ -721,7 +722,9 @@ public class Gallery {
 		if (!(Dungeon.level instanceof com.shatteredpixel.shatteredpixeldungeon.levels.FinalLevel)) { time = 0; return; }
 		com.shatteredpixel.shatteredpixeldungeon.levels.FinalLevel l = (com.shatteredpixel.shatteredpixeldungeon.levels.FinalLevel) Dungeon.level;
 		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Cthulhu b = cthuBoss();
-		if (cthuStep >= 3 && Dungeon.hero.ready) Dungeon.hero.rest( false );
+		//no turns pass while the beam and the mind blast are pictured, so the boss does not fire them first
+		boolean still = cthuStep >= 10 && cthuStep <= 12;
+		if (cthuStep >= 3 && !still && Dungeon.hero.ready) Dungeon.hero.rest( false );
 		try {
 			if (cthuStep == 1 && time > 2f) {
 				cthuStep = 2;
@@ -733,34 +736,49 @@ public class Gallery {
 				cthuStep = 3;
 				for (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob m : new ArrayList<>( l.mobs ))
 					if (m instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.SeptiumPillar) m.die( Dungeon.hero );
-			} else if (cthuStep == 3 && time > 5f) {
-				cthuStep = 4; cthuShot( "cthu_1_phase1" );
-			} else if (cthuStep == 4 && time > 6.6f) {
-				cthuStep = 5; cthuShot( "cthu_2_phase1b" );
+			} else if (cthuStep == 3 && time > 4.5f) {
+				cthuStep = 4; cthuShot( "cthu_01_phase1" );
+			} else if (cthuStep == 4 && time > 5.5f) {
+				cthuStep = 5; cthuShot( "cthu_02_phase1b" );
+				cthuWnd = new com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoMob( b );
+				com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene.show( cthuWnd );
+			} else if (cthuStep == 5 && time > 6.2f) {
+				cthuStep = 6; cthuShot( "cthu_03_info" );
+				if (cthuWnd != null) cthuWnd.hide();
 				if (b != null) b.damage( b.HP - 2 * b.HT / 3 + 1, Dungeon.hero );
-			} else if (cthuStep == 5 && time > 7.6f) {
-				cthuStep = 6; cthuShot( "cthu_3_scream" );
-			} else if (cthuStep == 6 && time > 11f) {
-				cthuStep = 7; cthuShot( "cthu_4_phase2" );
+			} else if (cthuStep == 6 && time > 7f) {
+				cthuStep = 7; cthuShot( "cthu_04_scream" );
+			} else if (cthuStep == 7 && time > 10.5f) {
+				cthuStep = 8; if (b != null) b.mindBlast();
+			} else if (cthuStep == 8 && time > 11.3f) {
+				cthuStep = 9; cthuShot( "cthu_05_mind" );
+			} else if (cthuStep == 9 && time > 12.5f) {
+				cthuStep = 90;
 				if (b != null) b.damage( b.HP - b.HT / 3 + 1, Dungeon.hero );
-			} else if (cthuStep == 7 && time > 12.5f) {
-				cthuStep = 8; cthuShot( "cthu_5_eye" );
-			} else if (cthuStep == 8 && time > 17f) {
-				cthuStep = 9; cthuShot( "cthu_6_phase3" );
+			} else if (cthuStep == 90 && time > 13.5f) {
+				cthuStep = 10; cthuShot( "cthu_06_eye" );
+			} else if (cthuStep == 10 && time > 16f) {
+				cthuStep = 11; if (b != null) b.chargeBeam( Dungeon.hero.pos );
+			} else if (cthuStep == 11 && time > 16.6f) {
+				cthuStep = 12; cthuShot( "cthu_07_charge" );
+				if (b != null) b.fireBeam();
+			} else if (cthuStep == 12 && time > 16.75f) {
+				cthuStep = 13; cthuShot( "cthu_08_beam" );
 				if (b != null) {
-					com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect( b, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison.class ).set( 30 );
+					com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect( b, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison.class ).set( 5 );
 					com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect( b, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness.class, 50f );
 				}
-			} else if (cthuStep == 9 && time > 18.4f) {
-				cthuStep = 10; cthuShot( "cthu_7_cleanse" );
-			} else if (cthuStep == 10 && time > 20f) {
-				cthuStep = 11; cthuShot( "cthu_8_beforedeath" );
-				if (b != null) b.damage( b.HP + 10, Dungeon.hero );
-			} else if (cthuStep == 11 && time > 21.5f) {
-				cthuStep = 12; cthuShot( "cthu_9_dying" );
-			} else if (cthuStep == 12 && time > 28f) {
-				cthuStep = 13; cthuShot( "cthu_10_dead" );
-				System.out.println( "[CTHU] exit " + l.exit + " locked " + l.locked + " transition " + l.getTransition( LevelTransition.Type.REGULAR_EXIT ) );
+			} else if (cthuStep == 13 && time > 18.5f) {
+				cthuStep = 14; cthuShot( "cthu_09_fight" );
+			} else if (cthuStep == 14 && time > 20f) {
+				cthuStep = 15; cthuShot( "cthu_10_fight" );
+				if (b != null) b.die( Dungeon.hero );
+			} else if (cthuStep == 15 && time > 21.5f) {
+				cthuStep = 16; cthuShot( "cthu_11_dying" );
+			} else if (cthuStep == 16 && time > 28f) {
+				cthuStep = 17; cthuShot( "cthu_12_dead" );
+				LevelTransition ex = l.getTransition( LevelTransition.Type.REGULAR_EXIT );
+				System.out.println( "[CTHU] exit " + l.exit + " locked " + l.locked + " to depth " + (ex == null ? "none" : ex.destDepth) );
 				System.out.println( "[CTHU] all done" );
 				Gdx.app.exit();
 			}

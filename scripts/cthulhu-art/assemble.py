@@ -6,6 +6,7 @@ OUT = os.path.join(D, 'out')
 DEST = sys.argv[2]
 GROUPS = {
     'boss': ['idle1', 'hurt', 'mind1', 'eye', 'beam', 'idle3', 'mind3', 'death'],
+    'slam': ['slam1_0', 'slam1_1', 'slam1_2', 'slam1_3', 'slam3_0', 'slam3_1', 'slam3_2', 'slam3_3'],
     'strike': ['strike'],
     'grasp': ['grasp_back', 'grasp_front'],
     'cleanse': ['cleanse_back', 'cleanse_front'],

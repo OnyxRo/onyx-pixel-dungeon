@@ -15,6 +15,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.SeptiumPillar;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Snake;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CthulhuArt;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CthulhuSprite;
 import com.watabou.noosa.Group;
@@ -309,7 +314,8 @@ public class FinalLevel extends Level{
         if (bundle.contains("fight_state")) pro = bundle.getEnum("fight_state", State.class);
         else if (locked) pro = Statistics.killcount < 2 ? State.BrokenSeal
                 : Statistics.killcount < 4 ? State.PillarsNext : State.PillarsFinal; //older saves, judged by pillars killed
-        buildFlagMaps(); //again, now the void holes and the fight state are known
+        buildFlagMaps(); //again, now the fight state is known
+        if (pro == State.Cthulhu || pro == State.End) lightUp();
     }
 
     private void activateNext( boolean elemental ){
@@ -393,12 +399,12 @@ public class FinalLevel extends Level{
 
 
     //Cthulhu's pit. The 5x5 pit and the cells of his eight floor tentacles cannot be walked on while he lives.
-    //His tentacle strikes leave void holes that block a cell, at most MAX_VOIDS, the oldest closes when a new one opens.
+    //His tentacle strikes leave holes of void, the same chasm as the rest of the arena, at most MAX_VOIDS, the oldest closes
+    //when a new one opens. Falling in while he lives does not leave the fight, the void throws you back hurt.
     private static final String VOIDS = "voids";
-    private static final int MAX_VOIDS = 10;
+    private static final int MAX_VOIDS = 12;
     private static final int CENTRE = WIDTH*21+20;
     private final ArrayList<Integer> voids = new ArrayList<>();
-    private final ArrayList<Image> voidImages = new ArrayList<>();
 
     private static boolean inPit( int cell ){
         int x = cell % WIDTH, y = cell / WIDTH;
@@ -426,37 +432,55 @@ public class FinalLevel extends Level{
     @Override
     public void buildFlagMaps() {
         super.buildFlagMaps();
-        if (voids == null) return; //called from the Level constructor chain before the fields are set
         for (int i = 0; i < length(); i++){
-            if ((bossAlive() && (inPit( i ) || isTentacle( i ))) || voids.contains( i )){
+            if (bossAlive() && (inPit( i ) || isTentacle( i ))){
                 passable[i] = false;
                 avoid[i] = false;
             }
         }
     }
 
-    //returns true when a new hole was made
+    //turns a floor cell into void, returns true when a new hole was made
     public boolean addVoid( int cell ){
         if (!insideMap( cell ) || !passable[cell] || voids.contains( cell ) || cell == entrance) return false;
         if (map[cell] != Terrain.EMPTY && map[cell] != Terrain.EMPTY_DECO && map[cell] != Terrain.EMPTY_SP && map[cell] != Terrain.GRASS) return false;
         if (voids.size() >= MAX_VOIDS){
             int old = voids.remove( 0 );
-            if (!voidImages.isEmpty()) voidImages.remove( 0 ).killAndErase();
-            passable[old] = true;
+            if (map[old] == Terrain.CHASM){
+                set( old, Terrain.EMPTY, this );
+                GameScene.updateMap( old );
+            }
         }
         voids.add( cell );
-        passable[cell] = false;
-        avoid[cell] = false;
+        set( cell, Terrain.CHASM, this );
+        GameScene.updateMap( cell );
+        Char ch = Actor.findChar( cell );
+        if (ch != null) occupyCell( ch );
         return true;
     }
 
-    public void showVoid( int cell ){
-        if (!voids.contains( cell ) || visuals == null) return;
-        Image im = CthulhuSprite.Fx.still( "strike", CthulhuArt.STRIKE_W, CthulhuArt.STRIKE_H, CthulhuArt.STRIKE, CthulhuArt.STRIKE.length - 1,
-                (cell % WIDTH) * 16 + 8 + CthulhuArt.STRIKE_DX, (cell / WIDTH) * 16 + 14 + CthulhuArt.STRIKE_DY );
-        visuals.add( im );
-        //holes shown after a reload are made in order, so the oldest is always first
-        voidImages.add( im );
+    //the void throws the hero back into the fight instead of down a floor, called from Chasm.heroFall
+    public boolean voidFall( int pos ){
+        if (!locked || !bossAlive()) return false;
+        Hero hero = Dungeon.hero;
+        ArrayList<Integer> cells = new ArrayList<>();
+        for (int i = 0; i < length(); i++){
+            if (passable[i] && !avoid[i] && !pit[i] && Actor.findChar( i ) == null && distance( i, CENTRE ) >= 4 && distance( i, CENTRE ) <= 9) cells.add( i );
+        }
+        if (cells.isEmpty()) return false;
+        hero.interrupt();
+        ScrollOfTeleportation.appear( hero, Random.element( cells ) );
+        Dungeon.observe();
+        GLog.n( Messages.get( Cthulhu.class, "voidfall" ) );
+        hero.damage( Math.max( 1, hero.HT / 6 ), Chasm.class );
+        if (!hero.isAlive()) Dungeon.fail( Chasm.class );
+        return true;
+    }
+
+    private void lightUp(){
+        //the dark of the pillar fight lifts once he wakes
+        viewDistance = 8;
+        if (Dungeon.hero != null && Dungeon.level == this) Dungeon.hero.viewDistance = viewDistance;
     }
 
     //every pillar is broken, Cthulhu wakes
@@ -466,18 +490,20 @@ public class FinalLevel extends Level{
             if (m instanceof SeptiumPillar) return;
         }
         pro = State.Cthulhu;
+        lightUp();
         for (Mob m : mobs.toArray( new Mob[0] )){
             if (m instanceof Cthulhu) ((Cthulhu) m).wake();
         }
+        Dungeon.observe();
     }
 
-    //opens the pit and puts the way down where he was
+    //opens the pit and puts the way to the Yendor hall where he was
     public void cthulhuDefeated(){
         pro = State.End;
         unseal();
         map[CENTRE] = Terrain.EXIT;
         exit = CENTRE;
-        transitions.add( new LevelTransition( this, CENTRE, LevelTransition.Type.REGULAR_EXIT ) );
+        transitions.add( new LevelTransition( this, CENTRE, LevelTransition.Type.REGULAR_EXIT, 26, 0, LevelTransition.Type.REGULAR_ENTRANCE ) );
         buildFlagMaps();
         GameScene.updateMap( CENTRE );
     }
@@ -486,8 +512,6 @@ public class FinalLevel extends Level{
     public Group addVisuals() {
         super.addVisuals();
         visuals.add( new Image( CthulhuSprite.DIR + "pit.png" ) {{ x = CthulhuArt.PIT_X; y = CthulhuArt.PIT_Y; }} );
-        voidImages.clear();
-        for (int c : voids) showVoid( c );
         if (pro == State.End){
             visuals.add( CthulhuSprite.Fx.still( "death", CthulhuArt.BOSS_W, CthulhuArt.BOSS_H, CthulhuArt.DEATH, CthulhuArt.DEATH.length - 1,
                     CthulhuArt.BOSS_X, CthulhuArt.BOSS_Y ) );

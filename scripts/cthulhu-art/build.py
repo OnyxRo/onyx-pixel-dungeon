@@ -49,6 +49,8 @@ ex, ey = meta['eyeAt']
 L.append(f'\tpublic static final float EYE_X = {ex:.1f}f, EYE_Y = {ey:.1f}f;')
 L.append('\t//the floor tentacles, the hole centre of each in world pixels')
 L.append('\tpublic static final int[][] TENTACLES = {' + ','.join('{%d,%d}' % (u[0], int(u[1])) for u in meta['units']) + '};')
+L.append('	//the four slamming tentacles, lower left, lower right, upper left, upper right. Base x, base y, side, length, tip x, tip y')
+L.append('	public static final int[][] SLAMS = {' + ','.join('{%d,%d,%d,%d,%d,%d}' % tuple(int(round(v)) for v in q) for q in meta['slams']) + '};')
 sx, sy = meta['spot0']; gx, gy = meta['grasp']; bx, by = meta['bar']
 L.append('\t//the strike and the void hole are drawn from the hole centre, cell x*16+8 and y*16+14')
 L.append(f'\tpublic static final int STRIKE_DX = STRIKE_X - {sx}, STRIKE_DY = STRIKE_Y - {sy};')

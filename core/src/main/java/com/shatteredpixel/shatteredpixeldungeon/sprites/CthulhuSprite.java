@@ -41,7 +41,11 @@ public class CthulhuSprite extends CharSprite {
 	//the beam sheet charges up to this frame and fires after it
 	private static final int BEAM_FIRE = 16;
 
+	//the slam hits on this frame
+	private static final int SLAM_HIT = 8;
+
 	private Animation idle1, idle3, scream, eye, mind1, mind3, beamCharge, beamFire;
+	private Animation[] slam1 = new Animation[4], slam3 = new Animation[4];
 
 	private int phase = 1;
 
@@ -58,6 +62,12 @@ public class CthulhuSprite extends CharSprite {
 		beamCharge = sheet( "beam", CthulhuArt.BEAM, 0, BEAM_FIRE, false );
 		beamFire = sheet( "beam", CthulhuArt.BEAM, BEAM_FIRE, -1, false );
 		die = sheet( "death", CthulhuArt.DEATH, 0, -1, false );
+		int[][] s1 = { CthulhuArt.SLAM1_0, CthulhuArt.SLAM1_1, CthulhuArt.SLAM1_2, CthulhuArt.SLAM1_3 };
+		int[][] s3 = { CthulhuArt.SLAM3_0, CthulhuArt.SLAM3_1, CthulhuArt.SLAM3_2, CthulhuArt.SLAM3_3 };
+		for (int k = 0; k < 4; k++){
+			slam1[k] = sheet( "slam1_" + k, s1[k], CthulhuArt.SLAM_X, CthulhuArt.SLAM_Y, CthulhuArt.SLAM_W, CthulhuArt.SLAM_H );
+			slam3[k] = sheet( "slam3_" + k, s3[k], CthulhuArt.SLAM_X, CthulhuArt.SLAM_Y, CthulhuArt.SLAM_W, CthulhuArt.SLAM_H );
+		}
 
 		idle = idle1;
 		run = idle1;
@@ -68,29 +78,64 @@ public class CthulhuSprite extends CharSprite {
 		play( idle );
 	}
 
+	//each sheet knows its texture and where its frames sit in the arena, the slam frames are wider than the rest
 	private static class Sheet extends Animation {
 		final SmartTexture tex;
-		Sheet( SmartTexture tex, boolean looped ){
+		final int ox, oy;
+		Sheet( SmartTexture tex, boolean looped, int ox, int oy ){
 			super( 12, looped );
 			this.tex = tex;
+			this.ox = ox;
+			this.oy = oy;
 		}
 	}
 
 	private static Sheet sheet( String name, int[] seq, int from, int to, boolean looped ){
+		return sheet( name, seq, from, to, looped, CthulhuArt.BOSS_X, CthulhuArt.BOSS_Y, CthulhuArt.BOSS_W, CthulhuArt.BOSS_H );
+	}
+
+	private static Sheet sheet( String name, int[] seq, int x, int y, int w, int h ){
+		return sheet( name, seq, 0, -1, false, x, y, w, h );
+	}
+
+	private static Sheet sheet( String name, int[] seq, int from, int to, boolean looped, int x, int y, int w, int h ){
 		SmartTexture tx = TextureCache.get( DIR + name + ".png" );
-		TextureFilm film = new TextureFilm( tx, CthulhuArt.BOSS_W, CthulhuArt.BOSS_H );
+		TextureFilm film = new TextureFilm( tx, w, h );
 		int end = to < 0 ? seq.length : to;
-		Sheet a = new Sheet( tx, looped );
+		Sheet a = new Sheet( tx, looped, x, y );
 		RectF[] frames = new RectF[end - from];
 		for (int i = from; i < end; i++) frames[i - from] = film.get( seq[i] );
 		a.frames = frames;
 		return a;
 	}
 
+	private Animation hitAnim;
+	private Callback hitCall;
+
 	@Override
 	public synchronized void play( Animation anim, boolean force ) {
-		if (anim instanceof Sheet && texture != ((Sheet) anim).tex) texture( ((Sheet) anim).tex );
+		//an animation cut short still lands its hit, so the fight never waits on it
+		if (hitCall != null && anim != hitAnim){
+			Callback c = hitCall;
+			hitCall = null;
+			c.call();
+		}
+		if (anim instanceof Sheet){
+			Sheet s = (Sheet) anim;
+			if (texture != s.tex) texture( s.tex );
+			PointF base = worldToCamera( ch != null ? ch.pos : 21 * 41 + 20 );
+			x = base.x + s.ox - CthulhuArt.BOSS_X;
+			y = base.y + s.oy - CthulhuArt.BOSS_Y;
+		}
 		super.play( anim, force );
+	}
+
+	//the head alone, for the monster info window
+	public void portrait(){
+		play( idle1 );
+		paused = true;
+		frame( ((Sheet) idle1).tex.uvRect( 46, 42, 134, 130 ) );
+		scale.set( 0.5f );
 	}
 
 	@Override
@@ -114,6 +159,11 @@ public class CthulhuSprite extends CharSprite {
 	@Override
 	public void update() {
 		super.update();
+		if (hitCall != null && curAnim == hitAnim && curFrame >= SLAM_HIT){
+			Callback c = hitCall;
+			hitCall = null;
+			c.call();
+		}
 		//he is far bigger than his cell, so he stays drawn when that one cell is out of sight
 		visible = true;
 	}
@@ -138,6 +188,14 @@ public class CthulhuSprite extends CharSprite {
 
 	public void scream(){ once( scream, null ); }
 
+	//one of the four outer tentacles whips along the floor, onHit runs when it lands
+	public void slam( int k, Callback onHit ){
+		Animation a = (phase >= 3 ? slam3 : slam1)[k];
+		once( a, null );
+		hitAnim = a;
+		hitCall = onHit;
+	}
+
 	public void openEye(){ once( eye, null ); }
 
 	public void mindBlast(){ once( phase >= 3 ? mind3 : mind1, null ); }
@@ -159,6 +217,7 @@ public class CthulhuSprite extends CharSprite {
 		private final TextureFilm film;
 		private final int[] seq;
 		private float time;
+		private float fps = 12;
 		private int holdFrame = -1;
 		private Hold hold;
 		private int callFrame = -1;
@@ -172,6 +231,11 @@ public class CthulhuSprite extends CharSprite {
 			frame( film.get( seq[0] ) );
 			this.x = x;
 			this.y = y;
+		}
+
+		public Fx fps( float fps ){
+			this.fps = fps;
+			return this;
 		}
 
 		//stays on this frame while the hold is active
@@ -196,10 +260,10 @@ public class CthulhuSprite extends CharSprite {
 		public void update() {
 			super.update();
 			time += Game.elapsed;
-			int f = (int)(time * 12);
+			int f = (int)(time * fps);
 			if (holdFrame >= 0 && f >= holdFrame && hold != null && hold.active()){
 				f = holdFrame;
-				time = holdFrame / 12f;
+				time = holdFrame / fps;
 			}
 			if (atFrame != null && f >= callFrame){
 				Callback c = atFrame;

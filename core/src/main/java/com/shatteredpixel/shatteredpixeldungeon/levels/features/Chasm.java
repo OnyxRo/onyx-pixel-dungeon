@@ -98,6 +98,9 @@ public class Chasm implements Hero.Doom {
 	
 	public static void heroFall( int pos ) {
 		if (com.shatteredpixel.shatteredpixeldungeon.TooCruel.chasmFall()) return; //toocruel, Extermination
+		//Cthulhu's void holes throw you back into his fight
+		if (Dungeon.level instanceof com.shatteredpixel.shatteredpixeldungeon.levels.FinalLevel
+				&& ((com.shatteredpixel.shatteredpixeldungeon.levels.FinalLevel) Dungeon.level).voidFall( pos )) return;
 		
 		jumpConfirmed = false;
 				

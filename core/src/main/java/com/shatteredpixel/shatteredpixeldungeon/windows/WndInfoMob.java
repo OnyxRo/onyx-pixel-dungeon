@@ -55,6 +55,8 @@ public class WndInfoMob extends WndTitledMessage {
 			add( name );
 			
 			image = mob.sprite();
+			//Cthulhu's sprite is the whole pit, the window shows his head
+			if (image instanceof com.shatteredpixel.shatteredpixeldungeon.sprites.CthulhuSprite) ((com.shatteredpixel.shatteredpixeldungeon.sprites.CthulhuSprite) image).portrait();
 			add( image );
 
 			health = new HealthBar();

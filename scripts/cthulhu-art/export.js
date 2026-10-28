@@ -50,12 +50,15 @@ job('hurt','hurt',DUR.hurt,BOSS);
 job('mind1','mind',DUR.mind,BOSS);
 job('eye','eye',DUR.eye,BOSS);
 job('beam','beam',DUR.beam,BOSS);
+const SLAM=[40,150,620,500];
+for(let k=0;k<4;k++)job('slam1_'+k,'slam',DUR.slam,SLAM,()=>{bossLayers();c.state.target=k});
 // The body with the third eye open becomes the body for the rest
 c.STATIC=empty();c.RIM=empty();c.units=[];
 {const {o}=frame('eye',DUR.eye);const B2=empty();for(let i=0;i<W*H;i++){if(!o[i*4+3])continue;for(let q=0;q<4;q++)B2.d[i*4+q]=o[i*4+q];const X=i%W,Y=(i/W)|0;if(X<B2.x0)B2.x0=X;if(X>B2.x1)B2.x1=X;if(Y<B2.y0)B2.y0=Y;if(Y>B2.y1)B2.y1=Y}c.BODY=B2}
 job('idle3','idle',6,BOSS,bossLayers);
 job('mind3','mind',DUR.mind,BOSS);
 job('death','death',DUR.death,BOSS);
+for(let k=0;k<4;k++)job('slam3_'+k,'slam',DUR.slam,SLAM,()=>{bossLayers();c.state.target=k});
 // Effects on their own, no arena, no body
 const none=()=>{c.STATIC=empty();c.RIM=empty();c.units=[];c.BODY=empty()};
 c.state.spot=0;job('strike','sprout',DUR.sprout,[160,200,272,350],none);
@@ -66,5 +69,5 @@ c.text=()=>{};c.HPB=null;c.LB=null;
 LAYER='back';job('cleanse_back','cleanse',DUR.cleanse,[200,180,460,290]);
 LAYER='front';job('cleanse_front','cleanse',DUR.cleanse,[200,180,460,290]);
 {const L=ORIG.STATIC,w=L.x1-L.x0+1,h=L.y1-L.y0+1,b=Buffer.alloc(w*h*4);for(let j=0;j<h;j++)for(let i=0;i<w;i++)for(let q=0;q<4;q++)b[(j*w+i)*4+q]=L.d[((L.y0+j)*W+L.x0+i)*4+q];fs.writeFileSync(path.join(OUT,'pit.rgba'),b);fs.writeFileSync(path.join(OUT,'pit.json'),JSON.stringify([L.x0,L.y0,w,h]))}
-fs.writeFileSync(path.join(OUT,'meta.json'),JSON.stringify({units:ORIG.units.map(u=>[u.hx,u.hy,u.rx]),eyeAt:(c.BODY=ORIG.BODY,c.eyeAt()),eyes:c.eyes,top:c.top,spot0:C.SPOTS[0],grasp:[328,428],bar:[168+Math.round(320/2-64),216+14]}));
+fs.writeFileSync(path.join(OUT,'meta.json'),JSON.stringify({units:ORIG.units.map(u=>[u.hx,u.hy,u.rx]),slams:c.targets.map(U=>{const sd=U.bx<C.CX?-1:1,sp=c.spine(U,1.57*sd,0,1);return [U.bx,U.by,sd,sp.n,sp.X[sp.n],sp.Y[sp.n]]}),eyeAt:(c.BODY=ORIG.BODY,c.eyeAt()),eyes:c.eyes,top:c.top,spot0:C.SPOTS[0],grasp:[328,428],bar:[168+Math.round(320/2-64),216+14]}));
 console.log('done');
