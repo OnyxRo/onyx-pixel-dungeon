@@ -68,7 +68,7 @@ public class SandboxHotkeys {
 	public static void randomLevel(){
 		ArrayList<Integer> pool = new ArrayList<>();
 		for (int world = WorldShuffle.HALLS + 1; world < WorldShuffle.worldCount(); world++) {
-			if (!Dungeon.sandboxOffMods.contains( WorldShuffle.modName(world) )) pool.add( world );
+			if (!Dungeon.sandboxOffMods.contains( WorldShuffle.modName(world) ) && !WorldShuffle.isBanned( WorldShuffle.modName(world) )) pool.add( world );
 		}
 		//with every mod switched off there is nothing to pick from, so use them all
 		if (pool.isEmpty()) {

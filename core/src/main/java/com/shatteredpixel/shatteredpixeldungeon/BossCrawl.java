@@ -33,7 +33,16 @@ public class BossCrawl {
 	//a readable name for each stop, in the same order
 	private static ArrayList<String> names;
 
+	/** How many of each segment's bosses the run goes through, in quarters. 1 easy, 2 medium, 3 hard, 4 insane (all of them). Saved with the run. */
+	public static int difficulty = 4;
+
+	//the seed, difficulty and banned mods the list was built for, it is built again when any of them changes
+	private static String builtFor = null;
+
 	public static ArrayList<int[]> stops(){
+		String key = Dungeon.seed + ":" + difficulty + ":" + bannedKey();
+		if (stops != null && !key.equals( builtFor )) stops = null;
+		builtFor = key;
 		if (stops == null) {
 			stops = new ArrayList<>();
 			names = new ArrayList<>();
@@ -44,7 +53,10 @@ public class BossCrawl {
 				names.add( "Town, before the floor " + depth + " bosses" );
 				stops.add( new int[]{ -1, depth, 0 } );
 				names.add( "Shattered " + shattered[depth/5 - 1] );
+				int segmentStart = stops.size() - 1;
 				for (int w = 0; w < WorldShuffle.worldCount(); w++) {
+					//a mod banned in the title screen's mods list sends none of its bosses
+					if (WorldShuffle.isBanned( WorldShuffle.modName( w ) )) continue;
 					Level[] vs = WorldShuffle.modBossVariants( w, depth );
 					for (int v = 0; v < vs.length; v++) {
 						//several worlds of one mod share the same boss, keep it once
@@ -54,11 +66,37 @@ public class BossCrawl {
 						}
 					}
 				}
+				keepShare( segmentStart, depth );
 			}
 			stops.add( new int[]{ -2, 26, 0 } );
 			names.add( "The Amulet of Yendor" );
 		}
 		return stops;
+	}
+
+	//below insane, keeps only difficulty quarters of this segment's bosses (at least one), picked by the run's seed, in their usual order
+	private static void keepShare( int start, int depth ){
+		int n = stops.size() - start;
+		int keep = Math.max( 1, (int)Math.ceil( n * Math.max( 1, Math.min( 4, difficulty ) ) / 4f ) );
+		if (keep >= n) return;
+		ArrayList<Integer> order = new ArrayList<>();
+		for (int i = 0; i < n; i++) order.add( i );
+		com.watabou.utils.Random.pushGenerator( Dungeon.seed + depth * 7919L );
+		com.watabou.utils.Random.shuffle( order );
+		com.watabou.utils.Random.popGenerator();
+		HashSet<Integer> kept = new HashSet<>( order.subList( 0, keep ) );
+		for (int i = n - 1; i >= 0; i--) {
+			if (!kept.contains( i )) {
+				stops.remove( start + i );
+				names.remove( start + i );
+			}
+		}
+	}
+
+	private static String bannedKey(){
+		StringBuilder b = new StringBuilder();
+		for (String mod : WorldShuffle.mods()) if (WorldShuffle.isBanned( mod )) b.append( mod ).append( '|' );
+		return b.toString();
 	}
 
 	/** The readable name of stop i, the mod and the boss floor's class name spelled out. */

@@ -722,8 +722,36 @@ public class WorldShuffle {
 
 	/** Whether a world's mod is left out of the roll, by the mods picked for the run or by the sandbox mod toggles. */
 	private static boolean modOff( int w ){
+		if (isBanned(modName(w))) return true;
 		if (!Dungeon.chosenMods.isEmpty()) return !Dungeon.chosenMods.contains(modName(w));
 		return Dungeon.sandboxOffMods.contains(modName(w));
+	}
+
+	// mods banned from the shuffle in the title screen's mods list, kept in the settings for every run
+
+	private static final String KEY_BANNED = "banned_mods";
+	private static java.util.LinkedHashSet<String> banned = null;
+
+	private static java.util.LinkedHashSet<String> bannedSet(){
+		if (banned == null) {
+			banned = new java.util.LinkedHashSet<>();
+			for (String m : com.shatteredpixel.shatteredpixeldungeon.SPDSettings.getString( KEY_BANNED, "", 20000 ).split( "\\|" )) {
+				if (!m.isEmpty()) banned.add( m );
+			}
+		}
+		return banned;
+	}
+
+	/** Whether a mod is banned, so none of its worlds come up in the shuffle. */
+	public static boolean isBanned( String mod ){
+		return bannedSet().contains( mod );
+	}
+
+	public static void toggleBanned( String mod ){
+		if (!bannedSet().remove( mod )) bannedSet().add( mod );
+		StringBuilder sb = new StringBuilder();
+		for (String m : bannedSet()) sb.append( m ).append( '|' );
+		com.shatteredpixel.shatteredpixeldungeon.SPDSettings.put( KEY_BANNED, sb.toString() );
 	}
 
 	public static int worldFor( int depth ){
@@ -741,6 +769,8 @@ public class WorldShuffle {
 		for (int w = 0; w < WORLDS.length; w++){
 			if (w == home) continue;
 			if (filtered && (w <= HALLS || modOff(w))) continue;
+			//a mod banned from the title screen's mods list never shows up, the floor keeps its home world instead
+			if (w > HALLS && isBanned(modName(w))) continue;
 			if (REGIONS[w] == home) regional.add(w);
 			else if (REGIONS[w] == ANY_REGION) anywhere.add(w);
 		}

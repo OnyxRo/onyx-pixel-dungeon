@@ -891,6 +891,7 @@ public class Dungeon {
 			bundle.put( SANDBOX_WORLD, sandboxWorld );
 			bundle.put( "boss_crawl", bossCrawl );
 			bundle.put( "boss_crawl_step", BossCrawl.step );
+			bundle.put( "boss_crawl_difficulty", BossCrawl.difficulty );
 			bundle.put( SANDBOX_GOD, sandboxGod );
 			bundle.put( SANDBOX_SIGHT, sandboxSight );
 			bundle.put( SANDBOX_OFF_MODS, sandboxOffMods.toArray(new String[0]) );
@@ -1020,6 +1021,8 @@ public class Dungeon {
 		sandboxWorld = bundle.contains( SANDBOX_WORLD ) ? bundle.getInt( SANDBOX_WORLD ) : -1;
 		bossCrawl = bundle.getBoolean( "boss_crawl" );
 		BossCrawl.step = bundle.getInt( "boss_crawl_step" );
+		//runs saved before the difficulty picker went through every boss
+		BossCrawl.difficulty = bundle.contains( "boss_crawl_difficulty" ) ? bundle.getInt( "boss_crawl_difficulty" ) : 4;
 		sandboxGod = !bundle.contains( SANDBOX_GOD ) || bundle.getBoolean( SANDBOX_GOD );
 		sandboxSight = !bundle.contains( SANDBOX_SIGHT ) || bundle.getBoolean( SANDBOX_SIGHT );
 		sandboxSalt = bundle.contains( SANDBOX_SALT ) ? bundle.getInt( SANDBOX_SALT ) : 0;

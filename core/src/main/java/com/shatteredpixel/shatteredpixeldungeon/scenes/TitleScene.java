@@ -211,7 +211,13 @@ public class TitleScene extends PixelScene {
 		btnJournal.icon(Icons.get(Icons.JOURNAL));
 		add(btnJournal);
 
-		btnNews = new NewsButton(GREY_TR, Messages.get(this, "news"));
+		//where Shattered had its news, every mod in the game with its summary and a ban for the shuffle
+		btnNews = new StyledButton(GREY_TR, Messages.get(this, "mods")){
+			@Override
+			protected void onClick() {
+				ShatteredPixelDungeon.scene().addToFront(new com.shatteredpixel.shatteredpixeldungeon.windows.WndModList());
+			}
+		};
 		btnNews.icon(Icons.get(Icons.NEWS));
 		add(btnNews);
 

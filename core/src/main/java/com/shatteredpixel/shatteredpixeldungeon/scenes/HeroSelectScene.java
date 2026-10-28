@@ -156,21 +156,16 @@ public class HeroSelectScene extends PixelScene {
 
 				if (GamesInProgress.selectedClass == null) return;
 
-				//radar, try seeds until one holds the items asked for
-				if (SPDSettings.customSeed().isEmpty() && com.shatteredpixel.shatteredpixeldungeon.RadarSearch.hasRequirements()){
-					ShatteredPixelDungeon.scene().addToFront(new com.shatteredpixel.shatteredpixeldungeon.windows.WndRadarSearch());
+				//a boss crawl asks how many of the bosses to fight first, and the window starts the run
+				if (Dungeon.bossCrawl){
+					ShatteredPixelDungeon.scene().addToFront(new com.shatteredpixel.shatteredpixeldungeon.windows.WndCrawlDifficulty());
 					return;
 				}
 
-				Dungeon.hero = null;
-				Dungeon.daily = Dungeon.dailyReplay = false;
-				Dungeon.initSeed();
-				ActionIndicator.clearAction();
-				InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
-
-				Game.switchScene( InterlevelScene.class );
+				startRun();
 			}
 		};
+		
 		startBtn.icon(Icons.get(Icons.ENTER));
 		startBtn.setSize(80, 21);
 		startBtn.textColor(Window.TITLE_COLOR);
@@ -1108,4 +1103,21 @@ public class HeroSelectScene extends PixelScene {
 		}
 	}
 
+
+	/** Starts the run with the hero picked, after the boss crawl's difficulty when there is one. */
+	public static void startRun(){
+		//radar, try seeds until one holds the items asked for
+		if (SPDSettings.customSeed().isEmpty() && com.shatteredpixel.shatteredpixeldungeon.RadarSearch.hasRequirements()){
+			ShatteredPixelDungeon.scene().addToFront(new com.shatteredpixel.shatteredpixeldungeon.windows.WndRadarSearch());
+			return;
+		}
+
+		Dungeon.hero = null;
+		Dungeon.daily = Dungeon.dailyReplay = false;
+		Dungeon.initSeed();
+		ActionIndicator.clearAction();
+		InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
+
+		Game.switchScene( InterlevelScene.class );
+	}
 }

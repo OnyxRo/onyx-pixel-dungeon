@@ -75,3 +75,6 @@ The cloud routine does the first unchecked task and checks it off. Smallest firs
 - [x] Boss crawl in segments (2026-10-27). Not a sandbox run any more. Starts in Transformation's surface town (the Dungeon Doctor's village), and before each floor's bosses the hero is back in the town with 1500 more gold, a merchant who sells every item without running out, and a glowing lake that heals 10 a turn and stops hunger
 - [x] Boss crawl merchant buys items too, and lists his goods from most to least expensive (2026-10-27)
 - [ ] Play a boss crawl and check the merchant prices, the gold amount and the pool glow on screen
+- [x] Mods button on the title screen in place of News, a list of every mod with its summary and a cross to ban it from the shuffle and the boss crawl (2026-10-28)
+- [x] Boss crawl difficulty after picking the hero. Easy, medium, hard and insane go through a quarter, half, three quarters or all of each floor's bosses (2026-10-28)
+- [ ] Look at the Mods list and the boss crawl difficulty window on screen
