@@ -38,10 +38,14 @@ public class BossCrawlTest {
 					for (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob m : l.mobs)
 						if (m instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.CrawlMerchant) merchant = true;
 					Dungeon.level = l;
-					boolean pool = com.shatteredpixel.shatteredpixeldungeon.levels.NormalZeroFiveLevel.inHealingPool( 21 + 35*l.width() );
-					ok = built.equals( "NormalZeroFiveLevel" ) && merchant && pool
-							&& l.passable[939] && com.shatteredpixel.shatteredpixeldungeon.windows.WndCrawlShop.price( new com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing() ) > 0;
-					if (!ok) System.out.println( "FAIL: town merchant " + merchant + " pool " + pool );
+					boolean pool = com.shatteredpixel.shatteredpixeldungeon.levels.SurfaceTownLevel.inHealingPool( 39 + 17*l.width() );
+					int merchantCell = com.shatteredpixel.shatteredpixeldungeon.levels.SurfaceTownLevel.MERCHANT_X + com.shatteredpixel.shatteredpixeldungeon.levels.SurfaceTownLevel.MERCHANT_Y*l.width();
+					//the manor stair is the way on to the bosses
+					boolean wayOn = l.getTransition( 22 + 14*l.width() ) != null
+							&& l.getTransition( 22 + 14*l.width() ).type == com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition.Type.REGULAR_EXIT;
+					ok = built.equals( "SurfaceTownLevel" ) && merchant && pool && wayOn
+							&& l.passable[merchantCell] && com.shatteredpixel.shatteredpixeldungeon.windows.WndCrawlShop.price( new com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing() ) > 0;
+					if (!ok) System.out.println( "FAIL: town merchant " + merchant + " pool " + pool + " way on " + wayOn );
 				}
 				System.out.println( (ok ? "ok " : "FAIL: ") + i + " " + want + " built " + built );
 				if (!ok) failures++;

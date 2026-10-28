@@ -202,6 +202,11 @@ public class SurfaceTownLevel extends Level {
 		map[entrance] = Terrain.EXIT;
 		map[exit] = Terrain.LOCKED_EXIT;
 		transitions.add(new LevelTransition(this, entrance, LevelTransition.Type.REGULAR_ENTRANCE));
+		//the boss crawl's village, the manor stair opens and leads on to the next bosses, see BossCrawl
+		if (Dungeon.bossCrawl) {
+			map[exit] = Terrain.EXIT;
+			transitions.add(new LevelTransition(this, exit, LevelTransition.Type.REGULAR_EXIT));
+		}
 
 		return true;
 	}
@@ -635,6 +640,53 @@ public class SurfaceTownLevel extends Level {
 			testStatue.pos = cell(TEST_STATUE_X, TEST_STATUE_Y);
 			mobs.add(testStatue);
 		}
+		//the boss crawl's merchant, by the lake, sells every item and never runs out
+		boolean hasMerchant = false;
+		for (Mob mob : mobs) if (mob instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.CrawlMerchant) hasMerchant = true;
+		if (!hasMerchant) {
+			com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.CrawlMerchant merchant = new com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.CrawlMerchant();
+			merchant.pos = cell(MERCHANT_X, MERCHANT_Y);
+			mobs.add(merchant);
+		}
+	}
+
+	public static final int MERCHANT_X = 33;
+	public static final int MERCHANT_Y = 14;
+
+	//the lake glows blue. Standing in it heals 10 health a turn and stops hunger, see Hunger.act
+	public static boolean inHealingPool( int cell ) {
+		Level level = Dungeon.level;
+		return level instanceof SurfaceTownLevel && cell >= 0 && cell < level.length() && level.map[cell] == Terrain.WATER;
+	}
+
+	private static final com.watabou.noosa.particles.Emitter.Factory POOL_GLOW = new com.watabou.noosa.particles.Emitter.Factory() {
+		@Override
+		public void emit( com.watabou.noosa.particles.Emitter emitter, int index, float x, float y ) {
+			com.watabou.noosa.particles.PixelParticle p = (com.watabou.noosa.particles.PixelParticle) emitter.recycle( com.watabou.noosa.particles.PixelParticle.Shrinking.class );
+			p.reset( x, y, Random.oneOf( 0x55CCFF, 0x88EEFF, 0x3399FF ), 2, Random.Float( 0.8f, 1.6f ) );
+			p.speed.set( 0, -Random.Float( 3, 8 ) );
+			p.am = 0.9f;
+		}
+
+		@Override
+		public boolean lightMode() {
+			return true;
+		}
+	};
+
+	@Override
+	public com.watabou.noosa.Group addVisuals() {
+		super.addVisuals();
+		for (int i = 0; i < length(); i++) {
+			if (map[i] == Terrain.WATER) {
+				com.watabou.noosa.particles.Emitter glow = new com.watabou.noosa.particles.Emitter();
+				com.watabou.utils.PointF c = com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap.tileToWorld( i );
+				glow.pos( c.x, c.y, com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap.SIZE, com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap.SIZE );
+				glow.pour( POOL_GLOW, 0.3f );
+				visuals.add( glow );
+			}
+		}
+		return visuals;
 	}
 
 	@Override

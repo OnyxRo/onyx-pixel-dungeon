@@ -15,8 +15,8 @@ import java.util.HashSet;
 /**
  * Boss crawl, a run that is only boss floors (an ordinary run, not a sandbox one). It goes through five segments,
  * the floor 5 bosses first and the floor 25 bosses last, Shattered's own boss first in each. Before each segment
- * the hero stops in Magic Ling's town, gets SEGMENT_GOLD to spend at the merchant (CrawlMerchant, every item,
- * never runs out) and can rest in the glowing pool. The town's north stairs lead on to the segment's first boss.
+ * the hero stops in Transformation's surface town (with the Dungeon Doctor), gets SEGMENT_GOLD to spend at the merchant (CrawlMerchant, every item,
+ * never runs out) and can rest in the glowing lake. The manor stair leads on to the segment's first boss.
  * The last stop is the Amulet floor, taking the Amulet there ends the run and ranks it like a normal win.
  * Started from the Boss crawl button on the title screen, see Dungeon.bossCrawl.
  */
@@ -112,7 +112,7 @@ public class BossCrawl {
 		if (s == null || s[1] != depth) return null;
 		Dungeon.sandboxWorld = s[0] < 0 ? -1 : s[0];
 		if (s[0] == -2) return new LastLevel();
-		if (s[0] == -3) return new com.shatteredpixel.shatteredpixeldungeon.levels.NormalZeroFiveLevel();
+		if (s[0] == -3) return new com.shatteredpixel.shatteredpixeldungeon.levels.SurfaceTownLevel();
 		if (s[0] == -1) {
 			switch (depth) {
 				case 5:  return new SewerBossLevel();
