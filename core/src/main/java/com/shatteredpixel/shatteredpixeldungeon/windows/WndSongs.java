@@ -74,10 +74,7 @@ public class WndSongs extends Window {
 
 	/** Called whenever a floor starts its music, so a picked song carries on. */
 	public static void applyChoice(){
-		if (SongPlayer.current == null) return;
-		//shuffle keeps its own song going
-		if (SongPlayer.shuffle != SongPlayer.Shuffle.OFF) return;
-		Music.INSTANCE.play( SongPlayer.current, true );
+		SongPlayer.resume();
 	}
 
 	/** Back to each floor's own music. */

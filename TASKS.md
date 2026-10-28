@@ -78,3 +78,4 @@ The cloud routine does the first unchecked task and checks it off. Smallest firs
 - [x] Mods button on the title screen in place of News, a list of every mod with its summary and a cross to ban it from the shuffle and the boss crawl (2026-10-28)
 - [x] Boss crawl difficulty after picking the hero. Easy, medium, hard and insane go through a quarter, half, three quarters or all of each floor's bosses (2026-10-28)
 - [ ] Look at the Mods list and the boss crawl difficulty window on screen
+- [x] Songs. A song picked by hand no longer loops forever, it plays once and carries on with random songs. Skip always works, from the floor's own music too (it starts a shuffle). A shuffled song keeps playing across floors instead of being replaced by the floor's music (2026-10-28)

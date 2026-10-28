@@ -252,12 +252,41 @@ public class SongPlayer {
 
 	// playing
 
-	/** Plays one song and keeps it going, floor after floor. Turns shuffle off. */
+	/**
+	 * Plays one song, and when it ends carries on with random songs from every song, so a picked song
+	 * never loops forever and can always be skipped.
+	 */
 	public static void play( String path ){
-		shuffle = Shuffle.OFF;
+		shuffle = Shuffle.ALL;
 		playingList = null;
+		shufflePool = allSongs();
 		current = path;
-		Music.INSTANCE.play( path, true );
+		playShuffled( path );
+	}
+
+	private static ArrayList<Song> allSongs(){
+		return new ArrayList<>( com.shatteredpixel.shatteredpixeldungeon.windows.WndSongs.byPath().values() );
+	}
+
+	private static void playShuffled( String path ){
+		Music.INSTANCE.playOnce( path, new Runnable() {
+			@Override
+			public void run() {
+				next( shufflePool );
+			}
+		} );
+	}
+
+	/**
+	 * Called when a floor starts its own music. A song, shuffle or playlist that was playing
+	 * takes over again, carrying on with the song it was on.
+	 */
+	public static void resume(){
+		if (current == null) return;
+		if (current.equals( Music.INSTANCE.currentTrack() ) && Music.INSTANCE.isPlaying()) return;
+		if (shuffle == Shuffle.PLAYLIST || shuffle == Shuffle.IN_ORDER) playListSong( current );
+		else if (shuffle != Shuffle.OFF) playShuffled( current );
+		else Music.INSTANCE.play( current, true );
 	}
 
 	/** Plays random songs one after another until another song or the floor's own music is chosen. */
@@ -353,23 +382,19 @@ public class SongPlayer {
 			pick = now.get( Random.Int( now.size() ) );
 		}
 		current = pick.path;
-		Music.INSTANCE.playOnce( pick.path, new Runnable() {
-			@Override
-			public void run() {
-				next( shufflePool );
-			}
-		} );
+		playShuffled( pick.path );
 	}
 
 	/** Whether a shuffle or playlist is running, so there is a next song to skip to. */
 	public static boolean canSkip(){
-		return shuffle != Shuffle.OFF;
+		return true;
 	}
 
-	/** Moves a shuffle or playlist on to its next song. */
+	/** Moves a shuffle or playlist on to its next song. With nothing picked, the floor's own music included, it starts shuffling every song. */
 	public static void skip(){
 		if (shuffle == Shuffle.PLAYLIST || shuffle == Shuffle.IN_ORDER) nextInList();
-		else if (shufflePool != null) next( shufflePool );
+		else if (shuffle != Shuffle.OFF && shufflePool != null) next( shufflePool );
+		else startShuffle( Shuffle.ALL, allSongs() );
 	}
 
 	/** Go back to each floor's own music. */

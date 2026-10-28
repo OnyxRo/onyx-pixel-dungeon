@@ -242,7 +242,12 @@ public class GameScene extends PixelScene {
 			return;
 		}
 
-		Dungeon.level.playLevelMusic();
+		//a picked song, shuffle or playlist that is still playing carries on instead of the floor's music
+		if (com.shatteredpixel.shatteredpixeldungeon.SongPlayer.current == null
+				|| !com.shatteredpixel.shatteredpixeldungeon.SongPlayer.current.equals( com.watabou.noosa.audio.Music.INSTANCE.currentTrack() )
+				|| !com.watabou.noosa.audio.Music.INSTANCE.isPlaying()) {
+			Dungeon.level.playLevelMusic();
+		}
 		WndSongs.applyChoice();
 
 		SPDSettings.lastClass(Dungeon.hero.heroClass.ordinal());
