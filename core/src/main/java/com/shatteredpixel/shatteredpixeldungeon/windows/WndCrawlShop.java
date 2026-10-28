@@ -146,10 +146,14 @@ public class WndCrawlShop extends Window {
 	}
 
 	//a fresh, identified copy of an item, or null if the item cannot be made outside the place it belongs
-	private static Item make( Class<?> cls ) {
+	public static Item make( Class<?> cls ) {
 		try {
 			Item item = (Item) Reflection.newInstance(cls);
 			if (item != null) item.identify();
+			//treasures roll a quality when made, which sets their worth. The merchant's are always plain quality,
+			//so what you buy is worth what the list showed
+			if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.treasures.Treasures)
+				((com.shatteredpixel.shatteredpixeldungeon.items.treasures.Treasures) item).setRarity( com.shatteredpixel.shatteredpixeldungeon.items.treasures.Treasures.Rarity.COMMON );
 			return item;
 		} catch (Throwable t) {
 			return null;
