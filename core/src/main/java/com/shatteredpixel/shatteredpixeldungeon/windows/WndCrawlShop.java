@@ -18,7 +18,8 @@ import com.watabou.utils.Reflection;
 
 /**
  * The boss crawl merchant's goods. Every item in the journal catalog, as many times as the hero can pay for,
- * priced like a Shattered shop on the first floors. Clicking an item shows what it does and offers to buy it.
+ * priced like a Shattered shop on the first floors, listed from most to least expensive. Clicking an item shows
+ * what it does and offers to buy it. The Sell button sells from the backpack the way Shattered's shops do.
  */
 public class WndCrawlShop extends Window {
 
@@ -69,8 +70,19 @@ public class WndCrawlShop extends Window {
 				} );
 			}
 		};
-		search.setRect( 0, top, WIDTH, 16 );
+		search.setRect( 0, top, (WIDTH - GAP) / 2f, 16 );
 		add( search );
+
+		//selling goes through Shattered's shop, an item sells for a fifth of what the merchant asks for it
+		RedButton sell = new RedButton( Messages.get(this, "sell"), 7 ) {
+			@Override
+			protected void onClick() {
+				WndCrawlShop.this.hide();
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper.sell();
+			}
+		};
+		sell.setRect( search.right() + GAP, top, WIDTH - search.right() - GAP, 16 );
+		add( sell );
 		top += 16 + GAP;
 
 		//the window has to be at its final size before the list is placed, or the list draws off centre
@@ -81,8 +93,10 @@ public class WndCrawlShop extends Window {
 		list.setRect( 0, top, WIDTH, height - top );
 		list.holdLayout = true;
 
+		//every item in one list, the most expensive first
+		java.util.ArrayList<Object[]> goods = new java.util.ArrayList<>();
+		java.util.HashSet<Class<?>> listed = new java.util.HashSet<>();
 		for (Catalog catalog : Catalog.values()) {
-			boolean titled = false;
 			for (final Class<?> cls : catalog.items()) {
 				//enchantments and glyphs are in the catalog too, but aren't items
 				if (!Item.class.isAssignableFrom(cls)) continue;
@@ -94,24 +108,33 @@ public class WndCrawlShop extends Window {
 				String name = Messages.get(cls, "name");
 				if (name.equals(Messages.NO_TEXT_FOUND)) name = sample.name();
 				if (!query.isEmpty() && !name.toLowerCase().contains( query.toLowerCase() )) continue;
+				if (!listed.add( cls )) continue;
 
-				if (!titled) {
-					list.addTitle( Messages.titleCase(catalog.title()) );
-					titled = true;
-				}
-
-				final String itemName = Messages.titleCase(name);
-				list.addItem( new ScrollingListPane.ListItem( new ItemSprite(sample), Messages.get(this, "price", itemName, price) ) {
-					@Override
-					public boolean onClick( float x, float y ) {
-						if (inside( x, y )) {
-							offer( cls, itemName, price );
-							return true;
-						}
-						return false;
-					}
-				} );
+				goods.add( new Object[]{ cls, sample, Messages.titleCase(name), price } );
 			}
+		}
+		java.util.Collections.sort( goods, new java.util.Comparator<Object[]>() {
+			@Override
+			public int compare( Object[] a, Object[] b ) {
+				int byPrice = Integer.compare( (Integer) b[3], (Integer) a[3] );
+				return byPrice != 0 ? byPrice : ((String) a[2]).compareTo( (String) b[2] );
+			}
+		} );
+
+		for (Object[] g : goods) {
+			final Class<?> cls = (Class<?>) g[0];
+			final String itemName = (String) g[2];
+			final int price = (Integer) g[3];
+			list.addItem( new ScrollingListPane.ListItem( new ItemSprite( (Item) g[1] ), Messages.get(this, "price", itemName, price) ) {
+				@Override
+				public boolean onClick( float x, float y ) {
+					if (inside( x, y )) {
+						offer( cls, itemName, price );
+						return true;
+					}
+					return false;
+				}
+			} );
 		}
 
 		list.holdLayout = false;

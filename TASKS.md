@@ -73,4 +73,5 @@ The cloud routine does the first unchecked task and checks it off. Smallest firs
 - [ ] Sandbox can't earn badges, so play a normal run to see the new Onyx badges pop up (World Hopper by floor 14 or so, Mod Sampler, Capybara Friend if a sewer floor has the nest)
 - [x] Songs. Name of the song playing at the top left (click it to like, ban, skip or add mid game), list opens on the playing song, add button on every song that defaults to the last playlist used, ban button that keeps a song out of every shuffle, and no more music cut out when clicking in the Songs window (2026-10-27)
 - [x] Boss crawl in segments (2026-10-27). Not a sandbox run any more. Starts in Transformation's surface town (the Dungeon Doctor's village), and before each floor's bosses the hero is back in the town with 1500 more gold, a merchant who sells every item without running out, and a glowing lake that heals 10 a turn and stops hunger
+- [x] Boss crawl merchant buys items too, and lists his goods from most to least expensive (2026-10-27)
 - [ ] Play a boss crawl and check the merchant prices, the gold amount and the pool glow on screen
