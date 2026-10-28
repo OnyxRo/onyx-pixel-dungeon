@@ -280,7 +280,8 @@ public class FinalLevel extends Level{
                 Mob mob = Dungeon.level.createMob();
                 mob.state = mob.WANDERING;
                 mob.pos = Dungeon.level.randomRespawnCell(mob);
-                GameScene.add(mob);
+                //abyssalnite, no free cell gave -1 and the add crashed
+                if (mob.pos != -1) GameScene.add(mob);
             }
         }
 
