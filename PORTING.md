@@ -773,3 +773,5 @@ Boss crawl ending (2026-10-27). After the last boss (Magic Ling's dragon) the ex
 - `BossCrawlTest` builds all 58 stops and checks each town has the merchant, the pool and the open manor stair.
 
 Journal crash (crash c700eb41). The journal catalog called `info()` on items it had seen, from the title screen where there is no hero. `Staff.info` read the hero, and the new `ItemSpriteTest` check found 75 more catalog items doing the same (Magic Ling bows, soul reaver spells, hero spells and others). `WndJournal.catalogText` now falls back to the plain description when `info()` fails, `Staff.info` is guarded, and `ItemSpriteTest` runs the catalog text of every item with no hero.
+
+Hero select crash (2026-10-27, crash eeca67f4). The bestiary loads every monster class on the hero select screen, before any hero exists. Magic Ling's MoRuoS and FayiNa built their chat lines in a static field that read the hero's name, so loading the class crashed. The lines are now built when spoken, and `ItemSpriteTest` loads every bestiary class with no hero.

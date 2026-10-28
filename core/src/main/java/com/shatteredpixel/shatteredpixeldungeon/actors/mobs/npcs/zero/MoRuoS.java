@@ -35,15 +35,18 @@ public class MoRuoS extends NTNPC {
         super.restoreFromBundle(bundle);
         first = bundle.getBoolean(FIRST);
     }
-    private static String[] TXT_RANDOM = {
-            Messages.get(MoRuoS.class,"roll1"),
-            Messages.get(MoRuoS.class,"roll2"),
-            Messages.get(MoRuoS.class,"roll3"),
-            Messages.get(MoRuoS.class,"roll4"),
-            Messages.get(MoRuoS.class,"roll5",Dungeon.hero.name()),
-            Messages.get(MoRuoS.class,"roll6"),
-            Messages.get(MoRuoS.class,"roll7"),
-    };
+    //built when spoken, the class is loaded by the bestiary on the hero select screen where there is no hero (crash eeca67f4)
+    private static String[] txtRandom() {
+        return new String[]{
+                Messages.get(MoRuoS.class,"roll1"),
+                Messages.get(MoRuoS.class,"roll2"),
+                Messages.get(MoRuoS.class,"roll3"),
+                Messages.get(MoRuoS.class,"roll4"),
+                Messages.get(MoRuoS.class,"roll5",Dungeon.hero.name()),
+                Messages.get(MoRuoS.class,"roll6"),
+                Messages.get(MoRuoS.class,"roll7"),
+        };
+    }
 
     @Override
     public boolean interact(Char c) {
@@ -60,7 +63,8 @@ public class MoRuoS extends NTNPC {
             });
             first=false;
         }else {
-            yell(TXT_RANDOM[Random.Int(TXT_RANDOM.length)]);
+            String[] lines = txtRandom();
+            yell(lines[Random.Int(lines.length)]);
         }
 
         return true;

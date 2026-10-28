@@ -23,6 +23,18 @@ public class ItemSpriteTest {
 	public static void main( String[] args ) throws Exception {
 		TestBoot.boot();
 		int failures = 0, checks = 0;
+		//the bestiary loads every monster class on the hero select screen, before any hero exists (crash eeca67f4)
+		com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero = null;
+		for (com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary b : com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary.values()) {
+			for (Class<?> cls : b.entities()) {
+				try {
+					Class.forName( cls.getName(), true, cls.getClassLoader() );
+				} catch (Throwable t) {
+					failures++;
+					System.out.println( "FAIL: " + cls.getName() + " cannot load with no hero, " + (t.getCause() != null ? t.getCause() : t) );
+				}
+			}
+		}
 		for (Catalog cat : Catalog.values()) {
 			for (Class<?> cls : cat.items()) {
 				if (!Item.class.isAssignableFrom( cls )) continue;

@@ -69,16 +69,19 @@ public class FayiNa extends NTNPC {
     }
 
 
-    private static String[] TXT_RANDOM = {
-            Messages.get(FayiNa.class,"roll1", Dungeon.hero.name()),
-            Messages.get(FayiNa.class,"roll2"),
-            Messages.get(FayiNa.class,"roll3"),
-            Messages.get(FayiNa.class,"roll4"),
-            Messages.get(FayiNa.class,"roll5"),
-            Messages.get(FayiNa.class,"roll6"),
-            Messages.get(FayiNa.class,"roll7"),
-            Messages.get(FayiNa.class,"roll8"),
-    };
+    //built when spoken, the class is loaded by the bestiary on the hero select screen where there is no hero (crash eeca67f4)
+    private static String[] txtRandom() {
+        return new String[]{
+                Messages.get(FayiNa.class,"roll1", Dungeon.hero.name()),
+                Messages.get(FayiNa.class,"roll2"),
+                Messages.get(FayiNa.class,"roll3"),
+                Messages.get(FayiNa.class,"roll4"),
+                Messages.get(FayiNa.class,"roll5"),
+                Messages.get(FayiNa.class,"roll6"),
+                Messages.get(FayiNa.class,"roll7"),
+                Messages.get(FayiNa.class,"roll8"),
+        };
+    }
 
     @Override
     public boolean interact(Char c) {
@@ -96,7 +99,8 @@ public class FayiNa extends NTNPC {
                 yell(Messages.get(ClearElemtGuard.class, "no_road",hero.name()));
                 progress++;
             }
-            yell(TXT_RANDOM[Random.Int(TXT_RANDOM.length)]);
+            String[] lines = txtRandom();
+            yell(lines[Random.Int(lines.length)]);
         } else {
             if (first) {
                 Game.runOnRenderThread(new Callback() {
