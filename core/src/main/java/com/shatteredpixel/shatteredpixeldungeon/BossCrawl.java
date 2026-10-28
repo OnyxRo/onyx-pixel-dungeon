@@ -14,7 +14,7 @@ import java.util.HashSet;
 
 /**
  * Boss crawl, a run that is only boss floors (an ordinary run, not a sandbox one). It goes through five segments,
- * the floor 5 bosses first and the floor 25 bosses last, Shattered's own boss first in each. Before each segment
+ * the floor 5 bosses first and the floor 25 bosses last, each floor's easiest boss first (see RANKS and difficulty). Before each segment
  * the hero stops in Transformation's surface town (with the Dungeon Doctor), gets SEGMENT_GOLD to spend at the merchant (CrawlMerchant, every item,
  * never runs out) and can rest in the glowing lake. The manor stair leads on to the segment's first boss.
  * The last stop is the Amulet floor, taking the Amulet there ends the run and ranks it like a normal win.
@@ -33,14 +33,55 @@ public class BossCrawl {
 	//a readable name for each stop, in the same order
 	private static ArrayList<String> names;
 
-	/** How many of each segment's bosses the run goes through, in quarters. 1 easy, 2 medium, 3 hard, 4 insane (all of them). Saved with the run. */
+	/**
+	 * How hard the run is, 1 easy, 2 medium, 3 hard, 4 insane. Each floor's bosses are sorted from easiest
+	 * to hardest by RANKS and split into four groups of about the same size. Easy fights the easiest group,
+	 * medium the two easiest, hard three and insane every boss. Saved with the run.
+	 */
 	public static int difficulty = 4;
 
-	//the seed, difficulty and banned mods the list was built for, it is built again when any of them changes
+	//each floor's bosses from easiest to hardest, by the simple class name of the boss floor.
+	//Ranked from their health, damage and tricks (2026-10-28). A boss missing here goes last, so only insane gets it
+	private static final String[][] RANKS = {
+		//floor 5
+		{ "SewerBossUsurperLevel", "GardenBossLevel", "SewerBossLevel",
+		  "SewerBossGooLevel", "Forest", "ForestBossLevel",
+		  "CrabKingBossLevel", "ForestPoisonBossLevel", "SLMKingLevel",
+		  "SkyGooBossLevel", "ForestHardBossLevel" },
+		//floor 10
+		{ "OldPrisonBossLevel", "PrisonBossLevel", "CursedTenguBossLevel",
+		  "NewPrisonBossLevel", "DeepShadowLevel", "ColdhouseBossLevel",
+		  "Gnoll", "CursedPrisonBossLevel", "GreenStlingBossLevel",
+		  "ColdChestBossLevel", "TransformationRunBossLevel" },
+		//floor 15
+		{ "OldCavesBossLevel", "CavesBossLevel", "CaveTwoBossLevel",
+		  "ForgeBossLevel", "CavesGirlDeadLevel", "RogerBossLevel",
+		  "NewCavesBossLevel", "AncientMysteryCityBossLevel", "ShopBossLevel",
+		  "CursedCavesBossLevel", "TransformationRunBossLevel" },
+		//floor 20
+		{ "OldCityBossLevel", "CityBossLevel", "DwarfMasterBossLevel",
+		  "DwarfGeneralBossLevel", "CitadelBossLevel", "CursedCityBossLevel",
+		  "TransformationRunBossLevel" },
+		//floor 25
+		{ "OldHallsBossLevel", "DragonBossLevel", "HallsBossLevel",
+		  "YogGodHardBossLevel", "LabsBossLevel", "TransformationRunBossLevel",
+		  "CursedHallsBossLevel", "VoidBossLevel", "FinalLevel" },
+	};
+
+	//boss floors that are an exact copy of another one already in the list
+	private static final HashSet<String> COPIES = new HashSet<>( java.util.Arrays.asList(
+		"CursedSewerBossLevel",	//Reforged's Goo floor line for line
+		"NewCityBossLevel",		//Shattered's Dwarf King in another arena
+		"NewHallsBossLevel"		//Shattered's Yog-Dzewa in another arena
+	) );
+
+	private static final String[] SHATTERED_LEVELS = { "SewerBossLevel", "PrisonBossLevel", "CavesBossLevel", "CityBossLevel", "HallsBossLevel" };
+
+	//the difficulty and banned mods the list was built for, it is built again when either changes
 	private static String builtFor = null;
 
 	public static ArrayList<int[]> stops(){
-		String key = Dungeon.seed + ":" + difficulty + ":" + bannedKey();
+		String key = difficulty + ":" + bannedKey();
 		if (stops != null && !key.equals( builtFor )) stops = null;
 		builtFor = key;
 		if (stops == null) {
@@ -51,22 +92,45 @@ public class BossCrawl {
 			for (int depth = 5; depth <= 25; depth += 5) {
 				stops.add( new int[]{ -3, depth, 0 } );
 				names.add( "Town, before the floor " + depth + " bosses" );
-				stops.add( new int[]{ -1, depth, 0 } );
-				names.add( "Shattered " + shattered[depth/5 - 1] );
-				int segmentStart = stops.size() - 1;
+
+				ArrayList<int[]> segStops = new ArrayList<>();
+				ArrayList<String> segNames = new ArrayList<>();
+				final ArrayList<String> segKeys = new ArrayList<>();
+				segStops.add( new int[]{ -1, depth, 0 } );
+				segNames.add( "Shattered " + shattered[depth/5 - 1] );
+				segKeys.add( SHATTERED_LEVELS[depth/5 - 1] );
 				for (int w = 0; w < WorldShuffle.worldCount(); w++) {
 					//a mod banned in the title screen's mods list sends none of its bosses
 					if (WorldShuffle.isBanned( WorldShuffle.modName( w ) )) continue;
 					Level[] vs = WorldShuffle.modBossVariants( w, depth );
 					for (int v = 0; v < vs.length; v++) {
+						String cls = vs[v].getClass().getSimpleName();
+						if (COPIES.contains( cls )) continue;
 						//several worlds of one mod share the same boss, keep it once
 						if (seen.add( depth + ":" + vs[v].getClass().getName() )) {
-							stops.add( new int[]{ w, depth, v } );
-							names.add( WorldShuffle.modName( w ).replace( " Pixel Dungeon", "" ) + ", " + readable( vs[v].getClass().getSimpleName() ) );
+							segStops.add( new int[]{ w, depth, v } );
+							segNames.add( WorldShuffle.modName( w ).replace( " Pixel Dungeon", "" ) + ", " + readable( cls ) );
+							segKeys.add( cls );
 						}
 					}
 				}
-				keepShare( segmentStart, depth );
+
+				//easiest first, then keep the groups this difficulty fights
+				final String[] rank = RANKS[depth/5 - 1];
+				ArrayList<Integer> order = new ArrayList<>();
+				for (int i = 0; i < segStops.size(); i++) order.add( i );
+				java.util.Collections.sort( order, new java.util.Comparator<Integer>() {
+					@Override
+					public int compare( Integer a, Integer b ) {
+						return Integer.compare( rankOf( rank, segKeys.get( a ) ), rankOf( rank, segKeys.get( b ) ) );
+					}
+				} );
+				int n = order.size();
+				int keep = Math.max( 1, (int)Math.ceil( n * Math.max( 1, Math.min( 4, difficulty ) ) / 4f ) );
+				for (int i = 0; i < Math.min( keep, n ); i++) {
+					stops.add( segStops.get( order.get( i ) ) );
+					names.add( segNames.get( order.get( i ) ) );
+				}
 			}
 			stops.add( new int[]{ -2, 26, 0 } );
 			names.add( "The Amulet of Yendor" );
@@ -74,23 +138,9 @@ public class BossCrawl {
 		return stops;
 	}
 
-	//below insane, keeps only difficulty quarters of this segment's bosses (at least one), picked by the run's seed, in their usual order
-	private static void keepShare( int start, int depth ){
-		int n = stops.size() - start;
-		int keep = Math.max( 1, (int)Math.ceil( n * Math.max( 1, Math.min( 4, difficulty ) ) / 4f ) );
-		if (keep >= n) return;
-		ArrayList<Integer> order = new ArrayList<>();
-		for (int i = 0; i < n; i++) order.add( i );
-		com.watabou.utils.Random.pushGenerator( Dungeon.seed + depth * 7919L );
-		com.watabou.utils.Random.shuffle( order );
-		com.watabou.utils.Random.popGenerator();
-		HashSet<Integer> kept = new HashSet<>( order.subList( 0, keep ) );
-		for (int i = n - 1; i >= 0; i--) {
-			if (!kept.contains( i )) {
-				stops.remove( start + i );
-				names.remove( start + i );
-			}
-		}
+	private static int rankOf( String[] rank, String cls ){
+		for (int i = 0; i < rank.length; i++) if (rank[i].equals( cls )) return i;
+		return rank.length;
 	}
 
 	private static String bannedKey(){
