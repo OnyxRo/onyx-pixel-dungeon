@@ -149,6 +149,41 @@ public class GameModesTest {
 			}
 			check( new com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHaste().isKnown(), "Superior Knowledge identifies potions" );
 
+			//Modded PD's test kit
+			newRun( 18, com.shatteredpixel.shatteredpixeldungeon.SmallModes.MODDED_KIT );
+			boolean plate = false;
+			for (Item i : Dungeon.hero.belongings) if (i instanceof com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor && i.level() == 100) plate = true;
+			check( plate, "Modded kit gives a +100 plate armor" );
+
+			//Speedrun PD Bones% and Old Speedrun PD's wand, remains on floor 1
+			for (int lvl = 1; lvl <= 10; lvl++) {
+				check( com.shatteredpixel.shatteredpixeldungeon.SmallModes.bonesItem( lvl ) != null, "bones item " + lvl );
+			}
+			for (String m : new String[]{ com.shatteredpixel.shatteredpixeldungeon.SmallModes.SPEEDRUN_BONES, com.shatteredpixel.shatteredpixeldungeon.SmallModes.OLDSPEEDRUN_WAND }) {
+				newRun( 19, m );
+				l = build( 1 );
+				boolean found = false;
+				for (com.shatteredpixel.shatteredpixeldungeon.items.Heap h : l.heaps.valueList()) {
+					if (h.type == com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type.REMAINS) found = true;
+				}
+				check( found, m + " puts remains on floor 1" );
+			}
+
+			//Speedrun PD timer, splits, finish and save
+			newRun( 20, com.shatteredpixel.shatteredpixeldungeon.SmallModes.SPEEDRUN_TIMER );
+			build( 1 );
+			com.shatteredpixel.shatteredpixeldungeon.SmallModes.time = 5000;
+			build( 2 );
+			check( com.shatteredpixel.shatteredpixeldungeon.SmallModes.splits[2] == 5000, "timer takes a split on floor 2" );
+			Bundle tb = new Bundle();
+			GameModes.store( tb );
+			com.shatteredpixel.shatteredpixeldungeon.SmallModes.time = 0;
+			GameModes.restore( tb );
+			check( com.shatteredpixel.shatteredpixeldungeon.SmallModes.time == 5000, "timer comes back after a save" );
+			com.shatteredpixel.shatteredpixeldungeon.SmallModes.onAmulet();
+			check( com.shatteredpixel.shatteredpixeldungeon.SmallModes.finished && com.shatteredpixel.shatteredpixeldungeon.SmallModes.personalBest() > 0, "amulet stops the timer and sets a best" );
+			check( hasText( com.shatteredpixel.shatteredpixeldungeon.SmallModes.categoryName() ), "category text" );
+
 			//Radar seed search, a ration of food is on floor 1 of most seeds
 			String old = RadarSearch.items( 0 );
 			RadarSearch.items( 0, "ration" );
