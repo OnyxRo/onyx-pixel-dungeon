@@ -79,20 +79,13 @@ public abstract class SeptiumPillar extends Mob {
         immunities.add( Blindness.class );
     }
 
+    //Onyx asked for the pillars' arts to be taken out (2026-10-28). They used one every turn, buffing monsters,
+    //giving the hero chaos and vertigo and firing beams, so now they only stand to be broken. zap() is kept but unused
     @Override
-    protected boolean act()
-
-        {
-            if (alignment == Alignment.NEUTRAL){
-                next();
-            }
-            else
-                {
-            onZapComplete();
-            state = PASSIVE;
-            }
-        return super.act();
-        }
+    protected boolean act() {
+        spend( TICK );
+        return true;
+    }
 
     @Override
     public void notice() {

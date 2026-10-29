@@ -84,8 +84,8 @@ public class Cthulhu extends Mob {
 	}
 
 	private static final int MAX_HP = 1200;
-	//the frame of the strike and the grasp where the tentacle is up, they play at half the page's speed
-	private static final int STRIKE_RISE = 9, GRASP_RISE = 9, FX_FPS = 6;
+	//the frame of the strike and the grasp where the tentacle is up, they play at the page's speed
+	private static final int STRIKE_RISE = 9, GRASP_RISE = 9, FX_FPS = 12;
 
 	private boolean awake = false;
 	private int phase = 1;
