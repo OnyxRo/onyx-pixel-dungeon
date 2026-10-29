@@ -63,8 +63,16 @@ The cloud routine does the first unchecked task and checks it off. Smallest firs
 
 - [x] Crash list. Every crash goes into crashes/crashes.jsonl, "fix bugs" works through it (2026-10-23)
 - [x] Journal item list crash from the Transformation item sheet (2026-10-23)
-- [ ] FirebloomHerb and SorrowmossHerb need description text
-- [ ] Bot check of the sandbox play tasks (2026-10-26). All headless tests passed. The every boss floor tour checked floors 0 to 251 and fixed two crashes (a Caves pylon dying before it powered up, and arriving at Transformation's Surface town). Floors 252 to 448 still need a tour run, the window was hidden for that part. Air challenge boss floor logs vision errors at the map edge (caught, not a crash). Hero bot games not run yet.
+- [x] FirebloomHerb and SorrowmossHerb need description text (2026-10-29, rewritten to match their effects)
+- [ ] Bot check of the sandbox play tasks (2026-10-26). All headless tests passed. The every boss floor tour checked floors 0 to 251 and fixed two crashes (a Caves pylon dying before it powered up, and arriving at Transformation's Surface town). Air challenge boss floor logs vision errors at the map edge (caught, not a crash).
+  - 2026-10-29. Full bot games (floor 1 to 26 and back, seed 4242) passed with no crash for Gunner, Samurai, Adventurer, Knight, Medic, Archer, Conjurer, Freeman, Necro hero, Tank, Tower priest, Explorer and Wraith. Engineer, Summoner and Rat King not run (paused). The boss tour from 252 ended by itself after 3 floors, at Forest Poison's boss floor (254) the bot's exit did not work ("used the exit, went false") and the tour quit. Find why, then run 254 onward.
+- [ ] Port the content of the 19 tiny Shattered mods (2026-10-29, paused). Five helper branches hold work in progress, none compiled yet. Each branch has a "paused" note with exact next steps at the end of its PORTING.md. Merge them into main one at a time once each compiles and passes check.sh.
+  - `worktree-agent-a78c077696a5ed1a2`, Elemental PD (Alchemist hero, four chapters after Yog with bosses, Elemental Stones). Items and talents copied, about 113 compile errors, `ElementalTalents` still to write.
+  - `worktree-agent-aa7f11d7f6aae4aa6`, Music Implant (written as game modes, never compiled) and Clairvoyant (not started, it adds an Apprentice hero).
+  - `worktree-agent-a256479b2be8b8ca5`, Modded, Speedrun and Old Speedrun as game modes (strings still to write). Lore (Goo hero), Trap Dungeon (36 monsters, 38 traps) and Re-Remixed (levels, town, skills) not started.
+  - `onyx/p6-oldmods` (in worktree agent-a509795745a9576f3), the six very old mods. Soft written as a game mode (never compiled). Buttered's Arena mode and 3oiDburg's two tweaks planned, not started. Shattered Ice Dungeon and Shattered Ice PD only add art that needs redrawing, Minecraft is only a retexture.
+  - `worktree-agent-a41ac4823a86cfe66`, the four Sprouted mods. Pictures copied, no code yet. Easier Sprouted becomes nine game modes plus the Unstable Wand, Regrown adds a Sacrificial Dagger and Monster Soul, Deistic adds races, race artifacts, Blastseed and the Arcane Singularity. Palantir has nothing portable (Sokoban floors that need Sprouted).
+  - `items.png` changes on several branches will conflict. Rerun each branch's `port-itemsprites.py` line on top of main instead of merging the picture.
 
 - [x] Boss crawl option on the title screen, bosses easiest to hardest (2026-10-26)
 - [x] Boss crawl ends on the Amulet floor after the last boss, taking the Amulet ends the run and ranks it (2026-10-27)
