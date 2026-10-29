@@ -487,6 +487,9 @@ public class Dungeon {
 		if ((sandbox || bossCrawl) && sandboxSpecial != null) {
 			level = sandboxSpecial.get();
 			sandboxSpecial = null;
+		} else if (branch == 0 && WuWuWu.skipsBoss(depth)) {
+			//zoidberg, a boss floor that rolled a plain floor instead
+			level = WuWuWu.plainFloor(depth);
 		} else if (crawl != null) {
 			level = crawl;
 		} else if (branch == 0 && sandbox && forcedWorld != -1 && WorldShuffle.canForce(depth)) {
@@ -749,6 +752,7 @@ public class Dungeon {
 		
 		hero.curAction = hero.lastAction = null;
 		TooCruel.switchLevel( hero ); //toocruel
+		WuWuWu.topUpGold(); //zoidberg
 
 		observe();
 		try {

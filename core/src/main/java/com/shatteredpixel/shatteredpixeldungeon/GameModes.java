@@ -143,6 +143,7 @@ public class GameModes {
 		}
 		TooCruel.register(); //toocruel
 		SoftPD.register(); //soft
+		WuWuWu.register(); //zoidberg
 	}
 
 	//other ports add their modes here, Too Cruel's modifiers among them
