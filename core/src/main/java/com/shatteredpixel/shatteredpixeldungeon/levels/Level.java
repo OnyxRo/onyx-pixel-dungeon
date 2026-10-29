@@ -1092,6 +1092,7 @@ public abstract class Level implements Bundlable {
 	}
 	
 	public void addItemToSpawn( Item item ) {
+		if (com.shatteredpixel.shatteredpixeldungeon.LoreGoo.noItems()) return; //lore
 		if (item != null) {
 			itemsToSpawn.add( item );
 		}

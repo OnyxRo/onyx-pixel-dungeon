@@ -649,6 +649,7 @@ public class WorldShuffle {
 	 */
 	public static int bossWorldFor( int depth ){
 		if (!Dungeon.bossLevel(depth)) return -1;
+		if (com.shatteredpixel.shatteredpixeldungeon.LoreGoo.on() && depth == 5) return -1; //lore, the Goo's story ends at Shattered's Goo
 		for (int d = depth - 4; d < depth; d++) {
 			if (!shuffles(d)) continue;
 			int world = worldFor(d);

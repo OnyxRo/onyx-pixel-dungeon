@@ -57,6 +57,7 @@ public class SmallModes {
 		//one level for each of the ten items Speedrun PD's bones window offered
 		GameModes.register(SPEEDRUN_BONES, MOD_SPEEDRUN, 10, "floor1_remains");
 		GameModes.register(OLDSPEEDRUN_WAND, MOD_OLDSPEEDRUN, 1, "floor1_remains");
+		LoreGoo.register(); //shattered pixel lore
 	}
 
 	/*****************************************************************

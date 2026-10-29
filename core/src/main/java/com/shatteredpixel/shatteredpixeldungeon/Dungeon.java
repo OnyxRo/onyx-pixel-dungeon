@@ -456,6 +456,7 @@ public class Dungeon {
 		GameModes.applyStartKits( hero ); //custom pd starting kits
 		SmallModes.applyStartKits( hero ); //modded pd test kit
 		SmallModes.reset(); //speedrun pd timer
+		LoreGoo.initHero( hero ); //lore, the hero becomes the Goo
 		TooCruel.postInit( hero ); //toocruel
 	}
 

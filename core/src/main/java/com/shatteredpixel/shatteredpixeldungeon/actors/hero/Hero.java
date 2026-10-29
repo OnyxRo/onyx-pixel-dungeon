@@ -1173,6 +1173,7 @@ public class Hero extends Char {
 	
 	@Override
 	public int damageRoll() {
+		if (com.shatteredpixel.shatteredpixeldungeon.LoreGoo.on()) return com.shatteredpixel.shatteredpixeldungeon.LoreGoo.damageRoll(this); //lore
 		KindOfWeapon wep = belongings.attackingWeapon();
 		int dmg;
 
@@ -1473,6 +1474,7 @@ public class Hero extends Char {
 	public boolean act() {
 
 		TransformationBossTalents.onHeroTurn(this); //transformation, Aquatic Recover
+		com.shatteredpixel.shatteredpixeldungeon.LoreGoo.onHeroTurn(this); //lore, water soaks into the Goo
 
 		//Shittened PD, now and then a friend request pops up
 		if (Random.Int(8000) == 0) {
@@ -1817,6 +1819,7 @@ public class Hero extends Char {
 	public boolean waitOrPickup = false;
 
 	private boolean actPickUp( HeroAction.PickUp action ) {
+		if (com.shatteredpixel.shatteredpixeldungeon.LoreGoo.blockPickUp(this)) { ready(); return false; } //lore
 		int dst = action.dst;
 		if (pos == dst) {
 			
@@ -2350,6 +2353,7 @@ public class Hero extends Char {
 	public int attackProc( final Char enemy, int damage ) {
 		damage = super.attackProc( enemy, damage );
 		damage = XunHeroes.attackProc( this, enemy, damage ); //xun
+		com.shatteredpixel.shatteredpixeldungeon.LoreGoo.attackProc( this, enemy ); //lore
 
 		KindOfWeapon wep;
 		if (RingOfForce.fightingUnarmed(this) && !RingOfForce.unarmedGetsWeaponEnchantment(this)){

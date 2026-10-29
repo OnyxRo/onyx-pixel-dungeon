@@ -184,6 +184,36 @@ public class GameModesTest {
 			check( com.shatteredpixel.shatteredpixeldungeon.SmallModes.finished && com.shatteredpixel.shatteredpixeldungeon.SmallModes.personalBest() > 0, "amulet stops the timer and sets a best" );
 			check( hasText( com.shatteredpixel.shatteredpixeldungeon.SmallModes.categoryName() ), "category text" );
 
+			//Shattered Pixel Lore, the Goo's story
+			newRun( 21, com.shatteredpixel.shatteredpixeldungeon.LoreGoo.GOO );
+			int carried = 0;
+			for (Item i : Dungeon.hero.belongings) carried++;
+			check( carried == 0, "the Goo starts with nothing, has " + carried );
+			check( Dungeon.hero.lvl == 2, "the Goo starts at level 2" );
+			check( Dungeon.hero.talents.get( 0 ).containsKey( com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.CAUSTIC_OOZE ) && Dungeon.hero.talents.get( 0 ).size() == 4, "the Goo has its own talents" );
+			for (int d = 1; d <= 5; d++) {
+				l = build( d );
+				int loot = 0;
+				for (com.shatteredpixel.shatteredpixeldungeon.items.Heap h : l.heaps.valueList()) for (Item i : h.items) {
+					if (i instanceof com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem || i instanceof com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion
+							|| i instanceof com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll || i instanceof com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand) loot++;
+				}
+				check( loot == 0 || d == 5, "Goo floor " + d + " holds no loot, has " + loot );
+			}
+			check( l instanceof com.shatteredpixel.shatteredpixeldungeon.levels.SewerBossLevel, "the Goo meets Shattered's Goo on floor 5, got " + l.getClass().getSimpleName() );
+			float before = com.shatteredpixel.shatteredpixeldungeon.LoreGoo.moisture( Dungeon.hero ).level();
+			for (int c = 0; c < l.length(); c++) if (l.water[c] && l.passable[c]) { Dungeon.hero.pos = c; break; }
+			com.shatteredpixel.shatteredpixeldungeon.LoreGoo.onHeroTurn( Dungeon.hero );
+			check( !l.water[Dungeon.hero.pos] || com.shatteredpixel.shatteredpixeldungeon.LoreGoo.moisture( Dungeon.hero ).level() > before, "water raises moisture" );
+			check( Dungeon.hero.damageRoll() >= 0, "the Goo rolls damage" );
+			check( com.shatteredpixel.shatteredpixeldungeon.LoreGoo.blockPickUp( Dungeon.hero ), "the Goo cannot pick up items" );
+			Bundle gb = new Bundle();
+			Dungeon.hero.storeInBundle( gb );
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero h2 = new com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero();
+			h2.restoreFromBundle( gb );
+			check( h2.talents.get( 0 ).containsKey( com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.SLIPPERY_SLIME ), "the Goo's talents come back after a save" );
+			check( hasText( Messages.get( com.shatteredpixel.shatteredpixeldungeon.scenes.GooWinScene.class, "text" ) ) && hasText( new com.shatteredpixel.shatteredpixeldungeon.actors.buffs.GooMoisture().desc() ), "Goo text" );
+
 			//Radar seed search, a ration of food is on floor 1 of most seeds
 			String old = RadarSearch.items( 0 );
 			RadarSearch.items( 0, "ration" );

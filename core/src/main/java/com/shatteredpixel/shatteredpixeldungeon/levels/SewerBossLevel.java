@@ -99,7 +99,7 @@ public class SewerBossLevel extends SewerLevel {
 		GooBossRoom gooRoom = GooBossRoom.randomGooRoom();
 		initRooms.add(gooRoom);
 		((FigureEightBuilder)builder).setLandmarkRoom(gooRoom);
-		initRooms.add(new RatKingRoom());
+		if (!com.shatteredpixel.shatteredpixeldungeon.LoreGoo.on()) initRooms.add(new RatKingRoom()); //lore
 		return initRooms;
 	}
 	
