@@ -1365,7 +1365,7 @@ public abstract class Mob extends Char {
 		dropBonus = com.shatteredpixel.shatteredpixeldungeon.Playstyles.lootChance(dropBonus); //radar, luck
 
 		//rearranged, the pink gem trinket
-		return lootChance * dropBonus * com.shatteredpixel.shatteredpixeldungeon.items.trinkets.PinkGem.dropChanceMultiplier();
+		return com.shatteredpixel.shatteredpixeldungeon.EspdModes.lootChance(lootChance * dropBonus * com.shatteredpixel.shatteredpixeldungeon.items.trinkets.PinkGem.dropChanceMultiplier()); //espd more loot
 	}
 	
 	public void rollToDropLoot(){

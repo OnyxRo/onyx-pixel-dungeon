@@ -142,6 +142,7 @@ public class GameModes {
 			MODES.add(new Mode(kit, MOD_CUSTOM, 1, null));
 		}
 		TooCruel.register(); //toocruel
+		EspdModes.register(); //espd
 	}
 
 	//other ports add their modes here, Too Cruel's modifiers among them

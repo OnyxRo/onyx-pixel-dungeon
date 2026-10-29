@@ -364,6 +364,8 @@ public class Ghost extends NPC {
 				if (summoner) itemLevel++;
 				weapon.upgrade(itemLevel);
 				armor.upgrade(itemLevel);
+				com.shatteredpixel.shatteredpixeldungeon.EspdModes.questReward(weapon); //espd quest tweaks
+				com.shatteredpixel.shatteredpixeldungeon.EspdModes.questReward(armor);
 
 				// 20% base chance to be enchanted, stored separately so status isn't revealed early
 				//we generate first so that the outcome doesn't affect the number of RNG rolls

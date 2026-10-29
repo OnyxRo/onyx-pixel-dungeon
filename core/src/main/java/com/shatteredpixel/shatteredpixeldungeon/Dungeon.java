@@ -454,6 +454,7 @@ public class Dungeon {
 		
 		GamesInProgress.selectedClass.initHero( hero );
 		GameModes.applyStartKits( hero ); //custom pd starting kits
+		EspdModes.onStart( hero ); //espd easy options
 		TooCruel.postInit( hero ); //toocruel
 	}
 
@@ -653,7 +654,7 @@ public class Dungeon {
 	}
 	
 	public static boolean shopOnLevel() {
-		return depth == 6 || depth == 11 || depth == 16;
+		return depth == 6 || depth == 11 || depth == 16 || EspdModes.moreShops(); //espd more shops
 	}
 	
 	//summoning, Summoning PD can change the chapter length, here it is always 5
