@@ -69,7 +69,7 @@ public class Gallery {
 	//floor and branch pairs for -Donyx.gallery.only=branches
 	private static final int[][] BRANCH_FLOORS = { {14, 2}, {15, 2}, {16, 2}, {17, 2}, {18, 2}, {8, 2}, {9, 2} };
 	private static int branchStep = 0;
-	private static boolean stayDone = false;
+	private static boolean finalBuffed, stayDone = false;
 
 	private static boolean started = false;
 	//-Donyx.gallery.only=mobs skips the worlds and goes straight to the monsters
@@ -208,6 +208,14 @@ public class Gallery {
 				stayDone = true;
 				com.shatteredpixel.shatteredpixeldungeon.levels.SpecialFloors.travel(
 						com.shatteredpixel.shatteredpixeldungeon.levels.FinalLevel::new );
+			}
+			//Onyx plays it with 200 strength and 5000 turns of invisibility
+			if (stayDone && !finalBuffed && Dungeon.level instanceof com.shatteredpixel.shatteredpixeldungeon.levels.FinalLevel
+					&& Dungeon.hero != null && Dungeon.hero.ready) {
+				finalBuffed = true;
+				Dungeon.hero.STR = 200;
+				com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect( Dungeon.hero,
+						com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility.class, 5000f );
 			}
 			return;
 		}

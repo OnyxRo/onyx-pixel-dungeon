@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChaosTime;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Effects;
@@ -58,9 +59,9 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 
 //Abyssalnite's final boss. Abyssalnite left him as a rat with 999999 health, the fight here follows Onyx's animation page.
-//He sleeps in the pit until every septium pillar is broken. He picks his targets the way every monster does
-//(chooseEnemy), so invisibility hides you and allies draw his attacks. Phase 1 has the tentacle strike, the slam
-//and the Void Grasp, the scream starts phase 2 and adds the mind blast, the third eye opens phase 3 and adds the eye beam.
+//He sleeps in the pit until every septium pillar is broken, calling monsters and slamming meanwhile. He picks his targets
+//the way every monster does (chooseEnemy), and nothing of his touches an invisible char. Phase 1 has the slam,
+//the scream starts phase 2 and adds the mind blast and Void Grasp, the third eye opens phase 3 and adds the eye beam.
 //All through the fight he crushes the first debuff on himself now and then. Beating him opens the way to the Yendor hall.
 public class Cthulhu extends Mob {
 
@@ -98,6 +99,9 @@ public class Cthulhu extends Mob {
 	//centres of the tentacle strikes shown with targets last turn
 	private int[] strikes = new int[0];
 	private int beamTarget = -1;
+	//while the pillars stand he calls a monster every few turns, up to a limit
+	private static final int SPAWN_EVERY = 6, SPAWN_MAX = 6;
+	private int spawnCD = 3;
 	private int slamPending = -1;
 
 	public int phase(){
@@ -154,18 +158,18 @@ public class Cthulhu extends Mob {
 			return true;
 		}
 
-		//While the pillars stand he cannot be hurt, but he lashes out in his sleep with slams and the Void Grasp
+		//While the pillars stand he cannot be hurt, but he calls monsters of the depth into the arena and slams
+		//anyone beside his outer tentacles
 		if (!awake){
+			spawnCD--;
+			if (spawnCD <= 0 && summon()) spawnCD = SPAWN_EVERY;
 			Char h = Dungeon.hero;
-			if (h != null && h.isAlive() && fieldOfView[h.pos] && h.invisible <= 0){
+			if (seen( h )){
 				enemy = h;
 				int slam = slamFor( h.pos );
 				if (slam >= 0 && slamCD <= 0){
 					markSlam( slam );
 					slamCD = 5;
-				} else if (graspCD <= 0 && h.buff( Roots.class ) == null && !h.flying){
-					graspCD = 8;
-					return grasp( h );
 				}
 			}
 			spend( TICK );
@@ -180,8 +184,10 @@ public class Cthulhu extends Mob {
 		}
 
 		//the usual monster rules, an invisible hero is not seen and allies can be picked
+		//chooseEnemy keeps an enemy that has turned invisible, so like Mob.act he only attacks one he can see
 		enemy = chooseEnemy();
-		if (enemy == null || !enemy.isAlive()){
+		enemySeen = seen( enemy );
+		if (!enemySeen){
 			spend( TICK );
 			return true;
 		}
@@ -196,7 +202,7 @@ public class Cthulhu extends Mob {
 		} else if (slam >= 0 && slamCD <= 0){
 			markSlam( slam );
 			slamCD = 4;
-		} else if (graspCD <= 0 && enemy.buff( Roots.class ) == null && !enemy.flying){
+		} else if (phase >= 2 && graspCD <= 0 && enemy.buff( Roots.class ) == null && !enemy.flying){
 			return grasp( enemy );
 		}
 
@@ -212,8 +218,13 @@ public class Cthulhu extends Mob {
 		sprite.parent.add( t );
 	}
 
+	//the usual monster rule, what he cannot see he cannot hit
+	private boolean seen( Char ch ){
+		return ch != null && ch.isAlive() && fieldOfView != null && fieldOfView[ch.pos] && ch.invisible <= 0;
+	}
+
 	private void hurt( Char ch, int dmg ){
-		if (ch == null || ch == this || !ch.isAlive()) return;
+		if (ch == null || ch == this || !ch.isAlive() || ch.invisible > 0) return;
 		ch.damage( dmg, this );
 		if (ch == Dungeon.hero && !ch.isAlive()){
 			Dungeon.fail( this );
@@ -224,7 +235,7 @@ public class Cthulhu extends Mob {
 	//sends a char flying away from a point, or a random way when it stands on it
 	//returns true when the char was thrown
 	private boolean knockBack( Char ch, int from, int power ){
-		if (ch == null || !ch.isAlive() || ch.properties().contains( Property.IMMOVABLE )) return false;
+		if (ch == null || !ch.isAlive() || ch.invisible > 0 || ch.properties().contains( Property.IMMOVABLE )) return false;
 		int dir;
 		if (ch.pos == from){
 			dir = PathFinder.NEIGHBOURS8[Random.Int( 8 )];
@@ -242,11 +253,13 @@ public class Cthulhu extends Mob {
 	//The tentacle strike, taken out of the fight by Onyx (2026-10-28). Only strikes marked in an older save still land.
 	//Red targets on the 3x3 round each centre, next turn a tentacle bursts up there, throws everyone
 	//in reach and sinks, leaving a hole of void you can fall into
-	//a broken pillar makes him thrash, his next slam or grasp comes at once
+	//a broken pillar makes him thrash, two monsters come at once and his next slam is ready
 	public void pillarBroken(){
 		if (awake || Dungeon.hero == null || !Dungeon.hero.isAlive()) return;
 		slamCD = 0;
-		graspCD = 0;
+		summon();
+		summon();
+		spawnCD = SPAWN_EVERY;
 		yell( Messages.get( this, "stir" ) );
 		if (onScreen()) Camera.main.shake( 3, 0.6f );
 	}
@@ -295,6 +308,32 @@ public class Cthulhu extends Mob {
 		//whoever stood on the centre falls in, unless the tentacle threw them clear
 		if (Dungeon.level instanceof FinalLevel) ((FinalLevel) Dungeon.level).addVoid( centre, !thrownOff );
 		if (onScreen()) Camera.main.shake( 3, 0.4f );
+	}
+
+	//Calls a monster of the depth up out of the dark, a few cells from the hero and hunting them,
+	//the way the Dwarf King and Yog call theirs. False when the arena is full or no cell is free
+	private boolean summon(){
+		Char h = Dungeon.hero;
+		if (h == null || !h.isAlive()) return false;
+		int count = 0;
+		for (Mob m : Dungeon.level.mobs){
+			if (m != this && m.alignment == Alignment.ENEMY && !(m instanceof SeptiumPillar)) count++;
+		}
+		if (count >= SPAWN_MAX) return false;
+		ArrayList<Integer> spots = new ArrayList<>();
+		for (int c = 0; c < Dungeon.level.length(); c++){
+			int d = Dungeon.level.distance( c, h.pos );
+			if (d >= 3 && d <= 7 && Dungeon.level.passable[c] && !Dungeon.level.solid[c]
+					&& !Dungeon.level.avoid[c] && !Dungeon.level.pit[c] && Actor.findChar( c ) == null) spots.add( c );
+		}
+		if (spots.isEmpty()) return false;
+		Mob m = Dungeon.level.createMob();
+		if (m == null) return false;
+		m.pos = Random.element( spots );
+		m.state = m.HUNTING;
+		GameScene.add( m );
+		if (onScreen()) ScrollOfTeleportation.appear( m, m.pos );
+		return true;
 	}
 
 	//The slam. One of the four outer floor tentacles whips flat along the floor beside it
@@ -365,7 +404,7 @@ public class Cthulhu extends Mob {
 		Callback hold = new Callback() {
 			@Override
 			public void call() {
-				if (!target.isAlive() || target.pos != cell) return;
+				if (!target.isAlive() || target.pos != cell || target.invisible > 0) return;
 				hurt( target, Random.NormalIntRange( 6, 10 ) );
 				if (target.isAlive()) Buff.prolong( target, Roots.class, 3f );
 				if (target == Dungeon.hero) GLog.w( Messages.get( Cthulhu.class, "grasp" ) );
@@ -408,7 +447,7 @@ public class Cthulhu extends Mob {
 		}
 		ArrayList<Char> minds = new ArrayList<>();
 		for (Char ch : Actor.chars()){
-			if (ch != this && ch.alignment != alignment && ch.isAlive() && fieldOfView[ch.pos]) minds.add( ch );
+			if (ch != this && ch.alignment != alignment && seen( ch )) minds.add( ch );
 		}
 		for (Char ch : minds){
 			hurt( ch, Random.NormalIntRange( 6, 12 ) );
@@ -568,6 +607,7 @@ public class Cthulhu extends Mob {
 		return true;
 	}
 
+	private static final String SPAWN = "spawn";
 	private static final String AWAKE = "awake";
 	private static final String PHASE = "phase";
 	private static final String BUSY = "busy";
@@ -586,6 +626,7 @@ public class Cthulhu extends Mob {
 		bundle.put( STRIKES, strikes );
 		bundle.put( BEAM, beamTarget );
 		bundle.put( SLAM, slamPending );
+		bundle.put( SPAWN, spawnCD );
 	}
 
 	@Override
@@ -608,6 +649,7 @@ public class Cthulhu extends Mob {
 		if (strikes == null) strikes = new int[0];
 		beamTarget = bundle.getInt( BEAM );
 		slamPending = bundle.contains( SLAM ) ? bundle.getInt( SLAM ) : -1;
+		if (bundle.contains( SPAWN )) spawnCD = bundle.getInt( SPAWN );
 		if (awake) BossHealthBar.assignBoss( this );
 	}
 }
