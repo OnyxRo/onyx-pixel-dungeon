@@ -161,6 +161,7 @@ public class HighGrass {
 				if (Random.Float() < lootChance) {
 					level.drop(new Dewdrop(), pos).sprite.drop();
 				}
+				com.shatteredpixel.shatteredpixeldungeon.SoftPD.grassLoot(level, pos); //soft, useful things in tall grass
 			}
 
 			if (ch != null) {
