@@ -372,6 +372,7 @@ public class ShopRoom extends SpecialRoom {
 		//use a new generator here to prevent items in shop stock affecting levelgen RNG (e.g. sandbags)
 		//we can use a random long for the seed as it will be the same long every time
 		Random.pushGenerator(Random.Long());
+			itemsToSpawn.addAll(com.shatteredpixel.shatteredpixeldungeon.MusicImplant.shopItems()); //musicimplant, torches and wax
 			Random.shuffle(itemsToSpawn);
 			com.shatteredpixel.shatteredpixeldungeon.actors.XunHooks.improveShopItems(itemsToSpawn); //xun, gold member card
 		Random.popGenerator();

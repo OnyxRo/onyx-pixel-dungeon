@@ -456,6 +456,7 @@ public class Hero extends Char {
 		}
 		HT = TransformationTalents.maxHP(this, HT); //Transformation PD talent catalog
 		HT = RBAHero.maxHP(this, HT); //rebluearchive
+		HT = com.shatteredpixel.shatteredpixeldungeon.MusicImplant.maxHP(this, HT); //musicimplant, sturdy, frail and satiation
 		if (HT < 1) HT = 1;
 
 		if (boostHP){
@@ -481,6 +482,7 @@ public class Hero extends Char {
 		}
 		strBonus += TransformationTalents.strBonus(this); //Transformation PD talent catalog
 		strBonus += RBAHero.strBonus(this, STR); //rebluearchive
+		strBonus += com.shatteredpixel.shatteredpixeldungeon.MusicImplant.strBonus(this); //musicimplant
 
 		return STR + strBonus;
 	}
@@ -816,6 +818,7 @@ public class Hero extends Char {
 		if (heroClass == HeroClass.DRAGONKNIGHT) Buff.affect( this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sear.class );
 		ensureSubclassBuffs();
 		com.shatteredpixel.shatteredpixeldungeon.TooCruel.heroLive(this); //toocruel
+		com.shatteredpixel.shatteredpixeldungeon.MusicImplant.heroLive(this); //musicimplant
 	}
 	
 	public int tier() {
@@ -967,6 +970,7 @@ public class Hero extends Char {
 		if (accuracy == Float.POSITIVE_INFINITY) return INFINITE_ACCURACY;
 		int rbaSkill = attackSkill + RBAHero.accuracyBonus(this); //rebluearchive, Noa's Taking Aim
 		accuracy *= XunHeroes.accuracyFactor(this) * XunTalents.accuracy(this, target); //xun
+		accuracy *= com.shatteredpixel.shatteredpixeldungeon.MusicImplant.accuracyFactor(this); //musicimplant, horror
 
 		if (!RingOfForce.fightingUnarmed(this)) {
 			accuracy *= TransformationTalents.accuracy(this, target); //Transformation PD talent catalog
@@ -1039,6 +1043,7 @@ public class Hero extends Char {
 		evasion = RBAHero.evasion(this, evasion); //rebluearchive
 		
 		evasion *= TransformationTalents.innerPeace(this); //transformation, Inner Peace
+		evasion *= com.shatteredpixel.shatteredpixeldungeon.MusicImplant.evasionFactor(this); //musicimplant
 		evasion += TransformationTalents.evasionBonus(this); //Transformation PD talent catalog
 		evasion += SummoningHooks.evasion(this); //summoning
 
@@ -1232,6 +1237,7 @@ public class Hero extends Char {
 		float speed = super.speed();
 
 		speed *= RingOfHaste.speedMultiplier(this);
+		speed *= com.shatteredpixel.shatteredpixeldungeon.MusicImplant.speedFactor(this); //musicimplant
 		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Overstuffed.class) != null) {
 			speed *= 0.8f;
 		}
@@ -1292,6 +1298,7 @@ public class Hero extends Char {
 	@Override
 	public boolean canSurpriseAttack(){
 		if (com.shatteredpixel.shatteredpixeldungeon.TooCruel.on(com.shatteredpixel.shatteredpixeldungeon.TooCruel.PREPARED_ENEMIES)) return false; //toocruel
+		if (com.shatteredpixel.shatteredpixeldungeon.MusicImplant.noSurprise(this)) return false; //musicimplant
 		KindOfWeapon w = belongings.attackingWeapon();
 		if (!(w instanceof Weapon))             return true;
 		if (RingOfForce.fightingUnarmed(this))  return true;
@@ -1348,6 +1355,7 @@ public class Hero extends Char {
 		}
 
 		float delay = TransformationTalents.attackDelayFactor(this); //transformation, Relentless Combat
+		delay *= com.shatteredpixel.shatteredpixeldungeon.MusicImplant.attackDelayFactor(this); //musicimplant, adrenaline
 		//rearranged, Re-ARranged's talents give the hero adrenaline
 		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline.class) != null) delay /= 1.5f;
 		//Dragonic PD, Fortify also speeds up attacks
@@ -2350,6 +2358,7 @@ public class Hero extends Char {
 	public int attackProc( final Char enemy, int damage ) {
 		damage = super.attackProc( enemy, damage );
 		damage = XunHeroes.attackProc( this, enemy, damage ); //xun
+		damage = com.shatteredpixel.shatteredpixeldungeon.MusicImplant.attackProc( this, enemy, damage ); //musicimplant
 
 		KindOfWeapon wep;
 		if (RingOfForce.fightingUnarmed(this) && !RingOfForce.unarmedGetsWeaponEnchantment(this)){
@@ -2965,6 +2974,7 @@ public class Hero extends Char {
 	
 	public void earnExp( int exp, Class source ) {
 		exp = com.shatteredpixel.shatteredpixeldungeon.TooCruel.earnExp(this, exp, source); //toocruel
+		exp = com.shatteredpixel.shatteredpixeldungeon.MusicImplant.expGain(exp, source); //musicimplant, quick learner
 
 		//xp granted by ascension challenge is only for on-exp gain effects
 		if (source != AscensionChallenge.class) {
@@ -3097,6 +3107,7 @@ public class Hero extends Char {
 	}
 	
 	public boolean isStarving() {
+		if (com.shatteredpixel.shatteredpixeldungeon.MusicImplant.satiationOn()) return com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Satiation.isStarving(this); //musicimplant
 		return Buff.affect(this, Hunger.class).isStarving();
 	}
 	
@@ -3659,7 +3670,7 @@ public class Hero extends Char {
 	//rearranged, the Specialist's stealth talent, gun attachments, obfuscation on the Knight's shield
 	@Override
 	public float stealth() {
-		return RBAHero.stealth(this, RearrangedHero.stealth(this, super.stealth()) + BAHero.stealthBonus(this) + XunTalents.stealthBonus(this)); //xun, the Incubus //bluearchive, rebluearchive
+		return RBAHero.stealth(this, RearrangedHero.stealth(this, super.stealth()) + BAHero.stealthBonus(this) + XunTalents.stealthBonus(this) + com.shatteredpixel.shatteredpixeldungeon.MusicImplant.stealthBonus()); //xun, the Incubus //bluearchive, rebluearchive //musicimplant
 	}
 
 	public boolean search( boolean intentional ) {

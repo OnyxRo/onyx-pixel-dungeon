@@ -66,7 +66,7 @@ public class Belongings implements Iterable<Item> {
 				//secondary weapons still occupy an inv. slot
 				cap--;
 			}
-			return cap;
+			return cap + com.shatteredpixel.shatteredpixeldungeon.MusicImplant.backpackBonus(); //musicimplant, organized and disorganized
 		}
 	}
 

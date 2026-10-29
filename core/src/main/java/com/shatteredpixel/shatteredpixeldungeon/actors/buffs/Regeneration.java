@@ -103,6 +103,7 @@ public class Regeneration extends Buff {
 				delay = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.regenDelay(target, delay); //rearranged
 
 				delay = com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.soulRegenDelay(target, delay); //summoning
+				delay = com.shatteredpixel.shatteredpixeldungeon.MusicImplant.regenDelay(target, delay); //musicimplant, satiation
 				//Ryuse's PD helmets
 				delay *= com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.regenDelay(target);
 				//transformation, Strengthen Chalice and Weaken Chalice

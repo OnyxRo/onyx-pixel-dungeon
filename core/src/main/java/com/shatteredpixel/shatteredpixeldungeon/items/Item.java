@@ -177,6 +177,7 @@ public class Item implements Bundlable {
 	}
 
 	public void doThrow( Hero hero ) {
+		if (com.shatteredpixel.shatteredpixeldungeon.MusicImplant.clumsyFails(hero, this, false)) return; //musicimplant
 		GameScene.selectCell(thrower);
 	}
 	
@@ -808,7 +809,7 @@ public class Item implements Bundlable {
 		Char enemy = Actor.findChar( cell );
 		QuickSlotButton.target(enemy);
 		
-		final float delay = castDelay(user, cell);
+		final float delay = com.shatteredpixel.shatteredpixeldungeon.MusicImplant.actTime(this, castDelay(user, cell), false); //musicimplant, dexterous
 
 		if (enemy != null) {
 			((MissileSprite) user.sprite.parent.recycle(MissileSprite.class)).

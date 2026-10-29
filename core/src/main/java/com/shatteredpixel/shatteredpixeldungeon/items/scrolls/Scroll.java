@@ -197,6 +197,7 @@ public abstract class Scroll extends Item {
 				GLog.n( Messages.get(this, "cursed") );
 			} else {
 				if (hero.knowledgeGated()) hero.loseKnowl( 1 );
+				if (com.shatteredpixel.shatteredpixeldungeon.MusicImplant.illiterateRead(hero, this)) return; //musicimplant
 				doRead();
 			}
 

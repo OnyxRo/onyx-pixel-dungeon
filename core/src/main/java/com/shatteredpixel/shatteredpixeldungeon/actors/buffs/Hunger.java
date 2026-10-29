@@ -63,6 +63,7 @@ public class Hunger extends Buff implements Hero.Doom {
 	@Override
 	public boolean act() {
 		if (com.shatteredpixel.shatteredpixeldungeon.TooCruel.steelBody()) { diactivate(); return true; } //toocruel, Certainty of Steel
+		if (com.shatteredpixel.shatteredpixeldungeon.MusicImplant.satiationOn() && target instanceof Hero) { level = 0; spend(TICK); return true; } //musicimplant, satiation takes over
 
 		//the glowing lake in Transformation's surface town (the boss crawl's village) heals 10 a turn and keeps hunger away
 		if (target instanceof Hero && target.isAlive()
@@ -116,6 +117,7 @@ public class Hunger extends Buff implements Hero.Doom {
 				}
 				hungerDelay *= com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.hungerDelay(target);
 
+				hungerDelay /= com.shatteredpixel.shatteredpixeldungeon.MusicImplant.hungerRate(); //musicimplant, on diet and big stomach
 				float newLevel = level + (1f/hungerDelay) * com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.hungerRate(hero); //transformation, Eater
 				//Shittened PD's Acceleration and Lavage make the stomach run
 				if (target.buff(Acceleration.class) != null) newLevel += 4f / hungerDelay;
@@ -186,6 +188,7 @@ public class Hunger extends Buff implements Hero.Doom {
 
 	public void affectHunger(float energy, boolean overrideLimits ) {
 		if (com.shatteredpixel.shatteredpixeldungeon.TooCruel.steelBody()) return; //toocruel
+		if (com.shatteredpixel.shatteredpixeldungeon.MusicImplant.feedSatiation(target, energy)) return; //musicimplant
 
 		if (energy < 0 && target.buff(WellFed.class) != null){
 			target.buff(WellFed.class).left += energy;
