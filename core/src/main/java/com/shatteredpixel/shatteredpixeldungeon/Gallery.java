@@ -209,13 +209,21 @@ public class Gallery {
 				com.shatteredpixel.shatteredpixeldungeon.levels.SpecialFloors.travel(
 						com.shatteredpixel.shatteredpixeldungeon.levels.FinalLevel::new );
 			}
-			//Onyx plays it with 200 strength and 5000 turns of invisibility
-			if (stayDone && !finalBuffed && Dungeon.level instanceof com.shatteredpixel.shatteredpixeldungeon.levels.FinalLevel
-					&& Dungeon.hero != null && Dungeon.hero.ready) {
-				finalBuffed = true;
-				Dungeon.hero.STR = 200;
-				com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect( Dungeon.hero,
-						com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility.class, 5000f );
+			//Onyx plays it with 200 strength, a +30 spirit bow and invisibility that comes back at once whenever it breaks
+			if (stayDone && Dungeon.level instanceof com.shatteredpixel.shatteredpixeldungeon.levels.FinalLevel
+					&& Dungeon.hero != null && Dungeon.hero.isAlive()) {
+				if (!finalBuffed && Dungeon.hero.ready) {
+					finalBuffed = true;
+					Dungeon.hero.STR = 200;
+					com.shatteredpixel.shatteredpixeldungeon.items.Item bow =
+							new com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow().upgrade( 30 );
+					bow.identify();
+					if (!bow.collect()) Dungeon.level.drop( bow, Dungeon.hero.pos );
+				}
+				if (Dungeon.hero.buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility.class ) == null) {
+					com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect( Dungeon.hero,
+							com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility.class, 5000f );
+				}
 			}
 			return;
 		}
