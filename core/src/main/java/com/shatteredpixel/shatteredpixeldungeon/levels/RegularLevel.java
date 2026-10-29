@@ -578,6 +578,9 @@ public abstract class RegularLevel extends Level {
 
 		Random.pushGenerator( Random.Long() );
 			ArrayList<Item> bonesItems = Bones.get();
+			//speedrun pd and old speedrun pd, chosen remains on floor 1
+			ArrayList<Item> modRemains = com.shatteredpixel.shatteredpixeldungeon.SmallModes.floorOneRemains();
+			if (!modRemains.isEmpty()) bonesItems = modRemains;
 			if (bonesItems != null) {
 				int cell = randomDropCell();
 				if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {

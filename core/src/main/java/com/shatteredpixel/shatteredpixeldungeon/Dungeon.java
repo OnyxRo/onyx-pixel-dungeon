@@ -454,6 +454,8 @@ public class Dungeon {
 		
 		GamesInProgress.selectedClass.initHero( hero );
 		GameModes.applyStartKits( hero ); //custom pd starting kits
+		SmallModes.applyStartKits( hero ); //modded pd test kit
+		SmallModes.reset(); //speedrun pd timer
 		TooCruel.postInit( hero ); //toocruel
 	}
 
@@ -719,6 +721,7 @@ public class Dungeon {
 		hero.pos = pos;
 
 		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper.Quest.spawn(level);
+		SmallModes.onArrive(depth); //speedrun pd splits
 		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper.Quest.checkNeedToKill();
 
 		if (hero.buff(AscensionChallenge.class) != null){
