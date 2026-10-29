@@ -86,6 +86,8 @@ public class Cthulhu extends Mob {
 	private static final int MAX_HP = 1200;
 	//the frame of the strike and the grasp where the tentacle is up, they play at the page's speed
 	private static final int STRIKE_RISE = 9, GRASP_RISE = 9, FX_FPS = 12;
+	//Onyx turned the tentacle popping out of the floor off for now (2026-10-28), the strike lands at once and leaves its crater
+	private static final boolean STRIKE_ANIMATION = false;
 
 	private boolean awake = false;
 	private int phase = 1;
@@ -223,8 +225,9 @@ public class Cthulhu extends Mob {
 	}
 
 	//sends a char flying away from a point, or a random way when it stands on it
-	private void knockBack( Char ch, int from, int power ){
-		if (ch == null || !ch.isAlive() || ch.properties().contains( Property.IMMOVABLE )) return;
+	//returns true when the char was thrown
+	private boolean knockBack( Char ch, int from, int power ){
+		if (ch == null || !ch.isAlive() || ch.properties().contains( Property.IMMOVABLE )) return false;
 		int dir;
 		if (ch.pos == from){
 			dir = PathFinder.NEIGHBOURS8[Random.Int( 8 )];
@@ -234,7 +237,9 @@ public class Cthulhu extends Mob {
 			dir = dx + dy * w;
 		}
 		Ballistica trajectory = new Ballistica( ch.pos, ch.pos + dir, Ballistica.MAGIC_BOLT );
-		if (trajectory.dist > 0) WandOfBlastWave.throwChar( ch, trajectory, power );
+		if (trajectory.dist <= 0) return false;
+		WandOfBlastWave.throwChar( ch, trajectory, power );
+		return true;
 	}
 
 	//The tentacle strike. Red targets on the 3x3 round each centre, next turn a tentacle bursts up there, throws everyone
@@ -271,8 +276,9 @@ public class Cthulhu extends Mob {
 		final int[] cells = strikes;
 		strikes = new int[0];
 		spend( TICK );
-		if (!onScreen()){
+		if (!onScreen() || !STRIKE_ANIMATION){
 			for (int c : cells) strikeHits( c );
+			if (onScreen()) Sample.INSTANCE.play( Assets.Sounds.ROCKS );
 			return true;
 		}
 		int w = Dungeon.level.width();
@@ -301,11 +307,14 @@ public class Cthulhu extends Mob {
 			Char ch = Actor.findChar( c );
 			if (ch != null && ch != this) hit.add( ch );
 		}
+		boolean thrownOff = false;
 		for (Char ch : hit){
 			hurt( ch, Random.NormalIntRange( 18, 28 ) );
-			knockBack( ch, centre, 3 );
+			boolean thrown = knockBack( ch, centre, 3 );
+			if (ch.pos == centre && thrown) thrownOff = true;
 		}
-		if (Dungeon.level instanceof FinalLevel) ((FinalLevel) Dungeon.level).addVoid( centre );
+		//whoever stood on the centre falls in, unless the tentacle threw them clear
+		if (Dungeon.level instanceof FinalLevel) ((FinalLevel) Dungeon.level).addVoid( centre, !thrownOff );
 		if (onScreen()) Camera.main.shake( 3, 0.4f );
 	}
 

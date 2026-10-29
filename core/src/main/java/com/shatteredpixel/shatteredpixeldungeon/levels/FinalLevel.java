@@ -399,12 +399,14 @@ public class FinalLevel extends Level{
 
 
     //Cthulhu's pit. The 5x5 pit and the cells of his eight floor tentacles cannot be walked on while he lives.
-    //His tentacle strikes leave holes of void, the same chasm as the rest of the arena, at most MAX_VOIDS, the oldest closes
-    //when a new one opens. Falling in while he lives does not leave the fight, the void throws you back hurt.
+    //His tentacle strikes leave craters drawn from the animation page that act like void, a pit you can fall into,
+    //at most MAX_VOIDS, the oldest closes when a new one opens. Falling in while he lives does not leave the fight,
+    //the void throws you back hurt.
     private static final String VOIDS = "voids";
     private static final int MAX_VOIDS = 12;
     private static final int CENTRE = WIDTH*21+20;
     private final ArrayList<Integer> voids = new ArrayList<>();
+    private final ArrayList<Image> voidImages = new ArrayList<>();
 
     private static boolean inPit( int cell ){
         int x = cell % WIDTH, y = cell / WIDTH;
@@ -436,27 +438,51 @@ public class FinalLevel extends Level{
             if (bossAlive() && (inPit( i ) || isTentacle( i ))){
                 passable[i] = false;
                 avoid[i] = false;
+            } else if (voids != null && voids.contains( i )){
+                voidFlags( i );
             }
         }
     }
 
+    //the same flags as a chasm, the floor tile stays and the crater art is drawn over it
+    private void voidFlags( int cell ){
+        passable[cell] = false;
+        avoid[cell] = true;
+        pit[cell] = true;
+    }
+
     //turns a floor cell into void, returns true when a new hole was made
-    public boolean addVoid( int cell ){
+    public boolean addVoid( int cell, boolean drop ){
         if (!insideMap( cell ) || !passable[cell] || voids.contains( cell ) || cell == entrance) return false;
         if (map[cell] != Terrain.EMPTY && map[cell] != Terrain.EMPTY_DECO && map[cell] != Terrain.EMPTY_SP && map[cell] != Terrain.GRASS) return false;
         if (voids.size() >= MAX_VOIDS){
             int old = voids.remove( 0 );
+            if (!voidImages.isEmpty()) voidImages.remove( 0 ).killAndErase();
+            //holes from older builds were real chasm tiles
             if (map[old] == Terrain.CHASM){
                 set( old, Terrain.EMPTY, this );
                 GameScene.updateMap( old );
+            } else {
+                passable[old] = true;
+                avoid[old] = false;
+                pit[old] = false;
             }
         }
         voids.add( cell );
-        set( cell, Terrain.CHASM, this );
-        GameScene.updateMap( cell );
+        voidFlags( cell );
+        showVoid( cell );
         Char ch = Actor.findChar( cell );
-        if (ch != null) occupyCell( ch );
+        if (ch != null && drop) occupyCell( ch );
         return true;
+    }
+
+    private void showVoid( int cell ){
+        if (visuals == null) return;
+        Image im = CthulhuSprite.Fx.still( "strike", CthulhuArt.STRIKE_W, CthulhuArt.STRIKE_H, CthulhuArt.STRIKE, CthulhuArt.STRIKE.length - 1,
+                (cell % WIDTH) * 16 + 8 + CthulhuArt.STRIKE_DX, (cell / WIDTH) * 16 + 14 + CthulhuArt.STRIKE_DY );
+        visuals.add( im );
+        //holes shown after a reload are made in order, so the oldest is always first
+        voidImages.add( im );
     }
 
     //the void throws the hero back into the fight instead of down a floor, called from Chasm.heroFall
@@ -515,6 +541,8 @@ public class FinalLevel extends Level{
     public Group addVisuals() {
         super.addVisuals();
         visuals.add( new Image( CthulhuSprite.DIR + "pit.png" ) {{ x = CthulhuArt.PIT_X; y = CthulhuArt.PIT_Y; }} );
+        voidImages.clear();
+        for (int c : voids) if (map[c] != Terrain.CHASM) showVoid( c );
         if (pro == State.End){
             visuals.add( CthulhuSprite.Fx.still( "death", CthulhuArt.BOSS_W, CthulhuArt.BOSS_H, CthulhuArt.DEATH, CthulhuArt.DEATH.length - 1,
                     CthulhuArt.BOSS_X, CthulhuArt.BOSS_Y ) );

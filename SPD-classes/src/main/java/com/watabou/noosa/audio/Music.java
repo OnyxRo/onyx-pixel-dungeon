@@ -40,7 +40,10 @@ public enum Music {
 	private String lastPlayed;
 	private boolean looping;
 	
-	private boolean enabled = true;
+	//Onyx asked for all music off for now (2026-10-28), set this back to false to turn it on again
+	public static final boolean ALL_OFF = true;
+
+	private boolean enabled = !ALL_OFF;
 	private float volume = 1f;
 
 	private float fadeTime = -1f;
@@ -383,6 +386,7 @@ public enum Music {
 	}
 	
 	public synchronized void enable( boolean value ) {
+		if (ALL_OFF) value = false;
 		enabled = value;
 		if (isPlaying() && !value) {
 			stop();
