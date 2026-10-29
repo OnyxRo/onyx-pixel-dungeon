@@ -154,7 +154,7 @@ public class Cthulhu extends Mob {
 			return true;
 		}
 
-		//While the pillars stand he cannot be hurt, but he lashes out in his sleep with strikes and slams
+		//While the pillars stand he cannot be hurt, but he lashes out in his sleep with slams and the Void Grasp
 		if (!awake){
 			Char h = Dungeon.hero;
 			if (h != null && h.isAlive() && fieldOfView[h.pos] && h.invisible <= 0){
@@ -163,9 +163,9 @@ public class Cthulhu extends Mob {
 				if (slam >= 0 && slamCD <= 0){
 					markSlam( slam );
 					slamCD = 5;
-				} else if (strikeCD <= 0){
-					markStrikes( h.pos, 1 );
-					strikeCD = 4;
+				} else if (graspCD <= 0 && h.buff( Roots.class ) == null && !h.flying){
+					graspCD = 8;
+					return grasp( h );
 				}
 			}
 			spend( TICK );
@@ -198,9 +198,6 @@ public class Cthulhu extends Mob {
 			slamCD = 4;
 		} else if (graspCD <= 0 && enemy.buff( Roots.class ) == null && !enemy.flying){
 			return grasp( enemy );
-		} else if (strikeCD <= 0){
-			markStrikes( enemy.pos, phase );
-			strikeCD = 2;
 		}
 
 		spend( TICK );
@@ -242,34 +239,16 @@ public class Cthulhu extends Mob {
 		return true;
 	}
 
-	//The tentacle strike. Red targets on the 3x3 round each centre, next turn a tentacle bursts up there, throws everyone
+	//The tentacle strike, taken out of the fight by Onyx (2026-10-28). Only strikes marked in an older save still land.
+	//Red targets on the 3x3 round each centre, next turn a tentacle bursts up there, throws everyone
 	//in reach and sinks, leaving a hole of void you can fall into
-	//a broken pillar makes him thrash, strikes round the hero next turn
+	//a broken pillar makes him thrash, his next slam or grasp comes at once
 	public void pillarBroken(){
 		if (awake || Dungeon.hero == null || !Dungeon.hero.isAlive()) return;
-		markStrikes( Dungeon.hero.pos, 2 );
+		slamCD = 0;
+		graspCD = 0;
 		yell( Messages.get( this, "stir" ) );
 		if (onScreen()) Camera.main.shake( 3, 0.6f );
-	}
-
-	private void markStrikes( int around, int count ){
-		ArrayList<Integer> centres = new ArrayList<>();
-		centres.add( around );
-		ArrayList<Integer> near = new ArrayList<>();
-		for (int i = 0; i < Dungeon.level.length(); i++){
-			int d = Dungeon.level.distance( i, around );
-			if (d >= 2 && d <= 4 && Dungeon.level.passable[i]) near.add( i );
-		}
-		for (int k = 1; k < count && !near.isEmpty(); k++) centres.add( near.remove( Random.Int( near.size() ) ) );
-		strikes = new int[centres.size()];
-		for (int k = 0; k < strikes.length; k++){
-			strikes[k] = centres.get( k );
-			for (int n : PathFinder.NEIGHBOURS9){
-				int c = strikes[k] + n;
-				if (Dungeon.level.insideMap( c ) && !Dungeon.level.solid[c]) target( c, -1 );
-			}
-		}
-		GLog.w( Messages.get( this, "rumble" ) );
 	}
 
 	private boolean resolveStrikes(){
