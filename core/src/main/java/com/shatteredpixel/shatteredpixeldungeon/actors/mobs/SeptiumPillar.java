@@ -6,6 +6,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChaosTime;
@@ -79,12 +80,36 @@ public abstract class SeptiumPillar extends Mob {
         immunities.add( Blindness.class );
     }
 
-    //Onyx asked for the pillars' arts to be taken out (2026-10-28). They used one every turn, buffing monsters,
-    //giving the hero chaos and vertigo and firing beams, so now they only stand to be broken. zap() is kept but unused
+    //Each lit pillar uses its art every ZAP_EVERY turns, as Abyssalnite meant (its zap() spent 15 turns).
+    //Abyssalnite's act() called zap() every turn and called next() inside its loops, so only the arts are kept.
+    //Arts aimed at the hero miss an invisible hero, like every other monster
+    protected static final int ZAP_EVERY = 15;
+    protected int zapCD = Random.IntRange( 4, ZAP_EVERY );
+
     @Override
     protected boolean act() {
+        if (alignment == Alignment.ENEMY && --zapCD <= 0){
+            zapCD = ZAP_EVERY;
+            if (zap() && sprite != null && Dungeon.level.heroFOV[pos]){
+                sprite.flash();
+                GLog.w( Messages.get( this, "message" ) );
+            }
+        }
         spend( TICK );
         return true;
+    }
+
+    //the monsters a pillar's art helps, everything hostile but the pillars themselves
+    protected static ArrayList<Mob> monsters(){
+        ArrayList<Mob> list = new ArrayList<>();
+        for (Mob m : Dungeon.level.mobs.toArray( new Mob[0] )){
+            if (m.isAlive() && m.alignment == Alignment.ENEMY && !m.properties().contains( Property.KISEKI )) list.add( m );
+        }
+        return list;
+    }
+
+    protected static boolean heroTargetable(){
+        return hero != null && hero.isAlive() && hero.invisible <= 0;
     }
 
     @Override
@@ -104,11 +129,13 @@ public abstract class SeptiumPillar extends Mob {
     }
 
     private static final String ALIGNMENT = "alignment";
+    private static final String ZAP_CD = "zap_cd";
 
     @Override
     public void storeInBundle(Bundle bundle) {
         super.storeInBundle(bundle);
         bundle.put(ALIGNMENT, alignment);
+        bundle.put(ZAP_CD, zapCD);
 
 
     }
@@ -117,6 +144,7 @@ public abstract class SeptiumPillar extends Mob {
     public void restoreFromBundle(Bundle bundle) {
         super.restoreFromBundle(bundle);
         alignment = bundle.getEnum(ALIGNMENT, Alignment.class);
+        if (bundle.contains(ZAP_CD)) zapCD = bundle.getInt(ZAP_CD);
 
     }
 
@@ -125,14 +153,8 @@ public abstract class SeptiumPillar extends Mob {
         return true;
     }
 
-    protected abstract void zap();
-
-
-
-    public void onZapComplete(){
-        zap();
-        next();
-    }
+    //uses the pillar's art, false when it had nothing to do
+    protected abstract boolean zap();
 
     @Override
     public void die(Object cause) {
@@ -178,7 +200,11 @@ public abstract class SeptiumPillar extends Mob {
         immunities.add( Blindness.class );
     }
 
+    //sets every monster's attacks on fire
     public static class FlamePillar extends SeptiumPillar {
+        {
+            spriteClass = PillarSprite.Flame.class;
+        }
 
         @Override
         public void die(Object cause) {
@@ -186,33 +212,19 @@ public abstract class SeptiumPillar extends Mob {
             Statistics.ThirdActive=true;
         }
 
-        {
-            spriteClass = PillarSprite.Flame.class;
-        }
-
         @Override
-        protected boolean act() {
-            {
-                state = PASSIVE;
-            }
-            return super.act();
+        protected boolean zap() {
+            ArrayList<Mob> list = monsters();
+            for (Mob m : list) Buff.affect( m, FireImbue.class ).set( 10f );
+            return !list.isEmpty();
         }
-
-        @Override
-        protected void zap() {
-            for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
-                if(!mob.properties().contains(Property.KISEKI)) {
-                    Buff.affect(mob, FireImbue.class).set( 10f);
-                    }
-                    next();
-                }
-            GLog.w(Messages.get( this, "message") );
-            spend(15f);
-        }
-
     }
 
+    //shields every monster. Abyssalnite gave them its Max Guard buff, which nothing in its code ever checked
     public static class GroundPillar extends SeptiumPillar {
+        {
+            spriteClass = PillarSprite.Ground.class;
+        }
 
         @Override
         public void die(Object cause) {
@@ -220,76 +232,44 @@ public abstract class SeptiumPillar extends Mob {
             Statistics.FirstActive=true;
         }
 
-        {
-            spriteClass = PillarSprite.Ground.class;
-        }
-
         @Override
-        protected boolean act() {
-            {
-                state = PASSIVE;
-            }
-            return super.act();
+        protected boolean zap() {
+            ArrayList<Mob> list = monsters();
+            for (Mob m : list) Buff.affect( m, Barrier.class ).setShield( 15 );
+            return !list.isEmpty();
         }
-
-
-        @Override
-        protected void zap() {
-            for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
-                if(!mob.properties().contains(Property.KISEKI)) {
-                    Buff.affect(mob, MaxGuard.class);
-                }
-                next();
-            }
-            GLog.w(Messages.get( this, "message") );
-            spend(15f);
-        };
-
-
-
-
-
     }
 
+    //heals every monster below a third of its health
     public static class WaterPillar extends SeptiumPillar {
+        {
+            spriteClass = PillarSprite.Water.class;
+        }
 
         @Override
         public void die(Object cause) {
             super.die(cause);
-            Statistics.SecondActive=true;;
-        }
-
-        {
-            spriteClass = PillarSprite.Water.class;
-
+            Statistics.SecondActive=true;
         }
 
         @Override
-        protected boolean act() {
-            {
-                state = PASSIVE;
-            }
-            return super.act();
-        }
-
-        @Override
-        protected void zap() {
-            for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
-                if(!mob.properties().contains(Property.KISEKI)) {
-                    if (mob.HP < mob.HT/3){
-                        Buff.affect(mob, Healing.class).setHeal(20, 0, 10);
-                    }
+        protected boolean zap() {
+            boolean any = false;
+            for (Mob m : monsters()){
+                if (m.HP < m.HT / 3){
+                    Buff.affect( m, Healing.class ).setHeal( 20, 0, 10 );
+                    any = true;
                 }
             }
-            GLog.w(Messages.get( this, "message") );
-            spend(15f);
-        };
-
-
-
+            return any;
+        }
     }
 
+    //speeds every monster up
     public static class WindPillar extends SeptiumPillar {
+        {
+            spriteClass = PillarSprite.Wind.class;
+        }
 
         @Override
         public void die(Object cause) {
@@ -297,239 +277,114 @@ public abstract class SeptiumPillar extends Mob {
             Statistics.FourthActive=true;
         }
 
-        {
-            spriteClass = PillarSprite.Wind.class;
-
-        }
-
         @Override
-        protected boolean act() {
-            {
-                state = PASSIVE;
-            }
-            return super.act();
-        }
-
-        @Override
-        protected void zap() {
-            for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
-                if(!mob.properties().contains(Property.KISEKI)) {
-                    Buff.affect(mob, Adrenaline.class,3f);
-                }
-                next();
-            }
-            GLog.w(Messages.get( this, "message") );
-            spend(15f);
+        protected boolean zap() {
+            ArrayList<Mob> list = monsters();
+            for (Mob m : list) Buff.affect( m, Adrenaline.class, 3f );
+            return !list.isEmpty();
         }
     }
 
+    //twists the hero's time, so they lose turns
     public static class ChronosPillar extends SeptiumPillar {
-
         {
             spriteClass = PillarSprite.Chronos.class;
-
         }
 
         @Override
-        protected boolean act() {
-            {
-                state = PASSIVE;
-            }
-            return super.act();
+        protected boolean zap() {
+            if (!heroTargetable()) return false;
+            Buff.affect( hero, ChaosTime.class ).extend( 6f );
+            return true;
         }
-
-        @Override
-        protected void zap() {
-
-            spend(15f);
-            Buff.affect( hero, ChaosTime.class).extend( 15f );
-            GLog.w(Messages.get( this, "message") );
-
-        }
-
-
     }
 
-
+    //marks a line through the hero in red, then fires a beam along it next turn
     public static class HeavenPillar extends SeptiumPillar {
-
         {
             spriteClass = PillarSprite.Heaven.class;
         }
 
-        private ArrayList<Integer> targetedCells = new ArrayList<>();
-
-        private float abilityCooldown;
-        private static final int MIN_ABILITY_CD = 10;
-        private static final int MAX_ABILITY_CD = 15;
-
-        // 添加一个计数器，用来记录回合数
-        private int turnCount = 0;
+        private int beamTarget = -1;
 
         @Override
         protected boolean act() {
-            if(alignment == Alignment.ENEMY){
-
-                laserattack();
-            } else{
-                spend(TICK);
-            }
-            return true;
-        }
-
-        private void laserattack(){
-            boolean terrainAffected = false;
-            HashSet<Char> affected = new HashSet<>();
-            //delay fire on a rooted hero
-
-            if(alignment == Alignment.NEUTRAL){
-            }
-
-            if (!hero.rooted) {
-                for (int i : targetedCells) {
-                    Ballistica b = new Ballistica(pos, i, Ballistica.WONT_STOP);
-                    //shoot beams
-
-                    sprite.parent.add(new Beam.DeathRay(sprite.center(), DungeonTilemap.raisedTileCenterToWorld(b.collisionPos)));
-                    for (int p : b.path) {
-                        Char ch = Actor.findChar(p);
-                        if (ch != null && (ch.alignment != alignment || ch instanceof Bee)) {
-                            affected.add(ch);
-
-                        }
-                        if (Dungeon.level.flamable[p]) {
-                            Dungeon.level.destroy(p);
-                            GameScene.updateMap(p);
-                            terrainAffected = true;
-
-                        }
-                    }
-                }
-                if (terrainAffected) {
-                    Dungeon.observe();
-                }
-                for (Char ch : affected) {
-                    ch.damage(Random.NormalIntRange(20, 30), new Eye.DeathGaze());
-
-                    if (Dungeon.level.heroFOV[pos]) {
-                        ch.sprite.flash();
-                        CellEmitter.center(pos).burst(PurpleParticle.BURST, Random.IntRange(1, 2));
-                    }
-                    if (!ch.isAlive() && ch == hero) {
-                        Dungeon.fail(getClass());
-                        GLog.n(Messages.get(Char.class, "kill", name()));
-                    }
-                }
-                targetedCells.clear();
-            }
-
-            if (abilityCooldown <= 0  && alignment == Alignment.ENEMY) {
-                int beams = 1;
-                GLog.w(Messages.get(this, "message"));
-                HashSet<Integer> affectedCells = new HashSet<>();
-                for (int i = 0; i < beams; i++) {
-
-                    int targetPos = hero.pos;
-                    if (i != 0) {
-                        do {
-                            targetPos = hero.pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
-                        } while (Dungeon.level.trueDistance(pos, hero.pos)
-                                > Dungeon.level.trueDistance(pos, targetPos));
-                    }
-                    targetedCells.add(targetPos);
-                    Ballistica b = new Ballistica(pos, targetPos, Ballistica.WONT_STOP);
-                    affectedCells.addAll(b.path);
-                }
-
-                //remove one beam if multiple shots would cause every cell next to the hero to be targeted
-                boolean allAdjTargeted = true;
-                for (int i : PathFinder.NEIGHBOURS9) {
-                    if (!affectedCells.contains(hero.pos + i) && Dungeon.level.passable[hero.pos + i]) {
-                        allAdjTargeted = false;
-                        break;
-                    }
-                }
-                if (allAdjTargeted) {
-                    targetedCells.remove(targetedCells.size() - 1);
-                }
-                for (int i : targetedCells) {
-                    Ballistica b = new Ballistica(pos, i, Ballistica.WONT_STOP);
-                    for (int p : b.path) {
-                        sprite.parent.add(TargetedCell.colored(p, 0xFF0000));
-                        affectedCells.add(p);
-                    }
-                }
-
-                // 在14回合时发出警告
-                if (turnCount == 14) {
-                    for (int i : affectedCells) {
-                        sprite.parent.add(TargetedCell.colored(i, 0xFF0000));
-                    }
-                }
-                else
-                // don't want to overly punish players with slow move or attack speed
-                spend(GameMath.gate(TICK, hero.cooldown(), 3 * TICK));
-                hero.interrupt();
-
-                abilityCooldown += Random.NormalFloat(MIN_ABILITY_CD, MAX_ABILITY_CD);
-
-            }  {
-                spend(TICK);
-                if (abilityCooldown > 0) abilityCooldown--;
-            }
-
-            turnCount++; // 回合数自增
-
-
-        }
-
-
-        @Override
-        protected void zap() {
-            next();
-        }
-
-
-    }
-
-
-
-
-
-
-    public static class PhantomPillar extends SeptiumPillar {
-
-        {
-            spriteClass = PillarSprite.Phantom.class;
-
-        }
-
-        @Override
-        protected boolean act() {
-            {
-                state = PASSIVE;
+            if (alignment == Alignment.ENEMY && beamTarget != -1){
+                fire();
+                spend( TICK );
+                return true;
             }
             return super.act();
         }
 
         @Override
-        protected void zap() {
-
-            Buff.affect( hero, Vertigo.class, 3f);
-            for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-                mob.beckon( hero.pos );
+        protected boolean zap() {
+            if (!heroTargetable()) return false;
+            beamTarget = hero.pos;
+            Ballistica b = new Ballistica( pos, beamTarget, Ballistica.WONT_STOP );
+            if (sprite != null && sprite.parent != null){
+                for (int c : b.subPath( 1, b.dist )){
+                    TargetedCell t = new TargetedCell();
+                    t.reset( c, Actor.now() + 1 );
+                    sprite.parent.add( t );
                 }
-            hero.sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
-            GLog.w(Messages.get( this, "message") );
-            spend(15f);
             }
-
-
-
-
+            hero.interrupt();
+            return true;
         }
 
+        private void fire(){
+            Ballistica b = new Ballistica( pos, beamTarget, Ballistica.WONT_STOP );
+            beamTarget = -1;
+            HashSet<Char> hit = new HashSet<>();
+            for (int c : b.subPath( 1, b.dist )){
+                Char ch = Actor.findChar( c );
+                if (ch != null && ch.alignment != alignment && ch.invisible <= 0) hit.add( ch );
+            }
+            if (sprite != null && sprite.parent != null){
+                sprite.parent.add( new Beam.DeathRay( sprite.center(), DungeonTilemap.raisedTileCenterToWorld( b.collisionPos ) ) );
+            }
+            for (Char ch : hit){
+                ch.damage( Random.NormalIntRange( 20, 30 ), new Eye.DeathGaze() );
+                if (ch.sprite != null && Dungeon.level.heroFOV[ch.pos]){
+                    ch.sprite.flash();
+                    CellEmitter.center( ch.pos ).burst( PurpleParticle.BURST, Random.IntRange( 1, 2 ) );
+                }
+                if (ch == hero && !ch.isAlive()){
+                    Dungeon.fail( this );
+                    GLog.n( Messages.get( Char.class, "kill", name() ) );
+                }
+            }
+        }
 
+        private static final String BEAM = "beam";
 
+        @Override
+        public void storeInBundle(Bundle bundle) {
+            super.storeInBundle(bundle);
+            bundle.put( BEAM, beamTarget );
+        }
+
+        @Override
+        public void restoreFromBundle(Bundle bundle) {
+            super.restoreFromBundle(bundle);
+            if (bundle.contains( BEAM )) beamTarget = bundle.getInt( BEAM );
+        }
     }
 
+    //makes the hero dizzy and calls every monster to them
+    public static class PhantomPillar extends SeptiumPillar {
+        {
+            spriteClass = PillarSprite.Phantom.class;
+        }
+
+        @Override
+        protected boolean zap() {
+            if (!heroTargetable()) return false;
+            Buff.affect( hero, Vertigo.class, 3f );
+            for (Mob m : monsters()) m.beckon( hero.pos );
+            if (hero.sprite != null) hero.sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
+            return true;
+        }
+    }
+}

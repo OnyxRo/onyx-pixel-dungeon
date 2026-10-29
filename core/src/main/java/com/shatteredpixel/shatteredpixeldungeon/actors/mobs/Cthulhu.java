@@ -310,7 +310,7 @@ public class Cthulhu extends Mob {
 		if (onScreen()) Camera.main.shake( 3, 0.4f );
 	}
 
-	//Calls a monster of the depth up out of the dark, a few cells from the hero and hunting them,
+	//Calls one of the arena's monsters (FinalLevel.arenaMob) up out of the dark, a few cells from the hero and hunting them,
 	//the way the Dwarf King and Yog call theirs. False when the arena is full or no cell is free
 	private boolean summon(){
 		Char h = Dungeon.hero;
@@ -327,8 +327,7 @@ public class Cthulhu extends Mob {
 					&& !Dungeon.level.avoid[c] && !Dungeon.level.pit[c] && Actor.findChar( c ) == null) spots.add( c );
 		}
 		if (spots.isEmpty()) return false;
-		Mob m = Dungeon.level.createMob();
-		if (m == null) return false;
+		Mob m = FinalLevel.arenaMob();
 		m.pos = Random.element( spots );
 		m.state = m.HUNTING;
 		GameScene.add( m );

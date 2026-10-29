@@ -1,6 +1,14 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.ChronosSkull;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.HeavenDoor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.PhantomSpirit;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GroundStatue;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.WaterFlower;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.FlameDemon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.WindSwarm;
+import com.watabou.utils.Reflection;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
@@ -282,7 +290,7 @@ public class FinalLevel extends Level{
             /** 避免养蛊 限制在20以下 */
             // 生成一个随机怪物
             if (count < 21 && Statistics.killcount > 0) {
-                Mob mob = Dungeon.level.createMob();
+                Mob mob = arenaMob();
                 mob.state = mob.WANDERING;
                 mob.pos = Dungeon.level.randomRespawnCell(mob);
                 //abyssalnite, no free cell gave -1 and the add crashed
@@ -291,6 +299,34 @@ public class FinalLevel extends Level{
         }
 
 
+    }
+
+    //The monsters of this fight, from Abyssalnite's Bestiary.getTownMobRotation. Each broken elemental pillar lets its
+    //own monster in (Statistics.FirstActive and the rest), and rarely a chronos skull, heaven door or phantom spirit
+    //comes instead. Abyssalnite spawned nothing before the first pillar broke, here the lit pillars' monsters come then
+    public static Mob arenaMob(){
+        float r = Random.Float();
+        if (r < 0.03f) return new ChronosSkull();
+        if (r < 0.06f) return new HeavenDoor();
+        if (r < 0.09f) return new PhantomSpirit();
+        ArrayList<Class<? extends Mob>> pool = new ArrayList<>();
+        if (Statistics.FirstActive) pool.add( GroundStatue.class );
+        if (Statistics.SecondActive) pool.add( WaterFlower.class );
+        if (Statistics.ThirdActive) pool.add( FlameDemon.class );
+        if (Statistics.FourthActive) pool.add( WindSwarm.class );
+        if (pool.isEmpty()){
+            for (Mob m : Dungeon.level.mobs){
+                if (m.alignment != Char.Alignment.ENEMY) continue;
+                if (m instanceof SeptiumPillar.GroundPillar) pool.add( GroundStatue.class );
+                if (m instanceof SeptiumPillar.WaterPillar) pool.add( WaterFlower.class );
+                if (m instanceof SeptiumPillar.FlamePillar) pool.add( FlameDemon.class );
+                if (m instanceof SeptiumPillar.WindPillar) pool.add( WindSwarm.class );
+            }
+        }
+        if (pool.isEmpty()){
+            pool.add( GroundStatue.class ); pool.add( WaterFlower.class ); pool.add( FlameDemon.class ); pool.add( WindSwarm.class );
+        }
+        return Reflection.newInstance( Random.element( pool ) );
     }
 
     /** 我们需要存储延时器保证它退出游戏再次进入后也可以正常工作 */
