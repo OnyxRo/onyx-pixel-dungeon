@@ -724,7 +724,7 @@ public class Gallery {
 		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Cthulhu b = cthuBoss();
 		//no turns pass while the beam and the mind blast are pictured, so the boss does not fire them first
 		boolean still = cthuStep >= 10 && cthuStep <= 12;
-		if (cthuStep >= 3 && !still && Dungeon.hero.ready) Dungeon.hero.rest( false );
+		if (cthuStep >= 2 && !still && Dungeon.hero.ready) Dungeon.hero.rest( false );
 		try {
 			if (cthuStep == 1 && time > 2f) {
 				cthuStep = 2;
@@ -734,6 +734,7 @@ public class Gallery {
 				cthuShot( "cthu_0_asleep" );
 			} else if (cthuStep == 2 && time > 3.5f) {
 				cthuStep = 3;
+				cthuShot( "cthu_00_sleeping" );
 				for (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob m : new ArrayList<>( l.mobs ))
 					if (m instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.SeptiumPillar) m.die( Dungeon.hero );
 			} else if (cthuStep == 3 && time > 4.5f) {

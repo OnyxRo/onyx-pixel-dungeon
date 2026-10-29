@@ -130,7 +130,8 @@ public class Cthulhu extends Mob {
 		}
 		Dungeon.level.updateFieldOfView( this, fieldOfView );
 
-		if (!awake || paralysed > 0){
+		//asleep he only stirs once the arena is sealed
+		if (paralysed > 0 || (!awake && !Dungeon.level.locked)){
 			spend( TICK );
 			return true;
 		}
@@ -147,6 +148,24 @@ public class Cthulhu extends Mob {
 		if (slamPending >= 0) return resolveSlam();
 		if (beamTarget >= 0){
 			fireBeam();
+			spend( TICK );
+			return true;
+		}
+
+		//While the pillars stand he cannot be hurt, but he lashes out in his sleep with strikes and slams
+		if (!awake){
+			Char h = Dungeon.hero;
+			if (h != null && h.isAlive() && fieldOfView[h.pos] && h.invisible <= 0){
+				enemy = h;
+				int slam = slamFor( h.pos );
+				if (slam >= 0 && slamCD <= 0){
+					markSlam( slam );
+					slamCD = 5;
+				} else if (strikeCD <= 0){
+					markStrikes( h.pos, 1 );
+					strikeCD = 4;
+				}
+			}
 			spend( TICK );
 			return true;
 		}
@@ -178,8 +197,8 @@ public class Cthulhu extends Mob {
 		} else if (graspCD <= 0 && enemy.buff( Roots.class ) == null && !enemy.flying){
 			return grasp( enemy );
 		} else if (strikeCD <= 0){
-			markStrikes( enemy.pos );
-			strikeCD = phase == 1 ? 3 : 2;
+			markStrikes( enemy.pos, phase );
+			strikeCD = 2;
 		}
 
 		spend( TICK );
@@ -220,7 +239,15 @@ public class Cthulhu extends Mob {
 
 	//The tentacle strike. Red targets on the 3x3 round each centre, next turn a tentacle bursts up there, throws everyone
 	//in reach and sinks, leaving a hole of void you can fall into
-	private void markStrikes( int around ){
+	//a broken pillar makes him thrash, strikes round the hero next turn
+	public void pillarBroken(){
+		if (awake || Dungeon.hero == null || !Dungeon.hero.isAlive()) return;
+		markStrikes( Dungeon.hero.pos, 2 );
+		yell( Messages.get( this, "stir" ) );
+		if (onScreen()) Camera.main.shake( 3, 0.6f );
+	}
+
+	private void markStrikes( int around, int count ){
 		ArrayList<Integer> centres = new ArrayList<>();
 		centres.add( around );
 		ArrayList<Integer> near = new ArrayList<>();
@@ -228,7 +255,7 @@ public class Cthulhu extends Mob {
 			int d = Dungeon.level.distance( i, around );
 			if (d >= 2 && d <= 4 && Dungeon.level.passable[i]) near.add( i );
 		}
-		for (int k = 1; k < phase && !near.isEmpty(); k++) centres.add( near.remove( Random.Int( near.size() ) ) );
+		for (int k = 1; k < count && !near.isEmpty(); k++) centres.add( near.remove( Random.Int( near.size() ) ) );
 		strikes = new int[centres.size()];
 		for (int k = 0; k < strikes.length; k++){
 			strikes[k] = centres.get( k );

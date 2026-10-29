@@ -487,7 +487,10 @@ public class FinalLevel extends Level{
     public void checkPillars(){
         if (pro == State.End || pro == State.Cthulhu) return;
         for (Mob m : mobs){
-            if (m instanceof SeptiumPillar) return;
+            if (m instanceof SeptiumPillar){
+                for (Mob c : mobs.toArray( new Mob[0] )) if (c instanceof Cthulhu) ((Cthulhu) c).pillarBroken();
+                return;
+            }
         }
         pro = State.Cthulhu;
         lightUp();
