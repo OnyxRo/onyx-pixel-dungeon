@@ -40,3 +40,4 @@ rerearranged|https://github.com/ek-mk8034/Re-Re-ARranged-pixel-dungeon|Re-ReARra
 estranged|https://github.com/ijulee/estranged-pixel-dungeon|Estranged PD, on Re-ARranged|ReARranged 3.40.0
 bluearchive|https://github.com/Hoto-Mocha/Blue-Archive-Pixel-Dungeon|Blue Archive PD, franchise|2.1.4
 rebluearchive|https://github.com/Hoto-Mocha/New-Blue-Archive-Pixel-Dungeon|Re Blue Archive PD, franchise|3.0.0
+elemental|https://github.com/Meel703/elemental-pixel-dungeon|Elemental PD|unknown

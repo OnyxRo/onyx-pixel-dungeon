@@ -990,6 +990,10 @@ public class Hero extends Char {
 			return INFINITE_EVASION;
 		}
 
+		if (ElementalTalents.fluidMovesDodge(this)){ //elemental, Fluid Moves
+			return INFINITE_EVASION;
+		}
+
 		//rearranged, the nunchaku's parry and the Slayer's evasive move
 		if (RearrangedHero.dodgesEverything(this, enemy)) return INFINITE_EVASION;
 		if (RBAHero.dodges(this, enemy)) return INFINITE_EVASION; //rebluearchive
@@ -2420,6 +2424,7 @@ public class Hero extends Char {
 	@Override
 	public int defenseProc( Char enemy, int damage ) {
 		damage = BAHero.defenseProc(this, enemy, damage); //bluearchive
+		ElementalTalents.onDefense(this, enemy); //elemental, Charming Chemicals
 
 		//Cursed PD's guard turns a blow aside, see Defense
 		if (guardProc( enemy, damage )) return 0;
@@ -3634,6 +3639,7 @@ public class Hero extends Char {
 
 	@Override
 	public boolean isImmune(Class effect) {
+		if (ElementalTalents.isImmune(this, effect)) return true; //elemental, the Elementalist
 		if (XunTalents.isImmune(this, effect)) return true; //xun, the Plague God
 		//Dragonic PD, an Icebreaker does not feel the cold and a Dragon Knight does not burn
 		if (subClass == HeroSubClass.ICEBREAKER && (effect == com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost.class

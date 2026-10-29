@@ -1223,7 +1223,21 @@ public enum Talent {
 	//Summoning Beacon T4
 	POWERED_DEVICE(40417, 4), SKYNET(40418, 4), VIOLENT_LEAP(40419, 4), ASSAULT(40420, 4),
 	//Detonator T4
-	STACKED_CHARGE(40421, 4), ALCHEMY_CRAFT(40422, 4), DECOY(40423, 4), PORTABLE_DETONATOR(40424, 4);
+	STACKED_CHARGE(40421, 4), ALCHEMY_CRAFT(40422, 4), DECOY(40423, 4), PORTABLE_DETONATOR(40424, 4),
+
+	//elemental, the Alchemist from Elemental PD. Hooks are in ElementalTalents, icons are the mod's own cell numbers
+	//Alchemist T1
+	VITAL_BREWS(110), FREAKS_INTUITION(111), FRENZIED_FINISH(112), REVITALISING_CONCOCTION(109),
+	//Alchemist T2
+	ATTUNED_MEAL(100), VOLATILE_POTIONS(101), FLUID_MOVES(102), FAMILIAR_FACE(103), SWIFT_LOBBING(104),
+	//Alchemist T3
+	TRANSMUTERS_TECHNIQUE(105, 3), CHARMING_CHEMICALS(106, 3),
+	//Elementalist T3
+	CHEMICAL_RESISTANCE(107, 3), OPPRESSIVE_OFFENCE(108, 3), DEBILITATING_DEFENCE(109, 3),
+	//Scientist T3
+	BACKUP_SUPPLIES(110, 3), RENEWABLE_POTIONS(111, 3), POSSESSIVE_POISON(112, 3),
+	//Purity T4, the mod's armor had one power and no talents for it, these three were written for this game
+	CAUSTIC_CLOUD(105, 4), RING_OF_FLAME(106, 4), CLEANSING_VAPOR(107, 4);
 
 	public static class ImprovisedProjectileCooldown extends FlavourBuff{
 		public int icon() { return BuffIndicator.TIME; }
@@ -2470,6 +2484,7 @@ public enum Talent {
 	}
 
 	public static void onTalentUpgraded( Hero hero, Talent talent ){
+		ElementalTalents.onTalentUpgraded(hero, talent); //elemental
 		BATalents.onTalentUpgraded(hero, talent); //bluearchive
 		RBATalents.onTalentUpgraded(hero, talent); //rebluearchive
 		RearrangedTalents.onTalentUpgraded(hero, talent); //rearranged
@@ -2588,6 +2603,7 @@ public enum Talent {
 	public static class NatureBerriesDropped extends CounterBuff{{revivePersists = true;}};
 
 	public static void onFoodEaten( Hero hero, float foodVal, Item foodSource ){
+		ElementalTalents.onFoodEaten(hero); //elemental
 		BATalents.onFoodEaten(hero); //bluearchive
 		RBATalents.onFoodEaten(hero, foodVal, foodSource); //rebluearchive
 		RearrangedTalents.onFoodEaten(hero, foodVal, foodSource); //rearranged
@@ -2976,6 +2992,7 @@ public enum Talent {
 	}
 
 	public static int onAttackProc( Hero hero, Char enemy, int dmg ){
+		dmg = ElementalTalents.onAttackProc(hero, enemy, dmg); //elemental
 		dmg = BATalents.onAttackProc(hero, enemy, dmg); //bluearchive
 		dmg = RBATalents.onAttackProc(hero, enemy, dmg); //rebluearchive
 		dmg = RearrangedRework.dashAttack(hero, dmg); //rearranged
@@ -3321,6 +3338,9 @@ public enum Talent {
 				//Ryuse's PD had no talents of its own for the Summoner, these are Shattered's picked to suit her
 				Collections.addAll(tierTalents, HEARTY_MEAL, SURVIVALISTS_INTUITION, SCHOLARS_INTUITION, BACKUP_BARRIER);
 				break;
+			case ALCHEMIST: //elemental
+				Collections.addAll(tierTalents, VITAL_BREWS, FREAKS_INTUITION, FRENZIED_FINISH, REVITALISING_CONCOCTION);
+				break;
 			case VIKING:
 				//Dragonic PD gave its heroes no talents, these are Shattered's picked to suit them
 				Collections.addAll(tierTalents, HEARTY_MEAL, VETERANS_INTUITION, PROVOKED_ANGER, IRON_WILL);
@@ -3422,6 +3442,9 @@ public enum Talent {
 			case SUMMONER:
 				Collections.addAll(tierTalents, INVIGORATING_MEAL, LIQUID_NATURE, ARCANE_VISION, HEIGHTENED_SENSES, SHIELD_BATTERY);
 				break;
+			case ALCHEMIST: //elemental
+				Collections.addAll(tierTalents, ATTUNED_MEAL, VOLATILE_POTIONS, FLUID_MOVES, FAMILIAR_FACE, SWIFT_LOBBING);
+				break;
 			case VIKING:
 				Collections.addAll(tierTalents, IRON_STOMACH, LIQUID_WILLPOWER, RUNIC_TRANSFERENCE, LETHAL_MOMENTUM, IMPROVISED_PROJECTILES);
 				break;
@@ -3521,6 +3544,9 @@ public enum Talent {
 				break;
 			case SUMMONER:
 				Collections.addAll(tierTalents, ALLY_WARP, HOLD_FAST);
+				break;
+			case ALCHEMIST: //elemental
+				Collections.addAll(tierTalents, TRANSMUTERS_TECHNIQUE, CHARMING_CHEMICALS);
 				break;
 			case VIKING:
 			case DRAGONKNIGHT:
@@ -3685,6 +3711,12 @@ public enum Talent {
 				break;
 			case ICEBREAKER:
 				Collections.addAll(tierTalents, EMPOWERED_STRIKE, EVASIVE_ARMOR, LAY_ON_HANDS);
+				break;
+			case ELEMENTALIST: //elemental
+				Collections.addAll(tierTalents, CHEMICAL_RESISTANCE, OPPRESSIVE_OFFENCE, DEBILITATING_DEFENCE);
+				break;
+			case SCIENTIST: //elemental
+				Collections.addAll(tierTalents, BACKUP_SUPPLIES, RENEWABLE_POTIONS, POSSESSIVE_POISON);
 				break;
 			case EIDOLON:
 				Collections.addAll(tierTalents, NECROMANCERS_MINIONS, SOUL_SIPHON, SHARED_UPGRADES);
