@@ -29,7 +29,7 @@ public class ItemSpriteSheet {
 	public static final int SIZE = 16;
 
 	private static final int TX_WIDTH = 256;
-	private static final int TX_HEIGHT = 4864;
+	private static final int TX_HEIGHT = 5440;
 
 	private static final int WIDTH = TX_WIDTH / SIZE;
 
@@ -482,6 +482,15 @@ public class ItemSpriteSheet {
 	public static final int DOGSTICK = xy(4, 60);
 	public static final int FISHSKELETON = xy(5, 60);
 	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;
+	public static final int ARES_CHAINS = xy(4, 340);
+	public static final int WRAITH_AMULET = xy(5, 340);
+	public static final int WOODEN_EFFIGY = xy(6, 340);
+	public static final int COMM_RELAY = xy(7, 340);
+	public static final int RAPPER = xy(8, 340);
+	public static final int TOME_OF_SPECIALTY = xy(9, 340);
+	public static final int UNSTABLE_WAND = xy(3, 340);
+	public static final int MONSTER_SOUL = xy(1, 340);
+	public static final int SACRIFICIAL_DAGGER = xy(2, 340);
 	public static final int BZMDR_GIFT = xy(8, 64);
 	public static final int LAN_FIRE_ROAD = xy(9, 64);
 	public static final int MOTO_BREW = xy(10, 64);
@@ -1661,6 +1670,15 @@ public class ItemSpriteSheet {
 		assignItemRect(DOGSTICK, 11, 15);
 		assignItemRect(FISHSKELETON, 16, 16);
 		assignItemRect(WOODEN_BOOMERANG, 12, 12);
+		assignItemRect(ARES_CHAINS, 13, 15);
+		assignItemRect(WRAITH_AMULET, 13, 14);
+		assignItemRect(WOODEN_EFFIGY, 12, 15);
+		assignItemRect(COMM_RELAY, 13, 15);
+		assignItemRect(RAPPER, 13, 14);
+		assignItemRect(TOME_OF_SPECIALTY, 16, 16);
+		assignItemRect(UNSTABLE_WAND, 15, 16);
+		assignItemRect(MONSTER_SOUL, 13, 15);
+		assignItemRect(SACRIFICIAL_DAGGER, 14, 15);
 		assignItemRect(BZMDR_GIFT, 12, 15);
 		assignItemRect(LAN_FIRE_ROAD, 14, 16);
 		assignItemRect(MOTO_BREW, 12, 16);
