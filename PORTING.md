@@ -826,3 +826,5 @@ Next steps, in order.
 7. Mod icon, `WorldShuffle.LOGOS`, `windows.wndmodinfo.elementalpd` text, strings checked against Onyx's rules, `scripts/check.sh --new`.
 
 Planned skips. The changelog screen, debug items (AddItems, teleport, testLevel), developer mode setting, branding text. The Berserker Rage rework, because Shattered 4.0.2's Berserker already lets the hero start berserking by hand, which was the heart of the rework. Hunger bar and rage indicator were not decided yet.
+
+Update, paused again 2026-10-29. Step 1 is written (`actors/hero/ElementalTalents.java`) and step 4's hooks are in, one line each in Burning, ToxicGas, the Haste, Invisibility, Levitation, MindVision and ToxicGas potions, Potion (drink time, drunk and thrown hooks), Hero (bundle), Mob.die, RegularLevel.createItems (Backup Supplies), Dungeon.newLevel (Fluid Moves) and Shopkeeper.sellPrice (Familiar Face). Potion.drink also calls `ElementalPD.onPotionDrunk`, which is not written yet. It should give an empty flask while the flask game mode is on. Still not compiled. Go on from step 2, and write `ElementalPD` when the game modes are done.

@@ -48,7 +48,7 @@ public class PotionOfMindVision extends Potion {
 			GLog.i( Messages.get(this, "blocked") );
 			return;
 		}
-		Buff.prolong( hero, MindVision.class, MindVision.DURATION );
+		Buff.prolong( hero, MindVision.class, MindVision.DURATION * com.shatteredpixel.shatteredpixeldungeon.actors.hero.ElementalTalents.potionBoost(hero) ); //elemental, Scientist
 		SpellSprite.show(hero, SpellSprite.VISION, 1, 0.77f, 0.9f);
 		Dungeon.observe();
 		

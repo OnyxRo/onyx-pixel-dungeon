@@ -319,9 +319,11 @@ public class Potion extends Item {
 			}
 		}
 		
-		hero.spend( TIME_TO_DRINK );
+		hero.spend( com.shatteredpixel.shatteredpixeldungeon.actors.hero.ElementalTalents.drinkTime(hero, TIME_TO_DRINK) ); //elemental, Swift Lobbing
 		hero.busy();
 		apply( hero );
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.ElementalTalents.onPotionDrunk( hero, this ); //elemental
+		com.shatteredpixel.shatteredpixeldungeon.ElementalPD.onPotionDrunk( hero ); //elemental, empty flasks
 		com.shatteredpixel.shatteredpixeldungeon.TooCruel.onDrink( this, hero ); //toocruel, Intoxication
 		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onPotionDrunk( hero, this ); //transformation
 		
@@ -357,6 +359,7 @@ public class Potion extends Item {
 				Dungeon.level.pressCell( cell );
 			}
 			shatter( cell );
+			if (!anonymous) com.shatteredpixel.shatteredpixeldungeon.actors.hero.ElementalTalents.onPotionThrown( curUser, this, cell ); //elemental
 
 			if (!anonymous && (mustThrowPots.contains(getClass()) || canThrowPots.contains(getClass()) || this instanceof Brew)) {
 				Catalog.countUse(getClass());

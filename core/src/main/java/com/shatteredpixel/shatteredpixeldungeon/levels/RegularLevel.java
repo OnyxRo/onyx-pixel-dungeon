@@ -407,6 +407,11 @@ public abstract class RegularLevel extends Level {
 
 		if (!canSpawnItems) return;
 
+		//elemental, the Scientist's Backup Supplies
+		for (int i = com.shatteredpixel.shatteredpixeldungeon.actors.hero.ElementalTalents.extraPotions(); i > 0; i--){
+			addItemToSpawn(Generator.random(Generator.Category.POTION));
+		}
+
 		//Matt Edition. A branch floor can set an exact item count, and how many of those are of one kind.
 		//Left at -1 it is Shattered's normal roll. Slots that no category claims are fully random items.
 		int nItems;

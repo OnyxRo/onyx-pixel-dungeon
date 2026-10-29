@@ -48,7 +48,8 @@ public class ToxicGas extends Blob implements Hero.Doom {
 				if (cur[cell] > 0 && (ch = Actor.findChar( cell )) != null) {
 					if (!ch.isImmune(this.getClass())) {
 
-						ch.damage(damage, this);
+						if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.ElementalTalents.elementalist(ch)) ch.HP = Math.min(ch.HT, ch.HP + Math.max(1, damage / 2)); //elemental
+						else ch.damage(damage, this);
 					}
 				}
 			}

@@ -613,7 +613,8 @@ public class Dungeon {
 		Statistics.qualifiedForBossRemainsBadge = false;
 		
 		level.create();
-		
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.ElementalTalents.onNewFloor( hero ); //elemental, Fluid Moves
+
 		if (branch == 0) Statistics.qualifiedForNoKilling = !bossLevel();
 		Statistics.qualifiedForBossChallengeBadge = false;
 

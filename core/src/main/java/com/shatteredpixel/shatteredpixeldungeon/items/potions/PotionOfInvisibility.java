@@ -43,7 +43,7 @@ public class PotionOfInvisibility extends Potion {
 	@Override
 	public void apply( Hero hero ) {
 		identify();
-		Buff.prolong( hero, Invisibility.class, Invisibility.DURATION );
+		Buff.prolong( hero, Invisibility.class, Invisibility.DURATION * com.shatteredpixel.shatteredpixeldungeon.actors.hero.ElementalTalents.potionBoost(hero) ); //elemental, Scientist
 		GLog.i( Messages.get(this, "invisible") );
 		Sample.INSTANCE.play( Assets.Sounds.MELD );
 	}

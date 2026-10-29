@@ -52,7 +52,7 @@ public class PotionOfToxicGas extends Potion {
 			Sample.INSTANCE.play( Assets.Sounds.GAS );
 		}
 
-		GameScene.add( Blob.seed( cell, 1000, ToxicGas.class ) );
+		GameScene.add( Blob.seed( cell, Math.round(1000 * com.shatteredpixel.shatteredpixeldungeon.actors.hero.ElementalTalents.potionBoost(Dungeon.hero)), ToxicGas.class ) ); //elemental, Scientist
 	}
 	
 	@Override

@@ -61,7 +61,7 @@ public class PotionOfLevitation extends Potion {
 	@Override
 	public void apply( Hero hero ) {
 		identify();
-		Buff.prolong( hero, Levitation.class, Levitation.DURATION );
+		Buff.prolong( hero, Levitation.class, Levitation.DURATION * com.shatteredpixel.shatteredpixeldungeon.actors.hero.ElementalTalents.potionBoost(hero) ); //elemental, Scientist
 		GLog.i( Messages.get(this, "float") );
 	}
 	
