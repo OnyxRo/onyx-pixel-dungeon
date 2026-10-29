@@ -81,4 +81,4 @@ The cloud routine does the first unchecked task and checks it off. Smallest firs
 - [x] Songs. A song picked by hand no longer loops forever, it plays once and carries on with random songs. Skip always works, from the floor's own music too (it starts a shuffle). A shuffled song keeps playing across floors instead of being replaced by the floor's music (2026-10-28)
 - [x] Boss crawl bosses sorted easiest to hardest on every floor and split into four groups of about the same size. Easy fights the easiest group, each step up adds the next, Insane fights all. Three copy fights taken out (2026-10-28)
 - [x] Check that Abyssalnite's final floor (Cthulhu) can be won. Done 2026-10-28, the fight was rebuilt from Onyx's animation page, he can be beaten and the floor opens an exit where he was
-- [ ] Play the new Cthulhu fight (sandbox, Special floors, Final arena) and say what to change. Slam from the animation page is not used yet, only what Onyx listed
+- [ ] Play the new Cthulhu fight (sandbox, Special floors, Final arena) and say what to change. He now grasps, slams, mind blasts and fires the beam, the tentacle strike is gone and all music is off for now

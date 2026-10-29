@@ -164,3 +164,6 @@ The first fix changed what the copy sprite asked for, but its updateArmor ignore
 
 ## 2026-10-26 Fight that never started
 BossArenaTest passed for NewCavesBossLevel while the fight could never start in play, because the gate tile id changed meaning between Shattered 0.8 and now. Looking at a picture of the game window found it after two wrong guesses to Onyx. When a fight does not start, capture the window first, then check the trigger condition line by line against the live tile flags.
+
+## 2026-10-28 Cthulhu fight in six passes
+The fight took six rounds of feedback. Exporting the animation page headless (scripts/cthulhu-art/build.py) made each round cheap, and the cthulhu tour mode checked every attack in pictures. Ask what each listed attack should feel like before building, it would have saved the strike work that was later removed.
