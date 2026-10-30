@@ -142,6 +142,8 @@ public class GameModes {
 			MODES.add(new Mode(kit, MOD_CUSTOM, 1, null));
 		}
 		TooCruel.register(); //toocruel
+		EspdModes.register(); //espd
+		DeisticPD.register(); //deistic
 		SoftPD.register(); //soft
 		WuWuWu.register(); //zoidberg
 		ButteredArena.register(); //buttered

@@ -40,6 +40,10 @@ rerearranged|https://github.com/ek-mk8034/Re-Re-ARranged-pixel-dungeon|Re-ReARra
 estranged|https://github.com/ijulee/estranged-pixel-dungeon|Estranged PD, on Re-ARranged|ReARranged 3.40.0
 bluearchive|https://github.com/Hoto-Mocha/Blue-Archive-Pixel-Dungeon|Blue Archive PD, franchise|2.1.4
 rebluearchive|https://github.com/Hoto-Mocha/New-Blue-Archive-Pixel-Dungeon|Re Blue Archive PD, franchise|3.0.0
+regrown|https://github.com/sldenis09/RegrownPixelDungeon|Regrown PD, on Sprouted 0.4.1|0.2.4
+espd|https://github.com/G2159687/ESPD|Easier Sprouted PD, on Sprouted 0.4.1|0.2.4
+deistic|https://github.com/BrightBotTeam/DeisticPixelDungeon|Deistic PD, on Sprouted 0.3.5|0.2.4
+palantir|https://github.com/QuasiStellar/PalantirPD|Palantir PD, on Sprouted 0.4.1|0.2.4
 icedungeon|https://github.com/Meduris/shattered-ice-dungeon|Shattered Ice Dungeon|0.3.0e
 buttered|https://github.com/EthanJoyce/Buttered-Pixel-Dungeon|Buttered PD|0.3.0
 minecraft|https://github.com/Meduris/MinecraftPixelDungeon|Minecraft PD, retexture|0.6.5c

@@ -772,6 +772,7 @@ public abstract class Char extends Actor {
 				}
 			}
 			if (enemy instanceof Hero) Talent.onHeroDodged((Hero) enemy, this); //Transformation PD
+			if (enemy instanceof Hero) com.shatteredpixel.shatteredpixeldungeon.DeisticPD.onHeroDodged((Hero) enemy); //deistic, mercenary
 			com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.onMiss(this); //rebluearchive, Noa's Taking Aim
 			if (visibleFight) {
 				//TODO enemy.defenseSound? currently miss plays for monks/crab even when they parry
@@ -1797,7 +1798,7 @@ public abstract class Char extends Actor {
 				result *= 0.5f;
 			}
 		}
-		return result * RingOfElements.resist(this, effect) * XunHooks.resist(this, effect); //xun, elemental mask
+		return result * RingOfElements.resist(this, effect) * XunHooks.resist(this, effect) * com.shatteredpixel.shatteredpixeldungeon.DeisticPD.resist(this, effect); //xun, elemental mask, deistic races
 	}
 	
 	protected final HashSet<Class> immunities = new HashSet<>();

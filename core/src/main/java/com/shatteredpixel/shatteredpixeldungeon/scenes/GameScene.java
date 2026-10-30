@@ -1771,6 +1771,7 @@ public class GameScene extends PixelScene {
 
 	public static void bossSlain() {
 		com.shatteredpixel.shatteredpixeldungeon.TooCruel.onBossSlain(); //toocruel
+		com.shatteredpixel.shatteredpixeldungeon.DeisticPD.onBossSlain(); //deistic, race artifact and tome
 		Badges.validateBossFloor();
 		if (scene == null) return; //headless tests
 		if (Dungeon.hero.isAlive()) {

@@ -368,6 +368,8 @@ public class Wandmaker extends NPC {
 				}
 				wand2.cursed = false;
 				wand2.upgrade();
+				com.shatteredpixel.shatteredpixeldungeon.EspdModes.questReward(wand1); //espd quest tweaks
+				com.shatteredpixel.shatteredpixeldungeon.EspdModes.questReward(wand2);
 				
 			}
 		}

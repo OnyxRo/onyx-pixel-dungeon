@@ -52,6 +52,7 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 	@Override
 	public void doRead() {
 		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.eternalCurseBlocks(this)) return; //transformation, Eternal Curse
+		com.shatteredpixel.shatteredpixeldungeon.DeisticPD.onRemoveCurse(curUser); //deistic, wraiths
 
 		TormentedSpirit spirit = null;
 		for (int i : PathFinder.NEIGHBOURS8){

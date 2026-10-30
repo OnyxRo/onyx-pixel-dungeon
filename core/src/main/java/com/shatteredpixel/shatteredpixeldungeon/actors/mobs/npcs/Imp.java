@@ -348,6 +348,7 @@ public class Imp extends NPC {
 				w.identify(false).level(Random.IntRange(2, 4));
 				w.curCharges = w.maxCharges;
 				rewardOptions.add(w);
+				for (Item espd : rewardOptions) com.shatteredpixel.shatteredpixeldungeon.EspdModes.questReward(espd); //espd quest tweaks
 
 				for (Item i : rewardOptions){
 					i.cursed = false;

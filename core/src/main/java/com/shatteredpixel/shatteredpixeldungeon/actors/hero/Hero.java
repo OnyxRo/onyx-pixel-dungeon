@@ -983,6 +983,11 @@ public class Hero extends Char {
 	
 	@Override
 	public int defenseSkill( Char enemy ) {
+		int skill = defenseSkillBase(enemy);
+		return skill >= INFINITE_EVASION ? skill : com.shatteredpixel.shatteredpixeldungeon.DeisticPD.defenseSkill(skill); //deistic, wraith
+	}
+
+	private int defenseSkillBase( Char enemy ) {
 
 		if (buff(Combo.ParryTracker.class) != null){
 			if (canAttack(enemy) && !isCharmedBy(enemy)){
@@ -1179,6 +1184,10 @@ public class Hero extends Char {
 	
 	@Override
 	public int damageRoll() {
+		return com.shatteredpixel.shatteredpixeldungeon.DeisticPD.damageRoll(this, damageRollBase()); //deistic, dwarf, monk and brute
+	}
+
+	private int damageRollBase() {
 		if (com.shatteredpixel.shatteredpixeldungeon.LoreGoo.on()) return com.shatteredpixel.shatteredpixeldungeon.LoreGoo.damageRoll(this); //lore
 		KindOfWeapon wep = belongings.attackingWeapon();
 		int dmg;
@@ -1351,6 +1360,10 @@ public class Hero extends Char {
 	}
 	
 	public float attackDelay() {
+		return com.shatteredpixel.shatteredpixeldungeon.DeisticPD.attackDelay(this, attackDelayBase()); //deistic, mercenary
+	}
+
+	private float attackDelayBase() {
 		if (BAHero.freeAttack(this)) return 0; //bluearchive
 		if (com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.freeAttack(this)) return 0; //trap dungeon armor
 		if (buff(Talent.LethalMomentumTracker.class) != null){
@@ -2370,6 +2383,7 @@ public class Hero extends Char {
 		damage = super.attackProc( enemy, damage );
 		damage = XunHeroes.attackProc( this, enemy, damage ); //xun
 		damage = com.shatteredpixel.shatteredpixeldungeon.MusicImplant.attackProc( this, enemy, damage ); //musicimplant
+		com.shatteredpixel.shatteredpixeldungeon.DeisticPD.onHeroHit( this, enemy ); //deistic, blue wraith
 		com.shatteredpixel.shatteredpixeldungeon.LoreGoo.attackProc( this, enemy ); //lore
 
 		KindOfWeapon wep;
@@ -2518,6 +2532,7 @@ public class Hero extends Char {
 	@Override
 	public void damage( int dmg, Object src ) {
 		dmg = com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.damageTaken( this, dmg, src ); //trap dungeon armor
+		dmg = com.shatteredpixel.shatteredpixeldungeon.DeisticPD.damageTaken( this, dmg, src ); //deistic races
 		if (Dungeon.godMode()) {
 			return;
 		}
