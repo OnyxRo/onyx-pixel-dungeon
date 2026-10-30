@@ -270,7 +270,8 @@ public class ButteredArenaLevel extends Level {
 	private void bossCleared( Hero hero ){
 		bossWave = false;
 		int cell = bossPos >= 0 && passable[bossPos] ? bossPos : hero.pos;
-		drop( new PixelMartKey(), cell ).sprite.drop();
+		Heap key = drop( new PixelMartKey(), cell );
+		if (key.sprite != null) key.sprite.drop();
 		if (wave >= 25 && exitCell >= 0 && map[exitCell] == Terrain.LOCKED_EXIT) {
 			set( exitCell, Terrain.EXIT );
 			GameScene.updateMap( exitCell );
@@ -283,7 +284,9 @@ public class ButteredArenaLevel extends Level {
 
 	private void clearMobs(){
 		for (Mob mob : enemies()) {
-			mob.destroy();
+			//removed without counting as a kill, so leftovers give no experience
+			mobs.remove( mob );
+			com.shatteredpixel.shatteredpixeldungeon.actors.Actor.remove( mob );
 			if (mob.sprite != null) mob.sprite.killAndErase();
 		}
 	}

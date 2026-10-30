@@ -44,7 +44,8 @@ public class SoftPD {
 
 	private static void drop( Level level, int pos, Item item ){
 		if (item == null) return;
-		level.drop(item, pos).sprite.drop();
+		com.shatteredpixel.shatteredpixeldungeon.items.Heap heap = level.drop(item, pos);
+		if (heap.sprite != null) heap.sprite.drop();
 	}
 
 	//the mod searched one tile further
