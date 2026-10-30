@@ -109,7 +109,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 	private static boolean isSwiftEquipping = false;
 
 	protected float timeToEquip( Hero hero ) {
-		return isSwiftEquipping ? 0f : super.timeToEquip(hero);
+		return isSwiftEquipping ? 0f : com.shatteredpixel.shatteredpixeldungeon.MusicImplant.equipTime(this, super.timeToEquip(hero)); //musicimplant, quick draw and slowpoke
 	}
 	
 	@Override

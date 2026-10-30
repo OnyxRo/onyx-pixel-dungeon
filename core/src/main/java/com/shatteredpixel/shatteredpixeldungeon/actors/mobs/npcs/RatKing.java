@@ -205,6 +205,9 @@ public class RatKing extends NPC {
 			notice();
 			yell( Messages.get(this, "not_sleeping") );
 			state = WANDERING;
+			com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.ratKingWoken(); //trap dungeon
+		} else if (com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.ratKingRitual(this)){
+			//trap dungeon, a rat beacon starts the ritual
 		} else if (crown != null){
 			if (Dungeon.hero.belongings.armor() == null){
 				yell( Messages.get(RatKing.class, "crown_clothes") );

@@ -183,6 +183,9 @@ abstract public class ClassArmor extends Armor {
 			case TANK:
 				classArmor = new WarriorArmor();
 				break;
+			case APPRENTICE: //clairvoyant
+				classArmor = new MageArmor();
+				break;
 			case TOWERPRIEST:
 				classArmor = new ClericArmor();
 				break;

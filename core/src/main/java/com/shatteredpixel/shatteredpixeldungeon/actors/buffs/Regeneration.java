@@ -74,7 +74,7 @@ public class Regeneration extends Buff {
 				Buff.affect(Dungeon.hero, ChaoticCenser.CenserGasTracker.class);
 			}
 
-			if (regenOn() && target.HP < regencap() && !((Hero)target).isStarving()) {
+			if (regenOn() && target.HP < regencap() && com.shatteredpixel.shatteredpixeldungeon.LoreGoo.canRegen((Hero)target)) { //lore, the Goo heals while not arid
 				boolean chaliceCursed = false;
 				int chaliceLevel = -1;
 				if (target.buff(MagicImmune.class) == null) {
@@ -103,6 +103,7 @@ public class Regeneration extends Buff {
 				delay = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.regenDelay(target, delay); //rearranged
 
 				delay = com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.soulRegenDelay(target, delay); //summoning
+				delay = com.shatteredpixel.shatteredpixeldungeon.MusicImplant.regenDelay(target, delay); //musicimplant, satiation
 				//Ryuse's PD helmets
 				delay *= com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.regenDelay(target);
 				//transformation, Strengthen Chalice and Weaken Chalice

@@ -781,6 +781,7 @@ abstract public class Weapon extends KindOfWeapon {
 				multi = rage.enchantFactor(multi);
 			}
 			multi = com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RearrangedWeapons.procChance(attacker, multi); //rearranged
+			multi += com.shatteredpixel.shatteredpixeldungeon.actors.hero.ClairvoyantHero.procBonus(attacker); //clairvoyant, the Channeller
 			multi = com.shatteredpixel.shatteredpixeldungeon.RBAHooks.enchantFactor(attacker, multi); //rebluearchive, bullet mods
 
 			if (attacker.buff(RunicBlade.RunicSlashTracker.class) != null){

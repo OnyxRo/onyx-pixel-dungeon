@@ -149,6 +149,121 @@ public class GameModesTest {
 			}
 			check( new com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHaste().isKnown(), "Superior Knowledge identifies potions" );
 
+			//Modded PD's test kit
+			newRun( 18, com.shatteredpixel.shatteredpixeldungeon.SmallModes.MODDED_KIT );
+			boolean plate = false;
+			for (Item i : Dungeon.hero.belongings) if (i instanceof com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor && i.level() == 100) plate = true;
+			check( plate, "Modded kit gives a +100 plate armor" );
+
+			//Speedrun PD Bones% and Old Speedrun PD's wand, remains on floor 1
+			for (int lvl = 1; lvl <= 10; lvl++) {
+				check( com.shatteredpixel.shatteredpixeldungeon.SmallModes.bonesItem( lvl ) != null, "bones item " + lvl );
+			}
+			for (String m : new String[]{ com.shatteredpixel.shatteredpixeldungeon.SmallModes.SPEEDRUN_BONES, com.shatteredpixel.shatteredpixeldungeon.SmallModes.OLDSPEEDRUN_WAND }) {
+				newRun( 19, m );
+				l = build( 1 );
+				boolean found = false;
+				for (com.shatteredpixel.shatteredpixeldungeon.items.Heap h : l.heaps.valueList()) {
+					if (h.type == com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type.REMAINS) found = true;
+				}
+				check( found, m + " puts remains on floor 1" );
+			}
+
+			//Speedrun PD timer, splits, finish and save
+			newRun( 20, com.shatteredpixel.shatteredpixeldungeon.SmallModes.SPEEDRUN_TIMER );
+			build( 1 );
+			com.shatteredpixel.shatteredpixeldungeon.SmallModes.time = 5000;
+			build( 2 );
+			check( com.shatteredpixel.shatteredpixeldungeon.SmallModes.splits[2] == 5000, "timer takes a split on floor 2" );
+			Bundle tb = new Bundle();
+			GameModes.store( tb );
+			com.shatteredpixel.shatteredpixeldungeon.SmallModes.time = 0;
+			GameModes.restore( tb );
+			check( com.shatteredpixel.shatteredpixeldungeon.SmallModes.time == 5000, "timer comes back after a save" );
+			com.shatteredpixel.shatteredpixeldungeon.SmallModes.onAmulet();
+			check( com.shatteredpixel.shatteredpixeldungeon.SmallModes.finished && com.shatteredpixel.shatteredpixeldungeon.SmallModes.personalBest() > 0, "amulet stops the timer and sets a best" );
+			check( hasText( com.shatteredpixel.shatteredpixeldungeon.SmallModes.categoryName() ), "category text" );
+
+			//Shattered Pixel Lore, the Goo's story
+			newRun( 21, com.shatteredpixel.shatteredpixeldungeon.LoreGoo.GOO );
+			int carried = 0;
+			for (Item i : Dungeon.hero.belongings) carried++;
+			check( carried == 0, "the Goo starts with nothing, has " + carried );
+			check( Dungeon.hero.lvl == 2, "the Goo starts at level 2" );
+			check( Dungeon.hero.talents.get( 0 ).containsKey( com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.CAUSTIC_OOZE ) && Dungeon.hero.talents.get( 0 ).size() == 4, "the Goo has its own talents" );
+			for (int d = 1; d <= 5; d++) {
+				l = build( d );
+				int loot = 0;
+				for (com.shatteredpixel.shatteredpixeldungeon.items.Heap h : l.heaps.valueList()) for (Item i : h.items) {
+					if (i instanceof com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem || i instanceof com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion
+							|| i instanceof com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll || i instanceof com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand) loot++;
+				}
+				check( loot == 0 || d == 5, "Goo floor " + d + " holds no loot, has " + loot );
+			}
+			check( l instanceof com.shatteredpixel.shatteredpixeldungeon.levels.SewerBossLevel, "the Goo meets Shattered's Goo on floor 5, got " + l.getClass().getSimpleName() );
+			float before = com.shatteredpixel.shatteredpixeldungeon.LoreGoo.moisture( Dungeon.hero ).level();
+			for (int c = 0; c < l.length(); c++) if (l.water[c] && l.passable[c]) { Dungeon.hero.pos = c; break; }
+			com.shatteredpixel.shatteredpixeldungeon.LoreGoo.onHeroTurn( Dungeon.hero );
+			check( !l.water[Dungeon.hero.pos] || com.shatteredpixel.shatteredpixeldungeon.LoreGoo.moisture( Dungeon.hero ).level() > before, "water raises moisture" );
+			check( Dungeon.hero.damageRoll() >= 0, "the Goo rolls damage" );
+			check( com.shatteredpixel.shatteredpixeldungeon.LoreGoo.blockPickUp( Dungeon.hero ), "the Goo cannot pick up items" );
+			Bundle gb = new Bundle();
+			Dungeon.hero.storeInBundle( gb );
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero h2 = new com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero();
+			h2.restoreFromBundle( gb );
+			check( h2.talents.get( 0 ).containsKey( com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.SLIPPERY_SLIME ), "the Goo's talents come back after a save" );
+			check( hasText( Messages.get( com.shatteredpixel.shatteredpixeldungeon.scenes.GooWinScene.class, "text" ) ) && hasText( new com.shatteredpixel.shatteredpixeldungeon.actors.buffs.GooMoisture().desc() ), "Goo text" );
+
+			//Shattered Trap Dungeon, its traps and monsters on every floor
+			newRun( 22, com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.MODE );
+			java.util.List<Class<?>> modTraps = java.util.Arrays.asList( com.shatteredpixel.shatteredpixeldungeon.levels.traps.TrapDungeonTraps.CLASSES );
+			int newTraps = 0, modMobs = 0;
+			for (int d = 1; d <= 24; d++) {
+				l = build( d );
+				for (com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap t : l.traps.valueList()) {
+					if (t.getClass().getPackage().getName().endsWith( "traps" ) && modTraps.contains( t.getClass() )
+							&& t.getClass().getName().matches( ".*(Annihilation|Bargain|Cannon|Chaos|Chestnut|Cryo|Disrobing|Dream|Enchanting|FrostCurse|Fury|Goblin|Lottery|Marking|Mimic|Multi|Rearm|Sharpnel|Slicing|Smokescreen|Spook|Transmutation)Trap" )) newTraps++;
+				}
+				for (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob m : l.mobs) {
+					if (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.ModRoster.class != null && m.getClass().getSimpleName().matches( "DancingSkeleton|FilthJet|Orc|ToughGhost|Assasin|KeyChain|BombSpider2?|DartSpitter|ShockerBlock|FrostMeteor|ChaosElemental|TDDemonRat|Prismancer|Hole" )) modMobs++;
+				}
+			}
+			check( newTraps > 0, "Trap Dungeon puts its own traps on the floors" );
+			check( modMobs > 0, "Trap Dungeon's monsters join the floors" );
+			System.out.println( "INFO trap dungeon, " + newTraps + " new traps and " + modMobs + " of its monsters on floors 1 to 24" );
+			int trapErrors = 0, trapHeadless = 0;
+			for (Class<?> tc : com.shatteredpixel.shatteredpixeldungeon.levels.traps.TrapDungeonTraps.CLASSES) {
+				com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap t = (com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap) com.watabou.utils.Reflection.newInstance( tc );
+				check( t != null && hasText( t.name() ) && hasText( t.desc() ), "trap text for " + tc.getSimpleName() );
+				if (t == null) continue;
+				l = build( 12 );
+				Dungeon.hero.HP = Dungeon.hero.HT = 10000;
+				int cell = -1;
+				for (int n : com.watabou.utils.PathFinder.NEIGHBOURS8) {
+					int c = Dungeon.hero.pos + n;
+					if (l.passable[c] && com.shatteredpixel.shatteredpixeldungeon.actors.Actor.findChar( c ) == null) { cell = c; break; }
+				}
+				t.pos = cell < 0 ? Dungeon.hero.pos : cell;
+				try {
+					t.activate();
+				} catch (NullPointerException e) {
+					trapHeadless++;
+				} catch (Throwable e) {
+					trapErrors++;
+					System.out.println( "FAIL: trap " + tc.getSimpleName() + " threw " + e );
+					StackTraceElement[] st = e.getStackTrace();
+					for (int i = 0; i < Math.min( 5, st.length ); i++) System.out.println( "        at " + st[i] );
+				}
+			}
+			check( trapErrors == 0, "Trap Dungeon traps go off without errors" );
+			System.out.println( "INFO trap dungeon traps, " + trapHeadless + " stopped at a sprite or effect headless" );
+			Bundle td = new Bundle();
+			com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.increaseTrapSkill();
+			GameModes.store( td );
+			com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.reset();
+			GameModes.restore( td );
+			check( com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.getTrapSkill() == 1, "trap skill comes back after a save" );
+
 			//Radar seed search, a ration of food is on floor 1 of most seeds
 			String old = RadarSearch.items( 0 );
 			RadarSearch.items( 0, "ration" );
@@ -159,6 +274,90 @@ public class GameModesTest {
 			check( search.failed == 0, "Radar seeds build without errors" );
 			System.out.println( "INFO radar checked " + search.checked + " seeds" );
 			RadarSearch.items( 0, old );
+
+			//soft, Soft PD's not so hard mode
+			for (int pass = 0; pass < 2; pass++) {
+				if (pass == 0) newRun( 31 ); else newRun( 31, com.shatteredpixel.shatteredpixeldungeon.SoftPD.NOT_SO_HARD );
+				l = build( 2 );
+				int softCell = l.entrance();
+				int softBefore = l.heaps.get( softCell ) == null ? 0 : l.heaps.get( softCell ).items.size();
+				for (int i = 0; i < 200; i++) com.shatteredpixel.shatteredpixeldungeon.SoftPD.grassLoot( l, softCell );
+				int softAfter = l.heaps.get( softCell ) == null ? 0 : l.heaps.get( softCell ).items.size();
+				if (pass == 0) check( softAfter == softBefore && com.shatteredpixel.shatteredpixeldungeon.SoftPD.searchBonus() == 0, "Soft off changes nothing" );
+				else check( softAfter - softBefore > 5 && com.shatteredpixel.shatteredpixeldungeon.SoftPD.searchBonus() == 1, "Soft grass gives items, got " + (softAfter - softBefore) );
+			}
+
+			//zoidberg, WuWuWu's million gold and boss roulette
+			newRun( 32, com.shatteredpixel.shatteredpixeldungeon.WuWuWu.GOLD );
+			build( 1 );
+			check( Dungeon.gold == 1000000, "WuWuWu starts with a million gold, has " + Dungeon.gold );
+			Dungeon.gold = 5;
+			build( 2 );
+			check( Dungeon.gold == 1000000, "WuWuWu tops the gold back up" );
+			int skipped = 0, bosses = 0;
+			for (long s = 40; s < 80 && (skipped < 4 || bosses < 1); s++) {
+				newRun( s, com.shatteredpixel.shatteredpixeldungeon.WuWuWu.SKIP_BOSSES );
+				for (int d = 5; d <= 20; d += 5) {
+					boolean skip = com.shatteredpixel.shatteredpixeldungeon.WuWuWu.skipsBoss( d );
+					l = build( d );
+					boolean plain = !l.getClass().getSimpleName().contains( "Boss" );
+					check( skip == plain, "WuWuWu floor " + d + " seed " + s + " plain " + plain + " rolled " + skip );
+					if (skip) {
+						skipped++;
+						check( exitDepth( l, LevelTransition.Type.REGULAR_EXIT ) == d + 1, "plain boss floor " + d + " has stairs down" );
+						if (d == 10 || d == 20) {
+							boolean progFound = false;
+							for (com.shatteredpixel.shatteredpixeldungeon.items.Heap h : l.heaps.valueList()) for (Item i : h.items)
+								if (i instanceof com.shatteredpixel.shatteredpixeldungeon.items.TengusMask || i instanceof com.shatteredpixel.shatteredpixeldungeon.items.KingsCrown) progFound = true;
+							check( progFound, "plain floor " + d + " holds the boss's progression item" );
+						}
+					} else bosses++;
+				}
+			}
+			check( skipped >= 4 && bosses >= 1, "WuWuWu skips some bosses and keeps others, skipped " + skipped );
+			newRun( 41 );
+			check( !com.shatteredpixel.shatteredpixeldungeon.WuWuWu.skipsBoss( 5 ), "WuWuWu off keeps every boss" );
+
+			//buttered, Buttered PD's Arena
+			newRun( 51, com.shatteredpixel.shatteredpixeldungeon.ButteredArena.ARENA );
+			l = build( 1 );
+			check( l instanceof com.shatteredpixel.shatteredpixeldungeon.levels.ButteredArenaLevel, "Arena floor 1 is the arena" );
+			com.shatteredpixel.shatteredpixeldungeon.levels.ButteredArenaLevel arena = (com.shatteredpixel.shatteredpixeldungeon.levels.ButteredArenaLevel) l;
+			check( exitDepth( l, LevelTransition.Type.REGULAR_EXIT ) == 26, "arena stairs lead to the amulet floor" );
+			check( !l.mobs.isEmpty() && !l.heaps.isEmpty(), "arena starts with monsters and items, " + l.mobs.size() + " " + l.heaps.size );
+			Dungeon.hero.pos = l.entrance() + 1;
+			arena.heroLeveledUp();
+			arena.tick( Dungeon.hero );
+			check( arena.wave == 2 && !arena.bossWave(), "a level up starts wave 2" );
+			for (int w : new int[]{ 5, 10, 25 }) {
+				arena.wave = w - 1;
+				arena.heroLeveledUp();
+				arena.tick( Dungeon.hero );
+				int waveFoes = 0;
+				for (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob m : l.mobs) if (m.alignment == com.shatteredpixel.shatteredpixeldungeon.actors.Char.Alignment.ENEMY) waveFoes++;
+				check( arena.bossWave() && waveFoes >= 1, "wave " + w + " is a boss wave with " + waveFoes + " enemies" );
+				for (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob m : l.mobs.toArray( new com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob[0] )) { l.mobs.remove( m ); com.shatteredpixel.shatteredpixeldungeon.actors.Actor.remove( m ); }
+				int lvl = Dungeon.hero.lvl;
+				arena.tick( Dungeon.hero );
+				boolean key = false;
+				for (com.shatteredpixel.shatteredpixeldungeon.items.Heap h : l.heaps.valueList()) for (Item i : h.items) if (i instanceof com.shatteredpixel.shatteredpixeldungeon.items.PixelMartKey) key = true;
+				check( !arena.bossWave() && key && Dungeon.hero.lvl == lvl + 1, "beating wave " + w + " gives a key and a level" );
+				check( Dungeon.hero.HP == Dungeon.hero.HT, "an arena level up heals" );
+			}
+			check( l.map[l.exit()] == com.shatteredpixel.shatteredpixeldungeon.levels.Terrain.EXIT, "wave 25 opens the stairs" );
+			check( com.shatteredpixel.shatteredpixeldungeon.ButteredArena.shopDepth( 5 ) == 6 && com.shatteredpixel.shatteredpixeldungeon.ButteredArena.shopDepth( 25 ) == 21, "shop floors are 6 to 21" );
+			com.shatteredpixel.shatteredpixeldungeon.levels.Level shop = build( 11 );
+			int forSale = 0;
+			for (com.shatteredpixel.shatteredpixeldungeon.items.Heap h : shop.heaps.valueList()) if (h.type == com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type.FOR_SALE) forSale++;
+			check( shop instanceof com.shatteredpixel.shatteredpixeldungeon.levels.ButteredShopLevel && forSale > 5, "the key's floor is a shop, " + forSale + " for sale" );
+			check( exitDepth( shop, LevelTransition.Type.REGULAR_ENTRANCE ) == 1 && exitDepth( shop, LevelTransition.Type.REGULAR_EXIT ) == -99, "the shop only leads back to the arena" );
+			check( GameModes.prevDepth( 26 ) == 1, "the amulet floor leads back to the arena" );
+			com.watabou.utils.Bundle ab = new com.watabou.utils.Bundle();
+			ab.put( "arena", arena );
+			com.shatteredpixel.shatteredpixeldungeon.levels.ButteredArenaLevel back = (com.shatteredpixel.shatteredpixeldungeon.levels.ButteredArenaLevel) ab.get( "arena" );
+			check( back.wave == arena.wave, "the arena keeps its wave after a save" );
+			newRun( 52 );
+			check( !(build( 1 ) instanceof com.shatteredpixel.shatteredpixeldungeon.levels.ButteredArenaLevel) && GameModes.nextDepth( 1 ) == 2, "Arena off keeps the normal dungeon" );
 
 			//timing of a deep search, only when asked with -Dradar.timing=true
 			if (Boolean.getBoolean( "radar.timing" )) {
@@ -173,7 +372,7 @@ public class GameModesTest {
 			}
 		} catch (Throwable t) {
 			failures++;
-			System.out.println( "FAIL: threw " + t );
+			System.out.println( "FAIL: threw " + t ); for (StackTraceElement el : t.getStackTrace()) System.out.println( "  at " + el );
 			StackTraceElement[] st = t.getStackTrace();
 			for (int i = 0; i < Math.min( 12, st.length ); i++) System.out.println( "        at " + st[i] );
 		}

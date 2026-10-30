@@ -63,8 +63,16 @@ The cloud routine does the first unchecked task and checks it off. Smallest firs
 
 - [x] Crash list. Every crash goes into crashes/crashes.jsonl, "fix bugs" works through it (2026-10-23)
 - [x] Journal item list crash from the Transformation item sheet (2026-10-23)
-- [ ] FirebloomHerb and SorrowmossHerb need description text
-- [ ] Bot check of the sandbox play tasks (2026-10-26). All headless tests passed. The every boss floor tour checked floors 0 to 251 and fixed two crashes (a Caves pylon dying before it powered up, and arriving at Transformation's Surface town). Floors 252 to 448 still need a tour run, the window was hidden for that part. Air challenge boss floor logs vision errors at the map edge (caught, not a crash). Hero bot games not run yet.
+- [x] FirebloomHerb and SorrowmossHerb need description text (2026-10-29, rewritten to match their effects)
+- [ ] Bot check of the sandbox play tasks (2026-10-26). All headless tests passed. The every boss floor tour checked floors 0 to 251 and fixed two crashes (a Caves pylon dying before it powered up, and arriving at Transformation's Surface town). Air challenge boss floor logs vision errors at the map edge (caught, not a crash).
+  - 2026-10-29. Full bot games (floor 1 to 26 and back, seed 4242) passed with no crash for Gunner, Samurai, Adventurer, Knight, Medic, Archer, Conjurer, Freeman, Necro hero, Tank, Tower priest, Explorer and Wraith. Engineer, Summoner and Rat King not run (paused). The boss tour from 252 ended by itself after 3 floors, at Forest Poison's boss floor (254) the bot's exit did not work ("used the exit, went false") and the tour quit. Find why, then run 254 onward.
+- [ ] Port the content of the 19 tiny Shattered mods (2026-10-29, paused). Five helper branches hold work in progress, none compiled yet. Each branch has a "paused" note with exact next steps at the end of its PORTING.md. Merge them into main one at a time once each compiles and passes check.sh.
+  - `worktree-agent-a78c077696a5ed1a2`, Elemental PD (Alchemist hero, four chapters after Yog with bosses, Elemental Stones). Items and talents copied, about 113 compile errors, `ElementalTalents` still to write.
+  - `worktree-agent-aa7f11d7f6aae4aa6`, Music Implant (written as game modes, never compiled) and Clairvoyant (not started, it adds an Apprentice hero).
+  - `worktree-agent-a256479b2be8b8ca5`, Modded, Speedrun and Old Speedrun as game modes (strings still to write). Lore (Goo hero), Trap Dungeon (36 monsters, 38 traps) and Re-Remixed (levels, town, skills) not started.
+  - `onyx/p6-oldmods` (in worktree agent-a509795745a9576f3), the six very old mods. Soft written as a game mode (never compiled). Buttered's Arena mode and 3oiDburg's two tweaks planned, not started. Shattered Ice Dungeon and Shattered Ice PD only add art that needs redrawing, Minecraft is only a retexture.
+  - `worktree-agent-a41ac4823a86cfe66`, the four Sprouted mods. Pictures copied, no code yet. Easier Sprouted becomes nine game modes plus the Unstable Wand, Regrown adds a Sacrificial Dagger and Monster Soul, Deistic adds races, race artifacts, Blastseed and the Arcane Singularity. Palantir has nothing portable (Sokoban floors that need Sprouted).
+  - `items.png` changes on several branches will conflict. Rerun each branch's `port-itemsprites.py` line on top of main instead of merging the picture.
 
 - [x] Boss crawl option on the title screen, bosses easiest to hardest (2026-10-26)
 - [x] Boss crawl ends on the Amulet floor after the last boss, taking the Amulet ends the run and ranks it (2026-10-27)
@@ -82,3 +90,11 @@ The cloud routine does the first unchecked task and checks it off. Smallest firs
 - [x] Boss crawl bosses sorted easiest to hardest on every floor and split into four groups of about the same size. Easy fights the easiest group, each step up adds the next, Insane fights all. Three copy fights taken out (2026-10-28)
 - [x] Check that Abyssalnite's final floor (Cthulhu) can be won. Done 2026-10-28, the fight was rebuilt from Onyx's animation page, he can be beaten and the floor opens an exit where he was
 - [ ] Play the new Cthulhu fight (sandbox, Special floors, Final arena) and say what to change. He now grasps, slams, mind blasts and fires the beam, the tentacle strike is gone and all music is off for now
+- [x] Port the six small mods (2026-10-29). Modded PD, Speedrun PD and Old Speedrun PD as game modes, Shattered Pixel Lore as The Goo's Story game mode, Shattered Trap Dungeon as the Trap Dungeon game mode with its 30 monsters, 22 traps and 19 items, Re-Remixed's boss arenas, town and very last floor
+- [ ] Port Re-Remixed Dungeon's three hero classes (Elf, Necromancer, Gnoll) with their skills system, and its run layout (town on floor 0, fake amulet on 26, real one on 27) as a game mode. See PORTING.md
+- [ ] Play the new game modes on screen (Speedrun timer and restart, Bones%, The Goo's Story, Trap Dungeon) and Re-Remixed's three boss arenas in the sandbox
+- [x] Port Music Implant SPD (light, horror, satiation and 34 perks as game modes, candle, torch, wax and wick). See PORTING.md
+- [ ] Play Music Implant's game modes on screen (Light and Horror, Satiation, a few perks) and say what to change
+- [x] Port Clairvoyant PD (the Apprentice hero with the Channeller, Spell Hand, Eighterstaff, Power Bracelet, Wild Magic, stable elementals). See PORTING.md
+- [ ] Play the Apprentice on screen (spell hand, Wild Magic, Channeller) and say what to change
+- [ ] Run the headless tests for Soft, WuWuWu and the Buttered Arena (`scripts/test-one.sh GameModesTest` after `FAST=1 scripts/check.sh --quick`), then play the Arena on screen and say what to change

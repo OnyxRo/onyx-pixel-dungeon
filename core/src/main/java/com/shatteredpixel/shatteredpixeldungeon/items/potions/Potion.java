@@ -298,6 +298,7 @@ public class Potion extends Item {
 	}
 	
 	protected void drink( Hero hero ) {
+		if (com.shatteredpixel.shatteredpixeldungeon.MusicImplant.clumsyFails(hero, this, true)) return; //musicimplant
 
 		//rearranged, the Adventurer's Safe Potion
 		if (!isKnown() && hero.hasTalent(Talent.SAFE_POTION)) {
@@ -319,7 +320,7 @@ public class Potion extends Item {
 			}
 		}
 		
-		hero.spend( com.shatteredpixel.shatteredpixeldungeon.actors.hero.ElementalTalents.drinkTime(hero, TIME_TO_DRINK) ); //elemental, Swift Lobbing
+		hero.spend( com.shatteredpixel.shatteredpixeldungeon.MusicImplant.actTime(this, com.shatteredpixel.shatteredpixeldungeon.actors.hero.ElementalTalents.drinkTime(hero, TIME_TO_DRINK), true) ); //musicimplant dexterous, elemental Swift Lobbing
 		hero.busy();
 		apply( hero );
 		com.shatteredpixel.shatteredpixeldungeon.actors.hero.ElementalTalents.onPotionDrunk( hero, this ); //elemental

@@ -293,6 +293,7 @@ public class Heap implements Bundlable {
 	//Note: should not be called to initiate an explosion, but rather by an explosion that is happening.
 	public void explode() {
 		hidden = false;
+		if (!items.isEmpty()) com.shatteredpixel.shatteredpixeldungeon.actors.hero.ClairvoyantHero.onItemDestroyed(pos); //clairvoyant, Matter Dissipation
 
 		//breaks open most standard containers, mimics die.
 		if (type == Type.CHEST || type == Type.SKELETON) {

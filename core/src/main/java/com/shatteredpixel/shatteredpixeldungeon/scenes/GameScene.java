@@ -502,6 +502,14 @@ public class GameScene extends PixelScene {
 			hudLeft = sandbox.left();
 		}
 
+		//speedrun pd, the run timer left of the menu buttons
+		if (com.shatteredpixel.shatteredpixeldungeon.SmallModes.timerOn()) {
+			com.shatteredpixel.shatteredpixeldungeon.ui.SpeedrunTimer timer = new com.shatteredpixel.shatteredpixeldungeon.ui.SpeedrunTimer();
+			timer.camera = uiCamera;
+			timer.rightEdge( hudLeft - 3, screentop + 2 );
+			add(timer);
+		}
+
 		//every floor a new world: the source mod's icon and name sit at the top left while in one of its worlds.
 		//Clicking the icon says what that mod changed
 		String modLogo = Dungeon.branch == 0 ? WorldShuffle.modLogo(Dungeon.level) : null;

@@ -474,6 +474,7 @@ public class DM300 extends Mob {
 
 	@Override
 	public void damage(int dmg, Object src) {
+		com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.dm300Damaged(this); //trap dungeon, goblin protocol
 		if (!BossHealthBar.isAssigned()){
 			notice();
 		}

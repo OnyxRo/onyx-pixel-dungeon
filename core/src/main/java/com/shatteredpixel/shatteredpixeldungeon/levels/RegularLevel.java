@@ -163,6 +163,7 @@ public abstract class RegularLevel extends Level {
 
 		//force max special rooms and add one more for large levels
 		int specials = specialRooms(feeling == Feeling.LARGE);
+		if (com.shatteredpixel.shatteredpixeldungeon.LoreGoo.noItems()) specials = 0; //lore
 		if (feeling == Feeling.LARGE){
 			specials++;
 		}
@@ -406,6 +407,7 @@ public abstract class RegularLevel extends Level {
 	protected void createItems() {
 
 		if (!canSpawnItems) return;
+		if (com.shatteredpixel.shatteredpixeldungeon.LoreGoo.noItems()) return; //lore, the Goo finds nothing
 
 		//elemental, the Scientist's Backup Supplies
 		for (int i = com.shatteredpixel.shatteredpixeldungeon.actors.hero.ElementalTalents.extraPotions(); i > 0; i--){
@@ -583,6 +585,9 @@ public abstract class RegularLevel extends Level {
 
 		Random.pushGenerator( Random.Long() );
 			ArrayList<Item> bonesItems = Bones.get();
+			//speedrun pd and old speedrun pd, chosen remains on floor 1
+			ArrayList<Item> modRemains = com.shatteredpixel.shatteredpixeldungeon.SmallModes.floorOneRemains();
+			if (!modRemains.isEmpty()) bonesItems = modRemains;
 			if (bonesItems != null) {
 				int cell = randomDropCell();
 				if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {

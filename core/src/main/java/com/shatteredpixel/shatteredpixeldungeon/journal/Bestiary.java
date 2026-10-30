@@ -369,6 +369,10 @@ public enum Bestiary {
 				com.shatteredpixel.shatteredpixeldungeon.levels.traps.LooseItemsTrap.class,
 				com.shatteredpixel.shatteredpixeldungeon.levels.traps.UnstableTrap.class,
 				com.shatteredpixel.shatteredpixeldungeon.levels.traps.WarpwayTrap.class);
+		//Shattered Trap Dungeon
+		for (Class<?> t : com.shatteredpixel.shatteredpixeldungeon.levels.traps.TrapDungeonTraps.CLASSES) {
+			if (!TRAP.entities().contains(t)) TRAP.addEntities(t);
+		}
 
 		PLANT.addEntities(Rotberry.class, Sungrass.class, Fadeleaf.class, Icecap.class,
 				Firebloom.class, Sorrowmoss.class, Swiftthistle.class, Blindweed.class,

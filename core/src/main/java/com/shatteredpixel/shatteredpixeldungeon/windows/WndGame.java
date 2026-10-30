@@ -106,6 +106,19 @@ public class WndGame extends Window {
 		} );
 		curBtn.icon(Icons.get(Icons.AUDIO));
 
+		//speedrun pd, a restart button while the hero still lives
+		if (Dungeon.hero != null && Dungeon.hero.isAlive() && com.shatteredpixel.shatteredpixeldungeon.SmallModes.restartButton()) {
+			addButton( curBtn = new RedButton( Messages.get(this, "restart") ) {
+				@Override
+				protected void onClick() {
+					GamesInProgress.selectedClass = Dungeon.hero.heroClass;
+					GamesInProgress.curSlot = GamesInProgress.firstEmpty();
+					ShatteredPixelDungeon.switchScene(HeroSelectScene.class);
+				}
+			} );
+			curBtn.icon(Icons.get(Icons.ENTER));
+		}
+
 		// Restart
 		if (Dungeon.hero == null || !Dungeon.hero.isAlive()) {
 
