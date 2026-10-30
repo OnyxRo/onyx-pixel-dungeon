@@ -3076,6 +3076,7 @@ public class Hero extends Char {
 				defenseSkill++;
 				Perks.earnPerk(this);
 				RearrangedTalents.onLevelUp(this); //rearranged
+				com.shatteredpixel.shatteredpixeldungeon.ButteredArena.onLevelUp(this); //buttered, heals and starts the next wave
 				summoningLevelUp();
 
 			} else {
@@ -3698,6 +3699,7 @@ public class Hero extends Char {
 		distance += BAHero.searchBonus(this); //bluearchive
 		if (pointsInTalent(Talent.BA_WIDER_SEARCH) == 1) circular = true; //bluearchive
 		distance += RBAHero.searchDistance(this); //rebluearchive, Noa
+		distance += com.shatteredpixel.shatteredpixeldungeon.SoftPD.searchBonus(); //soft
 		
 		boolean foresight = buff(Foresight.class) != null;
 		boolean foresightScan = foresight && !Dungeon.level.mapped[pos];

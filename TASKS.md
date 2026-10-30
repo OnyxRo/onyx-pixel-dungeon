@@ -97,3 +97,4 @@ The cloud routine does the first unchecked task and checks it off. Smallest firs
 - [ ] Play Music Implant's game modes on screen (Light and Horror, Satiation, a few perks) and say what to change
 - [x] Port Clairvoyant PD (the Apprentice hero with the Channeller, Spell Hand, Eighterstaff, Power Bracelet, Wild Magic, stable elementals). See PORTING.md
 - [ ] Play the Apprentice on screen (spell hand, Wild Magic, Channeller) and say what to change
+- [ ] Run the headless tests for Soft, WuWuWu and the Buttered Arena (`scripts/test-one.sh GameModesTest` after `FAST=1 scripts/check.sh --quick`), then play the Arena on screen and say what to change
