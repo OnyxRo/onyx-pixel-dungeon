@@ -118,6 +118,8 @@ public class ModRoster {
 		add( "reforged", Kobold.class, 4, 1, 99 );
 		//the Wyrm is a mining quest boss that carves tunnels, it never spawns by itself (weight 0) but can be called up in the sandbox
 		add( "reforged", Wyrm.class, 0, 1, 99 );
+		//clairvoyant, the Apprentice's summoned ally, sandbox list only
+		add( "clairvoyant", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.StableElemental.class, 0, 1, 99 );
 		add( "reforged", Spitter.class, 2, 1, 99 );
 		add( "reforged", UnholyPriest.class, 2, 1, 99 );
 		add( "reforged", Ballista.class, 1, 8, 99 );

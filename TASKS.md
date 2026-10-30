@@ -95,3 +95,5 @@ The cloud routine does the first unchecked task and checks it off. Smallest firs
 - [ ] Play the new game modes on screen (Speedrun timer and restart, Bones%, The Goo's Story, Trap Dungeon) and Re-Remixed's three boss arenas in the sandbox
 - [x] Port Music Implant SPD (light, horror, satiation and 34 perks as game modes, candle, torch, wax and wick). See PORTING.md
 - [ ] Play Music Implant's game modes on screen (Light and Horror, Satiation, a few perks) and say what to change
+- [x] Port Clairvoyant PD (the Apprentice hero with the Channeller, Spell Hand, Eighterstaff, Power Bracelet, Wild Magic, stable elementals). See PORTING.md
+- [ ] Play the Apprentice on screen (spell hand, Wild Magic, Channeller) and say what to change
