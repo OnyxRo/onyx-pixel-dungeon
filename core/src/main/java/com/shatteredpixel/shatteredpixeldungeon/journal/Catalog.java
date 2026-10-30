@@ -461,6 +461,17 @@ public enum Catalog {
 		SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollTeleportToStaircase.class);
 		STONES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfBlight.class);
 		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfDisplacement.class);
+		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.UnstableWand.class); //espd
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.SacrificialDagger.class); //regrown
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.MonsterSoul.class); //regrown
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.RegrownMachineKit.class); //regrown
+		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AresChains.class); //deistic
+		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CommRelay.class); //deistic
+		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.WraithAmulet.class); //deistic
+		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.WoodenEffigy.class); //deistic
+		ARTIFACTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Rapper.class); //deistic
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.TomeOfSpecialty.class); //deistic
+		ENCHANTMENTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Nullify.class); //deistic
 		TRINKETS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.trinkets.WanderersMap.class);
 
 		//items ported from ratking

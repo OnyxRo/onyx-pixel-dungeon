@@ -455,6 +455,7 @@ public class Dungeon {
 		GamesInProgress.selectedClass.initHero( hero );
 		GameModes.applyStartKits( hero ); //custom pd starting kits
 		EspdModes.onStart( hero ); //espd easy options
+		DeisticPD.onStart( hero ); //deistic races
 		SmallModes.applyStartKits( hero ); //modded pd test kit
 		SmallModes.reset(); //speedrun pd timer
 		LoreGoo.initHero( hero ); //lore, the hero becomes the Goo

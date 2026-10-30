@@ -689,6 +689,8 @@ public class Assets {
 
 	public static class Sprites {
 		public static final String GOD = "sprites/trap/ratgod.png"; //ported, trap
+		public static final String REGROWN_MACHINE = "sprites/regrown/machine.png"; //regrown
+		public static final String DEISTIC_SINGULARITY = "sprites/deistic/singularity.png"; //deistic
 		public static final String BOMBSHEEP = "sprites/trap/bombsheep.png"; //ported, trap
 		public static final String ASSASIN = "sprites/trap/assasin.png"; //ported, trap
 		public static final String AMOGUS = "sprites/trap/amogus.png"; //ported, trap

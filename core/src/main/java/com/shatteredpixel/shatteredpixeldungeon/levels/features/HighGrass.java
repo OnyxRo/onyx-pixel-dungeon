@@ -55,6 +55,7 @@ public class HighGrass {
 	public static void trample( Level level, int pos ) {
 		
 		if (freezeTrample) return;
+		com.shatteredpixel.shatteredpixeldungeon.DeisticPD.onTrample(com.shatteredpixel.shatteredpixeldungeon.actors.Actor.findChar(pos)); //deistic, shaman
 		
 		Char ch = Actor.findChar(pos);
 		

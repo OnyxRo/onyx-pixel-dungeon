@@ -789,6 +789,7 @@ public class ModRoster {
 		add( "trap", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.BombSheep.class, 0, 1, 99 );
 		add( "reremixed", GnollScout.class, 0, 1, 99 );
 		add( "reremixed", MimicAmulet.class, 0, 1, 99 );
+		add( "deistic", ArcaneSingularity.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

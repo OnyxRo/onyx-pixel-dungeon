@@ -1256,6 +1256,7 @@ public abstract class Mob extends Char {
 		//Transformation PD talent catalog, undead and demons may refuse to die
 		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.preventsDeath(this, cause)) return;
 		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onMobDie(this, cause);
+		com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.SacrificialDagger.onMobDie(this, cause); //regrown
 
 		//Transformation PD, the Friar's rewards and kill talents
 		if (cause == Dungeon.hero && alignment == Alignment.ENEMY){
@@ -1367,7 +1368,7 @@ public abstract class Mob extends Char {
 		dropBonus = com.shatteredpixel.shatteredpixeldungeon.Playstyles.lootChance(dropBonus); //radar, luck
 
 		//rearranged, the pink gem trinket
-		return com.shatteredpixel.shatteredpixeldungeon.EspdModes.lootChance(lootChance * dropBonus * com.shatteredpixel.shatteredpixeldungeon.items.trinkets.PinkGem.dropChanceMultiplier()); //espd more loot
+		return com.shatteredpixel.shatteredpixeldungeon.DeisticPD.lootChance(com.shatteredpixel.shatteredpixeldungeon.EspdModes.lootChance(lootChance * dropBonus * com.shatteredpixel.shatteredpixeldungeon.items.trinkets.PinkGem.dropChanceMultiplier())); //espd more loot, deistic red wraith
 	}
 	
 	public void rollToDropLoot(){
@@ -1728,7 +1729,8 @@ public abstract class Mob extends Char {
 		@Override
 		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
 			enemySeen = enemyInFOV;
-			if (enemyInFOV && !isCharmedBy( enemy ) && canAttack( enemy )) {
+			if (enemyInFOV && !isCharmedBy( enemy ) && canAttack( enemy )
+					&& (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Silence.class) == null || Dungeon.level.adjacent(pos, enemy.pos))) { //deistic, silenced monsters only fight up close
 
 				recentlyAttackedBy.clear();
 				target = enemy.pos;

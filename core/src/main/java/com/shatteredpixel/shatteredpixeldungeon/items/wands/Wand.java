@@ -872,7 +872,8 @@ public abstract class Wand extends Item {
 						com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onWandZap(curWand, shot.collisionPos); //transformation, Gas Spurt, Fire Ball, Out of Control Magic
 						curWand.fx(shot, new Callback() {
 							public void call() {
-								curWand.onZap(shot);
+								com.shatteredpixel.shatteredpixeldungeon.DeisticPD.warlockZap = true; //deistic, warlock
+								try { curWand.onZap(shot); } finally { com.shatteredpixel.shatteredpixeldungeon.DeisticPD.warlockZap = false; }
 								if (Random.Float() < WondrousResin.extraCurseEffectChance()){
 									WondrousResin.forcePositive = true;
 									CursedWand.cursedZap(curWand,
