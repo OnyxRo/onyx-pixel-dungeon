@@ -1225,7 +1225,12 @@ public enum Talent {
 	//Detonator T4
 	STACKED_CHARGE(40421, 4), ALCHEMY_CRAFT(40422, 4), DECOY(40423, 4), PORTABLE_DETONATOR(40424, 4),
 	//lore, Shattered Pixel Lore's Goo talents, all on the icon the mod gave them
-	CAUSTIC_OOZE(27), HARD_GOO(27), SHARP_GOOP(27), SLIPPERY_SLIME(27);
+	CAUSTIC_OOZE(27), HARD_GOO(27), SHARP_GOOP(27), SLIPPERY_SLIME(27),
+	//clairvoyant, Clairvoyant PD's Apprentice, icons from 60000 come from its own sheet
+	SNACK_SAVING(60000), APPRENTICES_INTUITION(60001), PHILOSOPHILE(60002), MAGIC_SHIELD(60003),
+	UNLEASHING_MEAL(60004), MATTER_DISSIPATION(60005), OPTIMIZED_TRANSMUTATION(60006), ARCANE_STABILIZATION(60008),
+	RUNE_IMBUEMENT(60009, 3), FORCE_CONVERSION(60010, 3),
+	EXTERNAL_CATALYST(60014, 3);
 
 	public static class ImprovisedProjectileCooldown extends FlavourBuff{
 		public int icon() { return BuffIndicator.TIME; }
@@ -2590,6 +2595,7 @@ public enum Talent {
 	public static class NatureBerriesDropped extends CounterBuff{{revivePersists = true;}};
 
 	public static void onFoodEaten( Hero hero, float foodVal, Item foodSource ){
+		ClairvoyantHero.onFoodEaten(hero, foodVal); //clairvoyant
 		BATalents.onFoodEaten(hero); //bluearchive
 		RBATalents.onFoodEaten(hero, foodVal, foodSource); //rebluearchive
 		RearrangedTalents.onFoodEaten(hero, foodVal, foodSource); //rearranged
@@ -2736,6 +2742,7 @@ public enum Talent {
 	}
 
 	public static float itemIDSpeedFactor( Hero hero, Item item ){
+		if (hero.hasTalent(APPRENTICES_INTUITION)) return ClairvoyantHero.idSpeed(hero, item) * itemIDSpeedFactorBase(hero, item); //clairvoyant
 		if (BAHeroes.isBA(hero)) return BATalents.itemIDSpeedFactor(hero, item); //bluearchive
 		float manaSense = manaSenseFactor(hero, item) * RBATalents.itemIDSpeedFactor(hero, item); //rebluearchive
 		if (manaSense != 1f) return manaSense * itemIDSpeedFactorBase(hero, item);
@@ -2968,6 +2975,7 @@ public enum Talent {
 	}
 
 	public static void onItemCollected( Hero hero, Item item ){
+		ClairvoyantHero.onItemCollected(hero, item); //clairvoyant
 		BATalents.onItemCollected(hero, item); //bluearchive
 		RBATalents.onItemCollected(hero, item); //rebluearchive
 		RearrangedTalents.onItemCollected(hero, item); //rearranged
@@ -3368,6 +3376,9 @@ public enum Talent {
 			case TANK:
 				Collections.addAll(tierTalents, HEARTY_MEAL, VETERANS_INTUITION, PROVOKED_ANGER, AGGRESSIVE_BARRIER);
 				break;
+			case APPRENTICE: //clairvoyant
+				Collections.addAll(tierTalents, SNACK_SAVING, APPRENTICES_INTUITION, PHILOSOPHILE, MAGIC_SHIELD);
+				break;
 			case TOWERPRIEST:
 				Collections.addAll(tierTalents, NATURES_BOUNTY, SURVIVALISTS_INTUITION, NATURES_AID, AGGRESSIVE_BARRIER);
 				break;
@@ -3468,6 +3479,9 @@ public enum Talent {
 			case TANK:
 				Collections.addAll(tierTalents, IRON_STOMACH, LIQUID_WILLPOWER, LETHAL_MOMENTUM, IMPROVISED_PROJECTILES, SWIFT_EQUIP);
 				break;
+			case APPRENTICE: //clairvoyant
+				Collections.addAll(tierTalents, UNLEASHING_MEAL, MATTER_DISSIPATION, OPTIMIZED_TRANSMUTATION, ARCANE_STABILIZATION);
+				break;
 			case TOWERPRIEST:
 				Collections.addAll(tierTalents, INVIGORATING_MEAL, LIQUID_NATURE, REJUVENATING_STEPS, HEIGHTENED_SENSES, DURABLE_PROJECTILES);
 				break;
@@ -3565,6 +3579,9 @@ public enum Talent {
 			case TANK:
 				Collections.addAll(tierTalents, HOLD_FAST, STRONGMAN);
 				break;
+			case APPRENTICE: //clairvoyant
+				Collections.addAll(tierTalents, RUNE_IMBUEMENT, FORCE_CONVERSION);
+				break;
 			case TOWERPRIEST:
 				Collections.addAll(tierTalents, ALLY_WARP, HOLD_FAST);
 				break;
@@ -3634,6 +3651,9 @@ public enum Talent {
 				break;
 			case GLADIATOR:
 				Collections.addAll(tierTalents, CLEAVE, LETHAL_DEFENSE, ENHANCED_COMBO);
+				break;
+			case CHANNELLER: //clairvoyant
+				Collections.addAll(tierTalents, EXTERNAL_CATALYST, LETHAL_DEFENSE, ENHANCED_COMBO);
 				break;
 			case BATTLEMAGE:
 				Collections.addAll(tierTalents, EMPOWERED_STRIKE, MYSTICAL_CHARGE, EXCESS_CHARGE);

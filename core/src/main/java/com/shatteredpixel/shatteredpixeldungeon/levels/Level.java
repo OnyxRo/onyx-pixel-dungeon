@@ -296,6 +296,7 @@ public abstract class Level implements Bundlable {
 				addItemToSpawn( new TrinketCatalyst());
 			}
 			com.shatteredpixel.shatteredpixeldungeon.GameModes.topUpDrops(this); //half, the drops of skipped floors
+			for (Item mi : com.shatteredpixel.shatteredpixeldungeon.MusicImplant.levelDrops()) addItemToSpawn(mi); //musicimplant, torches in the halls
 			//rearranged, a bullet belt for each set of five floors
 			if ( Dungeon.beltNeeded() ) {
 				Dungeon.LimitedDrops.BULLET_BELT.drop();
@@ -455,6 +456,7 @@ public abstract class Level implements Bundlable {
 	protected Feeling withLevelFeelingEffects( Feeling f ){
 		if (f == Feeling.DARK){
 			viewDistance = Math.round(5*viewDistance/8f);
+			if (com.shatteredpixel.shatteredpixeldungeon.MusicImplant.darkFloorTorch()) addItemToSpawn(new com.shatteredpixel.shatteredpixeldungeon.items.lightsource.FireTorch()); //musicimplant
 		} else if (f == Feeling.LARGE){
 			addItemToSpawn(Generator.random(Generator.Category.FOOD));
 		}
@@ -1767,6 +1769,7 @@ public abstract class Level implements Bundlable {
 			}
 
 			Dungeon.hero.mindVisionEnemies.clear();
+			if (com.shatteredpixel.shatteredpixeldungeon.MusicImplant.mindCompass() && exit() >= 0 && exit() < length()) heroMindFov[exit()] = true; //musicimplant, mind compass
 
 			int mindVisRange = 0;
 			if (c.buff(MindVision.class) != null) {

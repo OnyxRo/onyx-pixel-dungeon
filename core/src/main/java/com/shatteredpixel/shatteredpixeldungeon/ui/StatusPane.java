@@ -363,9 +363,9 @@ public class StatusPane extends Component {
 
 		if (oldHP != health || oldShield != shield || oldMax != max){
 			if (shield <= 0) {
-				hpText.text(health + "/" + max);
+				hpText.text(com.shatteredpixel.shatteredpixeldungeon.MusicImplant.hpText(health, max, health + "/" + max)); //musicimplant, lack of sense
 			} else {
-				hpText.text(health + "+" + shield + "/" + max);
+				hpText.text(com.shatteredpixel.shatteredpixeldungeon.MusicImplant.hpText(health, max, health + "+" + shield + "/" + max)); //musicimplant
 			}
 			oldHP = health;
 			oldShield = shield;

@@ -164,7 +164,9 @@ public enum HeroSubClass {
 	SOULHANDLER(HeroIcon.XUN + 24),
 	CRAFTSMAN(HeroIcon.XUN + 25),
 	HACKER(HeroIcon.XUN + 26),
-	GRENADIER(HeroIcon.XUN + 27);
+	GRENADIER(HeroIcon.XUN + 27),
+	//clairvoyant, Clairvoyant PD's Channeller, on the Battlemage's icon
+	CHANNELLER(HeroIcon.BATTLEMAGE);
 
 	//Transformation PD asks this of subclasses. DERanged PD's King counts as every subclass he has the talent for
 	public boolean is(HeroSubClass sub) {

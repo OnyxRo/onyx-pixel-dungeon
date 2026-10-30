@@ -104,7 +104,7 @@ public class Food extends Item {
 			SpellSprite.show( hero, SpellSprite.FOOD );
 			eatSFX();
 			
-			if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.eatsWhileActing(hero)) hero.next(); else hero.spend( eatingTime() ); //xun, Toilsome Meal
+			if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.eatsWhileActing(hero)) hero.next(); else hero.spend( com.shatteredpixel.shatteredpixeldungeon.MusicImplant.eatingTime(eatingTime()) ); //xun, Toilsome Meal //musicimplant, gobbler and nibbling
 
 			Dungeon.level.onHeroConsumableUsed(hero, this);
 			Talent.onFoodEaten(hero, energy, this);
@@ -157,7 +157,8 @@ public class Food extends Item {
 			|| Dungeon.hero.hasTalent(Talent.HEALING_MEAL)
 			|| Dungeon.hero.hasTalent(Talent.FIGHTING_MEAL)
 			|| com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.fastMeal(Dungeon.hero)
-			|| com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.fastMeal(Dungeon.hero)){ //xun
+			|| com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.fastMeal(Dungeon.hero) //xun
+			|| com.shatteredpixel.shatteredpixeldungeon.actors.hero.ClairvoyantHero.fastMeal(Dungeon.hero)){ //clairvoyant, Unleashing Meal
 			return com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.eatingTime(Dungeon.hero, TIME_TO_EAT - 2);
 		} else {
 			return com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.eatingTime(Dungeon.hero, TIME_TO_EAT);

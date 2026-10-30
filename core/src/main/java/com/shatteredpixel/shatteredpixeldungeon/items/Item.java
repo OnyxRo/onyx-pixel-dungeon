@@ -177,6 +177,7 @@ public class Item implements Bundlable {
 	}
 
 	public void doThrow( Hero hero ) {
+		if (com.shatteredpixel.shatteredpixeldungeon.MusicImplant.clumsyFails(hero, this, false)) return; //musicimplant
 		GameScene.selectCell(thrower);
 	}
 	
@@ -540,6 +541,7 @@ public class Item implements Bundlable {
 			Catalog.setSeen(getClass());
 			Statistics.itemTypesDiscovered.add(getClass());
 			if (!isIdentified()) com.shatteredpixel.shatteredpixeldungeon.actors.hero.BATalents.onItemIdentified(Dungeon.hero); //bluearchive
+			if (!isIdentified()) com.shatteredpixel.shatteredpixeldungeon.actors.hero.ClairvoyantHero.onItemIdentified(Dungeon.hero, this); //clairvoyant
 		}
 
 		levelKnown = true;
@@ -808,7 +810,7 @@ public class Item implements Bundlable {
 		Char enemy = Actor.findChar( cell );
 		QuickSlotButton.target(enemy);
 		
-		final float delay = castDelay(user, cell);
+		final float delay = com.shatteredpixel.shatteredpixeldungeon.MusicImplant.actTime(this, castDelay(user, cell), false); //musicimplant, dexterous
 
 		if (enemy != null) {
 			((MissileSprite) user.sprite.parent.recycle(MissileSprite.class)).
@@ -865,6 +867,8 @@ public class Item implements Bundlable {
 	}
 	
 	protected static Hero curUser = null;
+	//musicimplant, a scroll read by mistake needs its user set from outside
+	public static void setCurUser( Hero hero ){ curUser = hero; }
 	protected static Item curItem = null;
 	public void setCurrent( Hero hero ){
 		curUser = hero;

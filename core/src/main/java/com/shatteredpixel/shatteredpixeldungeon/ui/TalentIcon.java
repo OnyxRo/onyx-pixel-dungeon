@@ -44,10 +44,18 @@ public class TalentIcon extends Image {
 
 	private static TextureFilm baFilm;
 	private static TextureFilm rbaFilm;
+	private static TextureFilm cvFilm; //clairvoyant
 
 	public TalentIcon(int icon){
-		super( icon >= 50000 ? Assets.Interfaces.RBA_TALENT_ICONS : icon >= 40000 ? Assets.Interfaces.XUN_TALENT_ICONS : icon >= 30000 ? Assets.Interfaces.BA_TALENT_ICONS : icon >= 20000 ? Assets.Interfaces.DR_TALENT_ICONS : icon >= 10000 ? Assets.Interfaces.RA_TALENT_ICONS
+		super( icon >= 60000 ? Assets.Interfaces.CV_TALENT_ICONS : icon >= 50000 ? Assets.Interfaces.RBA_TALENT_ICONS : icon >= 40000 ? Assets.Interfaces.XUN_TALENT_ICONS : icon >= 30000 ? Assets.Interfaces.BA_TALENT_ICONS : icon >= 20000 ? Assets.Interfaces.DR_TALENT_ICONS : icon >= 10000 ? Assets.Interfaces.RA_TALENT_ICONS
 				: icon >= TRANSFORMATION_BASE ? Assets.Interfaces.TALENT_ICONS_TRANSFORMATION : Assets.Interfaces.TALENT_ICONS );
+
+		//clairvoyant, icons of 60000 and up come from Clairvoyant PD's sheet
+		if (icon >= 60000){
+			if (cvFilm == null) cvFilm = new TextureFilm(texture, SIZE, SIZE);
+			frame(cvFilm.get(icon - 60000));
+			return;
+		}
 
 		//rebluearchive, icons of 50000 and up come from Re Blue Archive PD's own sheet
 		if (icon >= 50000){

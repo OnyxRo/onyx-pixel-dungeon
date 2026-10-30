@@ -978,6 +978,10 @@ public class Generator {
 	}
 	
 	public static Item random( Category cat ) {
+		return com.shatteredpixel.shatteredpixeldungeon.MusicImplant.unlucky(randomForCategory(cat)); //musicimplant, unlucky
+	}
+
+	private static Item randomForCategory( Category cat ) {
 		Item rbaGun = RBALoot.gunFor(cat); //rebluearchive, students with guns find guns
 		if (rbaGun != null) return rbaGun;
 		switch (cat) {

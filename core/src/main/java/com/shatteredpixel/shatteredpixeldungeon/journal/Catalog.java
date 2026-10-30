@@ -282,6 +282,11 @@ public enum Catalog {
 		//items ported from Re-Remixed Dungeon
 		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.ElvenDagger.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.StoneSword.class);
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.FakeAmulet.class, com.shatteredpixel.shatteredpixeldungeon.items.quest.RatHide.class);
+		//musicimplant, Music Implant SPD's light sources
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.lightsource.Candle.class, com.shatteredpixel.shatteredpixeldungeon.items.lightsource.FireTorch.class, com.shatteredpixel.shatteredpixeldungeon.items.WaxNWick.class);
+		//clairvoyant, Clairvoyant PD's weapons and the Apprentice's spell hand
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Eighterstaff.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.PowerBracelet.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.SpellHand.class);
 
 		//items ported from Shattered Trap Dungeon
 		ARMOR.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.LeatherTrapperArmor.class, com.shatteredpixel.shatteredpixeldungeon.items.armor.LeatherWardenArmor.class,

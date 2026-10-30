@@ -751,6 +751,7 @@ public class Dungeon {
 		Light light = hero.buff( Light.class );
 		hero.viewDistance = light == null ? level.viewDistance : Math.max( Light.DISTANCE, level.viewDistance );
 		hero.viewDistance += com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunHeroes.viewBonus(hero); //xun, the Explorer sees a tile further
+		hero.viewDistance = MusicImplant.viewDistance(hero, hero.viewDistance); //musicimplant, light sources and sight perks
 		
 		hero.curAction = hero.lastAction = null;
 		TooCruel.switchLevel( hero ); //toocruel

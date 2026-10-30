@@ -290,7 +290,7 @@ public class FogOfWar extends Image {
 		if (visible[cell]) {
 			return VISIBLE;
 		} else if (visited[cell]) {
-			return VISITED;
+			return com.shatteredpixel.shatteredpixeldungeon.MusicImplant.amnesia() ? MAPPED : VISITED; //musicimplant, amnesia
 		} else if (mapped[cell] ) {
 			return MAPPED;
 		} else {
