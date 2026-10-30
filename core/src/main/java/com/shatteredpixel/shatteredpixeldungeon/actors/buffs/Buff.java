@@ -216,14 +216,14 @@ public class Buff extends Actor {
 	
 	public static<T extends FlavourBuff> T affect( Char target, Class<T> buffClass, float duration ) {
 		T buff = affect( target, buffClass );
-		buff.spend( duration * target.resist(buffClass) );
+		buff.spend( duration * target.resist(buffClass) * com.shatteredpixel.shatteredpixeldungeon.DeisticPD.durationScale(target) ); //deistic, warlock
 		return buff;
 	}
 
 	//postpones an already active buff, or creates & attaches a new buff and delays that.
 	public static<T extends FlavourBuff> T prolong( Char target, Class<T> buffClass, float duration ) {
 		T buff = affect( target, buffClass );
-		buff.postpone( duration * target.resist(buffClass) );
+		buff.postpone( duration * target.resist(buffClass) * com.shatteredpixel.shatteredpixeldungeon.DeisticPD.durationScale(target) ); //deistic, warlock
 		return buff;
 	}
 

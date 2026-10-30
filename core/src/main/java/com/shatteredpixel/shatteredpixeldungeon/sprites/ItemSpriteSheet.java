@@ -29,7 +29,7 @@ public class ItemSpriteSheet {
 	public static final int SIZE = 16;
 
 	private static final int TX_WIDTH = 256;
-	private static final int TX_HEIGHT = 4864;
+	private static final int TX_HEIGHT = 5440;
 
 	private static final int WIDTH = TX_WIDTH / SIZE;
 
@@ -490,6 +490,15 @@ public class ItemSpriteSheet {
 	public static final int FIRE_FRAGMENT = xy(6, 341);
 	public static final int POTION_EMPTY = xy(7, 341);
 	public static final int WATER_FRAGMENT = xy(8, 341);
+	public static final int ARES_CHAINS = xy(4, 340);
+	public static final int WRAITH_AMULET = xy(5, 340);
+	public static final int WOODEN_EFFIGY = xy(6, 340);
+	public static final int COMM_RELAY = xy(7, 340);
+	public static final int RAPPER = xy(8, 340);
+	public static final int TOME_OF_SPECIALTY = xy(9, 340);
+	public static final int UNSTABLE_WAND = xy(3, 340);
+	public static final int MONSTER_SOUL = xy(1, 340);
+	public static final int SACRIFICIAL_DAGGER = xy(2, 340);
 	public static final int SPELL_HAND = xy(6, 66);
 	public static final int EIGHTERSTAFF = xy(7, 66);
 	public static final int POWER_BRACELET = xy(8, 66);
@@ -1704,6 +1713,15 @@ public class ItemSpriteSheet {
 		assignItemRect(FIRE_FRAGMENT, 16, 15);
 		assignItemRect(POTION_EMPTY, 12, 14);
 		assignItemRect(WATER_FRAGMENT, 16, 15);
+		assignItemRect(ARES_CHAINS, 13, 15);
+		assignItemRect(WRAITH_AMULET, 13, 14);
+		assignItemRect(WOODEN_EFFIGY, 12, 15);
+		assignItemRect(COMM_RELAY, 13, 15);
+		assignItemRect(RAPPER, 13, 14);
+		assignItemRect(TOME_OF_SPECIALTY, 16, 16);
+		assignItemRect(UNSTABLE_WAND, 15, 16);
+		assignItemRect(MONSTER_SOUL, 13, 15);
+		assignItemRect(SACRIFICIAL_DAGGER, 14, 15);
 		assignItemRect(SPELL_HAND, 12, 16);
 		assignItemRect(EIGHTERSTAFF, 12, 12);
 		assignItemRect(POWER_BRACELET, 13, 14);

@@ -240,7 +240,7 @@ public class Bomb extends Item {
 					continue;
 				}
 
-				int dmg = minDamage >= 0 ? Random.NormalIntRange(minDamage, maxDamage) : com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.bombDamage(Random.NormalIntRange(4 + Dungeon.scalingDepth(), 12 + 3*Dungeon.scalingDepth()));
+				int dmg = minDamage >= 0 ? Random.NormalIntRange(minDamage, maxDamage) : com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.bombDamage(Random.NormalIntRange(4 + Dungeon.scalingDepth(), 12 + 3*Dungeon.scalingDepth()) + com.shatteredpixel.shatteredpixeldungeon.DeisticPD.bombBonus() * 3); //deistic, demolitionist
 				dmg = com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.bombDamage(this, ch, cell, dmg); //xun, takes off armor and adds the Grenadier talents
 
 				if (subBomb) dmg = (int)(dmg * 0.33f);

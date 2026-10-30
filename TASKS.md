@@ -71,7 +71,7 @@ The cloud routine does the first unchecked task and checks it off. Smallest firs
   - `worktree-agent-aa7f11d7f6aae4aa6`, Music Implant (written as game modes, never compiled) and Clairvoyant (not started, it adds an Apprentice hero).
   - `worktree-agent-a256479b2be8b8ca5`, Modded, Speedrun and Old Speedrun as game modes (strings still to write). Lore (Goo hero), Trap Dungeon (36 monsters, 38 traps) and Re-Remixed (levels, town, skills) not started.
   - `onyx/p6-oldmods` (in worktree agent-a509795745a9576f3), the six very old mods. Soft written as a game mode (never compiled). Buttered's Arena mode and 3oiDburg's two tweaks planned, not started. Shattered Ice Dungeon and Shattered Ice PD only add art that needs redrawing, Minecraft is only a retexture.
-  - `worktree-agent-a41ac4823a86cfe66`, the four Sprouted mods. Pictures copied, no code yet. Easier Sprouted becomes nine game modes plus the Unstable Wand, Regrown adds a Sacrificial Dagger and Monster Soul, Deistic adds races, race artifacts, Blastseed and the Arcane Singularity. Palantir has nothing portable (Sokoban floors that need Sprouted).
+  - Done 2026-10-30, merged. `worktree-agent-a41ac4823a86cfe66`, the four Sprouted mods. Easier Sprouted becomes nine game modes plus the Unstable Wand, Regrown adds a Sacrificial Dagger and Monster Soul, Deistic adds races, race artifacts, Blastseed and the Arcane Singularity. Palantir has nothing portable (Sokoban floors that need Sprouted).
   - `items.png` changes on several branches will conflict. Rerun each branch's `port-itemsprites.py` line on top of main instead of merging the picture.
 
 - [x] Boss crawl option on the title screen, bosses easiest to hardest (2026-10-26)
@@ -99,3 +99,4 @@ The cloud routine does the first unchecked task and checks it off. Smallest firs
 - [ ] Play the Apprentice on screen (spell hand, Wild Magic, Channeller) and say what to change
 - [ ] Run the headless tests for Soft, WuWuWu and the Buttered Arena (`scripts/test-one.sh GameModesTest` after `FAST=1 scripts/check.sh --quick`), then play the Arena on screen and say what to change
 - [ ] Play Elemental PD's Alchemist and its three boss floors (Special floors in the sandbox panel). Built 2026-10-30, not seen on screen yet.
+- [ ] Play the Sprouted mod ports on screen. The nine Easier Sprouted modes and the four Deistic races in the Game modes window, a Deistic race run to floor 10 (race artifact from the floor 5 boss, Tome of Specialty from Tengu), and the Sacrificial Dagger, Monster Soul and Machine Kit from the sandbox item list

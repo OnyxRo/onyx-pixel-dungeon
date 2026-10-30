@@ -137,6 +137,7 @@ public class ScrollOfUpgrade extends InventoryScroll {
 			item = item.upgrade();
 		}
 
+		com.shatteredpixel.shatteredpixeldungeon.EspdModes.extraUpgrades(item); //espd upgrade tweaks
 		item.recordUpgradeScrollUse();
 		Badges.validateItemLevelAquired( item );
 		Statistics.upgradesUsed++;

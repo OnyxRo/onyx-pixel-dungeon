@@ -252,6 +252,7 @@ public class Heap implements Bundlable {
 		for (Item item : items.toArray( new Item[0] )) {
 			if (item instanceof Scroll && !item.unique) {
 				items.remove( item );
+				if (com.shatteredpixel.shatteredpixeldungeon.DeisticPD.race() != null) com.shatteredpixel.shatteredpixeldungeon.DeisticPD.burnScroll( this, (Scroll) item ); //deistic, burning scrolls go off
 				burnt = true;
 			} else if (item instanceof Dewdrop) {
 				items.remove( item );
