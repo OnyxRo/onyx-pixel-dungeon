@@ -152,6 +152,7 @@ public class MusicImplant {
 		if (horrorOn()) Buff.affect(hero, Horror.class);
 		if (satiationOn()) Buff.affect(hero, Satiation.class);
 		if (perk("dexterous") || perk("quick_draw")) Buff.affect(hero, RegenPerTurn.class);
+		if (perk("sturdy") || perk("frail") || satiationOn()) hero.updateHT(true);
 		quickDraw = perk("quick_draw");
 		instantAct = perk("dexterous");
 	}
