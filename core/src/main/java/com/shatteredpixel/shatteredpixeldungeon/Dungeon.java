@@ -458,6 +458,7 @@ public class Dungeon {
 		SmallModes.reset(); //speedrun pd timer
 		LoreGoo.initHero( hero ); //lore, the hero becomes the Goo
 		TrapDungeon.reset(); //trap dungeon, trap skill
+		ElementalPD.onStart( hero ); //elemental, dew vial and flasks
 		TooCruel.postInit( hero ); //toocruel
 	}
 

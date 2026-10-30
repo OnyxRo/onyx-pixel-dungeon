@@ -249,7 +249,7 @@ public class AbyssalNightmare extends AbyssalMob {
 		immunities.add( ConfusionGas.class );
 		immunities.add( CorrosiveGas.class );
 		immunities.add( Electricity.class );
-		immunities.add( Fire.class );
+		immunities.add( com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire.class );
 		immunities.add( Freezing.class );
 		immunities.add( Inferno.class );
 		immunities.add( ParalyticGas.class );

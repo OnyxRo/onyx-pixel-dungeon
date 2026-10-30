@@ -41,22 +41,19 @@ public class Earth extends Weapon.Enchantment {
         }
 
 
-        if (Talent.ElementalSurge) {
+        if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.ElementalTalents.useSurge()) { //elemental, Attuned Meal
             if (Dungeon.hero.pointsInTalent(Talent.ATTUNED_MEAL) == 1) {
                 if (defender.rooted) {
                     Dungeon.hero.HP += (Dungeon.hero.HT / 2);
                     if (Dungeon.hero.HP > Dungeon.hero.HT) Dungeon.hero.HP = Dungeon.hero.HT;
                 }
-                Talent.ElementalSurge = false;
             } else {
                 if (defender.rooted) {
                     Dungeon.hero.HP += (Dungeon.hero.HT / 2);
                     if (Dungeon.hero.HP > Dungeon.hero.HT) Dungeon.hero.HP = Dungeon.hero.HT;
                 }
-                counter--;
 
                 if (counter == 0) {
-                    Talent.ElementalSurge = false;
                 }
 
             }

@@ -39,16 +39,13 @@ public class Air extends Armor.Glyph {
     @Override
     public int proc(Armor armor, Char attacker, Char defender, int damage) {
         Buff.affect(attacker, Cripple.class);
-        if (Talent.ElementalSurge) {
+        if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.ElementalTalents.useSurge()) { //elemental, Attuned Meal
             if (Dungeon.hero.pointsInTalent(Talent.ATTUNED_MEAL) == 1) {
                 Buff.affect(attacker, Blindness.class);
-                Talent.ElementalSurge = false;
             } else {
-                counter--;
                 Buff.affect(attacker, Blindness.class);
 
                 if (counter == 0) {
-                    Talent.ElementalSurge = false;
                 }
             }
         }

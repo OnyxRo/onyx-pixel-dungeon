@@ -41,7 +41,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
-import static com.shatteredpixel.shatteredpixeldungeon.items.Item.curItem;
 
 
 public class WndArmorInfusion extends Window {
@@ -71,7 +70,7 @@ public class WndArmorInfusion extends Window {
             protected void onClick() {
                 hide();
                 ((Armor)item).inscribe(new Fire());
-                ((ElementalStone) curItem).detach(Dungeon.hero.belongings.backpack);
+                ElementalStone.consume();
             }
         };
         btnFire.setRect( 0, textBlock.bottom() + GAP, WIDTH, BTN_HEIGHT );
@@ -82,7 +81,7 @@ public class WndArmorInfusion extends Window {
             protected void onClick() {
                 hide();
                 ((Armor)item).inscribe(new Air());
-                ((ElementalStone) curItem).detach(Dungeon.hero.belongings.backpack);
+                ElementalStone.consume();
             }
         };
         btnAir.setRect( 0, btnFire.bottom() + GAP, WIDTH, BTN_HEIGHT );
@@ -93,7 +92,7 @@ public class WndArmorInfusion extends Window {
             protected void onClick() {
                 hide();
                 ((Armor)item).inscribe(new Water());
-                ((ElementalStone) curItem).detach(Dungeon.hero.belongings.backpack);
+                ElementalStone.consume();
             }
         };
         btnWater.setRect( 0, btnAir.bottom() + GAP, WIDTH, BTN_HEIGHT );
@@ -104,7 +103,7 @@ public class WndArmorInfusion extends Window {
             protected void onClick() {
                 hide();
                 ((Armor)item).inscribe(new Earth());
-                ((ElementalStone) curItem).detach(Dungeon.hero.belongings.backpack);
+                ElementalStone.consume();
             }
         };
         btnEarth.setRect( 0, btnWater.bottom() + GAP, WIDTH, BTN_HEIGHT );
@@ -123,7 +122,7 @@ public class WndArmorInfusion extends Window {
         IconButton btnInfoFire = new IconButton(Icons.get(Icons.INFO)) {
             @Override
             protected void onClick() {
-                GameScene.show(new FireArmorInfo());
+                GameScene.show(new WndMessage(new Fire().desc()));
             }
         };
         btnInfoFire.setRect(WIDTH-20, btnFire.top() + (btnFire.height()-20)/2, 20, 20);
@@ -132,7 +131,7 @@ public class WndArmorInfusion extends Window {
         IconButton btnInfoAir = new IconButton(Icons.get(Icons.INFO)) {
             @Override
             protected void onClick() {
-                GameScene.show(new AirArmorInfo());
+                GameScene.show(new WndMessage(new Air().desc()));
             }
         };
         btnInfoAir.setRect(WIDTH-20, btnAir.top() + (btnAir.height()-20)/2, 20, 20);
@@ -141,7 +140,7 @@ public class WndArmorInfusion extends Window {
         IconButton btnWaterInfo = new IconButton(Icons.get(Icons.INFO)) {
             @Override
             protected void onClick() {
-                GameScene.show(new WaterArmorInfo());
+                GameScene.show(new WndMessage(new Water().desc()));
             }
         };
         btnWaterInfo.setRect(WIDTH-20, btnWater.top() + (btnWater.height()-20)/2, 20, 20);
@@ -150,7 +149,7 @@ public class WndArmorInfusion extends Window {
         IconButton btnEarthInfo = new IconButton(Icons.get(Icons.INFO)) {
             @Override
             protected void onClick() {
-                GameScene.show(new EarthArmorInfo());
+                GameScene.show(new WndMessage(new Earth().desc()));
             }
         };
         btnEarthInfo.setRect(WIDTH-20, btnEarth.top() + (btnEarth.height()-20)/2, 20, 20);

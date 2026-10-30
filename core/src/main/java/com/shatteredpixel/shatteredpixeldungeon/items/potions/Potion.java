@@ -547,7 +547,7 @@ public class Potion extends Item {
 					return false;
 				}
 			}
-			return true;
+			return com.shatteredpixel.shatteredpixeldungeon.ElementalPD.canBrew(); //elemental, brewing needs an empty flask
 		}
 		
 		@Override
@@ -558,6 +558,7 @@ public class Potion extends Item {
 		@Override
 		public Item brew(ArrayList<Item> ingredients) {
 			if (!testIngredients(ingredients)) return null;
+			com.shatteredpixel.shatteredpixeldungeon.ElementalPD.useFlask(); //elemental
 			
 			for (Item ingredient : ingredients){
 				ingredient.quantity(ingredient.quantity() - 1);

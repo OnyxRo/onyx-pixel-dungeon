@@ -15,167 +15,124 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndWeaponInfusion;
 
 import java.util.ArrayList;
 
+//Elemental PD's Elemental Stone. INFUSE gives a weapon or armor an elemental enchantment or glyph,
+//TRANSFER moves the scroll upgrades from one weapon to another, or one armor to another.
+//The mod's own upgrade counter is this game's upgradeScrollUses.
 public class ElementalStone extends Item {
 
-    protected WndBag.Mode mode = WndBag.Mode.ARMOR_WEAPON;
-    protected static WndBag.Mode modeArmor = WndBag.Mode.ARMOR;
-    protected static WndBag.Mode modeWeapon = WndBag.Mode.WEAPON;
+	public static final String AC_INFUSE = "INFUSE";
+	public static final String AC_TRANSFER = "TRANSFER";
 
-    {
-        image = ItemSpriteSheet.ELEMENTAL_STONE;
+	{
+		image = ItemSpriteSheet.ELEMENTAL_STONE;
+		stackable = true;
+		bones = false;
+	}
 
-        stackable = true;
-        bones = false;
-    }
+	@Override
+	public ArrayList<String> actions( Hero hero ) {
+		ArrayList<String> actions = super.actions(hero);
+		actions.add(AC_INFUSE);
+		actions.add(AC_TRANSFER);
+		return actions;
+	}
 
-    public static final String AC_INFUSE = "infuse";
-    public static final String AC_TRANSFER = "transfer";
+	@Override
+	public void execute( Hero hero, String action ) {
+		super.execute(hero, action);
+		curItem = this;
+		if (action.equals(AC_INFUSE)) {
+			GameScene.selectItem(infuser);
+		} else if (action.equals(AC_TRANSFER)) {
+			GameScene.selectItem(transferFrom);
+		}
+	}
 
-    public static String title;
+	@Override
+	public boolean isUpgradable() {
+		return false;
+	}
 
-    public static int value = 0;
+	@Override
+	public boolean isIdentified() {
+		return true;
+	}
 
-    public static Armor a2;
-    public static Weapon w2;
+	//the infusion windows use up one stone once an element is picked
+	public static void consume(){
+		Item stone = Dungeon.hero.belongings.getItem(ElementalStone.class);
+		if (stone != null) stone.detach(Dungeon.hero.belongings.backpack);
+	}
 
-    @Override
-    public ArrayList<String> actions(Hero hero) {
-        ArrayList<String> actions = super.actions(hero);
-        actions.add(AC_INFUSE);
-        actions.add(AC_TRANSFER);
-        return actions;
-    }
+	private static boolean gear( Item item ){
+		return item instanceof Armor || item instanceof Weapon;
+	}
 
-    @Override
-    public void execute(Hero hero, String action) {
-        super.execute(hero, action);
+	private final WndBag.ItemSelector infuser = new WndBag.ItemSelector() {
+		@Override
+		public String textPrompt() {
+			return Messages.get(ElementalStone.class, "select");
+		}
 
-        if (action.equals(AC_INFUSE)) {
-            GameScene.selectItem(itemSelector, mode, Messages.get(this, "select"));
+		@Override
+		public boolean itemSelectable( Item item ) {
+			return gear(item);
+		}
 
-        }
+		@Override
+		public void onSelect( Item item ) {
+			if (item instanceof Armor) GameScene.show(new WndArmorInfusion(item));
+			else if (item instanceof Weapon) GameScene.show(new WndWeaponInfusion(item));
+		}
+	};
 
-        if (action.equals(AC_TRANSFER)) {
-            GameScene.selectItem(itemSelectorTransfer, mode, Messages.get(this, "select"));
-        }
-    }
+	private Item source;
 
-    @Override
-    public boolean isUpgradable() {
-        return false;
-    }
+	private final WndBag.ItemSelector transferFrom = new WndBag.ItemSelector() {
+		@Override
+		public String textPrompt() {
+			return Messages.get(ElementalStone.class, "select_from");
+		}
 
-    @Override
-    public boolean isIdentified() {
-        return true;
-    }
+		@Override
+		public boolean itemSelectable( Item item ) {
+			return gear(item) && item.upgradeScrollUses > 0 && item.level() > 0;
+		}
 
-    public static WndBag.Listener itemSelector = new WndBag.Listener() {
-        @Override
-        public void onSelect(Item infusion) {
-            Hero hero = Dungeon.hero;
-            curUser.spend(1);
+		@Override
+		public void onSelect( Item item ) {
+			if (item == null) return;
+			source = item;
+			GameScene.selectItem(transferTo);
+		}
+	};
 
-            if (infusion instanceof Armor) {
-                GameScene.show(new WndArmorInfusion(infusion));
-            } else if (infusion instanceof Weapon) {
-                GameScene.show(new WndWeaponInfusion(infusion));
-            }
-        }
-    };
+	private final WndBag.ItemSelector transferTo = new WndBag.ItemSelector() {
+		@Override
+		public String textPrompt() {
+			return Messages.get(ElementalStone.class, "select_to");
+		}
 
-    public static WndBag.Listener armorSelector = new WndBag.Listener() {
-        @Override
-        public void onSelect(Item armor) {
-            Armor a = (Armor)armor;
+		@Override
+		public boolean itemSelectable( Item item ) {
+			if (source == null || item == source) return false;
+			return source instanceof Armor ? item instanceof Armor : item instanceof Weapon;
+		}
 
-            try {
-                for (int i = 0; i < value; i++) {
-                    a.upgrade();
-                    a.upgradeCounter++;
-                }
-            } catch (NullPointerException e) {
-                a2.upgrade(value);
-                a2.upgradeCounter += value;
-                new ElementalStone().collect();
-            }
-
-            ((ElementalStone)curItem).detach(Dungeon.hero.belongings.backpack);
-        }
-    };
-
-    public static WndBag.Listener weaponSelector = new WndBag.Listener() {
-        @Override
-        public void onSelect(Item item) {
-            Weapon w = (Weapon)item;
-
-            try {
-                for (int i = 0; i < value; i++) {
-                    w.upgrade();
-                    w.upgradeCounter++;
-                }
-            } catch (NullPointerException e) {
-                w2.upgrade(value);
-                w2.upgradeCounter += value;
-                new ElementalStone().collect();
-            }
-
-            ((ElementalStone)curItem).detach(Dungeon.hero.belongings.backpack);
-        }
-    };
-
-    public static WndBag.Listener itemSelectorTransfer = new WndBag.Listener() {
-        @Override
-        public void onSelect(Item item) {
-            value = 0;
-            Hero hero = Dungeon.hero;
-            curUser.spend(1);
-
-            //ARMOR
-            if (item instanceof Armor) {
-                Armor a = (Armor)item;
-                value = a.upgradeCounter;
-
-                if (a.upgradeCounter > 0 && a.level != 0 && curItem.isUpgraded(a)) {
-
-                    if (a.upgradeCounter == 1) title = "transfer upgrade";
-                    else title = "transfer upgrades";
-
-                    GameScene.selectItem(armorSelector, modeArmor, title);
-
-                    for (int i = 0;i < value; i++) {
-                        a.degrade();
-                        a.upgradeCounter--;
-                    }
-
-                    a2 = a;
-
-                } else {
-                    GLog.h("Please, select upgraded armor", ElementalStone.class);
-                }
-
-            //WEAPON
-            } else if (item instanceof Weapon) {
-                Weapon w = (Weapon)item;
-                value = w.upgradeCounter;
-
-                if (w.upgradeCounter > 0 && w.level != 0 && curItem.isUpgraded(w)) {
-
-                    if (w.upgradeCounter == 1) title = "transfer upgrade";
-                    else title = "transfer upgrades";
-
-                    GameScene.selectItem(weaponSelector, modeWeapon, title);
-
-                    for (int i = 0; i < value; i++) {
-                        w.degrade();
-                        w.upgradeCounter--;
-                    }
-
-                    w2 = w;
-                } else {
-                    GLog.h("Please, select upgraded weapon");
-                }
-            }
-        }
-    };
+		@Override
+		public void onSelect( Item item ) {
+			if (item == null || source == null) return;
+			int moved = Math.min(source.upgradeScrollUses, source.level());
+			for (int i = 0; i < moved; i++){
+				source.degrade();
+				item.upgrade();
+			}
+			source.upgradeScrollUses -= moved;
+			item.upgradeScrollUses += moved;
+			GLog.p(Messages.get(ElementalStone.class, "transferred", moved, item.name()));
+			source = null;
+			detach(Dungeon.hero.belongings.backpack);
+			Dungeon.hero.spendAndNext(1f);
+		}
+	};
 }

@@ -39,16 +39,13 @@ public class Water extends Armor.Glyph {
 
 
 
-        if (Talent.ElementalSurge) {
+        if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.ElementalTalents.useSurge()) { //elemental, Attuned Meal
             if (Dungeon.hero.pointsInTalent(Talent.ATTUNED_MEAL) == 1) {
                 Dungeon.hero.defenseSkill += Math.round(Dungeon.depth * 0.867f);
-                Talent.ElementalSurge = false;
             } else {
                 Dungeon.hero.defenseSkill += Math.round(Dungeon.depth * 0.867f);
-                counter--;
 
                 if (counter == 0) {
-                    Talent.ElementalSurge = false;
                 }
 
             }

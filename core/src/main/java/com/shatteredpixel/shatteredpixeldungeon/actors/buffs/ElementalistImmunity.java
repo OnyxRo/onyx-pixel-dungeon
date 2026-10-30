@@ -5,11 +5,10 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ConfusionGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
 
-import static jdk.nashorn.internal.objects.Global.Infinity;
 
 public class ElementalistImmunity extends FlavourBuff {
 
-    public static final float DURATION = (float) Infinity;
+    public static final float DURATION = Float.POSITIVE_INFINITY;
 
     {
         immunities.add(ConfusionGas.class);

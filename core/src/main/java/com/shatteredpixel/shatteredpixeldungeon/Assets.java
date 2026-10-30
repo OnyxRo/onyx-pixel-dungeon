@@ -648,6 +648,7 @@ public class Assets {
 		public static final String PRINCESS = "splashes/princess.png"; //ported, transformation
 		public static final String FREEMAN = "splashes/freeman.png"; //transformation
 		public static final String SUMMONER = "splashes/summoner.jpg"; //ported, ryuse
+		public static final String ALCHEMIST = "splashes/elemental/alchemist.jpg"; //elemental
 		public static final String SORCERESS = "splashes/sorceress.png"; //ported, ryuse, the Summoner's other picture
 		//summoning
 		public static final String CONJURER = "splashes/summoning/conjurer.png"; //ported, summoning
@@ -1230,6 +1231,7 @@ public class Assets {
 		public static final String PRINCESS = "sprites/princess.png"; //ported, transformation
 		public static final String FREEMAN = "sprites/freeman.png"; //transformation
 		public static final String SUMMONER = "sprites/summoner.png"; //ported, ryuse
+		public static final String ALCHEMIST = "sprites/elemental/alchemist.png"; //elemental
 		public static final String VIKING = "sprites/viking.png"; //ported, dragonic
 		public static final String DRAGONKNIGHT = "sprites/dragonknight.png"; //ported, dragonic
 		public static final String DEMON = "sprites/demon.png"; //ported, ryuse, the Imp the Summoner sees

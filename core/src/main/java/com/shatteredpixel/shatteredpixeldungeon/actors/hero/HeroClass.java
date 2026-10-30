@@ -96,6 +96,8 @@ public enum HeroClass {
 	ARTIFICER( HeroSubClass.CONSTRUCTOR, HeroSubClass.ARMORER ),
 	//from Ryuse's PD
 	SUMMONER( HeroSubClass.EIDOLON, HeroSubClass.ATTRACTOR ),
+	//from Elemental PD
+	ALCHEMIST( HeroSubClass.ELEMENTALIST, HeroSubClass.SCIENTIST ),
 	//from Dragonic PD
 	VIKING( HeroSubClass.DRUID, HeroSubClass.ICEBREAKER ),
 	DRAGONKNIGHT( HeroSubClass.DEVORANDUM, HeroSubClass.MESSOREM ),
@@ -225,6 +227,10 @@ public enum HeroClass {
 
 			case SUMMONER:
 				initSummoner( hero );
+				break;
+
+			case ALCHEMIST:
+				initAlchemist( hero );
 				break;
 
 			case VIKING:
@@ -376,6 +382,8 @@ public enum HeroClass {
 				return Badges.Badge.MASTERY_ARTIFICER;
 			case SUMMONER:
 				return Badges.Badge.MASTERY_SUMMONER;
+			case ALCHEMIST:
+				return Badges.Badge.MASTERY_ALCHEMIST;
 			case VIKING:
 				return Badges.Badge.MASTERY_VIKING;
 			case DRAGONKNIGHT:
@@ -730,6 +738,25 @@ public enum HeroClass {
 		new com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation().identify();
 	}
 
+	//Elemental PD. The Alchemist starts with the alchemist dagger, the alchemist flask (an endless supply of thrown potions)
+	//and a potion bandolier, and knows toxic gas and teleportation
+	private static void initAlchemist( Hero hero ) {
+		(hero.belongings.weapon = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.AlchemistDagger()).identify();
+		hero.belongings.weapon.activate(hero);
+
+		com.shatteredpixel.shatteredpixeldungeon.items.weapon.AlchemistFlask flask = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.AlchemistFlask();
+		flask.identify().collect();
+		Dungeon.quickslot.setSlot(0, flask);
+
+		if (Dungeon.LimitedDrops.POTION_BANDOLIER.count == 0){
+			new com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier().collect();
+			Dungeon.LimitedDrops.POTION_BANDOLIER.drop();
+		}
+
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas().identify();
+		new com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation().identify();
+	}
+
 	private static void initSummoner( Hero hero ) {
 		//Ryuse's PD. Summoner stats, 15 health that grows by 3 a level, a training whip and a dried rose that holds her lover's ghost
 		(hero.belongings.weapon = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.TrainingWhip()).identify();
@@ -826,6 +853,10 @@ public enum HeroClass {
 						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.artificer.Reflection()};
 			case SUMMONER:
 				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.summoner.PhaseShift()};
+			case ALCHEMIST:
+				//Elemental PD gave its armor one power, Purity. The Rogue's smoke bomb joins it so the crown still gives a choice
+				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.alchemist.Purity(),
+						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.rogue.SmokeBomb()};
 			case VIKING:
 				//Dragonic had one ability, Hammerfall. Two of the Warrior's join it so the crown still gives a choice
 				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.viking.Hammerfall(),
@@ -904,6 +935,8 @@ public enum HeroClass {
 				return Assets.Sprites.ARTIFICER;
 			case SUMMONER:
 				return Assets.Sprites.SUMMONER;
+			case ALCHEMIST:
+				return Assets.Sprites.ALCHEMIST;
 			case VIKING:
 				return Assets.Sprites.VIKING;
 			case DRAGONKNIGHT:
@@ -988,6 +1021,8 @@ public enum HeroClass {
 				return Assets.Splashes.ARTIFICER;
 			case SUMMONER:
 				return SUMMONER_SPLASH;
+			case ALCHEMIST:
+				return Assets.Splashes.ALCHEMIST;
 			//Dragonic had no splash art, these borrow the Warrior's and the Duelist's
 			case VIKING:
 				return Assets.Splashes.WARRIOR;
@@ -1072,6 +1107,8 @@ public enum HeroClass {
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_ARTIFICER);
 			case SUMMONER:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_SUMMONER);
+			case ALCHEMIST:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_ALCHEMIST);
 			case VIKING:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_VIKING);
 			case DRAGONKNIGHT:

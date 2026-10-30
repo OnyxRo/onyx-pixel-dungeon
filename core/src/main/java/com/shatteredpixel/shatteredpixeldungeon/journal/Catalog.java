@@ -1561,6 +1561,7 @@ public enum Catalog {
 
 		//items ported from elemental
 		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.AlchemistDagger.class);
+		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.AlchemistFlask.class); //elemental
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.BrokenAmulet.class);
 		ARMOR.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.AlchemistArmor.class);
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.fragments.AirFragment.class);

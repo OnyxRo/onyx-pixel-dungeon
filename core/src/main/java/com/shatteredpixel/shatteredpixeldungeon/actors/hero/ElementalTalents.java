@@ -82,7 +82,7 @@ public class ElementalTalents {
 	public static int onAttackProc( Hero hero, Char enemy, int dmg ){
 		if (hero.hasTalent(Talent.FRENZIED_FINISH)){
 			if (hero.belongings.attackingWeapon() instanceof MissileWeapon
-					|| hero.belongings.attackingWeapon() instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.AlchemistFlask.AlchemistProjectile){
+					|| hero.belongings.attackingWeapon() instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.AlchemistFlask.Flask){
 				Buff.affect(enemy, FrenziedFinishTracker.class);
 			} else if (enemy.buff(FrenziedFinishTracker.class) != null){
 				dmg += 1 + hero.pointsInTalent(Talent.FRENZIED_FINISH);

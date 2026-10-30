@@ -42,16 +42,13 @@ public class Fire extends Armor.Glyph {
     @Override
     public int proc(Armor armor, Char attacker, Char defender, int damage) {
 
-        if (Talent.ElementalSurge) {
+        if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.ElementalTalents.useSurge()) { //elemental, Attuned Meal
             if (Dungeon.hero.pointsInTalent(Talent.ATTUNED_MEAL) == 1) {
                 attacker.damage(damage / 3, this);
-                Talent.ElementalSurge = false;
             } else {
                 attacker.damage(damage / 3, this);
-                counter--;
 
                 if (counter == 0) {
-                    Talent.ElementalSurge = false;
                 }
             }
         } else {

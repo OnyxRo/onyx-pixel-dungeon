@@ -28,7 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.stones.ElementalStone;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Air;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Earth;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Water;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -41,7 +41,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
-import static com.shatteredpixel.shatteredpixeldungeon.items.Item.curItem;
 
 public class WndWeaponInfusion extends Window {
 
@@ -69,7 +68,7 @@ public class WndWeaponInfusion extends Window {
             protected void onClick() {
                 hide();
                 ((Weapon)item).enchant(new Fire());
-                ((ElementalStone) curItem).detach(Dungeon.hero.belongings.backpack);
+                ElementalStone.consume();
             }
         };
         btnFire.setRect( 0, textBlock.bottom() + GAP, WIDTH, BTN_HEIGHT );
@@ -80,7 +79,7 @@ public class WndWeaponInfusion extends Window {
             protected void onClick() {
                 hide();
                 ((Weapon)item).enchant(new Air());
-                ((ElementalStone) curItem).detach(Dungeon.hero.belongings.backpack);
+                ElementalStone.consume();
             }
         };
         btnAir.setRect( 0, btnFire.bottom() + GAP, WIDTH, BTN_HEIGHT );
@@ -91,7 +90,7 @@ public class WndWeaponInfusion extends Window {
             protected void onClick() {
                 hide();
                 ((Weapon)item).enchant(new Water());
-                ((ElementalStone) curItem).detach(Dungeon.hero.belongings.backpack);
+                ElementalStone.consume();
             }
         };
         btnWater.setRect( 0, btnAir.bottom() + GAP, WIDTH, BTN_HEIGHT );
@@ -102,7 +101,7 @@ public class WndWeaponInfusion extends Window {
             protected void onClick() {
                 hide();
                 ((Weapon)item).enchant(new Earth());
-                ((ElementalStone) curItem).detach(Dungeon.hero.belongings.backpack);
+                ElementalStone.consume();
             }
         };
         btnEarth.setRect( 0, btnWater.bottom() + GAP, WIDTH, BTN_HEIGHT );
@@ -124,7 +123,7 @@ public class WndWeaponInfusion extends Window {
         IconButton btnInfoFire = new IconButton(Icons.get(Icons.INFO)) {
             @Override
             protected void onClick() {
-                GameScene.show(new FireWeaponInfo());
+                GameScene.show(new WndMessage(new Fire().desc()));
             }
         };
         btnInfoFire.setRect(WIDTH-20, btnFire.top() + (btnFire.height()-20)/2, 20, 20);
@@ -133,7 +132,7 @@ public class WndWeaponInfusion extends Window {
         IconButton btnInfoAir = new IconButton(Icons.get(Icons.INFO)) {
             @Override
             protected void onClick() {
-                GameScene.show(new AirWeaponInfo());
+                GameScene.show(new WndMessage(new Air().desc()));
             }
         };
         btnInfoAir.setRect(WIDTH-20, btnAir.top() + (btnAir.height()-20)/2, 20, 20);
@@ -142,7 +141,7 @@ public class WndWeaponInfusion extends Window {
         IconButton btnWaterInfo = new IconButton(Icons.get(Icons.INFO)) {
             @Override
             protected void onClick() {
-                GameScene.show(new WaterWeaponInfo());
+                GameScene.show(new WndMessage(new Water().desc()));
             }
         };
         btnWaterInfo.setRect(WIDTH-20, btnWater.top() + (btnWater.height()-20)/2, 20, 20);
@@ -151,7 +150,7 @@ public class WndWeaponInfusion extends Window {
         IconButton btnEarthInfo = new IconButton(Icons.get(Icons.INFO)) {
             @Override
             protected void onClick() {
-                GameScene.show(new EarthWeaponInfo());
+                GameScene.show(new WndMessage(new Earth().desc()));
             }
         };
         btnEarthInfo.setRect(WIDTH-20, btnEarth.top() + (btnEarth.height()-20)/2, 20, 20);

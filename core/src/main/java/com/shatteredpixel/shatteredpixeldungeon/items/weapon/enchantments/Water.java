@@ -35,16 +35,13 @@ public class Water extends Weapon.Enchantment {
     public int proc(Weapon weapon, Char attacker, Char defender, int damage ) {
 
 
-        if (Talent.ElementalSurge) {
+        if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.ElementalTalents.useSurge()) { //elemental, Attuned Meal
             if (Dungeon.hero.pointsInTalent(Talent.ATTUNED_MEAL) == 1) {
                 weapon.ACC = 1.3f;
-                Talent.ElementalSurge = false;
             } else {
                 weapon.ACC = 1.3f;
-                counter--;
 
                 if (counter == 0) {
-                    Talent.ElementalSurge = false;
                 }
 
             }

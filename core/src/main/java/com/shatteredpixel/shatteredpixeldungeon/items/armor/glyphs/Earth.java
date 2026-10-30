@@ -39,19 +39,16 @@ public class Earth extends Armor.Glyph {
 
 
 
-        if (Talent.ElementalSurge) {
+        if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.ElementalTalents.useSurge()) { //elemental, Attuned Meal
             if (Dungeon.hero.pointsInTalent(Talent.ATTUNED_MEAL) == 1) {
                 if (Dungeon.hero.HP < (Dungeon.hero.HT / 2)) {
                     Buff.affect(Dungeon.hero, Barkskin.class).set( 2 + Dungeon.hero.lvl/3, 4);
-                    Talent.ElementalSurge = false;
                 }
             } else {
                 if (Dungeon.hero.HP < (Dungeon.hero.HT / 2)) {
                     Buff.affect(Dungeon.hero, Barkskin.class).set(2 + Dungeon.hero.lvl / 3, 4);
-                    counter--;
                 }
                 if (counter == 0) {
-                    Talent.ElementalSurge = false;
                 }
             }
         } else {

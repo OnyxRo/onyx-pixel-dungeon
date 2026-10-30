@@ -1,110 +1,65 @@
-/*
- * Pixel Dungeon
- * Copyright (C) 2012-2015 Oleg Dolya
- *
- * Shattered Pixel Dungeon
- * Copyright (C) 2014-2021 Evan Debenham
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>
- */
-
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
-
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.fragments.AirFragment;
+import com.shatteredpixel.shatteredpixeldungeon.items.fragments.EarthFragment;
+import com.shatteredpixel.shatteredpixeldungeon.items.fragments.FireFragment;
+import com.shatteredpixel.shatteredpixeldungeon.items.fragments.Fragment;
+import com.shatteredpixel.shatteredpixeldungeon.items.fragments.WaterFragment;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 
 import java.util.ArrayList;
 
+//Elemental PD's Broken Amulet of Yendor. With the four elemental fragments in the pack, FIX joins them into the real Amulet.
 public class BrokenAmulet extends Item {
 
-    private static final String AC_FIX = "FIX";
-    protected WndBag.Mode mode = WndBag.Mode.FRAGMENT;
+	private static final String AC_FIX = "FIX";
 
-    {
-        image = ItemSpriteSheet.BROKEN_AMULET;
+	@SuppressWarnings("unchecked")
+	private static final Class<? extends Fragment>[] PIECES = new Class[]{
+			AirFragment.class, EarthFragment.class, FireFragment.class, WaterFragment.class};
 
-        unique = true;
-    }
+	{
+		image = ItemSpriteSheet.BROKEN_AMULET;
+		unique = true;
+		defaultAction = AC_FIX;
+	}
 
-    @Override
-    public ArrayList<String> actions(Hero hero) {
-        ArrayList<String> actions = super.actions(hero);
-        actions.add(AC_FIX);
-        return actions;
-    }
+	@Override
+	public ArrayList<String> actions( Hero hero ) {
+		ArrayList<String> actions = super.actions(hero);
+		actions.add(AC_FIX);
+		return actions;
+	}
 
-    @Override
-    public void execute(Hero hero, String action) {
+	@Override
+	public void execute( Hero hero, String action ) {
+		super.execute(hero, action);
+		if (!action.equals(AC_FIX)) return;
 
-        super.execute(hero, action);
+		int have = 0;
+		for (Class<? extends Fragment> c : PIECES) if (hero.belongings.getItem(c) != null) have++;
+		if (have < PIECES.length){
+			GLog.w(Messages.get(this, "missing", PIECES.length - have));
+			return;
+		}
+		for (Class<? extends Fragment> c : PIECES) hero.belongings.getItem(c).detach(hero.belongings.backpack);
+		detach(hero.belongings.backpack);
+		GLog.p(Messages.get(this, "fix"));
+		Item amulet = new Amulet();
+		if (!amulet.collect()) com.shatteredpixel.shatteredpixeldungeon.Dungeon.level.drop(amulet, hero.pos);
+		hero.spendAndNext(1f);
+	}
 
-        if (action.equals(AC_FIX)) {
-            GameScene.selectItem(itemSelector, mode, Messages.get(this, "fragment"));
-        }
-    }
+	@Override
+	public boolean isIdentified() {
+		return true;
+	}
 
-    @Override
-    public boolean doPickUp(Hero hero, int pos) {
-        if (super.doPickUp(hero, pos)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public boolean isIdentified() {
-        return true;
-    }
-
-    @Override
-    public boolean isUpgradable() {
-        return false;
-    }
-
-    private static int fragmentCount = 0;
-
-    public static WndBag.Listener itemSelector = new WndBag.Listener() {
-        @Override
-        public void onSelect(Item item) {
-            Hero hero = Dungeon.hero;
-            curUser.spend(1);
-
-            fragmentCount++;
-
-            if (fragmentCount == 4) {
-                item.detach(hero.belongings.backpack);
-                GLog.h(Messages.get(BrokenAmulet.class, "fix"));
-                ((BrokenAmulet) curItem).detach(hero.belongings.backpack);
-
-                new Amulet().collect();
-            } else if (fragmentCount < 4) {
-                try {
-                    item.detach(hero.belongings.backpack);
-                } catch (NullPointerException e) {
-
-                }
-
-            }
-        }
-    };
+	@Override
+	public boolean isUpgradable() {
+		return false;
+	}
 }
-
-

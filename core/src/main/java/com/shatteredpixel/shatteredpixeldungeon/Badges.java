@@ -74,6 +74,7 @@ public class Badges {
 		MASTERY_ZEALOT,
 		MASTERY_ARTIFICER,
 		MASTERY_SUMMONER,
+		MASTERY_ALCHEMIST,
 		MASTERY_VIKING,
 		MASTERY_DRAGONKNIGHT,
 		MASTERY_FRIAR,
@@ -113,6 +114,7 @@ public class Badges {
 		UNLOCK_ZEALOT               ( 25 ),
 		UNLOCK_ARTIFICER            ( 6 ),
 		UNLOCK_SUMMONER             ( 5 ),
+		UNLOCK_ALCHEMIST            ( 6 ),
 		UNLOCK_VIKING               ( 6 ),
 		UNLOCK_DRAGONKNIGHT         ( 4 ),
 		UNLOCK_FRIAR                ( 5 ),
@@ -186,6 +188,7 @@ public class Badges {
 		BOSS_SLAIN_1_ZEALOT,
 		BOSS_SLAIN_1_ARTIFICER,
 		BOSS_SLAIN_1_SUMMONER,
+		BOSS_SLAIN_1_ALCHEMIST,
 		BOSS_SLAIN_1_FRIAR,
 		BOSS_SLAIN_1_SLIMEGIRL,
 		BOSS_SLAIN_1_NINJA,
@@ -261,6 +264,7 @@ public class Badges {
 		VICTORY_ZEALOT,
 		VICTORY_ARTIFICER,
 		VICTORY_SUMMONER,
+		VICTORY_ALCHEMIST,
 		VICTORY_FRIAR,
 		VICTORY_SLIMEGIRL,
 		VICTORY_NINJA,
@@ -650,6 +654,7 @@ public class Badges {
 	}
 	
 	public static void validateItemsCrafted() {
+		validateAlchemistUnlock(); //elemental
 		//Reforged PD unlocks the Artificer by crafting anything
 		validateArtificerUnlock();
 
@@ -972,6 +977,7 @@ public class Badges {
 		firstBossClassBadges.put(HeroClass.ZEALOT, Badge.BOSS_SLAIN_1_ZEALOT);
 		firstBossClassBadges.put(HeroClass.ARTIFICER, Badge.BOSS_SLAIN_1_ARTIFICER);
 		firstBossClassBadges.put(HeroClass.SUMMONER, Badge.BOSS_SLAIN_1_SUMMONER);
+		firstBossClassBadges.put(HeroClass.ALCHEMIST, Badge.BOSS_SLAIN_1_ALCHEMIST);
 		firstBossClassBadges.put(HeroClass.FRIAR, Badge.BOSS_SLAIN_1_FRIAR);
 		firstBossClassBadges.put(HeroClass.SLIMEGIRL, Badge.BOSS_SLAIN_1_SLIMEGIRL);
 		firstBossClassBadges.put(HeroClass.NINJA, Badge.BOSS_SLAIN_1_NINJA);
@@ -1009,6 +1015,7 @@ public class Badges {
 		victoryClassBadges.put(HeroClass.ZEALOT, Badge.VICTORY_ZEALOT);
 		victoryClassBadges.put(HeroClass.ARTIFICER, Badge.VICTORY_ARTIFICER);
 		victoryClassBadges.put(HeroClass.SUMMONER, Badge.VICTORY_SUMMONER);
+		victoryClassBadges.put(HeroClass.ALCHEMIST, Badge.VICTORY_ALCHEMIST);
 		victoryClassBadges.put(HeroClass.FRIAR, Badge.VICTORY_FRIAR);
 		victoryClassBadges.put(HeroClass.SLIMEGIRL, Badge.VICTORY_SLIMEGIRL);
 		victoryClassBadges.put(HeroClass.NINJA, Badge.VICTORY_NINJA);
@@ -1183,6 +1190,9 @@ public class Badges {
 				break;
 			case SUMMONER:
 				badge = Badge.MASTERY_SUMMONER;
+				break;
+			case ALCHEMIST:
+				badge = Badge.MASTERY_ALCHEMIST;
 				break;
 			case FRIAR:
 				badge = Badge.MASTERY_FRIAR;
@@ -1557,6 +1567,13 @@ public class Badges {
 	public static void validateSummonerUnlock(){
 		if (Statistics.mirrorImageScrollUsed >= 3 && !isUnlocked(Badge.UNLOCK_SUMMONER)){
 			displayBadge( Badge.UNLOCK_SUMMONER );
+		}
+	}
+
+	//Elemental PD, craft four items in alchemy pots to unlock the Alchemist
+	public static void validateAlchemistUnlock(){
+		if (Statistics.itemsCrafted >= 4 && !isUnlocked(Badge.UNLOCK_ALCHEMIST)){
+			displayBadge( Badge.UNLOCK_ALCHEMIST );
 		}
 	}
 

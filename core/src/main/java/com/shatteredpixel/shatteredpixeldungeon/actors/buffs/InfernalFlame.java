@@ -184,8 +184,8 @@ public class InfernalFlame extends Buff implements Hero.Doom {
 
 	@Override
 	public void fx(boolean on) {
-		if (on) target.sprite.add(CharSprite.State.INFERNAL_FLAME);
-		else target.sprite.remove(CharSprite.State.INFERNAL_FLAME);
+		if (on) target.sprite.add(CharSprite.State.BURNING);
+		else target.sprite.remove(CharSprite.State.BURNING);
 	}
 
 	@Override

@@ -37,22 +37,19 @@ public class Fire extends Weapon.Enchantment {
     @Override
     public int proc(Weapon weapon, Char attacker, Char defender, int damage ) {
 
-        if (Talent.ElementalSurge) {
+        if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.ElementalTalents.useSurge()) { //elemental, Attuned Meal
             if (Dungeon.hero.pointsInTalent(Talent.ATTUNED_MEAL) == 1) {
                 Bless.detach(Dungeon.hero, Bless.class);
                 if (Dungeon.hero.HP == Dungeon.hero.HT) {
                     Buff.affect(Dungeon.hero, Bless.class, 10);
                 }
-                Talent.ElementalSurge = false;
             } else {
                 Bless.detach(Dungeon.hero, Bless.class);
                 if (Dungeon.hero.HP == Dungeon.hero.HT) {
                     Buff.affect(Dungeon.hero, Bless.class, 10);
                 }
-                counter--;
 
                 if (counter == 0) {
-                    Talent.ElementalSurge = false;
                 }
 
             }
