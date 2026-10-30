@@ -541,6 +541,7 @@ public class Item implements Bundlable {
 			Catalog.setSeen(getClass());
 			Statistics.itemTypesDiscovered.add(getClass());
 			if (!isIdentified()) com.shatteredpixel.shatteredpixeldungeon.actors.hero.BATalents.onItemIdentified(Dungeon.hero); //bluearchive
+			if (!isIdentified()) com.shatteredpixel.shatteredpixeldungeon.actors.hero.ClairvoyantHero.onItemIdentified(Dungeon.hero, this); //clairvoyant
 		}
 
 		levelKnown = true;

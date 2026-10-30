@@ -65,7 +65,7 @@ public class WildEnergy extends TargetedSpell {
 		hero.belongings.charge(1f);
 		ArtifactRecharge.chargeArtifacts(hero, 4f);
 
-		Buff.affect(hero, Recharging.class, 8f);
+		Buff.affect(hero, Recharging.class, 8f + 3f * com.shatteredpixel.shatteredpixeldungeon.actors.hero.ClairvoyantHero.transmutation() * com.shatteredpixel.shatteredpixeldungeon.actors.hero.ClairvoyantHero.transmutation()); //clairvoyant
 		Buff.affect(hero, ArtifactRecharge.class).extend( 8 ).ignoreHornOfPlenty = false;
 
 		onSpellused();

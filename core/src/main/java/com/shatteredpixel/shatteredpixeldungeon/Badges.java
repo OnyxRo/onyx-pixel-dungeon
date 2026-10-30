@@ -93,6 +93,7 @@ public class Badges {
 		MASTERY_FREEMAN, //transformation
 		MASTERY_NECROHERO, //tower
 		MASTERY_TANK, //tower
+		MASTERY_APPRENTICE, //clairvoyant
 		MASTERY_TOWERPRIEST, //tower
 		//bluearchive
 		MASTERY_BA_ARIS, MASTERY_BA_NONOMI, MASTERY_BA_MIYAKO, MASTERY_BA_HOSHINO, MASTERY_BA_SHIROKO,
@@ -1229,6 +1230,9 @@ public class Badges {
 				break;
 			case TANK:
 				badge = Badge.MASTERY_TANK;
+				break;
+			case APPRENTICE: //clairvoyant
+				badge = Badge.MASTERY_APPRENTICE;
 				break;
 			case TOWERPRIEST:
 				badge = Badge.MASTERY_TOWERPRIEST;

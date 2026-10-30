@@ -636,7 +636,7 @@ public abstract class Char extends Actor {
 			int effectiveDamage = enemy.defenseProc( this, Math.round(dmg) );
 			//do not trigger on-hit logic if defenseProc returned a negative value
 			if (effectiveDamage >= 0) {
-				effectiveDamage = Math.max(effectiveDamage - dr, 0);
+				effectiveDamage = Math.max(effectiveDamage - dr, 0) + com.shatteredpixel.shatteredpixeldungeon.actors.hero.ClairvoyantHero.armorPiercing(this, effectiveDamage); //clairvoyant, Force Conversion
 				effectiveDamage = TowerChar.afterArmor(this, enemy, effectiveDamage); //tower
 
 				if (enemy.buff(Viscosity.ViscosityTracker.class) != null) {
@@ -826,6 +826,7 @@ public abstract class Char extends Actor {
 
 		float acuRoll = Random.Float( acuStat );
 		if (attacker.buff(Bless.class) != null) acuRoll *= 1.25f;
+		acuRoll *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.ClairvoyantHero.accuracy(attacker); //clairvoyant, Motivation
 		if (attacker.buff(  Hex.class) != null) acuRoll *= 0.8f;
 		if (attacker.buff( Daze.class) != null) acuRoll *= 0.5f;
 		//from Shittened PD

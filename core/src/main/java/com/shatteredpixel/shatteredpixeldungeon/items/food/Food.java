@@ -157,7 +157,8 @@ public class Food extends Item {
 			|| Dungeon.hero.hasTalent(Talent.HEALING_MEAL)
 			|| Dungeon.hero.hasTalent(Talent.FIGHTING_MEAL)
 			|| com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.fastMeal(Dungeon.hero)
-			|| com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.fastMeal(Dungeon.hero)){ //xun
+			|| com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.fastMeal(Dungeon.hero) //xun
+			|| com.shatteredpixel.shatteredpixeldungeon.actors.hero.ClairvoyantHero.fastMeal(Dungeon.hero)){ //clairvoyant, Unleashing Meal
 			return com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.eatingTime(Dungeon.hero, TIME_TO_EAT - 2);
 		} else {
 			return com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.eatingTime(Dungeon.hero, TIME_TO_EAT);

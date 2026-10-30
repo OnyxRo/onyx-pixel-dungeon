@@ -199,6 +199,7 @@ public class Assets {
 		public static final String DR_BUFFS_LARGE  = "interfaces/deranged/large_buffs.png";
 		//xun, Xun's PD icon sheets, drawn for icon numbers of 40000 and up
 		public static final String XUN_TALENT_ICONS = "interfaces/xun/talent_icons.png";
+		public static final String CV_TALENT_ICONS = "interfaces/clairvoyant/talent_icons.png"; //clairvoyant
 		public static final String XUN_HERO_ICONS   = "interfaces/xun/hero_icons.png";
 		public static final String XUN_BUFFS_SMALL  = "interfaces/xun/buffs.png";
 		public static final String XUN_BUFFS_LARGE  = "interfaces/xun/large_buffs.png";
@@ -632,6 +633,7 @@ public class Assets {
 		public static final String RBA_SHIROKO = "splashes/rebluearchive/shiroko.png"; //rebluearchive
 		public static final String RBA_YUZU = "splashes/rebluearchive/yuzu.png"; //rebluearchive
 		public static final String WARRIOR  = "splashes/warrior.jpg";
+		public static final String APPRENTICE = "splashes/clairvoyant/apprentice.jpg"; //clairvoyant
 		public static final String MAGE     = "splashes/mage.jpg";
 		public static final String ROGUE    = "splashes/rogue.jpg";
 		public static final String HUNTRESS = "splashes/huntress.jpg";
@@ -924,6 +926,8 @@ public class Assets {
 		public static final String FIX = "sprites/tower/fix.png"; //ported, tower
 		public static final String NECROHERO = "sprites/tower/necrohero.png"; //ported, tower
 		public static final String TANK = "sprites/tower/tank.png"; //ported, tower
+		public static final String APPRENTICE = "sprites/clairvoyant/apprentice.png"; //clairvoyant
+		public static final String STABLE_ELEMENTAL = "sprites/clairvoyant/stable_elemental.png"; //clairvoyant
 		public static final String PRIEST = "sprites/tower/priest.png"; //ported, tower
 		public static final String BOSSRATKING = "sprites/tower/bossratking.png"; //ported, tower
 		public static final String RATKINGAVATAR = "sprites/tower/ratkingavatar.png"; //ported, tower
