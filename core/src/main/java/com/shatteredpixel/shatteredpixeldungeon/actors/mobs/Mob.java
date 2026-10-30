@@ -1282,7 +1282,7 @@ public abstract class Mob extends Char {
 				Badges.validateHazardAssists();
 			}
 
-			rollToDropLoot();
+			if (!com.shatteredpixel.shatteredpixeldungeon.LoreGoo.noItems()) rollToDropLoot(); //lore
 
 			if (cause == Dungeon.hero || cause instanceof Weapon || cause instanceof Weapon.Enchantment){
 				if (Dungeon.hero.hasTalent(Talent.LETHAL_MOMENTUM)

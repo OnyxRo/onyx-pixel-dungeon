@@ -709,6 +709,7 @@ public abstract class Level implements Bundlable {
 			mobsToSpawn = WorldShuffle.mobRotation(this, com.shatteredpixel.shatteredpixeldungeon.TooCruel.mobDepth(Dungeon.depth)); //toocruel, Invasion
 			//Community PD has no worlds, its monsters join any floor (level feelings, rare alts)
 			com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CommunitySpawner.adjust(mobsToSpawn, this);
+			com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.adjust(mobsToSpawn, this); //trap dungeon game mode
 		}
 
 		Mob m = Reflection.newInstance(mobsToSpawn.remove(0));
@@ -1092,6 +1093,7 @@ public abstract class Level implements Bundlable {
 	}
 	
 	public void addItemToSpawn( Item item ) {
+		if (com.shatteredpixel.shatteredpixeldungeon.LoreGoo.noItems()) return; //lore
 		if (item != null) {
 			itemsToSpawn.add( item );
 		}

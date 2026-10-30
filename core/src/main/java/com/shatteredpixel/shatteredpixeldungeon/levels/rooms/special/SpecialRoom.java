@@ -114,6 +114,7 @@ public abstract class SpecialRoom extends Room {
 		ArrayList<Class<?extends Room>> runEquipSpecials = (ArrayList<Class<?extends Room>>)EQUIP_SPECIALS.clone();
 		ArrayList<Class<?extends Room>> runConsSpecials = (ArrayList<Class<?extends Room>>)CONSUMABLE_SPECIALS.clone();
 
+		com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.addSpecialRooms(runConsSpecials); //trap dungeon, its extra shop
 		Random.shuffle(runEquipSpecials);
 		Random.shuffle(runConsSpecials);
 

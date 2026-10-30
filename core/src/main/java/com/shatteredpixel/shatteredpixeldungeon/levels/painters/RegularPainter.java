@@ -71,8 +71,8 @@ public abstract class RegularPainter extends Painter {
 	
 	public RegularPainter setTraps(int num, Class<?>[] classes, float[] chances){
 		nTraps = Math.round(num * com.shatteredpixel.shatteredpixeldungeon.TooCruel.trapsMult()); //toocruel
-		trapClasses = (Class<? extends Trap>[]) classes;
-		trapChances = chances;
+		trapClasses = (Class<? extends Trap>[]) com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.trapClasses(classes); //trap dungeon game mode
+		trapChances = com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.trapChances(chances);
 		return this;
 	}
 

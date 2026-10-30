@@ -755,6 +755,38 @@ public class ModRoster {
 		add( "magicling", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.zero.normal.RainNight.class, 0, 1, 99 );
 		add( "magicling", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.zero.normal.SliceDream.class, 0, 1, 99 );
 		add( "magicling", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.zero.normal.SmallBlue.class, 0, 1, 99 );
+		add( "trap", BombSpider.class, 0, 1, 99 );
+		add( "trap", BombSpider2.class, 0, 1, 99 );
+		add( "trap", ChaosElemental.class, 0, 1, 99 );
+		add( "trap", Clown.class, 0, 1, 99 );
+		add( "trap", DancingSkeleton.class, 0, 1, 99 );
+		add( "trap", DartSpitter.class, 0, 1, 99 );
+		add( "trap", FilthJet.class, 0, 1, 99 );
+		add( "trap", FrostMeteor.class, 0, 1, 99 );
+		add( "trap", GiantRat.class, 0, 1, 99 );
+		add( "trap", Hole.class, 0, 1, 99 );
+		add( "trap", Orc.class, 0, 1, 99 );
+		add( "trap", Prismancer.class, 0, 1, 99 );
+		add( "trap", Skelecrabat.class, 0, 1, 99 );
+		add( "trap", SpectralSamurai.class, 0, 1, 99 );
+		add( "trap", SpectralSummoner.class, 0, 1, 99 );
+		add( "trap", SpectralWizard.class, 0, 1, 99 );
+		add( "trap", Spook.class, 0, 1, 99 );
+		add( "trap", ToughGhost.class, 0, 1, 99 );
+		add( "trap", KeyChain.class, 0, 1, 99 );
+		add( "trap", ShockerBlock.class, 0, 1, 99 );
+		add( "trap", SlaverBlue.class, 0, 1, 99 );
+		add( "trap", SlaverBoss.class, 0, 1, 99 );
+		add( "trap", SlaverRed.class, 0, 1, 99 );
+		add( "trap", Amogus.class, 0, 1, 99 );
+		add( "trap", Assasin.class, 0, 1, 99 );
+		add( "trap", TDGoblin.class, 0, 1, 99 );
+		add( "trap", TDDemonRat.class, 0, 1, 99 );
+		add( "trap", TDFlower.class, 0, 1, 99 );
+		add( "trap", SpectralGod.class, 0, 1, 99 );
+		add( "trap", com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.BombSheep.class, 0, 1, 99 );
+		add( "reremixed", GnollScout.class, 0, 1, 99 );
+		add( "reremixed", MimicAmulet.class, 0, 1, 99 );
 	}
 
 	/** Every monster on the roster, in the order they were added. */

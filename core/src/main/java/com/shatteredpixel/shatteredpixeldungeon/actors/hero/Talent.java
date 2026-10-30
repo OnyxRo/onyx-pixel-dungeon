@@ -1223,7 +1223,9 @@ public enum Talent {
 	//Summoning Beacon T4
 	POWERED_DEVICE(40417, 4), SKYNET(40418, 4), VIOLENT_LEAP(40419, 4), ASSAULT(40420, 4),
 	//Detonator T4
-	STACKED_CHARGE(40421, 4), ALCHEMY_CRAFT(40422, 4), DECOY(40423, 4), PORTABLE_DETONATOR(40424, 4);
+	STACKED_CHARGE(40421, 4), ALCHEMY_CRAFT(40422, 4), DECOY(40423, 4), PORTABLE_DETONATOR(40424, 4),
+	//lore, Shattered Pixel Lore's Goo talents, all on the icon the mod gave them
+	CAUSTIC_OOZE(27), HARD_GOO(27), SHARP_GOOP(27), SLIPPERY_SLIME(27);
 
 	public static class ImprovisedProjectileCooldown extends FlavourBuff{
 		public int icon() { return BuffIndicator.TIME; }
@@ -3278,6 +3280,7 @@ public enum Talent {
 
 	public static void initClassTalents( Hero hero ){
 		initClassTalents( hero.heroClass, hero.talents, hero.metamorphedTalents );
+		com.shatteredpixel.shatteredpixeldungeon.LoreGoo.initTalents( hero.talents ); //lore
 	}
 
 	public static void initClassTalents( HeroClass cls, ArrayList<LinkedHashMap<Talent, Integer>> talents){

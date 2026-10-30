@@ -344,6 +344,8 @@ SPS_RULES = [
     ('Magic Ling dialog chrome', r'\bdiagulewindow\.chrome\.', 'diagulewindow.chromeBox().'),
     ('Magic Ling blessed ankh constructor', r'\bnew\s+Ankh\(\s*true\s*\)', 'new com.shatteredpixel.shatteredpixeldungeon.items.Ankh()'),
     ('Magic Ling random prop with a tier', r'\bProp\.randomPropA\(\s*\d+\s*,', 'Prop.randomPropA('),
+    ('Trap Dungeon animation speed setting', r'SPDSettings\.speeder2?\(\)', '1f'),
+    ('Trap Dungeon exotic scroll category', r'Generator\.Category\.EXOTICSCROLL\b', 'Generator.Category.SCROLL'),
     ('Magic Ling blue potion icon', r'\bItemSpriteSheet\.Icons\.POTION_BLUE\b', 'ItemSpriteSheet.Icons.POTION_DRGBREATH'),
     # Goblins PD (Shattered 0.3 base), static Level arrays are instance fields now
     ('Goblins, Level.adjacent and distance are instance methods', r'\bLevel\.(adjacent|distance)\(', r'Dungeon.level.\1('),
