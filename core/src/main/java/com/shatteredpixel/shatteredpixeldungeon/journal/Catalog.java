@@ -279,6 +279,10 @@ public enum Catalog {
 				com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.blacksmith.WhipFirecracker.class);
 		MISC_EQUIPMENT.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.Glock.class);
 
+		//items ported from Re-Remixed Dungeon
+		MELEE_WEAPONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.ElvenDagger.class, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.StoneSword.class);
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.FakeAmulet.class, com.shatteredpixel.shatteredpixeldungeon.items.quest.RatHide.class);
+
 		//items ported from Shattered Trap Dungeon
 		ARMOR.addItems(com.shatteredpixel.shatteredpixeldungeon.items.armor.LeatherTrapperArmor.class, com.shatteredpixel.shatteredpixeldungeon.items.armor.LeatherWardenArmor.class,
 				com.shatteredpixel.shatteredpixeldungeon.items.armor.MailWarArmor.class, com.shatteredpixel.shatteredpixeldungeon.items.armor.MailArcaneArmor.class,

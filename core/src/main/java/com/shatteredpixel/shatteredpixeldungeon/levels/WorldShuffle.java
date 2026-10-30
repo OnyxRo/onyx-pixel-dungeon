@@ -617,6 +617,12 @@ public class WorldShuffle {
 			Level[] run = modBossVariants( world, depth );
 			return run.length == 0 ? null : run[0];
 		}
+		//reremixed, Re-Remixed Dungeon's boss arenas for the three alternate regions that Combusted's worlds come from
+		if (world >= 0 && world < WORLDS.length) {
+			if (WORLDS[world] == com.shatteredpixel.shatteredpixeldungeon.levels.worlds.NecropolisLevel.class) return depth == 10 ? new NecropolisBossLevel() : null;
+			if (WORLDS[world] == com.shatteredpixel.shatteredpixeldungeon.levels.worlds.IceCavesLevel.class) return depth == 15 ? new IceCavesBossLevel() : null;
+			if (WORLDS[world] == com.shatteredpixel.shatteredpixeldungeon.levels.worlds.SpiderNestLevel.class) return depth == 20 ? new SpiderNestBossLevel() : null;
+		}
 		//rearranged, Re-ARranged PD's Rebel leader guards the labs, in place of Yog on floor 25 after a Labs world
 		if (world >= 0 && world < WORLDS.length && WORLDS[world] == LabsLevel.class) {
 			return depth == 25 ? new LabsBossLevel() : null;

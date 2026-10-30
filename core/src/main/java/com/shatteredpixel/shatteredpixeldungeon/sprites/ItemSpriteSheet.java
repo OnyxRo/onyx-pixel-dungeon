@@ -482,6 +482,9 @@ public class ItemSpriteSheet {
 	public static final int DOGSTICK = xy(4, 60);
 	public static final int FISHSKELETON = xy(5, 60);
 	public static final int WOODEN_BOOMERANG = MOD_ITEMS+1;
+	public static final int RAT_HIDE = xy(14, 65);
+	public static final int ELVEN_DAGGER = xy(15, 65);
+	public static final int STONE_SWORD = xy(16, 65);
 	public static final int LOOTBAG = xy(14, 64);
 	public static final int RACK = xy(15, 64);
 	public static final int RATDUST = xy(16, 64);
@@ -1677,6 +1680,9 @@ public class ItemSpriteSheet {
 		assignItemRect(DOGSTICK, 11, 15);
 		assignItemRect(FISHSKELETON, 16, 16);
 		assignItemRect(WOODEN_BOOMERANG, 12, 12);
+		assignItemRect(RAT_HIDE, 14, 15);
+		assignItemRect(ELVEN_DAGGER, 13, 13);
+		assignItemRect(STONE_SWORD, 15, 15);
 		assignItemRect(LOOTBAG, 12, 16);
 		assignItemRect(RACK, 14, 11);
 		assignItemRect(RATDUST, 15, 15);
