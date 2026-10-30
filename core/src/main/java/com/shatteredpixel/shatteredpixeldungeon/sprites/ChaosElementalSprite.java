@@ -30,7 +30,7 @@ public class ChaosElementalSprite extends MobSprite {
 	public ChaosElementalSprite() {
 		super();
 		
-		texture( Assets.Sprites.CHAOS );
+		texture( "sprites/trap/chaos.png" ); //trap dungeon, Assets.Sprites.CHAOS is Unleashed's chaos mage
 		
 		TextureFilm frames = new TextureFilm( texture, 16, 16 );
 		
