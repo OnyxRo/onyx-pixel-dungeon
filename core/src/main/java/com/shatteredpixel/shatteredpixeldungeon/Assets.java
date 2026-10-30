@@ -686,6 +686,28 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String GOD = "sprites/trap/ratgod.png"; //ported, trap
+		public static final String BOMBSHEEP = "sprites/trap/bombsheep.png"; //ported, trap
+		public static final String ASSASIN = "sprites/trap/assasin.png"; //ported, trap
+		public static final String AMOGUS = "sprites/trap/amogus.png"; //ported, trap
+		public static final String FLOWER = "sprites/trap/fireflower.png"; //ported, trap
+		public static final String TOUGHGHOST = "sprites/trap/toughghost.png"; //ported, trap
+		public static final String SPOOK = "sprites/trap/frostspook.png"; //ported, trap
+		public static final String SPECTRAL = "sprites/trap/spectralrat.png"; //ported, trap
+		public static final String SLAVER = "sprites/trap/slaver.png"; //ported, trap
+		public static final String SKELECRABAT = "sprites/trap/skelecrabat.png"; //ported, trap
+		public static final String ELECTRO = "sprites/trap/electro.png"; //ported, trap
+		public static final String PRISMANCER = "sprites/trap/prismancer.png"; //ported, trap
+		public static final String ORC = "sprites/trap/orc.png"; //ported, trap
+		public static final String METEOR = "sprites/trap/meteor.png"; //ported, trap
+		public static final String KEYCHAIN = "sprites/trap/keychain.png"; //ported, trap
+		public static final String HOLE = "sprites/trap/hole.png"; //ported, trap
+		public static final String BIGRAT = "sprites/trap/bigrat.png"; //ported, trap
+		public static final String FILTHJET = "sprites/trap/filthjet.png"; //ported, trap
+		public static final String DARTSPITTER = "sprites/trap/dartspitter.png"; //ported, trap
+		public static final String DANCINGSKELETON = "sprites/trap/dancingskeleton.png"; //ported, trap
+		public static final String RATCLOWN = "sprites/trap/ratclown.png"; //ported, trap
+		public static final String BOMBSPIDER = "sprites/trap/bombspider.png"; //ported, trap
 		public static final String PINKFOX = "sprites/npc/magicling/pinkfox.png"; //ported, magicling
 		public static final String LXFCJ = "sprites/npc/magicling/lostwhitecj.png"; //ported, magicling
 		public static final String CJBL = "sprites/npc/magicling/blue_cj.png"; //ported, magicling

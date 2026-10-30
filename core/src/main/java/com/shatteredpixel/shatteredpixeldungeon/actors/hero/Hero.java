@@ -906,6 +906,7 @@ public class Hero extends Char {
 
 		float accuracy = 1;
 		accuracy *= RingOfAccuracy.accuracyMultiplier( this );
+		accuracy *= com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.accuracy( this ); //trap dungeon armor
 		accuracy *= com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.accuracy( this );
 		//Shittened PD, being well fed makes the hero a little better at everything
 		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Satisfied.class) != null) {
@@ -1178,6 +1179,7 @@ public class Hero extends Char {
 	
 	@Override
 	public int damageRoll() {
+		if (com.shatteredpixel.shatteredpixeldungeon.LoreGoo.on()) return com.shatteredpixel.shatteredpixeldungeon.LoreGoo.damageRoll(this); //lore
 		KindOfWeapon wep = belongings.attackingWeapon();
 		int dmg;
 
@@ -1218,6 +1220,7 @@ public class Hero extends Char {
 				: com.shatteredpixel.shatteredpixeldungeon.Playstyles.meleeDamage(this, dmg);
 
 		if (dmg < 0) dmg = 0;
+		dmg = com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.damageRoll( this, dmg ); //trap dungeon armor
 		return dmg;
 	}
 
@@ -1349,6 +1352,7 @@ public class Hero extends Char {
 	
 	public float attackDelay() {
 		if (BAHero.freeAttack(this)) return 0; //bluearchive
+		if (com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.freeAttack(this)) return 0; //trap dungeon armor
 		if (buff(Talent.LethalMomentumTracker.class) != null){
 			buff(Talent.LethalMomentumTracker.class).detach();
 			return 0;
@@ -1481,6 +1485,7 @@ public class Hero extends Char {
 	public boolean act() {
 
 		TransformationBossTalents.onHeroTurn(this); //transformation, Aquatic Recover
+		com.shatteredpixel.shatteredpixeldungeon.LoreGoo.onHeroTurn(this); //lore, water soaks into the Goo
 
 		//Shittened PD, now and then a friend request pops up
 		if (Random.Int(8000) == 0) {
@@ -1825,6 +1830,7 @@ public class Hero extends Char {
 	public boolean waitOrPickup = false;
 
 	private boolean actPickUp( HeroAction.PickUp action ) {
+		if (com.shatteredpixel.shatteredpixeldungeon.LoreGoo.blockPickUp(this)) { ready(); return false; } //lore
 		int dst = action.dst;
 		if (pos == dst) {
 			
@@ -2157,6 +2163,11 @@ public class Hero extends Char {
 			ready();
 			return false;
 
+		} else if (!Dungeon.level.locked && transition != null && transition.inside(pos)
+				&& com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.blockTransition(this)) {
+			ready(); //trap dungeon, the rat ritual needs rat dust to change floors
+			return false;
+
 		} else if (!Dungeon.level.locked && transition != null && transition.inside(pos)) {
 
 			//Pixel Dungeon Reforged's Half Ripper, an escort. Close by, it goes up with the hero. Otherwise ask first.
@@ -2359,6 +2370,7 @@ public class Hero extends Char {
 		damage = super.attackProc( enemy, damage );
 		damage = XunHeroes.attackProc( this, enemy, damage ); //xun
 		damage = com.shatteredpixel.shatteredpixeldungeon.MusicImplant.attackProc( this, enemy, damage ); //musicimplant
+		com.shatteredpixel.shatteredpixeldungeon.LoreGoo.attackProc( this, enemy ); //lore
 
 		KindOfWeapon wep;
 		if (RingOfForce.fightingUnarmed(this) && !RingOfForce.unarmedGetsWeaponEnchantment(this)){
@@ -2505,6 +2517,7 @@ public class Hero extends Char {
 
 	@Override
 	public void damage( int dmg, Object src ) {
+		dmg = com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.damageTaken( this, dmg, src ); //trap dungeon armor
 		if (Dungeon.godMode()) {
 			return;
 		}

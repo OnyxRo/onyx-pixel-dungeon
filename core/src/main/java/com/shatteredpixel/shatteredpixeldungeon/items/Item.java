@@ -866,6 +866,8 @@ public class Item implements Bundlable {
 	}
 	
 	protected static Hero curUser = null;
+	//musicimplant, a scroll read by mistake needs its user set from outside
+	public static void setCurUser( Hero hero ){ curUser = hero; }
 	protected static Item curItem = null;
 	public void setCurrent( Hero hero ){
 		curUser = hero;

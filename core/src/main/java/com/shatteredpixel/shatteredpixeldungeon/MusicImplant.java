@@ -401,7 +401,7 @@ public class MusicImplant {
 				|| other instanceof ScrollOfTransmutation);
 		GLog.w(Messages.get(MusicImplant.class, "illiterate"));
 		scroll.detach(hero.belongings.backpack);
-		Item.curUser = hero;
+		Item.setCurUser(hero);
 		other.anonymize();
 		other.doRead();
 		return true;

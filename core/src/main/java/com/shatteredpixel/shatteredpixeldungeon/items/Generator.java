@@ -1078,7 +1078,7 @@ public class Generator {
 		
 		Armor a = (Armor)Reflection.newInstance(Category.ARMOR.classes[Random.chances(tierProbs(floorSet))]);
 		a.random();
-		return a;
+		return com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.armorVariant(a); //trap dungeon
 	}
 
 	public static final Category[] wepTiers = new Category[]{

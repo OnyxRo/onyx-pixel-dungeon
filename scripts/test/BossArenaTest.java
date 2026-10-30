@@ -317,7 +317,7 @@ public class BossArenaTest {
 	static final java.util.Set<String> SEEN_LIMITS = new java.util.LinkedHashSet<>();
 
 	//boss levels whose fight has several phases. Add a class name here with a reason when a new one is ported.
-	static final java.util.Set<String> MULTI_PHASE = new java.util.HashSet<>( java.util.Arrays.asList( "OldPrisonBossLevel", "NewPrisonBossLevel", "FinalLevel", "DragonBossLevel" ) );
+	static final java.util.Set<String> MULTI_PHASE = new java.util.HashSet<>( java.util.Arrays.asList( "OldPrisonBossLevel", "NewPrisonBossLevel", "NecropolisBossLevel", "FinalLevel", "DragonBossLevel" ) );
 
 	static ArrayList<Mob> bossesIn( Level level ) {
 		ArrayList<Mob> out = new ArrayList<>();

@@ -58,7 +58,7 @@ public class HeroSprite extends CharSprite {
 	public HeroSprite() {
 		super();
 		
-		texture( Dungeon.hero.heroClass.spritesheet() );
+		texture( com.shatteredpixel.shatteredpixeldungeon.LoreGoo.spritesheet( Dungeon.hero.heroClass.spritesheet() ) ); //lore
 		updateArmor();
 		updateHair( Dungeon.hero.hairColor().ID() );
 		

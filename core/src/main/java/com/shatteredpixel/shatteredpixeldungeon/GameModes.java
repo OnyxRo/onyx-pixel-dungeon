@@ -143,6 +143,7 @@ public class GameModes {
 		}
 		TooCruel.register(); //toocruel
 		MusicImplant.register(); //musicimplant
+		SmallModes.register(); //modded, speedrun and old speedrun pd
 	}
 
 	//other ports add their modes here, Too Cruel's modifiers among them
@@ -215,10 +216,14 @@ public class GameModes {
 		for (int i = 0; i < ids.length; i++) levels[i] = active.get(ids[i]);
 		bundle.put(MODES_KEY, ids);
 		bundle.put(LEVELS_KEY, levels);
+		SmallModes.store(bundle); //speedrun pd timer
+		TrapDungeon.store(bundle); //trap dungeon, trap skill
 	}
 
 	public static void restore( Bundle bundle ){
 		active.clear();
+		SmallModes.restore(bundle); //speedrun pd timer
+		TrapDungeon.restore(bundle); //trap dungeon, trap skill
 		if (!bundle.contains(MODES_KEY)) return;
 		String[] ids = bundle.getStringArray(MODES_KEY);
 		int[] levels = bundle.getIntArray(LEVELS_KEY);

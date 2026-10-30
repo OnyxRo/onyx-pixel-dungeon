@@ -64,6 +64,7 @@ public class Hunger extends Buff implements Hero.Doom {
 	public boolean act() {
 		if (com.shatteredpixel.shatteredpixeldungeon.TooCruel.steelBody()) { diactivate(); return true; } //toocruel, Certainty of Steel
 		if (com.shatteredpixel.shatteredpixeldungeon.MusicImplant.satiationOn() && target instanceof Hero) { level = 0; spend(TICK); return true; } //musicimplant, satiation takes over
+		if (com.shatteredpixel.shatteredpixeldungeon.LoreGoo.noHunger(target)) { spend(TICK); return true; } //lore, the Goo never hungers
 
 		//the glowing lake in Transformation's surface town (the boss crawl's village) heals 10 a turn and keeps hunger away
 		if (target instanceof Hero && target.isAlive()
