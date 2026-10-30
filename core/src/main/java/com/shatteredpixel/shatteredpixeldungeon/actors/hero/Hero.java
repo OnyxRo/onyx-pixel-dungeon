@@ -3076,6 +3076,7 @@ public class Hero extends Char {
 				defenseSkill++;
 				Perks.earnPerk(this);
 				RearrangedTalents.onLevelUp(this); //rearranged
+				com.shatteredpixel.shatteredpixeldungeon.ButteredArena.onLevelUp(this); //buttered, heals and starts the next wave
 				summoningLevelUp();
 
 			} else {

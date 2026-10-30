@@ -144,6 +144,7 @@ public class GameModes {
 		TooCruel.register(); //toocruel
 		SoftPD.register(); //soft
 		WuWuWu.register(); //zoidberg
+		ButteredArena.register(); //buttered
 		MusicImplant.register(); //musicimplant
 		SmallModes.register(); //modded, speedrun and old speedrun pd
 	}
@@ -275,6 +276,7 @@ public class GameModes {
 	}
 
 	public static int nextDepth( int depth ){
+		if (ButteredArena.on() && Dungeon.branch == 0) return ButteredArena.nextDepth(depth); //buttered
 		int[] floors = floors();
 		if (floors == null || Dungeon.branch != 0) return depth + 1;
 		for (int f : floors) if (f > depth) return f;
@@ -282,6 +284,7 @@ public class GameModes {
 	}
 
 	public static int prevDepth( int depth ){
+		if (ButteredArena.on() && Dungeon.branch == 0) return ButteredArena.prevDepth(depth); //buttered
 		int[] floors = floors();
 		if (floors == null || Dungeon.branch != 0) return depth - 1;
 		int prev = depth - 1;

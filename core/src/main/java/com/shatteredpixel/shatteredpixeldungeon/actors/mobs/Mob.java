@@ -1194,6 +1194,7 @@ public abstract class Mob extends Char {
 					exp = Math.round(10 * spawningWeight());
 				}
 				exp = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.killExp(this, exp); //rebluearchive
+				exp = com.shatteredpixel.shatteredpixeldungeon.ButteredArena.killExp(this, exp); //buttered
 
 				if (exp > 0) {
 					Dungeon.hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(exp), FloatingText.EXPERIENCE);

@@ -173,3 +173,6 @@ The worktree began on a months old commit, so the first steps found no PORTING.m
 
 ## 2026-10-29 Music Implant SPD
 The mod was one upload with no history, so a small diff script against Shattered 0.9.2b (package renamed back) found its changes in seconds, worth keeping as a tool next time. The worktree guard refuses shell variables before sed, python and javac, which cost several retries. Wrappers in the scratchpad (runtest.sh, append.py, keepboth.py) solved it. test-one.sh does not recompile the test class, runtest.sh does.
+
+## 2026-10-29 Old mods, second part
+The worktree guard refused git and find in other folders and heredocs that named git, so cloning and reading mod history moved into scripts in the repo (`get-mod.sh --full`, `mod-history.sh`, `mod-diff-tag.py`). Merge conflicts of plain appended lines are now one command, `scripts/keep-both.py`. The full check was stopped for low memory, so run checks when nothing else heavy is open.

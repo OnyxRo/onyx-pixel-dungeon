@@ -491,6 +491,9 @@ public class Dungeon {
 		if ((sandbox || bossCrawl) && sandboxSpecial != null) {
 			level = sandboxSpecial.get();
 			sandboxSpecial = null;
+		} else if (branch == 0 && ButteredArena.builds(depth)) {
+			//buttered, the arena on floor 1 and its shops
+			level = ButteredArena.level(depth);
 		} else if (branch == 0 && WuWuWu.skipsBoss(depth)) {
 			//zoidberg, a boss floor that rolled a plain floor instead
 			level = WuWuWu.plainFloor(depth);

@@ -275,6 +275,90 @@ public class GameModesTest {
 			System.out.println( "INFO radar checked " + search.checked + " seeds" );
 			RadarSearch.items( 0, old );
 
+			//soft, Soft PD's not so hard mode
+			for (int pass = 0; pass < 2; pass++) {
+				if (pass == 0) newRun( 31 ); else newRun( 31, com.shatteredpixel.shatteredpixeldungeon.SoftPD.NOT_SO_HARD );
+				l = build( 2 );
+				int softCell = l.entrance();
+				int softBefore = l.heaps.get( softCell ) == null ? 0 : l.heaps.get( softCell ).items.size();
+				for (int i = 0; i < 200; i++) com.shatteredpixel.shatteredpixeldungeon.SoftPD.grassLoot( l, softCell );
+				int softAfter = l.heaps.get( softCell ) == null ? 0 : l.heaps.get( softCell ).items.size();
+				if (pass == 0) check( softAfter == softBefore && com.shatteredpixel.shatteredpixeldungeon.SoftPD.searchBonus() == 0, "Soft off changes nothing" );
+				else check( softAfter - softBefore > 20 && com.shatteredpixel.shatteredpixeldungeon.SoftPD.searchBonus() == 1, "Soft grass gives items, got " + (softAfter - softBefore) );
+			}
+
+			//zoidberg, WuWuWu's million gold and boss roulette
+			newRun( 32, com.shatteredpixel.shatteredpixeldungeon.WuWuWu.GOLD );
+			build( 1 );
+			check( Dungeon.gold == 1000000, "WuWuWu starts with a million gold, has " + Dungeon.gold );
+			Dungeon.gold = 5;
+			build( 2 );
+			check( Dungeon.gold == 1000000, "WuWuWu tops the gold back up" );
+			int skipped = 0, bosses = 0;
+			for (long s = 40; s < 80 && (skipped < 4 || bosses < 1); s++) {
+				newRun( s, com.shatteredpixel.shatteredpixeldungeon.WuWuWu.SKIP_BOSSES );
+				for (int d = 5; d <= 20; d += 5) {
+					boolean skip = com.shatteredpixel.shatteredpixeldungeon.WuWuWu.skipsBoss( d );
+					l = build( d );
+					boolean plain = l instanceof com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
+					check( skip == plain, "WuWuWu floor " + d + " seed " + s + " plain " + plain + " rolled " + skip );
+					if (skip) {
+						skipped++;
+						check( exitDepth( l, LevelTransition.Type.REGULAR_EXIT ) == d + 1, "plain boss floor " + d + " has stairs down" );
+						if (d == 10 || d == 20) {
+							boolean progFound = false;
+							for (com.shatteredpixel.shatteredpixeldungeon.items.Heap h : l.heaps.valueList()) for (Item i : h.items)
+								if (i instanceof com.shatteredpixel.shatteredpixeldungeon.items.TengusMask || i instanceof com.shatteredpixel.shatteredpixeldungeon.items.KingsCrown) progFound = true;
+							check( progFound, "plain floor " + d + " holds the boss's progression item" );
+						}
+					} else bosses++;
+				}
+			}
+			check( skipped >= 4 && bosses >= 1, "WuWuWu skips some bosses and keeps others, skipped " + skipped );
+			newRun( 41 );
+			check( !com.shatteredpixel.shatteredpixeldungeon.WuWuWu.skipsBoss( 5 ), "WuWuWu off keeps every boss" );
+
+			//buttered, Buttered PD's Arena
+			newRun( 51, com.shatteredpixel.shatteredpixeldungeon.ButteredArena.ARENA );
+			l = build( 1 );
+			check( l instanceof com.shatteredpixel.shatteredpixeldungeon.levels.ButteredArenaLevel, "Arena floor 1 is the arena" );
+			com.shatteredpixel.shatteredpixeldungeon.levels.ButteredArenaLevel arena = (com.shatteredpixel.shatteredpixeldungeon.levels.ButteredArenaLevel) l;
+			check( exitDepth( l, LevelTransition.Type.REGULAR_EXIT ) == 26, "arena stairs lead to the amulet floor" );
+			check( !l.mobs.isEmpty() && !l.heaps.isEmpty(), "arena starts with monsters and items, " + l.mobs.size() + " " + l.heaps.size() );
+			Dungeon.hero.pos = l.entrance() + 1;
+			arena.heroLeveledUp();
+			arena.tick( Dungeon.hero );
+			check( arena.wave == 2 && !arena.bossWave(), "a level up starts wave 2" );
+			for (int w : new int[]{ 5, 10, 25 }) {
+				arena.wave = w - 1;
+				arena.heroLeveledUp();
+				arena.tick( Dungeon.hero );
+				int bosses = 0;
+				for (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob m : l.mobs) if (m.alignment == com.shatteredpixel.shatteredpixeldungeon.actors.Char.Alignment.ENEMY) bosses++;
+				check( arena.bossWave() && bosses >= 1, "wave " + w + " is a boss wave with " + bosses + " enemies" );
+				for (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob m : l.mobs.toArray( new com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob[0] )) m.destroy();
+				int lvl = Dungeon.hero.lvl;
+				arena.tick( Dungeon.hero );
+				boolean key = false;
+				for (com.shatteredpixel.shatteredpixeldungeon.items.Heap h : l.heaps.valueList()) for (Item i : h.items) if (i instanceof com.shatteredpixel.shatteredpixeldungeon.items.PixelMartKey) key = true;
+				check( !arena.bossWave() && key && Dungeon.hero.lvl == lvl + 1, "beating wave " + w + " gives a key and a level" );
+				check( Dungeon.hero.HP == Dungeon.hero.HT, "an arena level up heals" );
+			}
+			check( l.map[l.exit()] == com.shatteredpixel.shatteredpixeldungeon.levels.Terrain.EXIT, "wave 25 opens the stairs" );
+			check( com.shatteredpixel.shatteredpixeldungeon.ButteredArena.shopDepth( 5 ) == 6 && com.shatteredpixel.shatteredpixeldungeon.ButteredArena.shopDepth( 25 ) == 21, "shop floors are 6 to 21" );
+			com.shatteredpixel.shatteredpixeldungeon.levels.Level shop = build( 11 );
+			int forSale = 0;
+			for (com.shatteredpixel.shatteredpixeldungeon.items.Heap h : shop.heaps.valueList()) if (h.type == com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type.FOR_SALE) forSale++;
+			check( shop instanceof com.shatteredpixel.shatteredpixeldungeon.levels.ButteredShopLevel && forSale > 5, "the key's floor is a shop, " + forSale + " for sale" );
+			check( exitDepth( shop, LevelTransition.Type.REGULAR_ENTRANCE ) == 1 && exitDepth( shop, LevelTransition.Type.REGULAR_EXIT ) == -99, "the shop only leads back to the arena" );
+			check( GameModes.prevDepth( 26 ) == 1, "the amulet floor leads back to the arena" );
+			com.watabou.utils.Bundle ab = new com.watabou.utils.Bundle();
+			ab.put( "arena", arena );
+			com.shatteredpixel.shatteredpixeldungeon.levels.ButteredArenaLevel back = (com.shatteredpixel.shatteredpixeldungeon.levels.ButteredArenaLevel) ab.get( "arena" );
+			check( back.wave == arena.wave, "the arena keeps its wave after a save" );
+			newRun( 52 );
+			check( !(build( 1 ) instanceof com.shatteredpixel.shatteredpixeldungeon.levels.ButteredArenaLevel) && GameModes.nextDepth( 1 ) == 2, "Arena off keeps the normal dungeon" );
+
 			//timing of a deep search, only when asked with -Dradar.timing=true
 			if (Boolean.getBoolean( "radar.timing" )) {
 				String old3 = RadarSearch.items( 3 );
