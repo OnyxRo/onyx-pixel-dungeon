@@ -978,6 +978,10 @@ public class Generator {
 	}
 	
 	public static Item random( Category cat ) {
+		return com.shatteredpixel.shatteredpixeldungeon.MusicImplant.unlucky(randomForCategory(cat)); //musicimplant, unlucky
+	}
+
+	private static Item randomForCategory( Category cat ) {
 		Item rbaGun = RBALoot.gunFor(cat); //rebluearchive, students with guns find guns
 		if (rbaGun != null) return rbaGun;
 		switch (cat) {
@@ -1074,7 +1078,7 @@ public class Generator {
 		
 		Armor a = (Armor)Reflection.newInstance(Category.ARMOR.classes[Random.chances(tierProbs(floorSet))]);
 		a.random();
-		return a;
+		return com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.armorVariant(a); //trap dungeon
 	}
 
 	public static final Category[] wepTiers = new Category[]{

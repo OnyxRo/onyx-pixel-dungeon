@@ -305,3 +305,15 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **Static blocks must not call into another new class** that has its own static state. Two classes that read each other while loading throw ExceptionInInitializerError on first use, which crashes every new run.
 - **Upgrading a thrown weapon resets its stack size.** Call `upgrade(n)` before `quantity(n)`.
 - **`Dungeon.init` resets the random generators.** Code that builds runs in a loop (the Radar search) must use its own `java.util.Random`, not push and pop the game's.
+
+## Added after the six small mods (2026-10-29)
+- **Check the worktree's base first.** Compare `git log --oneline -1` with main. A worktree made from an old commit has none of the tools, and `git merge --ff-only main` brings it up to date.
+- **Diff a single import mod against its Shattered base** with `python -I scripts/moddiff.py <mod> <shattered tag clone> build/diff-<key>.txt <mod package>`. It renames the package back, ignores whitespace, and lists new classes, changed classes by size and new assets. Shattered's 0.7 tags are v0.7.3b and v0.7.4d (there is no plain v0.7.4), check with `git ls-remote --tags`.
+- **Copy every new class at once** with `python -I scripts/copyall.py build/diff-<key>.txt <mod java root> <mod package> [names to skip]`. It skips names this game already has. Then `python -I scripts/newfiles.py --renames --sub OLD NEW ...` runs the renames and regex fixes on the untracked files only.
+- **Old mods with flat asset names** (`Assets.TILES_TOWN = "tiles_town.png"`) go in with `python -I scripts/flatassets.py <key> <mod assets dir> NAME...`, which copies each file to `assets/<key>/` and puts the path into the copied code. Android era mods keep assets in `android/src/main/assets`, which `port-itemsprites.py` now reads too.
+- **A mod whose content only makes sense together** (Trap Dungeon's traps and monster rotation, a speedrun timer) goes in as a game mode with one helper class, and its monsters, items and traps also go in the sandbox lists and the catalog. A hero class mini game (Lore's Goo) can be a mode that turns any hero into it, which needs no badge, splash or class armor work.
+- **Reskinned boss arenas from 0.7 mods** (Re-Remixed's) are easiest as a subclass of the matching Abyssalnite `Old*BossLevel` with only `tilesTex` and `waterTex` changed.
+## Added after Music Implant SPD (2026-10-29)
+- **Mods uploaded as one commit.** `python -I scripts/mod-diff.py <mod root> <shattered tag root> <mod package path> <out.txt>` lists new and changed files against a Shattered tag (clone it shallow, try two nearby tags and keep the one with fewer diff lines) and writes the unified diffs to `<out.txt>.diff`. Split the diff per file with awk to read one class at a time.
+- **`scripts/test-recompile.sh <Test> [args]`** recompiles one test class with TestBoot and runs it, `test-one.sh` alone runs the old class file.
+- **A whole run rework** (light, horror, satiation, perks) goes in as many small game modes from one helper class, with a conflict table in `onSet`, like Too Cruel and `MusicImplant`.

@@ -167,3 +167,9 @@ BossArenaTest passed for NewCavesBossLevel while the fight could never start in 
 
 ## 2026-10-28 Cthulhu fight in six passes
 The fight took six rounds of feedback. Exporting the animation page headless (scripts/cthulhu-art/build.py) made each round cheap, and the cthulhu tour mode checked every attack in pictures. Ask what each listed attack should feel like before building, it would have saved the strike work that was later removed.
+
+## 2026-10-29 Six small mods
+The worktree began on a months old commit, so the first steps found no PORTING.md and no tools, the fix was a fast forward to main. Several shell steps had to be split up or moved to PowerShell, and the tools then failed because PowerShell finds a different bash, fixed by putting Git's bin folder first on PATH. Old Android based mods keep assets in android/src/main/assets, which port-itemsprites now finds. Four helpers from this run are now in scripts (moddiff, copyall, newfiles, flatassets), see the skill.
+
+## 2026-10-29 Music Implant SPD
+The mod was one upload with no history, so a small diff script against Shattered 0.9.2b (package renamed back) found its changes in seconds, worth keeping as a tool next time. The worktree guard refuses shell variables before sed, python and javac, which cost several retries. Wrappers in the scratchpad (runtest.sh, append.py, keepboth.py) solved it. test-one.sh does not recompile the test class, runtest.sh does.

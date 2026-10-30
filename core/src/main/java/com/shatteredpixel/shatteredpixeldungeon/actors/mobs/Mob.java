@@ -1200,6 +1200,7 @@ public abstract class Mob extends Char {
 				}
 				exp = com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.expMulti(this, exp); //bluearchive
 				Dungeon.hero.earnExp(exp, getClass());
+				com.shatteredpixel.shatteredpixeldungeon.MusicImplant.onMobKilled(this); //musicimplant, horror relief
 				com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose.shareExp(exp);
 				com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.kill(Dungeon.hero, this);
 				if (Dungeon.hero.perks.contains(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Perks.Perk.ADDITIONAL_MONEY)){
@@ -1282,7 +1283,7 @@ public abstract class Mob extends Char {
 				Badges.validateHazardAssists();
 			}
 
-			rollToDropLoot();
+			if (!com.shatteredpixel.shatteredpixeldungeon.LoreGoo.noItems()) rollToDropLoot(); //lore
 
 			if (cause == Dungeon.hero || cause instanceof Weapon || cause instanceof Weapon.Enchantment){
 				if (Dungeon.hero.hasTalent(Talent.LETHAL_MOMENTUM)
@@ -1541,6 +1542,7 @@ public abstract class Mob extends Char {
 
 	public String info(){
 		String desc = description();
+		desc += com.shatteredpixel.shatteredpixeldungeon.MusicImplant.biologist(this); //musicimplant
 
 		for (Buff b : buffs(ChampionEnemy.class)){
 			desc += "\n\n_" + Messages.titleCase(b.name()) + "_\n" + b.desc();

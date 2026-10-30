@@ -54,6 +54,7 @@ public class Bones {
 	private static HeroClass heroClass;
 
 	public static void leave() {
+		if (LoreGoo.on()) return; //lore, the Goo has no bones to leave
 
 		//remains will usually drop on the floor the hero died on
 		// but are capped at 5 floors above the lowest depth reached (even when ascending)

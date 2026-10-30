@@ -4,7 +4,7 @@
 #   scripts/mod-history.sh <key> Name1 Name2     their patches in build/history-<key>.patch,
 #                                                files they touched in build/history-<key>-files.txt
 #   scripts/mod-history.sh <key> --diff <tag>    no history, so diff the tree against a Shattered tag
-#                                                (clones it shallow beside the mods, scripts/mod-diff.py pairs files
+#                                                (clones it shallow beside the mods, scripts/mod-diff-tag.py pairs files
 #                                                across package renames), build/history-<key>-summary.txt and .patch
 set -eu
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -16,7 +16,7 @@ git log --format='%an' | sort | uniq -c | sort -rn > "$OUT/history-$key-authors.
 if [ "${1:-}" = "--diff" ]; then
   tag="$2"; base="$MODS/shattered-$tag"
   [ -d "$base" ] || git -c core.longpaths=true clone -q --depth 1 --branch "$tag" https://github.com/00-Evan/shattered-pixel-dungeon "$base"
-  python -I "$ROOT/scripts/mod-diff.py" "$base" "$MODS/$key" "$OUT/history-$key"
+  python -I "$ROOT/scripts/mod-diff-tag.py" "$base" "$MODS/$key" "$OUT/history-$key"
   echo "see build/history-$key-summary.txt and build/history-$key.patch"; exit 0
 fi
 if [ $# -gt 0 ]; then

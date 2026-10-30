@@ -636,7 +636,7 @@ public abstract class Char extends Actor {
 			int effectiveDamage = enemy.defenseProc( this, Math.round(dmg) );
 			//do not trigger on-hit logic if defenseProc returned a negative value
 			if (effectiveDamage >= 0) {
-				effectiveDamage = Math.max(effectiveDamage - dr, 0);
+				effectiveDamage = Math.max(effectiveDamage - dr, 0) + com.shatteredpixel.shatteredpixeldungeon.actors.hero.ClairvoyantHero.armorPiercing(this, effectiveDamage); //clairvoyant, Force Conversion
 				effectiveDamage = TowerChar.afterArmor(this, enemy, effectiveDamage); //tower
 
 				if (enemy.buff(Viscosity.ViscosityTracker.class) != null) {
@@ -826,6 +826,7 @@ public abstract class Char extends Actor {
 
 		float acuRoll = Random.Float( acuStat );
 		if (attacker.buff(Bless.class) != null) acuRoll *= 1.25f;
+		acuRoll *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.ClairvoyantHero.accuracy(attacker); //clairvoyant, Motivation
 		if (attacker.buff(  Hex.class) != null) acuRoll *= 0.8f;
 		if (attacker.buff( Daze.class) != null) acuRoll *= 0.5f;
 		//from Shittened PD
@@ -892,6 +893,7 @@ public abstract class Char extends Actor {
 		int dr = 0;
 
 		dr += Random.NormalIntRange( 0 , Barkskin.currentLevel(this) );
+		dr += com.shatteredpixel.shatteredpixeldungeon.LoreGoo.slimeArmor(this); //lore
 		dr -= com.shatteredpixel.shatteredpixeldungeon.items.trinkets.GrindStone.drRoll(); //rearranged
 		dr -= com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.armorBreak(this); //rebluearchive
 		//summoning, monsters from Summoning PD give a fixed armor value, rolled from 20 to 80 percent
@@ -972,6 +974,7 @@ public abstract class Char extends Actor {
 		float speed = baseSpeed;
 		if ( buff( Cripple.class ) != null ) speed /= 2f;
 		if ( buff( Stamina.class ) != null) speed *= 1.5f;
+		speed *= com.shatteredpixel.shatteredpixeldungeon.LoreGoo.speed(this); //lore, Slippery Slime
 		if ( buff( Adrenaline.class ) != null) speed *= 2f;
 		if ( buff( Haste.class ) != null) speed *= 3f;
 		speed = TowerChar.speed(this, speed); //tower

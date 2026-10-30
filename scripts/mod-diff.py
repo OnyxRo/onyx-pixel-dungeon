@@ -1,73 +1,56 @@
-"""Compares a mod that was uploaded in one commit against the Shattered tag it was built on.
+"""moddiff.py <mod dir> <base dir> <mod package path> <out file>
+Lists new and changed files of a mod against its Shattered base, with diff sizes.
+Writes full unified diffs of changed java files to <out file>.diff"""
+import sys, os, difflib, re
 
-  python -I scripts/mod-diff.py <shattered tag folder> <mod folder> <out prefix>
+mod, base, pkg, out = sys.argv[1:5]
+SP = 'com/shatteredpixel/shatteredpixeldungeon'
+pkgdot = pkg.replace('/', '.')
 
-Files are paired by their path below the package root (com/shatteredpixel/shatteredpixeldungeon,
-or the mod's own package), so a renamed package still lines up. Package names, imports and
-whitespace are ignored. Writes <out>-summary.txt (new, changed and removed files with changed
-line counts, png files that differ) and <out>.patch (a unified diff of the changed Java files).
-"""
-import difflib, hashlib, os, re, sys
-
-base, mod, out = sys.argv[1], sys.argv[2], sys.argv[3]
-
-def index(root):
-    files = {}
-    for d, dirs, fs in os.walk(root):
-        dirs[:] = [x for x in dirs if x not in ('.git', 'build', 'PD-classes', 'watabou')]
+def walk(root):
+    res = {}
+    for d, _, fs in os.walk(root):
+        if '.git' in d or os.sep + 'build' + os.sep in d + os.sep:
+            continue
         for f in fs:
-            p = os.path.join(d, f)
-            rel = os.path.relpath(p, root).replace('\\', '/')
-            if f.endswith('.java'):
-                m = re.search(r'src/(?:main/java/)?com/(.*)$', rel)
-                if not m: continue
-                parts = m.group(1).split('/')[1:]
-                if len(parts) > 1 and parts[0].endswith('pixeldungeon'):
-                    parts = parts[1:]
-                files['java/' + '/'.join(parts)] = p
-            elif f.endswith('.png'):
-                files['png/' + f] = p
-            elif f.endswith('.properties') and 'messages' in rel:
-                files['msg/' + f] = p
-    return files
+            p = os.path.relpath(os.path.join(d, f), root).replace(os.sep, '/')
+            res[p.replace(pkg, SP)] = p
+    return res
 
-def norm(p):
-    t = open(p, encoding='utf-8', errors='replace').read()
-    lines = []
-    for l in t.splitlines():
-        s = l.strip()
-        if not s or s.startswith(('import ', 'package ', '*', '/*', '//')): continue
-        s = re.sub(r'\s+', ' ', s)
-        s = re.sub(r'com\.[a-z]+(\.[a-z]+)?pixeldungeon|com\.[a-z]+\.[a-z]+', 'PKG', s)
-        lines.append(s)
-    return lines
-
-def digest(p):
-    return hashlib.md5(open(p, 'rb').read()).hexdigest()
-
-b, m = index(base), index(mod)
-summary, patch = [], []
-for k in sorted(set(b) | set(m)):
+m = walk(mod)
+b = walk(base)
+lines = []
+diffs = []
+new, changed = [], []
+for k in sorted(m):
+    mp = os.path.join(mod, m[k])
     if k not in b:
-        n = len(norm(m[k])) if k.startswith(('java', 'msg')) else 0
-        summary.append('NEW      %s %s' % (k, n or ''))
-        if k.startswith('java'):
-            patch.append('### NEW %s\n%s\n' % (k, '\n'.join(norm(m[k]))))
-    elif k not in m:
-        summary.append('REMOVED  %s' % k)
-    elif k.startswith('png'):
-        if digest(b[k]) != digest(m[k]):
-            summary.append('PNG      %s' % k)
+        new.append(k)
+        continue
+    bp = os.path.join(base, b[k])
+    if k.endswith(('.java', '.properties', '.gradle', '.xml', '.txt')):
+        try:
+            mt = open(mp, encoding='utf-8', errors='replace').read().replace(pkgdot, 'com.shatteredpixel.shatteredpixeldungeon').replace('\r\n', '\n').splitlines()
+            bt = open(bp, encoding='utf-8', errors='replace').read().replace('\r\n', '\n').splitlines()
+        except Exception as e:
+            continue
+        if mt != bt:
+            d = list(difflib.unified_diff(bt, mt, 'base/' + k, 'mod/' + k, n=2, lineterm=''))
+            n = sum(1 for x in d if x[:1] in '+-' and not x.startswith(('+++', '---')))
+            changed.append((k, n))
+            if k.endswith('.java') or k.endswith('.properties'):
+                diffs.extend(d)
     else:
-        a, c = norm(b[k]), norm(m[k])
-        if a != c:
-            d = list(difflib.unified_diff(a, c, k, k, n=1, lineterm=''))
-            ch = sum(1 for l in d if l[:1] in '+-' and not l.startswith(('+++', '---')))
-            summary.append('CHANGED  %s %d' % (k, ch))
-            patch.append('\n'.join(d) + '\n')
-open(out + '-summary.txt', 'w', encoding='utf-8').write('\n'.join(summary) + '\n')
-open(out + '.patch', 'w', encoding='utf-8').write('\n'.join(patch))
-kinds = {}
-for s in summary:
-    kinds[s.split()[0]] = kinds.get(s.split()[0], 0) + 1
-print(kinds)
+        if open(mp, 'rb').read() != open(bp, 'rb').read():
+            changed.append((k, -1))
+removed = [k for k in b if k not in m and '/java/' in k]
+with open(out, 'w', encoding='utf-8') as f:
+    f.write('NEW %d\n' % len(new))
+    for k in new: f.write('  + ' + k + '\n')
+    f.write('CHANGED %d (total diff lines %d)\n' % (len(changed), sum(max(0, n) for _, n in changed)))
+    for k, n in changed: f.write('  ~ %s %d\n' % (k, n))
+    f.write('REMOVED java %d\n' % len(removed))
+    for k in removed: f.write('  - ' + k + '\n')
+with open(out + '.diff', 'w', encoding='utf-8') as f:
+    f.write('\n'.join(diffs))
+print(out, 'new', len(new), 'changed', len(changed), 'difflines', sum(max(0, n) for _, n in changed), 'removed', len(removed))

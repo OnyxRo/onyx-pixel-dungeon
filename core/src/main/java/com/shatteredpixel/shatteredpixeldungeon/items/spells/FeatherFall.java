@@ -40,7 +40,7 @@ public class FeatherFall extends Spell {
 	
 	@Override
 	protected void onCast(Hero hero) {
-		Buff.append(hero, FeatherBuff.class, 30f);
+		Buff.append(hero, FeatherBuff.class, 30f + 30f * com.shatteredpixel.shatteredpixeldungeon.actors.hero.ClairvoyantHero.transmutation()); //clairvoyant
 		hero.sprite.operate(hero.pos);
 		Sample.INSTANCE.play(Assets.Sounds.READ );
 		hero.sprite.emitter().burst( Speck.factory( Speck.JET ), 20);

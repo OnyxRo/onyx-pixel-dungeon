@@ -296,6 +296,7 @@ public abstract class Level implements Bundlable {
 				addItemToSpawn( new TrinketCatalyst());
 			}
 			com.shatteredpixel.shatteredpixeldungeon.GameModes.topUpDrops(this); //half, the drops of skipped floors
+			for (Item mi : com.shatteredpixel.shatteredpixeldungeon.MusicImplant.levelDrops()) addItemToSpawn(mi); //musicimplant, torches in the halls
 			//rearranged, a bullet belt for each set of five floors
 			if ( Dungeon.beltNeeded() ) {
 				Dungeon.LimitedDrops.BULLET_BELT.drop();
@@ -455,6 +456,7 @@ public abstract class Level implements Bundlable {
 	protected Feeling withLevelFeelingEffects( Feeling f ){
 		if (f == Feeling.DARK){
 			viewDistance = Math.round(5*viewDistance/8f);
+			if (com.shatteredpixel.shatteredpixeldungeon.MusicImplant.darkFloorTorch()) addItemToSpawn(new com.shatteredpixel.shatteredpixeldungeon.items.lightsource.FireTorch()); //musicimplant
 		} else if (f == Feeling.LARGE){
 			addItemToSpawn(Generator.random(Generator.Category.FOOD));
 		}
@@ -709,6 +711,7 @@ public abstract class Level implements Bundlable {
 			mobsToSpawn = WorldShuffle.mobRotation(this, com.shatteredpixel.shatteredpixeldungeon.TooCruel.mobDepth(Dungeon.depth)); //toocruel, Invasion
 			//Community PD has no worlds, its monsters join any floor (level feelings, rare alts)
 			com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CommunitySpawner.adjust(mobsToSpawn, this);
+			com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.adjust(mobsToSpawn, this); //trap dungeon game mode
 		}
 
 		Mob m = Reflection.newInstance(mobsToSpawn.remove(0));
@@ -1092,6 +1095,7 @@ public abstract class Level implements Bundlable {
 	}
 	
 	public void addItemToSpawn( Item item ) {
+		if (com.shatteredpixel.shatteredpixeldungeon.LoreGoo.noItems()) return; //lore
 		if (item != null) {
 			itemsToSpawn.add( item );
 		}
@@ -1765,6 +1769,7 @@ public abstract class Level implements Bundlable {
 			}
 
 			Dungeon.hero.mindVisionEnemies.clear();
+			if (com.shatteredpixel.shatteredpixeldungeon.MusicImplant.mindCompass() && exit() >= 0 && exit() < length()) heroMindFov[exit()] = true; //musicimplant, mind compass
 
 			int mindVisRange = 0;
 			if (c.buff(MindVision.class) != null) {

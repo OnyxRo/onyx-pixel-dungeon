@@ -454,6 +454,10 @@ public class Dungeon {
 		
 		GamesInProgress.selectedClass.initHero( hero );
 		GameModes.applyStartKits( hero ); //custom pd starting kits
+		SmallModes.applyStartKits( hero ); //modded pd test kit
+		SmallModes.reset(); //speedrun pd timer
+		LoreGoo.initHero( hero ); //lore, the hero becomes the Goo
+		TrapDungeon.reset(); //trap dungeon, trap skill
 		TooCruel.postInit( hero ); //toocruel
 	}
 
@@ -722,6 +726,7 @@ public class Dungeon {
 		hero.pos = pos;
 
 		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper.Quest.spawn(level);
+		SmallModes.onArrive(depth); //speedrun pd splits
 		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper.Quest.checkNeedToKill();
 
 		if (hero.buff(AscensionChallenge.class) != null){
@@ -749,6 +754,7 @@ public class Dungeon {
 		Light light = hero.buff( Light.class );
 		hero.viewDistance = light == null ? level.viewDistance : Math.max( Light.DISTANCE, level.viewDistance );
 		hero.viewDistance += com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunHeroes.viewBonus(hero); //xun, the Explorer sees a tile further
+		hero.viewDistance = MusicImplant.viewDistance(hero, hero.viewDistance); //musicimplant, light sources and sight perks
 		
 		hero.curAction = hero.lastAction = null;
 		TooCruel.switchLevel( hero ); //toocruel

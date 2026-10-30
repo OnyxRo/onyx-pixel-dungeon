@@ -424,6 +424,7 @@ public class Ring extends KindofMisc {
 				&& spiritForm.ring().buffClass == type){
 			bonus += spiritForm.ring().soloBonus();
 		}
+		if (type == RingOfWealth.Wealth.class && target instanceof com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero) bonus += com.shatteredpixel.shatteredpixeldungeon.MusicImplant.wealthBonus(); //musicimplant, lucky
 		return bonus;
 	}
 

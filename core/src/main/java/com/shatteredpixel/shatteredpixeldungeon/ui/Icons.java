@@ -549,6 +549,8 @@ public enum Icons {
 				return new ItemSprite(ItemSpriteSheet.HEROSPELL_NECROMANCY);
 			case TANK:
 				return new ItemSprite(ItemSpriteSheet.HEROSPELL_SHIELD);
+			case APPRENTICE: //clairvoyant
+				return new ItemSprite(ItemSpriteSheet.SPELL_HAND);
 			case TOWERPRIEST:
 				return new ItemSprite(ItemSpriteSheet.HEROSPELL_PRAY);
 			//deranged

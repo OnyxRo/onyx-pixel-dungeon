@@ -95,6 +95,11 @@ say "== wall overhangs"
 python -I scripts/fix-overhangs.py --check 2>&1 | sed 's/^/  /' | tail -12
 [ "${PIPESTATUS[0]}" -eq 0 ] && say "  passed" || { say "  FAILED"; FAIL=1; }
 
+#musicimplant, Music Implant SPD's light, horror, satiation and perk modes. Runs in --quick too
+run "MusicImplantTest" MusicImplantTest; rc=$?
+tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|HEADLESS|SUMMARY musicimplant)" | tail -12 | sed 's/^/  /'
+[ $rc -eq 0 ] && say "  passed" || { say "  FAILED"; FAIL=1; }
+
 #toocruel, every Too Cruel PD mode on its own, floors, monsters, blows, a death, save and reload. Runs in --quick too
 run "TooCruelTest" TooCruelTest; rc=$?
 tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|INFO mode|SUMMARY toocruel)" | tail -14 | sed 's/^/  /'
