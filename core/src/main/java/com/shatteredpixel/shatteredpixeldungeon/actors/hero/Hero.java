@@ -903,6 +903,7 @@ public class Hero extends Char {
 
 		float accuracy = 1;
 		accuracy *= RingOfAccuracy.accuracyMultiplier( this );
+		accuracy *= com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.accuracy( this ); //trap dungeon armor
 		accuracy *= com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet.accuracy( this );
 		//Shittened PD, being well fed makes the hero a little better at everything
 		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Satisfied.class) != null) {
@@ -1214,6 +1215,7 @@ public class Hero extends Char {
 				: com.shatteredpixel.shatteredpixeldungeon.Playstyles.meleeDamage(this, dmg);
 
 		if (dmg < 0) dmg = 0;
+		dmg = com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.damageRoll( this, dmg ); //trap dungeon armor
 		return dmg;
 	}
 
@@ -1343,6 +1345,7 @@ public class Hero extends Char {
 	
 	public float attackDelay() {
 		if (BAHero.freeAttack(this)) return 0; //bluearchive
+		if (com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.freeAttack(this)) return 0; //trap dungeon armor
 		if (buff(Talent.LethalMomentumTracker.class) != null){
 			buff(Talent.LethalMomentumTracker.class).detach();
 			return 0;
@@ -2152,6 +2155,11 @@ public class Hero extends Char {
 			ready();
 			return false;
 
+		} else if (!Dungeon.level.locked && transition != null && transition.inside(pos)
+				&& com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.blockTransition(this)) {
+			ready(); //trap dungeon, the rat ritual needs rat dust to change floors
+			return false;
+
 		} else if (!Dungeon.level.locked && transition != null && transition.inside(pos)) {
 
 			//Pixel Dungeon Reforged's Half Ripper, an escort. Close by, it goes up with the hero. Otherwise ask first.
@@ -2500,6 +2508,7 @@ public class Hero extends Char {
 
 	@Override
 	public void damage( int dmg, Object src ) {
+		dmg = com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.damageTaken( this, dmg, src ); //trap dungeon armor
 		if (Dungeon.godMode()) {
 			return;
 		}

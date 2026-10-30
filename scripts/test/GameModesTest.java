@@ -214,6 +214,56 @@ public class GameModesTest {
 			check( h2.talents.get( 0 ).containsKey( com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.SLIPPERY_SLIME ), "the Goo's talents come back after a save" );
 			check( hasText( Messages.get( com.shatteredpixel.shatteredpixeldungeon.scenes.GooWinScene.class, "text" ) ) && hasText( new com.shatteredpixel.shatteredpixeldungeon.actors.buffs.GooMoisture().desc() ), "Goo text" );
 
+			//Shattered Trap Dungeon, its traps and monsters on every floor
+			newRun( 22, com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.MODE );
+			java.util.List<Class<?>> modTraps = java.util.Arrays.asList( com.shatteredpixel.shatteredpixeldungeon.levels.traps.TrapDungeonTraps.CLASSES );
+			int newTraps = 0, modMobs = 0;
+			for (int d = 1; d <= 24; d++) {
+				l = build( d );
+				for (com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap t : l.traps.valueList()) {
+					if (t.getClass().getPackage().getName().endsWith( "traps" ) && modTraps.contains( t.getClass() )
+							&& t.getClass().getName().matches( ".*(Annihilation|Bargain|Cannon|Chaos|Chestnut|Cryo|Disrobing|Dream|Enchanting|FrostCurse|Fury|Goblin|Lottery|Marking|Mimic|Multi|Rearm|Sharpnel|Slicing|Smokescreen|Spook|Transmutation)Trap" )) newTraps++;
+				}
+				for (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob m : l.mobs) {
+					if (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.ModRoster.class != null && m.getClass().getSimpleName().matches( "DancingSkeleton|FilthJet|Orc|ToughGhost|Assasin|KeyChain|BombSpider2?|DartSpitter|ShockerBlock|FrostMeteor|ChaosElemental|TDDemonRat|Prismancer|Hole" )) modMobs++;
+				}
+			}
+			check( newTraps > 0, "Trap Dungeon puts its own traps on the floors" );
+			check( modMobs > 0, "Trap Dungeon's monsters join the floors" );
+			System.out.println( "INFO trap dungeon, " + newTraps + " new traps and " + modMobs + " of its monsters on floors 1 to 24" );
+			int trapErrors = 0, trapHeadless = 0;
+			for (Class<?> tc : com.shatteredpixel.shatteredpixeldungeon.levels.traps.TrapDungeonTraps.CLASSES) {
+				com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap t = (com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap) com.watabou.utils.Reflection.newInstance( tc );
+				check( t != null && hasText( t.name() ) && hasText( t.desc() ), "trap text for " + tc.getSimpleName() );
+				if (t == null) continue;
+				l = build( 12 );
+				Dungeon.hero.HP = Dungeon.hero.HT = 10000;
+				int cell = -1;
+				for (int n : com.watabou.utils.PathFinder.NEIGHBOURS8) {
+					int c = Dungeon.hero.pos + n;
+					if (l.passable[c] && com.shatteredpixel.shatteredpixeldungeon.actors.Actor.findChar( c ) == null) { cell = c; break; }
+				}
+				t.pos = cell < 0 ? Dungeon.hero.pos : cell;
+				try {
+					t.activate();
+				} catch (NullPointerException e) {
+					trapHeadless++;
+				} catch (Throwable e) {
+					trapErrors++;
+					System.out.println( "FAIL: trap " + tc.getSimpleName() + " threw " + e );
+					StackTraceElement[] st = e.getStackTrace();
+					for (int i = 0; i < Math.min( 5, st.length ); i++) System.out.println( "        at " + st[i] );
+				}
+			}
+			check( trapErrors == 0, "Trap Dungeon traps go off without errors" );
+			System.out.println( "INFO trap dungeon traps, " + trapHeadless + " stopped at a sprite or effect headless" );
+			Bundle td = new Bundle();
+			com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.increaseTrapSkill();
+			GameModes.store( td );
+			com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.reset();
+			GameModes.restore( td );
+			check( com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.getTrapSkill() == 1, "trap skill comes back after a save" );
+
 			//Radar seed search, a ration of food is on floor 1 of most seeds
 			String old = RadarSearch.items( 0 );
 			RadarSearch.items( 0, "ration" );

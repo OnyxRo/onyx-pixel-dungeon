@@ -58,6 +58,7 @@ public class SmallModes {
 		GameModes.register(SPEEDRUN_BONES, MOD_SPEEDRUN, 10, "floor1_remains");
 		GameModes.register(OLDSPEEDRUN_WAND, MOD_OLDSPEEDRUN, 1, "floor1_remains");
 		LoreGoo.register(); //shattered pixel lore
+		TrapDungeon.register(); //shattered trap dungeon
 	}
 
 	/*****************************************************************

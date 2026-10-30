@@ -457,6 +457,7 @@ public class Dungeon {
 		SmallModes.applyStartKits( hero ); //modded pd test kit
 		SmallModes.reset(); //speedrun pd timer
 		LoreGoo.initHero( hero ); //lore, the hero becomes the Goo
+		TrapDungeon.reset(); //trap dungeon, trap skill
 		TooCruel.postInit( hero ); //toocruel
 	}
 

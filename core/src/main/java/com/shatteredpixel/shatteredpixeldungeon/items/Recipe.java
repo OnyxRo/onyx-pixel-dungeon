@@ -189,6 +189,7 @@ public abstract class Recipe {
 	private static Recipe[] oneIngredientRecipes = new Recipe[]{
 		//deranged, three red crystals make a potion of strength (one stack, so a one ingredient recipe)
 		new com.shatteredpixel.shatteredpixeldungeon.items.quest.RedCrystal.StrengthRecipe(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.RatBeacon1.Recipe(), //trap dungeon
 		new Scroll.ScrollToStone(),
 		new ExoticPotion.PotionToExotic(),
 		new ExoticScroll.ScrollToExotic(),
@@ -260,6 +261,7 @@ public abstract class Recipe {
 	
 	private static Recipe[] twoIngredientRecipes = new Recipe[]{
 		new Blandfruit.CookFruit(),
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfTrapSkill.Recipe(), //trap dungeon
 		new Bomb.EnhanceBomb(),
 		new UnstableBrew.Recipe(),
 		new CausticBrew.Recipe(),

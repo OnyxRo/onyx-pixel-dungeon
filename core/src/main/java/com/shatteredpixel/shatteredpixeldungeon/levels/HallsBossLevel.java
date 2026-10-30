@@ -260,6 +260,7 @@ public class HallsBossLevel extends Level {
 
 		Dungeon.observe();
 
+		com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.yogArena(); //trap dungeon, the end of the rat ritual
 		YogDzewa boss = new YogDzewa();
 		boss.pos = exit() + width*3;
 
