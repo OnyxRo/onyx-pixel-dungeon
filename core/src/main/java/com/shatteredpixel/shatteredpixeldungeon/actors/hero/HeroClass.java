@@ -147,7 +147,9 @@ public enum HeroClass {
 	//xun, Xun's PD's three heroes
 	EXPLORER( HeroSubClass.WAVECHASER, HeroSubClass.TRAPPER, HeroSubClass.ROCKSY ),
 	WRAITH( HeroSubClass.INCUBUS, HeroSubClass.PLAGUEGOD, HeroSubClass.SOULHANDLER ),
-	ENGINEER( HeroSubClass.CRAFTSMAN, HeroSubClass.HACKER, HeroSubClass.GRENADIER );
+	ENGINEER( HeroSubClass.CRAFTSMAN, HeroSubClass.HACKER, HeroSubClass.GRENADIER ),
+	//clairvoyant, Clairvoyant PD's Apprentice, its second subclass was the Berserker in the mod too
+	APPRENTICE( HeroSubClass.CHANNELLER, HeroSubClass.BERSERKER );
 
 	//deranged, the Rat King counts as the classes he shares, everyone else only as themselves
 	public boolean is( HeroClass cls ){
@@ -271,6 +273,9 @@ public enum HeroClass {
 				break;
 			case TANK:
 				initTank( hero );
+				break;
+			case APPRENTICE: //clairvoyant
+				initApprentice( hero );
 				break;
 			case TOWERPRIEST:
 				initTowerPriest( hero );
@@ -408,6 +413,8 @@ public enum HeroClass {
 				return Badges.Badge.MASTERY_NECROHERO;
 			case TANK:
 				return Badges.Badge.MASTERY_TANK;
+			case APPRENTICE: //clairvoyant
+				return Badges.Badge.MASTERY_APPRENTICE;
 			case TOWERPRIEST:
 				return Badges.Badge.MASTERY_TOWERPRIEST;
 			//deranged
@@ -667,6 +674,20 @@ public enum HeroClass {
 		new com.shatteredpixel.shatteredpixeldungeon.plants.Sorrowmoss.Seed().identify().collect();
 	}
 
+	//clairvoyant, the Apprentice's kit from Clairvoyant PD (the mod's test items left out)
+	private static void initApprentice( Hero hero ) {
+		(hero.belongings.weapon = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Eighterstaff()).identify();
+		hero.belongings.weapon.activate( hero );
+		com.shatteredpixel.shatteredpixeldungeon.items.spells.SpellHand hand = new com.shatteredpixel.shatteredpixeldungeon.items.spells.SpellHand();
+		hand.collect();
+		Dungeon.quickslot.setSlot(0, hand);
+		new com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder().collect();
+		Dungeon.LimitedDrops.SCROLL_HOLDER.drop();
+		new com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb().collect();
+		new com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify().identify();
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience().identify();
+	}
+
 	private static void initTank( Hero hero ) {
 		hero.STR = 13;
 		(hero.belongings.armor = new com.shatteredpixel.shatteredpixeldungeon.items.armor.LeatherArmor()).identify();
@@ -841,6 +862,8 @@ public enum HeroClass {
 				return new ArmorAbility[]{new DeathMark(), new ShadowClone(), new WarpBeacon()};
 			case TANK:
 				return new ArmorAbility[]{new Endure(), new Shockwave(), new HeroicLeap()};
+			case APPRENTICE: //clairvoyant, the mod's own three
+				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.apprentice.ApprenticeWildMagic(), new Shockwave(), new Endure()};
 			case TOWERPRIEST:
 				return new ArmorAbility[]{new SpiritHawk(), new WarpBeacon(), new SmokeBomb()};
 			//deranged
@@ -918,6 +941,8 @@ public enum HeroClass {
 				return Assets.Sprites.NECROHERO;
 			case TANK:
 				return Assets.Sprites.TANK;
+			case APPRENTICE: //clairvoyant
+				return Assets.Sprites.APPRENTICE;
 			case TOWERPRIEST:
 				return Assets.Sprites.PRIEST;
 			//deranged
@@ -1001,6 +1026,8 @@ public enum HeroClass {
 				return Assets.Splashes.MAGE;
 			case TANK:
 				return Assets.Splashes.WARRIOR;
+			case APPRENTICE: //clairvoyant
+				return Assets.Splashes.APPRENTICE;
 			case TOWERPRIEST:
 				return Assets.Splashes.CLERIC;
 			//deranged
@@ -1082,6 +1109,8 @@ public enum HeroClass {
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_NECROHERO);
 			case TANK:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_TANK);
+			case APPRENTICE: //clairvoyant, always open in the mod
+				return true;
 			case TOWERPRIEST:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_TOWERPRIEST);
 			//deranged, a score of 250 000 in one run, as the mod's text says

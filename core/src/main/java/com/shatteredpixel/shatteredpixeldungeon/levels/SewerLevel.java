@@ -148,7 +148,7 @@ public class SewerLevel extends RegularLevel {
 
 	@Override
 	protected void createMobs() {
-		Ghost.Quest.spawn( this, roomExit );
+		if (!com.shatteredpixel.shatteredpixeldungeon.LoreGoo.on()) Ghost.Quest.spawn( this, roomExit ); //lore, no ghost for the Goo
 		super.createMobs();
 	}
 	

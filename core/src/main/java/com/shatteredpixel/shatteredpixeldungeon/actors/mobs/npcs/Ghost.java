@@ -341,6 +341,7 @@ public class Ghost extends NPC {
 					case 4: armor = new ScaleArmor();   break;
 					case 5: armor = new PlateArmor();   break;
 				}
+				armor = com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.ghostArmor(armor); //trap dungeon
 				weapon = (Weapon) Generator.random(Generator.wepTiers[wepTier - 1]);
 				if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHeroes.usesGuns()) weapon = com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.randomGun(wepTier); //bluearchive
 

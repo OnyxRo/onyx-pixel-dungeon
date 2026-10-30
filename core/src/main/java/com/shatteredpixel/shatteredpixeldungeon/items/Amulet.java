@@ -70,6 +70,7 @@ public class Amulet extends Item {
 	
 	@Override
 	public boolean doPickUp(Hero hero, int pos) {
+		com.shatteredpixel.shatteredpixeldungeon.SmallModes.onAmulet(); //speedrun pd, the timer stops
 		if (super.doPickUp( hero, pos )) {
 			
 			if (!Statistics.amuletObtained) {

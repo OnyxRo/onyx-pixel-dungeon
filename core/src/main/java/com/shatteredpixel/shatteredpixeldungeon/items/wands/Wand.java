@@ -636,7 +636,8 @@ public abstract class Wand extends Item {
 		Invisibility.dispel();
 		updateQuickslot();
 
-		curUser.spendAndNext( TIME_TO_ZAP / com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.plagueSpeed(curUser, 2) ); //xun, Plague Eucharist
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.ClairvoyantHero.afterZap(curUser, this); //clairvoyant, the Channeller's overload
+		curUser.spendAndNext( com.shatteredpixel.shatteredpixeldungeon.actors.hero.ClairvoyantHero.zapTime(curUser, TIME_TO_ZAP) / com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.plagueSpeed(curUser, 2) ); //xun, Plague Eucharist //clairvoyant, Motivation
 	}
 	
 	@Override

@@ -199,6 +199,7 @@ public class Assets {
 		public static final String DR_BUFFS_LARGE  = "interfaces/deranged/large_buffs.png";
 		//xun, Xun's PD icon sheets, drawn for icon numbers of 40000 and up
 		public static final String XUN_TALENT_ICONS = "interfaces/xun/talent_icons.png";
+		public static final String CV_TALENT_ICONS = "interfaces/clairvoyant/talent_icons.png"; //clairvoyant
 		public static final String XUN_HERO_ICONS   = "interfaces/xun/hero_icons.png";
 		public static final String XUN_BUFFS_SMALL  = "interfaces/xun/buffs.png";
 		public static final String XUN_BUFFS_LARGE  = "interfaces/xun/large_buffs.png";
@@ -632,6 +633,7 @@ public class Assets {
 		public static final String RBA_SHIROKO = "splashes/rebluearchive/shiroko.png"; //rebluearchive
 		public static final String RBA_YUZU = "splashes/rebluearchive/yuzu.png"; //rebluearchive
 		public static final String WARRIOR  = "splashes/warrior.jpg";
+		public static final String APPRENTICE = "splashes/clairvoyant/apprentice.jpg"; //clairvoyant
 		public static final String MAGE     = "splashes/mage.jpg";
 		public static final String ROGUE    = "splashes/rogue.jpg";
 		public static final String HUNTRESS = "splashes/huntress.jpg";
@@ -686,6 +688,28 @@ public class Assets {
 	}
 
 	public static class Sprites {
+		public static final String GOD = "sprites/trap/ratgod.png"; //ported, trap
+		public static final String BOMBSHEEP = "sprites/trap/bombsheep.png"; //ported, trap
+		public static final String ASSASIN = "sprites/trap/assasin.png"; //ported, trap
+		public static final String AMOGUS = "sprites/trap/amogus.png"; //ported, trap
+		public static final String FLOWER = "sprites/trap/fireflower.png"; //ported, trap
+		public static final String TOUGHGHOST = "sprites/trap/toughghost.png"; //ported, trap
+		public static final String SPOOK = "sprites/trap/frostspook.png"; //ported, trap
+		public static final String SPECTRAL = "sprites/trap/spectralrat.png"; //ported, trap
+		public static final String SLAVER = "sprites/trap/slaver.png"; //ported, trap
+		public static final String SKELECRABAT = "sprites/trap/skelecrabat.png"; //ported, trap
+		public static final String ELECTRO = "sprites/trap/electro.png"; //ported, trap
+		public static final String PRISMANCER = "sprites/trap/prismancer.png"; //ported, trap
+		public static final String ORC = "sprites/trap/orc.png"; //ported, trap
+		public static final String METEOR = "sprites/trap/meteor.png"; //ported, trap
+		public static final String KEYCHAIN = "sprites/trap/keychain.png"; //ported, trap
+		public static final String HOLE = "sprites/trap/hole.png"; //ported, trap
+		public static final String BIGRAT = "sprites/trap/bigrat.png"; //ported, trap
+		public static final String FILTHJET = "sprites/trap/filthjet.png"; //ported, trap
+		public static final String DARTSPITTER = "sprites/trap/dartspitter.png"; //ported, trap
+		public static final String DANCINGSKELETON = "sprites/trap/dancingskeleton.png"; //ported, trap
+		public static final String RATCLOWN = "sprites/trap/ratclown.png"; //ported, trap
+		public static final String BOMBSPIDER = "sprites/trap/bombspider.png"; //ported, trap
 		public static final String PINKFOX = "sprites/npc/magicling/pinkfox.png"; //ported, magicling
 		public static final String LXFCJ = "sprites/npc/magicling/lostwhitecj.png"; //ported, magicling
 		public static final String CJBL = "sprites/npc/magicling/blue_cj.png"; //ported, magicling
@@ -902,6 +926,8 @@ public class Assets {
 		public static final String FIX = "sprites/tower/fix.png"; //ported, tower
 		public static final String NECROHERO = "sprites/tower/necrohero.png"; //ported, tower
 		public static final String TANK = "sprites/tower/tank.png"; //ported, tower
+		public static final String APPRENTICE = "sprites/clairvoyant/apprentice.png"; //clairvoyant
+		public static final String STABLE_ELEMENTAL = "sprites/clairvoyant/stable_elemental.png"; //clairvoyant
 		public static final String PRIEST = "sprites/tower/priest.png"; //ported, tower
 		public static final String BOSSRATKING = "sprites/tower/bossratking.png"; //ported, tower
 		public static final String RATKINGAVATAR = "sprites/tower/ratkingavatar.png"; //ported, tower

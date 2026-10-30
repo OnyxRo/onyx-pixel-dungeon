@@ -106,6 +106,7 @@ public class MenuPane extends Component {
 			@Override
 			protected void onClick() {
 				super.onClick();
+				if (com.shatteredpixel.shatteredpixeldungeon.MusicImplant.noJournal()) return; //musicimplant, illiterate
 
 				if (Dungeon.level.feeling == Level.Feeling.NONE){
 					GameScene.show(new WndJournal());

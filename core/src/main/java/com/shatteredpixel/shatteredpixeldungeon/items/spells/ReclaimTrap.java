@@ -70,6 +70,7 @@ public class ReclaimTrap extends TargetedSpell {
 				Sample.INSTANCE.play(Assets.Sounds.LIGHTNING);
 				ScrollOfRecharging.charge(hero);
 				Buff.affect(hero, ReclaimedTrap.class).trap = t.getClass();
+				com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.onTrapStored(); //trap dungeon, trap skill
 				Bestiary.setSeen(t.getClass());
 				
 			} else {
@@ -90,7 +91,13 @@ public class ReclaimTrap extends TargetedSpell {
 			t.activate();
 			com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onTrapReclaimed(hero); //transformation, Trap Master
 
-			onSpellused();
+				if (com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.freeReclaim(hero, storedTrap)) {
+					//trap dungeon, a free use from trap skill
+					Invisibility.dispel();
+					curUser.spendAndNext( timeToCast() );
+				} else {
+					onSpellused();
+				}
 			
 		}
 	}
@@ -161,7 +168,7 @@ public class ReclaimTrap extends TargetedSpell {
 			revivePersists = true;
 		}
 
-		private Class<?extends Trap> trap;
+		public Class<?extends Trap> trap; //public for trap dungeon's trap skill
 
 		private static final String TRAP = "trap";
 
