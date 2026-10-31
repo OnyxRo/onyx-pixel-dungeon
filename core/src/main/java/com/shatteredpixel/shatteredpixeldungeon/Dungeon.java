@@ -460,6 +460,7 @@ public class Dungeon {
 		SmallModes.reset(); //speedrun pd timer
 		LoreGoo.initHero( hero ); //lore, the hero becomes the Goo
 		TrapDungeon.reset(); //trap dungeon, trap skill
+		ElementalPD.onStart( hero ); //elemental, dew vial and flasks
 		TooCruel.postInit( hero ); //toocruel
 	}
 
@@ -625,7 +626,8 @@ public class Dungeon {
 		Statistics.qualifiedForBossRemainsBadge = false;
 		
 		level.create();
-		
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.ElementalTalents.onNewFloor( hero ); //elemental, Fluid Moves
+
 		if (branch == 0) Statistics.qualifiedForNoKilling = !bossLevel();
 		Statistics.qualifiedForBossChallengeBadge = false;
 

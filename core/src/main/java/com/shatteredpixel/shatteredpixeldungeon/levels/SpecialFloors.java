@@ -133,6 +133,9 @@ public class SpecialFloors {
 		add( "Magic Ling PD", "Morpheus boss, the hollow core and its towers", com.shatteredpixel.shatteredpixeldungeon.levels.hollow.MorpheusBossLevel::new );
 		add( "Magic Ling PD", "Hollow minigame, the ghost chase", com.shatteredpixel.shatteredpixeldungeon.levels.hollow.PacmanHollowActorLevel::new );
 		add( "Magic Ling PD", "Hollow minigame, the box pushing puzzle", com.shatteredpixel.shatteredpixeldungeon.levels.hollow.MoveBoxHollowActorLevel::new );
+		add( "Elemental PD", "Great Fire Demon boss, the Infernal Bastion", com.shatteredpixel.shatteredpixeldungeon.levels.InfernalBastionBossLevel::new );
+		add( "Elemental PD", "Water DM-300 boss, the Endless Lakes", com.shatteredpixel.shatteredpixeldungeon.levels.WaterBossLevel::new );
+		add( "Elemental PD", "Earth Dwarf King boss, the Last Stand", com.shatteredpixel.shatteredpixeldungeon.levels.EarthBossLevel::new );
 	}
 
 	/** Re-ARranged PD's levels read the floor number, so it is set before they are built. */

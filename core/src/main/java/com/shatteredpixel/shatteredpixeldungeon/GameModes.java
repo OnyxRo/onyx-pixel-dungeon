@@ -149,6 +149,7 @@ public class GameModes {
 		ButteredArena.register(); //buttered
 		MusicImplant.register(); //musicimplant
 		SmallModes.register(); //modded, speedrun and old speedrun pd
+		ElementalPD.register(); //elemental
 	}
 
 	//other ports add their modes here, Too Cruel's modifiers among them

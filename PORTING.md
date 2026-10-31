@@ -808,6 +808,21 @@ Cthulhu fight, seventh pass (2026-10-29). Onyx asked for monsters in the first p
 
 Cthulhu fight, eighth pass (2026-10-29). The pillars use their arts again, as Abyssalnite wrote them, every 15 turns while lit (`SeptiumPillar.act`, Abyssalnite called them every turn and broke the turn order with stray `next()` calls). Flame sets monsters' attacks on fire, ground gives them a 15 point barrier (Abyssalnite's Max Guard buff was never checked anywhere), water heals the badly hurt ones, wind gives adrenaline, chronos gives the hero 6 turns of chaos, heaven marks a red line and fires a beam next turn, mirage gives vertigo and calls every monster to the hero. The hero arts miss an invisible hero. The monsters in the arena are now Abyssalnite's own list for it (`FinalLevel.arenaMob`, from its `Bestiary.getTownMobRotation`). Each broken elemental pillar lets its monster in (ground statue, water flower, flame demon, wind swarm) with a 3 percent chance each of a chronos skull, heaven door or phantom spirit. Before any pillar breaks the lit pillars' monsters come. Both Cthulhu's summons and the arena's timed spawn use it.
 
+## Elemental PD (Meel703), done 2026-10-30
+
+Base is Shattered 0.9.2b (last Evan commit eba806ef5 before Meel703's first). Mod key `elemental`, line added to `scripts/mods.txt`.
+
+- The Alchemist hero (`HeroClass.ALCHEMIST`, subclasses Elementalist and Scientist), unlocked by crafting four items in one run (`Badges.validateAlchemistUnlock`). Starts with the Alchemist Dagger, the Alchemist Flask in the first quickslot and a potion bandolier, and knows toxic gas and teleportation. Armor abilities Purity (`abilities/alchemist/Purity`, gas immunity, a ring of fire and a cloud of toxic gas, partly corrosive with Caustic Cloud) and Smoke Bomb. Its 20 talents are in `Talent` and hooked through `ElementalTalents`.
+- `AlchemistFlask` is the Alchemist's Spirit Bow. It throws endless flasks, each with one of the mod's random effects. The mod's sniper special and Great Fire Demon taunt are left out.
+- Elemental Stone (infuse an elemental enchantment or glyph, or move scroll upgrades between two weapons or two armors, through `Item.upgradeScrollUses`), the four elemental glyphs and enchantments, the four fragments and the Broken Amulet, which joins the four fragments into the Amulet.
+- Game modes (`ElementalPD`), Empty Flasks (drinking leaves a flask, brewing from seeds needs one), Hearty Meals (each class gets the mod's small bonus from every meal) and Dew Vial (every hero starts with one).
+- Bosses as special floors in the sandbox (`SpecialFloors`, under Elemental PD). Infernal Bastion with the Great Fire Demon, Endless Lakes with Water DM-300 and its pylons, The Last Stand with the Earth Dwarf King. Casts to their levels are guarded so the bosses do not crash elsewhere. They are not in the sandbox spawn list, like Tengu and DM-300.
+- Mod icon `interfaces/mods/elemental.png` and `windows.wndmodinfo.elementalpixeldungeon` text. No `WorldShuffle.LOGOS` entry since the mod has no worlds.
+
+Left out. Air Tengu and its level, which the mod never spawned (its floor 45 was Shattered's own Tengu prison). The plain chapter floors 31 to 49 between the bosses and the mod's depth 26 to 50 run, since this game ends at 26. Fire Goo's room. The changelog screen, debug items, developer mode, branding text, and the Berserker Rage rework (Shattered 4.0.2's Berserker already starts berserking by hand). The Great Fire Demon's sprite uses the statue sheet, as it does in the mod.
+
+Checked with the full `check.sh --new` (0 failures). Not seen on screen yet. Play the Alchemist and the three boss floors in the sandbox.
+
 ## Sprouted based mods, Regrown, ESPD, Deistic, Palantir (done 2026-10-30)
 Base found. `esunsatyr/SproutedPixelDungeon-Gradle` is Sprouted 0.4.1 (cloned to `~/mod-sources/sprouted`). The four mods are in `~/mod-sources/regrown`, `espd`, `deistic`, `palantir` with full history, and in `scripts/mods.txt`. Diffs against the base were made by two scratch scripts (`basediff.py`, `newnames.py` in the session scratchpad, results were in `build/sprouted-*.txt`, rebuild them if lost).
 

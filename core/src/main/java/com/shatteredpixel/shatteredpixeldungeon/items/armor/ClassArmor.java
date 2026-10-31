@@ -129,6 +129,9 @@ abstract public class ClassArmor extends Armor {
 			case SUMMONER:
 				classArmor = new SummonerArmor();
 				break;
+			case ALCHEMIST:
+				classArmor = new AlchemistArmor();
+				break;
 			case VIKING:
 				classArmor = new VikingArmor();
 				break;

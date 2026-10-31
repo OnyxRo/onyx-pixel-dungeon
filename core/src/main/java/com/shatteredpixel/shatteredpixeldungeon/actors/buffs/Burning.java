@@ -121,12 +121,15 @@ public class Burning extends Buff implements Hero.Doom, Buff.DOTbuff {
 				
 				Hero hero = (Hero)target;
 
-				hero.damage( damage, this );
+				//elemental, the Elementalist heals in fire and his items do not burn
+				boolean elementalist = com.shatteredpixel.shatteredpixeldungeon.actors.hero.ElementalTalents.elementalist(hero);
+				if (elementalist) hero.HP = Math.min(hero.HT, hero.HP + damage / 2);
+				else hero.damage( damage, this );
 				burnIncrement++;
 
 				//at 4+ turns, there is a (turns-3)/3 chance an item burns
 				//...except in the vault level, as the player can't access the scroll holder there
-				if (Random.Int(3) < (burnIncrement - 3) && !(Dungeon.level instanceof VaultLevel)){
+				if (!elementalist && Random.Int(3) < (burnIncrement - 3) && !(Dungeon.level instanceof VaultLevel)){
 					burnIncrement = 0;
 
 					ArrayList<Item> burnable = new ArrayList<>();

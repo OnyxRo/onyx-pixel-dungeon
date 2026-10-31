@@ -70,6 +70,9 @@ public enum HeroSubClass {
 
 	//from Transformation PD
 	ALCHEMIST(HeroIcon.ALCHEMIST),
+	//elemental, the Alchemist's subclasses from Elemental PD
+	ELEMENTALIST(HeroIcon.BATTLEMAGE),
+	SCIENTIST(HeroIcon.ALCHEMIST),
 	PIOUS(HeroIcon.PIOUS),
 	WATERSLIME(HeroIcon.WATERSLIME),
 	DARKSLIME(HeroIcon.DARKSLIME),

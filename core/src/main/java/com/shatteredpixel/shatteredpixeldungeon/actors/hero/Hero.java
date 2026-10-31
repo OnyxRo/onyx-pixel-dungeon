@@ -510,6 +510,7 @@ public class Hero extends Char {
 	public void storeInBundle( Bundle bundle ) {
 
 		super.storeInBundle( bundle );
+		ElementalTalents.store( bundle ); //elemental
 
 		bundle.put( CLASS, heroClass );
 		bundle.put( SUBCLASS, subClass );
@@ -553,6 +554,7 @@ public class Hero extends Char {
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 
+		ElementalTalents.restore( bundle ); //elemental
 		lvl = bundle.getInt( LEVEL );
 		exp = bundle.getInt( EXPERIENCE );
 
@@ -997,6 +999,10 @@ public class Hero extends Char {
 		}
 
 		if (buff(RoundShield.GuardTracker.class) != null){
+			return INFINITE_EVASION;
+		}
+
+		if (ElementalTalents.fluidMovesDodge(this)){ //elemental, Fluid Moves
 			return INFINITE_EVASION;
 		}
 
@@ -2455,6 +2461,7 @@ public class Hero extends Char {
 	@Override
 	public int defenseProc( Char enemy, int damage ) {
 		damage = BAHero.defenseProc(this, enemy, damage); //bluearchive
+		ElementalTalents.onDefense(this, enemy); //elemental, Charming Chemicals
 
 		//Cursed PD's guard turns a blow aside, see Defense
 		if (guardProc( enemy, damage )) return 0;
@@ -3674,6 +3681,7 @@ public class Hero extends Char {
 
 	@Override
 	public boolean isImmune(Class effect) {
+		if (ElementalTalents.isImmune(this, effect)) return true; //elemental, the Elementalist
 		if (XunTalents.isImmune(this, effect)) return true; //xun, the Plague God
 		//Dragonic PD, an Icebreaker does not feel the cold and a Dragon Knight does not burn
 		if (subClass == HeroSubClass.ICEBREAKER && (effect == com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost.class

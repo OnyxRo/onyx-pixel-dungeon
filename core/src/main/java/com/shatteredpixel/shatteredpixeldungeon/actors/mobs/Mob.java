@@ -1238,6 +1238,7 @@ public abstract class Mob extends Char {
 		if (com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Necronomicon.resolveSoulBoundDeath(this, cause) == com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Necronomicon.SoulBoundDeathResult.INTERCEPTED_DEATH) return; //transformation, the Necronomicon
 
 		com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedChar.onMobDeath(this, cause); //rearranged
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.ElementalTalents.onMobDeath(this, cause); //elemental, Possessive Poison
 		if (alignment == Alignment.ENEMY) Badges.validateGunKill(cause);
 
 		//Dragonic PD, a Devorandum eats a little of what it kills

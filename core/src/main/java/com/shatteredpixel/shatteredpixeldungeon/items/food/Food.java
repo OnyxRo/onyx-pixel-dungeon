@@ -178,6 +178,7 @@ public class Food extends Item {
 	}
 
 	protected void satisfy( Hero hero ){
+		com.shatteredpixel.shatteredpixeldungeon.ElementalPD.onMeal( hero ); //elemental, class meals
 		float foodVal = com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.foodValue(hero, this, energy); //transformation
 		foodVal = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedRework.addedMeal(hero, foodVal); //rearranged
 		if (hero.hasTalent(Talent.VEGETARIANISM)){
