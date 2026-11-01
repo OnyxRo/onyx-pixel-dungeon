@@ -189,6 +189,9 @@ abstract public class ClassArmor extends Armor {
 			case APPRENTICE: //clairvoyant
 				classArmor = new MageArmor();
 				break;
+			case ELF: case NECROMANCER: case GNOLL: //reremixed
+				classArmor = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RemixedHeroes.classArmor( owner.heroClass );
+				break;
 			case TOWERPRIEST:
 				classArmor = new ClericArmor();
 				break;

@@ -176,3 +176,6 @@ The mod was one upload with no history, so a small diff script against Shattered
 
 ## 2026-10-29 Old mods, second part
 The worktree guard refused git and find in other folders and heredocs that named git, so cloning and reading mod history moved into scripts in the repo (`get-mod.sh --full`, `mod-history.sh`, `mod-diff-tag.py`). Merge conflicts of plain appended lines are now one command, `scripts/keep-both.py`. The full check was stopped for low memory, so run checks when nothing else heavy is open.
+
+## 2026-11-01 Re-Remixed heroes
+A new hero touches the same six switches in HeroClass, five in Talent and four in Badges. Copying the newest hero (the Apprentice) with one Python script of exact replacements did it in one pass and compiled first time. Headless tests that kill a monster crash on the hero sprite, give test monsters a lot of health and call the death hook directly. A generic "add a hero class" script would save the next port about 20 minutes.

@@ -186,7 +186,9 @@ public class LastLevel extends Level {
 
 	@Override
 	protected void createItems() {
-		drop( new Amulet(), AMULET_POS );
+		//reremixed, in its run layout this amulet is a mimic and its pedestal leads down to floor 27
+		drop( com.shatteredpixel.shatteredpixeldungeon.RemixedLayout.lastFloorAmulet(), AMULET_POS );
+		com.shatteredpixel.shatteredpixeldungeon.RemixedLayout.addLastExit( this, AMULET_POS );
 	}
 
 	@Override

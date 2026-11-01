@@ -38,6 +38,10 @@ public class MpRegen extends Buff {
 	public boolean act() {
 		if (target.isAlive() && target instanceof Hero) {
 			Hero hero = (Hero) target;
+			if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.RemixedSkills.manaTick(hero)) { //reremixed, its heroes do not refill over time
+				spend( REGENERATION_DELAY );
+				return true;
+			}
 			if (hero.MP < hero.MAX_MP) {
 				LockedFloor lock = hero.buff(LockedFloor.class);
 				if ((lock == null || lock.regenOn()) && hero.buff(MagicImmune.class) == null) {

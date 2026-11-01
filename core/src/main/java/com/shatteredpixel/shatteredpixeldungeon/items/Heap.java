@@ -100,6 +100,7 @@ public class Heap implements Bundlable {
 	
 	public void open( Hero hero ) {
 		com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.onHeapOpened(this); //xun, Ancestral Tribute
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.RemixedHeroes.onHeapOpened(this, hero); //reremixed, Necromancer unlock
 		switch (type) {
 		case TOMB:
 			Wraith.spawnAround( hero.pos );

@@ -461,6 +461,7 @@ public class Dungeon {
 		LoreGoo.initHero( hero ); //lore, the hero becomes the Goo
 		TrapDungeon.reset(); //trap dungeon, trap skill
 		ElementalPD.onStart( hero ); //elemental, dew vial and flasks
+		RemixedLayout.onStart( hero ); //reremixed, the run starts in the town
 		TooCruel.postInit( hero ); //toocruel
 	}
 
@@ -497,6 +498,9 @@ public class Dungeon {
 		} else if (branch == 0 && ButteredArena.builds(depth)) {
 			//buttered, the arena on floor 1 and its shops
 			level = ButteredArena.level(depth);
+		} else if (branch == 0 && RemixedLayout.builds(depth)) {
+			//reremixed, the town on floor 0 and the true amulet's floor 27
+			level = RemixedLayout.level(depth);
 		} else if (branch == 0 && WuWuWu.skipsBoss(depth)) {
 			//zoidberg, a boss floor that rolled a plain floor instead
 			level = WuWuWu.plainFloor(depth);

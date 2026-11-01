@@ -78,6 +78,7 @@ public class LevelTransition extends Rect implements Bundlable {
 		centerCell = cell;
 		Point p = level.cellToPoint(cell);
 		set(p.x, p.y, p.x, p.y);
+		type = com.shatteredpixel.shatteredpixeldungeon.RemixedLayout.transitionType(type); //reremixed, floor 1 leads up to the town
 		this.type = type;
 		switch (type){
 			case REGULAR_ENTRANCE: default:

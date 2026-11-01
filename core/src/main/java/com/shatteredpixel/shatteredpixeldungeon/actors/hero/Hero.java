@@ -431,6 +431,7 @@ public class Hero extends Char {
 		} else {
 			HT = 20 + 5*(lvl-1) + HTBoost;
 		}
+		HT = RemixedHeroes.baseHT(this, HT); //reremixed, the Elf is frail
 		HT += BAHero.bonusHT(this); //bluearchive
 		HT = com.shatteredpixel.shatteredpixeldungeon.RearrangedChallenges.baseHT(HT); //rearranged, Superman
 		HT = com.shatteredpixel.shatteredpixeldungeon.actors.DerangedChar.heroHT(this, HT); //deranged, No HP
@@ -1307,6 +1308,7 @@ public class Hero extends Char {
 		speed = AscensionChallenge.modifyHeroSpeed(speed);
 		speed = SummoningHooks.speed(this, speed); //summoning
 		speed *= XunHeroes.speedFactor(this); //xun
+		speed *= RemixedHeroes.speedFactor(this); //reremixed
 		speed = com.shatteredpixel.shatteredpixeldungeon.Playstyles.moveSpeed(speed); //radar
 
 		return speed;
@@ -2388,6 +2390,7 @@ public class Hero extends Char {
 	public int attackProc( final Char enemy, int damage ) {
 		damage = super.attackProc( enemy, damage );
 		damage = XunHeroes.attackProc( this, enemy, damage ); //xun
+		damage = RemixedSkills.attackProc( this, enemy, damage ); //reremixed, the Gnoll's rage
 		damage = com.shatteredpixel.shatteredpixeldungeon.MusicImplant.attackProc( this, enemy, damage ); //musicimplant
 		com.shatteredpixel.shatteredpixeldungeon.DeisticPD.onHeroHit( this, enemy ); //deistic, blue wraith
 		com.shatteredpixel.shatteredpixeldungeon.LoreGoo.attackProc( this, enemy ); //lore
@@ -3208,6 +3211,7 @@ public class Hero extends Char {
 		}
 
 		if (RearrangedHero.preventsDeath(this, cause)) return; //rearranged
+		if (RemixedSkills.necroRevive(this)) return; //reremixed
 		RBAHero.onDie(this, cause); //rebluearchive
 
 		curAction = null;
@@ -3681,6 +3685,7 @@ public class Hero extends Char {
 
 	@Override
 	public boolean isImmune(Class effect) {
+		if (RemixedHeroes.isImmune(this, effect)) return true; //reremixed, the Elf
 		if (ElementalTalents.isImmune(this, effect)) return true; //elemental, the Elementalist
 		if (XunTalents.isImmune(this, effect)) return true; //xun, the Plague God
 		//Dragonic PD, an Icebreaker does not feel the cold and a Dragon Knight does not burn

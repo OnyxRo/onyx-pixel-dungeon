@@ -187,6 +187,8 @@ public abstract class Scroll extends Item {
 				return;
 			}
 
+			if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.RemixedHeroes.cannotRead(hero)) return; //reremixed, the Gnoll
+
 			if (hero.buff(MagicImmune.class) != null){
 				GLog.w( Messages.get(this, "no_magic") );
 			} else if (hero.buff( Blindness.class ) != null) {

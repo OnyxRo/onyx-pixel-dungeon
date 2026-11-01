@@ -774,6 +774,7 @@ public class AlchemyScene extends PixelScene {
 
 		Statistics.itemsCrafted++;
 		Badges.validateItemsCrafted();
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.RemixedHeroes.validateElfUnlock(); //reremixed
 		//rearranged, brewing pills unlocks the Medic
 		if (result instanceof com.shatteredpixel.shatteredpixeldungeon.items.pills.Pill) {
 			Statistics.pillsMade++;

@@ -150,6 +150,7 @@ public class GameModes {
 		MusicImplant.register(); //musicimplant
 		SmallModes.register(); //modded, speedrun and old speedrun pd
 		ElementalPD.register(); //elemental
+		RemixedLayout.register(); //reremixed
 	}
 
 	//other ports add their modes here, Too Cruel's modifiers among them

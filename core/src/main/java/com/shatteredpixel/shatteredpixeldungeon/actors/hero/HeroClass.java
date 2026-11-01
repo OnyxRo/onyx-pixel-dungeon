@@ -151,7 +151,11 @@ public enum HeroClass {
 	WRAITH( HeroSubClass.INCUBUS, HeroSubClass.PLAGUEGOD, HeroSubClass.SOULHANDLER ),
 	ENGINEER( HeroSubClass.CRAFTSMAN, HeroSubClass.HACKER, HeroSubClass.GRENADIER ),
 	//clairvoyant, Clairvoyant PD's Apprentice, its second subclass was the Berserker in the mod too
-	APPRENTICE( HeroSubClass.CHANNELLER, HeroSubClass.BERSERKER );
+	APPRENTICE( HeroSubClass.CHANNELLER, HeroSubClass.BERSERKER ),
+	//reremixed, Re-Remixed Dungeon's three heroes, see RemixedHeroes
+	ELF( HeroSubClass.RR_SCOUT, HeroSubClass.RR_ALCHEMIST ),
+	NECROMANCER( HeroSubClass.RR_LICH, HeroSubClass.RR_SHADOWMASTER ),
+	GNOLL( HeroSubClass.RR_BRUTE, HeroSubClass.RR_SHAMAN );
 
 	//deranged, the Rat King counts as the classes he shares, everyone else only as themselves
 	public boolean is( HeroClass cls ){
@@ -282,6 +286,9 @@ public enum HeroClass {
 				break;
 			case APPRENTICE: //clairvoyant
 				initApprentice( hero );
+				break;
+			case ELF: case NECROMANCER: case GNOLL: //reremixed
+				RemixedHeroes.init( this, hero );
 				break;
 			case TOWERPRIEST:
 				initTowerPriest( hero );
@@ -423,6 +430,8 @@ public enum HeroClass {
 				return Badges.Badge.MASTERY_TANK;
 			case APPRENTICE: //clairvoyant
 				return Badges.Badge.MASTERY_APPRENTICE;
+			case ELF: case NECROMANCER: case GNOLL: //reremixed
+				return RemixedHeroes.masteryBadge( this );
 			case TOWERPRIEST:
 				return Badges.Badge.MASTERY_TOWERPRIEST;
 			//deranged
@@ -893,6 +902,8 @@ public enum HeroClass {
 				return new ArmorAbility[]{new DeathMark(), new ShadowClone(), new WarpBeacon()};
 			case TANK:
 				return new ArmorAbility[]{new Endure(), new Shockwave(), new HeroicLeap()};
+			case ELF: case NECROMANCER: case GNOLL: //reremixed
+				return RemixedHeroes.armorAbilities( this );
 			case APPRENTICE: //clairvoyant, the mod's own three
 				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.apprentice.ApprenticeWildMagic(), new Shockwave(), new Endure()};
 			case TOWERPRIEST:
@@ -976,6 +987,8 @@ public enum HeroClass {
 				return Assets.Sprites.TANK;
 			case APPRENTICE: //clairvoyant
 				return Assets.Sprites.APPRENTICE;
+			case ELF: case NECROMANCER: case GNOLL: //reremixed
+				return RemixedHeroes.spritesheet( this );
 			case TOWERPRIEST:
 				return Assets.Sprites.PRIEST;
 			//deranged
@@ -1063,6 +1076,8 @@ public enum HeroClass {
 				return Assets.Splashes.WARRIOR;
 			case APPRENTICE: //clairvoyant
 				return Assets.Splashes.APPRENTICE;
+			case ELF: case NECROMANCER: case GNOLL: //reremixed
+				return RemixedHeroes.splashArt( this );
 			case TOWERPRIEST:
 				return Assets.Splashes.CLERIC;
 			//deranged
@@ -1146,6 +1161,8 @@ public enum HeroClass {
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_NECROHERO);
 			case TANK:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_TANK);
+			case ELF: case NECROMANCER: case GNOLL: //reremixed
+				return RemixedHeroes.isUnlocked( this );
 			case APPRENTICE: //clairvoyant, always open in the mod
 				return true;
 			case TOWERPRIEST:

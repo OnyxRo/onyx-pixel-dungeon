@@ -77,16 +77,21 @@ public class MeleeWeapon extends Weapon {
 	public boolean trollers = false;
 	private static final String KROMER = "kromer";
 
+	//reremixed, Re-Remixed Dungeon's mystical skull, set into a weapon by the Necromancer
+	public com.shatteredpixel.shatteredpixeldungeon.items.MysticalSkull skull = null;
+
 	@Override
 	public void storeInBundle( com.watabou.utils.Bundle bundle ) {
 		super.storeInBundle(bundle);
 		if (trollers) bundle.put(KROMER, true);
+		com.shatteredpixel.shatteredpixeldungeon.items.MysticalSkull.store(this, bundle); //reremixed
 	}
 
 	@Override
 	public void restoreFromBundle( com.watabou.utils.Bundle bundle ) {
 		super.restoreFromBundle(bundle);
 		trollers = bundle.getBoolean(KROMER);
+		com.shatteredpixel.shatteredpixeldungeon.items.MysticalSkull.restore(this, bundle); //reremixed
 	}
 
 	@Override
@@ -120,6 +125,7 @@ public class MeleeWeapon extends Weapon {
 				&& !(this instanceof com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe)) {
 			actions.add(AC_SCRAP);
 		}
+		com.shatteredpixel.shatteredpixeldungeon.items.MysticalSkull.addActions(this, actions); //reremixed
 		return actions;
 	}
 
@@ -143,6 +149,7 @@ public class MeleeWeapon extends Weapon {
 		if (action.equals(AC_SCRAP)) {
 			RearrangedWeapons.scrap(this, hero);
 		}
+		com.shatteredpixel.shatteredpixeldungeon.items.MysticalSkull.execute(this, hero, action); //reremixed
 
 		if (action.equals(AC_ABILITY)){
 			usesTargeting = false;
@@ -494,6 +501,7 @@ public class MeleeWeapon extends Weapon {
 	public String info() {
 
 		String info = super.info();
+		info += com.shatteredpixel.shatteredpixeldungeon.items.MysticalSkull.info(this); //reremixed
 
 		if (levelKnown) {
 			info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_known", tier(), augment.damageFactor(min()), augment.damageFactor(max()), STRReq());

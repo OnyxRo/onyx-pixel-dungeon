@@ -930,6 +930,10 @@ public class Assets {
 		public static final String NECROHERO = "sprites/tower/necrohero.png"; //ported, tower
 		public static final String TANK = "sprites/tower/tank.png"; //ported, tower
 		public static final String APPRENTICE = "sprites/clairvoyant/apprentice.png"; //clairvoyant
+		public static final String RR_ELF = "reremixed/elf.png"; //reremixed
+		public static final String RR_NECROMANCER = "reremixed/necromancer.png"; //reremixed
+		public static final String RR_GNOLL = "reremixed/gnoll.png"; //reremixed
+		public static final String RR_DEATHLING = "reremixed/deathling.png"; //reremixed
 		public static final String STABLE_ELEMENTAL = "sprites/clairvoyant/stable_elemental.png"; //clairvoyant
 		public static final String PRIEST = "sprites/tower/priest.png"; //ported, tower
 		public static final String BOSSRATKING = "sprites/tower/bossratking.png"; //ported, tower

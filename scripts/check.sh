@@ -153,6 +153,13 @@ if [ $QUICK -eq 0 ]; then
   run "XunHeroesTest" TransformationHeroesTest EXPLORER WRAITH ENGINEER; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|LIMIT|SUMMARY Transformation)" | tail -12 | sed 's/^/  /'
   [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
+  #reremixed, Re-Remixed Dungeon's Elf, Necromancer and Gnoll, their skills and the town layout mode
+  run "RemixedHeroesTest" TransformationHeroesTest ELF NECROMANCER GNOLL; rc=$?
+  tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|LIMIT|SUMMARY Transformation)" | tail -12 | sed 's/^/  /'
+  [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
+  run "RemixedTest" RemixedTest; rc=$?
+  tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY remixed)" | tail -12 | sed 's/^/  /'
+  [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
   #xun, the talents wired into shared code (debuffs, traps, bombs, food, sleep, wells)
   run "XunTalentsTest" XunTalentsTest; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY xun)" | tail -12 | sed 's/^/  /'

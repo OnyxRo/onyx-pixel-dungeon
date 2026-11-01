@@ -49,6 +49,7 @@ public class PotionOfStrength extends Potion {
 		GLog.p( Messages.get(this, "msg", hero.STR()) );
 		
 		Badges.validateStrengthAttained();
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.RemixedHeroes.onStrength(hero); //reremixed, Gnoll unlock
 		Badges.validateDuelistUnlock();
 	}
 

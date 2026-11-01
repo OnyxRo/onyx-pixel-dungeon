@@ -169,7 +169,14 @@ public enum HeroSubClass {
 	HACKER(HeroIcon.XUN + 26),
 	GRENADIER(HeroIcon.XUN + 27),
 	//clairvoyant, Clairvoyant PD's Channeller, on the Battlemage's icon
-	CHANNELLER(HeroIcon.BATTLEMAGE);
+	CHANNELLER(HeroIcon.BATTLEMAGE),
+	//reremixed, Re-Remixed Dungeon's subclasses on the closest Shattered icons
+	RR_SCOUT(HeroIcon.SNIPER),
+	RR_ALCHEMIST(HeroIcon.WARDEN),
+	RR_LICH(HeroIcon.WARLOCK),
+	RR_SHADOWMASTER(HeroIcon.ASSASSIN),
+	RR_BRUTE(HeroIcon.BERSERKER),
+	RR_SHAMAN(HeroIcon.WARDEN);
 
 	//Transformation PD asks this of subclasses. DERanged PD's King counts as every subclass he has the talent for
 	public boolean is(HeroSubClass sub) {

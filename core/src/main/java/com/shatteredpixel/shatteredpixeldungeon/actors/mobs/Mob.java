@@ -1237,6 +1237,8 @@ public abstract class Mob extends Char {
 
 		if (com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Necronomicon.resolveSoulBoundDeath(this, cause) == com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Necronomicon.SoulBoundDeathResult.INTERCEPTED_DEATH) return; //transformation, the Necronomicon
 
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.RemixedSkills.onMobDie(this, cause)) return; //reremixed, Plunder raises the dead
+
 		com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedChar.onMobDeath(this, cause); //rearranged
 		com.shatteredpixel.shatteredpixeldungeon.actors.hero.ElementalTalents.onMobDeath(this, cause); //elemental, Possessive Poison
 		if (alignment == Alignment.ENEMY) Badges.validateGunKill(cause);
