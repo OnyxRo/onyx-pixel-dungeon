@@ -106,3 +106,4 @@ The cloud routine does the first unchecked task and checks it off. Smallest firs
 - [x] Balance check (2026-11-01). `scripts/test/BalanceReport.java` builds 150 seeded runs and lists every monster and item per floor, `scripts/balance-report.py` turns it into charts (page at https://claude.ai/artifact/7jX1cz5JRVjYiSV9YJXbbB).
 - [x] Balance fix (2026-11-01). Every mod's world now spawns what the mod itself spawned on that floor (`scripts/mod-spawns.py` writes `ModSpawns`), instead of the roster's depth ranges. Matt's guild and snowfield follow its own tables too. Floors 1 to 5 no longer have any monster that can one-shot 30 health.
 - [ ] Play a few early floors in Cursed, Abyssalnite and Deep worlds and say whether the monsters feel right now. SPS names 20 monsters that were never ported (left out of its tables).
+- [x] Badge popup shows the badge name and what earned it under the icon, and stays 3 seconds (2026-11-01). Not seen on screen yet.

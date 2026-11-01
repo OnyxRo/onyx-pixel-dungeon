@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.effects;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.Game;
@@ -47,6 +48,11 @@ public class BadgeBanner extends Image {
 	
 	private static final float FADE_IN_TIME		= 0.25f;
 	private static final float STATIC_TIME		= 1f;
+	//longer with the badge's name and requirement under it, so there is time to read them
+	private static final float STATIC_TIME_LABEL	= 3f;
+
+	//the badge's name and what earned it, shown under the icon and faded with it (PixelScene.showBadge)
+	public RenderedTextBlock label;
 	private static final float FADE_OUT_TIME	= 1.75f;
 	
 	private int index;
@@ -106,7 +112,7 @@ public class BadgeBanner extends Image {
 			
 			switch (state) {
 			case FADE_IN:
-				time = STATIC_TIME;
+				time = label != null ? STATIC_TIME_LABEL : STATIC_TIME;
 				state = State.STATIC;
 				scale.set( DEFAULT_SCALE );
 				alpha( 1 );
@@ -125,7 +131,17 @@ public class BadgeBanner extends Image {
 	}
 	
 	@Override
+	public void alpha( float value ) {
+		super.alpha( value );
+		if (label != null) label.alpha( value );
+	}
+
+	@Override
 	public void kill() {
+		if (label != null) {
+			label.killAndErase();
+			label = null;
+		}
 		showing.remove(this);
 		super.kill();
 	}

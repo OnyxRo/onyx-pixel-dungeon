@@ -395,6 +395,21 @@ public class PixelScene extends Scene {
 						left += BadgeBanner.SIZE * BadgeBanner.DEFAULT_SCALE;
 					}
 
+					//the badge's name and what earned it, under the icons. Several badges at once stack their text
+					BadgeBanner newest = BadgeBanner.showing.get(BadgeBanner.showing.size() - 1);
+					newest.label = renderTextBlock(6);
+					newest.label.text("_" + badge.title() + "_\n" + badge.desc(), Math.min(uiCamera.width - 20, 160));
+					newest.label.align(RenderedTextBlock.CENTER_ALIGN);
+					newest.label.camera = uiCamera;
+					newest.label.alpha(0);
+					s.add(newest.label);
+					float top = newest.y + newest.height / 2f + BadgeBanner.SIZE * BadgeBanner.DEFAULT_SCALE / 2f + 4;
+					for (BadgeBanner b : BadgeBanner.showing) {
+						if (b.label == null) continue;
+						b.label.setPos(align(uiCamera, (uiCamera.width - b.label.width()) / 2f), align(uiCamera, top));
+						top += b.label.height() + 4;
+					}
+
 					WndJournal.last_index = 4;
 					WndJournal.BadgesTab.global = badge.type != Badges.BadgeType.LOCAL;
 
