@@ -81,6 +81,10 @@ public class Gallery {
 	private static int world = FROM_WORLD != null ? Integer.parseInt(FROM_WORLD)
 			: System.getProperty("onyx.gallery.only") == null ? WorldShuffle.HALLS + 1
 			: "ui".equals(System.getProperty("onyx.gallery.only")) ? WorldShuffle.worldCount() - 1 : Integer.MAX_VALUE;
+	//-Donyx.gallery.toworld=N stops after world N. -Donyx.gallery.wait=S waits S seconds before the first world,
+	//since pictures taken in the first minute after the window opens can come out empty
+	private static final int TO_WORLD = Integer.getInteger("onyx.gallery.toworld", Integer.MAX_VALUE);
+	private static float startWait = Float.parseFloat(System.getProperty("onyx.gallery.wait", "0"));
 	private static final boolean ARENA = "arena".equals(System.getProperty("onyx.gallery.only"));
 	private static final java.util.List<String> ARENA_NAMES = System.getProperty("onyx.gallery.mobs") == null
 			? new ArrayList<String>() : java.util.Arrays.asList(System.getProperty("onyx.gallery.mobs").split(","));
@@ -229,6 +233,8 @@ public class Gallery {
 		}
 
 		if (world < WorldShuffle.worldCount()) {
+			if (startWait > 0) { startWait -= Game.elapsed; time = 0; return; }
+			if (world > TO_WORLD) { Gdx.app.exit(); return; }
 			//the first floor of the run is only a starting point, go straight to the first world
 			boolean here = WorldShuffle.worldOf(Dungeon.level) == world;
 			if (here && !shot && time > 1.5f) {
