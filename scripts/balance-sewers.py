@@ -161,16 +161,37 @@ for line in open(SRC, encoding="utf-8"):
         it["count"] += 1; it["depths"][d] += 1; it["heaps"][p[5]] += 1
         if int(p[7]) >= 0: it["min"].append(int(p[7])); it["max"].append(int(p[8])); it["dmg"].append((int(p[7]) + int(p[8])) / 2)
 
+#--- what each monster did in a real fight (scripts/test/FightReport.java), by class and floor
+FIGHT = {}
+fight_path = os.path.join(ROOT, "build/fight-sewers.tsv")
+if os.path.exists(fight_path):
+    for line in open(fight_path, encoding="utf-8"):
+        c, d, ok, hits, avg, mx, pt, start = line.rstrip("\n").split("\t")
+        FIGHT[(c, int(d))] = (int(ok), int(hits), float(avg), int(mx), float(pt), int(start))
+
 seeds = floors // FLOORS_PER_SEED
 mean = lambda xs: sum(xs) / len(xs) if xs else 0
 icons, out_m, out_i = {}, [], []
-#Shattered's strongest regular sewer monster, for the comparison line
-SHATTERED_SEWER = ["Rat", "Albino", "Snake", "Gnoll", "Swarm", "Crab", "Slime", "CausticSlime", "GnollExile"]
+#Shattered's regular sewer monsters (its MobSpawner for floors 1 to 4), for the comparison line
+SHATTERED_SEWER = ["Rat", "Snake", "Gnoll", "Swarm", "Crab", "Slime"]
 for cls, m in mobs.items():
     key = mod_of(cls, True); icons.setdefault(key, mod_icon(key))
-    avg = mean(m["avg"]); per = m["count"] / floors
+    melee = mean(m["avg"]); per = m["count"] / floors
+    #the fight numbers, averaged over the floors it was seen on, weighted by how often it was seen there
+    w_sum = hit = top = turn = 0; fought = []
+    for d, n in m["depths"].items():
+        f = FIGHT.get((cls, d))
+        if not f or f[0] == 0: continue
+        w_sum += n; hit += f[2] * n; turn += f[4] * n; top = max(top, f[3]); fought.append(f)
+    if w_sum:
+        hit /= w_sum; turn /= w_sum
+        #harmless, never hurt the hero. near, only hurt him from right beside it (it does not move). fight, came and fought
+        how = "harmless" if top == 0 else ("near" if all(f[5] == 1 for f in fought if f[1] > 0) else "fight")
+    else:
+        hit, top, turn, how = melee, m["max"], None, "melee"
     out_m.append({"name": re.sub(r"#\d", "", m["name"]), "cls": cls.split(".")[-1], "mod": key, "pic": mob_picture(m["sprite"]),
-                  "avg": round(avg, 1), "max": m["max"], "hp": m["hp"], "perFloor": round(per, 4), "weighted": round(avg * per, 3),
+                  "avg": round(hit, 1), "max": top, "perTurn": round(turn, 2) if turn is not None else None, "melee": round(melee, 1),
+                  "how": how, "hp": m["hp"], "perFloor": round(per, 4), "weighted": round(hit * per, 3),
                   "floors": sorted(m["depths"]), "worlds": [w for w, _ in m["worlds"].most_common(3)]})
 base = max(x["avg"] for x in out_m if x["cls"] in SHATTERED_SEWER)
 for x in out_m:

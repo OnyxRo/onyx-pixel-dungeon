@@ -47,6 +47,7 @@ tr.flag td { background: var(--danger-soft); }
 .pic span { color: #9a918a; font-size: 0.7rem; }
 .who b { display: block; }
 .who span { font: 0.75rem var(--mono); color: var(--muted); }
+.who .how { display: block; font-size: 0.78rem; font-style: normal; color: var(--accent); }
 .mod { display: grid; justify-items: center; gap: 2px; width: 84px; text-align: center; font-size: 0.75rem; line-height: 1.15; }
 .mod img { width: 32px; height: 32px; image-rendering: pixelated; border-radius: 4px; }
 .bar { display: flex; align-items: center; gap: 8px; min-width: 190px; }
@@ -62,19 +63,19 @@ tr.flag .bar .fill { background: var(--danger); }
 <div class="wrap">
   <header style="display:grid;gap:10px">
     <h1>Sewers balance check</h1>
-    <p class="muted">Floors 1 to 5 of <span id="nseeds"></span> seeded runs, built the way a normal game builds them. Each monster and item counted was on the floor when it was made. A monster's hit is 400 rolls of its normal attack. Zaps, explosions and other special attacks are not included.</p>
+    <p class="muted">Floors 1 to 5 of <span id="nseeds"></span> seeded runs, built the way a normal game builds them. Each monster and item counted was on the floor when it was made. Monster damage comes from real fights. Each monster was put on a sewer floor of the same depth, 3 steps from a level 1 hero with no armor who stands still, and played its own turns for 50 turns, 6 times. Every point of health the hero lost counts, from bites, zaps, bolts, poison, acid, fire or anything else. A hit is one loss of health, so a poisoned hero takes many small hits.</p>
     <div class="stats" id="stats"></div>
   </header>
 
   <h2>Monsters</h2>
   <div class="legend">
-    <span><i class="sw" style="background:var(--bar)"></i>average hit</span>
+    <span><i class="sw" style="background:var(--bar)"></i>average hit in a fight</span>
     <span><i class="sw" style="background:var(--danger)"></i>can take a full health bar, or hits 1.5 times harder than Shattered's strongest sewer monster</span>
     <span><i class="sw" style="background:var(--fg);width:3px"></i>top hit</span>
-    <span><i class="sw" style="background:var(--base);width:3px"></i>Shattered's strongest sewer monster</span>
+    <span><i class="sw" style="background:var(--base);width:3px"></i>average hit of the hardest of Shattered's regular sewer monsters (rat, snake, gnoll, swarm, crab, slime)</span>
     <span><i class="sw" style="background:var(--accent);width:3px"></i>hero health (30)</span>
   </div>
-  <p class="muted small">Damage times chance is the average hit multiplied by the chance the monster is on a floor. It shows how much each monster adds to the danger of a typical sewer floor. Click any column to sort.</p>
+  <p class="muted small">Damage per turn is all the health the hero lost divided by the 50 turns, so it counts misses, walking up and how often it attacks. Normal attack is the old number, a roll of its plain melee attack only. Damage times chance is the average hit multiplied by the chance the monster is on a floor. Monsters that never move were also tested standing right next to the hero. Fish need water and friendly creatures never attack, so they show no fight. Click any column to sort.</p>
   <div class="controls">
     <label><input type="checkbox" id="mobflag"> Red only</label>
     <select id="mobmod" aria-label="Mod"></select>
@@ -105,7 +106,7 @@ $("nseeds").textContent = DATA.seeds;
 
 const red = DATA.mobs.filter(m => m.flag);
 $("stats").innerHTML = [
-  [DATA.mobs.length, "kinds of monster"], [DATA.items.length, "kinds of item"], [DATA.base, "Shattered's strongest average hit"],
+  [DATA.mobs.length, "kinds of monster"], [DATA.items.length, "kinds of item"], [DATA.base, "hardest regular Shattered sewer hit"],
   [red.length, "monsters in red"], [Math.round(1 / red.reduce((a, m) => a + m.perFloor, 0)), "floors per red monster, on average"]
 ].map(([v, l]) => `<div><b>${v}</b><span>${l}</span></div>`).join("");
 
@@ -130,22 +131,24 @@ function sortable(table, cols, rows, state, draw){
 }
 
 const mobState = {key: "avg", dir: -1};
+const HOW = {near: "standing next to it, it does not move", harmless: "never hurt the hero", melee: "could not be put in a fight, normal attack only"};
 const xmax = Math.max(...DATA.mobs.map(m => m.max), DATA.heroHp) * 1.02;
 function drawMobs(){
   const q = $("mobq").value.trim().toLowerCase(), fo = $("mobflag").checked, ms = $("mobmod").value;
   const rows = DATA.mobs.filter(m => (!fo || m.flag) && (!ms || m.mod === ms) && (!q || (m.name + " " + m.cls).toLowerCase().includes(q)));
-  const cols = [["", ""], ["name", "Monster"], ["mod", "Mod"], ["avg", "Average hit"], ["max", "Top hit"], ["hp", "Health"], ["perFloor", "Per 100 floors"], ["weighted", "Damage times chance"], ["", "Floors"]];
+  const cols = [["", ""], ["name", "Monster"], ["mod", "Mod"], ["avg", "Hit in a fight"], ["max", "Top hit"], ["perTurn", "Damage per turn"], ["melee", "Normal attack"], ["hp", "Health"], ["perFloor", "Per 100 floors"], ["weighted", "Damage times chance"], ["", "Floors"]];
   sortable($("mobtable"), cols, rows, mobState, drawMobs);
   const pct = v => (100 * v / xmax).toFixed(2) + "%";
   $("mobtable").tBodies[0].innerHTML = rows.map(m => `<tr class="${m.flag ? "flag" : ""}" title="Worlds ${esc(m.worlds.join(", "))}">
     <td>${pic(m.pic)}</td>
-    <td class="who"><b>${esc(m.name)}</b><span>${esc(m.cls)}</span></td>
+    <td class="who"><b>${esc(m.name)}</b><span>${esc(m.cls)}</span>${HOW[m.how] ? `<em class="how">${HOW[m.how]}</em>` : ""}</td>
     <td>${mod(m.mod)}</td>
     <td><div class="bar"><b>${m.avg}</b><div class="track">
       <i class="ln" style="left:${pct(DATA.base)};background:var(--base)"></i><i class="ln" style="left:${pct(DATA.heroHp)};background:var(--accent)"></i>
       <i class="fill" style="width:${pct(m.avg)}"></i><i class="tick" style="left:${pct(m.max)}"></i></div></div></td>
-    <td class="n">${m.max}</td><td class="n">${m.hp}</td><td class="n">${per100(m.perFloor)}</td><td class="n">${m.weighted.toFixed(2)}</td>
-    <td class="small">${floorsTxt(m.floors)}</td></tr>`).join("") || `<tr><td colspan="9" class="muted">No monsters match.</td></tr>`;
+    <td class="n">${m.max}</td><td class="n">${m.perTurn === null ? "" : m.perTurn.toFixed(2)}</td><td class="n muted">${m.melee}</td>
+    <td class="n">${m.hp}</td><td class="n">${per100(m.perFloor)}</td><td class="n">${m.weighted.toFixed(2)}</td>
+    <td class="small">${floorsTxt(m.floors)}</td></tr>`).join("") || `<tr><td colspan="11" class="muted">No monsters match.</td></tr>`;
 }
 
 const itemState = {key: "perFloor", dir: -1};
