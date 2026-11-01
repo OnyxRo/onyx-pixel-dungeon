@@ -92,7 +92,8 @@ The cloud routine does the first unchecked task and checks it off. Smallest firs
 - [ ] Play the new Cthulhu fight (sandbox, Special floors, Final arena) and say what to change. He now grasps, slams, mind blasts and fires the beam, the tentacle strike is gone and all music is off for now
 - [x] Port the six small mods (2026-10-29). Modded PD, Speedrun PD and Old Speedrun PD as game modes, Shattered Pixel Lore as The Goo's Story game mode, Shattered Trap Dungeon as the Trap Dungeon game mode with its 30 monsters, 22 traps and 19 items, Re-Remixed's boss arenas, town and very last floor
 - [x] Port Re-Remixed Dungeon's three hero classes (Elf, Necromancer, Gnoll) with their skills system, and its run layout (town on floor 0, fake amulet on 26, real one on 27) as a game mode (2026-11-01). See PORTING.md
-- [ ] Onyx reviews every world's stage on the World Stage Check page (https://claude.ai/artifact/EaDAQPaZz6Eyxt6ADy5Sp1, answers in its `reviews` collection, read them with ArtifactData list). Then move the worlds marked wrong to the stage he picked in `WorldShuffle.REGIONS`
+- [x] Onyx reviewed every world's stage (2026-11-01). The stages were right. The 33 worlds that looked wrong had tile sheets in the old Shattered grid and were rebuilt (`scripts/remap-oldsheets.py`)
+- [ ] Onyx checks the 33 rebuilt worlds on the Fixed Worlds Check page (`build/world-stage-check/Fixed Worlds Check.html`, he pastes his answers)
 - [ ] Play the Elf, Necromancer and Gnoll on screen (Skills button, deathlings, Gnoll sheep) and the Town and Two Amulets game mode
 - [ ] Play the new game modes on screen (Speedrun timer and restart, Bones%, The Goo's Story, Trap Dungeon) and Re-Remixed's three boss arenas in the sandbox
 - [x] Port Music Implant SPD (light, horror, satiation and 34 perks as game modes, candle, torch, wax and wick). See PORTING.md

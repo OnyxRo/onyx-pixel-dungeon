@@ -179,3 +179,6 @@ The worktree guard refused git and find in other folders and heredocs that named
 
 ## 2026-11-01 Re-Remixed heroes
 A new hero touches the same six switches in HeroClass, five in Talent and four in Badges. Copying the newest hero (the Apprentice) with one Python script of exact replacements did it in one pass and compiled first time. Headless tests that kill a monster crash on the hero sprite, give test monsters a lot of health and call the death hook directly. A generic "add a hero class" script would save the next port about 20 minutes.
+
+## 2026-11-01 Old tile grid
+Onyx saw rows of locked doors in 33 worlds. Earlier sessions assumed old-base sheets only lacked tiles, but Shattered rearranged the whole grid around 2.0. Comparing each mod's DungeonTileSheet.java with ours found it in one command, worth doing for every new mod. Tours take blank pictures while the game window is minimized, ask Onyx to leave it open, and use the new onyx.gallery.wait option.
