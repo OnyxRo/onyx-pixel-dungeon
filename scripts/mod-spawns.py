@@ -100,6 +100,11 @@ for dp, dn, fn in os.walk(os.path.join(JAVA, PKG.replace(".", "/"), "actors/mobs
 ROSTER = {}
 for m in re.finditer(r'add\(\s*"(\w+)"\s*,\s*([\w.]+)\.class', open(os.path.join(JAVA, PKG.replace(".", "/"), "actors/mobs/ModRoster.java"), encoding="utf-8").read()):
     ROSTER.setdefault(m.group(1), set()).add(m.group(2).split(".")[-1])
+#Shattered's own monsters, the files in actors/mobs at the first commit of this game
+import subprocess
+SHATTERED_MOBS = {os.path.basename(f)[:-5] for f in subprocess.run(["git", "ls-tree", "-r", "--name-only", "0e810728",
+    "core/src/main/java/" + PKG.replace(".", "/") + "/actors/mobs/"], cwd=ROOT, capture_output=True, text=True).stdout.split()
+    if f.endswith(".java")}
 #names a mod used for monsters that are in this game under another name
 RENAMES = {}
 
@@ -116,6 +121,10 @@ def resolve(mod, name):
     if name == "Shaman": return "Shaman.random"
     if name == "Elemental": return PKG + ".actors.mobs.Elemental$FireElemental"
     name = RENAMES.get((mod, name), RENAMES.get((None, name), name))
+    #another mod's monster with the same name is a different monster (Unleashed's air elemental is not Cursed's,
+    #which hits for 60), so it counts as not in the game
+    if name not in ROSTER.get(mod, ()) and name not in SHATTERED_MOBS and any(name in r for k, r in ROSTER.items() if k != mod):
+        return None
     opts = OURS.get(name, [])
     if not opts: return None
     base = [o for o in opts if o.count(".") == PKG.count(".") + 3]  #directly in actors.mobs

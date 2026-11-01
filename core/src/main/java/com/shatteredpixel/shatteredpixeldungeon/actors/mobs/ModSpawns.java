@@ -39,6 +39,31 @@ public class ModSpawns {
 	}
 
 	static {
+		abyssalnite();
+		cursed();
+		deep();
+		dragonic();
+		experienced();
+		rearranged();
+		reforged();
+		ryuse();
+		shittened();
+		summoning();
+		tower();
+		transformation();
+		unleashed();
+		spacebase();
+		sps();
+		rkpd2();
+		rebluearchive();
+		FrozenCavesLevel();
+		WaterChallengeLevel();
+		EarthChallengeLevel();
+		FireChallengeLevel();
+		AirChallengeLevel();
+	}
+
+	private static void abyssalnite(){
 		put( "abyssalnite", 2, false, "actors.mobs.Lavastone", 1f, "actors.mobs.GroundSpore", 1f, "actors.mobs.GroundSpore", 1f, "actors.mobs.Lavastone", 1f );
 		put( "abyssalnite", 3, false, "actors.mobs.Rat", 1f, "actors.mobs.Snake", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Swarm", 1f, "actors.mobs.Crab", 1f );
 		put( "abyssalnite", 4, false, "actors.mobs.Gnoll", 1f, "actors.mobs.Swarm", 1f, "actors.mobs.Crab", 1f, "actors.mobs.Crab", 1f, "actors.mobs.Slime", 1f, "actors.mobs.Slime", 1f );
@@ -58,6 +83,9 @@ public class ModSpawns {
 		put( "abyssalnite", 22, false, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f );
 		put( "abyssalnite", 23, false, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Scorpio", 1f );
 		put( "abyssalnite", 24, false, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Scorpio", 1f, "actors.mobs.Scorpio", 1f, "actors.mobs.Scorpio", 1f );
+	}
+
+	private static void cursed(){
 		put( "cursed", 2, false, "actors.mobs.Rat", 1f, "actors.mobs.Rat", 1f, "actors.mobs.Rat", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f );
 		put( "cursed", 3, false, "actors.mobs.Rat", 1f, "actors.mobs.Rat", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Crab", 1f, "actors.mobs.Swarm", 1f );
 		put( "cursed", 4, false, "actors.mobs.Rat", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Crab", 1f, "actors.mobs.Crab", 1f, "actors.mobs.Crab", 1f, "actors.mobs.Swarm", 1f );
@@ -77,6 +105,9 @@ public class ModSpawns {
 		put( "cursed", 22, false, "actors.mobs.Succubus", 1f, "actors.mobs.Succubus", 1f, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f );
 		put( "cursed", 23, false, "actors.mobs.Succubus", 1f, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Scorpio", 1f, "actors.mobs.Scorpio", 1f );
 		put( "cursed", 24, false, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Scorpio", 1f, "actors.mobs.Scorpio", 1f, "actors.mobs.Scorpio", 1f );
+	}
+
+	private static void deep(){
 		put( "deep", 1, true, "actors.mobs.Spirit", 5f );
 		put( "deep", 2, true, "actors.mobs.GnollThief", 1f, "actors.mobs.GnollMarksman", 1f, "actors.mobs.GnollKnight", 1f, "actors.mobs.Mandrake", 1f );
 		put( "deep", 3, true, "actors.mobs.GnollThief", 1f, "actors.mobs.GnollMarksman", 1f, "actors.mobs.GnollKnight", 1f, "actors.mobs.Mandrake", 1f );
@@ -94,6 +125,9 @@ public class ModSpawns {
 		put( "deep", 21, true, "actors.mobs.Elemental$FireElemental", 1f, "actors.mobs.Monk", 2f, "actors.mobs.Golem", 3f, "actors.mobs.Warlock", 1f, "actors.mobs.Succubus", 0.02f );
 		put( "deep", 23, true, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f );
 		put( "deep", 24, true, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 2f, "actors.mobs.Scorpio", 1f );
+	}
+
+	private static void dragonic(){
 		put( "dragonic", 2, false, "actors.mobs.Rat", 1f, "actors.mobs.Rat", 1f, "actors.mobs.Rat", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f );
 		put( "dragonic", 3, false, "actors.mobs.Rat", 1f, "actors.mobs.Rat", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Crab", 1f, "actors.mobs.Swarm", 1f );
 		put( "dragonic", 4, false, "actors.mobs.Rat", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Crab", 1f, "actors.mobs.Crab", 1f, "actors.mobs.Crab", 1f, "actors.mobs.Swarm", 1f );
@@ -112,6 +146,9 @@ public class ModSpawns {
 		put( "dragonic", 22, false, "actors.mobs.Succubus", 1f, "actors.mobs.Succubus", 1f, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f );
 		put( "dragonic", 23, false, "actors.mobs.Succubus", 1f, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Scorpio", 1f, "actors.mobs.Scorpio", 1f );
 		put( "dragonic", 24, false, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Scorpio", 1f, "actors.mobs.Scorpio", 1f, "actors.mobs.Scorpio", 1f );
+	}
+
+	private static void experienced(){
 		put( "experienced", 2, false, "actors.mobs.Rat", 1f, "actors.mobs.Rat", 1f, "actors.mobs.Snake", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f );
 		put( "experienced", 3, false, "actors.mobs.Rat", 1f, "actors.mobs.Snake", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Swarm", 1f, "actors.mobs.Crab", 1f );
 		put( "experienced", 4, false, "actors.mobs.Gnoll", 1f, "actors.mobs.Swarm", 1f, "actors.mobs.Crab", 1f, "actors.mobs.Crab", 1f, "actors.mobs.Slime", 1f, "actors.mobs.Slime", 1f );
@@ -131,6 +168,9 @@ public class ModSpawns {
 		put( "experienced", 22, false, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f );
 		put( "experienced", 23, false, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Scorpio", 1f );
 		put( "experienced", 24, false, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Scorpio", 1f, "actors.mobs.Scorpio", 1f, "actors.mobs.Scorpio", 1f );
+	}
+
+	private static void rearranged(){
 		put( "rearranged", 2, false, "actors.mobs.Rat", 1f, "actors.mobs.Rat", 1f, "actors.mobs.Snake", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f );
 		put( "rearranged", 3, false, "actors.mobs.Rat", 1f, "actors.mobs.Snake", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Swarm", 1f, "actors.mobs.Crab", 1f );
 		put( "rearranged", 4, false, "actors.mobs.Gnoll", 1f, "actors.mobs.Swarm", 1f, "actors.mobs.Crab", 1f, "actors.mobs.Crab", 1f, "actors.mobs.Slime", 1f, "actors.mobs.Slime", 1f );
@@ -150,6 +190,9 @@ public class ModSpawns {
 		put( "rearranged", 22, false, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f );
 		put( "rearranged", 23, false, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Scorpio", 1f );
 		put( "rearranged", 24, false, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Scorpio", 1f, "actors.mobs.Scorpio", 1f, "actors.mobs.Scorpio", 1f );
+	}
+
+	private static void reforged(){
 		put( "reforged", 2, false, "actors.mobs.Rat", 1f, "actors.mobs.Rat", 1f, "actors.mobs.Snake", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Spitter", 1f );
 		put( "reforged", 3, false, "actors.mobs.Rat", 1f, "actors.mobs.Snake", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Swarm", 1f, "actors.mobs.Crab", 1f, "actors.mobs.Spitter", 1f );
 		put( "reforged", 4, false, "actors.mobs.Gnoll", 1f, "actors.mobs.Swarm", 1f, "actors.mobs.Crab", 1f, "actors.mobs.Crab", 1f, "actors.mobs.Slime", 1f, "actors.mobs.Slime", 1f, "actors.mobs.Spitter", 1f );
@@ -169,10 +212,16 @@ public class ModSpawns {
 		put( "reforged", 22, false, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f );
 		put( "reforged", 23, false, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Scorpio", 1f, "actors.mobs.DemonGoo", 1f );
 		put( "reforged", 24, false, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Scorpio", 1f, "actors.mobs.Scorpio", 1f, "actors.mobs.DemonGoo", 1f, "actors.mobs.DemonGoo", 1f );
+	}
+
+	private static void ryuse(){
 		put( "ryuse", 1, false, "actors.mobs.PollutedRat", 1f, "actors.mobs.PollutedRat", 1f, "actors.mobs.PollutedRat", 1f, "actors.mobs.PollutedRat", 1f, "actors.mobs.Swarm", 1f, "actors.mobs.Swarm", 1f, "actors.mobs.Swarm", 1f );
 		put( "ryuse", 2, false, "actors.mobs.PollutedRat", 1f, "actors.mobs.PollutedRat", 1f, "actors.mobs.PollutedRat", 1f, "actors.mobs.Swarm", 1f, "actors.mobs.Swarm", 1f, "actors.mobs.PollutedCrab", 1f );
 		put( "ryuse", 3, false, "actors.mobs.PollutedRat", 1f, "actors.mobs.PollutedRat", 1f, "actors.mobs.Swarm", 1f, "actors.mobs.PollutedCrab", 1f, "actors.mobs.PollutedCrab", 1f, "actors.mobs.Slime", 1f );
 		put( "ryuse", 4, false, "actors.mobs.PollutedRat", 1f, "actors.mobs.PollutedCrab", 1f, "actors.mobs.PollutedCrab", 1f, "actors.mobs.PollutedCrab", 1f, "actors.mobs.Slime", 1f, "actors.mobs.Slime", 1f, "actors.mobs.CausticSlime", 1f );
+	}
+
+	private static void shittened(){
 		put( "shittened", 2, false, "actors.mobs.Snake", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f );
 		put( "shittened", 3, false, "actors.mobs.Snake", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Swarm", 1f, "actors.mobs.Crab", 1f );
 		put( "shittened", 4, false, "actors.mobs.Gnoll", 1f, "actors.mobs.Swarm", 1f, "actors.mobs.Crab", 1f, "actors.mobs.Crab", 1f, "actors.mobs.Slime", 1f, "actors.mobs.Slime", 1f );
@@ -192,6 +241,9 @@ public class ModSpawns {
 		put( "shittened", 22, false, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f );
 		put( "shittened", 23, false, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Scorpio", 1f );
 		put( "shittened", 24, false, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Scorpio", 1f, "actors.mobs.Scorpio", 1f, "actors.mobs.Scorpio", 1f );
+	}
+
+	private static void summoning(){
 		put( "summoning", 1, false, "actors.mobs.Rat", 1f, "actors.mobs.Rat", 1f, "actors.mobs.Rat", 1f, "actors.mobs.Rat", 1f, "actors.mobs.Rat", 1f, "actors.mobs.Rat", 1f, "actors.mobs.Rat", 1f, "actors.mobs.Rat", 1f, "actors.mobs.Rat", 1f, "actors.mobs.Rat", 1f );
 		put( "summoning", 2, false, "actors.mobs.Rat", 1f, "actors.mobs.Rat", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Dog", 1f, "actors.mobs.Dog", 1f );
 		put( "summoning", 3, false, "actors.mobs.Rat", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Crab", 1f, "actors.mobs.Crab", 1f, "actors.mobs.Swarm", 1f, "actors.mobs.Dog", 1f );
@@ -212,6 +264,9 @@ public class ModSpawns {
 		put( "summoning", 22, false, "actors.mobs.Succubus", 1f, "actors.mobs.Succubus", 1f, "actors.mobs.minions.Slime", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.minions.Slime", 1f );
 		put( "summoning", 23, false, "actors.mobs.Succubus", 1f, "actors.mobs.minions.Slime", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.minions.Slime", 1f, "actors.mobs.Scorpio", 1f, "actors.mobs.Scorpio", 1f );
 		put( "summoning", 24, false, "actors.mobs.minions.Slime", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Scorpio", 1f, "actors.mobs.Scorpio", 1f, "actors.mobs.Scorpio", 1f );
+	}
+
+	private static void tower(){
 		put( "tower", 2, false, "actors.mobs.Rat", 1f, "actors.mobs.Rat", 1f, "actors.mobs.Snake", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f );
 		put( "tower", 3, false, "actors.mobs.Rat", 1f, "actors.mobs.Snake", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Swarm", 1f, "actors.mobs.Crab", 1f );
 		put( "tower", 4, false, "actors.mobs.Gnoll", 1f, "actors.mobs.Swarm", 1f, "actors.mobs.Crab", 1f, "actors.mobs.Crab", 1f, "actors.mobs.Slime", 1f, "actors.mobs.Slime", 1f );
@@ -231,6 +286,9 @@ public class ModSpawns {
 		put( "tower", 22, false, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f );
 		put( "tower", 23, false, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Scorpio", 1f );
 		put( "tower", 24, false, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Scorpio", 1f, "actors.mobs.Scorpio", 1f, "actors.mobs.Scorpio", 1f );
+	}
+
+	private static void transformation(){
 		put( "transformation", 2, false, "actors.mobs.Rat", 1f, "actors.mobs.Rat", 1f, "actors.mobs.Snake", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f );
 		put( "transformation", 3, false, "actors.mobs.Rat", 1f, "actors.mobs.Snake", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Swarm", 1f, "actors.mobs.Crab", 1f );
 		put( "transformation", 4, false, "actors.mobs.Gnoll", 1f, "actors.mobs.Swarm", 1f, "actors.mobs.Crab", 1f, "actors.mobs.Crab", 1f, "actors.mobs.Slime", 1f, "actors.mobs.Slime", 1f );
@@ -250,6 +308,9 @@ public class ModSpawns {
 		put( "transformation", 22, false, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f );
 		put( "transformation", 23, false, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Scorpio", 1f );
 		put( "transformation", 24, false, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Scorpio", 1f, "actors.mobs.Scorpio", 1f, "actors.mobs.Scorpio", 1f );
+	}
+
+	private static void unleashed(){
 		put( "unleashed", 1, true, "actors.mobs.Rat", 3f, "actors.mobs.GreenSnake", 1f );
 		put( "unleashed", 2, true, "actors.mobs.Rat", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.GreenSnake", 1f );
 		put( "unleashed", 3, true, "actors.mobs.Rat", 1f, "actors.mobs.Gnoll", 2f, "actors.mobs.GreenSnake", 1f, "actors.mobs.Crab", 0.5f, "actors.mobs.Velocirooster", 0.5f, "actors.mobs.SewerFly", 0.05f );
@@ -270,6 +331,9 @@ public class ModSpawns {
 		put( "unleashed", 22, true, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 2f, "actors.mobs.Scorpio", 1f );
 		put( "unleashed", 23, true, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 2f, "actors.mobs.Scorpio", 3f, "actors.mobs.LostSoul", 1f );
 		put( "unleashed", 24, true, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 2f, "actors.mobs.Scorpio", 3f, "actors.mobs.LostSoul", 1f );
+	}
+
+	private static void spacebase(){
 		put( "spacebase", 1, true, "actors.mobs.Xenomorph", 4f );
 		put( "spacebase", 2, true, "actors.mobs.Xenomorph", 4f, "actors.mobs.Eye", 0.01f, "actors.mobs.OuterColonyScout", 4f );
 		put( "spacebase", 3, true, "actors.mobs.Xenomorph", 3f, "actors.mobs.Eye", 0.01f, "actors.mobs.OuterColonyScout", 4f, "actors.mobs.MaintenanceCrawler", 4f, "actors.mobs.ReplicatorSwarm", 0.1f );
@@ -290,21 +354,27 @@ public class ModSpawns {
 		put( "spacebase", 22, true, "actors.mobs.Eye", 0.1f, "actors.mobs.OuterColonyShockTrooper", 0.1f, "actors.mobs.Elemental$FireElemental", 0.1f, "actors.mobs.JedaKnight", 0.1f, "actors.mobs.WarMachine", 1f, "actors.mobs.SignalSiren", 1f );
 		put( "spacebase", 23, true, "actors.mobs.Eye", 0.2f, "actors.mobs.WarMachine", 0.2f, "actors.mobs.SignalSiren", 2f, "actors.mobs.Scorpio", 1f );
 		put( "spacebase", 24, true, "actors.mobs.Eye", 1f, "actors.mobs.SignalSiren", 3f, "actors.mobs.Scorpio", 2f );
-		put( "sps", 2, true, "actors.mobs.Rat", 1f, "actors.mobs.BrownBat", 1f );
-		put( "sps", 3, true, "actors.mobs.Rat", 1f, "actors.mobs.BrownBat", 1f, "actors.mobs.Shit", 1f, "actors.mobs.Swarm", 0.4f );
+	}
+
+	private static void sps(){
+		put( "sps", 2, true, "actors.mobs.Rat", 1f );
+		put( "sps", 3, true, "actors.mobs.Rat", 1f, "actors.mobs.Shit", 1f, "actors.mobs.Swarm", 0.4f );
 		put( "sps", 4, true, "actors.mobs.Shit", 1f, "actors.mobs.Swarm", 1f, "actors.mobs.Crab", 1f );
 		put( "sps", 7, true, "actors.mobs.Thief", 1f, "actors.mobs.Gnoll", 1f );
-		put( "sps", 8, true, "actors.mobs.Thief", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Guard", 0.5f, "actors.mobs.Assassin", 0.4f, "actors.mobs.FireRabbit", 0.5f, "actors.mobs.BambooMob", 1f );
-		put( "sps", 9, true, "actors.mobs.Thief", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Guard", 1f, "actors.mobs.Assassin", 1f, "actors.mobs.Zombie", 1f, "actors.mobs.FireRabbit", 1f, "actors.mobs.BambooMob", 1f );
+		put( "sps", 8, true, "actors.mobs.Thief", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Guard", 0.5f, "actors.mobs.FireRabbit", 0.5f, "actors.mobs.BambooMob", 1f );
+		put( "sps", 9, true, "actors.mobs.Thief", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Guard", 1f, "actors.mobs.Zombie", 1f, "actors.mobs.FireRabbit", 1f, "actors.mobs.BambooMob", 1f );
 		put( "sps", 12, true, "actors.mobs.Bat", 1f, "actors.mobs.Skeleton", 0.9f, "actors.mobs.Spinner", 0.3f, "actors.mobs.IceBug", 1f );
 		put( "sps", 13, true, "actors.mobs.Bat", 1f, "actors.mobs.Skeleton", 1f, "actors.mobs.Brute", 0.3f, "actors.mobs.Spinner", 0.6f, "actors.mobs.IceBug", 1f );
 		put( "sps", 14, true, "actors.mobs.Bat", 1f, "actors.mobs.Skeleton", 1f, "actors.mobs.Brute", 1f, "actors.mobs.Spinner", 1f, "actors.mobs.IceBug", 1f );
-		put( "sps", 17, true, "actors.mobs.Elemental$FireElemental", 1f, "actors.mobs.Monk", 0.8f, "actors.mobs.Golem", 0.4f, "actors.mobs.SpiderBot", 0.4f );
-		put( "sps", 18, true, "actors.mobs.Elemental$FireElemental", 1f, "actors.mobs.Warlock", 1f, "actors.mobs.Monk", 1f, "actors.mobs.Golem", 0.8f, "actors.mobs.SpiderBot", 0.8f );
-		put( "sps", 19, true, "actors.mobs.Elemental$FireElemental", 1f, "actors.mobs.Warlock", 1f, "actors.mobs.Monk", 1f, "actors.mobs.Golem", 1f, "actors.mobs.SpiderBot", 1f );
-		put( "sps", 22, true, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 0.5f, "actors.mobs.DemonGoo", 1f );
-		put( "sps", 23, true, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f, "actors.mobs.DemonGoo", 1f, "actors.mobs.Scorpio", 0.5f, "actors.mobs.DemonRabbit", 0.5f );
-		put( "sps", 24, true, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f, "actors.mobs.DemonGoo", 1f, "actors.mobs.Scorpio", 1f, "actors.mobs.DemonRabbit", 1f );
+		put( "sps", 17, true, "actors.mobs.Elemental$FireElemental", 1f, "actors.mobs.Monk", 0.8f, "actors.mobs.Golem", 0.4f );
+		put( "sps", 18, true, "actors.mobs.Elemental$FireElemental", 1f, "actors.mobs.Warlock", 1f, "actors.mobs.Monk", 1f, "actors.mobs.Golem", 0.8f );
+		put( "sps", 19, true, "actors.mobs.Elemental$FireElemental", 1f, "actors.mobs.Warlock", 1f, "actors.mobs.Monk", 1f, "actors.mobs.Golem", 1f );
+		put( "sps", 22, true, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 0.5f );
+		put( "sps", 23, true, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Scorpio", 0.5f, "actors.mobs.DemonRabbit", 0.5f );
+		put( "sps", 24, true, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Scorpio", 1f, "actors.mobs.DemonRabbit", 1f );
+	}
+
+	private static void rkpd2(){
 		put( "rkpd2", 2, false, "actors.mobs.Rat", 1f, "actors.mobs.Rat", 1f, "actors.mobs.Snake", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f );
 		put( "rkpd2", 3, false, "actors.mobs.Rat", 1f, "actors.mobs.Snake", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Swarm", 1f, "actors.mobs.Crab", 1f );
 		put( "rkpd2", 4, false, "actors.mobs.Gnoll", 1f, "actors.mobs.Swarm", 1f, "actors.mobs.Crab", 1f, "actors.mobs.Crab", 1f, "actors.mobs.Slime", 1f, "actors.mobs.Slime", 1f );
@@ -324,6 +394,9 @@ public class ModSpawns {
 		put( "rkpd2", 22, false, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f );
 		put( "rkpd2", 23, false, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Scorpio", 1f );
 		put( "rkpd2", 24, false, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Scorpio", 1f, "actors.mobs.Scorpio", 1f, "actors.mobs.Scorpio", 1f );
+	}
+
+	private static void rebluearchive(){
 		put( "rebluearchive", 2, false, "actors.mobs.Rat", 1f, "actors.mobs.Rat", 1f, "actors.mobs.Snake", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f );
 		put( "rebluearchive", 3, false, "actors.mobs.Rat", 1f, "actors.mobs.Snake", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Gnoll", 1f, "actors.mobs.Swarm", 1f, "actors.mobs.Crab", 1f );
 		put( "rebluearchive", 4, false, "actors.mobs.Gnoll", 1f, "actors.mobs.Swarm", 1f, "actors.mobs.Crab", 1f, "actors.mobs.Crab", 1f, "actors.mobs.Slime", 1f, "actors.mobs.Slime", 1f );
@@ -343,26 +416,32 @@ public class ModSpawns {
 		put( "rebluearchive", 22, false, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f );
 		put( "rebluearchive", 23, false, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Scorpio", 1f );
 		put( "rebluearchive", 24, false, "actors.mobs.Succubus", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Eye", 1f, "actors.mobs.Scorpio", 1f, "actors.mobs.Scorpio", 1f, "actors.mobs.Scorpio", 1f );
+	}
+
+	private static void FrozenCavesLevel(){
 		put( "FrozenCavesLevel", 1, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f );
-		put( "FrozenCavesLevel", 2, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f, "actors.mobs.AirElemental", 1f );
-		put( "FrozenCavesLevel", 3, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f, "actors.mobs.AirElemental", 2f );
-		put( "FrozenCavesLevel", 4, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f, "actors.mobs.AirElemental", 1f, "actors.mobs.Yeti", 0.5f );
+		put( "FrozenCavesLevel", 2, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f );
+		put( "FrozenCavesLevel", 3, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f );
+		put( "FrozenCavesLevel", 4, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f, "actors.mobs.Yeti", 0.5f );
 		put( "FrozenCavesLevel", 6, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f );
-		put( "FrozenCavesLevel", 7, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f, "actors.mobs.AirElemental", 1f );
-		put( "FrozenCavesLevel", 8, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f, "actors.mobs.AirElemental", 2f );
-		put( "FrozenCavesLevel", 9, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f, "actors.mobs.AirElemental", 1f, "actors.mobs.Yeti", 0.5f );
+		put( "FrozenCavesLevel", 7, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f );
+		put( "FrozenCavesLevel", 8, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f );
+		put( "FrozenCavesLevel", 9, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f, "actors.mobs.Yeti", 0.5f );
 		put( "FrozenCavesLevel", 11, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f );
-		put( "FrozenCavesLevel", 12, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f, "actors.mobs.AirElemental", 1f );
-		put( "FrozenCavesLevel", 13, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f, "actors.mobs.AirElemental", 2f );
-		put( "FrozenCavesLevel", 14, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f, "actors.mobs.AirElemental", 1f, "actors.mobs.Yeti", 0.5f );
+		put( "FrozenCavesLevel", 12, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f );
+		put( "FrozenCavesLevel", 13, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f );
+		put( "FrozenCavesLevel", 14, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f, "actors.mobs.Yeti", 0.5f );
 		put( "FrozenCavesLevel", 16, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f );
-		put( "FrozenCavesLevel", 17, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f, "actors.mobs.AirElemental", 1f );
-		put( "FrozenCavesLevel", 18, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f, "actors.mobs.AirElemental", 2f );
-		put( "FrozenCavesLevel", 19, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f, "actors.mobs.AirElemental", 1f, "actors.mobs.Yeti", 0.5f );
+		put( "FrozenCavesLevel", 17, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f );
+		put( "FrozenCavesLevel", 18, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f );
+		put( "FrozenCavesLevel", 19, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f, "actors.mobs.Yeti", 0.5f );
 		put( "FrozenCavesLevel", 21, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f );
-		put( "FrozenCavesLevel", 22, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f, "actors.mobs.AirElemental", 1f );
-		put( "FrozenCavesLevel", 23, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f, "actors.mobs.AirElemental", 2f );
-		put( "FrozenCavesLevel", 24, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f, "actors.mobs.AirElemental", 1f, "actors.mobs.Yeti", 0.5f );
+		put( "FrozenCavesLevel", 22, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f );
+		put( "FrozenCavesLevel", 23, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f );
+		put( "FrozenCavesLevel", 24, true, "actors.mobs.BrownWolf", 1f, "actors.mobs.GrayWolf", 1f, "actors.mobs.Yeti", 0.5f );
+	}
+
+	private static void WaterChallengeLevel(){
 		put( "WaterChallengeLevel", 1, false, "actors.mobs.WaterElemental", 1f, "actors.mobs.WaterElemental", 1f, "actors.mobs.WaterLarvae", 1f, "actors.mobs.WaterLarvae", 1f, "actors.mobs.WaterLarvae", 1f, "actors.mobs.WaterLarvae", 1f );
 		put( "WaterChallengeLevel", 2, false, "actors.mobs.WaterElemental", 1f, "actors.mobs.NonBossGoo", 1f, "actors.mobs.WaterLarvae", 1f, "actors.mobs.WaterLarvae", 1f, "actors.mobs.WaterLarvae", 1f, "actors.mobs.MageCrab", 1f );
 		put( "WaterChallengeLevel", 3, false, "actors.mobs.WaterElemental", 1f, "actors.mobs.NonBossGoo", 1f, "actors.mobs.WaterLarvae", 1f, "actors.mobs.WaterLarvae", 1f, "actors.mobs.MageCrab", 1f, "actors.mobs.MageCrab", 1f );
@@ -383,6 +462,9 @@ public class ModSpawns {
 		put( "WaterChallengeLevel", 22, false, "actors.mobs.WaterElemental", 1f, "actors.mobs.NonBossGoo", 1f, "actors.mobs.WaterLarvae", 1f, "actors.mobs.WaterLarvae", 1f, "actors.mobs.WaterLarvae", 1f, "actors.mobs.MageCrab", 1f );
 		put( "WaterChallengeLevel", 23, false, "actors.mobs.WaterElemental", 1f, "actors.mobs.NonBossGoo", 1f, "actors.mobs.WaterLarvae", 1f, "actors.mobs.WaterLarvae", 1f, "actors.mobs.MageCrab", 1f, "actors.mobs.MageCrab", 1f );
 		put( "WaterChallengeLevel", 24, false, "actors.mobs.NonBossGoo", 1f, "actors.mobs.NonBossGoo", 1f, "actors.mobs.MageCrab", 1f, "actors.mobs.MageCrab", 1f, "actors.mobs.MageCrab", 1f, "actors.mobs.WaterLarvae", 1f );
+	}
+
+	private static void EarthChallengeLevel(){
 		put( "EarthChallengeLevel", 1, false, "actors.mobs.FossilSkeleton", 1f, "actors.mobs.FossilSkeleton", 1f, "actors.mobs.EarthenGuardian", 1f, "actors.mobs.EarthenGuardian", 1f, "actors.mobs.GnollBattlemage", 1f, "actors.mobs.GnollBattlemage", 1f );
 		put( "EarthChallengeLevel", 2, false, "actors.mobs.FossilSkeleton", 1f, "actors.mobs.FossilSkeleton", 1f, "actors.mobs.EarthenGuardian", 1f, "actors.mobs.EarthenGuardian", 1f, "actors.mobs.GnollBattlemage", 1f, "actors.mobs.GnollBattlemage", 1f );
 		put( "EarthChallengeLevel", 3, false, "actors.mobs.FossilSkeleton", 1f, "actors.mobs.FossilSkeleton", 1f, "actors.mobs.EarthenGuardian", 1f, "actors.mobs.EarthenGuardian", 1f, "actors.mobs.GnollBattlemage", 1f, "actors.mobs.GnollBattlemage", 1f );
@@ -403,6 +485,9 @@ public class ModSpawns {
 		put( "EarthChallengeLevel", 22, false, "actors.mobs.FossilSkeleton", 1f, "actors.mobs.FossilSkeleton", 1f, "actors.mobs.EarthenGuardian", 1f, "actors.mobs.EarthenGuardian", 1f, "actors.mobs.GnollBattlemage", 1f, "actors.mobs.GnollBattlemage", 1f );
 		put( "EarthChallengeLevel", 23, false, "actors.mobs.FossilSkeleton", 1f, "actors.mobs.FossilSkeleton", 1f, "actors.mobs.EarthenGuardian", 1f, "actors.mobs.EarthenGuardian", 1f, "actors.mobs.GnollBattlemage", 1f, "actors.mobs.GnollBattlemage", 1f );
 		put( "EarthChallengeLevel", 24, false, "actors.mobs.FossilSkeleton", 1f, "actors.mobs.FossilSkeleton", 1f, "actors.mobs.EarthenGuardian", 1f, "actors.mobs.EarthenGuardian", 1f, "actors.mobs.GnollBattlemage", 1f, "actors.mobs.GnollBattlemage", 1f );
+	}
+
+	private static void FireChallengeLevel(){
 		put( "FireChallengeLevel", 1, false, "actors.mobs.AdultFireElemental", 1f, "actors.mobs.Kupua", 1f );
 		put( "FireChallengeLevel", 2, false, "actors.mobs.AdultFireElemental", 1f, "actors.mobs.Kupua", 1f );
 		put( "FireChallengeLevel", 3, false, "actors.mobs.AdultFireElemental", 1f, "actors.mobs.Kupua", 1f );
@@ -423,6 +508,9 @@ public class ModSpawns {
 		put( "FireChallengeLevel", 22, false, "actors.mobs.AdultFireElemental", 1f, "actors.mobs.Kupua", 1f );
 		put( "FireChallengeLevel", 23, false, "actors.mobs.AdultFireElemental", 1f, "actors.mobs.Kupua", 1f );
 		put( "FireChallengeLevel", 24, false, "actors.mobs.AdultFireElemental", 1f, "actors.mobs.Kupua", 1f );
+	}
+
+	private static void AirChallengeLevel(){
 		put( "AirChallengeLevel", 1, false, "actors.mobs.SonicBat", 1f, "actors.mobs.AirElemental", 1f, "actors.mobs.Shinobi", 1f );
 		put( "AirChallengeLevel", 2, false, "actors.mobs.SonicBat", 1f, "actors.mobs.AirElemental", 1f, "actors.mobs.Shinobi", 1f );
 		put( "AirChallengeLevel", 3, false, "actors.mobs.SonicBat", 1f, "actors.mobs.AirElemental", 1f, "actors.mobs.Shinobi", 1f );

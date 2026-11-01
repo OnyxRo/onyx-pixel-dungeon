@@ -1,9 +1,12 @@
-"""Sewers balance page, every monster and item on floors 1 to 5 with its picture and its mod's icon.
+"""Balance pages, every monster and item of each section of the dungeon with its picture and its mod's icon.
 
-    (cd core/src/main/assets && java @../../../../build/cp-run.args BalanceReport 150 <repo>/build/balance-sewers.tsv 5)
-    python -I scripts/balance-sewers.py
+    (cd core/src/main/assets && java @../../../../build/cp-run.args BalanceReport 100 <repo>/build/balance-all.tsv 26)
+    (cd core/src/main/assets && java @../../../../build/cp-run.args FightReport <repo>/build/balance-all.tsv <repo>/build/fight-all.tsv)
+    python -I scripts/balance-pages.py          all five sections
+    python -I scripts/balance-pages.py 2        just floors 11 to 15
 
-Reads build/balance-sewers.tsv, writes build/balance-sewers.html (open it in a browser, no account needed).
+Reads build/balance-all.tsv and build/fight-all.tsv, writes build/balance-floors-1-5.html and the other four
+(open them in a browser, no account needed). Each page links to the others.
 Monster pictures are the first idle frame, read from each sprite class's texture and TextureFilm lines.
 Item pictures are cut from sprites/items.png. An item's mod is worked out from its source file, files that
 were in the first commit are Shattered's, the rest are matched by mod names in the file or the commit that added it.
@@ -15,10 +18,26 @@ from PIL import Image
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 JAVA = os.path.join(ROOT, "core/src/main/java")
 ASSETS = os.path.join(ROOT, "core/src/main/assets")
-SRC = os.path.join(ROOT, "build/balance-sewers.tsv")
-OUT = os.path.join(ROOT, "build/balance-sewers.html")
-HERO_HP = 30
-FLOORS_PER_SEED = 5
+SRC = os.path.join(ROOT, "build/balance-all.tsv")
+#the five sections, their floors, the hero's usual health at the end of each, and Shattered's regular monsters
+#there (its MobSpawner), which set the comparison line
+SECTIONS = [
+    ("Sewers", 1, 5, 30, ["Rat", "Snake", "Gnoll", "Swarm", "Crab", "Slime"]),
+    ("Prison", 6, 10, 55, ["Skeleton", "Thief", "DM100", "Guard", "Necromancer"]),
+    ("Caves", 11, 15, 80, ["Bat", "Brute", "Shaman$RedShaman", "Shaman$BlueShaman", "Shaman$PurpleShaman", "Spinner", "DM200"]),
+    ("City", 16, 20, 105, ["Ghoul", "Elemental$FireElemental", "Elemental$FrostElemental", "Elemental$ShockElemental", "Warlock", "Monk", "Golem"]),
+    ("Halls", 21, 26, 130, ["Succubus", "Eye", "Scorpio"]),
+]
+if len(sys.argv) == 1:
+    #every section, each in its own run so nothing carries over
+    for i in range(len(SECTIONS)):
+        subprocess.run([sys.executable, "-I", os.path.abspath(__file__), str(i)], check=True)
+    sys.exit(0)
+SECTION = int(sys.argv[1])
+NAME, LOW, HIGH, HERO_HP, SHATTERED_REGULAR = SECTIONS[SECTION]
+page_name = lambda i: "balance-floors-%d-%d.html" % (SECTIONS[i][1], SECTIONS[i][2])
+OUT = os.path.join(ROOT, "build", page_name(SECTION))
+FLOORS_PER_SEED = HIGH - LOW + 1
 
 MODS = {  #key -> name shown on the page
     "shattered": "Shattered", "abyssalnite": "Abyssalnite", "combusted": "Combusted", "cursed": "Cursed",
@@ -150,6 +169,7 @@ def mod_of(cls, is_mob):
 floors, mobs, items = 0, {}, {}
 for line in open(SRC, encoding="utf-8"):
     p = line.rstrip("\n").split("\t")
+    if not LOW <= int(p[1]) <= HIGH: continue
     if p[0] == "FLOOR": floors += 1
     elif p[0] == "MOB":
         d, cls = int(p[1]), p[4]
@@ -163,26 +183,25 @@ for line in open(SRC, encoding="utf-8"):
 
 #--- what each monster did in a real fight (scripts/test/FightReport.java), by class and floor
 FIGHT = {}
-fight_path = os.path.join(ROOT, "build/fight-sewers.tsv")
+fight_path = os.path.join(ROOT, "build/fight-all.tsv")
 if os.path.exists(fight_path):
     for line in open(fight_path, encoding="utf-8"):
-        c, d, ok, hits, avg, mx, pt, start = line.rstrip("\n").split("\t")
-        FIGHT[(c, int(d))] = (int(ok), int(hits), float(avg), int(mx), float(pt), int(start))
+        c, d, ok, hits, avg, mx, pt, start, kills = (line.rstrip("\n").split("\t") + ["0"])[:9]
+        FIGHT[(c, int(d))] = (int(ok), int(hits), float(avg), int(mx), float(pt), int(start), int(kills))
 
 seeds = floors // FLOORS_PER_SEED
 mean = lambda xs: sum(xs) / len(xs) if xs else 0
 icons, out_m, out_i = {}, [], []
-#Shattered's regular sewer monsters (its MobSpawner for floors 1 to 4), for the comparison line
-SHATTERED_SEWER = ["Rat", "Snake", "Gnoll", "Swarm", "Crab", "Slime"]
 for cls, m in mobs.items():
     key = mod_of(cls, True); icons.setdefault(key, mod_icon(key))
     melee = mean(m["avg"]); per = m["count"] / floors
     #the fight numbers, averaged over the floors it was seen on, weighted by how often it was seen there
-    w_sum = hit = top = turn = 0; fought = []
+    w_sum = hit = top = turn = kills = fights = 0; fought = []
     for d, n in m["depths"].items():
         f = FIGHT.get((cls, d))
         if not f or f[0] == 0: continue
         w_sum += n; hit += f[2] * n; turn += f[4] * n; top = max(top, f[3]); fought.append(f)
+        kills += f[6]; fights += f[0]
     if w_sum:
         hit /= w_sum; turn /= w_sum
         #harmless, never hurt the hero. near, only hurt him from right beside it (it does not move). fight, came and fought
@@ -191,11 +210,11 @@ for cls, m in mobs.items():
         hit, top, turn, how = melee, m["max"], None, "melee"
     out_m.append({"name": re.sub(r"#\d", "", m["name"]), "cls": cls.split(".")[-1], "mod": key, "pic": mob_picture(m["sprite"]),
                   "avg": round(hit, 1), "max": top, "perTurn": round(turn, 2) if turn is not None else None, "melee": round(melee, 1),
-                  "how": how, "hp": m["hp"], "perFloor": round(per, 4), "weighted": round(hit * per, 3),
+                  "how": how, "kills": kills, "fights": fights, "hp": m["hp"], "perFloor": round(per, 4), "weighted": round(hit * per, 3),
                   "floors": sorted(m["depths"]), "worlds": [w for w, _ in m["worlds"].most_common(3)]})
-base = max(x["avg"] for x in out_m if x["cls"] in SHATTERED_SEWER)
+base = max([x["avg"] for x in out_m if x["cls"] in SHATTERED_REGULAR] or [0])
 for x in out_m:
-    x["flag"] = x["max"] >= HERO_HP or x["avg"] > base * 1.5
+    x["flag"] = x["kills"] > 0 or x["max"] >= HERO_HP or x["avg"] > base * 1.5
 for cls, it in items.items():
     key = mod_of(cls, False); icons.setdefault(key, mod_icon(key))
     per = it["count"] / floors
@@ -206,9 +225,10 @@ for cls, it in items.items():
                   "max": round(mean(it["max"]), 1) if it["max"] else None, "weighted": round(dmg * per, 3) if dmg is not None else None,
                   "floors": sorted(it["depths"]), "where": [h.lower().replace("_", " ") for h, _ in it["heaps"].most_common(2)]})
 
-data = {"seeds": seeds, "floors": floors, "heroHp": HERO_HP, "base": base, "mods": {k: [MODS.get(k, k), v] for k, v in icons.items()},
+data = {"seeds": seeds, "floors": floors, "heroHp": HERO_HP, "base": base, "name": NAME, "first": LOW, "last": HIGH,
+        "regular": SHATTERED_REGULAR, "pages": [[sec[0], sec[1], sec[2], page_name(i), i == SECTION] for i, sec in enumerate(SECTIONS)], "mods": {k: [MODS.get(k, k), v] for k, v in icons.items()},
         "mobs": sorted(out_m, key=lambda x: -x["avg"]), "items": sorted(out_i, key=lambda x: -x["perFloor"])}
-page = open(os.path.join(ROOT, "scripts/balance-sewers-page.html"), encoding="utf-8").read().replace("/*DATA*/null", json.dumps(data, separators=(",", ":")))
+page = open(os.path.join(ROOT, "scripts/balance-section-page.html"), encoding="utf-8").read().replace("Sewers Balance Check", NAME + " Balance Check").replace("/*DATA*/null", json.dumps(data, separators=(",", ":")))
 open(OUT, "w", encoding="utf-8").write(page)
 print("SUMMARY %d monsters (%d without picture), %d items (%d without picture), %d unknown mods: %s" % (
     len(out_m), sum(1 for x in out_m if not x["pic"]), len(out_i), sum(1 for x in out_i if not x["pic"]),

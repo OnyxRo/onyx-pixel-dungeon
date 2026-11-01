@@ -47,6 +47,10 @@ tr.flag td { background: var(--danger-soft); }
 .pic span { color: #9a918a; font-size: 0.7rem; }
 .who b { display: block; }
 .who span { font: 0.75rem var(--mono); color: var(--muted); }
+.pages { display: flex; flex-wrap: wrap; gap: 6px 10px; font-size: 0.95rem; }
+.pages a, .pages b { padding: 4px 12px; border-radius: 4px; border: 1px solid var(--line); text-decoration: none; color: var(--fg); background: var(--panel); }
+.pages b { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.pages a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .who .how { display: block; font-size: 0.78rem; font-style: normal; color: var(--accent); }
 .mod { display: grid; justify-items: center; gap: 2px; width: 84px; text-align: center; font-size: 0.75rem; line-height: 1.15; }
 .mod img { width: 32px; height: 32px; image-rendering: pixelated; border-radius: 4px; }
@@ -62,18 +66,19 @@ tr.flag .bar .fill { background: var(--danger); }
 <body>
 <div class="wrap">
   <header style="display:grid;gap:10px">
-    <h1>Sewers balance check</h1>
-    <p class="muted">Floors 1 to 5 of <span id="nseeds"></span> seeded runs, built the way a normal game builds them. Each monster and item counted was on the floor when it was made. Monster damage comes from real fights. Each monster was put on a sewer floor of the same depth, 3 steps from a level 1 hero with no armor who stands still, and played its own turns for 50 turns, 6 times. Every point of health the hero lost counts, from bites, zaps, bolts, poison, acid, fire or anything else. A hit is one loss of health, so a poisoned hero takes many small hits.</p>
+    <nav class="pages" id="pages" aria-label="Sections"></nav>
+    <h1 id="title">Balance check</h1>
+    <p class="muted"><span id="range"></span> of <span id="nseeds"></span> seeded runs, built the way a normal game builds them. Each monster and item counted was on the floor when it was made. Monster damage comes from real fights. Each monster was put on a plain Shattered floor of the same depth, 3 steps from a hero who stands still, and played its own turns for 50 turns, 6 times. The hero is the usual level for the floor (level 3 with 30 health at floor 5, level 23 with 130 at floor 25) with no armor, healed to full before every turn. Every point of health he lost counts, from bites, zaps, bolts, poison, acid, fire or anything else. A hit is one loss of health, so a poisoned hero takes many small hits. Every monster is made to attack, even ones like statues that in the game wait until you disturb them.</p>
     <div class="stats" id="stats"></div>
   </header>
 
   <h2>Monsters</h2>
   <div class="legend">
     <span><i class="sw" style="background:var(--bar)"></i>average hit in a fight</span>
-    <span><i class="sw" style="background:var(--danger)"></i>can take a full health bar, or hits 1.5 times harder than Shattered's strongest sewer monster</span>
+    <span><i class="sw" style="background:var(--danger)"></i>killed a full health hero in one turn, or hits 1.5 times harder than the blue line</span>
     <span><i class="sw" style="background:var(--fg);width:3px"></i>top hit</span>
-    <span><i class="sw" style="background:var(--base);width:3px"></i>average hit of the hardest of Shattered's regular sewer monsters (rat, snake, gnoll, swarm, crab, slime)</span>
-    <span><i class="sw" style="background:var(--accent);width:3px"></i>hero health (30)</span>
+    <span><i class="sw" style="background:var(--base);width:3px"></i><span id="baselabel"></span></span>
+    <span><i class="sw" style="background:var(--accent);width:3px"></i><span id="hplabel"></span></span>
   </div>
   <p class="muted small">Damage per turn is all the health the hero lost divided by the 50 turns, so it counts misses, walking up and how often it attacks. Normal attack is the old number, a roll of its plain melee attack only. Damage times chance is the average hit multiplied by the chance the monster is on a floor. Monsters that never move were also tested standing right next to the hero. Fish need water and friendly creatures never attack, so they show no fight. Click any column to sort.</p>
   <div class="controls">
@@ -101,12 +106,17 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":
 const pic = p => `<div class="pic">${p ? `<img src="${p}" alt="">` : "<span>none</span>"}</div>`;
 const mod = k => `<div class="mod"><img src="${DATA.mods[k][1]}" alt=""><span>${esc(DATA.mods[k][0])}</span></div>`;
 const per100 = v => (v * 100).toFixed(v < 0.1 ? 1 : 0);
-const floorsTxt = f => f.length === 5 ? "1 to 5" : f.join(", ");
+const floorsTxt = f => f.length === DATA.last - DATA.first + 1 ? DATA.first + " to " + DATA.last : f.join(", ");
 $("nseeds").textContent = DATA.seeds;
+$("title").textContent = DATA.name + " balance check";
+$("range").textContent = "Floors " + DATA.first + " to " + DATA.last;
+$("baselabel").textContent = "average hit of the hardest of Shattered's regular monsters here (" + DATA.regular.map(r => r.split("$").pop()).join(", ") + ")";
+$("hplabel").textContent = "usual hero health at floor " + DATA.last + " (" + DATA.heroHp + ")";
+$("pages").innerHTML = DATA.pages.map(([n, a, b, href, here]) => here ? `<b>${n} ${a} to ${b}</b>` : `<a href="${href}">${n} ${a} to ${b}</a>`).join("");
 
 const red = DATA.mobs.filter(m => m.flag);
 $("stats").innerHTML = [
-  [DATA.mobs.length, "kinds of monster"], [DATA.items.length, "kinds of item"], [DATA.base, "hardest regular Shattered sewer hit"],
+  [DATA.mobs.length, "kinds of monster"], [DATA.items.length, "kinds of item"], [DATA.base, "hardest regular Shattered hit here"],
   [red.length, "monsters in red"], [Math.round(1 / red.reduce((a, m) => a + m.perFloor, 0)), "floors per red monster, on average"]
 ].map(([v, l]) => `<div><b>${v}</b><span>${l}</span></div>`).join("");
 
@@ -136,7 +146,7 @@ const xmax = Math.max(...DATA.mobs.map(m => m.max), DATA.heroHp) * 1.02;
 function drawMobs(){
   const q = $("mobq").value.trim().toLowerCase(), fo = $("mobflag").checked, ms = $("mobmod").value;
   const rows = DATA.mobs.filter(m => (!fo || m.flag) && (!ms || m.mod === ms) && (!q || (m.name + " " + m.cls).toLowerCase().includes(q)));
-  const cols = [["", ""], ["name", "Monster"], ["mod", "Mod"], ["avg", "Hit in a fight"], ["max", "Top hit"], ["perTurn", "Damage per turn"], ["melee", "Normal attack"], ["hp", "Health"], ["perFloor", "Per 100 floors"], ["weighted", "Damage times chance"], ["", "Floors"]];
+  const cols = [["", ""], ["name", "Monster"], ["mod", "Mod"], ["avg", "Hit in a fight"], ["max", "Top hit"], ["perTurn", "Damage per turn"], ["kills", "Killed a full health hero"], ["melee", "Normal attack"], ["hp", "Health"], ["perFloor", "Per 100 floors"], ["weighted", "Damage times chance"], ["", "Floors"]];
   sortable($("mobtable"), cols, rows, mobState, drawMobs);
   const pct = v => (100 * v / xmax).toFixed(2) + "%";
   $("mobtable").tBodies[0].innerHTML = rows.map(m => `<tr class="${m.flag ? "flag" : ""}" title="Worlds ${esc(m.worlds.join(", "))}">
@@ -146,9 +156,10 @@ function drawMobs(){
     <td><div class="bar"><b>${m.avg}</b><div class="track">
       <i class="ln" style="left:${pct(DATA.base)};background:var(--base)"></i><i class="ln" style="left:${pct(DATA.heroHp)};background:var(--accent)"></i>
       <i class="fill" style="width:${pct(m.avg)}"></i><i class="tick" style="left:${pct(m.max)}"></i></div></div></td>
-    <td class="n">${m.max}</td><td class="n">${m.perTurn === null ? "" : m.perTurn.toFixed(2)}</td><td class="n muted">${m.melee}</td>
+    <td class="n">${m.max}</td><td class="n">${m.perTurn === null ? "" : m.perTurn.toFixed(2)}</td>
+    <td class="n">${m.kills ? `<b class="flagtxt">${m.kills} times</b><br><span class="muted small">in ${m.fights} fights</span>` : ""}</td><td class="n muted">${m.melee}</td>
     <td class="n">${m.hp}</td><td class="n">${per100(m.perFloor)}</td><td class="n">${m.weighted.toFixed(2)}</td>
-    <td class="small">${floorsTxt(m.floors)}</td></tr>`).join("") || `<tr><td colspan="11" class="muted">No monsters match.</td></tr>`;
+    <td class="small">${floorsTxt(m.floors)}</td></tr>`).join("") || `<tr><td colspan="12" class="muted">No monsters match.</td></tr>`;
 }
 
 const itemState = {key: "perFloor", dir: -1};
