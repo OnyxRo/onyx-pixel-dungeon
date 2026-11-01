@@ -29,7 +29,7 @@ public class ItemSpriteSheet {
 	public static final int SIZE = 16;
 
 	private static final int TX_WIDTH = 256;
-	private static final int TX_HEIGHT = 5440;
+	private static final int TX_HEIGHT = 5456; //must match the height of sprites/items.png, ItemSpriteTest checks it
 
 	private static final int WIDTH = TX_WIDTH / SIZE;
 

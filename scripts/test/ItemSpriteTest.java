@@ -23,6 +23,18 @@ public class ItemSpriteTest {
 	public static void main( String[] args ) throws Exception {
 		TestBoot.boot();
 		int failures = 0, checks = 0;
+		//the film works out each picture from the sheet size written in ItemSpriteSheet. When items.png grew a row and the
+		//number did not, every lower item showed half of the next picture (2026-11-01)
+		{
+			checks++;
+			java.awt.image.BufferedImage sheet = javax.imageio.ImageIO.read( new java.io.File( "sprites/items.png" ) );
+			java.lang.reflect.Field h = ItemSpriteSheet.class.getDeclaredField( "TX_HEIGHT" );
+			h.setAccessible( true );
+			if (sheet.getHeight() != h.getInt( null ) || sheet.getWidth() != 256) {
+				failures++;
+				System.out.println( "FAIL: items.png is " + sheet.getWidth() + "x" + sheet.getHeight() + " but ItemSpriteSheet.TX_HEIGHT is " + h.getInt( null ) );
+			}
+		}
 		//the bestiary loads every monster class on the hero select screen, before any hero exists (crash eeca67f4)
 		com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero = null;
 		for (com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary b : com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary.values()) {
