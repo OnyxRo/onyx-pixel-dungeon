@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sewers Balance Check</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* layout, one column, a sortable monster table then a sortable item table, pixel art kept sharp */
+:root {
+  --bg: #f3f1ee; --panel: #fbfaf8; --fg: #23201d; --muted: #6c655e; --line: #dcd6cf;
+  --accent: #b86b1c; --danger: #c2372b; --danger-soft: #f6dcd8; --base: #3b6fa8; --bar: #8f857a; --tile: #2b2724;
+  --display: "Pixelify Sans", "Courier New", monospace;
+  --body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root {
+  --bg: #1a1816; --panel: #23201d; --fg: #ece6df; --muted: #a39a90; --line: #3a3530;
+  --accent: #e39a4a; --danger: #ff6b5c; --danger-soft: #4a2420; --base: #7fb0e8; --bar: #8a8076; --tile: #110f0e; color-scheme: dark } }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 var(--body); }
+.wrap { max-width: 1200px; margin: 0 auto; padding: 32px 16px 64px; display: grid; gap: 22px; }
+h1, h2 { font-family: var(--display); font-weight: 700; margin: 0; line-height: 1.15; text-wrap: balance; }
+h1 { font-size: 2.2rem; }
+h2 { font-size: 1.5rem; margin-top: 18px; }
+p { margin: 0; max-width: 72ch; }
+.muted { color: var(--muted); }
+.small { font-size: 0.85rem; }
+.stats { display: flex; flex-wrap: wrap; gap: 10px 28px; }
+.stats div { display: grid; }
+.stats b { font: 600 1.3rem var(--mono); }
+.stats span { font-size: 0.85rem; color: var(--muted); }
+.controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.controls input, .controls select { font: 0.95rem var(--body); padding: 6px 10px; border: 1px solid var(--line); border-radius: 4px; background: var(--panel); color: var(--fg); }
+.controls label { display: flex; gap: 6px; align-items: center; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 0.85rem; color: var(--muted); align-items: center; }
+.sw { display: inline-block; width: 14px; height: 10px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
+.tablebox { overflow: auto; max-height: 75vh; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); }
+table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+th { position: sticky; top: 0; z-index: 2; background: var(--panel); cursor: pointer; white-space: nowrap; font-weight: 700; user-select: none; }
+th:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+td.n { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+tr.flag td { background: var(--danger-soft); }
+.pic { width: 56px; height: 56px; display: grid; place-items: center; background: var(--tile); border-radius: 4px; }
+.pic img { image-rendering: pixelated; max-width: 52px; max-height: 52px; }
+.pic span { color: #9a918a; font-size: 0.7rem; }
+.who b { display: block; }
+.who span { font: 0.75rem var(--mono); color: var(--muted); }
+.mod { display: grid; justify-items: center; gap: 2px; width: 84px; text-align: center; font-size: 0.75rem; line-height: 1.15; }
+.mod img { width: 32px; height: 32px; image-rendering: pixelated; border-radius: 4px; }
+.bar { display: flex; align-items: center; gap: 8px; min-width: 190px; }
+.bar .track { position: relative; flex: 1; height: 12px; }
+.bar .fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--bar); border-radius: 2px; }
+tr.flag .bar .fill { background: var(--danger); }
+.bar .tick { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--fg); }
+.bar .ln { position: absolute; top: -5px; bottom: -5px; width: 2px; }
+.bar b { font: 600 0.9rem var(--mono); width: 44px; text-align: right; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header style="display:grid;gap:10px">
+    <h1>Sewers balance check</h1>
+    <p class="muted">Floors 1 to 5 of <span id="nseeds"></span> seeded runs, built the way a normal game builds them. Each monster and item counted was on the floor when it was made. A monster's hit is 400 rolls of its normal attack. Zaps, explosions and other special attacks are not included.</p>
+    <div class="stats" id="stats"></div>
+  </header>
+
+  <h2>Monsters</h2>
+  <div class="legend">
+    <span><i class="sw" style="background:var(--bar)"></i>average hit</span>
+    <span><i class="sw" style="background:var(--danger)"></i>can take a full health bar, or hits 1.5 times harder than Shattered's strongest sewer monster</span>
+    <span><i class="sw" style="background:var(--fg);width:3px"></i>top hit</span>
+    <span><i class="sw" style="background:var(--base);width:3px"></i>Shattered's strongest sewer monster</span>
+    <span><i class="sw" style="background:var(--accent);width:3px"></i>hero health (30)</span>
+  </div>
+  <p class="muted small">Damage times chance is the average hit multiplied by the chance the monster is on a floor. It shows how much each monster adds to the danger of a typical sewer floor. Click any column to sort.</p>
+  <div class="controls">
+    <label><input type="checkbox" id="mobflag"> Red only</label>
+    <select id="mobmod" aria-label="Mod"></select>
+    <input type="search" id="mobq" placeholder="Search monster" aria-label="Search monsters">
+  </div>
+  <div class="tablebox"><table id="mobtable"><thead></thead><tbody></tbody></table></div>
+
+  <h2>Items</h2>
+  <p class="muted small">Flat damage is the weapon's average hit as found (its upgrade level included), with the lowest and highest roll under it. Damage times chance is that average multiplied by the chance the item is on a floor. Items that are not weapons have no damage.</p>
+  <div class="controls">
+    <label><input type="checkbox" id="itemweap"> Weapons only</label>
+    <select id="itemmod" aria-label="Mod"></select>
+    <select id="itemkind" aria-label="Item kind"></select>
+    <input type="search" id="itemq" placeholder="Search item" aria-label="Search items">
+  </div>
+  <div class="tablebox"><table id="itemtable"><thead></thead><tbody></tbody></table></div>
+</div>
+
+<script>
+const DATA = /*DATA*/null;
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const pic = p => `<div class="pic">${p ? `<img src="${p}" alt="">` : "<span>none</span>"}</div>`;
+const mod = k => `<div class="mod"><img src="${DATA.mods[k][1]}" alt=""><span>${esc(DATA.mods[k][0])}</span></div>`;
+const per100 = v => (v * 100).toFixed(v < 0.1 ? 1 : 0);
+const floorsTxt = f => f.length === 5 ? "1 to 5" : f.join(", ");
+$("nseeds").textContent = DATA.seeds;
+
+const red = DATA.mobs.filter(m => m.flag);
+$("stats").innerHTML = [
+  [DATA.mobs.length, "kinds of monster"], [DATA.items.length, "kinds of item"], [DATA.base, "Shattered's strongest average hit"],
+  [red.length, "monsters in red"], [Math.round(1 / red.reduce((a, m) => a + m.perFloor, 0)), "floors per red monster, on average"]
+].map(([v, l]) => `<div><b>${v}</b><span>${l}</span></div>`).join("");
+
+function fillSelect(sel, values, label, names){
+  sel.innerHTML = `<option value="">${label}</option>` + values.map(v => `<option value="${esc(v)}">${esc(names ? names(v) : v)}</option>`).join("");
+}
+const modName = k => DATA.mods[k][0];
+fillSelect($("mobmod"), [...new Set(DATA.mobs.map(m => m.mod))].sort((a, b) => modName(a).localeCompare(modName(b))), "All mods", modName);
+fillSelect($("itemmod"), [...new Set(DATA.items.map(i => i.mod))].sort((a, b) => modName(a).localeCompare(modName(b))), "All mods", modName);
+fillSelect($("itemkind"), [...new Set(DATA.items.map(i => i.kind))].sort(), "All kinds");
+
+function sortable(table, cols, rows, state, draw){
+  const k = state.key, d = state.dir;
+  const val = r => { const v = r[k]; return v === null || v === undefined ? -Infinity : v; };
+  rows.sort((a, b) => k === "mod" ? modName(a.mod).localeCompare(modName(b.mod)) * d : typeof a[k] === "string" ? a[k].localeCompare(b[k]) * d : (val(a) - val(b)) * d);
+  table.tHead.innerHTML = "<tr>" + cols.map(([key, l]) => `<th tabindex="0" data-k="${key}">${l}${key && k === key ? (d < 0 ? " &#9660;" : " &#9650;") : ""}</th>`).join("") + "</tr>";
+  [...table.tHead.querySelectorAll("th")].forEach(th => {
+    if (!th.dataset.k) return;
+    const go = () => { const key = th.dataset.k; state.dir = state.key === key ? -state.dir : (key === "name" || key === "mod" || key === "kind" ? 1 : -1); state.key = key; draw(); };
+    th.onclick = go; th.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } };
+  });
+}
+
+const mobState = {key: "avg", dir: -1};
+const xmax = Math.max(...DATA.mobs.map(m => m.max), DATA.heroHp) * 1.02;
+function drawMobs(){
+  const q = $("mobq").value.trim().toLowerCase(), fo = $("mobflag").checked, ms = $("mobmod").value;
+  const rows = DATA.mobs.filter(m => (!fo || m.flag) && (!ms || m.mod === ms) && (!q || (m.name + " " + m.cls).toLowerCase().includes(q)));
+  const cols = [["", ""], ["name", "Monster"], ["mod", "Mod"], ["avg", "Average hit"], ["max", "Top hit"], ["hp", "Health"], ["perFloor", "Per 100 floors"], ["weighted", "Damage times chance"], ["", "Floors"]];
+  sortable($("mobtable"), cols, rows, mobState, drawMobs);
+  const pct = v => (100 * v / xmax).toFixed(2) + "%";
+  $("mobtable").tBodies[0].innerHTML = rows.map(m => `<tr class="${m.flag ? "flag" : ""}" title="Worlds ${esc(m.worlds.join(", "))}">
+    <td>${pic(m.pic)}</td>
+    <td class="who"><b>${esc(m.name)}</b><span>${esc(m.cls)}</span></td>
+    <td>${mod(m.mod)}</td>
+    <td><div class="bar"><b>${m.avg}</b><div class="track">
+      <i class="ln" style="left:${pct(DATA.base)};background:var(--base)"></i><i class="ln" style="left:${pct(DATA.heroHp)};background:var(--accent)"></i>
+      <i class="fill" style="width:${pct(m.avg)}"></i><i class="tick" style="left:${pct(m.max)}"></i></div></div></td>
+    <td class="n">${m.max}</td><td class="n">${m.hp}</td><td class="n">${per100(m.perFloor)}</td><td class="n">${m.weighted.toFixed(2)}</td>
+    <td class="small">${floorsTxt(m.floors)}</td></tr>`).join("") || `<tr><td colspan="9" class="muted">No monsters match.</td></tr>`;
+}
+
+const itemState = {key: "perFloor", dir: -1};
+function drawItems(){
+  const q = $("itemq").value.trim().toLowerCase(), wo = $("itemweap").checked, ms = $("itemmod").value, ks = $("itemkind").value;
+  const rows = DATA.items.filter(i => (!wo || i.dmg !== null) && (!ms || i.mod === ms) && (!ks || i.kind === ks) && (!q || (i.name + " " + i.cls).toLowerCase().includes(q)));
+  const cols = [["", ""], ["name", "Item"], ["mod", "Mod"], ["kind", "Kind"], ["perFloor", "Per 100 floors"], ["dmg", "Flat damage"], ["weighted", "Damage times chance"], ["", "Where"], ["", "Floors"]];
+  sortable($("itemtable"), cols, rows, itemState, drawItems);
+  $("itemtable").tBodies[0].innerHTML = rows.map(i => `<tr>
+    <td>${pic(i.pic)}</td>
+    <td class="who"><b>${esc(i.name)}</b><span>${esc(i.cls)}</span></td>
+    <td>${mod(i.mod)}</td><td class="small muted">${esc(i.kind)}</td>
+    <td class="n">${per100(i.perFloor)}</td>
+    <td class="n">${i.dmg === null ? "" : `${i.dmg}<br><span class="muted small">${i.min} to ${i.max}</span>`}</td>
+    <td class="n">${i.weighted === null ? "" : i.weighted.toFixed(3)}</td>
+    <td class="small muted">${esc(i.where.join(", "))}</td>
+    <td class="small">${floorsTxt(i.floors)}</td></tr>`).join("") || `<tr><td colspan="9" class="muted">No items match.</td></tr>`;
+}
+
+["mobq", "mobflag", "mobmod"].forEach(id => $(id).addEventListener("input", drawMobs));
+["itemq", "itemweap", "itemmod", "itemkind"].forEach(id => $(id).addEventListener("input", drawItems));
+drawMobs(); drawItems();
+</script>
+</body>
+</html>

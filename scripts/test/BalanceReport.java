@@ -4,6 +4,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.WorldShuffle;
 import java.io.PrintWriter;
@@ -14,17 +15,19 @@ import java.util.Map;
  * Balance report. Builds every floor of N seeded runs the way a normal game does, and writes what is
  * standing or lying on each floor when it is made, so monsters and items can be compared by stage.
  *
- *   java BalanceReport <seeds> <out.tsv>
+ *   java BalanceReport <seeds> <out.tsv> [last floor, default 26]
  *
  * Lines are MOB depth world mod class name hp attackSkill defense avgDmg maxDmg, and
  * ITEM depth world class name. Damage is 400 rolls of damageRoll at that depth, it leaves out
- * special attacks like zaps and explosions.
+ * special attacks like zaps and explosions. Mob lines end with the sprite class, item lines with the
+ * picture number on items.png and the weapon's min and max damage (-1 when not a weapon).
  */
 public class BalanceReport {
 
 	public static void main(String[] args) throws Exception {
 		int seeds = args.length > 0 ? Integer.parseInt(args[0]) : 100;
 		String out = args.length > 1 ? args[1] : "balance.tsv";
+		int maxDepth = args.length > 2 ? Integer.parseInt(args[2]) : 26;
 		TestBoot.boot();
 		HeroClass[] classes = {HeroClass.WARRIOR, HeroClass.MAGE, HeroClass.ROGUE, HeroClass.HUNTRESS, HeroClass.DUELIST, HeroClass.CLERIC};
 		Map<String, String> stats = new HashMap<>();
@@ -34,7 +37,7 @@ public class BalanceReport {
 				GamesInProgress.selectedClass = classes[s % classes.length];
 				Dungeon.seed = 5000011L * (s + 1);
 				Dungeon.init();
-				for (int d = 1; d <= 26; d++) {
+				for (int d = 1; d <= maxDepth; d++) {
 					Dungeon.depth = d;
 					Dungeon.branch = 0;
 					Level l;
@@ -61,7 +64,11 @@ public class BalanceReport {
 						for (Item i : h.items) {
 							String name;
 							try { name = i.trueName(); } catch (Throwable t) { name = i.getClass().getSimpleName(); }
-							w.println("ITEM\t" + d + "\t" + world + "\t" + i.getClass().getName() + "\t" + name + "\t" + h.type);
+							int min = -1, max = -1;
+							if (i instanceof KindOfWeapon) {
+								try { min = ((KindOfWeapon) i).min(); max = ((KindOfWeapon) i).max(); } catch (Throwable ignored) {}
+							}
+							w.println("ITEM\t" + d + "\t" + world + "\t" + i.getClass().getName() + "\t" + name + "\t" + h.type + "\t" + i.image() + "\t" + min + "\t" + max);
 						}
 					}
 				}
@@ -87,9 +94,10 @@ public class BalanceReport {
 			int acc = -1, def = -1;
 			try { acc = m.attackSkill(Dungeon.hero); } catch (Throwable ignored) {}
 			try { def = m.defenseSkill(Dungeon.hero); } catch (Throwable ignored) {}
-			return cls.getName() + "\t" + name + "\t" + m.HT + "\t" + acc + "\t" + def + "\t" + String.format("%.2f", sum / (double) n) + "\t" + max;
+			String sprite = m.spriteClass == null ? "" : m.spriteClass.getName();
+			return cls.getName() + "\t" + name + "\t" + m.HT + "\t" + acc + "\t" + def + "\t" + String.format("%.2f", sum / (double) n) + "\t" + max + "\t" + sprite;
 		} catch (Throwable t) {
-			return cls.getName() + "\t" + name + "\t-1\t-1\t-1\t-1\t-1";
+			return cls.getName() + "\t" + name + "\t-1\t-1\t-1\t-1\t-1\t";
 		}
 	}
 }
