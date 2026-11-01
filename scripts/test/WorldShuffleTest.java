@@ -310,6 +310,15 @@ public class WorldShuffleTest {
 			}
 		}
 		System.out.println("ported monsters with name strings checked: " + namedMobs);
+		//every monster in the mods' spawn tables (ModSpawns, from scripts/mod-spawns.py) exists and can be made
+		java.util.ArrayList<String> spawnNames = com.shatteredpixel.shatteredpixeldungeon.actors.mobs.ModSpawns.allNames();
+		for (String n : spawnNames) {
+			if (!com.shatteredpixel.shatteredpixeldungeon.actors.mobs.ModSpawns.resolves(n)) {
+				System.out.println("FAIL: mod spawn table names " + n + ", which is not in the game");
+				failures++;
+			}
+		}
+		System.out.println("mod spawn table monsters checked: " + spawnNames.size());
 		System.exit(failures == 0 ? 0 : 1);
 	}
 

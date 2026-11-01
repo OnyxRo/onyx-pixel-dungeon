@@ -21,39 +21,66 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.worlds.GuildLevel;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
- * The monsters Matt Edition puts in its own two areas. Its thieves' guild is home to burglars
- * and snatchers, and its ice caves to frozen swarms, frost DM-100s, ice snakes and ice golems.
- * Matt Edition gave those areas fixed monsters whatever the floor, so depth is not used here.
+ * The monsters Matt Edition puts in its own two areas, as its ThievesGuildLevel and IceCavesLevel build them.
+ * The guild is 4 thieves, 3 burglars and 3 snatchers on every floor. The ice caves are a branch of four floors
+ * (Matt's 14 to 17) with a table for each, here picked by the floor's place in its region.
  */
 public class MattSpawner {
 
 	public static ArrayList<Class<? extends Mob>> getMobRotation( Level level ){
-		ArrayList<Class<? extends Mob>> mobs;
+		ArrayList<Class<? extends Mob>> mobs = new ArrayList<>();
 		if (level instanceof GuildLevel) {
-			mobs = new ArrayList<>(Arrays.asList(
-					Burglar.class, Burglar.class, Burglar.class,
-					Snatcher.class, Snatcher.class,
-					DM151.class));
+			add( mobs, Thief.class, 4 );
+			add( mobs, Burglar.class, 3 );
+			add( mobs, Snatcher.class, 3 );
 		} else {
-			mobs = new ArrayList<>(Arrays.asList(
-					FrozenSwarm.class, FrozenSwarm.class,
-					DM100F.class,
-					IceSnake.class, IceSnake.class,
-					IceGolem.class,
-					GnollBaby.class));
-			//Matt Edition's rare gnoll, at the odds it had there
-			if (Random.Float() < 0.02f) mobs.add( GnollMyth.class );
+			switch ((Dungeon.depth - 1) % 5) {
+				case 0: default:
+					add( mobs, Elemental.FrostElemental.class, 1 );
+					add( mobs, DM200.class, 3 );
+					add( mobs, Bat.class, 3 );
+					add( mobs, FrozenSwarm.class, 3 );
+					add( mobs, DM100F.class, 5 );
+					add( mobs, IceSnake.class, 5 );
+					break;
+				case 1:
+					add( mobs, Elemental.FrostElemental.class, 1 );
+					add( mobs, Bat.class, 2 );
+					add( mobs, FrozenSwarm.class, 2 );
+					add( mobs, DM100F.class, 2 );
+					add( mobs, IceSnake.class, 2 );
+					add( mobs, IceGolem.class, 2 );
+					break;
+				case 2:
+					add( mobs, Elemental.FrostElemental.class, 1 );
+					add( mobs, FrozenSwarm.class, 1 );
+					add( mobs, DM100F.class, 1 );
+					add( mobs, IceSnake.class, 1 );
+					add( mobs, IceGolem.class, 2 );
+					break;
+				case 3:
+					add( mobs, Elemental.FrostElemental.class, 2 );
+					add( mobs, IceGolem.class, 5 );
+					add( mobs, FrozenSwarm.class, 1 );
+					add( mobs, DM100F.class, 1 );
+					add( mobs, IceSnake.class, 1 );
+					break;
+			}
 		}
 		Random.shuffle( mobs );
 		return mobs;
+	}
+
+	private static void add( ArrayList<Class<? extends Mob>> mobs, Class<? extends Mob> mob, int count ){
+		for (int i = 0; i < count; i++) mobs.add( mob );
 	}
 
 }

@@ -397,8 +397,9 @@ public class WorldShuffle {
 	}
 
 	/**
-	 * The monsters a floor spawns. A floor built in one of Devoted's worlds uses Devoted's own
-	 * monsters for that depth. Every other floor uses Shattered's.
+	 * The monsters a floor spawns. A floor built in a mod's world spawns what that mod spawned on the
+	 * same floor of its own dungeon (Devoted, Matt, Lovecraft and Magic Ling have their own spawners, the
+	 * rest come from ModSpawns). Shattered's own worlds, and mods with no table for the floor, use Shattered's.
 	 */
 	public static java.util.ArrayList<Class<? extends com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob>> mobRotation( Level level, int depth ){
 		if (Dungeon.branch == 0 && DEVOTED.equals(worldLogo(level))) {
@@ -413,12 +414,15 @@ public class WorldShuffle {
 		if (Dungeon.branch == 0 && MAGIC_LING.equals(worldLogo(level))) {
 			return com.shatteredpixel.shatteredpixeldungeon.actors.mobs.MagicLingSpawner.getMobRotation(depth);
 		}
-		//any other mod with monsters on the roster
+		//any other mod, its own spawn table for this floor (ModSpawns, made by scripts/mod-spawns.py). A level from a
+		//part of a mod this game has no region for (Unleashed's frozen caves, Cursed's challenge floors) has its own table
+		java.util.ArrayList<Class<? extends com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob>> mobs =
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.ModSpawns.rotation(level.getClass().getSimpleName(), depth);
+		if (mobs != null) return mobs;
 		String key = modKey(level);
-		if (Dungeon.branch == 0 && key != null && com.shatteredpixel.shatteredpixeldungeon.actors.mobs.ModRoster.hasMod(key)) {
-			java.util.ArrayList<Class<? extends com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob>> mobs =
-					com.shatteredpixel.shatteredpixeldungeon.actors.mobs.ModRoster.rotation(key, depth);
-			if (!mobs.isEmpty()) return mobs;
+		if (Dungeon.branch == 0 && key != null) {
+			mobs = com.shatteredpixel.shatteredpixeldungeon.actors.mobs.ModSpawns.rotation(key, depth);
+			if (mobs != null) return mobs;
 		}
 		return com.shatteredpixel.shatteredpixeldungeon.actors.mobs.MobSpawner.getMobRotation(depth);
 	}

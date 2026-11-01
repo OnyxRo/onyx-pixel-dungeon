@@ -182,3 +182,7 @@ A new hero touches the same six switches in HeroClass, five in Talent and four i
 
 ## 2026-11-01 Old tile grid
 Onyx saw rows of locked doors in 33 worlds. Earlier sessions assumed old-base sheets only lacked tiles, but Shattered rearranged the whole grid around 2.0. Comparing each mod's DungeonTileSheet.java with ours found it in one command, worth doing for every new mod. Tours take blank pictures while the game window is minimized, ask Onyx to leave it open, and use the new onyx.gallery.wait option.
+
+## 2026-11-01 Spawn tables
+- Porting gave monsters depth 1 to 99 to make them spawn, which put Cursed's floor 31 to 49 monsters on floor 2. Spawning now comes from a script that copies each mod's table, so this cannot drift again. The port-mod skill says so.
+- An earlier fix sat unbuilt for hours because the game was open during the hook. When Onyx reports a bug that was already fixed, check `build/auto-update.log` first.
