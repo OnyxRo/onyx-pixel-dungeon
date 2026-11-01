@@ -1,0 +1,222 @@
+<title>Onyx's PD Balance Check</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* layout, one column of sections, each a ranked bar list of monsters and a sortable item table */
+:root {
+  --bg: #f3f1ee; --panel: #fbfaf8; --fg: #23201d; --muted: #6c655e; --line: #dcd6cf;
+  --accent: #b86b1c; --danger: #c2372b; --danger-soft: #f6dcd8; --base: #3b6fa8; --bar: #8f857a;
+  --display: "Pixelify Sans", "Courier New", monospace;
+  --body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #1a1816; --panel: #23201d; --fg: #ece6df; --muted: #a39a90; --line: #3a3530;
+  --accent: #e39a4a; --danger: #ff6b5c; --danger-soft: #4a2420; --base: #7fb0e8; --bar: #8a8076; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #1a1816; --panel: #23201d; --fg: #ece6df; --muted: #a39a90; --line: #3a3530;
+  --accent: #e39a4a; --danger: #ff6b5c; --danger-soft: #4a2420; --base: #7fb0e8; --bar: #8a8076; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font: 16px/1.5 var(--body); }
+.wrap { max-width: 1100px; margin: 0 auto; padding-block: 32px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 28px; }
+h1, h2, h3 { font-family: var(--display); font-weight: 700; text-wrap: balance; margin: 0; line-height: 1.15; }
+h1 { font-size: 2.2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.1rem; }
+p { margin: 0; max-width: 68ch; }
+.muted { color: var(--muted); }
+.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.findings { background: var(--danger-soft); border-radius: 6px; padding: 16px 20px; display: grid; gap: 8px; }
+.findings ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; position: sticky; top: env(safe-area-inset-top, 0px); background: var(--bg); padding-block: 10px; z-index: 5; border-bottom: 1px solid var(--line); }
+.tabs button { font: 600 0.95rem var(--body); padding: 6px 14px; border-radius: 4px; border: 1px solid var(--line); background: var(--panel); color: var(--fg); cursor: pointer; }
+.tabs button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.tabs button:focus-visible, input:focus-visible, select:focus-visible, th:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+section { display: grid; gap: 18px; }
+.stats { display: flex; flex-wrap: wrap; gap: 10px 28px; }
+.stats div { display: grid; }
+.stats b { font: 600 1.3rem var(--mono); }
+.stats span { font-size: 0.85rem; color: var(--muted); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 0.85rem; color: var(--muted); align-items: center; }
+.sw { display: inline-block; width: 14px; height: 10px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
+.chart { overflow-x: auto; }
+svg text { fill: var(--fg); font-family: var(--body); }
+.controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.controls input, .controls select { font: 0.95rem var(--body); padding: 6px 10px; border: 1px solid var(--line); border-radius: 4px; background: var(--panel); color: var(--fg); }
+.controls label { display: flex; gap: 6px; align-items: center; font-size: 0.95rem; }
+.tablebox { overflow-x: auto; max-height: 640px; overflow-y: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); }
+table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { position: sticky; top: 0; background: var(--panel); cursor: pointer; white-space: nowrap; font-weight: 700; }
+td.n { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+tr.flag td { background: var(--danger-soft); }
+.rate { display: inline-block; height: 8px; background: var(--accent); border-radius: 2px; vertical-align: middle; margin-left: 6px; }
+.flagtxt { color: var(--danger); font-weight: 600; }
+.small { font-size: 0.85rem; }
+</style>
+
+<div class="wrap">
+  <header style="display:grid;gap:10px">
+    <h1>Balance check</h1>
+    <p class="muted">Built from <span class="num" id="nseeds"></span> seeded runs, every floor 1 to 26 made the way a normal game makes it. Each monster and item counted is one that stands or lies on the floor when you arrive. Damage is 400 rolls of each monster's normal attack at the floor it appeared on. Zaps, explosions and other special attacks are not included.</p>
+  </header>
+
+  <div class="findings" id="findings"></div>
+
+  <nav class="tabs" id="tabs" aria-label="Section"></nav>
+
+  <section id="mobsec">
+    <h2 id="mobtitle"></h2>
+    <div class="stats" id="mobstats"></div>
+    <h3>How hard the monsters you meet hit</h3>
+    <p class="muted small">Share of all monsters met in this section, grouped by average hit. Bars far to the right of the blue line are the ones to look at.</p>
+    <div class="chart" id="hist"></div>
+    <h3>Every monster, hardest hitter first</h3>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--bar)"></i>average hit</span>
+      <span><i class="sw" style="background:var(--danger)"></i>flagged</span>
+      <span><i class="sw" style="background:var(--fg);width:3px"></i>top hit</span>
+      <span><i class="sw" style="background:var(--base);width:3px"></i>strongest Shattered monster here</span>
+      <span><i class="sw" style="background:var(--accent);width:3px"></i>hero health at end of section</span>
+    </div>
+    <div class="controls">
+      <label><input type="checkbox" id="mobflag"> Flagged only</label>
+      <input type="search" id="mobq" placeholder="Search monster or mod" aria-label="Search monsters">
+    </div>
+    <div class="chart" id="bars"></div>
+  </section>
+
+  <section id="itemsec">
+    <h2 id="itemtitle"></h2>
+    <p class="muted small">Per floor means how many of that item lie on an average floor of this section (shops, chests and tombs included). Click a column to sort. Red rows turn up here much less often than in a later section, so they may be coming too early.</p>
+    <div class="controls">
+      <label><input type="checkbox" id="itemflag"> Flagged only</label>
+      <select id="itemgroup" aria-label="Item kind"></select>
+      <input type="search" id="itemq" placeholder="Search item" aria-label="Search items">
+    </div>
+    <div class="tablebox"><table id="itemtable"><thead></thead><tbody></tbody></table></div>
+  </section>
+</div>
+
+<script>
+const DATA = /*DATA*/null;
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const clean = s => String(s).replace(/#\d/g, "");
+let cur = 0, itemSort = {key: "perFloor", dir: -1};
+$("nseeds").textContent = Math.round(DATA.floors[0] / 5);
+
+// summary of the worst problems
+(function(){
+  const bad = DATA.mobs.filter(m => m.section === 0 && m.max >= DATA.heroHp[0]);
+  const mods = {};
+  bad.forEach(m => m.mods.forEach(k => mods[k] = (mods[k] || 0) + 1));
+  const early = DATA.items.filter(i => i.flags.length && i.section === 0).sort((a,b) => b.count - a.count).slice(0, 4);
+  $("findings").innerHTML = `<h3>What stands out</h3><ul>
+    <li><b>${bad.length} monsters on floors 2 to 4 can take a full 30 health in one hit.</b> They come from ${Object.keys(mods).map(esc).join(" and ")} worlds, whose whole monster list is allowed on every floor from 1 to 99. Shattered's strongest monster there averages ${DATA.baseline[0]}.</li>
+    <li>Each one only shows up on about 1 floor in 100, but there are ${bad.length} of them, so one turns up about once every <b class="num">${Math.round(1 / bad.reduce((a,m)=>a+m.perFloor,0))}</b> floors in this section.</li>
+    <li>Items turning up early include ${early.map(i => esc(i.name)).join(", ")}.</li>
+  </ul>`;
+})();
+
+DATA.sections.forEach((s, i) => {
+  const b = document.createElement("button");
+  b.textContent = s; b.setAttribute("aria-pressed", i === 0);
+  b.onclick = () => { cur = i; render(); };
+  $("tabs").appendChild(b);
+});
+
+function svgEl(w, h, inner){ return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" role="img">${inner}</svg>`; }
+
+function render(){
+  [...$("tabs").children].forEach((b, i) => b.setAttribute("aria-pressed", i === cur));
+  const s = cur, sec = DATA.sections[s];
+  const all = DATA.mobs.filter(m => m.section === s);
+  $("mobtitle").textContent = `Monsters on ${sec}`;
+  $("itemtitle").textContent = `Items on ${sec}`;
+  const total = all.reduce((a, m) => a + m.count, 0);
+  const flagged = all.filter(m => m.flags.length);
+  $("mobstats").innerHTML = [
+    [all.length, "kinds of monster"], [(total / DATA.floors[s]).toFixed(1), "monsters per floor"],
+    [DATA.baseline[s] || "none", "strongest Shattered average hit"], [DATA.heroHp[s], "hero health at section end"],
+    [flagged.length, "flagged"]].map(([v, l]) => `<div><b>${v}</b><span>${l}</span></div>`).join("");
+
+  // histogram, encounter weighted
+  const maxAvg = Math.max(...all.map(m => m.avg), DATA.heroHp[s]);
+  const bin = maxAvg > 60 ? 10 : 5, nb = Math.ceil((maxAvg + 1) / bin);
+  const counts = new Array(nb).fill(0), flagBins = new Array(nb).fill(0);
+  all.forEach(m => { const k = Math.min(nb - 1, Math.floor(m.avg / bin)); counts[k] += m.count; if (m.flags.length) flagBins[k] += m.count; });
+  const W = 960, H = 220, L = 46, R = 12, T = 12, B = 40;
+  const pw = (W - L - R) / nb, top = Math.max(...counts) / total;
+  const yMax = Math.ceil(top * 10) / 10 || 0.1;
+  let g = "";
+  for (let t = 0; t <= 4; t++) { const v = yMax * t / 4, y = T + (H - T - B) * (1 - v / yMax);
+    g += `<line x1="${L}" x2="${W - R}" y1="${y}" y2="${y}" stroke="var(--line)"/><text x="${L - 6}" y="${y + 4}" text-anchor="end" font-size="11">${Math.round(v * 100)}%</text>`; }
+  counts.forEach((c, k) => {
+    const share = c / total, hgt = (H - T - B) * share / yMax, x = L + k * pw;
+    const fs = flagBins[k] / total, fh = (H - T - B) * fs / yMax;
+    if (c) {
+      g += `<rect x="${x + 1}" y="${H - B - hgt}" width="${pw - 2}" height="${hgt}" fill="var(--bar)"><title>${k * bin} to ${k * bin + bin - 1} damage, ${(share * 100).toFixed(1)}% of monsters met</title></rect>`;
+      if (fs) g += `<rect x="${x + 1}" y="${H - B - Math.max(fh, 2)}" width="${pw - 2}" height="${Math.max(fh, 2)}" fill="var(--danger)"/>`;
+    }
+    if (k % (nb > 20 ? 2 : 1) === 0) g += `<text x="${x}" y="${H - B + 16}" font-size="11" text-anchor="middle">${k * bin}</text>`;
+  });
+  const xv = v => L + v / bin * pw;
+  if (DATA.baseline[s]) g += `<line x1="${xv(DATA.baseline[s])}" x2="${xv(DATA.baseline[s])}" y1="${T}" y2="${H - B}" stroke="var(--base)" stroke-width="2"/>`;
+  g += `<line x1="${xv(DATA.heroHp[s])}" x2="${xv(DATA.heroHp[s])}" y1="${T}" y2="${H - B}" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4 3"/>`;
+  g += `<text x="${(L + W - R) / 2}" y="${H - 6}" text-anchor="middle" font-size="12" fill="var(--muted)">average hit (damage)</text>`;
+  $("hist").innerHTML = svgEl(W, H, g);
+
+  // ranked bars
+  const q = $("mobq").value.trim().toLowerCase(), fo = $("mobflag").checked;
+  const rows = all.filter(m => (!fo || m.flags.length) && (!q || (clean(m.name) + " " + m.cls + " " + m.mods.join(" ")).toLowerCase().includes(q)));
+  const rh = 22, BW = 960, nameW = 330, chartL = nameW + 10, chartR = 200;
+  const xmax = Math.max(...all.map(m => m.max), DATA.heroHp[s]) * 1.05;
+  const x = v => chartL + (BW - chartL - chartR) * v / xmax;
+  const BH = rows.length * rh + 30;
+  let b = "";
+  const tickStep = xmax > 100 ? 20 : xmax > 40 ? 10 : 5;
+  for (let t = 0; t <= xmax; t += tickStep) b += `<line x1="${x(t)}" x2="${x(t)}" y1="0" y2="${BH - 22}" stroke="var(--line)"/><text x="${x(t)}" y="${BH - 6}" font-size="11" text-anchor="middle">${t}</text>`;
+  if (DATA.baseline[s]) b += `<line x1="${x(DATA.baseline[s])}" x2="${x(DATA.baseline[s])}" y1="0" y2="${BH - 22}" stroke="var(--base)" stroke-width="2"/>`;
+  b += `<line x1="${x(DATA.heroHp[s])}" x2="${x(DATA.heroHp[s])}" y1="0" y2="${BH - 22}" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4 3"/>`;
+  rows.forEach((m, i) => {
+    const y = i * rh + 4, fl = m.flags.length;
+    const label = clean(m.name).slice(0, 30) + "  (" + m.mods.join(", ") + ")";
+    b += `<g><title>${esc(clean(m.name))} (${esc(m.cls)})&#10;average ${m.avg}, top ${m.max}, health ${m.hp}, accuracy ${m.acc}&#10;floors ${m.depths.join(", ")}&#10;worlds ${esc(m.worlds.join(", "))}&#10;on ${(m.perFloor * 100).toFixed(1)} of every 100 floors${fl ? "&#10;" + esc(m.flags.join(". ")) : ""}</title>
+      <text x="${nameW}" y="${y + 13}" text-anchor="end" font-size="12" ${fl ? 'fill="var(--danger)" font-weight="700"' : ""}>${esc(label.length > 52 ? label.slice(0, 51) + "..." : label)}</text>
+      <rect x="${chartL}" y="${y + 2}" width="${Math.max(1, x(m.avg) - chartL)}" height="${rh - 8}" rx="2" fill="${fl ? "var(--danger)" : "var(--bar)"}"/>
+      <line x1="${x(m.max)}" x2="${x(m.max)}" y1="${y}" y2="${y + rh - 4}" stroke="var(--fg)" stroke-width="2"/>
+      <text x="${BW - chartR + 10}" y="${y + 13}" font-size="11" font-family="var(--mono)">${m.avg} avg, ${m.max} top, fl ${m.minDepth}+</text></g>`;
+  });
+  $("bars").innerHTML = rows.length ? svgEl(BW, BH, b) : `<p class="muted">No monsters match.</p>`;
+  renderItems();
+}
+
+function renderItems(){
+  const s = cur;
+  const items = DATA.items.filter(i => i.section === s);
+  const groups = [...new Set(items.map(i => i.group || "other"))].sort();
+  const sel = $("itemgroup"), prev = sel.value;
+  sel.innerHTML = `<option value="">All kinds</option>` + groups.map(g => `<option ${g === prev ? "selected" : ""}>${esc(g)}</option>`).join("");
+  const q = $("itemq").value.trim().toLowerCase(), fo = $("itemflag").checked, gsel = sel.value;
+  let rows = items.filter(i => (!fo || i.flags.length) && (!gsel || (i.group || "other") === gsel) && (!q || (i.name + " " + i.cls).toLowerCase().includes(q)));
+  const k = itemSort.key, d = itemSort.dir;
+  rows.sort((a, b) => (typeof a[k] === "string" ? a[k].localeCompare(b[k]) : a[k] - b[k]) * d);
+  const cols = [["name","Item"],["group","Kind"],["perFloor","Per floor"],["count","Found"],["home","Most common in"],["heaps","Where"],["flags","Note"]];
+  $("itemtable").tHead.innerHTML = "<tr>" + cols.map(([key, l]) => `<th tabindex="0" data-k="${key}">${l}${k === key ? (d < 0 ? " &#9660;" : " &#9650;") : ""}</th>`).join("") + "</tr>";
+  const maxRate = Math.max(...items.filter(i => i.cls !== "Gold").map(i => i.perFloor), 0.01);
+  $("itemtable").tBodies[0].innerHTML = rows.map(i => `<tr class="${i.flags.length ? "flag" : ""}">
+    <td>${esc(i.name)}</td><td class="muted">${esc(i.group || "other")}</td>
+    <td class="n">${i.perFloor.toFixed(3)}<span class="rate" style="width:${Math.min(60, 60 * i.perFloor / maxRate)}px"></span></td>
+    <td class="n">${i.count}</td><td>${esc(DATA.sections[i.home])}</td>
+    <td class="muted small">${esc(i.heaps.join(", ").toLowerCase().replace(/_/g, " "))}</td>
+    <td class="flagtxt small">${esc(i.flags.join(". "))}</td></tr>`).join("") || `<tr><td colspan="7" class="muted">No items match.</td></tr>`;
+  [...$("itemtable").tHead.querySelectorAll("th")].forEach(th => {
+    const go = () => { const key = th.dataset.k; itemSort = {key, dir: itemSort.key === key ? -itemSort.dir : (key === "name" || key === "group" ? 1 : -1)}; renderItems(); };
+    th.onclick = go; th.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } };
+  });
+}
+
+["mobq", "mobflag"].forEach(id => $(id).addEventListener("input", render));
+["itemq", "itemflag", "itemgroup"].forEach(id => $(id).addEventListener("input", renderItems));
+render();
+</script>
