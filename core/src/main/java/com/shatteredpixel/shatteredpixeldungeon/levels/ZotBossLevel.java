@@ -42,7 +42,7 @@ public class ZotBossLevel extends Level {
 
 	{
 		color1 = 0x534f3e;
-		color2 = 0xb9d661;
+		color2 = 0xb9d661;
 		viewDistance = 6;
 	}
 
@@ -232,14 +232,14 @@ public class ZotBossLevel extends Level {
 	public String tileName(int tile) {
 		switch (tile) {
 		case Terrain.WATER:
-			return Messages.get(CavesLevel.class, "water_name");
+			return Messages.get(ZotBossLevel.class, "water_name");
 		case Terrain.GRASS:
-			return Messages.get(CavesLevel.class, "grass_name");
+			return Messages.get(ZotBossLevel.class, "grass_name");
 		case Terrain.HIGH_GRASS:
-			return Messages.get(CavesLevel.class, "high_grass_name");
+			return Messages.get(ZotBossLevel.class, "high_grass_name");
 		case Terrain.STATUE:
 		case Terrain.STATUE_SP:
-			return Messages.get(CavesLevel.class, "statue_sp_name");
+			return Messages.get(ZotBossLevel.class, "statue_sp_name");
 		default:
 			return super.tileName(tile);
 		}
@@ -249,10 +249,10 @@ public class ZotBossLevel extends Level {
 	public String tileDesc(int tile) {
 		switch (tile) {
 		case Terrain.WATER:
-			return Messages.get(CavesLevel.class, "water_desc");
+			return Messages.get(ZotBossLevel.class, "water_desc");
 		case Terrain.STATUE:
 		case Terrain.STATUE_SP:
-			return Messages.get(CavesLevel.class, "statue_sp_desc");
+			return Messages.get(ZotBossLevel.class, "statue_sp_desc");
 		default:
 			return super.tileDesc(tile);
 		}

@@ -186,3 +186,10 @@ Onyx saw rows of locked doors in 33 worlds. Earlier sessions assumed old-base sh
 ## 2026-11-01 Spawn tables
 - Porting gave monsters depth 1 to 99 to make them spawn, which put Cursed's floor 31 to 49 monsters on floor 2. Spawning now comes from a script that copies each mod's table, so this cannot drift again. The port-mod skill says so.
 - An earlier fix sat unbuilt for hours because the game was open during the hook. When Onyx reports a bug that was already fixed, check `build/auto-update.log` first.
+
+## 2026-11-01 SPS monsters and bosses
+- `sps-copy.py --reapply` took every file added since an old branch and rewrote 53 committed files of other mods. It now only touches untracked files. Check `git status` after any reapply.
+- SPS keeps sources in `java/` and assets in `assets/` at the top of the repo, and its item sheet is 20 cells wide with no WIDTH constant. `renames.mod_package_dir`, `port-assets.py`, `port-strings.py`, `port-itemsprites.py`, `missing-mobs.py` and `missing-imports.py` all looked only under `core/src/main`, so each failed quietly. All now fall back to the top folders, and the item sheet width comes from the picture. The first SPS port had copied nine wrong item pictures because of the width, they are fixed.
+- Monster names that other mods already use (Assassin, Brown Bat, Demon Goo and more) went to `actors/mobs/sps/`. `mod-spawns.py` then handed the SPS copies to Reforged and Unleashed, it now never takes another mod's subpackage copy.
+- Two MobArenaTest runs hung on SPS loops that pick random cells until one fits the boss's own arena (and one that rerolled weapons until a +3 that this game never rolls). A small script bounds every such loop at 500 tries. Run the arena test on bosses in small groups under `timeout`, a hung java could not be stopped from the session.
+- The SPS blob seed rule left a double brace, it now eats the old opening brace. New rename rows cover SPS damage types (Char has its own DamageType enum that hid the import), wand zap and fx access, MagicMissile helpers, missile pictures in sprites, old terrain names and Dungeon boss flags.

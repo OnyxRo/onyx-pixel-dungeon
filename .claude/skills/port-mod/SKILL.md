@@ -318,3 +318,10 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **Mods uploaded as one commit.** `python -I scripts/mod-diff.py <mod root> <shattered tag root> <mod package path> <out.txt>` lists new and changed files against a Shattered tag (clone it shallow, try two nearby tags and keep the one with fewer diff lines) and writes the unified diffs to `<out.txt>.diff`. Split the diff per file with awk to read one class at a time.
 - **`scripts/test-recompile.sh <Test> [args]`** recompiles one test class with TestBoot and runs it, `test-one.sh` alone runs the old class file.
 - **A whole run rework** (light, horror, satiation, perks) goes in as many small game modes from one helper class, with a conflict table in `onSet`, like Too Cruel and `MusicImplant`.
+
+## Added after the SPS finish (2026-11-01)
+- **Android era mods** (SPS) keep code in `<mod>/java` and art in `<mod>/assets`. The tools now look there too. If one fails with a None path or "no ItemSpriteSheet", it is a tool still missing that fallback.
+- **Item sheets with no WIDTH constant** get the width from the picture (SPS is 20 cells). Crop the copied row and look at it once before trusting it.
+- **Mod names other mods already use** go in a mod subpackage (`actors/mobs/sps/`, `sprites/sps/`), with the imports in every new file pointed at them. `port-strings.py` reads their text with `SUBPKG=sps`, and `mod-spawns.py` keeps each mod to its own copies.
+- **Boss code that loops until a random cell fits its arena** hangs the arena test and the sandbox spawn list. Bound such loops (500 tries, then give up) before testing, and run MobArenaTest on bosses in small groups under `timeout`.
+- **`sps-copy.py --reapply` only touches untracked files.** Never point a reapply at committed files of other mods.
