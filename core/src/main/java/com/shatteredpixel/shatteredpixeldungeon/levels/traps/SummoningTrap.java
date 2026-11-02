@@ -65,6 +65,7 @@ public class SummoningTrap extends Trap {
 
 	@Override
 	public void activate() {
+		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.GoblinsPets.heapAt(pos, com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.GoblinsPets.SUMMON); //goblins, pet eggs
 
 		int nMobs = 1;
 		if (m_MobCountOverride != -1) {

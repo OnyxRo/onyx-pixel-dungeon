@@ -335,6 +335,8 @@ public enum Catalog {
 		BOMBS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.bombs.Flashbang.class);
 		BOMBS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.bombs.ShockBomb.class);
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.quest.KingBlade.class);
+		//Goblins PD pet eggs
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.pets.KlikSoulorb.class, com.shatteredpixel.shatteredpixeldungeon.items.pets.PetEgg.class);
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.quest.RustyShield.class);
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.quest.SuperPickaxe.class);
 		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.Vampirism.class);

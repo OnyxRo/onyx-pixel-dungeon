@@ -1581,6 +1581,9 @@ public class ItemSpriteSheet {
 	//Matt Edition magic scrolls
 	public static final int MAGIC_UPGRADE_SCROLL = xy(9, 341);
 	public static final int PURE_MAGIC_SCROLL = xy(10, 341);
+	//Goblins PD pet eggs
+	public static final int GOBLINS_KLIK_SOULORB = xy(11, 341);
+	public static final int GOBLINS_PET_EGG = xy(12, 341);
 	public static final int STORMBRINGER_BATTLE_AXE = xy(2, 19);
 	public static final int EMERALD_ROUND_SHIELD = xy(3, 19);
 	public static final int PURGE_GLOVES = xy(4, 19);
@@ -2803,6 +2806,8 @@ public class ItemSpriteSheet {
 		assignItemRect(ARROW_SIGN, 16, 16);
 		assignItemRect(MAGIC_UPGRADE_SCROLL, 15, 14);
 		assignItemRect(PURE_MAGIC_SCROLL, 15, 14);
+		assignItemRect(GOBLINS_KLIK_SOULORB, 10, 10);
+		assignItemRect(GOBLINS_PET_EGG, 11, 14);
 		assignItemRect(STORMBRINGER_BATTLE_AXE, 16, 16);
 		assignItemRect(EMERALD_ROUND_SHIELD, 16, 16);
 		assignItemRect(PURGE_GLOVES, 12, 16);

@@ -408,6 +408,7 @@ public abstract class RegularLevel extends Level {
 
 		if (!canSpawnItems) return;
 		if (com.shatteredpixel.shatteredpixeldungeon.LoreGoo.noItems()) return; //lore, the Goo finds nothing
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.GoblinsPets.rollSoulorb(this)) addItemToSpawn(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.GoblinsPets.soulorb()); //goblins, a pet egg now and then
 
 		//elemental, the Scientist's Backup Supplies
 		for (int i = com.shatteredpixel.shatteredpixeldungeon.actors.hero.ElementalTalents.extraPotions(); i > 0; i--){

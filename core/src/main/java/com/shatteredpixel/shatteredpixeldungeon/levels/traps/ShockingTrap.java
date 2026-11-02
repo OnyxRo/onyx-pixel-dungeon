@@ -41,6 +41,7 @@ public class ShockingTrap extends Trap {
 
 	@Override
 	public void activate() {
+		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.GoblinsPets.heapAt(pos, com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.GoblinsPets.LIT); //goblins, pet eggs
 		
 		if (Dungeon.level.heroFOV[pos]){
 			Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );

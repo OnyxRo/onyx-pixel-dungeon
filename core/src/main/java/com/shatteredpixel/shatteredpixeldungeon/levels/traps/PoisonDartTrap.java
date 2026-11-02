@@ -61,6 +61,7 @@ public class PoisonDartTrap extends Trap {
 	
 	@Override
 	public void activate() {
+		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.GoblinsPets.heapAt(pos, com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.GoblinsPets.POISON); //goblins, pet eggs
 
 		//we handle this inside of a separate actor as the trap may produce a visual effect we need to pause for
 		Actor.add(new Actor() {
