@@ -39,6 +39,10 @@ for path, errs in todo.items():
             kill.add(ln - 1)
         elif 'cannot find symbol' in msg and name and re.match(r'^\s*(lootOther|loot)\s*=\s*(new\s+' + re.escape(name) + r'\b.*|' + re.escape(name) + r'\.class)\s*;\s*$', line):
             kill.add(ln - 1)
+        elif 'cannot find symbol' in msg and name and re.match(r'^\s*(Dungeon\.level\.drop|\w+\.drop)\(\s*new\s+' + re.escape(name) + r'\b.*\)\s*(\.sprite\.drop\([^)]*\))?\s*;\s*$', line):
+            kill.add(ln - 1)   # a drop of an item this game lacks, like Dungeon.level.drop(new SewerReward(), pos).sprite.drop();
+        elif 'cannot find symbol' in msg and name.split('(')[0] in ('explodeDew', 'explodeDewHigh') and re.match(r'^\s*explodeDew(High)?\(\s*\w+\s*\)\s*;\s*$', line):
+            kill.add(ln - 1)   # SPS dew vial mode, off unless chosen in the mod, this game has none
         elif 'cannot find symbol' in msg and name:
             # a SupercreateLoot override that builds a missing item is dropped whole, nothing calls it here
             for b in range(ln - 1, max(ln - 8, 0), -1):

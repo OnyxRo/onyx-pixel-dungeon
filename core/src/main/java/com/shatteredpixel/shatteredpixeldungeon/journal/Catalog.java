@@ -1588,6 +1588,20 @@ public enum Catalog {
 		POTIONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.EmptyPotionFlask.class);
 		STONES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.stones.ElementalStone.class);
 
+		//items ported from sps
+		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFreeze.class);
+		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfAcid.class);
+		WANDS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfSwamp.class);
+		ENCHANTMENTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.EnchantmentIce.class);
+		ENCHANTMENTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.EnchantmentIce2.class);
+		ENCHANTMENTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.EnchantmentFire.class);
+		ENCHANTMENTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.EnchantmentFire2.class);
+		ENCHANTMENTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.EnchantmentShock.class);
+		ENCHANTMENTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.EnchantmentShock2.class);
+		ENCHANTMENTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.EnchantmentDark.class);
+		ENCHANTMENTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.EnchantmentEnergy.class);
+		ENCHANTMENTS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.EnchantmentEnergy2.class);
+
 
 	}
 

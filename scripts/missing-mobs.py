@@ -15,6 +15,11 @@ for d, dirs, _ in os.walk(mod):
     if d.replace('\\', '/').endswith('core/src/main/java'):
         src = d
         break
+if src is None:  # older mods (SPS) keep sources in <mod>/java or <mod>/src
+    for cand in ('java', 'src', 'src/main/java'):
+        if os.path.isdir(os.path.join(mod, cand)):
+            src = os.path.join(mod, cand)
+            break
 ours = set()
 ourpaths = {}
 OURSRC = os.path.join(ROOT, 'core', 'src', 'main', 'java')

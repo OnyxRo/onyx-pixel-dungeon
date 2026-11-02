@@ -17,6 +17,7 @@ def mod_package_dir(mod):
     import os
     base = os.path.join(mod, 'core', 'src', 'main', 'java')
     if not os.path.isdir(base): base = os.path.join(mod, 'src', 'main', 'java')  # single module mods (Unleashed)
+    if not os.path.isdir(base): base = os.path.join(mod, 'java')  # Android era mods with sources at the top (SPS)
     best = None
     for dp, dirs, files in os.walk(base):
         if 'actors' in dirs and 'items' in dirs:
@@ -192,7 +193,7 @@ SPS_RULES = [
     ('SPS hitSkill(Char) is attackSkill(Char)', r'\bhitSkill\(\s*Char\b', 'attackSkill( Char'),
     ('SPS old MagicMissile call is boltFromChar', r'MagicMissile\.(blueLight|coldLight|earth|fire|force|poison|shadow)\(\s*parent\s*,\s*[\w.]+\s*,\s*([\w.]+)\s*,', lambda m: 'MagicMissile.boltFromChar( parent, MagicMissile.' + {'blueLight': 'FROST', 'coldLight': 'FROST', 'earth': 'EARTH', 'fire': 'FIRE', 'force': 'FORCE', 'poison': 'POISON', 'shadow': 'SHADOW'}[m.group(1)] + ', this, ' + m.group(2) + ','),
     ('SPS Burning.set is reignite', r'Buff\.affect\(\s*([\w.]+)\s*,\s*Burning\.class\s*\)\.set\([^)]*\)', r'Buff.affect(\1, Burning.class).reignite(\1)'),
-    ('SPS blob seed signature', r'public\s+void\s+seed\(\s*int\s+cell\s*,\s*int\s+amount\s*\)', 'public void seed( Level level, int cell, int amount ) { if (cur == null) cur = new int[level.length()]; if (off == null) off = new int[cur.length];'),
+    ('SPS blob seed signature', r'public\s+void\s+seed\(\s*int\s+cell\s*,\s*int\s+amount\s*\)\s*\{','public void seed( Level level, int cell, int amount ) { if (cur == null) cur = new int[level.length()]; if (off == null) off = new int[cur.length];'),
     ('SPS blob super seed', r'super\.seed\(\s*cell\s*,\s*amount\s*\)', 'super.seed( level, cell, amount )'),
     ('SPS floating text with an icon', r'showStatusWithIcon\(\s*[\w.]+\s*,\s*([^;]+?)\s*,\s*FloatingText2\.\w+\s*\)', r'showStatus( CharSprite.NEGATIVE, \1 )'),
     ('SPS belongings.discharge does not exist', r'[\w.]*belongings\.discharge\(\)\s*;', '//belongings.discharge() has no use here'),
@@ -346,6 +347,34 @@ SPS_RULES = [
     ('Magic Ling random prop with a tier', r'\bProp\.randomPropA\(\s*\d+\s*,', 'Prop.randomPropA('),
     ('Trap Dungeon animation speed setting', r'SPDSettings\.speeder2?\(\)', '1f'),
     ('Trap Dungeon exotic scroll category', r'Generator\.Category\.EXOTICSCROLL\b', 'Generator.Category.SCROLL'),
+    ('SPS Ballistica STOP_TERRAIN is STOP_SOLID', r'Ballistica\.STOP_TERRAIN', 'Ballistica.STOP_SOLID'),
+    ('SPS challenge floor kill counters live in SpsStats', r'\bStatistics\.(albinoPiranhasKilled|skeletonsKilled|archersKilled|goldThievesKilled|assassinsKilled)\b', r'com.shatteredpixel.shatteredpixeldungeon.SpsStats.\1'),
+    ('SPS ScrollOfPsionicBlast is an exotic scroll here', r'items\.scrolls\.ScrollOfPsionicBlast;', 'items.scrolls.exotic.ScrollOfPsionicBlast;'),
+    ('SPS damage types by full name, Char has its own DamageType enum that hides the import in monsters', r'(?<![\w.])DamageType\.(?=[A-Z])', 'com.shatteredpixel.shatteredpixeldungeon.actors.damagetype.DamageType.'),
+    ('SPS WandOfFlow.throwChar is the blast wave throw', r'WandOfFlow\.throwChar\(\s*(\w+)\s*,\s*(\w+)\s*,\s*(\w+)\s*\)', r'com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave.throwChar(\1, \2, \3, false, true, this)'),
+    ('SPS KindOfArmor is Armor', r'\bKindOfArmor\b', 'Armor'),
+    ('SPS randomRespawnCellMob is randomRespawnCell', r'\.randomRespawnCellMob\(\)', '.randomRespawnCell(null)'),
+    ('SPS Actor.freeCell has no use here', r'\n[ \t]*Actor\.freeCell\(\s*\w+\s*\);', ''),
+    ('SPS TEST_TIME challenge does not exist', r'Dungeon\.isChallenged\(\s*Challenges\.TEST_TIME\s*\)', 'false'),
+    ('SPS boss killed flags on Dungeon', r'\n[ \t]*Dungeon\.\w+killed\s*=\s*true;', ''),
+    ('SPS escape knife missile picture', r'new EscapeKnive\(\)', 'new com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnife()'),
+    ('SPS poison dart missile picture', r'new PoisonDart\(\)', 'new com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.PoisonDart()'),
+    ('SPS wave missile picture', r'new Wave\(\)', 'new com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken()'),
+    ('SPS skull missile picture', r'new Skull\(\)', 'new com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingStone()'),
+    ('SPS bola missile picture', r'new EmpBola\(\)', 'new com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Bolas()'),
+    ('SPS old high grass is high grass', r'Terrain\.OLD_HIGH_GRASS', 'Terrain.HIGH_GRASS'),
+    ('SPS shrub is high grass', r'Terrain\.SHRUB\b', 'Terrain.HIGH_GRASS'),
+    ('SPS ground A tile is special floor', r'Terrain\.GROUND_A\b', 'Terrain.EMPTY_SP'),
+    ('SPS glass wall shows as a wall', r'Terrain\.GLASS_WALL\b', 'Terrain.WALL'),
+    ('SPS NEIGHBOURS4OUT are the four diagonals', r'PathFinder\.NEIGHBOURS4OUT', 'new int[]{ +1 + com.shatteredpixel.shatteredpixeldungeon.Dungeon.level.width(), +1 - com.shatteredpixel.shatteredpixeldungeon.Dungeon.level.width(), -1 + com.shatteredpixel.shatteredpixeldungeon.Dungeon.level.width(), -1 - com.shatteredpixel.shatteredpixeldungeon.Dungeon.level.width() }'),
+    ('SPS static Level.insideMap', r'(?<![\w.])Level\.insideMap\(', 'Dungeon.level.insideMap('),
+    ('SPS bomb pictures we lack', r'ItemSpriteSheet\.(HUGE_BOMB|MINI_BOMB)\b', 'ItemSpriteSheet.BOMB'),
+    ('SPS wand magic skill bonus, the hero has no magic skill here', r'\(\s*1\s*\+\s*0\.1\s*\*\s*(?:Dungeon\.)?hero\.magicSkill\(\)\s*\)', '1'),
+    ('SPS MagicMissile.foliage', r'MagicMissile\.foliage\(\s*([\w.]+)\s*,\s*curUser\.pos\s*,', r'MagicMissile.boltFromChar(\1, MagicMissile.FOLIAGE, curUser.sprite,'),
+    ('SPS MagicMissile.poison', r'MagicMissile\.poison\(\s*([\w.]+)\s*,\s*curUser\.pos\s*,', r'MagicMissile.boltFromChar(\1, MagicMissile.POISON, curUser.sprite,'),
+    ('SPS MagicMissile.coldLight', r'MagicMissile\.coldLight\(\s*([\w.]+)\s*,\s*curUser\.pos\s*,', r'MagicMissile.boltFromChar(\1, MagicMissile.FROST, curUser.sprite,'),
+    ('SPS wand onZap is public', r'protected(\s+void\s+onZap\s*\(\s*Ballistica)', r'public\1'),
+    ('SPS wand fx is public', r'protected(\s+void\s+fx\s*\(\s*Ballistica\s+\w+\s*,\s*Callback)', r'public\1'),
     ('Magic Ling blue potion icon', r'\bItemSpriteSheet\.Icons\.POTION_BLUE\b', 'ItemSpriteSheet.Icons.POTION_DRGBREATH'),
     # Goblins PD (Shattered 0.3 base), static Level arrays are instance fields now
     ('Goblins, Level.adjacent and distance are instance methods', r'\bLevel\.(adjacent|distance)\(', r'Dungeon.level.\1('),

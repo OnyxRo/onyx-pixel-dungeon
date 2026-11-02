@@ -130,8 +130,11 @@ def resolve(mod, name):
     base = [o for o in opts if o.count(".") == PKG.count(".") + 3]  #directly in actors.mobs
     if name in ROSTER.get(mod, ()):
         #a mod's own monster, prefer the copy in a mod folder over Shattered's of the same name
-        sub = [o for o in opts if o not in base]
-        return (sub or opts)[0]
+        #never another mod's own subpackage copy (actors.mobs.sps.DemonGoo is not Reforged's demon goo)
+        sub = [o for o in opts if o not in base and not any((".mobs." + k + ".") in o for k in ROSTER if k != mod)]
+        #a copy in the mod's own subpackage (actors.mobs.sps.FireElemental) beats a nested class of the same name elsewhere
+        own = [o for o in sub if (".mobs." + mod + ".") in o]
+        return (own or sub or opts)[0]
     return (base or opts)[0]
 
 #first floor of each region (sewers, prison, caves, city, halls) for mods whose regions do not start where ours do,

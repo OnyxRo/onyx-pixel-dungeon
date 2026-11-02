@@ -330,3 +330,9 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **Check a leftover list against the repo first.** Lists in TASKS go stale. Run `python -I scripts/missing-mobs.py <key>` and look for each named class under `core/src/main/java` before porting, the Transformation list named 25 classes that were all in already.
 - **Bringing an old branch onto main.** Cherry pick it with `-n`, then resolve with a small script that walks the conflict markers and applies a rule per file and hunk (ours, theirs, both, or a function). Keep both for appended lines, merge single conditions by hand. Bit flags and sheet cells the old branch used are often taken on main, move them to the next free ones.
 - **Never write message text through a shell heredoc.** `scripts/check-props.py` now reports stray text lines, run it after adding strings.
+## Added after the SPS finish (2026-11-01)
+- **Android era mods** (SPS) keep code in `<mod>/java` and art in `<mod>/assets`. The tools now look there too. If one fails with a None path or "no ItemSpriteSheet", it is a tool still missing that fallback.
+- **Item sheets with no WIDTH constant** get the width from the picture (SPS is 20 cells). Crop the copied row and look at it once before trusting it.
+- **Mod names other mods already use** go in a mod subpackage (`actors/mobs/sps/`, `sprites/sps/`), with the imports in every new file pointed at them. `port-strings.py` reads their text with `SUBPKG=sps`, and `mod-spawns.py` keeps each mod to its own copies.
+- **Boss code that loops until a random cell fits its arena** hangs the arena test and the sandbox spawn list. Bound such loops (500 tries, then give up) before testing, and run MobArenaTest on bosses in small groups under `timeout`.
+- **`sps-copy.py --reapply` only touches untracked files.** Never point a reapply at committed files of other mods.

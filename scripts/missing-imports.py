@@ -32,6 +32,8 @@ def main():
         if d.replace('\\', '/').endswith('src/main/java') and 'core' in d:
             modsrc = d
             break
+    if modsrc is None and os.path.isdir(os.path.join(mod, 'java')):
+        modsrc = os.path.join(mod, 'java')  # Android era mods (SPS)
     ours = index(OURS)
     theirs = index('\\\\?\\' + os.path.abspath(modsrc) if os.name == 'nt' else modsrc)
     seen = set()

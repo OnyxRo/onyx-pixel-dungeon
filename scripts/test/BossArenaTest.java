@@ -61,6 +61,7 @@ public class BossArenaTest {
 				for (int v = 0; v < variants.length; v++) {
 				String name = variants[v].getClass().getSimpleName();
 				if (!only.isEmpty() && java.util.Arrays.stream( only.split(",") ).noneMatch( name::contains )) continue; //BOSS_ONLY=A,B runs several
+				if (!FOUGHT.add( name + " " + depth )) continue; //a mod with many worlds (SPS has 14) has the same fight once per world
 				current = name + " on floor " + depth;
 				fightStart = System.currentTimeMillis();
 				WorldShuffle.forcedVariant = v;
@@ -88,7 +89,7 @@ public class BossArenaTest {
 		//the special floors with a boss, built the way the sandbox builds them
 		for (com.shatteredpixel.shatteredpixeldungeon.levels.SpecialFloors.Entry e : com.shatteredpixel.shatteredpixeldungeon.levels.SpecialFloors.LIST) {
 			if (!e.label.toLowerCase().contains( "boss" ) && !e.label.toLowerCase().contains( "final" )) continue;
-			if (!only.isEmpty() && !e.label.contains( only )) continue;
+			if (!only.isEmpty() && java.util.Arrays.stream( only.split(",") ).noneMatch( e.label::contains )) continue;
 			current = e.label;
 			fightStart = System.currentTimeMillis();
 			try {
@@ -315,6 +316,7 @@ public class BossArenaTest {
 	}
 
 	static final java.util.Set<String> SEEN_LIMITS = new java.util.LinkedHashSet<>();
+	static final java.util.Set<String> FOUGHT = new java.util.HashSet<>();
 
 	//boss levels whose fight has several phases. Add a class name here with a reason when a new one is ported.
 	static final java.util.Set<String> MULTI_PHASE = new java.util.HashSet<>( java.util.Arrays.asList( "OldPrisonBossLevel", "NewPrisonBossLevel", "NecropolisBossLevel", "FinalLevel", "DragonBossLevel" ) );
