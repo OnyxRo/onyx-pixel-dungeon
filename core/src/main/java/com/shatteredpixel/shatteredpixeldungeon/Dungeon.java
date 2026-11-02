@@ -380,6 +380,12 @@ public class Dungeon {
 		challenges = SPDSettings.challenges();
 		difficulty = SPDSettings.difficulty();
 		sins = SPDSettings.sins();
+		//a copy from GitHub plays plain Shattered until Yog is beaten, see ModsUnlock
+		if (ModsUnlock.locked()) {
+			challenges &= Challenges.SHATTERED_MASK;
+			difficulty = 2;
+			sins = 0;
+		}
 		mobsToChampion = 1;
 		bullet = 0; //rearranged
 		templeCompleted = false;
@@ -748,7 +754,7 @@ public class Dungeon {
 		Dungeon.level = level;
 		hero.pos = pos;
 
-		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper.Quest.spawn(level);
+		if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper.Quest.spawn(level);
 		SmallModes.onArrive(depth); //speedrun pd splits
 		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.HalfRipper.Quest.checkNeedToKill();
 

@@ -84,6 +84,10 @@ public class WndChallenges extends Window {
 		float pos = TTL_HEIGHT;
 		for (int i=0; i < Challenges.NAME_IDS.length; i++) {
 
+			//only Shattered's nine until Yog is beaten in a copy from GitHub
+			if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()
+					&& (Challenges.MASKS[i] & Challenges.SHATTERED_MASK) == 0) continue;
+
 			if (!Challenges.IsChallengeUnlocked(Challenges.MASKS[i])) {
 				lockedCount++;
 				continue;

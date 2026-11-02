@@ -1913,6 +1913,7 @@ public class Badges {
 	}
 	
 	private static void displayBadge( Badge badge ) {
+		if (badge != null && ModsUnlock.locked() && !ModsUnlock.isOriginalBadge(badge)) return; //a copy from GitHub, see ModsUnlock
 
 		if (badge == null || (badge.type != BadgeType.JOURNAL && !Dungeon.customSeedText.isEmpty())) {
 			return;
@@ -1956,6 +1957,7 @@ public class Badges {
 	}
 	
 	public static void unlock( Badge badge ){
+		if (badge != null && ModsUnlock.locked() && !ModsUnlock.isOriginalBadge(badge)) return; //a copy from GitHub, see ModsUnlock
 		if (!isUnlocked(badge) && !Dungeon.sandbox && (badge.type == BadgeType.JOURNAL || Dungeon.customSeedText.isEmpty())){
 			global.add( badge );
 			saveNeeded = true;

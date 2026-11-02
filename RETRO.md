@@ -204,3 +204,6 @@ The mod spread its skins over 15 item classes, each with a copy of the same pick
 
 ## 2026-11-02 Tower defense dialogue
 The tower defense port missed 205 text lines (the Rat King speech in every arena, the toxic water and temple tiles), so each bubble said no text. TowerDefenseTest only read the menu strings. `scripts/check-arena-text.py` now checks every written text key in the arenas and runs in check.sh.
+
+## 2026-11-02 Locked start for the GitHub copy
+Finding every mod hook inside Shattered's own code by hand would have taken hours. Two read only helpers split the 432 changed Shattered files (actors and items, everything else) and listed what still fires in a plain run, and a class list from the first commit (`assets/shattered-classes.txt`) filters items, rooms, recipes, enchantments and badges in one rule each. `LockedModeTest` then caught the three hooks both missed (Goblins pets, a helmet through the default item roll, Tower hero badges). Rebuild the class list the same way if the base ever moves.

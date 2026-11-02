@@ -396,6 +396,8 @@ public abstract class Recipe {
 			}
 		}
 		com.shatteredpixel.shatteredpixeldungeon.RBAHooks.addRecipes(ingredients, result); //rebluearchive
+		//only Shattered's own recipes until Yog is beaten in a copy from GitHub, see ModsUnlock
+		if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) result.removeIf(r -> !com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.isOriginal(r.getClass()));
 
 		return result;
 	}
@@ -405,7 +407,7 @@ public abstract class Recipe {
 		if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.quest.CorpseDust && com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero != null
 				&& com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero.belongings.getItem(com.shatteredpixel.shatteredpixeldungeon.items.spells.RubbingsTome.class) != null) return true;
 		//xun, Xun's PD grinds unequipped rings into gem powder
-		if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring && com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero != null
+		if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked() && item instanceof com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring && com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero != null
 				&& !item.isEquipped(com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero)){
 			return item.isIdentified() && !item.cursed;
 		}

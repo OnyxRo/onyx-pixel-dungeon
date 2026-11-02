@@ -179,7 +179,7 @@ public class WndHero extends WndTabbed {
 				}
 			};
 			perkInfo.setRect(title.right(), 0, 16, 16);
-			add(perkInfo);
+			if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) add(perkInfo); //a copy from GitHub, see ModsUnlock
 
 			IconButton infoButton = new IconButton(Icons.get(Icons.INFO)){
 				@Override

@@ -50,7 +50,7 @@ public class Rat extends Mob {
 			if (state == SLEEPING) state = WANDERING;
 		}
 		//Shittened PD, a rat that has seen you may squeal and speed up
-		if (Dungeon.level.heroFOV[pos] && Random.Int(90) == 1 && state == HUNTING) {
+		if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked() && Dungeon.level.heroFOV[pos] && Random.Int(90) == 1 && state == HUNTING) {
 			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff.affect(this,
 					com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste.class, 1f);
 			com.watabou.noosa.audio.Sample.INSTANCE.playForDuration( com.shatteredpixel.shatteredpixeldungeon.Assets.Sounds.FREE_RAT,

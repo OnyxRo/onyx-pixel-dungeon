@@ -284,7 +284,7 @@ public class Goo extends Mob {
 
 		super.die( cause );
 		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationBossTalents.dropSublimation("GOO", pos); //transformation
-		com.shatteredpixel.shatteredpixeldungeon.items.ancientrunes.ElektroHooks.dropBossRune(this); //elektro
+		if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) com.shatteredpixel.shatteredpixeldungeon.items.ancientrunes.ElektroHooks.dropBossRune(this); //elektro
 		
 		Dungeon.level.unseal();
 		

@@ -342,7 +342,7 @@ public class StatusPane extends Component {
 
 		//mana shows once the hero has a power item or has spent some
 		com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero mpHero = Dungeon.hero;
-		boolean usesMana = mpHero.MAX_MP > 0 && (mpHero.MP < mpHero.MAX_MP
+		boolean usesMana = !com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked() && mpHero.MAX_MP > 0 && (mpHero.MP < mpHero.MAX_MP
 				|| mpHero.belongings.getItem( com.shatteredpixel.shatteredpixeldungeon.items.powers.Power.class ) != null);
 		mhBar.x = hp.x;
 		mhBar.y = mpBar.y + 3f;

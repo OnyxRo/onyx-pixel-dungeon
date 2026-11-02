@@ -57,7 +57,8 @@ public class BadgesGrid extends Component {
 
 			ArrayList<Badges.Badge> lockedBadges = new ArrayList<>();
 			for (Badges.Badge badge : Badges.Badge.values()) {
-				if (badge.type != Badges.BadgeType.HIDDEN && !Badges.isUnlocked(badge)) {
+				if (badge.type != Badges.BadgeType.HIDDEN && !Badges.isUnlocked(badge)
+						&& (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked() || com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.isOriginalBadge(badge))) {
 					lockedBadges.add(badge);
 				}
 			}

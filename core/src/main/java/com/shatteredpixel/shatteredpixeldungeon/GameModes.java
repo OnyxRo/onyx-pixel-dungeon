@@ -243,6 +243,11 @@ public class GameModes {
 
 	public static void loadSettings(){
 		active.clear();
+		//no game modes until Yog is beaten in a copy from GitHub, see ModsUnlock
+		if (ModsUnlock.locked()) {
+			Playstyles.refresh();
+			return;
+		}
 		String s = SPDSettings.getString(SETTING, "");
 		for (String part : s.split(",")){
 			int eq = part.indexOf('=');

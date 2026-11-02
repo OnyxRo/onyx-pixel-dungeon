@@ -1163,6 +1163,7 @@ public class Armor extends EquipableItem {
 		public static Glyph randomCommon( Class<? extends Glyph> ... toIgnore ){
 			ArrayList<Class<?>> glyphs = new ArrayList<>(Arrays.asList(common));
 			glyphs.removeAll(Arrays.asList(toIgnore));
+			if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) glyphs.removeIf(c -> !com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.isOriginal(c)); //a copy from GitHub, see ModsUnlock
 			if (glyphs.isEmpty()) {
 				return random();
 			} else {
@@ -1174,6 +1175,7 @@ public class Armor extends EquipableItem {
 		public static Glyph randomUncommon( Class<? extends Glyph> ... toIgnore ){
 			ArrayList<Class<?>> glyphs = new ArrayList<>(Arrays.asList(uncommon));
 			glyphs.removeAll(Arrays.asList(toIgnore));
+			if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) glyphs.removeIf(c -> !com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.isOriginal(c)); //a copy from GitHub, see ModsUnlock
 			if (glyphs.isEmpty()) {
 				return random();
 			} else {
@@ -1185,6 +1187,7 @@ public class Armor extends EquipableItem {
 		public static Glyph randomRare( Class<? extends Glyph> ... toIgnore ){
 			ArrayList<Class<?>> glyphs = new ArrayList<>(Arrays.asList(rare));
 			glyphs.removeAll(Arrays.asList(toIgnore));
+			if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) glyphs.removeIf(c -> !com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.isOriginal(c)); //a copy from GitHub, see ModsUnlock
 			if (glyphs.isEmpty()) {
 				return random();
 			} else {
@@ -1196,6 +1199,7 @@ public class Armor extends EquipableItem {
 		public static Glyph randomCurse( Class<? extends Glyph> ... toIgnore ){
 			ArrayList<Class<?>> glyphs = new ArrayList<>(Arrays.asList(curses));
 			glyphs.removeAll(Arrays.asList(toIgnore));
+			if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) glyphs.removeIf(c -> !com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.isOriginal(c)); //a copy from GitHub, see ModsUnlock
 			if (glyphs.isEmpty()) {
 				return random();
 			} else {

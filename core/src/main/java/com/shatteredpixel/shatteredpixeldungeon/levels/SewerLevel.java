@@ -76,7 +76,7 @@ public class SewerLevel extends RegularLevel {
 	protected java.util.ArrayList<com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room> initRooms() {
 		java.util.ArrayList<com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room> rooms = super.initRooms();
 		//Shittened PD, now and then a nest of capybaras
-		if (Random.Int(9) == 0 ) {
+		if (Random.Int(9) == 0 && !com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) {
 			rooms.add(new com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.CapybaraNestRoom());
 		}
 		return rooms;

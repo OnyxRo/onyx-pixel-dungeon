@@ -128,3 +128,5 @@ The cloud routine does the first unchecked task and checks it off. Smallest firs
 - [ ] Hatch a Goblins pet on screen. Give yourself a klik soulorb from the sandbox item list, walk 200 turns (or drop it on a fire), break it open and check the Spider Klik follows you down the stairs. Try the egg too (10 turns makes a Bunny)
 - [x] Port the rest of SPS (2026-11-01). Every monster its spawn tables name, 50 more regular monsters, its floor 5 to 20 bosses on its own arenas (sandbox only) and six side boss arenas as special floors, three wands and nine enchantments. Left out and why is in PORTING.md.
 - [ ] Play SPS worlds and its boss floors in the sandbox (force an SPS world, skip to 5, 10, 15 or 20, and Special floors, SPecial Surprise PD) and say what to change. Not seen on screen yet.
+- [x] Locked start for friends. A copy from GitHub plays plain Shattered until Yog is beaten, Onyx's copy keeps everything with a Friend view switch (2026-11-02). See PORTING.md.
+- [ ] Turn Friend view on (top left of the title screen) and look at the welcome window, hero select and a few floors, then say what to change

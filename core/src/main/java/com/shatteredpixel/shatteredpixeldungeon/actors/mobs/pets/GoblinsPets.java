@@ -44,12 +44,12 @@ public class GoblinsPets {
 	}
 
 	public static void heapAt( int cell, int kind ) {
-		if (Dungeon.level == null) return;
+		if (Dungeon.level == null || com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) return;
 		heapEffect(Dungeon.level.heaps.get(cell), kind);
 	}
 
 	private static boolean allowed() {
-		return Dungeon.branch == 0 && Dungeon.chosenMods.isEmpty() && Dungeon.depth % 5 != 0;
+		return !com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked() && Dungeon.branch == 0 && Dungeon.chosenMods.isEmpty() && Dungeon.depth % 5 != 0;
 	}
 
 	/** Whether this regular floor gets a klik soulorb. Rolled on its own seed, so the rest of the floor is unchanged. */

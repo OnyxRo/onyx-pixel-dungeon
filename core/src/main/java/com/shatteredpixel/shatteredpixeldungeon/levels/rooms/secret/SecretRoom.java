@@ -60,6 +60,7 @@ public abstract class SecretRoom extends SpecialRoom {
 		}
 		
 		runSecrets = new ArrayList<>(ALL_SECRETS);
+		if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) runSecrets.removeIf(r -> !com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.isOriginal(r)); //a copy from GitHub, see ModsUnlock
 		Random.shuffle(runSecrets);
 		
 	}

@@ -165,7 +165,8 @@ public class TitleScene extends PixelScene {
 			}
 		};
 		btnSandbox.icon(Icons.get(Icons.STAIRS));
-		add(btnSandbox);
+		//the sandbox is for Onyx's playtesting, a copy from GitHub has none
+		if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.publicMode()) add(btnSandbox);
 
 		//a run of boss floors only, easiest to hardest, with the town and its merchant between segments, see BossCrawl
 		btnCrawl = new StyledButton(GREY_TR, Messages.get(this, "boss_crawl")){
@@ -184,11 +185,12 @@ public class TitleScene extends PixelScene {
 			}
 		};
 		btnCrawl.icon(Icons.get(Icons.SKULL));
-		add(btnCrawl);
+		//boss crawl and tower defense open with the mods, once Yog is beaten
+		if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) add(btnCrawl);
 
 		//tower, Tower PD's tower defense game as a mode of its own, see TowerDefense
 		btnTowers = com.shatteredpixel.shatteredpixeldungeon.scenes.TowerLevelSelectScene.titleButton(GREY_TR);
-		add(btnTowers);
+		if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) add(btnTowers);
 
 		btnSupport = new SupportButton(GREY_TR, Messages.get(this, "support"));
 		add(btnSupport);
@@ -221,7 +223,9 @@ public class TitleScene extends PixelScene {
 		btnNews = new StyledButton(GREY_TR, Messages.get(this, "mods")){
 			@Override
 			protected void onClick() {
-				ShatteredPixelDungeon.scene().addToFront(new com.shatteredpixel.shatteredpixeldungeon.windows.WndModList());
+				//until Yog is beaten the mods list only explains how to open it
+				if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) ShatteredPixelDungeon.scene().addToFront(new com.shatteredpixel.shatteredpixeldungeon.windows.WndModsLocked(false));
+				else ShatteredPixelDungeon.scene().addToFront(new com.shatteredpixel.shatteredpixeldungeon.windows.WndModList());
 			}
 		};
 		btnNews.icon(Icons.get(Icons.NEWS));
@@ -267,7 +271,7 @@ public class TitleScene extends PixelScene {
 		} else {
 			btnPlay.setRect(btnAreaLeft, insets.top + topRegion+GAP, buttonAreaWidth, BTN_HEIGHT);
 			align(btnPlay);
-			btnSupport.setRect(btnPlay.left(), btnPlay.bottom()+ GAP, (btnPlay.width()/2)-1, BTN_HEIGHT);
+			btnSupport.setRect(btnPlay.left(), btnPlay.bottom()+ GAP, com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked() ? btnPlay.width() : (btnPlay.width()/2)-1, BTN_HEIGHT);
 			btnTowers.setRect(btnSupport.right()+2, btnSupport.top(), btnSupport.width(), BTN_HEIGHT);
 			btnRankings.setRect(btnPlay.left(), btnSupport.bottom()+ GAP, (btnPlay.width()/2)-1, BTN_HEIGHT);
 			btnJournal.setRect(btnRankings.right()+2, btnRankings.top(), btnRankings.width(), BTN_HEIGHT);
@@ -343,6 +347,29 @@ public class TitleScene extends PixelScene {
 		if (Badges.isUnlocked(Badges.Badge.VICTORY) && !SPDSettings.victoryNagged()) {
 			SPDSettings.victoryNagged(true);
 			add(new WndVictoryCongrats());
+		}
+
+		//a copy from GitHub explains on first launch that the mods open after beating Yog, and says so once they have
+		if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.newsDue()) {
+			com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.newsShown();
+			com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.introShown();
+			add(new com.shatteredpixel.shatteredpixeldungeon.windows.WndModsLocked(true));
+		} else if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.introDue()) {
+			com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.introShown();
+			add(new com.shatteredpixel.shatteredpixeldungeon.windows.WndModsLocked(false));
+		}
+
+		//Onyx's copy only, switches between his game and what a friend's copy from GitHub looks like
+		if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.devBuild()) {
+			StyledButton btnFriend = new StyledButton(GREY_TR, Messages.get(this,
+					com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.friendView() ? "friend_view_on" : "friend_view_off"), 6){
+				@Override
+				protected void onClick() {
+					ShatteredPixelDungeon.scene().addToFront(new com.shatteredpixel.shatteredpixeldungeon.windows.WndFriendView());
+				}
+			};
+			btnFriend.setRect(insets.left + 2, insets.top + 2, btnFriend.reqWidth() + 6, 14);
+			add(btnFriend);
 		}
 
 		fadeIn();

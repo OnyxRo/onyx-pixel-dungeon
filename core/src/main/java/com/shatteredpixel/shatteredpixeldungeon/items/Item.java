@@ -132,7 +132,7 @@ public class Item implements Bundlable {
 		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.canRavensEyeInspect(hero, this)){
 			actions.add( AC_INSPECT );
 		}
-		SkinPaint.addActions(this, actions); //Shittened PD, paint a new skin
+		if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) SkinPaint.addActions(this, actions); //Shittened PD, paint a new skin
 		return actions;
 	}
 

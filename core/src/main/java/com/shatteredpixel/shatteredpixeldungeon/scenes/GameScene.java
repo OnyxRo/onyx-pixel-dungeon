@@ -538,6 +538,7 @@ public class GameScene extends PixelScene {
 		NowPlaying nowPlaying = new NowPlaying();
 		nowPlaying.camera = uiCamera;
 		nowPlaying.setRect( insets.left + 3, screentop + (modLogo != null ? 20 : 2), 120, 10 );
+		if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) nowPlaying.visible = nowPlaying.active = false;
 		add( nowPlaying );
 
 		float extraRight = uiCamera.width - (menuBarMaxLeft + MenuPane.WIDTH);
@@ -1777,7 +1778,7 @@ public class GameScene extends PixelScene {
 		if (Dungeon.hero.isAlive()) {
 			//Shittened PD, the banner is sometimes a joke
 			BannerSprites.Type type;
-			switch (Random.Int(7)) {
+			switch (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked() ? 6 : Random.Int(7)) {
 				case 0:  type = BannerSprites.Type.SASS_SLAIN;      break;
 				case 1:  type = BannerSprites.Type.SAAB_SLAIN;      break;
 				case 2:  type = BannerSprites.Type.ASS_SLAIN;       break;
@@ -1790,7 +1791,7 @@ public class GameScene extends PixelScene {
 			bossSlain.show( 0xFFFFFF, 0.3f, 5f );
 			scene.showBanner( bossSlain );
 
-			if (Random.Float() < 0.1f) Sample.INSTANCE.play( Assets.Sounds.BOSSOB );
+			if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked() && Random.Float() < 0.1f) Sample.INSTANCE.play( Assets.Sounds.BOSSOB );
 			else Sample.INSTANCE.play( Assets.Sounds.BOSS );
 		}
 	}
@@ -1798,6 +1799,7 @@ public class GameScene extends PixelScene {
 	//Shittened PD banners
 	public static void ratSlain() {
 		if (scene == null) return; //headless tests
+		if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) return; //a copy from GitHub, see ModsUnlock
 		if (Dungeon.hero.isAlive()) {
 			Banner ratSlain = new Banner( BannerSprites.get( BannerSprites.Type.RAT_SLAIN ) );
 			ratSlain.show( 0xFFFFFF, 0.3f, 1.5f );
@@ -1820,6 +1822,7 @@ public class GameScene extends PixelScene {
 
 	public static void friendRequest() {
 		if (scene == null) return;
+		if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) return; //a copy from GitHub, see ModsUnlock
 		if (Dungeon.hero.isAlive()) {
 			Banner request = new Banner( BannerSprites.get( BannerSprites.Type.FRIEND_REQUEST ) );
 			request.show( 0xFFFFFF, 0.3f, 4f );

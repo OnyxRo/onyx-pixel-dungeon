@@ -612,7 +612,7 @@ public class Hero extends Char {
 			MAX_MP = bundle.getInt( MANA_MAX );
 			magicSkill = bundle.getInt( MAGIC_SKILL );
 		}
-		if (buff( MpRegen.class ) == null) Buff.affect( this, MpRegen.class );
+		if (buff( MpRegen.class ) == null && !com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) Buff.affect( this, MpRegen.class );
 		//summoning
 		if (bundle.contains( "summ_attunement" )) {
 			attunement = bundle.getFloat( "summ_attunement" );
@@ -825,7 +825,7 @@ public class Hero extends Char {
 		if (Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.CONSUMING_GREED)) Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ConsumingGreed.class);
 		if (Dungeon.isSinActive(com.shatteredpixel.shatteredpixeldungeon.Sins.SLOTH)) Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sloth.class);
 		if (Dungeon.isSinActive(com.shatteredpixel.shatteredpixeldungeon.Sins.PRIDE)) Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Pride.class);
-		Buff.affect( this, MpRegen.class );
+		if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) Buff.affect( this, MpRegen.class );
 		com.shatteredpixel.shatteredpixeldungeon.actors.DerangedChar.live(this); //deranged, Forget Path
 		//Dragonic PD, the Dragon Knight sears raw meat
 		if (heroClass == HeroClass.DRAGONKNIGHT) Buff.affect( this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sear.class );
@@ -1531,7 +1531,7 @@ public class Hero extends Char {
 		if (Random.Int(8000) == 0) {
 			GameScene.friendRequest();
 		}
-		com.shatteredpixel.shatteredpixeldungeon.items.SkinPaint.onHeroAct(this); //Shittened PD, the sheep seal bleats
+		if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) com.shatteredpixel.shatteredpixeldungeon.items.SkinPaint.onHeroAct(this); //Shittened PD, the sheep seal bleats
 
 		//calls to dungeon.observe will also update hero's local FOV.
 		fieldOfView = Dungeon.level.heroFOV;
@@ -2061,7 +2061,7 @@ public class Hero extends Char {
 				
 			} else {
 				GLog.w( Messages.get(this, "locked_door") );
-				Sample.INSTANCE.play(Random.oneOf(Assets.Sounds.LOCKED_DOOR_1,
+				if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) Sample.INSTANCE.play(Random.oneOf(Assets.Sounds.LOCKED_DOOR_1,
 						Assets.Sounds.LOCKED_DOOR_2, Assets.Sounds.LOCKED_DOOR_3), 0.3f, Random.Float(0.95f, 1.05f));
 				ready();
 			}
@@ -2378,7 +2378,9 @@ public class Hero extends Char {
 			Buff.affect(Dungeon.hero, Talent.PatientStrikeTracker.class).pos = Dungeon.hero.pos;
 		}
 		if (!fullRest) {
-			if (sprite != null) {
+			if (sprite != null && com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) {
+				sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, "wait"));
+			} else if (sprite != null) {
 				//Shittened PD, the hero mutters something different each time
 				int min = 0, max = 17;
 				int randomNumber = min + (int)(max * (1f - Math.sqrt(0.96f - Random.Float() * Random.Float())));
@@ -3126,7 +3128,7 @@ public class Hero extends Char {
 				updateHT( true );
 				attackSkill++;
 				defenseSkill++;
-				Perks.earnPerk(this);
+				if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) Perks.earnPerk(this);
 				RearrangedTalents.onLevelUp(this); //rearranged
 				com.shatteredpixel.shatteredpixeldungeon.ButteredArena.onLevelUp(this); //buttered, heals and starts the next wave
 				summoningLevelUp();
@@ -3385,7 +3387,8 @@ public class Hero extends Char {
 			public void call() {
 				GameScene.gameOver();
 				//Shittened PD, a dozen ways to die
-				Sample.INSTANCE.play( Random.oneOf(Assets.Sounds.DEATH_1, Assets.Sounds.DEATH_2, Assets.Sounds.DEATH_3,
+				if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) Sample.INSTANCE.play( Assets.Sounds.DEATH );
+				else Sample.INSTANCE.play( Random.oneOf(Assets.Sounds.DEATH_1, Assets.Sounds.DEATH_2, Assets.Sounds.DEATH_3,
 						Assets.Sounds.DEATH_4, Assets.Sounds.DEATH_5, Assets.Sounds.DEATH_6,
 						Assets.Sounds.DEATH_7, Assets.Sounds.DEATH_8, Assets.Sounds.DEATH_9,
 						Assets.Sounds.DEATH_10, Assets.Sounds.DEATH_11, Assets.Sounds.DEATH_12, Assets.Sounds.OOF) );
@@ -3399,7 +3402,9 @@ public class Hero extends Char {
 		if (Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.KetchupStormed.class) != null) Badges.validateDeathWithKetchup();
 
 		//Shittened PD, the Dwarf King's throne room gets his victory tune, everywhere else goes quiet
-		if (Dungeon.level instanceof com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel) {
+		if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) {
+			//Shattered leaves the music playing
+		} else if (Dungeon.level instanceof com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel) {
 			com.watabou.noosa.audio.Music.INSTANCE.play(Assets.Music.KING_VICTORY, false);
 		} else {
 			com.watabou.noosa.audio.Music.INSTANCE.stop();
@@ -3464,7 +3469,7 @@ public class Hero extends Char {
 		}
 
 		//HERO MAY TAKE A SHIT (most of the time only when something was drunk or eaten that disagrees with them)
-		if (Random.Int(0,1500) == 4 && Dungeon.depth > 0 && Dungeon.branch == 0 && Dungeon.level != null && !Dungeon.level.locked){
+		if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked() && Random.Int(0,1500) == 4 && Dungeon.depth > 0 && Dungeon.branch == 0 && Dungeon.level != null && !Dungeon.level.locked){
 			defecate(3f);
 		}
 		if (Random.Int(300) == 69 && buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CaffeineRush.class) != null) {
@@ -3474,7 +3479,7 @@ public class Hero extends Char {
 		if (Random.Int(300) == 69 && buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Lavage.class) != null) {
 			defecate(3f);
 		}
-		com.shatteredpixel.shatteredpixeldungeon.items.SkinPaint.onHeroMove(this); //Shittened PD, the hero may step on a lego
+		if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) com.shatteredpixel.shatteredpixeldungeon.items.SkinPaint.onHeroMove(this); //Shittened PD, the hero may step on a lego
 
 		int tfFrom = pos;
 		super.move( step, travelling);
@@ -3489,6 +3494,25 @@ public class Hero extends Char {
 
 	//Shittened PD, every kind of floor has its own footsteps (and so do the floors Shattered would have used one sound for)
 	private void stepSound( int step, boolean wasHighGrass ) {
+		//a copy from GitHub keeps Shattered's footsteps until Yog is beaten, see ModsUnlock
+		if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) {
+			if (Dungeon.level.water[pos]) {
+				Sample.INSTANCE.play( Assets.Sounds.WATER, 1, Random.Float( 0.8f, 1.25f ) );
+			} else if (Dungeon.level.map[pos] == Terrain.EMPTY_SP) {
+				Sample.INSTANCE.play( Assets.Sounds.STURDY, 1, Random.Float( 0.96f, 1.05f ) );
+			} else if (Dungeon.level.map[pos] == Terrain.GRASS
+					|| Dungeon.level.map[pos] == Terrain.EMBERS
+					|| Dungeon.level.map[pos] == Terrain.FURROWED_GRASS){
+				if (step == pos && wasHighGrass) {
+					Sample.INSTANCE.play(Assets.Sounds.TRAMPLE, 1, Random.Float( 0.96f, 1.05f ) );
+				} else {
+					Sample.INSTANCE.play( Assets.Sounds.GRASS, 1, Random.Float( 0.96f, 1.05f ) );
+				}
+			} else {
+				Sample.INSTANCE.play( Assets.Sounds.STEP, 1, Random.Float( 0.96f, 1.05f ) );
+			}
+			return;
+		}
 		int depth = Dungeon.depth;
 		boolean grassy = Dungeon.level.map[pos] == Terrain.GRASS
 				|| Dungeon.level.map[pos] == Terrain.EMBERS
@@ -3532,6 +3556,7 @@ public class Hero extends Char {
 	}
 
 	public static String levelUpSound() {
+		if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) return Assets.Sounds.LEVELUP; //a copy from GitHub, see ModsUnlock
 		return Random.oneOf(Assets.Sounds.LEVELUP_1, Assets.Sounds.LEVELUP_2, Assets.Sounds.LEVELUP_3,
 				Assets.Sounds.LEVELUP_4, Assets.Sounds.LEVELUP_5, Assets.Sounds.LEVELUP_6);
 	}

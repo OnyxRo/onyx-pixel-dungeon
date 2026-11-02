@@ -112,7 +112,7 @@ public class Chasm implements Hero.Doom {
 			Dungeon.hero.interrupt();
 			InterlevelScene.mode = InterlevelScene.Mode.FALL;
 			InterlevelScene.fallUsesTransition = false;
-			if (Dungeon.depth == 14 && (Dungeon.branch == 0 || Dungeon.branch == 2)) {
+			if (Dungeon.depth == 14 && (Dungeon.branch == 0 || Dungeon.branch == 2) && !com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) {
 				//Matt Edition. A fall from floor 14 drops into the Ice Caves, and a fall inside them goes back up to
 				//floor 14, so nobody skips the caves or lands on the deep exit puzzle floor
 				boolean fromMain = Dungeon.branch == 0;

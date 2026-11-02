@@ -962,6 +962,16 @@ public class Generator {
 			cat = Random.chances( categoryProbs );
 		}
 		categoryProbs.put( cat, categoryProbs.get( cat ) - 1);
+		//categories the mods added are skipped until Yog is beaten in a copy from GitHub, see ModsUnlock
+		for (int tries = 0; tries < 20 && com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked() && !shatteredCategory(cat); tries++){
+			cat = Random.chances( categoryProbs );
+			if (cat == null){
+				usingFirstDeck = !usingFirstDeck;
+				generalReset();
+				cat = Random.chances( categoryProbs );
+			}
+			categoryProbs.put( cat, categoryProbs.get( cat ) - 1);
+		}
 
 		if (cat == Category.SEED) {
 			//We specifically use defaults for seeds here because, unlike other item categories
@@ -974,11 +984,34 @@ public class Generator {
 	}
 
 	public static Item randomUsingDefaults(){
-		return randomUsingDefaults(Random.chances( defaultCatProbs ));
+		Category cat = Random.chances( defaultCatProbs );
+		//categories the mods added are skipped until Yog is beaten in a copy from GitHub, see ModsUnlock
+		for (int tries = 0; tries < 20 && com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked() && !shatteredCategory(cat); tries++){
+			cat = Random.chances( defaultCatProbs );
+		}
+		return randomUsingDefaults(cat);
 	}
 	
 	public static Item random( Category cat ) {
-		return com.shatteredpixel.shatteredpixeldungeon.MusicImplant.unlucky(randomForCategory(cat)); //musicimplant, unlucky
+		Item item = com.shatteredpixel.shatteredpixeldungeon.MusicImplant.unlucky(randomForCategory(cat)); //musicimplant, unlucky
+		for (int tries = 0; tries < 20 && modded(item); tries++){
+			item = com.shatteredpixel.shatteredpixeldungeon.MusicImplant.unlucky(randomForCategory(cat));
+		}
+		return item;
+	}
+
+	private static final java.util.List<String> SHATTERED_CATEGORIES = java.util.Arrays.asList(
+			"TRINKET", "WEAPON", "WEP_T1", "WEP_T2", "WEP_T3", "WEP_T4", "WEP_T5", "ARMOR", "MISSILE",
+			"MIS_T1", "MIS_T2", "MIS_T3", "MIS_T4", "MIS_T5", "WAND", "RING", "ARTIFACT", "FOOD", "POTION", "SEED");
+
+	private static boolean shatteredCategory( Category cat ){
+		return cat == null || SHATTERED_CATEGORIES.contains(cat.name());
+	}
+
+	//a copy from GitHub only finds Shattered's own items until Yog is beaten, see ModsUnlock
+	private static boolean modded( Item item ){
+		return item != null && com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()
+				&& !com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.isOriginal(item.getClass());
 	}
 
 	private static Item randomForCategory( Category cat ) {
@@ -1037,6 +1070,12 @@ public class Generator {
 	//overrides any deck systems and always uses default probs
 	// except for artifacts, which must always use a deck
 	public static Item randomUsingDefaults( Category cat ){
+		Item item = randomUsingDefaultsOnce(cat);
+		for (int tries = 0; tries < 20 && modded(item); tries++) item = randomUsingDefaultsOnce(cat);
+		return item;
+	}
+
+	private static Item randomUsingDefaultsOnce( Category cat ){
 		Item rbaGun = RBALoot.gunFor(cat); //rebluearchive, students with guns find guns
 		if (rbaGun != null) return rbaGun;
 		if (cat == Category.WEAPON){
@@ -1160,6 +1199,12 @@ public class Generator {
 
 	//enforces uniqueness of artifacts throughout a run.
 	public static Artifact randomArtifact() {
+		Artifact a = randomArtifactOnce();
+		for (int tries = 0; tries < 20 && modded(a); tries++) a = randomArtifactOnce();
+		return modded(a) ? null : a;
+	}
+
+	private static Artifact randomArtifactOnce() {
 
 		Category cat = Category.ARTIFACT;
 

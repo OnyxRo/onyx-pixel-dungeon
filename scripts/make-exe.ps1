@@ -31,7 +31,9 @@ try {
     else { $jpackage = (Get-Command jpackage -ErrorAction Stop).Source }
     & $jpackage --type app-image --name $name --input $stage --main-jar $jar.Name `
         --icon desktop\src\main\assets\icons\windows.ico --dest $dest `
-        --java-options '-XX:+IgnoreUnrecognizedVMOptions'
+        --java-options '-XX:+IgnoreUnrecognizedVMOptions' `
+        --java-options '-Donyx.dev=true'
+    # onyx.dev keeps every mod and the testing tools open in Onyx's copy, a GitHub copy starts as plain Shattered (ModsUnlock)
     if ($LASTEXITCODE -ne 0) { throw 'jpackage failed' }
 
     $exe = Join-Path $app "$name.exe"

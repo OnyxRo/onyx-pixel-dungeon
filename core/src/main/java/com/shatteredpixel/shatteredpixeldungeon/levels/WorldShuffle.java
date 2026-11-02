@@ -491,6 +491,8 @@ public class WorldShuffle {
 	}
 
 	public static boolean shuffles( int depth ){
+		//a copy from GitHub plays plain Shattered until Yog is beaten
+		if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) return false;
 		if (depth <= 1 || depth >= 25) return false;
 		if (depth % 5 == 0) return false;      //boss floors
 		//quest floors, since each region's quest is guaranteed to spawn by its 4th floor

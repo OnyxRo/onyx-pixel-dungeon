@@ -137,7 +137,7 @@ public abstract class RegularLevel extends Level {
 	protected ArrayList<Room> initRooms() {
 		ArrayList<Room> initRooms = new ArrayList<>();
 		initRooms.add ( roomEntrance = EntranceRoom.createEntrance());
-		if (Dungeon.depth == 14 && Dungeon.branch == 0) {
+		if (Dungeon.depth == 14 && Dungeon.branch == 0 && !com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) {
 			//Matt Edition. The exit of floor 14 leads down into its Ice Caves branch as well as to floor 15
 			initRooms.add( roomExit = new com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Custom.IceCavesEntrance());
 		} else {

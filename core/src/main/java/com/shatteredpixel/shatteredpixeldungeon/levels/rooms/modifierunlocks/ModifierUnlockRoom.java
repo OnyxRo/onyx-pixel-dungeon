@@ -47,7 +47,8 @@ public abstract class ModifierUnlockRoom extends Room {
 		//while something is still locked. The floor comes from its own generator, so the same seed always
 		//picks the same floor and the rest of the dungeon is not shifted by it.
 		//-Donyx.notrial switches the rooms off, for telling level generation bugs apart in the headless tests
-		if (System.getProperty("onyx.notrial") != null || Dungeon.sandbox || !Challenges.HasAnyChallengesToUnlock()) {
+		if (System.getProperty("onyx.notrial") != null || Dungeon.sandbox || !Challenges.HasAnyChallengesToUnlock()
+				|| com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) {
 			m_DepthToSpawn = -1;
 			return;
 		}

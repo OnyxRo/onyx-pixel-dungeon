@@ -77,6 +77,8 @@ public class Challenges {
 
 	public static final int MAX_VALUE           = (1 << 29) - 1;
 	public static final int MAX_CHALS           = 29;
+	/** Shattered's own nine, the only ones a copy from GitHub has until Yog is beaten. */
+	public static final int SHATTERED_MASK      = 511;
 
 	public static final String[] NAME_IDS = {
 			"champion_enemies",

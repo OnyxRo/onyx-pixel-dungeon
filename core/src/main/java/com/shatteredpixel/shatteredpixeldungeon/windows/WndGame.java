@@ -86,7 +86,8 @@ public class WndGame extends Window {
 			curBtn.textColor(Window.TITLE_COLOR);
 		}
 
-		// Compendium of what each mod adds
+		// Compendium of what each mod adds, and the songs, both hidden until Yog is beaten in a copy from GitHub
+		if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) {
 		addButton( curBtn = new RedButton( Messages.get(this, "compendium") ) {
 			@Override
 			protected void onClick() {
@@ -105,6 +106,7 @@ public class WndGame extends Window {
 			}
 		} );
 		curBtn.icon(Icons.get(Icons.AUDIO));
+		}
 
 		//speedrun pd, a restart button while the hero still lives
 		if (Dungeon.hero != null && Dungeon.hero.isAlive() && com.shatteredpixel.shatteredpixeldungeon.SmallModes.restartButton()) {

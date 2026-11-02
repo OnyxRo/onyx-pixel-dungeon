@@ -50,7 +50,7 @@ public class CavesPainter extends RegularPainter {
 
 		for (Room room : rooms) {
 			//Shittened PD, a boombox waits in every caves entrance room
-			if (room instanceof com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.entrance.EntranceRoom) {
+			if (room instanceof com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.entrance.EntranceRoom && !com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) {
 				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Boombox.spawnBoombox(level, room);
 			}
 

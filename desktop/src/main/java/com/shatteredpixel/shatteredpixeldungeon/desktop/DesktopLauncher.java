@@ -63,6 +63,10 @@ public class DesktopLauncher {
 			}
 		}
 		
+		//Onyx's own copy is built with -Donyx.dev=true, a copy from GitHub starts as plain Shattered, see ModsUnlock
+		com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.dev = Boolean.getBoolean("onyx.dev")
+				|| System.getProperty("onyx.gallery") != null;
+
 		final String title;
 		if (System.getProperty("onyx.gallery") != null) {
 			//the screenshot tour deletes and overwrites save slot 1, so it must never share the

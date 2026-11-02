@@ -183,7 +183,7 @@ public enum HeroClass {
 		if (!Challenges.isItemBlocked(i)) i.collect();
 
 		//Shittened PD, Finland's independence day comes with a Finnish album
-		if (com.shatteredpixel.shatteredpixeldungeon.utils.Holiday.getCurrentHoliday() == com.shatteredpixel.shatteredpixeldungeon.utils.Holiday.FINNISH_INDEPENDENCE_DAY) {
+		if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked() && com.shatteredpixel.shatteredpixeldungeon.utils.Holiday.getCurrentHoliday() == com.shatteredpixel.shatteredpixeldungeon.utils.Holiday.FINNISH_INDEPENDENCE_DAY) {
 			new com.shatteredpixel.shatteredpixeldungeon.items.albums.FinnishAlbum().collect();
 		}
 
@@ -513,7 +513,7 @@ public enum HeroClass {
 		(hero.belongings.weapon = new Dagger()).identify();
 
 		CloakOfShadows cloak = new CloakOfShadows();
-		com.shatteredpixel.shatteredpixeldungeon.items.SkinPaint.holidaySkin(cloak); //Shittened PD, Dracula's cloak at Halloween
+		if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) com.shatteredpixel.shatteredpixeldungeon.items.SkinPaint.holidaySkin(cloak); //Shittened PD, Dracula's cloak at Halloween
 		(hero.belongings.artifact = cloak).identify();
 		hero.belongings.artifact.activate( hero );
 
@@ -531,7 +531,7 @@ public enum HeroClass {
 
 		(hero.belongings.weapon = new Gloves()).identify();
 		SpiritBow bow = new SpiritBow();
-		com.shatteredpixel.shatteredpixeldungeon.items.SkinPaint.holidaySkin(bow); //Shittened PD, the egg bow at Easter
+		if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) com.shatteredpixel.shatteredpixeldungeon.items.SkinPaint.holidaySkin(bow); //Shittened PD, the egg bow at Easter
 		bow.identify().collect();
 
 		Dungeon.quickslot.setSlot(0, bow);
@@ -1096,6 +1096,9 @@ public enum HeroClass {
 	public static final boolean UNLOCK_ALL_FOR_NOW = true;
 
 	public boolean isUnlocked(){
+		//a copy from GitHub only has Shattered's heroes until Yog is beaten, see ModsUnlock
+		if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()
+				&& !com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.isShatteredHero(this)) return false;
 		//always unlock on debug builds
 		if (DeviceCompat.isDebug()) return true;
 		//and in sandbox runs

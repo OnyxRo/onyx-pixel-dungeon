@@ -523,7 +523,7 @@ public class YogDzewa extends Mob {
 	public void die( Object cause ) {
 
 		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationBossTalents.dropSublimation("YOG", pos); //transformation
-		com.shatteredpixel.shatteredpixeldungeon.items.ancientrunes.ElektroHooks.dropBossRune(this); //elektro
+		if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) com.shatteredpixel.shatteredpixeldungeon.items.ancientrunes.ElektroHooks.dropBossRune(this); //elektro
 		Bestiary.skipCountingEncounters = true;
 		for (Mob mob : (Iterable<Mob>)Dungeon.level.mobs.clone()) {
 			if (mob instanceof Larva || mob instanceof YogRipper || mob instanceof YogEye || mob instanceof YogScorpio) {
@@ -535,6 +535,11 @@ public class YogDzewa extends Mob {
 		updateVisibility(Dungeon.level);
 
 		GameScene.bossSlain();
+		//a copy from GitHub opens every mod once Yog is beaten
+		if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) {
+			com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.unlock();
+			com.shatteredpixel.shatteredpixeldungeon.utils.GLog.p(Messages.get(com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.class, "unlocked_log"));
+		}
 		Badges.validateFriarUnlock(); //Transformation PD
 
 		if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES) && Statistics.spawnersAlive == 4){

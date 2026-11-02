@@ -119,6 +119,7 @@ public Item random() {
 	//Shittened PD, gold goes by other names
 	@Override
 	public String name() {
+		if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) return super.name(); //a copy from GitHub, see ModsUnlock
 		return com.shatteredpixel.shatteredpixeldungeon.messages.Messages.get(this, "name_" + Random.Int(11));
 	}
 }

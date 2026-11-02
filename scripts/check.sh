@@ -190,6 +190,10 @@ if [ $QUICK -eq 0 ]; then
   run "HeroArtTest" HeroArtTest; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY heroart)" | tail -12 | sed 's/^/  /'
   [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
+  #a copy from GitHub plays plain Shattered until Yog is beaten, 10 seeds of 26 floors with nothing from the mods
+  run "LockedModeTest" LockedModeTest 10; rc=$?
+  tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|STRAY|LockedModeTest)" | tail -12 | sed 's/^/  /'
+  [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
   #game modes, Half PD, Even Shorter PD, Radar's playstyles and seed search, Custom PD's starting kits
   run "GameModesTest" GameModesTest; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|INFO radar|SUMMARY gamemodes)" | tail -12 | sed 's/^/  /'

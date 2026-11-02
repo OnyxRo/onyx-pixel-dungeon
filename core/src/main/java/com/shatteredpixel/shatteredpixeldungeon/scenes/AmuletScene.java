@@ -138,6 +138,7 @@ public class AmuletScene extends PixelScene {
 		btnExitWithSaul.icon(new ItemSprite(ItemSpriteSheet.AMULET));
 		btnExitWithSaul.setSize( WIDTH, BTN_HEIGHT );
 		add( btnExitWithSaul );
+		if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) btnExitWithSaul.visible = btnExitWithSaul.active = false; //a copy from GitHub, see ModsUnlock
 		
 		btnStay = new StyledButton(Chrome.Type.GREY_BUTTON_TR, Messages.get(this, "stay") ) {
 			@Override

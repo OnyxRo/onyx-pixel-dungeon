@@ -210,7 +210,9 @@ public class Piranha extends Mob {
 		} else {
 			//Shittened PD's water monsters
 			float rand = Random.Float();
-			if (rand < 0.1f && Dungeon.depth > 15) {
+			if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) {
+				return new Piranha();
+			} else if (rand < 0.1f && Dungeon.depth > 15) {
 				return new Goldfish();
 			} else if (rand < 0.3f) {
 				return new Perch();

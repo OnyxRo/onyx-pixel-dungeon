@@ -175,7 +175,7 @@ public class DwarfKing extends Mob {
 			throwItems();
 		}
 
-		if (phase == 1 && HP > HT - 50 && Dungeon.level.locked && Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge.class) == null) {
+		if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked() && phase == 1 && HP > HT - 50 && Dungeon.level.locked && Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge.class) == null) {
 			//Shittened PD, just wait. Nothing happens until the king is hurt, and 2500 turns later he lets you go
 			{
 				waitTime--;

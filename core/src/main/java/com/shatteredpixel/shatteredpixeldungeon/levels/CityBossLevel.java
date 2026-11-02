@@ -352,7 +352,7 @@ public class CityBossLevel extends Level {
 		}
 
 		//Shittened PD, a slot machine in one corner of the arena
-		{
+		if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) {
 			com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.SlotMachine slotMachine = new com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.SlotMachine();
 			int[] corners = new int[]{
 					pointToCell(new Point(arena.left + 2, arena.top + 2)),

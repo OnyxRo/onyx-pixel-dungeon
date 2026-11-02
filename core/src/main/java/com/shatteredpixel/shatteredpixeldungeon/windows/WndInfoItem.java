@@ -98,7 +98,9 @@ public class WndInfoItem extends Window {
 		titlebar.color( color );
 		
 		RenderedTextBlock txtInfo;
-		if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.food.Food) {
+		if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) {
+			txtInfo = PixelScene.renderTextBlock( item.info(), 6 );
+		} else if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.food.Food) {
 			txtInfo = PixelScene.renderTextBlock( item.info() + "\n\n" + ((com.shatteredpixel.shatteredpixeldungeon.items.food.Food) item).nutritionalInfo(), 6 );
 		} else {
 			//Shittened PD, a painted item says which skin it wears

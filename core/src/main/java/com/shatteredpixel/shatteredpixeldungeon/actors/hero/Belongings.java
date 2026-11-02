@@ -99,9 +99,10 @@ public class Belongings implements Iterable<Item> {
 		for (int i = 0; i < arr.length; i++) if (arr[i] == null) return i;
 		return -1;
 	}
-	public int freeExtraArmor()    { return freeIn(extraArmors); }
-	public int freeExtraArtifact() { return freeIn(extraArtifacts); }
-	public int freeExtraRing()     { return freeIn(extraRings); }
+	//no extra slots until Yog is beaten in a copy from GitHub, see ModsUnlock
+	public int freeExtraArmor()    { return com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked() ? -1 : freeIn(extraArmors); }
+	public int freeExtraArtifact() { return com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked() ? -1 : freeIn(extraArtifacts); }
+	public int freeExtraRing()     { return com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked() ? -1 : freeIn(extraRings); }
 
 	public boolean inExtraSlot( Item item ){
 		for (Object o : extraArmors)    if (o == item && item != null) return true;

@@ -270,14 +270,15 @@ public class WndBag extends WndTabbed {
 		placeItem( stuff.artifact != null ? stuff.artifact : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
 		placeItem( stuff.misc != null ? stuff.misc : new Placeholder( ItemSpriteSheet.SOMETHING ) );
 		placeItem( stuff.ring != null ? stuff.ring : new Placeholder( ItemSpriteSheet.RING_HOLDER ) );
-		//from Ryuse's PD
-		placeItem( stuff.helmet != null ? stuff.helmet : new Placeholder( ItemSpriteSheet.HELMET_HOLDER ) );
+		//from Ryuse's PD, its slots stay hidden until Yog is beaten in a copy from GitHub
+		boolean modSlots = !com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked();
+		if (modSlots) placeItem( stuff.helmet != null ? stuff.helmet : new Placeholder( ItemSpriteSheet.HELMET_HOLDER ) );
 
-		int equipped = 6;
+		int equipped = modSlots ? 6 : 5;
 
 		//Ryuse's PD, extra slots show on the main backpack only. Worn items always show
 		// and one empty slot is shown per kind while there is room for more
-		if (container == Dungeon.hero.belongings.backpack) {
+		if (modSlots && container == Dungeon.hero.belongings.backpack) {
 			for (Armor a : stuff.extraArmors) if (a != null) { placeItem(a); equipped++; }
 			if (stuff.freeExtraArmor() >= 0) { placeItem( new Placeholder( ItemSpriteSheet.ARMOR_HOLDER ) ); equipped++; }
 			for (Artifact a : stuff.extraArtifacts) if (a != null) { placeItem(a); equipped++; }

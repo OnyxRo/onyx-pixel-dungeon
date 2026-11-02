@@ -62,7 +62,7 @@ public class SecretWellRoom extends SecretRoom {
 		Painter.set( level, well, Terrain.WELL );
 		
 		@SuppressWarnings("unchecked")
-		Class<? extends WellWater> waterClass = (Class<? extends WellWater>) Random.element( WATERS );
+		Class<? extends WellWater> waterClass = (Class<? extends WellWater>) Random.element( com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked() ? java.util.Arrays.copyOf(WATERS, 2) : WATERS );
 		
 		WellWater.seed(well.x + level.width() * well.y, 1, waterClass, level);
 		

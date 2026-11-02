@@ -2,7 +2,9 @@
 
 **Every floor a new world.**
 
-Onyx's Pixel Dungeon is a fork of [Shattered Pixel Dungeon](https://github.com/00-Evan/shattered-pixel-dungeon) (v4.0.2) where most floors are built in a randomly chosen world instead of the one their depth normally uses. There are 54 worlds, Shattered's own five plus 49 ported from 14 other Pixel Dungeon mods. Floor 2 might be the Gardens, floor 7 the Necropolis, floor 12 the Lost Tomb. Devoted's and Matt Edition's monsters are ported too, and a sandbox mode lets you visit anything. It is a desktop game, built for Windows.
+Onyx's Pixel Dungeon is a fork of [Shattered Pixel Dungeon](https://github.com/00-Evan/shattered-pixel-dungeon) (v4.0.2) where most floors are built in a randomly chosen world instead of the one their depth normally uses. There are 54 worlds, Shattered's own five plus 49 ported from 14 other Pixel Dungeon mods. Floor 2 might be the Gardens, floor 7 the Necropolis, floor 12 the Lost Tomb. The mods' monsters, heroes, items and game modes are ported too. It is a desktop game, built for Windows.
+
+A new copy starts out as plain Shattered Pixel Dungeon, so the mods do not all arrive at once. Beat Yog-Dzewa on floor 25 and everything opens, the world shuffle, the mod heroes, the game modes, the boss crawl and tower defense. The sandbox described below is in Onyx's own copy only.
 
 ## How it works
 

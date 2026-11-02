@@ -300,7 +300,7 @@ public abstract class YogFist extends Mob {
 
 			boolean result = super.act();
 
-			if (speech == 0) {
+			if (speech == 0 && !com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) {
 				speech++;
 				yell(Messages.get(SoiledFist.class, "speech_1"));
 				GLog.n(Messages.get(SoiledFist.class, "speech_1_respond"));
@@ -449,7 +449,7 @@ public abstract class YogFist extends Mob {
 			}
 
 			//Shittened PD, the rotting fist sometimes shouts and capybaras come running
-			if (Random.Int(0,20) == 5) {
+			if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked() && Random.Int(0,20) == 5) {
 				com.watabou.noosa.audio.Sample.INSTANCE.play( com.shatteredpixel.shatteredpixeldungeon.Assets.Sounds.VINEBOOM );
 				int rand = Random.Int(0,6);
 				for (int i = 0; i < rand; i++) {

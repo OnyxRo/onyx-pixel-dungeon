@@ -83,6 +83,7 @@ public class PrisonLevel extends RegularLevel {
 	@Override
 	protected ArrayList<Room> initRooms() {
 		//the Friendly Thief room comes from Matt Edition
+		if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) return Wandmaker.Quest.spawnRoom(super.initRooms()); //a copy from GitHub, see ModsUnlock
 		return com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.FriendlyThief.Quest.spawnRoom(
 				Wandmaker.Quest.spawnRoom(super.initRooms()));
 	}

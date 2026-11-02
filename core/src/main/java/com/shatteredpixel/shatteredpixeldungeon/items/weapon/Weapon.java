@@ -139,7 +139,7 @@ abstract public class Weapon extends KindOfWeapon {
 	public boolean masteryPotionBonus = false;
 
 	//Shittened PD's prefixes. Most melee weapons find a prefix that nudges their damage, accuracy and speed.
-	public com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix prefix = Random.Float() > 0.4f && this instanceof MeleeWeapon
+	public com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix prefix = !com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked() && Random.Float() > 0.4f && this instanceof MeleeWeapon
 			? com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix.all[Random.Int(0, com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix.all.length - 1)] : com.shatteredpixel.shatteredpixeldungeon.mechanics.Prefix.NONE;
 
 	{
@@ -861,6 +861,7 @@ abstract public class Weapon extends KindOfWeapon {
 		public static Enchantment randomCommon( Class<? extends Enchantment> ... toIgnore ) {
 			ArrayList<Class<?>> enchants = new ArrayList<>(Arrays.asList(common));
 			enchants.removeAll(Arrays.asList(toIgnore));
+			if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) enchants.removeIf(c -> !com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.isOriginal(c)); //a copy from GitHub, see ModsUnlock
 			if (enchants.isEmpty()) {
 				return random();
 			} else {
@@ -872,6 +873,7 @@ abstract public class Weapon extends KindOfWeapon {
 		public static Enchantment randomUncommon( Class<? extends Enchantment> ... toIgnore ) {
 			ArrayList<Class<?>> enchants = new ArrayList<>(Arrays.asList(uncommon));
 			enchants.removeAll(Arrays.asList(toIgnore));
+			if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) enchants.removeIf(c -> !com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.isOriginal(c)); //a copy from GitHub, see ModsUnlock
 			if (enchants.isEmpty()) {
 				return random();
 			} else {
@@ -883,6 +885,7 @@ abstract public class Weapon extends KindOfWeapon {
 		public static Enchantment randomRare( Class<? extends Enchantment> ... toIgnore ) {
 			ArrayList<Class<?>> enchants = new ArrayList<>(Arrays.asList(rare));
 			enchants.removeAll(Arrays.asList(toIgnore));
+			if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) enchants.removeIf(c -> !com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.isOriginal(c)); //a copy from GitHub, see ModsUnlock
 			if (enchants.isEmpty()) {
 				return random();
 			} else {
@@ -894,6 +897,7 @@ abstract public class Weapon extends KindOfWeapon {
 		public static Enchantment randomCurse( Class<? extends Enchantment> ... toIgnore ){
 			ArrayList<Class<?>> enchants = new ArrayList<>(Arrays.asList(curses));
 			enchants.removeAll(Arrays.asList(toIgnore));
+			if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) enchants.removeIf(c -> !com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.isOriginal(c)); //a copy from GitHub, see ModsUnlock
 			if (enchants.isEmpty()) {
 				return random();
 			} else {

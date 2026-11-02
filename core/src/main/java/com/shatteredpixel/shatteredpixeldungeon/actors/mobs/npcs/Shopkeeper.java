@@ -92,7 +92,7 @@ public class Shopkeeper extends NPC {
 	@Override
 	public void damage( int dmg, Object src ) {
 		//Shittened PD, hurting the shopkeeper on floor 11 brings Mr Tokmanni
-		if (Dungeon.depth == 11 && src == Dungeon.hero && !(Dungeon.level.mobs.stream().anyMatch(m -> m instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tokmanni))) {
+		if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked() && Dungeon.depth == 11 && src == Dungeon.hero && !(Dungeon.level.mobs.stream().anyMatch(m -> m instanceof com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tokmanni))) {
 			com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tokmanni mrTokmanni = new com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tokmanni();
 			mrTokmanni.pos = -1;
 			if (Dungeon.level.passable[pos] && Dungeon.level.findMob(pos) == null && Actor.findChar(pos) == null) {
@@ -207,7 +207,7 @@ public class Shopkeeper extends NPC {
 				}
 				if (heap.size() == 1) {
 					//Shittened PD, an emptied shop on floor 11 may leave a bucket behind
-					if (com.watabou.utils.Random.Float() > 0.5f && Dungeon.depth == 11) {
+					if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked() && com.watabou.utils.Random.Float() > 0.5f && Dungeon.depth == 11) {
 						com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bucket bucket = new com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bucket();
 						bucket.pos = heap.pos;
 						bucket.state = bucket.WANDERING;

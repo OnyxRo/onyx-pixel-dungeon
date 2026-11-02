@@ -243,7 +243,7 @@ public class ShopRoom extends SpecialRoom {
 			m = (MissileWeapon) Generator.random(Generator.misTiers[2]);
 			itemsToSpawn.add( new MailArmor().identify(false) );
 			//Matt Edition's shop also sells its Glock here
-			itemsToSpawn.add( new com.shatteredpixel.shatteredpixeldungeon.items.weapon.Glock() );
+			if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) itemsToSpawn.add( new com.shatteredpixel.shatteredpixeldungeon.items.weapon.Glock() );
 			break;
 
 		case 16:
@@ -365,7 +365,7 @@ public class ShopRoom extends SpecialRoom {
 		itemsToSpawn.add( rare );
 
 		//rearranged, shops sell bullet belts, more of them deeper down
-		if (Dungeon.depth >= 5) {
+		if (Dungeon.depth >= 5 && !com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) {
 			itemsToSpawn.add( new com.shatteredpixel.shatteredpixeldungeon.items.BulletBelt().quantity(Dungeon.depth/5));
 		}
 
@@ -388,7 +388,7 @@ public class ShopRoom extends SpecialRoom {
 		if (!Dungeon.LimitedDrops.SCROLL_HOLDER.dropped()) bags.put(new ScrollHolder(), 0);
 		if (!Dungeon.LimitedDrops.POTION_BANDOLIER.dropped()) bags.put(new PotionBandolier(), 0);
 		if (!Dungeon.LimitedDrops.MAGICAL_HOLSTER.dropped()) bags.put(new MagicalHolster(), 0);
-		if (!Dungeon.LimitedDrops.FOOD_POCKET.dropped()) bags.put(new com.shatteredpixel.shatteredpixeldungeon.items.bags.FoodPocket(), 0); //xun
+		if (!Dungeon.LimitedDrops.FOOD_POCKET.dropped() && !com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) bags.put(new com.shatteredpixel.shatteredpixeldungeon.items.bags.FoodPocket(), 0); //xun
 
 		if (bags.isEmpty()) return null;
 

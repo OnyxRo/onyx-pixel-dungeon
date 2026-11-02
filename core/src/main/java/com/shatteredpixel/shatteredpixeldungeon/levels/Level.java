@@ -279,7 +279,7 @@ public abstract class Level implements Bundlable {
 					addItemToSpawn(new ScrollOfUpgrade());
 				}
 			}
-			if (Dungeon.msouNeeded()) {
+			if (Dungeon.msouNeeded() && !com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) {
 				Dungeon.LimitedDrops.MAGIC_UPGRADE_SCROLLS.count++;
 				if (!Dungeon.isChallenged(Challenges.NO_SCROLLS) || Dungeon.LimitedDrops.MAGIC_UPGRADE_SCROLLS.count % 2 != 0) {
 					addItemToSpawn(new com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicUpgrade());
@@ -304,7 +304,7 @@ public abstract class Level implements Bundlable {
 			com.shatteredpixel.shatteredpixeldungeon.GameModes.topUpDrops(this); //half, the drops of skipped floors
 			for (Item mi : com.shatteredpixel.shatteredpixeldungeon.MusicImplant.levelDrops()) addItemToSpawn(mi); //musicimplant, torches in the halls
 			//rearranged, a bullet belt for each set of five floors
-			if ( Dungeon.beltNeeded() ) {
+			if ( Dungeon.beltNeeded() && !com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked() ) {
 				Dungeon.LimitedDrops.BULLET_BELT.drop();
 				addItemToSpawn( new com.shatteredpixel.shatteredpixeldungeon.items.BulletBelt());
 			}
@@ -716,7 +716,7 @@ public abstract class Level implements Bundlable {
 			//ported worlds can bring their own mod's monsters, see WorldShuffle
 			mobsToSpawn = WorldShuffle.mobRotation(this, com.shatteredpixel.shatteredpixeldungeon.TooCruel.mobDepth(Dungeon.depth)); //toocruel, Invasion
 			//Community PD has no worlds, its monsters join any floor (level feelings, rare alts)
-			com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CommunitySpawner.adjust(mobsToSpawn, this);
+			if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CommunitySpawner.adjust(mobsToSpawn, this);
 			com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.adjust(mobsToSpawn, this); //trap dungeon game mode
 		}
 

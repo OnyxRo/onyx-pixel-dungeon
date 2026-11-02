@@ -151,6 +151,10 @@ public abstract class SpecialRoom extends Room {
 		if (Dungeon.branch == 0 && Dungeon.depth > 20 && Dungeon.depth < 25 && Random.Int(3) == 0){
 			floorSpecials.add(0, RatRoom.class);
 		}
+		//a copy from GitHub only builds Shattered's own rooms until Yog is beaten, see ModsUnlock
+		if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()){
+			floorSpecials.removeIf(r -> !com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.isOriginal(r));
+		}
 		//laboratory rooms spawn on floor 3 or 4 each chapter
 		if (Dungeon.labRoomNeeded()){
 			Dungeon.LimitedDrops.LAB_ROOM.count++;

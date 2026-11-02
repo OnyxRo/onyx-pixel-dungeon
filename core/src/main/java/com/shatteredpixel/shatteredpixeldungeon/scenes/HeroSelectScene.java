@@ -201,6 +201,9 @@ public class HeroSelectScene extends PixelScene {
 		add(infoButton);
 
 		for (HeroClass cl : HeroClass.values()){
+			//mod heroes stay hidden until Yog is beaten in a copy from GitHub
+			if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()
+					&& !com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.isShatteredHero(cl)) continue;
 			HeroBtn button = new HeroBtn(cl);
 			add(button);
 			heroBtns.add(button);
@@ -409,6 +412,9 @@ public class HeroSelectScene extends PixelScene {
 		add(fadeResetter);
 		resetFade();
 
+		if (GamesInProgress.selectedClass != null && !GamesInProgress.selectedClass.isUnlocked()){
+			GamesInProgress.selectedClass = null;
+		}
 		if (GamesInProgress.selectedClass != null){
 			setSelectedHero(GamesInProgress.selectedClass);
 		}
@@ -895,8 +901,8 @@ public class HeroSelectScene extends PixelScene {
 			};
 			sinButton.leftJustify = true;
 			sinButton.icon(Icons.get(SPDSettings.sins() > 0 ? Icons.SIN_COLOR : Icons.SIN_GREY));
-			add(sinButton);
-			buttons.add(sinButton);
+			//mod options stay hidden until Yog is beaten in a copy from GitHub
+			if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) { add(sinButton); buttons.add(sinButton); }
 
 			//Pixel Dungeon Reforged, easy, medium, hard or impossible
 			difficultyButton = new StyledButton(Chrome.Type.BLANK, Messages.get(WndDifficulty.class, "difficulty"), 6){
@@ -913,8 +919,8 @@ public class HeroSelectScene extends PixelScene {
 			};
 			difficultyButton.leftJustify = true;
 			difficultyButton.icon(WndDifficulty.iconFor(SPDSettings.difficulty()));
-			add(difficultyButton);
-			buttons.add(difficultyButton);
+			//mod options stay hidden until Yog is beaten in a copy from GitHub
+			if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) { add(difficultyButton); buttons.add(difficultyButton); }
 
 			//every mod shuffled floor by floor, or only the mods picked here
 			final StyledButton modeButton = new StyledButton(Chrome.Type.BLANK, com.shatteredpixel.shatteredpixeldungeon.windows.WndChooseMods.label(), 6){
@@ -933,8 +939,8 @@ public class HeroSelectScene extends PixelScene {
 			};
 			modeButton.leftJustify = true;
 			modeButton.icon(Icons.get(Icons.STAIRS));
-			add(modeButton);
-			buttons.add(modeButton);
+			//mod options stay hidden until Yog is beaten in a copy from GitHub
+			if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) { add(modeButton); buttons.add(modeButton); }
 
 			//game modes from Half PD, Even Shorter PD, Radar, Custom PD and Too Cruel PD
 			final StyledButton gameModesButton = new StyledButton(Chrome.Type.BLANK, com.shatteredpixel.shatteredpixeldungeon.windows.WndGameModes.label(), 6){
@@ -953,8 +959,8 @@ public class HeroSelectScene extends PixelScene {
 			};
 			gameModesButton.leftJustify = true;
 			gameModesButton.icon(Icons.get(Icons.CHALLENGE_GREY));
-			add(gameModesButton);
-			buttons.add(gameModesButton);
+			//mod options stay hidden until Yog is beaten in a copy from GitHub
+			if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) { add(gameModesButton); buttons.add(gameModesButton); }
 
 			int unlockedCount = 0;
 			for (HeroClass cls : HeroClass.values()){
