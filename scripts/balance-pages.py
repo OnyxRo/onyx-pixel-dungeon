@@ -213,8 +213,22 @@ for cls, m in mobs.items():
                   "how": how, "kills": kills, "fights": fights, "hp": m["hp"], "perFloor": round(per, 4), "weighted": round(hit * per, 3),
                   "floors": sorted(m["depths"]), "worlds": [w for w, _ in m["worlds"].most_common(3)]})
 base = max([x["avg"] for x in out_m if x["cls"] in SHATTERED_REGULAR] or [0])
+#monsters worth changing, and short reasons for the ones that look worse or safer than they are
+WORRY = {"GnollThief", "GnollKnight", "GnollMarksman", "IceBug", "BrownWolf", "GrayWolf", "IceGolem", "Ballista"}
+NOTES = {"Statue": "Shattered design, only attacks if disturbed", "StatueArmor": "Only attacks if disturbed", "ArmoredStatue": "Shattered design, only attacks if disturbed",
+         "Mimic": "Shattered design, hidden in chests", "GoldenMimic": "Shattered design, hidden in chests", "CrystalMimic": "Shattered design, hidden in chests",
+         "RotLasher": "Only hits if you stand next to it", "GnollThief": "Deep's gnolls, strong for this stage", "GnollKnight": "Deep's gnolls, strong for this stage",
+         "GnollMarksman": "Deep's gnolls, strong for this stage", "IceBug": "Frozen world monster, strong for this stage", "BrownWolf": "Unleashed Frozen Caves, strong for this stage",
+         "GrayWolf": "Unleashed Frozen Caves, strong for this stage", "IceGolem": "Matt's Snowfield, strong for this stage", "Ballista": "Reforged's Kobold Caves, strong for this stage",
+         "Piranha": "Test floor has no water, damage unknown", "PhantomPiranha": "Test floor has no water, damage unknown", "Capybara": "Only fights back once hurt, the test never hits it",
+         "CapybaraPile": "Only fights back once hurt, the test never hits it", "Guard": "Pulls you rather than hits", "Necromancer": "Attacks through skeletons it summons, not measured",
+         "Emperor": "Deep's floor 5 boss"}
 for x in out_m:
     x["flag"] = x["kills"] > 0 or x["max"] >= HERO_HP or x["avg"] > base * 1.5
+    worry = x["cls"] in WORRY or (x["cls"] == "Elemental$FrostElemental" and 11 <= LOW <= 15)
+    x["worry"] = "Worry" if worry else ("Watch" if x["flag"] else "")
+    x["note"] = "Matt's Snowfield, strong for this stage" if x["cls"] == "Elemental$FrostElemental" and worry else NOTES.get(x["cls"], "")
+    if not x["note"] and x["how"] == "harmless": x["note"] = "Did no damage in the test, damage unknown"
 for cls, it in items.items():
     key = mod_of(cls, False); icons.setdefault(key, mod_icon(key))
     per = it["count"] / floors

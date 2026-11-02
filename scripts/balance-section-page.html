@@ -9,7 +9,7 @@
 /* layout, one column, a sortable monster table then a sortable item table, pixel art kept sharp */
 :root {
   --bg: #f3f1ee; --panel: #fbfaf8; --fg: #23201d; --muted: #6c655e; --line: #dcd6cf;
-  --accent: #b86b1c; --danger: #c2372b; --danger-soft: #f6dcd8; --base: #3b6fa8; --bar: #8f857a; --tile: #2b2724;
+  --accent: #b86b1c; --danger: #c2372b; --danger-soft: #f6dcd8; --watch-soft: #f6ecd8; --base: #3b6fa8; --bar: #8f857a; --tile: #2b2724;
   --display: "Pixelify Sans", "Courier New", monospace;
   --body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
   --mono: "JetBrains Mono", Consolas, monospace;
@@ -17,7 +17,7 @@
 }
 @media (prefers-color-scheme: dark) { :root {
   --bg: #1a1816; --panel: #23201d; --fg: #ece6df; --muted: #a39a90; --line: #3a3530;
-  --accent: #e39a4a; --danger: #ff6b5c; --danger-soft: #4a2420; --base: #7fb0e8; --bar: #8a8076; --tile: #110f0e; color-scheme: dark } }
+  --accent: #e39a4a; --danger: #ff6b5c; --danger-soft: #4a2420; --watch-soft: #3a2f1c; --base: #7fb0e8; --bar: #8a8076; --tile: #110f0e; color-scheme: dark } }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 var(--body); }
 .wrap { max-width: 1200px; margin: 0 auto; padding: 32px 16px 64px; display: grid; gap: 22px; }
 h1, h2 { font-family: var(--display); font-weight: 700; margin: 0; line-height: 1.15; text-wrap: balance; }
@@ -42,6 +42,10 @@ th { position: sticky; top: 0; z-index: 2; background: var(--panel); cursor: poi
 th:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 td.n { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
 tr.flag td { background: var(--danger-soft); }
+tr.watch td { background: var(--watch-soft); }
+.worry { font-weight: 700; color: var(--danger); }
+.watchtxt { font-weight: 700; color: var(--accent); }
+.who .note { display: block; font-size: 0.78rem; color: var(--fg); }
 .pic { width: 56px; height: 56px; display: grid; place-items: center; background: var(--tile); border-radius: 4px; }
 .pic img { image-rendering: pixelated; max-width: 52px; max-height: 52px; }
 .pic span { color: #9a918a; font-size: 0.7rem; }
@@ -75,14 +79,15 @@ tr.flag .bar .fill { background: var(--danger); }
   <h2>Monsters</h2>
   <div class="legend">
     <span><i class="sw" style="background:var(--bar)"></i>average hit in a fight</span>
-    <span><i class="sw" style="background:var(--danger)"></i>killed a full health hero in one turn, or hits 1.5 times harder than the blue line</span>
+    <span><i class="sw" style="background:var(--danger-soft)"></i>Worry, a monster I would change for this stage</span>
+    <span><i class="sw" style="background:var(--watch-soft)"></i>Watch, strong but fine as it is (killed a full health hero, or hits 1.5 times harder than the blue line)</span>
     <span><i class="sw" style="background:var(--fg);width:3px"></i>top hit</span>
     <span><i class="sw" style="background:var(--base);width:3px"></i><span id="baselabel"></span></span>
     <span><i class="sw" style="background:var(--accent);width:3px"></i><span id="hplabel"></span></span>
   </div>
   <p class="muted small">Damage per turn is all the health the hero lost divided by the 50 turns, so it counts misses, walking up and how often it attacks. Normal attack is the old number, a roll of its plain melee attack only. Damage times chance is the average hit multiplied by the chance the monster is on a floor. Monsters that never move were also tested standing right next to the hero. Fish need water and friendly creatures never attack, so they show no fight. Click any column to sort.</p>
   <div class="controls">
-    <label><input type="checkbox" id="mobflag"> Red only</label>
+    <label><input type="checkbox" id="mobflag"> Worry and watch only</label>
     <select id="mobmod" aria-label="Mod"></select>
     <input type="search" id="mobq" placeholder="Search monster" aria-label="Search monsters">
   </div>
@@ -117,7 +122,7 @@ $("pages").innerHTML = DATA.pages.map(([n, a, b, href, here]) => here ? `<b>${n}
 const red = DATA.mobs.filter(m => m.flag);
 $("stats").innerHTML = [
   [DATA.mobs.length, "kinds of monster"], [DATA.items.length, "kinds of item"], [DATA.base, "hardest regular Shattered hit here"],
-  [red.length, "monsters in red"], [Math.round(1 / red.reduce((a, m) => a + m.perFloor, 0)), "floors per red monster, on average"]
+  [DATA.mobs.filter(m => m.worry === "Worry").length, "monsters to worry about"], [red.length, "worry or watch"], [Math.round(1 / red.reduce((a, m) => a + m.perFloor, 0)), "floors per red monster, on average"]
 ].map(([v, l]) => `<div><b>${v}</b><span>${l}</span></div>`).join("");
 
 function fillSelect(sel, values, label, names){
@@ -145,13 +150,14 @@ const HOW = {near: "standing next to it, it does not move", harmless: "never hur
 const xmax = Math.max(...DATA.mobs.map(m => m.max), DATA.heroHp) * 1.02;
 function drawMobs(){
   const q = $("mobq").value.trim().toLowerCase(), fo = $("mobflag").checked, ms = $("mobmod").value;
-  const rows = DATA.mobs.filter(m => (!fo || m.flag) && (!ms || m.mod === ms) && (!q || (m.name + " " + m.cls).toLowerCase().includes(q)));
-  const cols = [["", ""], ["name", "Monster"], ["mod", "Mod"], ["avg", "Hit in a fight"], ["max", "Top hit"], ["perTurn", "Damage per turn"], ["kills", "Killed a full health hero"], ["melee", "Normal attack"], ["hp", "Health"], ["perFloor", "Per 100 floors"], ["weighted", "Damage times chance"], ["", "Floors"]];
+  const rows = DATA.mobs.filter(m => (!fo || m.worry) && (!ms || m.mod === ms) && (!q || (m.name + " " + m.cls).toLowerCase().includes(q)));
+  const cols = [["", ""], ["name", "Monster"], ["worry", "Worry"], ["mod", "Mod"], ["avg", "Hit in a fight"], ["max", "Top hit"], ["perTurn", "Damage per turn"], ["kills", "Killed a full health hero"], ["melee", "Normal attack"], ["hp", "Health"], ["perFloor", "Per 100 floors"], ["weighted", "Damage times chance"], ["", "Floors"]];
   sortable($("mobtable"), cols, rows, mobState, drawMobs);
   const pct = v => (100 * v / xmax).toFixed(2) + "%";
-  $("mobtable").tBodies[0].innerHTML = rows.map(m => `<tr class="${m.flag ? "flag" : ""}" title="Worlds ${esc(m.worlds.join(", "))}">
+  $("mobtable").tBodies[0].innerHTML = rows.map(m => `<tr class="${m.worry === "Worry" ? "flag" : m.worry ? "watch" : ""}" title="Worlds ${esc(m.worlds.join(", "))}">
     <td>${pic(m.pic)}</td>
-    <td class="who"><b>${esc(m.name)}</b><span>${esc(m.cls)}</span>${HOW[m.how] ? `<em class="how">${HOW[m.how]}</em>` : ""}</td>
+    <td class="who"><b>${esc(m.name)}</b><span>${esc(m.cls)}</span>${HOW[m.how] ? `<em class="how">${HOW[m.how]}</em>` : ""}${m.note ? `<span class="note">${esc(m.note)}</span>` : ""}</td>
+    <td>${m.worry === "Worry" ? `<span class="worry">Worry</span>` : m.worry ? `<span class="watchtxt">Watch</span>` : ""}</td>
     <td>${mod(m.mod)}</td>
     <td><div class="bar"><b>${m.avg}</b><div class="track">
       <i class="ln" style="left:${pct(DATA.base)};background:var(--base)"></i><i class="ln" style="left:${pct(DATA.heroHp)};background:var(--accent)"></i>
@@ -159,7 +165,7 @@ function drawMobs(){
     <td class="n">${m.max}</td><td class="n">${m.perTurn === null ? "" : m.perTurn.toFixed(2)}</td>
     <td class="n">${m.kills ? `<b class="flagtxt">${m.kills} times</b><br><span class="muted small">in ${m.fights} fights</span>` : ""}</td><td class="n muted">${m.melee}</td>
     <td class="n">${m.hp}</td><td class="n">${per100(m.perFloor)}</td><td class="n">${m.weighted.toFixed(2)}</td>
-    <td class="small">${floorsTxt(m.floors)}</td></tr>`).join("") || `<tr><td colspan="12" class="muted">No monsters match.</td></tr>`;
+    <td class="small">${floorsTxt(m.floors)}</td></tr>`).join("") || `<tr><td colspan="13" class="muted">No monsters match.</td></tr>`;
 }
 
 const itemState = {key: "perFloor", dir: -1};
