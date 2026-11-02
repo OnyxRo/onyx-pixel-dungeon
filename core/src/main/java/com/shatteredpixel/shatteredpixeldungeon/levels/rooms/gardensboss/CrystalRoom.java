@@ -85,7 +85,9 @@ public class CrystalRoom extends StandardRoom {
                 Painter.set(level, curr, Terrain.EMPTY_SP);
                 curr.x += dir.x;
                 curr.y += dir.y;
-            } while (level.map[level.pointToCell(curr)] == Terrain.WALL);
+            //stops at the room's own edge, a door on a corner used to dig off the map
+            } while (curr.x >= left && curr.x <= right && curr.y >= top && curr.y <= bottom
+                    && level.map[level.pointToCell(curr)] == Terrain.WALL);
         }
 
 
