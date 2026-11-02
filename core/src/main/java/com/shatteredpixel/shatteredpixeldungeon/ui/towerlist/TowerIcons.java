@@ -52,7 +52,12 @@ public enum TowerIcons {
 	GREYLOCK( 224, 128, 16, 16 ),
 	MINER( 0, 144, 16, 16 ),
 	PYLON( 16, 144, 16, 16 ),
-	RATCAMP( 64, 144, 16, 16 );
+	RATCAMP( 64, 144, 16, 16 ),
+	//the game mode pictures of the mod's mode screen
+	STORYMODE( 0, 160, 32, 32 ),
+	ENDLESSMODE( 32, 160, 30, 18 ),
+	VSMODE( 62, 160, 44, 33 ),
+	REDPORTAL( 106, 160, 17, 28 );
 
 	public static final String SHEET = "interfaces/tower/icons.png";
 

@@ -34,8 +34,15 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.ui.towerlist.TowerIcons;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.BossRatKing;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.BossRatKingSprite;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndDialogueWithPic;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndModes;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
+import com.watabou.utils.ColorMath;
+import com.watabou.utils.Random;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Blending;
 import com.watabou.noosa.Camera;
@@ -84,10 +91,19 @@ public class TowerLevelSelectScene extends PixelScene {
 				Dungeon.bossCrawl = false;
 				TowerDefense.active = true;
 				//start on the newest arena open in story mode
-				if (!TowerDefense.endless) TowerDefense.arena = Math.min( TowerDefense.unlocked( WndModes.current ), TowerDefense.STORY.size() );
+				if (TowerDefense.branch() == 0) TowerDefense.arena = Math.min( TowerDefense.unlocked( WndModes.current ), TowerDefense.STORY.size() );
 				GamesInProgress.selectedClass = null;
 				GamesInProgress.curSlot = slot;
 				ShatteredPixelDungeon.switchScene( HeroSelectScene.class );
+			}
+
+			@Override
+			public void update() {
+				super.update();
+				//the mod's play button glowed while the Rat King had news
+				if (TowerDefense.levelNews() || TowerDefense.towerNews()) {
+					textColor( ColorMath.interpolate( 0.5f + (float)Math.sin( Game.timeTotal ) / 2f, 0xFF9999, 0xFFFF99 ) );
+				}
 			}
 		};
 		b.icon( TowerIcons.TOWER.get() );
@@ -97,13 +113,37 @@ public class TowerLevelSelectScene extends PixelScene {
 	public String backgroundArt() {
 		int n = TowerDefense.arena;
 		if (!TowerDefense.isUnlocked( n )) return "splashes/tower/levels/locked.png";
-		return "splashes/tower/levels/" + (TowerDefense.endless ? "endlessarena" : "arena") + n + ".png";
+		String name = TowerDefense.chosen().getSimpleName().toLowerCase( Locale.ROOT );
+		//the mod drew no picture for its tutorial, its level select showed the main window art there
+		if (name.equals( "arena0" )) return "splashes/tower/levels/mainwindow.png";
+		return "splashes/tower/levels/" + name + ".png";
+	}
+
+	/** Shows the Rat King's news, if he has any, the way the mod's start button did. Returns true if he spoke. */
+	private static boolean ratKingNews() {
+		String[] text = null;
+		if (TowerDefense.levelNews()) {
+			//the mod kept this one until the arrow was pressed. Here it shows once, since the screen already opens on the new stage
+			TowerDefense.clearLevelNews();
+			text = new String[]{
+					Messages.get( TowerLevelSelectScene.class, "newlevelunlocked1" ),
+					Messages.get( TowerLevelSelectScene.class, "newlevelunlocked2" ) };
+		} else if (TowerDefense.towerNews()) {
+			TowerDefense.clearTowerNews();
+			text = new String[]{ Messages.get( TowerLevelSelectScene.class, "newtowersunlocked" + Random.Int( 8 ) ) };
+		}
+		if (text == null) return false;
+		byte[] actions = new byte[text.length];
+		java.util.Arrays.fill( actions, WndDialogueWithPic.RUN );
+		WndDialogueWithPic.dialogue_outsideOfGame( new BossRatKingSprite(), Messages.get( BossRatKing.class, "name" ), text, actions );
+		return true;
 	}
 
 	private String loadingAsset() {
 		int n = TowerDefense.arena;
 		String region = n <= 5 ? "sewers" : n <= 10 ? "prison" : n <= 15 ? "caves" : n <= 20 ? "city" : "halls";
 		if (TowerDefense.endless) region = n <= 2 ? "sewers" : n == 3 ? "prison" : "caves";
+		if (TowerDefense.puzzles) region = n <= 1 ? "sewers" : "prison";
 		switch (WndModes.current) {
 			case HARDMODE: return "interfaces/tower/loading_" + region + "_hard.png";
 			case CHALLENGE: return "interfaces/tower/loading_" + region + "_chal.png";
@@ -114,7 +154,7 @@ public class TowerLevelSelectScene extends PixelScene {
 	@Override
 	public void create() {
 		//endless arenas are always normal, as in the mod
-		if (TowerDefense.endless) WndModes.current = WndModes.Modes.NORMAL;
+		if (TowerDefense.endless || TowerDefense.puzzles) WndModes.current = WndModes.Modes.NORMAL;
 
 		switch (WndModes.current) {
 			case NORMAL:
@@ -186,7 +226,7 @@ public class TowerLevelSelectScene extends PixelScene {
 		add( levelName );
 
 		String desc = WndModes.current == WndModes.Modes.CHALLENGE ? Messages.get( this, key + "challenge" ) : Messages.get( this, key + "desc" );
-		if (WndModes.current == WndModes.Modes.NORMAL && !TowerDefense.endless
+		if (WndModes.current == WndModes.Modes.NORMAL && TowerDefense.branch() == 0
 				&& TowerDefense.unlocked( WndModes.Modes.NORMAL ) == chosenLevel
 				&& Messages.get( this, key + "prize" ).length() > 3 && !Messages.get( this, key + "prize" ).contains( "!!!" )) {
 			desc = desc + "\n\n" + Messages.get( this, "prize" ) + "\n" + Messages.get( this, key + "prize" );
@@ -210,7 +250,8 @@ public class TowerLevelSelectScene extends PixelScene {
 		align( levelKnowledge );
 		add( levelKnowledge );
 
-		lockedText = PixelScene.renderTextBlock( TowerDefense.endless ? Messages.get( this, "lockedtextneedstory" ) : Messages.get( this, "lockedtext" ), 10 );
+		lockedText = PixelScene.renderTextBlock( TowerDefense.puzzles ? Messages.get( this, "lockedtextpuzzle" )
+				: TowerDefense.endless ? Messages.get( this, "lockedtextneedstory" ) : Messages.get( this, "lockedtext" ), 10 );
 		lockedText.hardlight( Window.WHITE );
 		lockedText.align( RenderedTextBlock.CENTER_ALIGN );
 		lockedText.maxWidth( 100 );
@@ -229,7 +270,8 @@ public class TowerLevelSelectScene extends PixelScene {
 			@Override
 			protected void onClick() {
 				super.onClick();
-				TowerDefense.start();
+				//the Rat King stopped the first press of start when he had news, as in the mod
+				if (!ratKingNews()) TowerDefense.start();
 			}
 		};
 		startBtn.icon( com.shatteredpixel.shatteredpixeldungeon.ui.Icons.get( com.shatteredpixel.shatteredpixeldungeon.ui.Icons.ENTER ) );
@@ -241,7 +283,10 @@ public class TowerLevelSelectScene extends PixelScene {
 		add( startBtn );
 		startBtn.visible = startBtn.active = open;
 
-		levelNum = PixelScene.renderTextBlock( Integer.toString( chosenLevel ), 18 );
+		String number = Integer.toString( chosenLevel );
+		//the mod named its tutorial instead of numbering it
+		if (TowerDefense.puzzles) number = Messages.get( this, chosenLevel == 1 ? "tutorial" : "puzzle" );
+		levelNum = PixelScene.renderTextBlock( number, 18 );
 		levelNum.hardlight( Window.WHITE );
 		levelNum.align( RenderedTextBlock.LEFT_ALIGN );
 		levelNum.setPos( mainStagePic.center().x - (levelNum.width() / 2f), startBtn.top() - levelNum.height() - 4 );
@@ -341,23 +386,19 @@ public class TowerLevelSelectScene extends PixelScene {
 		btnModes.setPos( startBtn.left() - btnModes.width(), startBtn.centerY() - btnModes.height() / 2 );
 		align( btnModes );
 		//the mod showed the modes once the prison was reached, and never for endless arenas
-		if (TowerDefense.unlocked( WndModes.Modes.NORMAL ) >= 6 && !TowerDefense.endless) add( btnModes );
+		if (TowerDefense.unlocked( WndModes.Modes.NORMAL ) >= 6 && TowerDefense.branch() == 0) add( btnModes );
 
-		btnBranch = new StyledButton( Chrome.Type.GREY_BUTTON_TR, Messages.get( this, TowerDefense.endless ? "endless_name" : "story_name" ), 7 ){
+		btnBranch = new StyledButton( Chrome.Type.GREY_BUTTON_TR, Messages.get( this, BRANCH_KEYS[TowerDefense.branch()] + "_name" ), 7 ){
 			@Override
 			protected void onClick() {
 				super.onClick();
-				if (!TowerDefense.endless && TowerDefense.unlocked( WndModes.Modes.NORMAL ) < 6) {
-					ShatteredPixelDungeon.scene().addToFront( new WndMessage( Messages.get( TowerLevelSelectScene.class, "endless_locked" ) ) );
-					return;
-				}
-				TowerDefense.endless = !TowerDefense.endless;
-				TowerDefense.arena = TowerDefense.endless ? 1 : Math.min( TowerDefense.unlocked( WndModes.current ), TowerDefense.STORY.size() );
-				ShatteredPixelDungeon.switchNoFade( TowerLevelSelectScene.class );
+				ShatteredPixelDungeon.scene().addToFront( new WndBranches() );
 			}
 		};
-		btnBranch.icon( TowerDefense.endless ? TowerIcons.SLOT4.get() : TowerIcons.TOWER.get() );
-		btnBranch.setSize( 70, 18 );
+		Image branchIcon = BRANCH_ICONS[TowerDefense.branch()].get();
+		branchIcon.scale.set( 14f / Math.max( branchIcon.width, branchIcon.height ) );
+		btnBranch.icon( branchIcon );
+		btnBranch.setSize( 80, 18 );
 		btnBranch.setPos( 2, 2 );
 		align( btnBranch );
 		add( btnBranch );
@@ -368,5 +409,59 @@ public class TowerLevelSelectScene extends PixelScene {
 	@Override
 	protected void onBackPressed() {
 		ShatteredPixelDungeon.switchScene( HeroSelectScene.class );
+	}
+
+	//story, endless, tutorials and puzzles, versus. The order of the mod's GamemodeSelectionScene branches
+	private static final String[] BRANCH_KEYS = { "story", "endless", "puzzles", "vs" };
+	private static final TowerIcons[] BRANCH_ICONS = { TowerIcons.STORYMODE, TowerIcons.ENDLESSMODE, TowerIcons.REDPORTAL, TowerIcons.VSMODE };
+	private static final int VERSUS = 3;
+
+	/**
+	 * The mod's mode screen (GamemodeSelectionScene) as a window. Endless opens once the sewers are beaten, as in the
+	 * mod. The mod never switched on its tutorials and puzzles or its versus mode. Tutorials and puzzles is open here
+	 * with the stages the mod made for it. Versus mode had no code at all, so it stays locked with the mod's text.
+	 */
+	public static class WndBranches extends WndOptions {
+
+		public WndBranches() {
+			super( Messages.get( TowerLevelSelectScene.class, "mode_title" ),
+					Messages.get( TowerLevelSelectScene.class, "mode_body" ),
+					Messages.get( TowerLevelSelectScene.class, "story_name" ),
+					Messages.get( TowerLevelSelectScene.class, "endless_name" ),
+					Messages.get( TowerLevelSelectScene.class, "puzzles_name" ),
+					Messages.get( TowerLevelSelectScene.class, "vs_name" ) );
+		}
+
+		private static boolean open( int index ){
+			if (index == VERSUS) return false;
+			if (index == 1) return TowerDefense.unlocked( WndModes.Modes.NORMAL ) >= 6;
+			return true;
+		}
+
+		@Override
+		protected boolean enabled( int index ) {
+			return open( index );
+		}
+
+		@Override
+		protected void onSelect( int index ) {
+			if (!open( index ) || index == TowerDefense.branch()) return;
+			TowerDefense.branch( index );
+			ShatteredPixelDungeon.switchNoFade( TowerLevelSelectScene.class );
+		}
+
+		@Override
+		protected boolean hasInfo( int index ) {
+			return true;
+		}
+
+		@Override
+		protected void onInfo( int index ) {
+			String key = BRANCH_KEYS[index];
+			String text = Messages.get( TowerLevelSelectScene.class, index == 1 && !open( index ) ? "endless_locked" : key + "_desc" );
+			Image icon = BRANCH_ICONS[index].get();
+			icon.scale.set( 16f / Math.max( icon.width, icon.height ) );
+			ShatteredPixelDungeon.scene().addToFront( new WndTitledMessage( icon, Messages.get( TowerLevelSelectScene.class, key + "_name" ), text ) );
+		}
 	}
 }
