@@ -8,6 +8,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.LeatherArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.EquipmentPage;
+import com.shatteredpixel.shatteredpixeldungeon.items.helmets.*;
 import com.watabou.utils.Bundle;
 
 import java.io.ByteArrayInputStream;
@@ -98,6 +100,35 @@ public class ExtraSlotsTest {
 		plate.doUnequip( hero, true, false );
 		if (b.armor != main) fail( "unequipping extra armor removed the main armor" );
 		if (b.extraArmors[0] != null) fail( "extra armor slot not cleared" );
+
+		//no more than five rings, as in the mod, even with the misc slot holding one
+		for (int i = 0; i < b.extraRings.length; i++) b.extraRings[i] = null;
+		b.ring = new RingOfMight(); b.misc = new RingOfHaste();
+		b.extraRings[0] = new RingOfEvasion(); b.extraRings[1] = new RingOfFuror(); b.extraRings[2] = new RingOfWealth();
+		if (b.ringsWorn() != 5) fail( "ringsWorn should count 5, got " + b.ringsWorn() );
+		if (b.freeExtraRing() >= 0) fail( "a sixth ring slot was offered" );
+		b.extraRings[2] = null;
+		if (b.freeExtraRing() < 0) fail( "the fifth ring slot was refused" );
+
+		//five helmet slots, their effects stack, save and load keep them
+		Helmet h1 = new StrawHat(), h2 = new WizardHat(), h3 = new RangerHat();
+		for (Helmet h : new Helmet[]{h1, h2, h3}) { h.identify(); h.collect(); h.doEquip( hero ); }
+		if (b.helmet != h1) fail( "first helmet should take the main slot" );
+		if (b.extraHelmets[0] != h2 || b.extraHelmets[1] != h3) fail( "later helmets should take the extra helmet slots" );
+		if (!h3.isEquipped( hero )) fail( "third helmet not equipped" );
+		if (Helmet.allWorn( hero ).size() != 3) fail( "allWorn should list 3 helmets, got " + Helmet.allWorn( hero ).size() );
+		Bundle hb = new Bundle();
+		b.storeInBundle( hb );
+		Belongings hl = new Belongings( hero );
+		hl.restoreFromBundle( hb );
+		if (hl.extraHelmets[1] == null) fail( "extra helmet lost on reload" );
+		h2.doUnequip( hero, true, false );
+		if (b.extraHelmets[0] != null) fail( "extra helmet slot not cleared" );
+		if (b.helmet != h1) fail( "unequipping an extra helmet removed the main one" );
+
+		//every new hero starts with the Equipment Page
+		Dungeon.init();
+		if (Dungeon.hero.belongings.getItem( EquipmentPage.class ) == null) fail( "new hero has no Equipment Page" );
 
 		System.out.println( "SUMMARY extraslots failures=" + failures );
 		if (failures > 0) System.exit( 1 );

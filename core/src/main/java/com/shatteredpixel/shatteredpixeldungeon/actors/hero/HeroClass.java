@@ -193,6 +193,8 @@ public enum HeroClass {
 		Waterskin waterskin = new Waterskin();
 		waterskin.collect();
 
+		if (!com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) new com.shatteredpixel.shatteredpixeldungeon.items.bags.EquipmentPage().collect(); //ryuse, every hero starts with it as in the mod
+
 		new ScrollOfIdentify().identify();
 
 		if (BAHeroes.isBA(this)) BAHeroes.initHero(this, hero); else //bluearchive
