@@ -103,7 +103,7 @@ cp "$WORK/officialwin/app/"*.jar "$APP/app/"
     "java-options=-Djpackage.app-version=$VERSION" "java-options=-XX:+IgnoreUnrecognizedVMOptions"
 } > "$APP/app/$FILE_NAME.cfg"
 printf '%s\r\n' "$VERSION" "$BASE_TAG" > "$APP/app/onyx-version.txt"
-( cd "$WORK" && zip -q -r -9 "$OUT/OnyxPixelDungeon-$VERSION-Windows.zip" "$NAME" )
+( cd "$WORK" && zip -q -r -9 "$OUT/Download-Me.zip" "$NAME" ) #the full Windows download, named for friends, Play.ps1 never asks for it by name
 
 # 5. what the updater downloads, a version-independent game jar and a small manifest
 cp "$INST/files/OnyxPixelDungeon.jar" "$OUT/OnyxPixelDungeon-game.jar"

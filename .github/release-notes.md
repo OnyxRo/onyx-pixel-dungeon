@@ -6,7 +6,7 @@ Onyx's Pixel Dungeon holds content from more than 60 Pixel Dungeon mods. That is
 
 **Already installed version 0.2.1 or later?** Just launch the game. It updates itself.
 
-**Windows.** Download `OnyxPixelDungeon-<version>-Windows.zip`, unzip it, and run **Play.bat**. Java is included. If SmartScreen warns you, click **More info** and then **Run anyway**.
+**Windows.** Download **Download-Me.zip**, unzip it, and run **Play.bat**. Java is included. If SmartScreen warns you, click **More info** and then **Run anyway**.
 
 **Smaller Windows download.** `OnyxPixelDungeon-<version>-Windows-Installer.zip` downloads the official Shattered Pixel Dungeon runtime from GitHub, sets the game up, and adds a desktop shortcut. Unzip it and run **Install.bat**.
 
