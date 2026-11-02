@@ -527,8 +527,17 @@ public class WorldShuffle {
 			}
 		}
 		if (world >= 0 && world < LOGOS.length && TRANSFORMATION.equals(LOGOS[world])) {
-			//Transformation PD's tower bosses, one for each floor from 10 down. Floor 5 keeps Shattered's Goo.
-			return depth >= 10 && depth % 5 == 0 ? new Level[]{ new com.shatteredpixel.shatteredpixeldungeon.levels.towers.TransformationRunBossLevel() } : new Level[0];
+			//Transformation PD's tower bosses, one for each floor from 10 down, then the mod's own versions of
+			//Shattered's boss floors. The Warrior in Goo's room, the Rogue's prison, the Huntress in the caves,
+			//and the shop owner and the Great Imp who wait after the Dwarf King and Yog
+			switch (depth) {
+				case 5:  return new Level[]{ new TransformationSewerBossLevel() };
+				case 10: return new Level[]{ new com.shatteredpixel.shatteredpixeldungeon.levels.towers.TransformationRunBossLevel(), new PrisonNewBossLevel() };
+				case 15: return new Level[]{ new com.shatteredpixel.shatteredpixeldungeon.levels.towers.TransformationRunBossLevel(), new HuntressBossLevel() };
+				case 20: return new Level[]{ new com.shatteredpixel.shatteredpixeldungeon.levels.towers.TransformationRunBossLevel(), new TransformationCityBossLevel() };
+				case 25: return new Level[]{ new com.shatteredpixel.shatteredpixeldungeon.levels.towers.TransformationRunBossLevel(), new TransformationHallsBossLevel() };
+				default: return new Level[0];
+			}
 		}
 		if (world >= 0 && world < LOGOS.length && MAGIC_LING.equals(LOGOS[world])) {
 			//magicling, the mod's floor 5 fights. Qliphoth and Crivus Fruits in the jungle (the mod's usual pick), the Slime Prince
