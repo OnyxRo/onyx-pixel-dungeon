@@ -241,9 +241,61 @@ public class TowerDefenseTest {
 		check( endless instanceof EndlessArena1, "endless arena 1 should be built" );
 		check( WndModes.current == WndModes.Modes.NORMAL, "endless arenas are always normal" );
 
+		//---- the Rat King's news (2026-11-02)
+		check( TowerDefense.levelNews(), "the first win should leave the Rat King's new stage news" );
+		TowerDefense.clearLevelNews();
+		TowerDefense.clearTowerNews();
+		check( !TowerDefense.levelNews() && !TowerDefense.towerNews(), "the news should clear" );
+		for (int i = 1; i <= 2; i++)
+			check( !Messages.get( TowerLevelSelectScene.class, "newlevelunlocked" + i ).contains( "!!!" ), "no Rat King text newlevelunlocked" + i );
+		for (int i = 0; i < 8; i++)
+			check( !Messages.get( TowerLevelSelectScene.class, "newtowersunlocked" + i ).contains( "!!!" ), "no Rat King text newtowersunlocked" + i );
+		check( !Messages.get( com.shatteredpixel.shatteredpixeldungeon.actors.mobs.BossRatKing.class, "name" ).contains( "!!!" ), "no Rat King name" );
+
+		//---- the mode window, tutorials and puzzles, versus (2026-11-02)
+		for (String k : new String[]{ "mode_title", "mode_body", "story_desc", "endless_desc", "puzzles_name", "puzzles_desc", "vs_name", "vs_desc", "tutorial", "puzzle", "lockedtextpuzzle" })
+			check( !Messages.get( TowerLevelSelectScene.class, k ).contains( "!!!" ), "no mode text " + k );
+		for (Class<?> c : TowerDefense.PUZZLES) {
+			String k = c.getSimpleName().toLowerCase( Locale.ROOT );
+			for (String part : new String[]{ "name", "desc", "knowledge" })
+				check( !Messages.get( TowerLevelSelectScene.class, k + part ).contains( "!!!" ), "no text for " + k + part );
+		}
+		check( new File( "splashes/tower/levels/mainwindow.png" ).exists(), "no tutorial picture" );
+		TowerDefense.branch( 2 );
+		check( TowerDefense.puzzles && !TowerDefense.endless && TowerDefense.arena == 1, "the puzzles branch should start on the tutorial" );
+		check( TowerDefense.isUnlocked( 1 ) && !TowerDefense.isUnlocked( 2 ), "the tutorial should be open and the puzzle wait for story arena 9" );
+		Level tutorial = Dungeon.newLevel();
+		check( tutorial instanceof com.shatteredpixel.shatteredpixeldungeon.levels.Arena0, "the tutorial should be built, got " + tutorial.getClass().getSimpleName() );
+		heroOn( tutorial );
+		quietly( tutorial::initNpcs, "tutorial initNpcs" );
+		Dungeon.saveGame( GamesInProgress.curSlot );
+		TowerDefense.puzzles = false;
+		Dungeon.loadGame( GamesInProgress.curSlot );
+		check( TowerDefense.puzzles && TowerDefense.branch() == 2, "the puzzles branch should reload" );
+		TowerDefense.arena = 2;
+		Level puzzle = Dungeon.newLevel();
+		check( puzzle instanceof com.shatteredpixel.shatteredpixeldungeon.levels.Arena9, "the puzzle stage should be built" );
+		int before = TowerDefense.unlocked( WndModes.Modes.NORMAL );
+		TowerDefense.cleared = false;
+		TowerDefense.onStageComplete();
+		check( TowerDefense.unlocked( WndModes.Modes.NORMAL ) == before, "a puzzle win should not open story arenas" );
+		TowerDefense.branch( 0 );
+		check( !TowerDefense.puzzles && !TowerDefense.endless, "story mode should come back" );
+
+		//---- the Curved Knife (2026-11-02)
+		com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.CurvedKnife knife = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.CurvedKnife();
+		check( !knife.name().contains( "!!!" ) && !knife.desc().contains( "!!!" ), "no Curved Knife text" );
+		check( com.shatteredpixel.shatteredpixeldungeon.sprites.TowerItemSprites.is( knife.image ), "the Curved Knife should draw from the Tower picture files" );
+		check( new File( "sprites/tower/curved_knife.png" ).exists(), "no Curved Knife picture" );
+		int maxBefore = knife.max();
+		com.shatteredpixel.shatteredpixeldungeon.SPDSettings.put( "td_knife_level", 3 );
+		check( knife.max() == maxBefore + 3, "each sacrifice should add to the knife's top damage" );
+		com.shatteredpixel.shatteredpixeldungeon.SPDSettings.put( "td_knife_level", 0 );
+
 		//---- outside tower defense nothing changes
 		TowerDefense.active = false;
 		TowerDefense.endless = false;
+		TowerDefense.puzzles = false;
 		check( !TowerDefense.unranked(), "normal runs should be ranked" );
 		check( new Arena1().slot1 == TowerInfo.AllTowers.WALL, "sandbox arenas should keep their default towers" );
 	}
