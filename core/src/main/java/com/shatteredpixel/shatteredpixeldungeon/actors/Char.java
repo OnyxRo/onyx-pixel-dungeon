@@ -1329,6 +1329,7 @@ public abstract class Char extends Actor {
 			if (src instanceof Viscosity.DeferedDamage)                 icon = FloatingText.DEFERRED;
 			if (src instanceof Corruption)                              icon = FloatingText.CORRUPTION;
 			if (src instanceof AscensionChallenge)                      icon = FloatingText.AMULET;
+			icon = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.damageIcon(this, src, icon, hitMissIcon); //rebluearchive, miracles and student skills
 
 			//Experienced PD's Iron Reflection perk, below half health a physical or magic hit sends out a blast
 			boolean ironWill = this instanceof Hero && ((Hero) this).perks.contains(Perks.Perk.IRON_WILL) && HP <= HT/2

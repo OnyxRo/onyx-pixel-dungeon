@@ -264,6 +264,26 @@ public class RBAHooks {
 	}
 
 	/** Cells the hero senses through Mari's Mind Bind and Miyu's scope. */
+	/** Dungeon.observe, the cells around a Mind Bind target and Miyu's scoped area stay marked on the map (added 2026-11-02). */
+	public static void markVisited( Hero hero, Level level ){
+		for (RBASnipe.ScopedArea a : hero.buffs(RBASnipe.ScopedArea.class)){
+			if (Dungeon.depth != a.depth || Dungeon.branch != a.branch) continue;
+			markAround(level, a.pos);
+		}
+		for (RBAMindBind.MindBindBuff b : hero.buffs(RBAMindBind.MindBindBuff.class)){
+			Char ch = (Char) Actor.findById(b.charID);
+			if (ch == null || !ch.isAlive() || Char.hasProp(ch, Char.Property.OBJECT)) continue;
+			markAround(level, ch.pos);
+		}
+	}
+
+	private static void markAround( Level level, int pos ){
+		com.watabou.utils.BArray.or( level.visited, level.heroFOV, pos - 1 - level.width(), 3, level.visited );
+		com.watabou.utils.BArray.or( level.visited, level.heroFOV, pos - 1, 3, level.visited );
+		com.watabou.utils.BArray.or( level.visited, level.heroFOV, pos - 1 + level.width(), 3, level.visited );
+		com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene.updateFog(pos, 2);
+	}
+
 	public static void markMindVision( Char c, boolean[] heroMindFov ){
 		for (RBAMindBind.MindBindBuff a : c.buffs(RBAMindBind.MindBindBuff.class)){
 			Char ch = (Char) Actor.findById(a.charID);

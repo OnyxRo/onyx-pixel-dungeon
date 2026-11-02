@@ -58,6 +58,7 @@ public class MirrorSprite extends MobSprite {
 	
 	public void updateArmor( int tier ) {
 		TextureFilm film = new TextureFilm( HeroSprite.tiers(), tier, FRAME_WIDTH, FRAME_HEIGHT );
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.RBAHero.isStudent(Dungeon.hero)) film = new TextureFilm( texture, FRAME_WIDTH, RBASprites.STUDENT_HEIGHT ); //rebluearchive, the students are 17 pixels tall
 		
 		idle = new Animation( 1, true );
 		idle.frames( film, 0, 0, 0, 1, 0, 0, 1, 1 );

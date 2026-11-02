@@ -717,4 +717,38 @@ public class RBAHero {
 		return ch instanceof Hero && ((Hero) ch).hasTalent(Talent.RBA_IZUNA_T2_4)
 				&& mob.distance(ch) >= 4 - ((Hero) ch).pointsInTalent(Talent.RBA_IZUNA_T2_4);
 	}
+
+	// ---- damage number icons, the mod's changes to Char.damage (added 2026-11-02) -----------------
+
+	/** The mod's miracle damage icon, cell 25 of effects/text_icons.png, its hit reasons sit 54 cells after the plain ones. */
+	public static final int DMG_MIRACLE = 25;
+
+	public static int damageIcon( Char ch, Object src, int icon, int hitMissIcon ){
+		if (src == null) return icon;
+		Hero h = Dungeon.hero;
+		if (src instanceof com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.hoshino.RBAChase
+				|| src == com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RBALittleAngry.class
+				|| (src == h && h != null && h.buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.shiroko.RBAPenetrationShot.IgnoreArmor.class) != null)){
+			icon = com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText.PHYS_DMG_NO_BLOCK;
+		}
+		if (src == h && h != null && h.heroClass == HeroClass.RBA_MARI
+				&& h.belongings.attackingWeapon() instanceof RBAGun.Bullet){
+			icon = DMG_MIRACLE;
+		}
+		if (RBAMariMiracle.MIRACLE_DAMAGE.contains(src.getClass())) icon = DMG_MIRACLE;
+		if (src instanceof com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RBASupportDrone){
+			icon = com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText.SHOCKING;
+		}
+		if (src instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.SR.RBAJusticeIncarnate.JusticeIncarnateBullet){
+			icon = com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText.EXPERIENCE;
+		}
+		if (icon == DMG_MIRACLE && hitMissIcon != -1) icon = hitMissIcon + 54;
+		return icon;
+	}
+
+	/** Noa's Double Barrel holds a handgun in each hand, so equipping one asks which hand, as the Champion does. */
+	public static boolean doubleBarrelChoice( Hero hero, com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon wep ){
+		return hero.subClass == HeroSubClass.RBA_DOUBLE_BARREL
+				&& wep instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.HG.RBAHG;
+	}
 }
