@@ -166,10 +166,10 @@ public abstract class Level implements Bundlable {
 	public void initNpcs(){
 	}
 	public com.shatteredpixel.shatteredpixeldungeon.windows.WndDialogueWithPic lastSavedWndDialogueWithPic;
-	public com.shatteredpixel.shatteredpixeldungeon.ui.towerlist.TowerInfo.AllTowers slot1 = com.shatteredpixel.shatteredpixeldungeon.ui.towerlist.TowerInfo.AllTowers.WALL;
-	public com.shatteredpixel.shatteredpixeldungeon.ui.towerlist.TowerInfo.AllTowers slot2 = com.shatteredpixel.shatteredpixeldungeon.ui.towerlist.TowerInfo.AllTowers.CROSSBOW;
-	public com.shatteredpixel.shatteredpixeldungeon.ui.towerlist.TowerInfo.AllTowers slot3 = com.shatteredpixel.shatteredpixeldungeon.ui.towerlist.TowerInfo.AllTowers.GUARD;
-	public com.shatteredpixel.shatteredpixeldungeon.ui.towerlist.TowerInfo.AllTowers slot4 = com.shatteredpixel.shatteredpixeldungeon.ui.towerlist.TowerInfo.AllTowers.MAGICMISSILE;
+	public com.shatteredpixel.shatteredpixeldungeon.ui.towerlist.TowerInfo.AllTowers slot1 = com.shatteredpixel.shatteredpixeldungeon.TowerDefense.slot(1, com.shatteredpixel.shatteredpixeldungeon.ui.towerlist.TowerInfo.AllTowers.WALL);
+	public com.shatteredpixel.shatteredpixeldungeon.ui.towerlist.TowerInfo.AllTowers slot2 = com.shatteredpixel.shatteredpixeldungeon.TowerDefense.slot(2, com.shatteredpixel.shatteredpixeldungeon.ui.towerlist.TowerInfo.AllTowers.CROSSBOW);
+	public com.shatteredpixel.shatteredpixeldungeon.ui.towerlist.TowerInfo.AllTowers slot3 = com.shatteredpixel.shatteredpixeldungeon.TowerDefense.slot(3, com.shatteredpixel.shatteredpixeldungeon.ui.towerlist.TowerInfo.AllTowers.GUARD);
+	public com.shatteredpixel.shatteredpixeldungeon.ui.towerlist.TowerInfo.AllTowers slot4 = com.shatteredpixel.shatteredpixeldungeon.TowerDefense.slot(4, com.shatteredpixel.shatteredpixeldungeon.ui.towerlist.TowerInfo.AllTowers.MAGICMISSILE);
 
 	public boolean cellAdjacentToBorderCells(int cell){
 		return (cell / width() <= 1 || cell / width() >= height()-1 || cell % width() <= 1 || cell % width() >= width()-1 ) ;

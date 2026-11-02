@@ -492,7 +492,11 @@ public class Dungeon {
 		sandboxOnceWorld = -1;
 		Level crawl = bossCrawl && branch == 0 ? BossCrawl.build(depth) : null;
 		//the boss crawl's town has a side door to the hotel, which travels the way the sandbox does
-		if ((sandbox || bossCrawl) && sandboxSpecial != null) {
+		//tower, a tower defense run is only its chosen arena, see TowerDefense
+		Level towers = TowerDefense.active && branch == 0 ? TowerDefense.build() : null;
+		if (towers != null) {
+			level = towers;
+		} else if ((sandbox || bossCrawl) && sandboxSpecial != null) {
 			level = sandboxSpecial.get();
 			sandboxSpecial = null;
 		} else if (branch == 0 && ButteredArena.builds(depth)) {
@@ -913,6 +917,7 @@ public class Dungeon {
 			bundle.put( "boss_crawl", bossCrawl );
 			bundle.put( "boss_crawl_step", BossCrawl.step );
 			bundle.put( "boss_crawl_difficulty", BossCrawl.difficulty );
+			TowerDefense.store( bundle ); //tower
 			bundle.put( SANDBOX_GOD, sandboxGod );
 			bundle.put( SANDBOX_SIGHT, sandboxSight );
 			bundle.put( SANDBOX_OFF_MODS, sandboxOffMods.toArray(new String[0]) );
@@ -1044,6 +1049,7 @@ public class Dungeon {
 		BossCrawl.step = bundle.getInt( "boss_crawl_step" );
 		//runs saved before the difficulty picker went through every boss
 		BossCrawl.difficulty = bundle.contains( "boss_crawl_difficulty" ) ? bundle.getInt( "boss_crawl_difficulty" ) : 4;
+		TowerDefense.restore( bundle ); //tower
 		sandboxGod = !bundle.contains( SANDBOX_GOD ) || bundle.getBoolean( SANDBOX_GOD );
 		sandboxSight = !bundle.contains( SANDBOX_SIGHT ) || bundle.getBoolean( SANDBOX_SIGHT );
 		sandboxSalt = bundle.contains( SANDBOX_SALT ) ? bundle.getInt( SANDBOX_SALT ) : 0;

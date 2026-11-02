@@ -628,6 +628,7 @@ public class Arena extends Level {
         Buff.detach(hero, WaveBuff.class);
         Buff.detach(hero, WaveCooldownBuff.class);
         if (Dungeon.level instanceof Arena) { ((Arena)Dungeon.level).stageCompleted = true; ((Arena)Dungeon.level).amuletTower.stalled = true; }
+        com.shatteredpixel.shatteredpixeldungeon.TowerDefense.onStageComplete();
     }
 
     public boolean stageCompleted = false;
@@ -942,7 +943,7 @@ public class Arena extends Level {
         wave = bundle.getInt(WAVE);
         normalShopKeeper = (NormalShopKeeper) bundle.get(SHOPKEEPER);
         towerShopKeeper = (TowerShopKeeper) bundle.get(TOWERSHOPKEEPER);
-        for (Mob mob : com.shatteredpixel.shatteredpixeldungeon.Dungeon.level.mobs){
+        for (Mob mob : mobs){ //this level's own mobs, Dungeon.level is null while a saved level loads
             if (mob.id() == bundle.getInt(PORTAL)) amuletTower = (AmuletTower) mob;
         }
 

@@ -115,3 +115,5 @@ The cloud routine does the first unchecked task and checks it off. Smallest firs
   - The rest of SPS's monsters, and add them to its spawn tables
   - Shittened's Skin system
   - Transformation's bosses and talent tied monsters, Matt's Seven Sins branch (`onyx/p2-mattsins`), Goblins' pet eggs
+- [x] Tower PD's tower defense game as its own mode (2026-11-01). Tower defense button on the title screen, the mod's level select and tower selection screens, story and endless arenas with unlocks, the victory window. See PORTING.md.
+- [ ] Play the tower defense mode. Title screen, Tower defense, pick a hero, look at the level select (arrows, amulet button for modes, castle button for towers, story and endless button at the top left) and start Arena 1. Buy a tower from the gnoll shop, place it, hold the waves and win. Check the window after the win and that Next arena starts Arena 2. Say if any screen looks wrong, they have not been seen on screen yet.
