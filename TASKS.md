@@ -109,3 +109,4 @@ The cloud routine does the first unchecked task and checks it off. Smallest firs
 - [x] Badge popup shows the badge name and what earned it under the icon, and stays 3 seconds (2026-11-01). Not seen on screen yet.
 - [x] Balance pages for every section with real fight damage (2026-11-01), `build/balance-floors-*.html`.
 - [ ] Onyx to decide on Unleashed's Frozen Caves. Its wolves come from Unleashed's frozen region (its floors 25 to 29) but the world sits in our caves, so they hit about 28 against a caves average of 16.
+- [ ] Onyx to decide on the balance findings in BALANCE.md (12 monsters too strong, 17 too weak against Shattered). Nothing changes in the game until he says so.
