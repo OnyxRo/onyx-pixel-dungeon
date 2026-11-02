@@ -136,6 +136,14 @@ public class SpecialFloors {
 		add( "Elemental PD", "Great Fire Demon boss, the Infernal Bastion", com.shatteredpixel.shatteredpixeldungeon.levels.InfernalBastionBossLevel::new );
 		add( "Elemental PD", "Water DM-300 boss, the Endless Lakes", com.shatteredpixel.shatteredpixeldungeon.levels.WaterBossLevel::new );
 		add( "Elemental PD", "Earth Dwarf King boss, the Last Stand", com.shatteredpixel.shatteredpixeldungeon.levels.EarthBossLevel::new );
+
+		//sps, SPS's side boss arenas, reached in the mod through its challenge books and keys
+		add( "SPecial Surprise PD", "Gnoll King boss, the field", FieldBossLevel::new );
+		add( "SPecial Surprise PD", "Thief King boss, the thieves' hall", ThiefBossLevel::new );
+		add( "SPecial Surprise PD", "Skeleton King boss, the bone hall", SkeletonBossLevel::new );
+		add( "SPecial Surprise PD", "Crab King boss, the shore", CrabBossLevel::new );
+		add( "SPecial Surprise PD", "Shadow Yog boss, the infestation", InfestBossLevel::new );
+		add( "SPecial Surprise PD", "Zot boss, the arena of Zot", ZotBossLevel::new );
 	}
 
 	/** Re-ARranged PD's levels read the floor number, so it is set before they are built. */

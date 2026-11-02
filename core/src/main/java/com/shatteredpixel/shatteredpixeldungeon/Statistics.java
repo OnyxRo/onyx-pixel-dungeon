@@ -117,6 +117,7 @@ public class Statistics {
 	public static String gunKillsFloor = "";
 
 	public static void reset() {
+		SpsStats.reset(); //sps
 		worldsVisited.clear();
 		bossModsBeaten.clear();
 		gunKills = 0;
@@ -228,6 +229,7 @@ public class Statistics {
 	private static final String ASCENDED		= "ascended";
 	
 	public static void storeInBundle( Bundle bundle ) {
+		SpsStats.store( bundle ); //sps
 		bundle.put( "onyx_worlds", worldsVisited.toArray(new String[0]) );
 		bundle.put( "onyx_bossmods", bossModsBeaten.toArray(new String[0]) );
 		bundle.put( "onyx_gunkills", gunKills );
@@ -305,6 +307,7 @@ public class Statistics {
 	}
 	
 	public static void restoreFromBundle( Bundle bundle ) {
+		SpsStats.restore( bundle ); //sps
 		worldsVisited.clear();
 		bossModsBeaten.clear();
 		if (bundle.contains( "onyx_worlds" )) java.util.Collections.addAll( worldsVisited, bundle.getStringArray( "onyx_worlds" ) );

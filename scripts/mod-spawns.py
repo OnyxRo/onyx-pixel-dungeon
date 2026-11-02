@@ -131,7 +131,9 @@ def resolve(mod, name):
     if name in ROSTER.get(mod, ()):
         #a mod's own monster, prefer the copy in a mod folder over Shattered's of the same name
         sub = [o for o in opts if o not in base]
-        return (sub or opts)[0]
+        #a copy in the mod's own subpackage (actors.mobs.sps.FireElemental) beats a nested class of the same name elsewhere
+        own = [o for o in sub if (".mobs." + mod + ".") in o]
+        return (own or sub or opts)[0]
     return (base or opts)[0]
 
 #first floor of each region (sewers, prison, caves, city, halls) for mods whose regions do not start where ours do,

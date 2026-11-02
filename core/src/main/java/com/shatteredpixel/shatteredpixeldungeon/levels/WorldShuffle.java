@@ -530,6 +530,16 @@ public class WorldShuffle {
 			//Transformation PD's tower bosses, one for each floor from 10 down. Floor 5 keeps Shattered's Goo.
 			return depth >= 10 && depth % 5 == 0 ? new Level[]{ new com.shatteredpixel.shatteredpixeldungeon.levels.towers.TransformationRunBossLevel() } : new Level[0];
 		}
+		if (world >= 0 && world < LOGOS.length && SPS.equals(LOGOS[world])) {
+			//sps, the boss floors of SPecial Surprise PD with the bosses it added. Its Goo, DM-300 and King are left to Shattered
+			switch (depth) {
+				case 5:  return new Level[]{ new SpsSewerBossLevel() };
+				case 10: return new Level[]{ new SpsPrisonBossLevel() };
+				case 15: return new Level[]{ new SpsCavesBossLevel(), new SpsCavesBossLevel.Queen() };
+				case 20: return new Level[]{ new SpsCityBossLevel(), new SpsCityBossLevel.Avatar() };
+				default: return new Level[0];
+			}
+		}
 		if (world >= 0 && world < LOGOS.length && MAGIC_LING.equals(LOGOS[world])) {
 			//magicling, the mod's floor 5 fights. Qliphoth and Crivus Fruits in the jungle (the mod's usual pick), the Slime Prince
 			//in the sewers, Sky Goo in the jungle, the Crab King on the shore
@@ -597,6 +607,13 @@ public class WorldShuffle {
 			int pick = forcedVariant >= 0 ? forcedVariant : (int)((Math.abs( Dungeon.seed ) / 7 + depth) & 1);
 			//a third variant is the final arena, only built when asked for by name (the boss test), never by the seed
 			return both[forcedVariant >= 0 ? pick % both.length : pick % Math.min(both.length, 2)];
+		}
+		if (world >= 0 && world < LOGOS.length && SPS.equals(LOGOS[world])) {
+			//sps, SPS's own arenas with its new bosses, picked by the dungeon seed like Magic Ling's
+			Level[] sp = modBossVariants( world, depth );
+			if (sp.length == 0) return null;
+			int pick = forcedVariant >= 0 ? forcedVariant : (int)((Math.abs( Dungeon.seed ) / 7 + depth) % sp.length);
+			return sp[pick % sp.length];
 		}
 		if (world >= 0 && world < LOGOS.length && MAGIC_LING.equals(LOGOS[world])) {
 			//magicling, one of its fights for the floor, picked by the dungeon seed so the floor is the same each time it is built

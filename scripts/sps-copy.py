@@ -36,9 +36,8 @@ args = sys.argv[1:]
 if args and args[0] == '--reapply':
     KEYS = args[1:]  # only rules whose description contains one of these words, others are not safe to run twice
     # runs the SPS rules over the current text of every file this branch added, keeps hand edits
-    base = subprocess.run(['git', 'merge-base', 'HEAD', 'onyx/finish-four-mods'], cwd=ROOT, capture_output=True, text=True).stdout.strip()
-    added = subprocess.run(['git', 'diff', '--name-only', '--diff-filter=A', base, 'HEAD'], cwd=ROOT, capture_output=True, text=True).stdout.split('\n')
-    added += subprocess.run(['git', 'ls-files', '--others', '--exclude-standard'], cwd=ROOT, capture_output=True, text=True).stdout.split('\n')
+    # only untracked files. It once also took every file added since an old branch and rewrote 53 committed files of other mods
+    added = subprocess.run(['git', 'ls-files', '--others', '--exclude-standard'], cwd=ROOT, capture_output=True, text=True).stdout.split('\n')
     n = 0
     for f in added:
         if f.endswith('.java') and f.startswith('core/src/main/java/'):

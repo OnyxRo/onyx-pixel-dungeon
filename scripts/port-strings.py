@@ -10,6 +10,7 @@ import sys, os, io, re, glob, subprocess
 ROOT = sys.argv[1].rstrip('/') + '/'
 MOD = sys.argv[2].rstrip('/') + '/'
 LABEL = sys.argv[3]
+SUBPKG = os.environ.get('SUBPKG', '')  # SUBPKG=sps, see copy_from
 PK = 'core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/'
 MSG = 'core/src/main/assets/messages/'
 
@@ -43,6 +44,13 @@ def copy_from(src, dst, keys, bundle):
         m = re.match(r'([^#=\s][^=]*)=', line)
         if not m: continue
         k = m.group(1)
+        # classes copied into a mod subpackage because the name was taken (actors/mobs/sps/Assassin) read the mod's key without it
+        for p in keys:
+            short = p.replace('.' + SUBPKG + '.', '.') if SUBPKG else p
+            if short != p and (k.startswith(short + '.') or k.startswith(short + '$')):
+                k2 = p + k[len(short):]
+                if k2 not in have:
+                    add.append(k2 + line[len(k):]); have.add(k2)
         if k in have: continue
         if any(k.startswith(p + '.') or k.startswith(p + '$') for p in keys):
             add.append(line); have.add(k)
@@ -65,6 +73,8 @@ for bundle, keys in prefixes.items():
     if not os.path.exists(LP(src)):
         # older mods keep text under resources/<package path>/messages
         hits = glob.glob(LP(MOD + 'core/src/main/resources') + '/**/*messages/' + bundle + '/' + bundle + '.properties', recursive=True)
+        # Android era mods (SPS) keep them under resources/ at the top
+        hits = hits or glob.glob(LP(MOD + 'resources') + '/**/*messages/' + bundle + '/' + bundle + '.properties', recursive=True)
         if hits: src = hits[0]
     if os.path.exists(LP(src)): copy_from(src, dst, keys, bundle)
 print('strings added', total)

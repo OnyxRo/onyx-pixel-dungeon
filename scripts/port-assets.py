@@ -20,6 +20,7 @@ _spec = importlib.util.spec_from_file_location('renames', os.path.join(os.path.d
 renames = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(renames)
 MB = os.path.join(MOD, renames.mod_package_dir(MOD))
 MASSETS = os.path.join(MOD, 'core', 'src', 'main', 'assets')
+if not os.path.isdir(MASSETS): MASSETS = os.path.join(MOD, 'assets')  # Android era mods (SPS)
 ASSETS = os.path.join(ROOT, 'core', 'src', 'main', 'assets')
 OURS = os.path.join(ROOT, 'core', 'src', 'main', 'java', 'com', 'shatteredpixel', 'shatteredpixeldungeon', 'Assets.java')
 msrc = io.open(os.path.join(MB, 'Assets.java'), encoding='utf-8', errors='replace').read()
@@ -84,6 +85,7 @@ def wr(p, s): io.open(LP(p), 'w', encoding='utf-8', newline='').write(s)
 
 MB = MOD + '/' + renames.mod_package_dir(MOD)
 MASSETS = MOD + '/core/src/main/assets/'
+if not os.path.isdir(MASSETS): MASSETS = MOD + '/assets/'  # Android era mods (SPS)
 ASSETS = ROOT + '/core/src/main/assets/'
 OURS = ROOT + '/core/src/main/java/com/shatteredpixel/shatteredpixeldungeon/Assets.java'
 mod_src = rd(MB + 'Assets.java')
