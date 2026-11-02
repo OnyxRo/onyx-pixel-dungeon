@@ -123,9 +123,8 @@ public class TowerInfo extends Component {
     }
 
     public static Image getTowerPreviewImage(AllTowers sometower) {
-        //the mod drew a splash picture per tower, here the tower's own sprite stands in
-        Tower t = getTowerNewInstance(sometower);
-        return t == null ? new Image() : t.sprite();
+        //the mod's splash picture of each tower
+        return new Image("splashes/tower/towers/tower" + sometower.name().toLowerCase(Locale.ROOT) + ".png");
     }
 
     public enum Lock{
@@ -242,8 +241,7 @@ public class TowerInfo extends Component {
 
 
     public static Image getTowerIcon(AllTowers sometower) {
-        Tower t = getTowerNewInstance(sometower);
-        return t == null ? new Image() : t.sprite();
+        return TowerIcons.forTower(sometower);
     }
 
     public static int getTowerIndex(AllTowers sometower){

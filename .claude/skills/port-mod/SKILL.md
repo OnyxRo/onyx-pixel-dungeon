@@ -318,3 +318,9 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **Mods uploaded as one commit.** `python -I scripts/mod-diff.py <mod root> <shattered tag root> <mod package path> <out.txt>` lists new and changed files against a Shattered tag (clone it shallow, try two nearby tags and keep the one with fewer diff lines) and writes the unified diffs to `<out.txt>.diff`. Split the diff per file with awk to read one class at a time.
 - **`scripts/test-recompile.sh <Test> [args]`** recompiles one test class with TestBoot and runs it, `test-one.sh` alone runs the old class file.
 - **A whole run rework** (light, horror, satiation, perks) goes in as many small game modes from one helper class, with a conflict table in `onSet`, like Too Cruel and `MusicImplant`.
+
+## Added after the tower defense mode (2026-11-01)
+
+- **A mod's menus as a run mode.** Copy the boss crawl's hooks (a title button, a flag saved with the run, one line in `Dungeon.newLevel`, store and restore in the Dungeon bundle). `TowerDefense` is the second example. Cut a mod's icons in a small enum of its own (`TowerIcons`) instead of growing `Icons`, so parallel ports do not collide.
+- **Appending strings.** `python -I scripts/append-props.py <target> <mod file> --rename old.prefix.=new.prefix. --comment "text"` copies a mod's keys under a new prefix with the target's own line endings. Several message files are CRLF.
+- **Levels that read `Dungeon.level` in `restoreFromBundle` crash on Continue**, because `Dungeon.loadLevel` sets it to null first. Use the level's own fields. Write a save and reload step into any test of a new level type.

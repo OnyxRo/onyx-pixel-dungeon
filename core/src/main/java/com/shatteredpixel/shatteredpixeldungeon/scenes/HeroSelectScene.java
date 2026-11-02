@@ -161,6 +161,11 @@ public class HeroSelectScene extends PixelScene {
 					ShatteredPixelDungeon.scene().addToFront(new com.shatteredpixel.shatteredpixeldungeon.windows.WndCrawlDifficulty());
 					return;
 				}
+				//tower defense goes on to its level select screen, which starts the run
+				if (com.shatteredpixel.shatteredpixeldungeon.TowerDefense.active){
+					ShatteredPixelDungeon.switchScene(com.shatteredpixel.shatteredpixeldungeon.scenes.TowerLevelSelectScene.class);
+					return;
+				}
 
 				startRun();
 			}

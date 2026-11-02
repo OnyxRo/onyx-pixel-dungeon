@@ -88,6 +88,7 @@ public enum Rankings {
 
 		//sandbox runs are never ranked, except a boss crawl that reached the end and took the Amulet
 		if (Dungeon.sandbox && !(win && Dungeon.bossCrawl)) return;
+		if (TowerDefense.unranked()) return; //tower
 
 		load();
 		

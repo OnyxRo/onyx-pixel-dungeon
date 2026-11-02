@@ -130,6 +130,10 @@ if [ $QUICK -eq 0 ]; then
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY branch)" | tail -8 | sed 's/^/  /'
   [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
   #the boss crawl, every stop must build the boss the Pick a boss list names
+  #tower defense mode, start a run, place a tower, play a wave, save and reload, win, next arena
+  run "TowerDefenseTest" TowerDefenseTest; rc=$?
+  tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY tower defense)" | tail -8 | sed 's/^/  /'
+  [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
   run "BossCrawlTest" BossCrawlTest; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY boss crawl)" | tail -8 | sed 's/^/  /'
   [ $rc -eq 0 ] && say "  passed" || say "  FAILED"

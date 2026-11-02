@@ -43,9 +43,9 @@ public class SPDSettings extends GameSettings {
 		put( KEY_VERSION, value );
 	}
 	
-	//Tower PD, every tower is unlocked here
+	//Tower PD, towers unlock as the tower defense story goes on, see TowerDefense
 	public static int maxlevelunlocked() {
-		return 26;
+		return TowerDefense.towerProgress();
 	}
 
 	public static int version() {
