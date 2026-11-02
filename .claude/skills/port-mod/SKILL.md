@@ -336,3 +336,9 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **Mod names other mods already use** go in a mod subpackage (`actors/mobs/sps/`, `sprites/sps/`), with the imports in every new file pointed at them. `port-strings.py` reads their text with `SUBPKG=sps`, and `mod-spawns.py` keeps each mod to its own copies.
 - **Boss code that loops until a random cell fits its arena** hangs the arena test and the sandbox spawn list. Bound such loops (500 tries, then give up) before testing, and run MobArenaTest on bosses in small groups under `timeout`.
 - **`sps-copy.py --reapply` only touches untracked files.** Never point a reapply at committed files of other mods.
+## Added after the Blue Archive finish (2026-11-02)
+- **A mod that "reworks" Shattered's heroes may only hide them.** Read its `initClassTalents` and `HeroClass` before porting a rework. Blue Archive and Re Blue Archive only took the six out of hero select, so the port is a roster game mode (`BlueArchiveModes.hides`, one line in `HeroClass.isUnlocked` and the hero button loop). Copy it for any mod whose heroes replace the six.
+- **NPC pictures a mod swapped** (shopkeeper, blacksmith, Imp) go through one helper called at the end of the Shattered sprite's constructor (`BlueArchiveNpcSprites`), shown while the mod's mode is on or on its worlds (`WorldShuffle.modKey(Dungeon.level)`).
+- **Hidden per class badges** for ported heroes can be added by name with `Badges.Badge.valueOf` from one register call at the end of the badge map static block (`BlueArchiveBadges`), no per hero lines.
+- **Shared sheets with empty cells** (`effects/text_icons.png`) can take a mod's extra icons in place when the cells are empty here. Compare cell by cell first.
+- **If the worktree disappears mid run**, `git worktree add <path> <branch>` brings the branch back, uncommitted work is lost, so commit after each batch.

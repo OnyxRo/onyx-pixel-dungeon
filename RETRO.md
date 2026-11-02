@@ -207,3 +207,6 @@ The tower defense port missed 205 text lines (the Rat King speech in every arena
 
 ## 2026-11-02 Locked start for the GitHub copy
 Finding every mod hook inside Shattered's own code by hand would have taken hours. Two read only helpers split the 432 changed Shattered files (actors and items, everything else) and listed what still fires in a plain run, and a class list from the first commit (`assets/shattered-classes.txt`) filters items, rooms, recipes, enchantments and badges in one rule each. `LockedModeTest` then caught the three hooks both missed (Goblins pets, a helmet through the default item roll, Tower hero badges). Rebuild the class list the same way if the base ever moves.
+
+## 2026-11-02 Blue Archive finish
+The worktree was removed when the run was paused, and the guard refuses commands that change into the mod folders before running git or sed. Making a new worktree from the branch (`git worktree add <path> <branch>`) brought the work back at once, nothing was committed yet. Plain javac took 8 minutes with six jobs compiling together, so the hook edits went in batches through `edit.py` specs and one compile per batch. Re Blue Archive's repo has moved to Shattered 4.0.2 since our port, so its vault quest turned out to be Shattered's own, check a mod's `build.gradle` again before porting a leftover.

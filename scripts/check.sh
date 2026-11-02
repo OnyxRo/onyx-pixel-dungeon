@@ -198,6 +198,10 @@ if [ $QUICK -eq 0 ]; then
   run "GameModesTest" GameModesTest; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|INFO radar|SUMMARY gamemodes)" | tail -12 | sed 's/^/  /'
   [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
+  #bluearchive and rebluearchive, the Students Only modes, the students' badges, the punching bag on floor 26
+  run "BlueArchiveModesTest" BlueArchiveModesTest; rc=$?
+  tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY bluearchive)" | tail -12 | sed 's/^/  /'
+  [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
   #rearranged, the Re-ARranged heroes option, its rework of Shattered's six heroes
   run "RearrangedReworkTest" RearrangedReworkTest; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY rearranged)" | tail -12 | sed 's/^/  /'
