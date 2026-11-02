@@ -110,3 +110,8 @@ The cloud routine does the first unchecked task and checks it off. Smallest firs
 - [x] Balance pages for every section with real fight damage (2026-11-01), `build/balance-floors-*.html`.
 - [ ] Onyx to decide on Unleashed's Frozen Caves. Its wolves come from Unleashed's frozen region (its floors 25 to 29) but the world sits in our caves, so they hit about 28 against a caves average of 16.
 - [ ] Onyx to decide on the balance findings in BALANCE.md (12 monsters too strong, 17 too weak against Shattered). Nothing changes in the game until he says so.
+- [ ] Port everything left that needs no redrawing (2026-11-01), run as parallel branches, merged one at a time
+  - Tower PD's tower defense as a game mode with its own title screen button, like the boss crawl
+  - The rest of SPS's monsters, and add them to its spawn tables
+  - Shittened's Skin system
+  - Transformation's bosses and talent tied monsters, Matt's Seven Sins branch (`onyx/p2-mattsins`), Goblins' pet eggs
