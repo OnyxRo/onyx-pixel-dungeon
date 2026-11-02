@@ -70,7 +70,7 @@ public class HolyTome extends Artifact {
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
 		if ((isEquipped( hero ) || hero.hasTalent(Talent.LIGHT_READING))
-				&& !cursed
+				&& !curseActive()
 				&& hero.buff(MagicImmune.class) == null) {
 			actions.add(AC_CAST);
 		}
@@ -87,7 +87,7 @@ public class HolyTome extends Artifact {
 		if (action.equals(AC_CAST)) {
 
 			if (!isEquipped(hero) && !hero.hasTalent(Talent.LIGHT_READING)) GLog.i(Messages.get(Artifact.class, "need_to_equip"));
-			else if (cursed)       GLog.i( Messages.get(this, "cursed") );
+			else if (curseActive())       GLog.i( Messages.get(this, "cursed") );
 			else {
 
 				if (!Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.CUBE)) {
@@ -227,7 +227,7 @@ public class HolyTome extends Artifact {
 
 	@Override
 	public void charge(Hero target, float amount) {
-		if (cursed || target.buff(MagicImmune.class) != null) return;
+		if (curseActive() || target.buff(MagicImmune.class) != null) return;
 
 		if (charge < chargeCap) {
 			if (!isEquipped(target)) amount *= 0.75f*target.pointsInTalent(Talent.LIGHT_READING)/3f;
@@ -303,7 +303,7 @@ public class HolyTome extends Artifact {
 
 		@Override
 		public boolean act() {
-			if (charge < chargeCap && !cursed && target.buff(MagicImmune.class) == null) {
+			if (charge < chargeCap && !curseActive() && target.buff(MagicImmune.class) == null) {
 				if (Regeneration.regenOn()) {
 					float missing = (chargeCap - charge);
 					if (level() > 7) missing += 5*(level() - 7)/3f;
@@ -356,7 +356,7 @@ public class HolyTome extends Artifact {
 
 		@Override
 		public void doAction() {
-			if (cursed){
+			if (curseActive()){
 				GLog.w(Messages.get(HolyTome.this, "cursed"));
 				return;
 			}

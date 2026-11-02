@@ -91,6 +91,7 @@ public class ScrollOfUpgrade extends InventoryScroll {
 			boolean hadCursedEnchant = w.hasCurseEnchant();
 			boolean hadGoodEnchant = w.hasGoodEnchant();
 
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.durableModifies(curUser, w); //xun
 			item = w.upgrade();
 
 			if (w.cursedKnown && hadCursedEnchant && !w.hasCurseEnchant()){
@@ -111,6 +112,7 @@ public class ScrollOfUpgrade extends InventoryScroll {
 			boolean hadCursedGlyph = a.hasCurseGlyph();
 			boolean hadGoodGlyph = a.hasGoodGlyph();
 
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.durableModifies(curUser, a); //xun
 			item = a.upgrade();
 
 			if (a.cursedKnown && hadCursedGlyph && !a.hasCurseGlyph()){

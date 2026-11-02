@@ -124,11 +124,11 @@ public class SandalsOfNature extends Artifact {
 		if (hero.buff(MagicImmune.class) != null){
 			return actions;
 		}
-		if (isEquipped( hero ) && !cursed) {
+		if (isEquipped( hero ) && !curseActive()) {
 			actions.add(AC_FEED);
 		}
 		if (isEquipped( hero )
-				&& !cursed
+				&& !curseActive()
 				&& curSeedEffect != null
 				&& charge >= seedChargeReqs.get(curSeedEffect)) {
 			actions.add(AC_ROOT);
@@ -146,7 +146,7 @@ public class SandalsOfNature extends Artifact {
 
 			GameScene.selectItem(itemSelector);
 
-		} else if (action.equals(AC_ROOT) && !cursed){
+		} else if (action.equals(AC_ROOT) && !curseActive()){
 
 			if (!isEquipped( hero ))                                GLog.i( Messages.get(Artifact.class, "need_to_equip") );
 			else if (curSeedEffect == null)                         GLog.i( Messages.get(this, "no_effect") );
@@ -164,7 +164,7 @@ public class SandalsOfNature extends Artifact {
 	
 	@Override
 	public void charge(Hero target, float amount) {
-		if (cursed || target.buff(MagicImmune.class) != null) return;
+		if (curseActive() || target.buff(MagicImmune.class) != null) return;
 		if (charge < chargeCap) {
 			partialCharge += 2*amount;
 			while (partialCharge >= 1f){
@@ -200,7 +200,7 @@ public class SandalsOfNature extends Artifact {
 		if ( isEquipped ( Dungeon.hero ) ) {
 			desc += "\n\n";
 
-			if (!cursed) {
+			if (!curseActive()) {
 				desc += Messages.get(this, "desc_hint");
 			} else {
 				desc += Messages.get(this, "desc_cursed");
@@ -270,7 +270,7 @@ public class SandalsOfNature extends Artifact {
 
 	public class Naturalism extends ArtifactBuff{
 		public void charge() {
-			if (cursed || target.buff(MagicImmune.class) != null) return;
+			if (curseActive() || target.buff(MagicImmune.class) != null) return;
 			if (charge < chargeCap){
 				//0.5 charge per grass at +0, up to 1.5 at +10
 				float chargeGain = (3f + 2*level())/6f;

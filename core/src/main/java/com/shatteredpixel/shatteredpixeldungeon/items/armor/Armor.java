@@ -1109,6 +1109,7 @@ public class Armor extends EquipableItem {
 					&& (Dungeon.level.distance(defender.pos, Dungeon.hero.pos) <= 2 || defender.buff(LifeLinkSpell.LifeLinkSpellBuff.class) != null)){
 				multi += 0.25f + 0.25f*Dungeon.hero.pointsInTalent(Talent.AURA_OF_PROTECTION);
 			}
+			multi *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.barbedWireGlyph(defender); //xun, Barbed Wire
 
 			return multi;
 		}

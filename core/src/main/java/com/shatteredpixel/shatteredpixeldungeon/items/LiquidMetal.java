@@ -137,6 +137,7 @@ public class LiquidMetal extends Item {
 
 	@Override
 	protected void onThrow( int cell ) {
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.remoteDestruction(cell)) return; //xun, Remote Destruction
 		if (Dungeon.level.map[cell] == Terrain.WELL || Dungeon.level.pit[cell]) {
 
 			super.onThrow( cell );

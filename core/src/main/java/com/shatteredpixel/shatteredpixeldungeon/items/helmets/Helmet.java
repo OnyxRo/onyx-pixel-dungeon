@@ -50,15 +50,18 @@ public class Helmet extends EquipableItem {
 	@Override
 	public boolean doEquip(Hero hero) {
 		Helmet old = hero.belongings.helmet;
-		if (old != null && old != this) {
-			//swap with the helmet already worn, it goes back to the pack
+		//the mod has five helmet slots, a full main slot sends the helmet to a free extra one
+		int extra = old != null && old != this ? hero.belongings.freeExtraHelmet() : -1;
+		if (extra < 0 && old != null && old != this) {
+			//every slot is full, swap with the main helmet, it goes back to the pack
 			if (!old.doUnequip(hero, true, false)) {
 				return false;
 			}
 		}
 
 		detach(hero.belongings.backpack);
-		hero.belongings.helmet = this;
+		if (extra >= 0) hero.belongings.extraHelmets[extra] = this;
+		else            hero.belongings.helmet = this;
 
 		identify();
 		cursedKnown = true;
@@ -79,6 +82,7 @@ public class Helmet extends EquipableItem {
 	public boolean doUnequip(Hero hero, boolean collect, boolean single) {
 		if (super.doUnequip(hero, collect, single)) {
 			if (hero.belongings.helmet == this) hero.belongings.helmet = null;
+			hero.belongings.clearExtraSlot(this);
 			hero.updateHT(false);
 			Dungeon.observe();
 			return true;
@@ -88,7 +92,7 @@ public class Helmet extends EquipableItem {
 
 	@Override
 	public boolean isEquipped(Hero hero) {
-		return hero != null && hero.belongings.helmet() == this;
+		return hero != null && (hero.belongings.helmet() == this || hero.belongings.inExtraSlot(this));
 	}
 
 	@Override
@@ -211,57 +215,67 @@ public class Helmet extends EquipableItem {
 		return ch instanceof Hero ? ((Hero) ch).belongings.helmet() : null;
 	}
 
+	//every helmet the hero wears, up to five as in the mod. Their effects stack
+	public static java.util.List<Helmet> allWorn(Char ch) {
+		if (!(ch instanceof Hero)) return java.util.Collections.emptyList();
+		return ((Hero) ch).belongings.allHelmets();
+	}
+
 	public static int onAttackProc(Hero hero, Char enemy, int dmg) {
-		Helmet h = worn(hero);
-		if (h == null) return dmg;
 		boolean ranged = hero.belongings.thrownWeapon != null;
-		return Math.max(0, h.procGivenDamage(hero, enemy, dmg, ranged));
+		for (Helmet h : allWorn(hero)) dmg = Math.max(0, h.procGivenDamage(hero, enemy, dmg, ranged));
+		return dmg;
 	}
 
 	public static float onDamageTaken(Hero hero, float dmg, Object src) {
-		Helmet h = worn(hero);
-		if (h == null) return dmg;
-		return Math.max(0, h.procTakenDamage(hero, dmg, src));
+		for (Helmet h : allWorn(hero)) dmg = Math.max(0, h.procTakenDamage(hero, dmg, src));
+		return dmg;
 	}
 
 	public static int viewDelta(Hero hero) {
-		Helmet h = worn(hero);
-		return h == null ? 0 : h.viewAmend();
+		int delta = 0;
+		for (Helmet h : allWorn(hero)) delta += h.viewAmend();
+		return delta;
 	}
 
 	public static float regenDelay(Char ch) {
-		Helmet h = worn(ch);
-		return h == null ? 1f : h.regenDelayMultiplier();
+		float mult = 1f;
+		for (Helmet h : allWorn(ch)) mult *= h.regenDelayMultiplier();
+		return mult;
 	}
 
 	public static float hungerDelay(Char ch) {
-		Helmet h = worn(ch);
-		return h == null ? 1f : h.hungerDelayMultiplier();
+		float mult = 1f;
+		for (Helmet h : allWorn(ch)) mult *= h.hungerDelayMultiplier();
+		return mult;
 	}
 
 	public static float wandCharge(Char ch) {
-		Helmet h = worn(ch);
-		return h == null ? 1f : h.wandChargeMultiplier();
+		float mult = 1f;
+		for (Helmet h : allWorn(ch)) mult *= h.wandChargeMultiplier();
+		return mult;
 	}
 
 	public static float accuracy(Hero hero) {
-		Helmet h = worn(hero);
-		return h == null ? 1f : h.accuracyMultiplier();
+		float mult = 1f;
+		for (Helmet h : allWorn(hero)) mult *= h.accuracyMultiplier();
+		return mult;
 	}
 
 	public static boolean guaranteedHit(Hero hero) {
-		Helmet h = worn(hero);
-		return h != null && h.sureHit();
+		//each helmet rolls its own chance
+		boolean hit = false;
+		for (Helmet h : allWorn(hero)) hit = h.sureHit() || hit;
+		return hit;
 	}
 
 	public static int maxHP(Hero hero, int hp) {
-		Helmet h = worn(hero);
-		return h == null ? hp : h.maxHPFix(hp);
+		for (Helmet h : allWorn(hero)) hp = h.maxHPFix(hp);
+		return hp;
 	}
 
 	public static void kill(Hero hero, Char victim) {
-		Helmet h = worn(hero);
-		if (h != null) h.onKill(hero, victim);
+		for (Helmet h : allWorn(hero)) h.onKill(hero, victim);
 	}
 
 	//attacks from a distance, and from spell casters, are told apart here

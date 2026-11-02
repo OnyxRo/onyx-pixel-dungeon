@@ -63,7 +63,7 @@ public class ChaliceOfBlood extends Artifact {
 		ArrayList<String> actions = super.actions( hero );
 		if (isEquipped( hero )
 				&& level() < levelCap
-				&& !cursed
+				&& !curseActive()
 				&& !hero.isInvulnerable(getClass())
 				&& hero.buff(MagicImmune.class) == null)
 			actions.add(AC_PRICK);
@@ -191,7 +191,7 @@ public class ChaliceOfBlood extends Artifact {
 	
 	@Override
 	public void charge(Hero target, float amount) {
-		if (cursed || target.buff(MagicImmune.class) != null) return;
+		if (curseActive() || target.buff(MagicImmune.class) != null) return;
 
 		//grants 5 turns of healing up-front, if hero isn't starving
 		if (target.isStarving()) return;
@@ -219,7 +219,7 @@ public class ChaliceOfBlood extends Artifact {
 
 		if (isEquipped (Dungeon.hero)){
 			desc += "\n\n";
-			if (cursed)
+			if (curseActive())
 				desc += Messages.get(this, "desc_cursed");
 			else if (level() == 0)
 				desc += Messages.get(this, "desc_1");

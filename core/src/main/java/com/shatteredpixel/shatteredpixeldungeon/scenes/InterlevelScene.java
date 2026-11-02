@@ -242,6 +242,7 @@ public class InterlevelScene extends PixelScene {
 		background.y = (Camera.main.height - background.height())/2f;
 		PixelScene.align(background);
 		add(background);
+		RyuseLoading.decorate(this, mode, loadingDepth); //ryuse, the Polluted Sewers loading tile
 
 		Image fadeLeft, fadeRight;
 		fadeLeft = new Image(TextureCache.createGradient(0xFF000000, 0xFF000000, 0x00000000));

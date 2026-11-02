@@ -63,6 +63,7 @@ public abstract class EquipableItem extends Item {
 		if (!Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.CUBE) || !(this instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon)) {
 			actions.add( isEquipped( hero ) ? AC_UNEQUIP : AC_EQUIP );
 		}
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.smeltActions(this, hero, actions); //xun, Apart Anything
 		return actions;
 	}
 
@@ -84,6 +85,7 @@ public abstract class EquipableItem extends Item {
 	public void execute( Hero hero, String action ) {
 
 		super.execute( hero, action );
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.smelt(this, hero, action)) return; //xun, Apart Anything
 
 		if (action.equals( AC_EQUIP )) {
 			if (Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.CUBE) && this instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon) {

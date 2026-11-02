@@ -73,7 +73,7 @@ public class EtherealChains extends Artifact {
 	@Override
 	public ArrayList<String> actions(Hero hero) {
 		ArrayList<String> actions = super.actions( hero );
-		if (isEquipped(hero) && charge > 0 && !cursed && hero.buff(MagicImmune.class) == null) {
+		if (isEquipped(hero) && charge > 0 && !curseActive() && hero.buff(MagicImmune.class) == null) {
 			actions.add(AC_CAST);
 		}
 		return actions;
@@ -102,7 +102,7 @@ public class EtherealChains extends Artifact {
 				GLog.i( Messages.get(this, "no_charge") );
 				usesTargeting = false;
 
-			} else if (cursed) {
+			} else if (curseActive()) {
 				GLog.w( Messages.get(this, "cursed") );
 				usesTargeting = false;
 
@@ -287,7 +287,7 @@ public class EtherealChains extends Artifact {
 	
 	@Override
 	public void charge(Hero target, float amount) {
-		if (cursed || target.buff(MagicImmune.class) != null) return;
+		if (curseActive() || target.buff(MagicImmune.class) != null) return;
 		int chargeTarget = 5+(level()*2);
 		if (charge < chargeTarget*2){
 			partialCharge += 0.5f*amount;
@@ -305,7 +305,7 @@ public class EtherealChains extends Artifact {
 
 		if (isEquipped( Dungeon.hero )){
 			desc += "\n\n";
-			if (cursed)
+			if (curseActive())
 				desc += Messages.get(this, "desc_cursed");
 			else
 				desc += Messages.get(this, "desc_equipped");
@@ -319,14 +319,14 @@ public class EtherealChains extends Artifact {
 		public boolean act() {
 			int chargeTarget = 5+(level()*2);
 			if (charge < chargeTarget
-					&& !cursed
+					&& !curseActive()
 					&& target.buff(MagicImmune.class) == null
 					&& Regeneration.regenOn()) {
 				//gains a charge in 40 - 2*missingCharge turns
 				float chargeGain = (1 / (40f - (chargeTarget - charge)*2f));
 				chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);
 				partialCharge += chargeGain;
-			} else if (cursed && Random.Int(100) == 0){
+			} else if (curseActive() && Random.Int(100) == 0){
 				Buff.prolong( target, Cripple.class, 10f);
 			}
 
@@ -343,7 +343,7 @@ public class EtherealChains extends Artifact {
 		}
 
 		public void gainExp( float levelPortion ) {
-			if (cursed || target.buff(MagicImmune.class) != null || levelPortion == 0) return;
+			if (curseActive() || target.buff(MagicImmune.class) != null || levelPortion == 0) return;
 
 			exp += Math.round(levelPortion*100);
 

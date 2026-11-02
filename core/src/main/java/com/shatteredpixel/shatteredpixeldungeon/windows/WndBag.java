@@ -265,6 +265,9 @@ public class WndBag extends WndTabbed {
 		
 		// Equipped items
 		Belongings stuff = Dungeon.hero.belongings;
+		//Ryuse's PD, the Equipment Page lists every equipment slot
+		if (container instanceof com.shatteredpixel.shatteredpixeldungeon.items.bags.EquipmentPage
+				&& !com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()) { placeEquipmentPage( stuff, container ); return; }
 		placeItem( stuff.weapon != null ? stuff.weapon : new Placeholder( ItemSpriteSheet.WEAPON_HOLDER ) );
 		placeItem( stuff.armor != null ? stuff.armor : new Placeholder( ItemSpriteSheet.ARMOR_HOLDER ) );
 		placeItem( stuff.artifact != null ? stuff.artifact : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
@@ -278,7 +281,11 @@ public class WndBag extends WndTabbed {
 
 		//Ryuse's PD, extra slots show on the main backpack only. Worn items always show
 		// and one empty slot is shown per kind while there is room for more
-		if (modSlots && container == Dungeon.hero.belongings.backpack) {
+		// When the hero carries the Equipment Page they move there, as in the mod
+		if (modSlots && container == Dungeon.hero.belongings.backpack
+				&& stuff.getItem( com.shatteredpixel.shatteredpixeldungeon.items.bags.EquipmentPage.class ) == null) {
+			for (Item h : stuff.extraHelmets) if (h != null) { placeItem(h); equipped++; }
+			if (stuff.helmet != null && stuff.freeExtraHelmet() >= 0) { placeItem( new Placeholder( ItemSpriteSheet.HELMET_HOLDER ) ); equipped++; }
 			for (Armor a : stuff.extraArmors) if (a != null) { placeItem(a); equipped++; }
 			if (stuff.freeExtraArmor() >= 0) { placeItem( new Placeholder( ItemSpriteSheet.ARMOR_HOLDER ) ); equipped++; }
 			for (Artifact a : stuff.extraArtifacts) if (a != null) { placeItem(a); equipped++; }
@@ -311,7 +318,24 @@ public class WndBag extends WndTabbed {
 			placeItem( null );
 		}
 	}
-	
+
+	//Ryuse's PD, as in the mod the page shows the weapon and main armor, then five helmet slots,
+	// five more armor slots, five artifact slots and five ring slots. Shattered's misc slot sits beside the armor
+	private void placeEquipmentPage( Belongings stuff, Bag page ){
+		placeItem( stuff.weapon != null ? stuff.weapon : new Placeholder( ItemSpriteSheet.WEAPON_HOLDER ) );
+		placeItem( stuff.armor != null ? stuff.armor : new Placeholder( ItemSpriteSheet.ARMOR_HOLDER ) );
+		placeItem( stuff.misc != null ? stuff.misc : new Placeholder( ItemSpriteSheet.SOMETHING ) );
+		if (stuff.secondWep != null) placeItem( stuff.secondWep );
+		placeItem( page );
+		placeItem( stuff.helmet != null ? stuff.helmet : new Placeholder( ItemSpriteSheet.HELMET_HOLDER ) );
+		for (Item h : stuff.extraHelmets) placeItem( h != null ? h : new Placeholder( ItemSpriteSheet.HELMET_HOLDER ) );
+		for (Armor a : stuff.extraArmors) placeItem( a != null ? a : new Placeholder( ItemSpriteSheet.ARMOR_HOLDER ) );
+		placeItem( stuff.artifact != null ? stuff.artifact : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
+		for (Artifact a : stuff.extraArtifacts) placeItem( a != null ? a : new Placeholder( ItemSpriteSheet.ARTIFACT_HOLDER ) );
+		placeItem( stuff.ring != null ? stuff.ring : new Placeholder( ItemSpriteSheet.RING_HOLDER ) );
+		for (Ring r : stuff.extraRings) placeItem( r != null ? r : new Placeholder( ItemSpriteSheet.RING_HOLDER ) );
+	}
+
 	protected void placeItem( final Item item ) {
 
 		count++;
@@ -449,6 +473,8 @@ public class WndBag extends WndTabbed {
 			return Icons.get( Icons.WAND_HOLSTER );
 		} else if (bag instanceof PotionBandolier) {
 			return Icons.get( Icons.POTION_BANDOLIER );
+		} else if (bag instanceof com.shatteredpixel.shatteredpixeldungeon.items.bags.EquipmentPage) {
+			return new com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite( ItemSpriteSheet.ARMOR_HOLDER ); //ryuse
 		} else {
 			return Icons.get( Icons.BACKPACK );
 		}

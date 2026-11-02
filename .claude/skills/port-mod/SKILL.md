@@ -347,3 +347,7 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **Hidden per class badges** for ported heroes can be added by name with `Badges.Badge.valueOf` from one register call at the end of the badge map static block (`BlueArchiveBadges`), no per hero lines.
 - **Shared sheets with empty cells** (`effects/text_icons.png`) can take a mod's extra icons in place when the cells are empty here. Compare cell by cell first.
 - **If the worktree disappears mid run**, `git worktree add <path> <branch>` brings the branch back, uncommitted work is lost, so commit after each batch.
+## Added after the Ryuse and Xun finish (2026-11-02)
+- **Isolated worktree agents** cannot write to the session scratchpad and get bash commands refused when they mix cd, heredocs and git or javac with computed paths. Keep helper scripts in `build/<job>/` inside the worktree, run them with an absolute path, and call javac with plain relative paths (`javac @build/cp-javac.args -d build/test ...`).
+- **`scripts/test-recompile.sh` only compiles the test and TestBoot.** A test that calls `MobArenaTest.level` needs `scripts/test/MobArenaTest.java` on the same javac line.
+- **"Only after metamorphosis" talent parts** are lines in the mod that test `heroClass != OWN_CLASS`. Grep the mod for each talent with that test and give each one hook in the mod helper class, as `XunTalents` does.

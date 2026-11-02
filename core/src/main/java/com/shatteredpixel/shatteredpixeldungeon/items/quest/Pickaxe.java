@@ -75,6 +75,7 @@ public class Pickaxe extends MeleeWeapon {
 				&& hero.heroClass.is(com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.ADVENTURER)) {
 			actions.add(AC_INFUSE);
 		}
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.pickaxeActions(hero, actions); //xun, Demolition
 		return actions;
 	}
 
@@ -86,6 +87,12 @@ public class Pickaxe extends MeleeWeapon {
 		if (action.equals(AC_INFUSE)) {
 			com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RearrangedWeapons.infuseShovel(this, hero);
 		}
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.pickaxeExecute(hero, action); //xun, Demolition
+	}
+
+	@Override
+	public String desc() {
+		return super.desc() + com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.pickaxeDesc(); //xun, Demolition
 	}
 
 	@Override

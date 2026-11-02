@@ -94,17 +94,46 @@ public class Belongings implements Iterable<Item> {
 	public Armor[] extraArmors = new Armor[EXTRA_ARMORS];
 	public Artifact[] extraArtifacts = new Artifact[EXTRA_ARTIFACTS];
 	public Ring[] extraRings = new Ring[EXTRA_RINGS];
+	//the mod has five helmet slots, the main one plus these
+	public static final int EXTRA_HELMETS = 4;
+	public com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet[] extraHelmets = new com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet[EXTRA_HELMETS];
+	//the mod wears at most five rings and five artifacts. Shattered's misc slot holds either, so it counts toward the five
+	public static final int MAX_RINGS = 5;
+	public static final int MAX_ARTIFACTS = 5;
 
 	private static int freeIn( Object[] arr ){
 		for (int i = 0; i < arr.length; i++) if (arr[i] == null) return i;
 		return -1;
 	}
+	private static int filled( Object[] arr ){
+		int n = 0;
+		for (Object o : arr) if (o != null) n++;
+		return n;
+	}
+	public int ringsWorn(){
+		return (ring != null ? 1 : 0) + (misc instanceof Ring ? 1 : 0) + filled(extraRings);
+	}
+	public int artifactsWorn(){
+		return (artifact != null ? 1 : 0) + (misc instanceof Artifact ? 1 : 0) + filled(extraArtifacts);
+	}
 	//no extra slots until Yog is beaten in a copy from GitHub, see ModsUnlock
 	public int freeExtraArmor()    { return com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked() ? -1 : freeIn(extraArmors); }
-	public int freeExtraArtifact() { return com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked() ? -1 : freeIn(extraArtifacts); }
-	public int freeExtraRing()     { return com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked() ? -1 : freeIn(extraRings); }
+	public int freeExtraArtifact() { return com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked() || artifactsWorn() >= MAX_ARTIFACTS ? -1 : freeIn(extraArtifacts); }
+	public int freeExtraRing()     { return com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked() || ringsWorn() >= MAX_RINGS ? -1 : freeIn(extraRings); }
+	public int freeExtraHelmet()   { return com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked() ? -1 : freeIn(extraHelmets); }
+
+	//every helmet worn, main slot first, leaving out what the lost inventory debuff hides
+	public ArrayList<com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet> allHelmets(){
+		ArrayList<com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet> result = new ArrayList<>();
+		if (helmet() != null) result.add(helmet());
+		for (com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet h : extraHelmets){
+			if (h != null && (!lostInventory() || h.keptThroughLostInventory())) result.add(h);
+		}
+		return result;
+	}
 
 	public boolean inExtraSlot( Item item ){
+		for (Object o : extraHelmets)   if (o == item && item != null) return true;
 		for (Object o : extraArmors)    if (o == item && item != null) return true;
 		for (Object o : extraArtifacts) if (o == item && item != null) return true;
 		for (Object o : extraRings)     if (o == item && item != null) return true;
@@ -114,7 +143,8 @@ public class Belongings implements Iterable<Item> {
 	//empties whichever extra slot holds the item, true if one did
 	public boolean clearExtraSlot( Item item ){
 		boolean found = false;
-		for (int i = 0; i < extraArmors.length; i++)    if (item != null && extraArmors[i] == item)    { extraArmors[i] = null; found = true; }
+		for (int i = 0; i < extraHelmets.length; i++)   if (item != null && extraHelmets[i] == item)   { extraHelmets[i] = null; found = true; }
+		for (int i = 0; i < extraArmors.length; i++)   if (item != null && extraArmors[i] == item)    { extraArmors[i] = null; found = true; }
 		for (int i = 0; i < extraArtifacts.length; i++) if (item != null && extraArtifacts[i] == item) { extraArtifacts[i] = null; found = true; }
 		for (int i = 0; i < extraRings.length; i++)     if (item != null && extraRings[i] == item)     { extraRings[i] = null; found = true; }
 		return found;
@@ -141,6 +171,7 @@ public class Belongings implements Iterable<Item> {
 
 	private ArrayList<Item> extraItems(){
 		ArrayList<Item> result = new ArrayList<>();
+		for (Item i : extraHelmets)   if (i != null) result.add(i);
 		for (Item i : extraArmors)    if (i != null) result.add(i);
 		for (Item i : extraArtifacts) if (i != null) result.add(i);
 		for (Item i : extraRings)     if (i != null) result.add(i);
@@ -277,6 +308,7 @@ public class Belongings implements Iterable<Item> {
 		for (int i = 0; i < EXTRA_ARMORS; i++)    if (extraArmors[i] != null)    bundle.put( "extra_armor" + i, extraArmors[i] );
 		for (int i = 0; i < EXTRA_ARTIFACTS; i++) if (extraArtifacts[i] != null) bundle.put( "extra_artifact" + i, extraArtifacts[i] );
 		for (int i = 0; i < EXTRA_RINGS; i++)     if (extraRings[i] != null)     bundle.put( "extra_ring" + i, extraRings[i] );
+		for (int i = 0; i < EXTRA_HELMETS; i++)   if (extraHelmets[i] != null)   bundle.put( "extra_helmet" + i, extraHelmets[i] );
 	}
 
 	public static boolean bundleRestoring = false;
@@ -319,6 +351,10 @@ public class Belongings implements Iterable<Item> {
 			extraRings[i] = bundle.contains("extra_ring" + i) ? (Ring) bundle.get("extra_ring" + i) : null;
 			if (extraRings[i] != null) extraRings[i].activate(owner);
 		}
+		for (int i = 0; i < EXTRA_HELMETS; i++) {
+			extraHelmets[i] = bundle.contains("extra_helmet" + i) ? (com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet) bundle.get("extra_helmet" + i) : null;
+			if (extraHelmets[i] != null) extraHelmets[i].activate(owner);
+		}
 
 		bundleRestoring = false;
 	}
@@ -334,6 +370,7 @@ public class Belongings implements Iterable<Item> {
 		extraArmors = new Armor[EXTRA_ARMORS];
 		extraArtifacts = new Artifact[EXTRA_ARTIFACTS];
 		extraRings = new Ring[EXTRA_RINGS];
+		extraHelmets = new com.shatteredpixel.shatteredpixeldungeon.items.helmets.Helmet[EXTRA_HELMETS];
 	}
 	
 	public static void preview( GamesInProgress.Info info, Bundle bundle ) {
@@ -573,6 +610,7 @@ public class Belongings implements Iterable<Item> {
 			for (Item i : extraArmors)    list.add(i);
 			for (Item i : extraArtifacts) list.add(i);
 			for (Item i : extraRings)     list.add(i);
+			for (Item i : extraHelmets)   list.add(i);
 			return list.toArray(new Item[0]);
 		}
 		private int backpackIndex = equipped.length;

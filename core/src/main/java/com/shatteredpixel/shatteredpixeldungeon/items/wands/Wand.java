@@ -249,6 +249,7 @@ public abstract class Wand extends Item {
 	//TODO Consider externalizing char awareness buff
 	protected static void wandProc(Char target, int wandLevel, int chargesUsed){
 		com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.onWandProc(target); //transformation, wand talents of the catalog
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.outsiderWandProc(target); //xun, Resonant Sensing and Ionizing Radiation
 		if (Dungeon.hero.hasTalent(Talent.ARCANE_VISION)) {
 			int dur = 5 + 5*Dungeon.hero.pointsInTalent(Talent.ARCANE_VISION);
 			Buff.append(Dungeon.hero, TalismanOfForesight.CharAwareness.class, dur).charID = target.id();
