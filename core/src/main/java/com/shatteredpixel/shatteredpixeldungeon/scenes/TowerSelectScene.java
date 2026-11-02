@@ -68,6 +68,8 @@ public class TowerSelectScene extends PixelScene {
 	@Override
 	public void create() {
 		super.create();
+		//the Rat King's tower news is read once this screen opens, as in the mod
+		com.shatteredpixel.shatteredpixeldungeon.TowerDefense.clearTowerNews();
 		int w = Camera.main.width;
 		int h = Camera.main.height;
 

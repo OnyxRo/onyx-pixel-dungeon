@@ -96,7 +96,7 @@ public class WndDialogueWithPic extends Window {
                     wnd.lastDialogue = wndref.lastDialogue;
                     wnd.unskippable = wndref.unskippable;
                     wnd.runnableArrayList = wndref.runnableArrayList;
-                    Dungeon.level.lastSavedWndDialogueWithPic = wnd;
+                    if (Dungeon.level != null) Dungeon.level.lastSavedWndDialogueWithPic = wnd;
                     if (ShatteredPixelDungeon.scene() instanceof GameScene)
                         GameScene.show(wnd);
                     else ShatteredPixelDungeon.scene().add(wnd);
@@ -113,7 +113,7 @@ public class WndDialogueWithPic extends Window {
                     if (type == WndType.FINAL) wnd.lastDialogue = true;
                     if (type == WndType.YOGFINAL) wnd.unskippable = true;
                     wnd.runnableArrayList = runnableArrayList;
-                    Dungeon.level.lastSavedWndDialogueWithPic = wnd;
+                    if (Dungeon.level != null) Dungeon.level.lastSavedWndDialogueWithPic = wnd;
                     if (ShatteredPixelDungeon.scene() instanceof GameScene)
                         GameScene.show(wnd);
                     else ShatteredPixelDungeon.scene().add(wnd);

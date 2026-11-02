@@ -25,6 +25,7 @@
 package com.shatteredpixel.shatteredpixeldungeon;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.Arena;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Arena0;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Arena1;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Arena10;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Arena11;
@@ -80,6 +81,8 @@ public class TowerDefense {
 	public static boolean active = false;
 	/** Endless mode instead of story mode. */
 	public static boolean endless = false;
+	/** The tutorials and puzzles mode instead of story mode. The mod never finished it (see PUZZLES). */
+	public static boolean puzzles = false;
 	/** Which arena of the current list, counted from 1 like the mod's level select. */
 	public static int arena = 1;
 	/** Set once the current arena is won. Taking the exit under the portal then leads to the next arena. */
@@ -95,8 +98,29 @@ public class TowerDefense {
 	public static final List<Class<? extends Arena>> ENDLESS = Arrays.asList(
 			EndlessArena1.class, EndlessArena2.class, EndlessArena3.class, EndlessArena4.class, EndlessArena5.class );
 
+	/**
+	 * Tutorials and puzzles. The mod named this mode and described many short stages, but it was never switched on
+	 * and no stage was written for it. What exists is its tutorial and playground (Arena0, which its level select
+	 * could never reach) and its one puzzle stage (Arena9, also arena 9 of the story), so those two make the list.
+	 */
+	public static final List<Class<? extends Arena>> PUZZLES = Arrays.asList( Arena0.class, Arena9.class );
+
+	/** The story arena a puzzle stage needs before it opens. The tutorial is always open. */
+	private static final int[] PUZZLE_NEEDS = { 1, 9 };
+
 	public static List<Class<? extends Arena>> list(){
-		return endless ? ENDLESS : STORY;
+		return puzzles ? PUZZLES : endless ? ENDLESS : STORY;
+	}
+
+	/** Picks story (0), endless (1) or tutorials and puzzles (2), starting at the right arena. */
+	public static void branch( int b ){
+		endless = b == 1;
+		puzzles = b == 2;
+		arena = b == 0 ? Math.min( unlocked( WndModes.current ), STORY.size() ) : 1;
+	}
+
+	public static int branch(){
+		return puzzles ? 2 : endless ? 1 : 0;
 	}
 
 	public static Class<? extends Arena> chosen(){
@@ -120,6 +144,7 @@ public class TowerDefense {
 	/** Whether an arena of the current list may be played. */
 	public static boolean isUnlocked( int index ){
 		int normal = unlocked( WndModes.Modes.NORMAL );
+		if (puzzles) return index >= 1 && index <= PUZZLE_NEEDS.length && normal >= PUZZLE_NEEDS[index - 1];
 		if (endless) {
 			//the mod opened endless arenas as the story reached each region
 			if (index <= 2) return true;
@@ -164,8 +189,8 @@ public class TowerDefense {
 		//the exit under a held portal leads on to the next arena with the same hero
 		if (Dungeon.hero != null && cleared && arena < list().size()) arena++;
 		cleared = false;
-		//endless arenas are always normal, as in the mod
-		if (endless) WndModes.current = WndModes.Modes.NORMAL;
+		//endless arenas are always normal, as in the mod, and so are the tutorial and puzzles
+		if (endless || puzzles) WndModes.current = WndModes.Modes.NORMAL;
 		Arena a = Reflection.newInstance( chosen() );
 		if (a.arenaDepth > 0) Dungeon.depth = a.arenaDepth;
 		return a;
@@ -176,14 +201,55 @@ public class TowerDefense {
 		if (!active || cleared) return;
 		cleared = true;
 		SPDSettings.put( "td_wins", wins() + 1 );
-		if (!endless && Dungeon.level instanceof Arena) {
+		if (!endless && !puzzles && Dungeon.level instanceof Arena) {
 			WndModes.Modes mode = Dungeon.level.mode;
+			int before = unlocked( WndModes.Modes.NORMAL );
 			int next = arena + 1;
 			if (SPDSettings.getInt( unlockKey( mode ), 1 ) < next) SPDSettings.put( unlockKey( mode ), next );
+			ratKingNews( before, unlocked( WndModes.Modes.NORMAL ) );
 		}
 		if (ShatteredPixelDungeon.scene() instanceof GameScene) {
 			GameScene.show( new com.shatteredpixel.shatteredpixeldungeon.windows.WndTowerVictory() );
 		}
+	}
+
+	//---------------------------------------------------------------- the Rat King's news on the level select
+
+	private static final String NEWS_LEVEL = "td_news_level";
+	private static final String NEWS_TOWER = "td_news_tower";
+
+	/**
+	 * After a win, the mod had the Rat King wait on the level select with news. Once when the second arena opens
+	 * (how to move on) and whenever the new arena opened a tower. The mod listed the arenas that open towers by hand,
+	 * here they come from the towers themselves, so the news always matches the tower selection.
+	 */
+	static void ratKingNews( int before, int after ){
+		if (after <= before) return;
+		if (before == 1 && after == 2) SPDSettings.put( NEWS_LEVEL, true );
+		for (TowerInfo.AllTowers t : TowerInfo.AllTowers.values()) {
+			int need = TowerInfo.getTowerUnlockLevel( t );
+			if (need > before && need <= after) {
+				SPDSettings.put( NEWS_TOWER, true );
+				break;
+			}
+		}
+	}
+
+	public static boolean levelNews(){
+		return SPDSettings.getBoolean( NEWS_LEVEL, false );
+	}
+
+	public static boolean towerNews(){
+		return SPDSettings.getBoolean( NEWS_TOWER, false );
+	}
+
+	public static void clearLevelNews(){
+		SPDSettings.put( NEWS_LEVEL, false );
+	}
+
+	/** The tower selection screen clears it on opening, as in the mod. */
+	public static void clearTowerNews(){
+		SPDSettings.put( NEWS_TOWER, false );
 	}
 
 	/** Whether the next arena exists and is open. */
@@ -201,6 +267,8 @@ public class TowerDefense {
 		Dungeon.deleteGame( GamesInProgress.curSlot, true );
 		arena++;
 		cleared = false;
+		//the player moved on already, the Rat King's how to move on would come too late
+		clearLevelNews();
 		start();
 	}
 
@@ -236,6 +304,7 @@ public class TowerDefense {
 		if (!active) return;
 		bundle.put( ACTIVE, true );
 		bundle.put( "td_endless", endless );
+		bundle.put( "td_puzzles", puzzles );
 		bundle.put( "td_arena", arena );
 		bundle.put( "td_cleared", cleared );
 		bundle.put( "td_mode", WndModes.current.name() );
@@ -245,6 +314,7 @@ public class TowerDefense {
 		active = bundle.getBoolean( ACTIVE );
 		if (!active) return;
 		endless = bundle.getBoolean( "td_endless" );
+		puzzles = bundle.getBoolean( "td_puzzles" );
 		arena = bundle.getInt( "td_arena" );
 		cleared = bundle.getBoolean( "td_cleared" );
 		try {
