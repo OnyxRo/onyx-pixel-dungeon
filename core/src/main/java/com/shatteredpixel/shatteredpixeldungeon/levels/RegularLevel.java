@@ -408,6 +408,7 @@ public abstract class RegularLevel extends Level {
 
 		if (!canSpawnItems) return;
 		if (com.shatteredpixel.shatteredpixeldungeon.LoreGoo.noItems()) return; //lore, the Goo finds nothing
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.GoblinsPets.rollSoulorb(this)) addItemToSpawn(com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.GoblinsPets.soulorb()); //goblins, a pet egg now and then
 
 		//elemental, the Scientist's Backup Supplies
 		for (int i = com.shatteredpixel.shatteredpixeldungeon.actors.hero.ElementalTalents.extraPotions(); i > 0; i--){
@@ -456,6 +457,7 @@ public abstract class RegularLevel extends Level {
 			Item toDrop = i < slots.size() ? Generator.random(slots.get(i)) : Generator.random();
 			if (toDrop == null) continue;
 			toDrop = com.shatteredpixel.shatteredpixeldungeon.actors.XunHooks.replaceDrop(toDrop); //xun, magical gem and solidified metal
+			if (com.shatteredpixel.shatteredpixeldungeon.SinEffects.shouldDesireDestroy(toDrop)) continue; //Matt Edition, Sin of Desire
 
 			int cell = randomDropCell();
 			if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {

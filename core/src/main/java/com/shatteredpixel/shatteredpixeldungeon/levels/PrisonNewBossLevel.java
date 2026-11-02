@@ -346,6 +346,7 @@ public class PrisonNewBossLevel extends Level{
         hero.sprite.interruptMotion();
         hero.sprite.place(hero.pos);
         Camera.main.snapTo(hero.sprite.center());
+        WorldShuffle.dropProgressionItem(this); //the Rogue does not drop Tengu's mask
 
         rogue.pos = pointToCell(tenguCellCenter);
         if(rogue.sprite!=null){

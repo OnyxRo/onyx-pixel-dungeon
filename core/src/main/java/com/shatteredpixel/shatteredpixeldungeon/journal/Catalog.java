@@ -335,6 +335,8 @@ public enum Catalog {
 		BOMBS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.bombs.Flashbang.class);
 		BOMBS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.bombs.ShockBomb.class);
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.quest.KingBlade.class);
+		//Goblins PD pet eggs
+		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.pets.KlikSoulorb.class, com.shatteredpixel.shatteredpixeldungeon.items.pets.PetEgg.class);
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.quest.RustyShield.class);
 		MISC_CONSUMABLES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.quest.SuperPickaxe.class);
 		SPELLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.spells.Vampirism.class);
@@ -593,6 +595,9 @@ public enum Catalog {
 		EXOTIC_POTIONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfKetchupStorm.class);
 		SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfShit.class);
 		EXOTIC_SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfEnshittification.class);
+		//Matt Edition
+		SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicUpgrade.class);
+		EXOTIC_SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPureMagic.class);
 		STONES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfReforging.class);
 
 		//items ported from ryuse

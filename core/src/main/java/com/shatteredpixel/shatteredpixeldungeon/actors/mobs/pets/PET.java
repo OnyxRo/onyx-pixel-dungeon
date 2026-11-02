@@ -132,6 +132,7 @@ public abstract class PET extends Mob {
 	@Override
 	public void die(Object cause) {
 		GLog.n("Your %s dies.", name());
+		PetOwner.petGone(true);
 		super.die(cause);
 	}
 
@@ -142,6 +143,7 @@ public abstract class PET extends Mob {
 			GLog.n("Your %s knows when it's not wanted!", name());
 		}
 		CellEmitter.get(pos).burst(ElmoParticle.FACTORY, 6);
+		PetOwner.petGone(false);
 		destroy();
 		if (sprite != null) sprite.killAndErase();
 	}

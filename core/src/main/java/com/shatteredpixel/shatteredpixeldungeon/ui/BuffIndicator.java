@@ -308,6 +308,12 @@ public class BuffIndicator extends Component {
 	public static final int RBA_TRINITY_RED_BLUE = RBA + 123;
 	public static final int RBA_TRINITY_ALL = RBA + 124;
 	public static final int RBA_ENCORE = RBA + 125;
+	//Matt Edition
+	public static final int GREED       = 106;
+	public static final int SLOTH       = 107;
+	public static final int BULKY       = 108;
+	public static final int CONSUMING_GREED = 109;
+	public static final int MAGIC_INFUSE = 110;
 
 	public static final int SIZE_SMALL  = 7;
 	public static final int SIZE_LARGE  = 16;

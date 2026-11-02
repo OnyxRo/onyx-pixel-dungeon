@@ -125,6 +125,7 @@ public class Dungeon {
 		//limited world drops
 		STRENGTH_POTIONS,
 		UPGRADE_SCROLLS,
+		MAGIC_UPGRADE_SCROLLS, //Matt Edition
 		ARCANE_STYLI,
 		ENCH_STONE,
 		INT_STONE,
@@ -242,6 +243,8 @@ public class Dungeon {
 	public static int difficulty = 2;
 	//Pixel Dungeon Reforged's Randomizer challenge, see Randomizer for how the bits are laid out
 	public static long randomizer;
+	//Matt Edition, the Seven Sins mode
+	public static int sins;
 	public static float mobsToChampion;
 
 	public static Hero hero;
@@ -376,6 +379,7 @@ public class Dungeon {
 		initialVersion = version = Game.versionCode;
 		challenges = SPDSettings.challenges();
 		difficulty = SPDSettings.difficulty();
+		sins = SPDSettings.sins();
 		mobsToChampion = 1;
 		bullet = 0; //rearranged
 		templeCompleted = false;
@@ -463,6 +467,10 @@ public class Dungeon {
 		ElementalPD.onStart( hero ); //elemental, dew vial and flasks
 		RemixedLayout.onStart( hero ); //reremixed, the run starts in the town
 		TooCruel.postInit( hero ); //toocruel
+	}
+
+	public static boolean isSinActive( int sinMask ){
+		return (sins & sinMask) != 0;
 	}
 
 	public static boolean isChallenged( int mask ) {
@@ -821,6 +829,15 @@ public class Dungeon {
 		return Random.Int(5 - floorThisSet) < souLeftThisSet;
 	}
 	
+	//Matt Edition, 2 scrolls of magic upgrade each floor set, limited like the scroll of upgrade
+	public static boolean msouNeeded() {
+		int left = 2 - (LimitedDrops.MAGIC_UPGRADE_SCROLLS.count - (depth / 5) * 2);
+		if (left <= 0) return false;
+
+		int floorThisSet = (depth % 5);
+		return Random.Int(5 - floorThisSet) < left;
+	}
+
 	public static boolean asNeeded() {
 		//1 AS each floor set
 		int asLeftThisSet = 1 - (LimitedDrops.ARCANE_STYLI.count - (depth / 5));
@@ -885,6 +902,7 @@ public class Dungeon {
 	private static final String CHALLENGES	= "challenges";
 	private static final String DIFFICULTY	= "difficulty";
 	private static final String RANDOMIZER	= "randomizer";
+	private static final String SINS		= "sins";
 	private static final String MOBS_TO_CHAMPION	= "mobs_to_champion";
 	private static final String HERO		= "hero";
 	private static final String DEPTH		= "depth";
@@ -928,6 +946,7 @@ public class Dungeon {
 			bundle.put( CHALLENGES, challenges );
 			bundle.put( DIFFICULTY, difficulty );
 			bundle.put( RANDOMIZER, randomizer );
+			bundle.put( SINS, sins );
 			bundle.put( MOBS_TO_CHAMPION, mobsToChampion );
 			bundle.put( HERO, hero );
 			bundle.put( DEPTH, depth );
@@ -1076,6 +1095,7 @@ public class Dungeon {
 		Dungeon.challenges = bundle.getInt( CHALLENGES );
 		Dungeon.difficulty = bundle.contains( DIFFICULTY ) ? bundle.getInt( DIFFICULTY ) : 2;
 		Dungeon.randomizer = bundle.contains( RANDOMIZER ) ? bundle.getLong( RANDOMIZER ) : 0L;
+		Dungeon.sins = bundle.contains( SINS ) ? bundle.getInt( SINS ) : 0;
 		Dungeon.mobsToChampion = bundle.getFloat( MOBS_TO_CHAMPION );
 		
 		Dungeon.level = null;
@@ -1217,6 +1237,7 @@ public class Dungeon {
 		info.version = bundle.getInt( VERSION );
 		info.challenges = bundle.getInt( CHALLENGES );
 		info.difficulty = bundle.contains( DIFFICULTY ) ? bundle.getInt( DIFFICULTY ) : 2;
+		info.sins = bundle.contains( SINS ) ? bundle.getInt( SINS ) : 0;
 		info.seed = bundle.getLong( SEED );
 		info.customSeed = bundle.getString( CUSTOM_SEED );
 		info.daily = bundle.getBoolean( DAILY );

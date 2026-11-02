@@ -40,6 +40,11 @@ public class Hunger extends Buff implements Hero.Doom {
 	public static final float HUNGRY	= 300f;
 	public static final float STARVING	= 450f;
 
+	//Matt Edition, the Sin of Gluttony makes hunger arrive sooner
+	public float hungryThreshold() {
+		return Math.max(HUNGRY / com.shatteredpixel.shatteredpixeldungeon.SinEffects.gluttonyHungerFactor(), 100f);
+	}
+
 	private float level;
 	private float partialDamage;
 
@@ -132,7 +137,7 @@ public class Hunger extends Buff implements Hero.Doom {
 					hero.interrupt();
 					newLevel = STARVING;
 
-				} else if (newLevel >= HUNGRY && level < HUNGRY) {
+				} else if (newLevel >= hungryThreshold() && level < hungryThreshold()) {
 
 					GLog.w( Messages.get(this, "onhungry") );
 
@@ -213,7 +218,7 @@ public class Hunger extends Buff implements Hero.Doom {
 			}
 		}
 
-		if (oldLevel < HUNGRY && level >= HUNGRY){
+		if (oldLevel < hungryThreshold() && level >= hungryThreshold()){
 			GLog.w( Messages.get(this, "onhungry") );
 		} else if (oldLevel < STARVING && level >= STARVING){
 			GLog.n( Messages.get(this, "onstarving") );
@@ -225,7 +230,7 @@ public class Hunger extends Buff implements Hero.Doom {
 	}
 
 	public boolean isHungry() {
-		return level >= HUNGRY;
+		return level >= hungryThreshold();
 	}
 
 	public boolean isStarving() {
@@ -238,7 +243,7 @@ public class Hunger extends Buff implements Hero.Doom {
 
 	@Override
 	public int icon() {
-		if (level < HUNGRY) {
+		if (level < hungryThreshold()) {
 			return BuffIndicator.NONE;
 		} else if (level < STARVING) {
 			return BuffIndicator.HUNGER;

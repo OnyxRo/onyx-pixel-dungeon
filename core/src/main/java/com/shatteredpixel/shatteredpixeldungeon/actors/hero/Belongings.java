@@ -522,6 +522,24 @@ public class Belongings implements Iterable<Item> {
 		return Random.element( backpack.items );
 	}
 	
+	//Matt Edition, the Sin of Envy counts every item carried and worn
+	public int totalItemsCount() {
+		int count = 0;
+		boolean lost = lostInventory();
+
+		if (weapon != null && (!lost || weapon.keptThroughLostInventory())) count++;
+		if (armor != null && (!lost || armor.keptThroughLostInventory())) count++;
+		if (artifact != null && (!lost || artifact.keptThroughLostInventory())) count++;
+		if (misc != null && (!lost || misc.keptThroughLostInventory())) count++;
+		if (secondWep != null && (!lost || secondWep.keptThroughLostInventory())) count++;
+
+		for (Item item : backpack) {
+			if (!lost || item.keptThroughLostInventory()) count++;
+		}
+
+		return count;
+	}
+
 	public int charge( float charge ) {
 		
 		int count = 0;

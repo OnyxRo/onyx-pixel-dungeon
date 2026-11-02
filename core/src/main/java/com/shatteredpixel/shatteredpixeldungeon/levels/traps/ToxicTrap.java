@@ -40,6 +40,7 @@ public class ToxicTrap extends Trap{
 
 	@Override
 	public void activate() {
+		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.GoblinsPets.heapAt(pos, com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.GoblinsPets.POISON); //goblins, pet eggs
 
 		GameScene.add( Blob.seed( pos, 300 + 20 * scalingDepth(), ToxicGas.class ) );
 		Sample.INSTANCE.play(Assets.Sounds.GAS);

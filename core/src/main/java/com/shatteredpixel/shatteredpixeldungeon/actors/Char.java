@@ -482,7 +482,7 @@ public abstract class Char extends Actor {
 
 			return false;
 
-		} else if (attackAlwaysHits( enemy ) || hit( this, enemy, accMulti, false )) {
+		} else if (attackAlwaysHits( enemy ) || hit( this, enemy, accMulti, buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicInfuse.class) != null )) {
 
 			//rearranged, the Knight's Chivalry takes the hit for an ally in sight
 			Char raGuard = com.shatteredpixel.shatteredpixeldungeon.actors.hero.RearrangedChar.chivalryGuard(this, enemy);
@@ -518,6 +518,9 @@ public abstract class Char extends Actor {
 					if (h.hasTalent(Talent.HERBAL_SHADOW)) {
 						h.heal(h.pointsInTalent(Talent.HERBAL_SHADOW));
 					}
+				}
+				//Matt Edition, magic infusion ignores armor
+				if (h.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicInfuse.class) != null){
 					dr = 0;
 				}
 			}
@@ -665,8 +668,13 @@ public abstract class Char extends Actor {
 				return true;
 			}
 
-			enemy.damage( effectiveDamage, this );
+			enemy.damage( effectiveDamage, buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicInfuse.class) != null ? buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicInfuse.class) : this );
 			onAttackResolved( enemy, true, effectiveDamage );
+
+			//Matt Edition, Sin of Pride counts hits in a row
+			if (Dungeon.hero != null && Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Pride.class) != null) {
+				Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Pride.class).onSuccessfulHit();
+			}
 
 			if (buff(FireImbue.class) != null)  buff(FireImbue.class).proc(enemy);
 			if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EarthImbue.class) != null) buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EarthImbue.class).proc(enemy);
@@ -778,7 +786,12 @@ public abstract class Char extends Actor {
 				//TODO enemy.defenseSound? currently miss plays for monks/crab even when they parry
 				Sample.INSTANCE.play(Assets.Sounds.MISS);
 			}
-			
+
+			//Matt Edition, a miss ends the Sin of Pride streak
+			if (Dungeon.hero != null && Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Pride.class) != null) {
+				Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Pride.class).onMissedAttack();
+			}
+
 			return false;
 			
 		} else {
@@ -902,6 +915,9 @@ public abstract class Char extends Actor {
 		if (fixedArmor > 0) dr += Random.NormalIntRange( Math.round(fixedArmor * 0.2f), Math.round(fixedArmor * 0.8f) );
 		dr += com.shatteredpixel.shatteredpixeldungeon.TooCruel.drBonus(this); //toocruel
 
+		//Matt Edition
+		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bulky.class) != null) dr = Math.round(dr * com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bulky.drMultiplier());
+
 		return dr;
 	}
 	
@@ -996,6 +1012,8 @@ public abstract class Char extends Actor {
 		//rearranged, the Researcher's sticky ooze
 		if (this.alignment != Alignment.ALLY && buff(Ooze.class) != null && Dungeon.hero != null
 				&& Dungeon.hero.hasTalent(Talent.STICKY_OOZE)) speed *= 1-0.1f*Dungeon.hero.pointsInTalent(Talent.STICKY_OOZE);
+		//Matt Edition
+		if ( buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bulky.class ) != null) speed *= com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bulky.speedBoost(this);
 
 		return speed;
 	}
@@ -1186,6 +1204,11 @@ public abstract class Char extends Actor {
 		
 		//TODO improve this when I have proper damage source logic
 		if (AntiMagic.RESISTS.contains(src.getClass())){
+			//Matt Edition, armor with a magic level blocks magic damage
+			if (this instanceof Hero && ((Hero)this).belongings.armor() != null){
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor mArmor = ((Hero)this).belongings.armor();
+				dmg -= Random.NormalIntRange(mArmor.magicDRMin(), mArmor.magicDRMax());
+			}
 			dmg -= AntiMagic.drRoll(this, glyphLevel(AntiMagic.class));
 			if (buff(ArcaneArmor.class) != null) {
 				dmg -= Random.NormalIntRange(0, buff(ArcaneArmor.class).level());

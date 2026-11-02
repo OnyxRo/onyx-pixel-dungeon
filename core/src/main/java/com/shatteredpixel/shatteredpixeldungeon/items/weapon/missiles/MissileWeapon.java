@@ -492,6 +492,7 @@ abstract public class MissileWeapon extends Weapon {
 				n++;
 			}
 		}
+		n = com.shatteredpixel.shatteredpixeldungeon.SinEffects.desireRoll(n); //Matt Edition, Sin of Desire
 		level(n);
 
 		//we use a separate RNG here so that variance due to things like parchment scrap
@@ -501,7 +502,7 @@ abstract public class MissileWeapon extends Weapon {
 			//30% chance to be cursed
 			//10% chance to be enchanted
 			float effectRoll = Random.Float();
-			if (effectRoll < 0.3f * ParchmentScrap.curseChanceMultiplier()) {
+			if (effectRoll < (Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.I_HATE_MYSELF) ? 0.7f : 0.3f) * ParchmentScrap.curseChanceMultiplier()) { //Matt Edition, I hate myself
 				enchant(Enchantment.randomCurse());
 				cursed = true;
 			} else if (effectRoll >= 1f - (0.1f * ParchmentScrap.enchantChanceMultiplier())){

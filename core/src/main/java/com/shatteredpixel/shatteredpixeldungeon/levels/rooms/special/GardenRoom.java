@@ -62,6 +62,7 @@ public class GardenRoom extends SpecialRoom {
 			}
 		}
 		level.blobs.put( Foliage.class, light );
+		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.GoblinsPets.gardenEgg(level, this); //goblins
 	}
 	
 	private int plantPos( Level level ){

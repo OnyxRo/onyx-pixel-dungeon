@@ -246,6 +246,7 @@ public class Heap implements Bundlable {
 		if (type != Type.HEAP) {
 			return;
 		}
+		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.GoblinsPets.heapEffect(this, com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.GoblinsPets.BURN); //goblins, pet eggs
 		
 		boolean burnt = false;
 		boolean evaporated = false;
@@ -354,6 +355,7 @@ public class Heap implements Bundlable {
 		if (type != Type.HEAP) {
 			return;
 		}
+		com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.GoblinsPets.heapEffect(this, com.shatteredpixel.shatteredpixeldungeon.actors.mobs.pets.GoblinsPets.FREEZE); //goblins, pet eggs
 		
 		boolean frozen = false;
 		for (Item item : items.toArray( new Item[0] )) {

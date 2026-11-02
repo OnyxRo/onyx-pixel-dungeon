@@ -244,6 +244,8 @@ public class HeroSelectScene extends PixelScene {
 		if (!Badges.isUnlocked(Badges.Badge.VICTORY) && !DeviceCompat.isDebug() && !Dungeon.sandbox){
 			Dungeon.challenges = 0;
 			SPDSettings.challenges(0);
+			Dungeon.sins = 0;
+			SPDSettings.sins(0);
 			SPDSettings.customSeed("");
 		}
 
@@ -425,7 +427,7 @@ public class HeroSelectScene extends PixelScene {
 			btnOptions.icon().hardlight(1f, 1.5f, 0.67f);
 		} else if (!Dungeon.chosenMods.isEmpty() || com.shatteredpixel.shatteredpixeldungeon.GameModes.count() > 0){
 			btnOptions.icon().hardlight(0.67f, 1f, 1.5f);
-		} else if (SPDSettings.challenges() != 0 || SPDSettings.difficulty() != 2){
+		} else if (SPDSettings.challenges() != 0 || SPDSettings.difficulty() != 2 || SPDSettings.sins() != 0){
 			btnOptions.icon().hardlight(2f, 1.33f, 0.5f);
 		} else {
 			btnOptions.icon().resetColor();
@@ -674,6 +676,7 @@ public class HeroSelectScene extends PixelScene {
 
 		protected StyledButton challengeButton;
 		protected StyledButton difficultyButton;
+		protected StyledButton sinButton;
 
 		@Override
 		protected void createChildren() {
@@ -867,6 +870,33 @@ public class HeroSelectScene extends PixelScene {
 			challengeButton.icon(Icons.get(SPDSettings.challenges() > 0 ? Icons.CHALLENGE_COLOR : Icons.CHALLENGE_GREY));
 			add(challengeButton);
 			buttons.add(challengeButton);
+
+			//Matt Edition, the Seven Sins
+			sinButton = new StyledButton(Chrome.Type.BLANK, Messages.get(com.shatteredpixel.shatteredpixeldungeon.windows.WndSins.class, "title"), 6){
+				@Override
+				protected void onClick() {
+					if (!Badges.isUnlocked(Badges.Badge.VICTORY) && !DeviceCompat.isDebug() && !Dungeon.sandbox){
+						ShatteredPixelDungeon.scene().addToFront( new WndTitledMessage(
+								Icons.get(Icons.SIN_GREY),
+								Messages.get(com.shatteredpixel.shatteredpixeldungeon.windows.WndSins.class, "title"),
+								Messages.get(HeroSelectScene.class, "challenges_nowin")
+						));
+						return;
+					}
+
+					ShatteredPixelDungeon.scene().addToFront(new com.shatteredpixel.shatteredpixeldungeon.windows.WndSins(SPDSettings.sins(), true) {
+						public void onBackPressed() {
+							super.onBackPressed();
+							icon(Icons.get(SPDSettings.sins() > 0 ? Icons.SIN_COLOR : Icons.SIN_GREY));
+							updateOptionsColor();
+						}
+					} );
+				}
+			};
+			sinButton.leftJustify = true;
+			sinButton.icon(Icons.get(SPDSettings.sins() > 0 ? Icons.SIN_COLOR : Icons.SIN_GREY));
+			add(sinButton);
+			buttons.add(sinButton);
 
 			//Pixel Dungeon Reforged, easy, medium, hard or impossible
 			difficultyButton = new StyledButton(Chrome.Type.BLANK, Messages.get(WndDifficulty.class, "difficulty"), 6){

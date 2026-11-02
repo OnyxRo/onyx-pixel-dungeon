@@ -60,6 +60,7 @@ public class CustomNoteButton extends IconButton {
 	@Override
 	protected void onClick() {
 		super.onClick();
+		if (com.shatteredpixel.shatteredpixeldungeon.Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.I_HATE_MYSELF)) return; //Matt Edition
 
 		if (Notes.getRecords(Notes.CustomRecord.class).size() >= Notes.customRecordLimit()){
 			GameScene.show(new WndTitledMessage(Icons.INFO.get(),

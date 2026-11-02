@@ -117,6 +117,13 @@ public class Food extends Item {
 			
 			Statistics.foodEaten++;
 			Badges.validateFoodEaten();
+
+			//Matt Edition, Sin of Gluttony, a short bulky spell and a little healing
+			if (Dungeon.isSinActive(com.shatteredpixel.shatteredpixeldungeon.Sins.GLUTTONY)) {
+				Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bulky.class, 20f + TIME_TO_EAT);
+				com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Healing healing = Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Healing.class);
+				healing.setHeal((int) (0.12f * hero.HT + 5), 0.1f, 1);
+			}
 			
 		}
 	}

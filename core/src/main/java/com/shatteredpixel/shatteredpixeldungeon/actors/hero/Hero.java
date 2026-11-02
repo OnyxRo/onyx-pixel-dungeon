@@ -485,6 +485,11 @@ public class Hero extends Char {
 		strBonus += RBAHero.strBonus(this, STR); //rebluearchive
 		strBonus += com.shatteredpixel.shatteredpixeldungeon.MusicImplant.strBonus(this); //musicimplant
 
+		//Matt Edition, Sin of Envy
+		if (Dungeon.isSinActive(com.shatteredpixel.shatteredpixeldungeon.Sins.ENVY) && belongings.totalItemsCount() <= 15) {
+			strBonus += (int) com.shatteredpixel.shatteredpixeldungeon.SinEffects.envyMultiplier(this, true);
+		}
+
 		return STR + strBonus;
 	}
 
@@ -815,6 +820,11 @@ public class Hero extends Char {
 		RBAHero.liveRestore(this, rbaKeep); //rebluearchive
 		Buff.affect( this, Regeneration.class );
 		Buff.affect( this, Hunger.class );
+		//Matt Edition, sins and the consuming greed challenge
+		if (Dungeon.isSinActive(com.shatteredpixel.shatteredpixeldungeon.Sins.GREED)) Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Greed.class);
+		if (Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.CONSUMING_GREED)) Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ConsumingGreed.class);
+		if (Dungeon.isSinActive(com.shatteredpixel.shatteredpixeldungeon.Sins.SLOTH)) Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sloth.class);
+		if (Dungeon.isSinActive(com.shatteredpixel.shatteredpixeldungeon.Sins.PRIDE)) Buff.affect(this, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Pride.class);
 		Buff.affect( this, MpRegen.class );
 		com.shatteredpixel.shatteredpixeldungeon.actors.DerangedChar.live(this); //deranged, Forget Path
 		//Dragonic PD, the Dragon Knight sears raw meat
@@ -1086,6 +1096,10 @@ public class Hero extends Char {
 		}
 		evasion *= XunHeroes.evasionFactor(this); //xun
 
+		//Matt Edition, bulky cannot dodge, envy slows evasion along with speed
+		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bulky.class) != null) return 0;
+		if (Dungeon.isSinActive(com.shatteredpixel.shatteredpixeldungeon.Sins.ENVY)) evasion *= Math.min(1f, com.shatteredpixel.shatteredpixeldungeon.SinEffects.envyMultiplier(this, false) * 0.9f);
+
 		return Math.max(1, Math.round(evasion));
 	}
 
@@ -1234,6 +1248,9 @@ public class Hero extends Char {
 		//radar, playstyle damage, thrown weapons count as ranged
 		dmg = wep instanceof MissileWeapon ? com.shatteredpixel.shatteredpixeldungeon.Playstyles.rangedDamage(this, dmg)
 				: com.shatteredpixel.shatteredpixeldungeon.Playstyles.meleeDamage(this, dmg);
+		//Matt Edition, wrath and pride
+		if (Dungeon.isSinActive(com.shatteredpixel.shatteredpixeldungeon.Sins.WRATH)) dmg = Math.round(dmg * 1.2f);
+		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Pride.class) != null) dmg = Math.round(dmg * buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Pride.class).getDamageMultiplier());
 
 		if (dmg < 0) dmg = 0;
 		dmg = com.shatteredpixel.shatteredpixeldungeon.TrapDungeon.damageRoll( this, dmg ); //trap dungeon armor
@@ -1305,6 +1322,8 @@ public class Hero extends Char {
 
 		speed *= TransformationTalents.speed(this); //Transformation PD talent catalog
 		speed *= BAHero.speedMulti(this); //bluearchive
+		speed *= com.shatteredpixel.shatteredpixeldungeon.SinEffects.envyMultiplier(this, false);
+
 		speed = AscensionChallenge.modifyHeroSpeed(speed);
 		speed = SummoningHooks.speed(this, speed); //summoning
 		speed *= XunHeroes.speedFactor(this); //xun
@@ -2577,6 +2596,13 @@ public class Hero extends Char {
 		//temporarily assign to a float to avoid rounding a bunch
 		float damage = dmg;
 
+		//Matt Edition, wrath and pride
+		if (Dungeon.isSinActive(com.shatteredpixel.shatteredpixeldungeon.Sins.WRATH)) damage *= 1.3f;
+		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Pride.class) != null) {
+			buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Pride.class).onHeroGotHit();
+			damage *= buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Pride.class).getIncomingDamageMultiplier();
+		}
+
 		Endure.EndureTracker endure = buff(Endure.EndureTracker.class);
 		if (!(src instanceof Char)){
 			//reduce damage here if it isn't coming from a character (if it is we already reduced it)
@@ -3143,6 +3169,12 @@ public class Hero extends Char {
 	}
 	
 	public static int maxExp( int lvl ){
+		//Matt Edition, Sin of Sloth
+		if (Dungeon.hero == null) {
+			if (Dungeon.isSinActive(com.shatteredpixel.shatteredpixeldungeon.Sins.SLOTH)) return com.shatteredpixel.shatteredpixeldungeon.GameModes.maxExp(lvl, (int)(4 + lvl * 4.5));
+		} else if (Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sloth.class) != null) {
+			return com.shatteredpixel.shatteredpixeldungeon.GameModes.maxExp(lvl, 4 + lvl * 4);
+		}
 		return com.shatteredpixel.shatteredpixeldungeon.GameModes.maxExp(lvl, 5 + lvl * 5); //half
 	}
 	
