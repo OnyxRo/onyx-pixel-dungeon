@@ -126,9 +126,11 @@ public class ShadowYog extends Mob  {
 			
 			for (int i = 0; i < 4; i++) {
 				int trapPos;
+				int _tries1 = 0; //sps, gives up away from its own arena
 				do {
 					trapPos = Random.Int(Dungeon.level.length());
-				} while (!Dungeon.level.heroFOV[trapPos] || !Dungeon.level.passable[trapPos]);
+				} while ((!Dungeon.level.heroFOV[trapPos] || !Dungeon.level.passable[trapPos]) && ++_tries1 < 500);
+				if (_tries1 >= 500) return;
 
 				if (Dungeon.level.map[trapPos] == Terrain.INACTIVE_TRAP) {
 					Dungeon.level.setTrap( new SummoningTrap().reveal(), trapPos );

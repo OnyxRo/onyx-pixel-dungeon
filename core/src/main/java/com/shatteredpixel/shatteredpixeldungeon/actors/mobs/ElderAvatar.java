@@ -113,10 +113,12 @@ public class ElderAvatar extends Mob {
 		Obelisk a = new Obelisk();
 
 		a.pos = Terrain.WELL;
+		int _tries1 = 0; //sps, gives up away from its own arena
 		do {
 			a.pos = Random.Int(Dungeon.level.randomRespawnCell(null));
-		} while (Dungeon.level.map[a.pos] != Terrain.WELL
-				|| Actor.findChar(a.pos) != null);
+		} while ((Dungeon.level.map[a.pos] != Terrain.WELL
+				|| Actor.findChar(a.pos) != null) && ++_tries1 < 500);
+		if (_tries1 >= 500) return;
 		GameScene.add(a);
 	}
 

@@ -32,12 +32,15 @@ def LP(p):
 sheets = []
 for dirpath, dirs, files in os.walk(LP(MOD + 'core/src/main/java')):
     if 'ItemSpriteSheet.java' in files: sheets.append(os.path.join(dirpath, 'ItemSpriteSheet.java'))
+if not sheets:  # Android era mods (SPS) keep sources in <mod>/java
+    for dirpath, dirs, files in os.walk(LP(MOD + 'java')):
+        if 'ItemSpriteSheet.java' in files: sheets.append(os.path.join(dirpath, 'ItemSpriteSheet.java'))
 assert sheets, 'mod has no ItemSpriteSheet'
 ms = io.open(sheets[0], encoding='utf-8', errors='replace').read()
 # only the item part of the file, before the small icon sheet nested inside it
 cut = ms.find('class Icons')
 body = ms[:cut] if cut != -1 else ms
-defs = dict(re.findall(r'int\s+(\w+)\s*=\s*([^;]+);', body))
+defs = dict(re.findall(r'int\s+(\w+)\s*=\s*([^;]+);', re.sub(r'//[^\n]*', '', body)))  # commented out lines do not count (SPS has two SHIT_BOMB)
 # cells per row of the mod's sheet. Most use 16, Tower PD uses 32 (a 512 wide sheet)
 _w = re.search(r'int\s+WIDTH\s*=\s*(\d+)\s*;', body)
 MW = int(_w.group(1)) if _w else 16
@@ -55,7 +58,10 @@ if not os.path.exists(sheet_path): sheet_path = LP(MOD + 'core/src/main/assets/i
 if not os.path.exists(sheet_path): sheet_path = LP(MOD + 'core/src/main/assets/ui/items.png')   # 0.5 and 0.6 mods keep it under ui
 if not os.path.exists(sheet_path): sheet_path = LP(MOD + 'core/src/main/assets/sprites/items/items.png')   # Magic Ling keeps it one folder down
 if not os.path.exists(sheet_path): sheet_path = LP(MOD + 'android/src/main/assets/items.png')   # 0.7 mods built for Android keep assets there (Re-Remixed)
+if not os.path.exists(sheet_path): sheet_path = LP(MOD + 'assets/items.png')   # Android era mods with assets at the top (SPS)
 src = Image.open(sheet_path).convert('RGBA')
+# a sheet with no WIDTH constant and plain ROWn + k numbers (SPS is 20 cells wide) gets its width from the picture
+if not _w and 'xy(' not in body: MW = src.width // 16
 dstp = ROOT + 'core/src/main/assets/sprites/items.png'
 dst = Image.open(dstp).convert('RGBA')
 p = ROOT + PK + 'sprites/ItemSpriteSheet.java'

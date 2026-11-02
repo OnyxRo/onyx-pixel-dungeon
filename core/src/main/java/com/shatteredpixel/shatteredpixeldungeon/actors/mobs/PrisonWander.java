@@ -96,11 +96,13 @@ public class PrisonWander extends Mob {
 
 	public void spawnBomb() {
 		int newPos2;
+		int _tries1 = 0; //sps, gives up away from its own arena
 		do {
 			newPos2 = Random.Int(Dungeon.level.length());
-		} while (!Dungeon.level.heroFOV[newPos2] || !Dungeon.level.passable[newPos2]
+		} while ((!Dungeon.level.heroFOV[newPos2] || !Dungeon.level.passable[newPos2]
 				|| Dungeon.level.adjacent(newPos2, hero.pos)
-				|| Actor.findChar(newPos2) != null);
+				|| Actor.findChar(newPos2) != null) && ++_tries1 < 500);
+		if (_tries1 >= 500) return;
 		SeekBombP bomb1 = new SeekBombP();
 		bomb1.pos = newPos2;
 		GameScene.add(bomb1);
@@ -202,11 +204,13 @@ public class PrisonWander extends Mob {
 		com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave.throwChar(enemy, trajectory, 1, false, true, this);
 		} else if ((Random.Int(10)<2)) {
 			int newPos;
+			int _tries2 = 0; //sps, gives up away from its own arena
 			do {
 				newPos = Random.Int(Dungeon.level.length());
-			} while (!Dungeon.level.heroFOV[newPos] || !Dungeon.level.passable[newPos]
+			} while ((!Dungeon.level.heroFOV[newPos] || !Dungeon.level.passable[newPos]
 					|| Dungeon.level.adjacent(newPos, hero.pos)
-					|| Actor.findChar(newPos) != null);
+					|| Actor.findChar(newPos) != null) && ++_tries2 < 500);
+			if (_tries2 >= 500) return -1;
 
 			Buff.affect(hero, STRdown.class,5f);
 			hero.sprite.move(pos, newPos);

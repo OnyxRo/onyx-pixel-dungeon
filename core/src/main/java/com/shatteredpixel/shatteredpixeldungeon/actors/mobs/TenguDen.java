@@ -142,11 +142,13 @@ public class TenguDen extends Mob {
 		timeToJump = JUMP_DELAY;
 
 		int newPos;
+		int _tries1 = 0; //sps, gives up away from its own arena
 		do {
 			newPos = Random.Int(Dungeon.level.length());
-		} while (!Dungeon.level.passable[newPos]
+		} while ((!Dungeon.level.passable[newPos]
 				|| Dungeon.level.adjacent(newPos, Dungeon.hero.pos)
-				|| Actor.findChar(newPos) != null);
+				|| Actor.findChar(newPos) != null) && ++_tries1 < 500);
+		if (_tries1 >= 500) return;
 
 		sprite.move(pos, newPos);
 		move(newPos);

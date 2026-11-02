@@ -25,7 +25,7 @@ public class RatBossSprite extends MobSprite {
 	public RatBossSprite() {
 		super();
 
-		texture(Assets.Sprites.RAT);
+		texture(Assets.Sprites.SPS_RAT);
 
 		TextureFilm frames = new TextureFilm(texture, 16, 15);
 

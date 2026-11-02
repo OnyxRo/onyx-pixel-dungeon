@@ -1064,6 +1064,7 @@ public class Assets {
 		public static final String SHIT = "sprites/sps/shit.png"; //ported, sps
 		public static final String MOB_BAMBOO = "sprites/sps/bamboo.png"; //ported, sps
 		public static final String ICEBUG = "sprites/sps/icebug.png"; //ported, sps
+		public static final String SPS_RAT = "sprites/sps/rat.png"; //ported, sps, its rat sheet has the Rat Boss rows
 		public static final String FIRERABBIT = "sprites/sps/firerabbit.png"; //ported, sps
 		public static final String DEMON_RABBIT = "sprites/sps/demonrabbit.png"; //ported, sps
 		public static final String WORM_WHYHUMAN = "sprites/tumulus/magicling/worm_whyhuman.png"; //ported, magicling

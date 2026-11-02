@@ -130,11 +130,13 @@ public class SewerHeart extends Mob {
 	public void damage( int dmg, Object src ) {
 		if( (5 - breaks) > 6 * HP / HT ) {
 			int newPos;
+			int _tries1 = 0; //sps, gives up away from its own arena
 			do {
 				newPos = Random.Int(Dungeon.level.length());
-			} while (!Dungeon.level.heroFOV[newPos] || !Dungeon.level.passable[newPos]
+			} while ((!Dungeon.level.heroFOV[newPos] || !Dungeon.level.passable[newPos]
 					|| Dungeon.level.adjacent(newPos, enemy.pos)
-					|| Actor.findChar(newPos) != null);
+					|| Actor.findChar(newPos) != null) && ++_tries1 < 500);
+			if (_tries1 >= 500) return;
 
 			sprite.move(pos, newPos);
 			move(newPos);
@@ -359,9 +361,11 @@ public class SewerHeart extends Mob {
 			if (powerNeeded <= spawnLasher){
 				spawnLasher -= powerNeeded;
 				int pos = 0;
+				int _tries2 = 0; //sps, gives up away from its own arena
 				do{
 					pos = Random.Int(Dungeon.level.randomRespawnCell(null));
-				} while (!Dungeon.level.passable[pos] || Actor.findChar( pos ) != null);
+				} while ((!Dungeon.level.passable[pos] || Actor.findChar( pos ) != null) && ++_tries2 < 500);
+				if (_tries2 >= 500) return false;
 				SewerLasher.spawnAt(pos);
 				Sample.INSTANCE.play(Assets.Sounds.BURNING);
 			}

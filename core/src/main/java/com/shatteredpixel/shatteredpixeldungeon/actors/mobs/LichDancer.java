@@ -80,10 +80,12 @@ public class LichDancer extends Mob {
 	public void spawnTomb() {
 		BatteryTomb a = new BatteryTomb();
 		a.pos = Terrain.PEDESTAL;
+			int _tries1 = 0; //sps, gives up away from its own arena
 			do {
 				a.pos = Random.Int(Dungeon.level.randomRespawnCell(null));
-			} while (Dungeon.level.map[a.pos] != Terrain.PEDESTAL
-					|| Actor.findChar(a.pos) != null);
+			} while ((Dungeon.level.map[a.pos] != Terrain.PEDESTAL
+					|| Actor.findChar(a.pos) != null) && ++_tries1 < 500);
+			if (_tries1 >= 500) return;
 			GameScene.add(a);
 	}
 	
@@ -121,9 +123,11 @@ public class LichDancer extends Mob {
 
 	private void jump() {
 		int newPos;
+		int _tries2 = 0; //sps, gives up away from its own arena
 		do {
 			newPos = Random.Int(Dungeon.level.length());
-		} while (Dungeon.level.map[newPos] != Terrain.WELL && Dungeon.level.map[newPos] != Terrain.STATUE_SP);
+		} while ((Dungeon.level.map[newPos] != Terrain.WELL && Dungeon.level.map[newPos] != Terrain.STATUE_SP) && ++_tries2 < 500);
+		if (_tries2 >= 500) return;
 		sprite.move(pos, newPos);
 		move(newPos);
 
@@ -137,11 +141,13 @@ public class LichDancer extends Mob {
 
 	private void addbomb() {
 		int bombPos;
+		int _tries3 = 0; //sps, gives up away from its own arena
 		do {
 			bombPos = Random.Int(Dungeon.level.length());
-		} while (!Dungeon.level.heroFOV[bombPos] || !Dungeon.level.passable[bombPos]
+		} while ((!Dungeon.level.heroFOV[bombPos] || !Dungeon.level.passable[bombPos]
 				|| Dungeon.level.adjacent(bombPos, enemy.pos)
-				|| Actor.findChar(bombPos) != null);
+				|| Actor.findChar(bombPos) != null) && ++_tries3 < 500);
+		if (_tries3 >= 500) return;
 
 		Mob	m = new LinkAddBomb();
 		GameScene.add(m);

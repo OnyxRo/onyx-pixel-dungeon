@@ -369,6 +369,12 @@ SPS_RULES = [
     ('SPS NEIGHBOURS4OUT are the four diagonals', r'PathFinder\.NEIGHBOURS4OUT', 'new int[]{ +1 + com.shatteredpixel.shatteredpixeldungeon.Dungeon.level.width(), +1 - com.shatteredpixel.shatteredpixeldungeon.Dungeon.level.width(), -1 + com.shatteredpixel.shatteredpixeldungeon.Dungeon.level.width(), -1 - com.shatteredpixel.shatteredpixeldungeon.Dungeon.level.width() }'),
     ('SPS static Level.insideMap', r'(?<![\w.])Level\.insideMap\(', 'Dungeon.level.insideMap('),
     ('SPS bomb pictures we lack', r'ItemSpriteSheet\.(HUGE_BOMB|MINI_BOMB)\b', 'ItemSpriteSheet.BOMB'),
+    ('SPS wand magic skill bonus, the hero has no magic skill here', r'\(\s*1\s*\+\s*0\.1\s*\*\s*(?:Dungeon\.)?hero\.magicSkill\(\)\s*\)', '1'),
+    ('SPS MagicMissile.foliage', r'MagicMissile\.foliage\(\s*([\w.]+)\s*,\s*curUser\.pos\s*,', r'MagicMissile.boltFromChar(\1, MagicMissile.FOLIAGE, curUser.sprite,'),
+    ('SPS MagicMissile.poison', r'MagicMissile\.poison\(\s*([\w.]+)\s*,\s*curUser\.pos\s*,', r'MagicMissile.boltFromChar(\1, MagicMissile.POISON, curUser.sprite,'),
+    ('SPS MagicMissile.coldLight', r'MagicMissile\.coldLight\(\s*([\w.]+)\s*,\s*curUser\.pos\s*,', r'MagicMissile.boltFromChar(\1, MagicMissile.FROST, curUser.sprite,'),
+    ('SPS wand onZap is public', r'protected(\s+void\s+onZap\s*\(\s*Ballistica)', r'public\1'),
+    ('SPS wand fx is public', r'protected(\s+void\s+fx\s*\(\s*Ballistica\s+\w+\s*,\s*Callback)', r'public\1'),
     ('Magic Ling blue potion icon', r'\bItemSpriteSheet\.Icons\.POTION_BLUE\b', 'ItemSpriteSheet.Icons.POTION_DRGBREATH'),
     # Goblins PD (Shattered 0.3 base), static Level arrays are instance fields now
     ('Goblins, Level.adjacent and distance are instance methods', r'\bLevel\.(adjacent|distance)\(', r'Dungeon.level.\1('),
