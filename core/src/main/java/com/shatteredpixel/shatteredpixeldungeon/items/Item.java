@@ -77,6 +77,8 @@ public class Item implements Bundlable {
 
 	//TODO should these be private and accessed through methods?
 	public int image = 0;
+	//Shittened PD item skins, see SkinPaint. Null means the item was never painted and keeps its usual look.
+	public com.shatteredpixel.shatteredpixeldungeon.Skin skin = null;
 	public int icon = -1; //used as an identifier for items with randomized images
 	public int extraIcon = -1; //Shittened PD, a second small icon for the weapon prefix
 	
@@ -130,6 +132,7 @@ public class Item implements Bundlable {
 		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.canRavensEyeInspect(hero, this)){
 			actions.add( AC_INSPECT );
 		}
+		SkinPaint.addActions(this, actions); //Shittened PD, paint a new skin
 		return actions;
 	}
 
@@ -205,7 +208,9 @@ public class Item implements Bundlable {
 			if (hero.belongings.backpack.contains(this) || isEquipped(hero)) {
 				com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.doRavensEyeInspect(hero, this);
 			}
-			
+
+		} else {
+			SkinPaint.execute(this, hero, action); //Shittened PD, paint a new skin
 		}
 	}
 
@@ -574,7 +579,8 @@ public class Item implements Bundlable {
 	}
 	
 	public String name() {
-		return trueName();
+		String skinName = SkinPaint.legendName(this); //Shittened PD, legendary skins rename their item
+		return skinName != null ? skinName : trueName();
 	}
 	
 	public final String trueName() {
@@ -589,7 +595,7 @@ public class Item implements Bundlable {
 		return null;
 	}
 
-	public Emitter emitter() { return null; }
+	public Emitter emitter() { return SkinPaint.emitter(this); } //Shittened PD, some skins sparkle
 	
 	public String info() {
 
@@ -690,6 +696,7 @@ public class Item implements Bundlable {
 		if (customNoteID != -1)     bundle.put(CUSTOM_NOTE_ID, customNoteID);
 		if (upgradeScrollUses > 0)  bundle.put(UPGRADE_SCROLL_USES, upgradeScrollUses);
 		if (shardlvl > 0)  bundle.put(SHARD_LEVEL, shardlvl);
+		SkinPaint.store(this, bundle); //Shittened PD skin
 	}
 	
 	@Override
@@ -719,6 +726,7 @@ public class Item implements Bundlable {
 		keptThoughLostInvent = bundle.getBoolean( KEPT_LOST );
 		isInfused = bundle.getBoolean( INFUSED );
 		if (bundle.contains(CUSTOM_NOTE_ID))    customNoteID = bundle.getInt(CUSTOM_NOTE_ID);
+		SkinPaint.restore(this, bundle); //Shittened PD skin
 	}
 
 	public int targetingPos( Hero user, int dst ){

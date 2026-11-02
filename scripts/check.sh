@@ -105,6 +105,11 @@ run "TooCruelTest" TooCruelTest; rc=$?
 tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|INFO mode|SUMMARY toocruel)" | tail -14 | sed 's/^/  /'
 [ $rc -eq 0 ] && say "  passed" || say "  FAILED"
 
+#Shittened PD item skins, every skin's picture, strings and save, the paint rules and the journal. Runs in --quick too
+run "SkinPaintTest" SkinPaintTest; rc=$?
+tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|info skins|SUMMARY skins)" | tail -10 | sed 's/^/  /'
+[ $rc -eq 0 ] && say "  passed" || { say "  FAILED"; FAIL=1; }
+
 if [ $QUICK -eq 0 ]; then
   run "WorldShuffleTest ($SEEDS seeds)" WorldShuffleTest "$SEEDS"; rc=$?
   tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|floors generated|ported monsters)" | tail -6 | sed 's/^/  /'

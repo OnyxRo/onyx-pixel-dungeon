@@ -37,7 +37,8 @@ ms = io.open(sheets[0], encoding='utf-8', errors='replace').read()
 # only the item part of the file, before the small icon sheet nested inside it
 cut = ms.find('class Icons')
 body = ms[:cut] if cut != -1 else ms
-defs = dict(re.findall(r'int\s+(\w+)\s*=\s*([^;]+);', body))
+body = re.sub(r'//[^\n]*', '', body)   # commented out lines can reuse a name (Shittened's SCIMITAR), the last one would win
+defs =dict(re.findall(r'int\s+(\w+)\s*=\s*([^;]+);', body))
 # cells per row of the mod's sheet. Most use 16, Tower PD uses 32 (a 512 wide sheet)
 _w = re.search(r'int\s+WIDTH\s*=\s*(\d+)\s*;', body)
 MW = int(_w.group(1)) if _w else 16

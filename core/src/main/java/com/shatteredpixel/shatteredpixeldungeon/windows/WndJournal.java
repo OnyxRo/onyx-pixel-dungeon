@@ -568,16 +568,17 @@ public class WndJournal extends WndTabbed {
 	public static class CatalogTab extends Component{
 		
 		private RedButton[] itemButtons;
-		private static final int NUM_BUTTONS = 4;
+		private static final int NUM_BUTTONS = 5;
 
 		public static int currentItemIdx   = 0;
 		private static float[] scrollPositions = new float[NUM_BUTTONS];
-		
+
 		//sprite locations
 		private static final int EQUIP_IDX = 0;
 		private static final int CONSUM_IDX = 1;
 		private static final int BESTIARY_IDX = 2;
 		private static final int LORE_IDX = 3;
+		private static final int SKIN_IDX = 4; //Shittened PD item skins
 
 		private ScrollingGridPane grid;
 		
@@ -599,6 +600,7 @@ public class WndJournal extends WndTabbed {
 			itemButtons[CONSUM_IDX].icon(new ItemSprite(ItemSpriteSheet.POTION_HOLDER));
 			itemButtons[BESTIARY_IDX].icon(new ItemSprite(ItemSpriteSheet.MOB_HOLDER));
 			itemButtons[LORE_IDX].icon(new ItemSprite(ItemSpriteSheet.DOCUMENT_HOLDER));
+			itemButtons[SKIN_IDX].icon(new ItemSprite(com.shatteredpixel.shatteredpixeldungeon.sprites.SkinSprites.EMPTY_SEAL));
 
 			grid = new ScrollingGridPane(){
 				@Override
@@ -685,6 +687,9 @@ public class WndJournal extends WndTabbed {
 					grid.addHeader("_" + Messages.titleCase(bestiary.title()) + "_ (" + bestiary.totalSeen() + "/" + bestiary.totalEntities() + "):");
 					addGridEntities(grid, bestiary.entities());
 				}
+
+			} else if (currentItemIdx == SKIN_IDX) {
+				SkinJournal.fill(grid); //Shittened PD item skins
 
 			} else {
 				int totalItems = 0;

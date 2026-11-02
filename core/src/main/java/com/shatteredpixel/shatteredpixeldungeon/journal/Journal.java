@@ -49,6 +49,7 @@ public class Journal {
 		Catalog.restore( bundle );
 		Bestiary.restore( bundle );
 		Document.restore( bundle );
+		SkinCatalog.restore( bundle ); //Shittened PD skins
 		
 		loaded = true;
 	}
@@ -70,6 +71,7 @@ public class Journal {
 		Catalog.store(bundle);
 		Bestiary.store(bundle);
 		Document.store(bundle);
+		SkinCatalog.store(bundle); //Shittened PD skins
 		
 		try {
 			FileUtils.bundleToFile( JOURNAL_FILE, bundle );
