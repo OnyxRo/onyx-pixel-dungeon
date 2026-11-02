@@ -88,6 +88,7 @@ tail -n +$SEG_START "$LOG" | grep -E "^(FAIL|SUMMARY item)" | tail -12 | sed 's/
 #every sprite asks only for frames its picture has, a bad one crashes the game when the monster is made
 say "== sprite frames"
 python -I scripts/check-sprites.py 2>&1 | grep -E "^(.*\.java:|SUMMARY)" | sed 's/^/  /' | tail -12
+python -I scripts/check-arena-text.py 2>&1 | grep -E "^(MISSING|SUMMARY)" | sed 's/^/  /' | tail -12
 [ "${PIPESTATUS[0]}" -eq 0 ] && say "  passed" || { say "  FAILED"; FAIL=1; }
 
 #world tile sheets need see-through wall overhangs, solid ones hide the floor along every wall (and the stairs there)

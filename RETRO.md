@@ -201,3 +201,6 @@ The mod spread its skins over 15 item classes, each with a copy of the same pick
 - Monster names that other mods already use (Assassin, Brown Bat, Demon Goo and more) went to `actors/mobs/sps/`. `mod-spawns.py` then handed the SPS copies to Reforged and Unleashed, it now never takes another mod's subpackage copy.
 - Two MobArenaTest runs hung on SPS loops that pick random cells until one fits the boss's own arena (and one that rerolled weapons until a +3 that this game never rolls). A small script bounds every such loop at 500 tries. Run the arena test on bosses in small groups under `timeout`, a hung java could not be stopped from the session.
 - The SPS blob seed rule left a double brace, it now eats the old opening brace. New rename rows cover SPS damage types (Char has its own DamageType enum that hid the import), wand zap and fx access, MagicMissile helpers, missile pictures in sprites, old terrain names and Dungeon boss flags.
+
+## 2026-11-02 Tower defense dialogue
+The tower defense port missed 205 text lines (the Rat King speech in every arena, the toxic water and temple tiles), so each bubble said no text. TowerDefenseTest only read the menu strings. `scripts/check-arena-text.py` now checks every written text key in the arenas and runs in check.sh.

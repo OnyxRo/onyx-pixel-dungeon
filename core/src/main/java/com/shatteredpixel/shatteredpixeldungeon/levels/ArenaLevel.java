@@ -308,7 +308,8 @@ public class ArenaLevel extends Level {
 			case Terrain.HIGH_GRASS:
 				return Messages.get(CityLevel.class, "high_grass_desc");
 			case Terrain.WALL_DECO:
-				return Messages.get(CityLevel.class, "wall_deco_desc");
+				//the city has no line for a decorated wall, the caves' ore vein fits this arena
+				return Messages.get(CavesLevel.class, "wall_deco_desc");
 			case Terrain.BOOKSHELF:
 				return Messages.get(CityLevel.class, "bookshelf_desc");
 			default:
