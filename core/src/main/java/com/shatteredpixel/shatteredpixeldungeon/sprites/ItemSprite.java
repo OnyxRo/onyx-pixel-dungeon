@@ -256,6 +256,7 @@ public class ItemSprite extends MovieClip {
 	}
 
 	public void frame( int image ){
+		if (TowerItemSprites.frame(this, image)) return; //tower, Tower PD pictures added after its first port
 		//Shittened PD item skins draw from their own sheet
 		if (SkinSprites.is(image)) {
 			SmartTexture skinTexture = TextureCache.get(SkinSprites.SHEET);
@@ -430,6 +431,7 @@ public class ItemSprite extends MovieClip {
 	}
 
 	public static int pick( int index, int x, int y ) {
+		if (TowerItemSprites.is(index)) return TowerItemSprites.pick(index, x, y); //tower
 		if (SkinSprites.is(index)) {
 			return TextureCache.get(SkinSprites.SHEET).getPixel(SkinSprites.cellX(index) + x, SkinSprites.cellY(index) + y);
 		}
