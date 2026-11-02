@@ -51,6 +51,7 @@ public class BlacksmithSprite extends MobSprite {
 		die.frames( frames, 0 );
 		
 		play( idle );
+		BlueArchiveNpcSprites.blacksmith( this ); //bluearchive, Cherino
 	}
 	
 	@Override

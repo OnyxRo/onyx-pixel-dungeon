@@ -151,6 +151,7 @@ public class GameModes {
 		SmallModes.register(); //modded, speedrun and old speedrun pd
 		ElementalPD.register(); //elemental
 		RemixedLayout.register(); //reremixed
+		BlueArchiveModes.register(); //bluearchive and rebluearchive, students only
 	}
 
 	//other ports add their modes here, Too Cruel's modifiers among them

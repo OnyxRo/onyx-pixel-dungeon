@@ -370,6 +370,7 @@ public enum HeroClass {
 
 	public Badges.Badge masteryBadge() {
 		if (BAHeroes.isBA(this)) return BAHeroes.masteryBadge(this); //bluearchive
+		if (RBAHero.isStudent(this)) return com.shatteredpixel.shatteredpixeldungeon.BlueArchiveBadges.mastery(this); //rebluearchive
 		switch (this) {
 			case WARRIOR:
 				return Badges.Badge.MASTERY_WARRIOR;
@@ -1104,6 +1105,8 @@ public enum HeroClass {
 		//and in sandbox runs
 		if (Dungeon.sandbox) return true;
 		//for now every hero is open in normal runs too, delete this line to bring the badge unlocks back
+		//bluearchive and rebluearchive, their game modes leave only the students
+		if (com.shatteredpixel.shatteredpixeldungeon.BlueArchiveModes.hides(this)) return false;
 		if (UNLOCK_ALL_FOR_NOW) return true;
 		//rebluearchive, the students are open from the start as in the mod
 		if (RBAHero.isStudent(this)) return true;

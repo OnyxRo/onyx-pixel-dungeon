@@ -46,13 +46,14 @@ public class ShopkeeperSprite extends MobSprite {
 		attack = idle.clone();
 		
 		idle();
+		BlueArchiveNpcSprites.shopkeeper( this ); //bluearchive, Sora
 	}
 	
 	@Override
 	public void onComplete( Animation anim ) {
 		super.onComplete( anim );
 		
-		if (visible && anim == idle) {
+		if (visible && anim == idle && !BlueArchiveNpcSprites.isSora( this )) {
 			if (coin == null) {
 				coin = new PixelParticle();
 				parent.add( coin );
