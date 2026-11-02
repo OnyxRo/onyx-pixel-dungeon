@@ -336,3 +336,7 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **Mod names other mods already use** go in a mod subpackage (`actors/mobs/sps/`, `sprites/sps/`), with the imports in every new file pointed at them. `port-strings.py` reads their text with `SUBPKG=sps`, and `mod-spawns.py` keeps each mod to its own copies.
 - **Boss code that loops until a random cell fits its arena** hangs the arena test and the sandbox spawn list. Bound such loops (500 tries, then give up) before testing, and run MobArenaTest on bosses in small groups under `timeout`.
 - **`sps-copy.py --reapply` only touches untracked files.** Never point a reapply at committed files of other mods.
+## Added after the Ryuse and Xun finish (2026-11-02)
+- **Isolated worktree agents** cannot write to the session scratchpad and get bash commands refused when they mix cd, heredocs and git or javac with computed paths. Keep helper scripts in `build/<job>/` inside the worktree, run them with an absolute path, and call javac with plain relative paths (`javac @build/cp-javac.args -d build/test ...`).
+- **`scripts/test-recompile.sh` only compiles the test and TestBoot.** A test that calls `MobArenaTest.level` needs `scripts/test/MobArenaTest.java` on the same javac line.
+- **"Only after metamorphosis" talent parts** are lines in the mod that test `heroClass != OWN_CLASS`. Grep the mod for each talent with that test and give each one hook in the mod helper class, as `XunTalents` does.

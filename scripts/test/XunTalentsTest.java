@@ -382,6 +382,8 @@ public class XunTalentsTest {
 				if (s2.enchantHardened) hardened++;
 			}
 			check( hardened > 15, "Durable Modifies hardens enchantments, " + hardened + " of 40" );
+			check( com.shatteredpixel.shatteredpixeldungeon.actors.hero.TransformationTalents.inPool( Talent.APART_ANYTHING ),
+					"the Freeman's catalog metamorphosis can land on Apart Anything" );
 		});
 
 		run( "cursed power, artifacts", () -> {

@@ -1293,6 +1293,7 @@ public class TransformationTalents {
 
 	//the talents a catalog metamorphosis can land on
 	public static boolean inPool(Talent t){
+		if (XunTalents.forOtherHeroes(t)) return true; //xun, its talents with a part for other heroes
 		if (!t.isCatalogTalent() || !t.type().isCommon()) return false;
 		switch (t){
 			case POTENTIAL_1: case POTENTIAL_2: case POTENTIAL_3: case POTENTIAL_4: case POTENTIAL_5:

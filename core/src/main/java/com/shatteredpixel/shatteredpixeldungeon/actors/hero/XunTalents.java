@@ -1292,6 +1292,19 @@ public class XunTalents {
 	//Wraith or Engineer an extra effect when a hero of another class takes it through a scroll of metamorphosis
 	//(or here, the Freeman's catalog). Each is copied from the mod's own line, the call sites are marked //xun.
 
+	//the talents with a part for other heroes. The Freeman's catalog metamorphosis can land on these too
+	// (TransformationTalents.inPool), so the Freeman reaches them the way Shattered's scroll lets other heroes
+	public static boolean forOtherHeroes( Talent t ){
+		switch (t){
+			case SAFE_PRICK: case BLURING_BODY: case CONVENIENT_SHOVEL: case BARBED_WIRE: case AGGRESSIVE_ROADBLOCK:
+			case DEMOLITION: case PULSE_ENERGY: case STRONG_PULSE: case RESONANT_SENSING: case IONIZING_RADIATION:
+			case APART_ANYTHING: case REMOTE_DESTRUCTION: case DURABLE_MODIFIES:
+				return true;
+			default:
+				return false;
+		}
+	}
+
 	private static boolean outsider( Hero hero, HeroClass own ){
 		return hero != null && hero.heroClass != own;
 	}
