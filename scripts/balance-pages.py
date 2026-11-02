@@ -11,7 +11,7 @@ Monster pictures are the first idle frame, read from each sprite class's texture
 Item pictures are cut from sprites/items.png. An item's mod is worked out from its source file, files that
 were in the first commit are Shattered's, the rest are matched by mod names in the file or the commit that added it.
 """
-import base64, io, json, os, re, subprocess, sys
+import base64, io, json, math, os, re, subprocess, sys
 from collections import Counter, defaultdict
 from PIL import Image
 
@@ -208,13 +208,37 @@ for cls, m in mobs.items():
         how = "harmless" if top == 0 else ("near" if all(f[5] == 1 for f in fought if f[1] > 0) else "fight")
     else:
         hit, top, turn, how = melee, m["max"], None, "melee"
-    out_m.append({"name": re.sub(r"#\d", "", m["name"]), "cls": cls.split(".")[-1], "mod": key, "pic": mob_picture(m["sprite"]),
+    out_m.append({"name": re.sub(r"#\d", "", m["name"]), "cls": cls.split(".")[-1], "full": cls, "mod": key, "pic": mob_picture(m["sprite"]),
                   "avg": round(hit, 1), "max": top, "perTurn": round(turn, 2) if turn is not None else None, "melee": round(melee, 1),
                   "how": how, "kills": kills, "fights": fights, "hp": m["hp"], "perFloor": round(per, 4), "weighted": round(hit * per, 3),
                   "floors": sorted(m["depths"]), "worlds": [w for w, _ in m["worlds"].most_common(3)]})
 base = max([x["avg"] for x in out_m if x["cls"] in SHATTERED_REGULAR] or [0])
-#monsters worth changing, and short reasons for the ones that look worse or safer than they are
-WORRY = {"GnollThief", "GnollKnight", "GnollMarksman", "IceBug", "BrownWolf", "GrayWolf", "IceGolem", "Ballista"}
+#--- Shattered's curve. The average fight hit of Shattered's regular monsters, all sections, fitted as a smooth
+#growth by floor (log of the hit against the floor). Each monster is compared with the curve on the floors it is on,
+#and is out of line when it is further from it than any of Shattered's own regulars, by a quarter more
+REG_ALL = {"com.shatteredpixel.shatteredpixeldungeon.actors.mobs." + r for s in SECTIONS for r in s[4]}
+seen_all = Counter()
+for line in open(SRC, encoding="utf-8"):
+    p = line.split("\t")
+    if p[0] == "MOB": seen_all[(p[4], int(p[1]))] += 1
+pts = [(d, math.log(FIGHT[(c, d)][2]), n) for (c, d), n in seen_all.items() if c in REG_ALL and (c, d) in FIGHT and FIGHT[(c, d)][2] > 0]
+sw = sum(n for _, _, n in pts); mx_ = sum(d * n for d, _, n in pts) / sw; my_ = sum(y * n for _, y, n in pts) / sw
+slope = sum(n * (d - mx_) * (y - my_) for d, y, n in pts) / sum(n * (d - mx_) ** 2 for d, _, n in pts)
+curve = lambda d: math.exp(my_ + slope * (d - mx_))
+def ratio(c, depths):
+    #how many times Shattered's curve this monster hits, averaged over its floors by how often it is there
+    t = w = 0
+    for d, n in depths.items():
+        f = FIGHT.get((c, d))
+        if f and f[0] > 0 and f[2] > 0: t += n * math.log(f[2] / curve(d)); w += n
+    return math.exp(t / w) if w else None
+reg_r = defaultdict(Counter)
+for (c, d), n in seen_all.items():
+    if c in REG_ALL: reg_r[c][d] += n
+reg_r = [r for r in (ratio(c, ds) for c, ds in reg_r.items()) if r]
+STRONG, WEAK = max(reg_r) * 1.25, min(reg_r) / 1.25
+
+#short reasons for the ones that look worse or safer than they are
 NOTES = {"Statue": "Shattered design, only attacks if disturbed", "StatueArmor": "Only attacks if disturbed", "ArmoredStatue": "Shattered design, only attacks if disturbed",
          "Mimic": "Shattered design, hidden in chests", "GoldenMimic": "Shattered design, hidden in chests", "CrystalMimic": "Shattered design, hidden in chests",
          "RotLasher": "Only hits if you stand next to it", "GnollThief": "Deep's gnolls, strong for this stage", "GnollKnight": "Deep's gnolls, strong for this stage",
@@ -225,10 +249,17 @@ NOTES = {"Statue": "Shattered design, only attacks if disturbed", "StatueArmor":
          "Emperor": "Deep's floor 5 boss"}
 for x in out_m:
     x["flag"] = x["kills"] > 0 or x["max"] >= HERO_HP or x["avg"] > base * 1.5
-    worry = x["cls"] in WORRY or (x["cls"] == "Elemental$FrostElemental" and 11 <= LOW <= 15)
-    x["worry"] = "Worry" if worry else ("Watch" if x["flag"] else "")
-    x["note"] = "Matt's Snowfield, strong for this stage" if x["cls"] == "Elemental$FrostElemental" and worry else NOTES.get(x["cls"], "")
+    r = ratio(x["full"], mobs[x["full"]]["depths"])
+    x["ratio"] = round(r, 2) if r else None
+    x["note"] = NOTES.get(x["cls"], "")
+    if x["mod"] == "shattered": x["worry"] = ""
+    elif r is None: x["worry"] = "Unknown"
+    elif r >= STRONG: x["worry"] = "Too strong"
+    elif r <= WEAK: x["worry"] = "Too weak"
+    else: x["worry"] = ""
+    if x["mod"] == "shattered" and not x["note"]: x["note"] = "Shattered's own"
     if not x["note"] and x["how"] == "harmless": x["note"] = "Did no damage in the test, damage unknown"
+    if not x["note"] and x["how"] == "melee": x["note"] = "Could not be put in a fight"
 for cls, it in items.items():
     key = mod_of(cls, False); icons.setdefault(key, mod_icon(key))
     per = it["count"] / floors
@@ -239,7 +270,8 @@ for cls, it in items.items():
                   "max": round(mean(it["max"]), 1) if it["max"] else None, "weighted": round(dmg * per, 3) if dmg is not None else None,
                   "floors": sorted(it["depths"]), "where": [h.lower().replace("_", " ") for h, _ in it["heaps"].most_common(2)]})
 
-data = {"seeds": seeds, "floors": floors, "heroHp": HERO_HP, "base": base, "name": NAME, "first": LOW, "last": HIGH,
+for x in out_m: del x["full"]
+data = {"strong": round(STRONG, 2), "weak": round(WEAK, 2), "curve": [round(curve(d), 1) for d in range(LOW, HIGH + 1)], "seeds": seeds, "floors": floors, "heroHp": HERO_HP, "base": base, "name": NAME, "first": LOW, "last": HIGH,
         "regular": SHATTERED_REGULAR, "pages": [[sec[0], sec[1], sec[2], page_name(i), i == SECTION] for i, sec in enumerate(SECTIONS)], "mods": {k: [MODS.get(k, k), v] for k, v in icons.items()},
         "mobs": sorted(out_m, key=lambda x: -x["avg"]), "items": sorted(out_i, key=lambda x: -x["perFloor"])}
 page = open(os.path.join(ROOT, "scripts/balance-section-page.html"), encoding="utf-8").read().replace("Sewers Balance Check", NAME + " Balance Check").replace("/*DATA*/null", json.dumps(data, separators=(",", ":")))

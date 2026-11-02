@@ -79,15 +79,16 @@ tr.flag .bar .fill { background: var(--danger); }
   <h2>Monsters</h2>
   <div class="legend">
     <span><i class="sw" style="background:var(--bar)"></i>average hit in a fight</span>
-    <span><i class="sw" style="background:var(--danger-soft)"></i>Worry, a monster I would change for this stage</span>
-    <span><i class="sw" style="background:var(--watch-soft)"></i>Watch, strong but fine as it is (killed a full health hero, or hits 1.5 times harder than the blue line)</span>
+    <span><i class="sw" style="background:var(--danger-soft)"></i>Too strong for its floors, compared with Shattered</span>
+    <span><i class="sw" style="background:var(--watch-soft)"></i>Too weak for its floors, compared with Shattered</span>
     <span><i class="sw" style="background:var(--fg);width:3px"></i>top hit</span>
     <span><i class="sw" style="background:var(--base);width:3px"></i><span id="baselabel"></span></span>
     <span><i class="sw" style="background:var(--accent);width:3px"></i><span id="hplabel"></span></span>
   </div>
+  <p class="muted small" id="curvetxt"></p>
   <p class="muted small">Damage per turn is all the health the hero lost divided by the 50 turns, so it counts misses, walking up and how often it attacks. Normal attack is the old number, a roll of its plain melee attack only. Damage times chance is the average hit multiplied by the chance the monster is on a floor. Monsters that never move were also tested standing right next to the hero. Fish need water and friendly creatures never attack, so they show no fight. Click any column to sort.</p>
   <div class="controls">
-    <label><input type="checkbox" id="mobflag"> Worry and watch only</label>
+    <label><input type="checkbox" id="mobflag"> Out of line only</label>
     <select id="mobmod" aria-label="Mod"></select>
     <input type="search" id="mobq" placeholder="Search monster" aria-label="Search monsters">
   </div>
@@ -113,6 +114,7 @@ const mod = k => `<div class="mod"><img src="${DATA.mods[k][1]}" alt=""><span>${
 const per100 = v => (v * 100).toFixed(v < 0.1 ? 1 : 0);
 const floorsTxt = f => f.length === DATA.last - DATA.first + 1 ? DATA.first + " to " + DATA.last : f.join(", ");
 $("nseeds").textContent = DATA.seeds;
+$("curvetxt").textContent = "Times Shattered compares a monster's average fight hit with Shattered's regular monsters on the same floors (a smooth curve through all of them, " + DATA.curve.join(", ") + " on floors " + DATA.first + " to " + DATA.last + "). Shattered's own regulars land between " + (DATA.weak * 1.25).toFixed(2) + " and " + (DATA.strong / 1.25).toFixed(2) + " times. A monster is too strong at " + DATA.strong + " times or more and too weak at " + DATA.weak + " times or less, a quarter past the furthest Shattered monster. Shattered's own monsters, mimics and statues included, are the baseline and are never marked. Unknown means the test could not measure its hits.";
 $("title").textContent = DATA.name + " balance check";
 $("range").textContent = "Floors " + DATA.first + " to " + DATA.last;
 $("baselabel").textContent = "average hit of the hardest of Shattered's regular monsters here (" + DATA.regular.map(r => r.split("$").pop()).join(", ") + ")";
@@ -122,7 +124,7 @@ $("pages").innerHTML = DATA.pages.map(([n, a, b, href, here]) => here ? `<b>${n}
 const red = DATA.mobs.filter(m => m.flag);
 $("stats").innerHTML = [
   [DATA.mobs.length, "kinds of monster"], [DATA.items.length, "kinds of item"], [DATA.base, "hardest regular Shattered hit here"],
-  [DATA.mobs.filter(m => m.worry === "Worry").length, "monsters to worry about"], [red.length, "worry or watch"], [Math.round(1 / red.reduce((a, m) => a + m.perFloor, 0)), "floors per red monster, on average"]
+  [DATA.mobs.filter(m => m.worry === "Too strong").length, "too strong"], [DATA.mobs.filter(m => m.worry === "Too weak").length, "too weak"], [Math.round(1 / red.reduce((a, m) => a + m.perFloor, 0)), "floors per red monster, on average"]
 ].map(([v, l]) => `<div><b>${v}</b><span>${l}</span></div>`).join("");
 
 function fillSelect(sel, values, label, names){
@@ -150,14 +152,15 @@ const HOW = {near: "standing next to it, it does not move", harmless: "never hur
 const xmax = Math.max(...DATA.mobs.map(m => m.max), DATA.heroHp) * 1.02;
 function drawMobs(){
   const q = $("mobq").value.trim().toLowerCase(), fo = $("mobflag").checked, ms = $("mobmod").value;
-  const rows = DATA.mobs.filter(m => (!fo || m.worry) && (!ms || m.mod === ms) && (!q || (m.name + " " + m.cls).toLowerCase().includes(q)));
-  const cols = [["", ""], ["name", "Monster"], ["worry", "Worry"], ["mod", "Mod"], ["avg", "Hit in a fight"], ["max", "Top hit"], ["perTurn", "Damage per turn"], ["kills", "Killed a full health hero"], ["melee", "Normal attack"], ["hp", "Health"], ["perFloor", "Per 100 floors"], ["weighted", "Damage times chance"], ["", "Floors"]];
+  const rows = DATA.mobs.filter(m => (!fo || m.worry === "Too strong" || m.worry === "Too weak") && (!ms || m.mod === ms) && (!q || (m.name + " " + m.cls).toLowerCase().includes(q)));
+  const cols = [["", ""], ["name", "Monster"], ["worry", "Compared with Shattered"], ["ratio", "Times Shattered"], ["mod", "Mod"], ["avg", "Hit in a fight"], ["max", "Top hit"], ["perTurn", "Damage per turn"], ["kills", "Killed a full health hero"], ["melee", "Normal attack"], ["hp", "Health"], ["perFloor", "Per 100 floors"], ["weighted", "Damage times chance"], ["", "Floors"]];
   sortable($("mobtable"), cols, rows, mobState, drawMobs);
   const pct = v => (100 * v / xmax).toFixed(2) + "%";
-  $("mobtable").tBodies[0].innerHTML = rows.map(m => `<tr class="${m.worry === "Worry" ? "flag" : m.worry ? "watch" : ""}" title="Worlds ${esc(m.worlds.join(", "))}">
+  $("mobtable").tBodies[0].innerHTML = rows.map(m => `<tr class="${m.worry === "Too strong" ? "flag" : m.worry === "Too weak" ? "watch" : ""}" title="Worlds ${esc(m.worlds.join(", "))}">
     <td>${pic(m.pic)}</td>
     <td class="who"><b>${esc(m.name)}</b><span>${esc(m.cls)}</span>${HOW[m.how] ? `<em class="how">${HOW[m.how]}</em>` : ""}${m.note ? `<span class="note">${esc(m.note)}</span>` : ""}</td>
-    <td>${m.worry === "Worry" ? `<span class="worry">Worry</span>` : m.worry ? `<span class="watchtxt">Watch</span>` : ""}</td>
+    <td>${m.worry === "Too strong" ? `<span class="worry">Too strong</span>` : m.worry === "Too weak" ? `<span class="watchtxt">Too weak</span>` : m.worry ? `<span class="muted">${m.worry}</span>` : ""}</td>
+    <td class="n">${m.ratio === null ? "" : m.ratio.toFixed(2)}</td>
     <td>${mod(m.mod)}</td>
     <td><div class="bar"><b>${m.avg}</b><div class="track">
       <i class="ln" style="left:${pct(DATA.base)};background:var(--base)"></i><i class="ln" style="left:${pct(DATA.heroHp)};background:var(--accent)"></i>
@@ -165,7 +168,7 @@ function drawMobs(){
     <td class="n">${m.max}</td><td class="n">${m.perTurn === null ? "" : m.perTurn.toFixed(2)}</td>
     <td class="n">${m.kills ? `<b class="flagtxt">${m.kills} times</b><br><span class="muted small">in ${m.fights} fights</span>` : ""}</td><td class="n muted">${m.melee}</td>
     <td class="n">${m.hp}</td><td class="n">${per100(m.perFloor)}</td><td class="n">${m.weighted.toFixed(2)}</td>
-    <td class="small">${floorsTxt(m.floors)}</td></tr>`).join("") || `<tr><td colspan="13" class="muted">No monsters match.</td></tr>`;
+    <td class="small">${floorsTxt(m.floors)}</td></tr>`).join("") || `<tr><td colspan="14" class="muted">No monsters match.</td></tr>`;
 }
 
 const itemState = {key: "perFloor", dir: -1};
