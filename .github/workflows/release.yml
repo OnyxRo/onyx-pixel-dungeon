@@ -38,7 +38,7 @@ jobs:
         run: |
           scripts/compile.sh vendor/ShatteredPD-$SHATTERED_TAG-Java.jar testbuild
           mkdir -p testbuild/test
-          javac -nowarn -cp "testbuild/classes:testbuild/lib/libs.jar" -d testbuild/test scripts/test/WorldShuffleTest.java
+          javac -nowarn -cp "testbuild/classes:testbuild/lib/libs.jar" -d testbuild/test scripts/test/WorldShuffleTest.java scripts/test/TestBoot.java
           cd testbuild/classes && java -cp ".:../lib/libs.jar:../test" WorldShuffleTest 1000
 
       - name: Package
