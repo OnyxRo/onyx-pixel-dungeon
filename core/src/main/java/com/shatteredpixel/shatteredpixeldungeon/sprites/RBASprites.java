@@ -84,6 +84,45 @@ public class RBASprites {
 		sprite.place( Dungeon.hero.pos );
 	}
 
+	// ---- missile flight, the mod's changes to MissileSprite (added 2026-11-02) --------------------
+
+	/** Bullets, lances and shots fly straight instead of spinning. */
+	public static void angularSpeeds( java.util.HashMap<Class<? extends com.shatteredpixel.shatteredpixeldungeon.items.Item>, Integer> speeds ){
+		speeds.put(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.RBAGun.Bullet.class, 0);
+		speeds.put(RBAYukinoSprite.YukinoShot.class, 0);
+		speeds.put(RBANikoSprite.NikoShot.class, 0);
+		speeds.put(RBAOtogiSprite.OtogiShot.class, 0);
+		speeds.put(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.shiroko.RBAPenetrationShot.PenetrationBullet.class, 0);
+		speeds.put(RBAHologramSprite.HologramShot.class, 0);
+		speeds.put(com.shatteredpixel.shatteredpixeldungeon.actors.hero.console.fantasy.RBAIceLance.IceLanceVFX.class, 0);
+		speeds.put(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.izuna.RBAThrowingThunder.PotOThunder.class, 0);
+		speeds.put(com.shatteredpixel.shatteredpixeldungeon.actors.hero.miracles.RBALightBullet.LightBulletItem.class, 0);
+		speeds.put(com.shatteredpixel.shatteredpixeldungeon.actors.hero.miracles.RBASilverBullet.SilverBulletItem.class, 0);
+		speeds.put(com.shatteredpixel.shatteredpixeldungeon.actors.hero.miracles.RBAHolyBullet.HolyBulletItem.class, 0);
+		speeds.put(com.shatteredpixel.shatteredpixeldungeon.actors.hero.miracles.RBAThunderLance.ThunderItem.class, 0);
+	}
+
+	/** How much faster than a thrown item each of the mod's missiles flies, 1 for everything else. */
+	public static float missileSpeed( com.shatteredpixel.shatteredpixeldungeon.items.Item item ){
+		if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.RBAGun.Bullet){
+			return ((com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.gun.RBAGun.Bullet) item).projectileSpeed();
+		}
+		if (item instanceof RBAYukinoSprite.YukinoShot
+				|| item instanceof RBANikoSprite.NikoShot
+				|| item instanceof RBAOtogiSprite.OtogiShot
+				|| item instanceof com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.shiroko.RBAPenetrationShot.PenetrationBullet
+				|| item instanceof RBAHologramSprite.HologramShot
+				|| item instanceof com.shatteredpixel.shatteredpixeldungeon.actors.hero.miracles.RBALightBullet.LightBulletItem
+				|| item instanceof com.shatteredpixel.shatteredpixeldungeon.actors.hero.miracles.RBASilverBullet.SilverBulletItem
+				|| item instanceof com.shatteredpixel.shatteredpixeldungeon.actors.hero.miracles.RBAHolyBullet.HolyBulletItem){
+			return 3f;
+		}
+		if (item instanceof com.shatteredpixel.shatteredpixeldungeon.actors.hero.miracles.RBAThunderLance.ThunderItem){
+			return 1.5f;
+		}
+		return 1f;
+	}
+
 	// ---- small icons the mod drew on its own icon sheet (interfaces/rebluearchive/icons.png) ----------
 
 	public static Image icon( int x, int y, int w, int h ){

@@ -205,6 +205,8 @@ public class WndUpgrade extends Window {
 					bottom);
 		}
 
+		bottom = RBAUpgradeLines.fields(this, toUpgrade, levelFrom, levelTo, bottom); //rebluearchive, gun lines
+
 		if (toUpgrade instanceof Crossbow){
 			bottom = fillFields(Messages.get(this, "dart_damage"),
 					((Crossbow) toUpgrade).dartMin(levelFrom) + "-" + ((Crossbow) toUpgrade).dartMax(levelFrom),
@@ -380,6 +382,7 @@ public class WndUpgrade extends Window {
 					}
 				}
 
+				lossChance = RBAUpgradeLines.lossChance(lossChance); //rebluearchive
 				if (lossChance >= 10) {
 					String warn;
 					if (toUpgrade instanceof Weapon) {
@@ -512,7 +515,7 @@ public class WndUpgrade extends Window {
 		return null;
 	}
 
-	private float fillFields(String title, String msg1, String msg2, float bottom){
+	float fillFields(String title, String msg1, String msg2, float bottom){
 
 		//the ~ symbol is more commonly used in Chinese
 		if (Messages.lang() == Languages.CHI_SMPL || Messages.lang() == Languages.CHI_TRAD){

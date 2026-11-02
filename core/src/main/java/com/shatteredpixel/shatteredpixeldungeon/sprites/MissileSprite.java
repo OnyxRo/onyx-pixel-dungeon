@@ -131,6 +131,7 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 		ANGULAR_SPEEDS.put(MortarSprite.MineShot.class,       0);
 		ANGULAR_SPEEDS.put(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SwordAura.Aura.class,   0);
 		ANGULAR_SPEEDS.put(com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.alchemy.PotOThunder.class,   0);
+		RBASprites.angularSpeeds(ANGULAR_SPEEDS); //rebluearchive
 		
 		//720 is default
 
@@ -230,6 +231,7 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 		} else if (item instanceof MortarSprite.MineShot) {
 			speed *= 0.7f;
 		}
+		speed *= RBASprites.missileSpeed(item); //rebluearchive
 		
 		PosTweener tweener = new PosTweener( this, to, d.length() / speed );
 		tweener.listener = this;

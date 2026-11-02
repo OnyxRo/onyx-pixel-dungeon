@@ -164,6 +164,7 @@ public class WndBlacksmith extends Window {
 		};
 		smith.enable(Blacksmith.Quest.favor >= 2000);
 		buttons.add(smith);
+		RBAEngrave.addButton(this, buttons); //rebluearchive, engraving a gun
 
 		RedButton cashOut = new RedButton(Messages.get(this, "cashout"), 6){
 			@Override

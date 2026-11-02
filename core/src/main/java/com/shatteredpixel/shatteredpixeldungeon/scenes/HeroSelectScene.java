@@ -204,6 +204,7 @@ public class HeroSelectScene extends PixelScene {
 			//mod heroes stay hidden until Yog is beaten in a copy from GitHub
 			if (com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.locked()
 					&& !com.shatteredpixel.shatteredpixeldungeon.ModsUnlock.isShatteredHero(cl)) continue;
+			if (com.shatteredpixel.shatteredpixeldungeon.BlueArchiveModes.hides(cl)) continue; //bluearchive, students only
 			HeroBtn button = new HeroBtn(cl);
 			add(button);
 			heroBtns.add(button);
@@ -953,6 +954,7 @@ public class HeroSelectScene extends PixelScene {
 						public void onChanged() {
 							self.text(com.shatteredpixel.shatteredpixeldungeon.windows.WndGameModes.label());
 							updateOptionsColor();
+							if (com.shatteredpixel.shatteredpixeldungeon.BlueArchiveModes.rosterChanged()) ShatteredPixelDungeon.switchNoFade(HeroSelectScene.class); //bluearchive
 						}
 					}));
 				}

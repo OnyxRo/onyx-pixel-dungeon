@@ -49,8 +49,9 @@ public class ImpSprite extends MobSprite {
 		die.frames( frames, 0 );
 		
 		play( idle );
+		BlueArchiveNpcSprites.imp( this ); //rebluearchive, Akira
 	}
-	
+
 	@Override
 	public void onComplete( Animation anim ) {
 		if (anim == die) {

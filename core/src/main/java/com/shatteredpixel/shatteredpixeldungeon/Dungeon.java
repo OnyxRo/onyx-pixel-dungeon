@@ -1425,6 +1425,7 @@ public class Dungeon {
 			BArray.or( level.visited, level.heroFOV, a.pos - 1 + level.width(), 3, level.visited );
 			GameScene.updateFog(a.pos, 2);
 		}
+		com.shatteredpixel.shatteredpixeldungeon.RBAHooks.markVisited(hero, level); //rebluearchive, Mind Bind and Miyu's scope
 
 		for (Char ch : Actor.chars()){
 			if (ch instanceof WandOfWarding.Ward

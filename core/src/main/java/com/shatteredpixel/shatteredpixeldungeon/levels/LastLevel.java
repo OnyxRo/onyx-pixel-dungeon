@@ -178,6 +178,7 @@ public class LastLevel extends Level {
 
 	@Override
 	protected void createMobs() {
+		com.shatteredpixel.shatteredpixeldungeon.BlueArchiveModes.lastLevelMobs( this, AMULET_POS ); //rebluearchive, the punching bag
 	}
 
 	public Actor addRespawner() {
