@@ -207,3 +207,6 @@ The tower defense port missed 205 text lines (the Rat King speech in every arena
 
 ## 2026-11-02 Locked start for the GitHub copy
 Finding every mod hook inside Shattered's own code by hand would have taken hours. Two read only helpers split the 432 changed Shattered files (actors and items, everything else) and listed what still fires in a plain run, and a class list from the first commit (`assets/shattered-classes.txt`) filters items, rooms, recipes, enchantments and badges in one rule each. `LockedModeTest` then caught the three hooks both missed (Goblins pets, a helmet through the default item roll, Tower hero badges). Rebuild the class list the same way if the base ever moves.
+
+## 2026-11-02 Ryuse and Xun finish
+An agent in an isolated worktree cannot write to the session scratchpad and cannot run bash commands that mix cd, heredocs and git. Put helper scripts under build/ in the worktree and run them with an absolute path. A multi file `cursed` to `curseActive()` rewrite went through one small regex script that skips comments and assignments, 68 checks in 12 artifacts in one step.

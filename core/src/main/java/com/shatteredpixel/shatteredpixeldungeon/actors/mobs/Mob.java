@@ -1014,6 +1014,7 @@ public abstract class Mob extends Char {
 		if (enemy instanceof Hero
 				&& ((Hero) enemy).belongings.attackingWeapon() instanceof MissileWeapon){
 			Statistics.thrownAttacks++;
+			com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.pulseEnergy(enemy); //xun, Pulse Energy
 			Badges.validateHuntressUnlock();
 		}
 		

@@ -1406,6 +1406,7 @@ public class Hero extends Char {
 		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Fortify.class) != null) delay *= 0.75f;
 		delay = SummoningHooks.attackDelay(this, delay); //summoning
 		delay /= XunTalents.plagueSpeed(this, 3); //xun, Plague Eucharist
+		delay /= XunTalents.convenientShovel(this); //xun, Convenient Shovel for other heroes
 
 		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ninja.OneSword.OKU_OneSword.class) != null
 				&& belongings.attackingWeapon() instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon){

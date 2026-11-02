@@ -143,7 +143,7 @@ public class DriedRose extends Artifact {
 		}
 		if (isEquipped( hero )
 				&& charge == chargeCap
-				&& !cursed
+				&& !curseActive()
 				&& hero.buff(MagicImmune.class) == null
 				&& ghostID == 0) {
 			actions.add(AC_SUMMON);
@@ -152,7 +152,7 @@ public class DriedRose extends Artifact {
 			actions.add(AC_DIRECT);
 		}
 		//cannot outfit a rose that's cursed, unIDed, or in the vault to prevent smuggling exploits
-		if (isIdentified() && !cursed && !(Dungeon.level instanceof VaultLevel)){
+		if (isIdentified() && !curseActive() && !(Dungeon.level instanceof VaultLevel)){
 			actions.add(AC_OUTFIT);
 		}
 		
@@ -181,7 +181,7 @@ public class DriedRose extends Artifact {
 			else if (ghost != null)         GLog.i( Messages.get(this, "spawned") );
 			else if (!isEquipped( hero ))   GLog.i( Messages.get(Artifact.class, "need_to_equip") );
 			else if (charge != chargeCap)   GLog.i( Messages.get(this, "no_charge") );
-			else if (cursed)                GLog.i( Messages.get(this, "cursed") );
+			else if (curseActive())                GLog.i( Messages.get(this, "cursed") );
 			else {
 				ArrayList<Integer> spawnPoints = new ArrayList<>();
 				for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
@@ -274,7 +274,7 @@ public class DriedRose extends Artifact {
 		String desc = summoner() ? Messages.get(this, "desc_summoner") : super.desc();
 
 		if (isEquipped( Dungeon.hero )){
-			if (!cursed){
+			if (!curseActive()){
 
 				if (level() < levelCap)
 					desc+= "\n\n" + Messages.get(this, "desc_hint");
@@ -337,7 +337,7 @@ public class DriedRose extends Artifact {
 	
 	@Override
 	public void charge(Hero target, float amount) {
-		if (cursed || target.buff(MagicImmune.class) != null) return;
+		if (curseActive() || target.buff(MagicImmune.class) != null) return;
 
 		if (ghost == null){
 			if (charge < chargeCap) {
@@ -447,7 +447,7 @@ public class DriedRose extends Artifact {
 			}
 			
 			//rose does not charge while ghost hero is alive
-			if (ghost != null && !cursed && target.buff(MagicImmune.class) == null){
+			if (ghost != null && !curseActive() && target.buff(MagicImmune.class) == null){
 				
 				//heals to full over 500 turns
 				if (ghost.HP < ghost.HT && Regeneration.regenOn()) {
@@ -469,7 +469,7 @@ public class DriedRose extends Artifact {
 			}
 			
 			if (charge < chargeCap
-					&& !cursed
+					&& !curseActive()
 					&& target.buff(MagicImmune.class) == null
 					&& Regeneration.regenOn()) {
 				//500 turns to a full charge
@@ -485,7 +485,7 @@ public class DriedRose extends Artifact {
 						GLog.p( Messages.get(DriedRose.class, "charged") );
 					}
 				}
-			} else if (cursed && Random.Int(100) == 0) {
+			} else if (curseActive() && Random.Int(100) == 0) {
 
 				ArrayList<Integer> spawnPoints = new ArrayList<>();
 

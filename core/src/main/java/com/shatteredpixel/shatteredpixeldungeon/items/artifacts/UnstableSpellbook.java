@@ -107,10 +107,10 @@ public class UnstableSpellbook extends Artifact {
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		if (isEquipped( hero ) && charge > 0 && !cursed && hero.buff(MagicImmune.class) == null) {
+		if (isEquipped( hero ) && charge > 0 && !curseActive() && hero.buff(MagicImmune.class) == null) {
 			actions.add(AC_READ);
 		}
-		if (isEquipped( hero ) && level() < levelCap && !cursed && hero.buff(MagicImmune.class) == null) {
+		if (isEquipped( hero ) && level() < levelCap && !curseActive() && hero.buff(MagicImmune.class) == null) {
 			actions.add(AC_ADD);
 		}
 		return actions;
@@ -128,7 +128,7 @@ public class UnstableSpellbook extends Artifact {
 			if (hero.buff( Blindness.class ) != null) GLog.w( Messages.get(this, "blinded") );
 			else if (!isEquipped( hero ))             GLog.i( Messages.get(Artifact.class, "need_to_equip") );
 			else if (charge <= 0)                     GLog.i( Messages.get(this, "no_charge") );
-			else if (cursed)                          GLog.i( Messages.get(this, "cursed") );
+			else if (curseActive())                          GLog.i( Messages.get(this, "cursed") );
 			else {
 				doReadEffect(hero);
 			}
@@ -263,7 +263,7 @@ public class UnstableSpellbook extends Artifact {
 	
 	@Override
 	public void charge(Hero target, float amount) {
-		if (charge < chargeCap && !cursed && target.buff(MagicImmune.class) == null){
+		if (charge < chargeCap && !curseActive() && target.buff(MagicImmune.class) == null){
 			partialCharge += 0.1f*amount;
 			while (partialCharge >= 1){
 				partialCharge--;
@@ -302,7 +302,7 @@ public class UnstableSpellbook extends Artifact {
 		String desc = super.desc();
 
 		if (isEquipped(Dungeon.hero)) {
-			if (cursed) {
+			if (curseActive()) {
 				desc += "\n\n" + Messages.get(this, "desc_cursed");
 			}
 			
@@ -344,7 +344,7 @@ public class UnstableSpellbook extends Artifact {
 		@Override
 		public boolean act() {
 			if (charge < chargeCap
-					&& !cursed
+					&& !curseActive()
 					&& target.buff(MagicImmune.class) == null
 					&& Regeneration.regenOn()) {
 				//120 turns to charge at full, 80 turns to charge at 0/8

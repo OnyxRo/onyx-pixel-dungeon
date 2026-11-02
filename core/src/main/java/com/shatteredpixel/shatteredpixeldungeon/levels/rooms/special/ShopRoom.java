@@ -323,7 +323,7 @@ public class ShopRoom extends SpecialRoom {
 		com.shatteredpixel.shatteredpixeldungeon.RBAHooks.addShopItems(itemsToSpawn); //rebluearchive
 
 		TimekeepersHourglass hourglass = Dungeon.hero.belongings.getItem(TimekeepersHourglass.class);
-		if (hourglass != null && hourglass.isIdentified() && !hourglass.cursed){
+		if (hourglass != null && hourglass.isIdentified() && !hourglass.curseActive()){ //xun, Cursed Power
 			int bags = 0;
 			//creates the given float percent of the remaining bags to be dropped.
 			//this way players who get the hourglass late can still max it, usually.

@@ -401,7 +401,7 @@ public class XunTalents {
 	}
 
 	public static int stealthBonus( Hero hero ){
-		return hero.subClass == HeroSubClass.INCUBUS ? 2 : 0;
+		return (hero.subClass == HeroSubClass.INCUBUS ? 2 : 0) + bluringStealth(hero);
 	}
 
 	//=====================================================================================
@@ -807,6 +807,7 @@ public class XunTalents {
 	public static class PsionicBlast {}
 
 	public static void onHeroDamaged( Hero hero, int dmg, Object src ){
+		safePrick(hero, dmg);
 		if (src instanceof PsionicBlast || !hero.hasTalent(Talent.PSIONIC_BLAST) || Dungeon.level == null) return;
 		if (dmg >= hero.lvl * (1.25f - 0.25f * hero.pointsInTalent(Talent.PSIONIC_BLAST))){
 			for (Mob m : Dungeon.level.mobs.toArray(new Mob[0])){
@@ -1284,5 +1285,193 @@ public class XunTalents {
 			return 1.15f;
 		}
 		return 1f;
+	}
+
+	//=====================================================================================
+	//talent parts that only matter for another hero (2026-11-02). Xun's PD gives a talent of the Explorer,
+	//Wraith or Engineer an extra effect when a hero of another class takes it through a scroll of metamorphosis
+	//(or here, the Freeman's catalog). Each is copied from the mod's own line, the call sites are marked //xun.
+
+	private static boolean outsider( Hero hero, HeroClass own ){
+		return hero != null && hero.heroClass != own;
+	}
+
+	//Safe Prick, another hero hurt by 4 or more gains a small shield, then waits 50 turns (Hero.damage)
+	public static void safePrick( Hero hero, int dmg ){
+		if (!outsider(hero, HeroClass.WRAITH) || !hero.hasTalent(Talent.SAFE_PRICK) || dmg < 4
+				|| hero.buff(com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.BoneSpike.SafePrickCooldown.class) != null) return;
+		int shield = 2 * hero.pointsInTalent(Talent.SAFE_PRICK);
+		Buff.affect(hero, Barrier.class).setShield(shield);
+		if (hero.sprite != null) hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shield), FloatingText.SHIELDING);
+		Buff.affect(hero, com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.BoneSpike.SafePrickCooldown.class, 50);
+	}
+
+	//Bluring Body, another hero gains a point of stealth per talent point (Char.stealth)
+	private static int bluringStealth( Hero hero ){
+		return outsider(hero, HeroClass.WRAITH) ? hero.pointsInTalent(Talent.BLURING_BODY) : 0;
+	}
+
+	//Convenient Shovel, another hero attacks 5% faster per point (Hero.attackDelay)
+	public static float convenientShovel( Hero hero ){
+		return outsider(hero, HeroClass.EXPLORER) ? 1f + 0.05f * hero.pointsInTalent(Talent.CONVENIENT_SHOVEL) : 1f;
+	}
+
+	//Barbed Wire, another hero's glyphs proc 10% more often per point (Armor.Glyph.genericProcChanceMultiplier)
+	public static float barbedWireGlyph( Char defender ){
+		if (!(defender instanceof Hero) || !outsider((Hero) defender, HeroClass.EXPLORER)) return 1f;
+		return 1f + 0.1f * ((Hero) defender).pointsInTalent(Talent.BARBED_WIRE);
+	}
+
+	//Aggressive Roadblock cuts the damage another hero's allies take by 10% a point.
+	//Strong Pulse adds the alchemy energy the hero holds (up to 4 + 4 a point) to wand damage (Char.damage)
+	public static float outsiderDamageTaken( Char ch, float damage, Object src ){
+		Hero hero = Dungeon.hero;
+		if (hero == null) return damage;
+		if (ch.alignment == Char.Alignment.ALLY && ch != hero && outsider(hero, HeroClass.EXPLORER)){
+			damage *= 1 - 0.1f * hero.pointsInTalent(Talent.AGGRESSIVE_ROADBLOCK);
+		}
+		if (src instanceof Wand && ch.alignment != Char.Alignment.ALLY && ch != hero
+				&& outsider(hero, HeroClass.ENGINEER) && hero.hasTalent(Talent.STRONG_PULSE)){
+			damage += Math.min(Dungeon.energy, 4 + 4 * hero.pointsInTalent(Talent.STRONG_PULSE));
+		}
+		return damage;
+	}
+
+	//Pulse Energy, another hero hitting with a thrown weapon gains a shield, then waits 50 turns (Mob.defenseProc)
+	public static class PulseEnergyCD extends FlavourBuff {}
+
+	public static void pulseEnergy( Char enemy ){
+		if (!(enemy instanceof Hero)) return;
+		Hero hero = (Hero) enemy;
+		if (!outsider(hero, HeroClass.ENGINEER) || !hero.hasTalent(Talent.PULSE_ENERGY) || hero.buff(PulseEnergyCD.class) != null) return;
+		int shield = 1 + 2 * hero.pointsInTalent(Talent.PULSE_ENERGY);
+		Buff.affect(hero, Barrier.class).setShield(shield);
+		if (hero.sprite != null) hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shield), FloatingText.SHIELDING);
+		Buff.prolong(hero, PulseEnergyCD.class, 50);
+	}
+
+	//Resonant Sensing gives another hero a moment of mind vision on wand hits, Ionizing Radiation adds
+	//deferred damage scaled by hero level (Wand.wandProc)
+	public static void outsiderWandProc( Char target ){
+		Hero hero = Dungeon.hero;
+		if (hero == null || target == null || !outsider(hero, HeroClass.ENGINEER)) return;
+		if (Random.Int(3) < hero.pointsInTalent(Talent.RESONANT_SENSING)){
+			Buff.prolong(hero, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision.class, 1f);
+		}
+		if (hero.hasTalent(Talent.IONIZING_RADIATION) && target != hero){
+			Buff.affect(target, com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity.DeferedDamage.class)
+					.extend(hero.lvl * hero.pointsInTalent(Talent.IONIZING_RADIATION) / 4f);
+		}
+	}
+
+	//Apart Anything, another hero can melt weapons and armor in the pack down into liquid metal
+	//(EquipableItem.actions and execute)
+	public static final String AC_SMELT = "SMELT";
+
+	private static int smeltTier( Item item ){
+		if (item instanceof Armor) return ((Armor) item).tier;
+		if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon)
+			return ((com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon) item).tier;
+		if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon)
+			return ((com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon) item).tier;
+		return 1;
+	}
+
+	private static boolean canSmelt( Item item, Hero hero ){
+		if (hero == null || !outsider(hero, HeroClass.ENGINEER) || !hero.hasTalent(Talent.APART_ANYTHING)) return false;
+		if (item.isEquipped(hero) || !item.cursedKnown || item.cursed) return false;
+		if (item instanceof Armor){
+			Armor a = (Armor) item;
+			return !(a instanceof com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor) && !a.hasCurseGlyph();
+		}
+		if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon){
+			com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon w = (com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon) item;
+			return !w.unique && !w.hasCurseEnchant();
+		}
+		return false;
+	}
+
+	public static void smeltActions( Item item, Hero hero, ArrayList<String> actions ){
+		if (canSmelt(item, hero)) actions.add(AC_SMELT);
+	}
+
+	public static boolean smelt( Item item, Hero hero, String action ){
+		if (!AC_SMELT.equals(action) || !canSmelt(item, hero)) return false;
+		int quantity = (int) Math.pow(2, Math.max(0, item.level())) * (smeltTier(item) + 1) * 3;
+		boolean magic = item instanceof Armor ? ((Armor) item).glyph != null
+				: ((com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon) item).enchantment != null;
+		if (magic) quantity = Math.round(quantity * 1.5f);
+		if (hero.pointsInTalent(Talent.APART_ANYTHING) >= 2) quantity = Math.round(quantity * 1.67f);
+		LiquidMetal metal = new LiquidMetal();
+		metal.quantity(quantity);
+		item.detach(hero.belongings.backpack);
+		if (!metal.collect()) Dungeon.level.drop(metal, hero.pos).sprite.drop();
+		if (hero.sprite != null) hero.sprite.operate(hero.pos);
+		Sample.INSTANCE.play(Assets.Sounds.EVOKE);
+		return true;
+	}
+
+	//Remote Destruction, another hero throwing liquid metal at a construct cripples it, then waits 100 turns
+	//(LiquidMetal.onThrow). This game has no mechanical property, so level 1 already works on any inorganic foe
+	public static class RemoteDestructionCD extends FlavourBuff {}
+
+	public static boolean remoteDestruction( int cell ){
+		Hero hero = Dungeon.hero;
+		if (!outsider(hero, HeroClass.ENGINEER) || !hero.hasTalent(Talent.REMOTE_DESTRUCTION)
+				|| hero.buff(RemoteDestructionCD.class) != null) return false;
+		Char ch = com.shatteredpixel.shatteredpixeldungeon.actors.Actor.findChar(cell);
+		if (ch == null || ch.alignment == Char.Alignment.ALLY || !Char.hasProp(ch, Char.Property.INORGANIC)) return false;
+		Sample.INSTANCE.play(Assets.Sounds.HIT);
+		Buff.affect(ch, Cripple.class, 8);
+		Buff.prolong(hero, RemoteDestructionCD.class, 100);
+		return true;
+	}
+
+	//Durable Modifies, another hero's scroll of upgrade has a 25% chance a point to harden the enchantment or glyph
+	//(ScrollOfUpgrade, before the item is upgraded)
+	public static void durableModifies( Hero hero, Item item ){
+		if (!outsider(hero, HeroClass.ENGINEER) || Random.Int(4) >= hero.pointsInTalent(Talent.DURABLE_MODIFIES)) return;
+		if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon){
+			((com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon) item).enchantHardened = true;
+		} else if (item instanceof Armor){
+			((Armor) item).glyphHardened = true;
+		}
+	}
+
+	//Demolition, any hero with it can knock down barricades and doors (and statues at +2) with the pickaxe
+	//(Pickaxe.actions, execute and desc). It shares the Explorer's terrain cooldown
+	public static final String AC_MINE = "MINE";
+
+	public static void pickaxeActions( Hero hero, ArrayList<String> actions ){
+		if (hero != null && hero.hasTalent(Talent.DEMOLITION)) actions.add(AC_MINE);
+	}
+
+	public static String pickaxeDesc(){
+		return Dungeon.hero != null && Dungeon.hero.hasTalent(Talent.DEMOLITION)
+				? "\n\n" + Messages.get(com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe.class, "desc_demolition") : "";
+	}
+
+	public static void pickaxeExecute( final Hero hero, String action ){
+		if (!AC_MINE.equals(action)) return;
+		final Class<?> pick = com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe.class;
+		GameScene.selectCell(new CellSelector.Listener() {
+			@Override
+			public String prompt() {
+				return Messages.get(pick, "mine");
+			}
+
+			@Override
+			public void onSelect( Integer cell ) {
+				if (cell == null) return;
+				if (Dungeon.level.distance(cell, hero.pos) > 1 || !Dungeon.level.heroFOV[cell]) {
+					GLog.w(Messages.get(pick, "reach"));
+					return;
+				}
+				//the pickaxe's own execute already set the item user to this hero
+				if (!com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.XunShovel.breakTerrain(cell)) {
+					GLog.w(Messages.get(pick, "hard"));
+				}
+			}
+		});
 	}
 }

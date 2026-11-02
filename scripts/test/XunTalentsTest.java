@@ -324,6 +324,75 @@ public class XunTalentsTest {
 			check( XunTalents.fastMeal( h ), "Preparing Meal eats faster" );
 		});
 
+		run( "talent parts for other heroes", () -> {
+			Hero w = fresh( HeroClass.WARRIOR, null );
+			talent( w, Talent.SAFE_PRICK, 2 );
+			XunTalents.safePrick( w, 6 );
+			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier b = w.buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier.class );
+			check( b != null && b.shielding() == 4, "Safe Prick shields another hero hurt by 4 or more" );
+			Hero wr = fresh( HeroClass.WRAITH, null );
+			talent( wr, Talent.SAFE_PRICK, 2 );
+			XunTalents.safePrick( wr, 6 );
+			check( wr.buff( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier.class ) == null, "the Wraith's own Safe Prick works through the bone spike only" );
+
+			w = fresh( HeroClass.WARRIOR, null );
+			talent( w, Talent.BLURING_BODY, 2 );
+			check( XunTalents.stealthBonus( w ) == 2, "Bluring Body adds stealth for another hero" );
+			talent( w, Talent.CONVENIENT_SHOVEL, 2 );
+			check( XunTalents.convenientShovel( w ) > 1.09f, "Convenient Shovel speeds another hero's attacks" );
+			talent( w, Talent.BARBED_WIRE, 3 );
+			check( XunTalents.barbedWireGlyph( w ) > 1.29f, "Barbed Wire raises another hero's glyph chance" );
+
+			Mob ally = rat( freeCellNextTo( w.pos ) );
+			ally.alignment = com.shatteredpixel.shatteredpixeldungeon.actors.Char.Alignment.ALLY;
+			talent( w, Talent.AGGRESSIVE_ROADBLOCK, 2 );
+			check( XunTalents.outsiderDamageTaken( ally, 10f, w ) < 8.1f, "Aggressive Roadblock cuts the damage allies take" );
+
+			Mob foe = rat( freeCellNextTo( w.pos ) );
+			talent( w, Talent.STRONG_PULSE, 1 );
+			Dungeon.energy = 20;
+			check( XunTalents.outsiderDamageTaken( foe, 5f, new com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile() ) >= 13f,
+					"Strong Pulse adds energy to wand damage" );
+
+			talent( w, Talent.PULSE_ENERGY, 1 );
+			XunTalents.pulseEnergy( w );
+			check( w.buff( XunTalents.PulseEnergyCD.class ) != null, "Pulse Energy shields a thrower and starts its cooldown" );
+
+			talent( w, Talent.APART_ANYTHING, 1 );
+			com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword sword = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword();
+			sword.identify();
+			sword.collect();
+			check( sword.actions( w ).contains( XunTalents.AC_SMELT ), "Apart Anything lets another hero smelt a weapon" );
+			int metal0 = w.belongings.getItem( com.shatteredpixel.shatteredpixeldungeon.items.LiquidMetal.class ) == null ? 0
+					: w.belongings.getItem( com.shatteredpixel.shatteredpixeldungeon.items.LiquidMetal.class ).quantity();
+			XunTalents.smelt( sword, w, XunTalents.AC_SMELT );
+			com.shatteredpixel.shatteredpixeldungeon.items.LiquidMetal lm = w.belongings.getItem( com.shatteredpixel.shatteredpixeldungeon.items.LiquidMetal.class );
+			check( lm != null && lm.quantity() > metal0 && !w.belongings.backpack.items.contains( sword ), "smelting turns the sword into liquid metal" );
+
+			talent( w, Talent.DEMOLITION, 1 );
+			java.util.ArrayList<String> acts = new java.util.ArrayList<>();
+			XunTalents.pickaxeActions( w, acts );
+			check( acts.contains( XunTalents.AC_MINE ), "Demolition gives the pickaxe its demolish action" );
+
+			talent( w, Talent.DURABLE_MODIFIES, 3 );
+			int hardened = 0;
+			for (int i = 0; i < 40; i++) {
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword s2 = new com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword();
+				XunTalents.durableModifies( w, s2 );
+				if (s2.enchantHardened) hardened++;
+			}
+			check( hardened > 15, "Durable Modifies hardens enchantments, " + hardened + " of 40" );
+		});
+
+		run( "cursed power, artifacts", () -> {
+			Hero h = fresh( HeroClass.WRAITH, null );
+			com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty horn = new com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty();
+			horn.cursed = true;
+			check( horn.curseActive(), "a cursed horn is cursed without the talent" );
+			talent( h, Talent.CURSED_POWER, 3 );
+			check( !horn.curseActive(), "Cursed Power +3 lets a cursed artifact work" );
+		});
+
 		System.out.println( "SUMMARY xun talents: " + passes + " passed, " + failures + " failed" );
 		System.exit( failures > 0 ? 1 : 0 );
 	}

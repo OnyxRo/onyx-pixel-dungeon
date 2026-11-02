@@ -190,9 +190,14 @@ public class Artifact extends KindofMisc {
 		}
 	}
 
+	//xun, Cursed Power at +3 lets a cursed artifact work as if it were clean. The artifacts check this instead of cursed
+	public boolean curseActive() {
+		return cursed && !com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.artifactCurseIgnored();
+	}
+
 	@Override
 	public String status() {
-		
+
 		//if the artifact isn't IDed, or is cursed, don't display anything
 		if (!isIdentified() || (cursed && !com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.artifactCurseIgnored())){ //xun, Cursed Power
 			return null;

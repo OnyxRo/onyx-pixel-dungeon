@@ -1137,6 +1137,7 @@ public abstract class Char extends Actor {
 				damage *= 0.75f;
 			}
 		}
+		damage = com.shatteredpixel.shatteredpixeldungeon.actors.hero.XunTalents.outsiderDamageTaken(this, damage, src); //xun, Aggressive Roadblock and Strong Pulse for other heroes
 
 		Terror t = buff(Terror.class);
 		if (t != null){
