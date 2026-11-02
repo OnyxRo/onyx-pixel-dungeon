@@ -982,6 +982,8 @@ public abstract class Mob extends Char {
 
 	@Override
 	public int defenseSkill( Char enemy ) {
+		//Matt Edition, bulky cannot dodge
+		if (buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bulky.class) != null) return 0;
 		if (buff(GuidingLight.Illuminated.class) != null && Dungeon.hero.heroClass.is(HeroClass.CLERIC)){
 			//if the attacker is the cleric, they must be using a weapon they have the str for
 			if (enemy instanceof Hero){
@@ -1419,7 +1421,7 @@ public abstract class Mob extends Char {
 		if (stolen == null || !stolen.itemWasStolen()) {
 			if (Random.Float() < lootChance()) {
 				for (Item loot : createLootDrops()) {
-					if (loot != null) {
+					if (loot != null && !com.shatteredpixel.shatteredpixeldungeon.SinEffects.shouldDesireDestroy(loot)) {
 						Dungeon.level.drop(loot, pos).sprite.drop();
 					}
 				}

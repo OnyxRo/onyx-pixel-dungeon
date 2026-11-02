@@ -593,6 +593,9 @@ public enum Catalog {
 		EXOTIC_POTIONS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfKetchupStorm.class);
 		SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfShit.class);
 		EXOTIC_SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfEnshittification.class);
+		//Matt Edition
+		SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicUpgrade.class);
+		EXOTIC_SCROLLS.addItems(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPureMagic.class);
 		STONES.addItems(com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfReforging.class);
 
 		//items ported from ryuse

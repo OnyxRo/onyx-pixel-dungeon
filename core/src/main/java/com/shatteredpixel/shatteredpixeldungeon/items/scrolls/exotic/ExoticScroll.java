@@ -65,6 +65,10 @@ public abstract class ExoticScroll extends Scroll {
 		regToExo.put(ScrollOfUpgrade.class, ScrollOfEnchantment.class);
 		exoToReg.put(ScrollOfEnchantment.class, ScrollOfUpgrade.class);
 
+		//Matt Edition, brewed from the scroll of magic upgrade
+		regToExo.put(com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicUpgrade.class, ScrollOfPureMagic.class);
+		exoToReg.put(ScrollOfPureMagic.class, com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicUpgrade.class);
+
 		regToExo.put(ScrollOfIdentify.class, ScrollOfDivination.class);
 		exoToReg.put(ScrollOfDivination.class, ScrollOfIdentify.class);
 		

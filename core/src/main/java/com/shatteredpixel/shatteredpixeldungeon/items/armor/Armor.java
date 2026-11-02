@@ -155,6 +155,7 @@ public class Armor extends EquipableItem {
 	private static final String MASTERY_POTION_BONUS = "mastery_potion_bonus";
 	private static final String SEAL            = "seal";
 	private static final String AUGMENT			= "augment";
+	private static final String MAGIC_LEVEL		= "magic_level";
 	private static final String SPECIAL			= "special_augment";
 
 	@Override
@@ -171,6 +172,7 @@ public class Armor extends EquipableItem {
 		bundle.put( SEAL, seal);
 		bundle.put( AUGMENT, augment);
 		bundle.put( SPECIAL, special);
+		if (magicLevel != 0) bundle.put( MAGIC_LEVEL, magicLevel );
 	}
 
 	@Override
@@ -185,6 +187,7 @@ public class Armor extends EquipableItem {
 		curseInfusionBonus = bundle.getBoolean( CURSE_INFUSION_BONUS );
 		masteryPotionBonus = bundle.getBoolean( MASTERY_POTION_BONUS );
 		seal = (BrokenSeal)bundle.get(SEAL);
+		magicLevel = bundle.getInt( MAGIC_LEVEL );
 		
 		augment = bundle.getEnum(AUGMENT, Augment.class);
 		special = (com.shatteredpixel.shatteredpixeldungeon.items.armor.augments.ArmorAugment) bundle.get( SPECIAL );
@@ -484,6 +487,50 @@ public class Armor extends EquipableItem {
 		return speed;
 	}
 
+	//Matt Edition, a second level raised by the scroll of magic upgrade. It does not add to physical armor,
+	//it only blocks magic damage. Raising the normal level makes the magic level count for less.
+	public int magicLevel = 0;
+
+	public final int magicDRMax(){
+		return magicDRMax(magicLevel);
+	}
+
+	public int magicDRMax(int magicLvl){
+		if (Dungeon.isChallenged(Challenges.NO_ARMOR)){
+			return magicLvl > 0 ? 1 + tier + magicLvl : 0;
+		}
+
+		int physicalPenalty = (int)(level() * 0.18f);
+		int effective = Math.max(0, magicLvl - physicalPenalty);
+		if (effective == 0) return 0;
+
+		//T1 and T2 are x1, T3 and T4 x2, T5 x3
+		int tierMultiplier = (int)((tier + 0.5) / 1.5);
+		int baseValue = 2 + (effective / 2) + (effective % 2);
+		int maxMagicDR = tierMultiplier * baseValue;
+
+		if (effective > maxMagicDR){
+			return (effective - maxMagicDR + 1) / 2;
+		}
+		return maxMagicDR;
+	}
+
+	public final int magicDRMin(){
+		return magicDRMin(magicLevel);
+	}
+
+	public int magicDRMin(int magicLvl){
+		if (Dungeon.isChallenged(Challenges.NO_ARMOR)) return 0;
+
+		int physicalPenalty = (int)(level() * 0.18f);
+		int after = magicLvl - physicalPenalty;
+		int effective = Math.max(0, (after / 2) + (after % 2));
+		int max = magicDRMax(magicLvl);
+
+		if (effective >= max) return effective - max;
+		return effective;
+	}
+
 	public final int DRMax(){
 		return DRMax(buffedLvl());
 	}
@@ -773,12 +820,15 @@ public class Armor extends EquipableItem {
 		if (levelKnown) {
 
 			info += "\n\n" + Messages.get(Armor.class, "curr_absorb", tier, DRMin(), DRMax(), STRReq());
+			info += "\n" + Messages.get(Armor.class, "curr_magic_absorb", magicDRMin(), magicDRMax());
+			if (magicLevel > 0) info += "\n" + Messages.get(Armor.class, "magic_level", magicLevel);
 			
 			if (Dungeon.hero != null && STRReq() > Dungeon.hero.STR()) {
 				info += " " + Messages.get(Armor.class, "too_heavy");
 			}
 		} else {
 			info += "\n\n" + Messages.get(Armor.class, "avg_absorb", tier, DRMin(0), DRMax(0), STRReq(0));
+			info += "\n" + Messages.get(Armor.class, "avg_magic_absorb", magicDRMin(0), magicDRMax(0));
 
 			if (Dungeon.hero != null && STRReq(0) > Dungeon.hero.STR()) {
 				info += " " + Messages.get(Armor.class, "probably_too_heavy");
@@ -849,6 +899,7 @@ public class Armor extends EquipableItem {
 				n++;
 			}
 		}
+		n = com.shatteredpixel.shatteredpixeldungeon.SinEffects.desireRoll(n); //Matt Edition, Sin of Desire
 		level(n);
 
 		//we use a separate RNG here so that variance due to things like parchment scrap
@@ -858,7 +909,7 @@ public class Armor extends EquipableItem {
 			//30% chance to be cursed
 			//15% chance to be inscribed
 			float effectRoll = Random.Float();
-			if (effectRoll < 0.3f * ParchmentScrap.curseChanceMultiplier()) {
+			if (effectRoll < (Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.I_HATE_MYSELF) ? 0.7f : 0.3f) * ParchmentScrap.curseChanceMultiplier()) { //Matt Edition, I hate myself
 				inscribe(Glyph.randomCurse());
 				cursed = true;
 			} else if (effectRoll >= 1f - (0.15f * ParchmentScrap.enchantChanceMultiplier())){

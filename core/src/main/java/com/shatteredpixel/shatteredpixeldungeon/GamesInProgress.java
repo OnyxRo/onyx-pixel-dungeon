@@ -144,6 +144,7 @@ public class GamesInProgress {
 		info.depth = Dungeon.depth;
 		info.challenges = Dungeon.challenges;
 		info.difficulty = Dungeon.difficulty;
+		info.sins = Dungeon.sins;
 
 		info.seed = Dungeon.seed;
 		info.customSeed = Dungeon.customSeedText;
@@ -183,6 +184,7 @@ public class GamesInProgress {
 		public int version;
 		public int challenges;
 		public int difficulty = 2; //Pixel Dungeon Reforged
+		public int sins;
 
 		public long seed;
 		public String customSeed;

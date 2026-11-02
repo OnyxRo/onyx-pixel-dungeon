@@ -63,6 +63,12 @@ public class Gold extends Item {
 		Statistics.itemTypesDiscovered.add(getClass());
 
 		quantity = com.shatteredpixel.shatteredpixeldungeon.RBAHooks.goldGain(hero, quantity); //rebluearchive, Yuzu's credit
+		//Matt Edition, Sin of Greed pays by how quickly gold is collected
+		if (Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Greed.class) != null && quantity >= 3) {
+			quantity = (int)(quantity * Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Greed.class).getGoldMultiplier());
+			Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Greed.class).onGoldCollected();
+		}
+
 		Dungeon.gold += quantity;
 		Statistics.goldCollected += quantity;
 		Badges.validateGoldCollected();

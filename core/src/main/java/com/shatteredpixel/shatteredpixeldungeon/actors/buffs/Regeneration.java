@@ -124,6 +124,9 @@ public class Regeneration extends Buff {
 					delay /= Math.max(target.HT * 0.01 * (1 + Dungeon.hero.pointsInTalent(com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent.WATER_REGENERATION)/6f), 1);
 				}
 				delay *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.BAHero.regenDelay(target); //bluearchive
+				//Matt Edition, the Sin of Gluttony slows regeneration by a quarter
+				if (Dungeon.isSinActive(com.shatteredpixel.shatteredpixeldungeon.Sins.GLUTTONY)) delay /= 0.75f;
+
 				partialRegen += 1f / delay;
 
 				if (partialRegen >= 1) {

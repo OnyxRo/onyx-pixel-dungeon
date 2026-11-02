@@ -56,6 +56,7 @@ public enum Icons {
 	KEYBOARD,
 	STATS,
 	CHALLENGE_GREY,
+	SIN_GREY,
 	SCROLL_GREY,
 	SEED,
 	LEFTARROW,
@@ -82,6 +83,7 @@ public enum Icons {
 	REPEAT,
 	ARROW,
 	CHALLENGE_COLOR,
+	SIN_COLOR,
 	SCROLL_COLOR,
 	COPY,
 	PASTE,
@@ -213,6 +215,12 @@ public enum Icons {
 				break;
 			case STATS:
 				icon.frame( icon.texture.uvRectBySize( 128, 16, 16, 13 ) );
+				break;
+			case SIN_GREY:
+				icon.frame( icon.texture.uvRectBySize( 208, 32, 15, 12 ) );
+				break;
+			case SIN_COLOR:
+				icon.frame( icon.texture.uvRectBySize( 224, 32, 15, 12 ) );
 				break;
 			case CHALLENGE_GREY:
 				icon.frame( icon.texture.uvRectBySize( 144, 16, 15, 12 ) );

@@ -186,3 +186,4 @@ Onyx saw rows of locked doors in 33 worlds. Earlier sessions assumed old-base sh
 ## 2026-11-01 Spawn tables
 - Porting gave monsters depth 1 to 99 to make them spawn, which put Cursed's floor 31 to 49 monsters on floor 2. Spawning now comes from a script that copies each mod's table, so this cannot drift again. The port-mod skill says so.
 - An earlier fix sat unbuilt for hours because the game was open during the hook. When Onyx reports a bug that was already fixed, check `build/auto-update.log` first.
+2026-10-16. Matt Edition sins. Cost time, `check.sh` compiles through Gradle, which took 12 minutes and then failed on a file hash while 14 agents compiled at once. A plain `javac` over `core/src/main/java` plus `services/src/main/java` with Gradle's cached jars took 3 minutes and gives clean errors. Doing a big batch of edits as one Python script with an `ed(file, old, new)` list that checks each old text is unique worked first time for 66 edits.

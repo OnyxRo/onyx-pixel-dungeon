@@ -412,6 +412,8 @@ public class Potion extends Item {
 	@Override
 	public Item identify( boolean byHero ) {
 		super.identify(byHero);
+		//Matt Edition, I hate myself, using it does not identify it
+		if (byHero && Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.I_HATE_MYSELF)) return this;
 
 		if (!isKnown()) {
 			setKnown();

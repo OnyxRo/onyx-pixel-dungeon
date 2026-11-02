@@ -279,6 +279,12 @@ public abstract class Level implements Bundlable {
 					addItemToSpawn(new ScrollOfUpgrade());
 				}
 			}
+			if (Dungeon.msouNeeded()) {
+				Dungeon.LimitedDrops.MAGIC_UPGRADE_SCROLLS.count++;
+				if (!Dungeon.isChallenged(Challenges.NO_SCROLLS) || Dungeon.LimitedDrops.MAGIC_UPGRADE_SCROLLS.count % 2 != 0) {
+					addItemToSpawn(new com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicUpgrade());
+				}
+			}
 			if (Dungeon.asNeeded()) {
 				Dungeon.LimitedDrops.ARCANE_STYLI.count++;
 				addItemToSpawn( new Stylus() );

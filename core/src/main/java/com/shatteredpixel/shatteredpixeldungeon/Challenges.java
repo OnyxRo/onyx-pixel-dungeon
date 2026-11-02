@@ -71,9 +71,12 @@ public class Challenges {
 	//deranged, two of DERanged PD's challenges, the ones that bring their own buffs
 	public static final int FORGET_PATH			= 1 << 25;
 	public static final int NO_HP				= 1 << 26;
+	//Matt Edition, two challenges from its Seven Sins update
+	public static final int I_HATE_MYSELF		= 1 << 27;
+	public static final int CONSUMING_GREED		= 1 << 28;
 
-	public static final int MAX_VALUE           = (1 << 27) - 1;
-	public static final int MAX_CHALS           = 27;
+	public static final int MAX_VALUE           = (1 << 29) - 1;
+	public static final int MAX_CHALS           = 29;
 
 	public static final String[] NAME_IDS = {
 			"champion_enemies",
@@ -100,7 +103,9 @@ public class Challenges {
 			//polished
 			"polished_changes",
 			//deranged
-			"forget_path", "no_hp"
+			"forget_path", "no_hp",
+			//Matt Edition
+			"i_hate_myself", "consuming_greed"
 	};
 
 	public static final int[] MASKS = {
@@ -113,7 +118,9 @@ public class Challenges {
 			//polished
 			POLISHED_CHANGES,
 			//deranged
-			FORGET_PATH, NO_HP
+			FORGET_PATH, NO_HP,
+			//Matt Edition
+			I_HATE_MYSELF, CONSUMING_GREED
 	};
 
 	//the nine challenges Shattered always has and Experienced's cycles, the rest have to be unlocked
@@ -122,7 +129,8 @@ public class Challenges {
 			| CURSED_TALENTS //transformation
 			| SUPERMAN | PYRO | CURSED_DUNGEON | FATIGUE | MUTATION | REARRANGED_HEROES //rearranged
 			| POLISHED_CHANGES //polished
-			| FORGET_PATH | NO_HP; //deranged
+			| FORGET_PATH | NO_HP //deranged
+			| I_HATE_MYSELF | CONSUMING_GREED; //Matt Edition
 
 	public static int activeChallenges(){
 		return activeChallenges(Dungeon.challenges);
@@ -138,6 +146,12 @@ public class Challenges {
 
 	public static boolean isItemBlocked( Item item ){
 		if (TooCruel.isItemBlocked(item)) return true; //toocruel
+
+		if (Dungeon.isChallenged(I_HATE_MYSELF) && (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify
+				|| item instanceof com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfDivination
+				|| item instanceof com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfIntuition)){
+			return true;
+		}
 
 		if (Dungeon.isChallenged(NO_HERBALISM) && item instanceof Dewdrop){
 			return true;

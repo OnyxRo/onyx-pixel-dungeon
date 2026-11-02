@@ -229,7 +229,15 @@ public class Shopkeeper extends NPC {
 
 	//shopkeepers are greedy!
 	public static int sellPrice(Item item){
-		return com.shatteredpixel.shatteredpixeldungeon.actors.hero.ElementalTalents.potionPrice(item, sellPriceBase(item)); //elemental, Familiar Face
+		return greedPrice(com.shatteredpixel.shatteredpixeldungeon.actors.hero.ElementalTalents.potionPrice(item, sellPriceBase(item))); //elemental, Familiar Face
+	}
+
+	//Matt Edition, Sin of Greed raises shop prices over time
+	private static int greedPrice(int price){
+		if (Dungeon.hero != null && Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Greed.class) != null){
+			return Math.round(price * Dungeon.hero.buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Greed.class).getShopMultiplier());
+		}
+		return price;
 	}
 
 	private static int sellPriceBase(Item item){

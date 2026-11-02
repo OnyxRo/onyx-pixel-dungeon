@@ -45,6 +45,7 @@ public class ItemJournalButton extends IconButton {
 
 	@Override
 	protected void onClick() {
+		if (com.shatteredpixel.shatteredpixeldungeon.Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.I_HATE_MYSELF)) return; //Matt Edition
 
 		customNote();
 

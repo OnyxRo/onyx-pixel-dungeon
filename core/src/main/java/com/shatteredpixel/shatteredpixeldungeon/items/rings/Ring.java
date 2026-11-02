@@ -318,10 +318,11 @@ public class Ring extends KindofMisc {
 				n++;
 			}
 		}
+		n = com.shatteredpixel.shatteredpixeldungeon.SinEffects.desireRoll(n); //Matt Edition, Sin of Desire
 		level(n);
 		
 		//30% chance to be cursed
-		if (Random.Float() < 0.3f) {
+		if (Random.Float() < (Dungeon.isChallenged(com.shatteredpixel.shatteredpixeldungeon.Challenges.I_HATE_MYSELF) ? 0.7f : 0.3f)) { //Matt Edition, I hate myself
 			cursed = true;
 		}
 		
