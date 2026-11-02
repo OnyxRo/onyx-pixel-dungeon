@@ -336,3 +336,8 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 - **Mod names other mods already use** go in a mod subpackage (`actors/mobs/sps/`, `sprites/sps/`), with the imports in every new file pointed at them. `port-strings.py` reads their text with `SUBPKG=sps`, and `mod-spawns.py` keeps each mod to its own copies.
 - **Boss code that loops until a random cell fits its arena** hangs the arena test and the sandbox spawn list. Bound such loops (500 tries, then give up) before testing, and run MobArenaTest on bosses in small groups under `timeout`.
 - **`sps-copy.py --reapply` only touches untracked files.** Never point a reapply at committed files of other mods.
+
+## Added after the Tower PD leftovers (2026-11-02)
+- **One or two new item pictures** need no sheet edit. Save each as its own small file under `sprites/<key>/` and add a row to a tiny per mod class like `TowerItemSprites` (a number base, one line each in `ItemSprite.frame` and `pick`). Pick a base nobody uses yet (Shittened 0x8000, Tower 0xE000, stay below 0x10000, which the EX sheet uses).
+- **Mod colour markers.** `python -I scripts/tower-markers.py [--apply] <properties...>` turns `#1text#1` into `_text_` (names lose them). Run it after copying strings from Tower PD or any mod that uses them.
+- **Never `sed -i` a message file** (it rewrites CRLF) and never put backslash n inside a Bash heredoc. Use the Write tool for a script file.

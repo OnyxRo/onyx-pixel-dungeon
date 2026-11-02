@@ -207,3 +207,7 @@ The tower defense port missed 205 text lines (the Rat King speech in every arena
 
 ## 2026-11-02 Locked start for the GitHub copy
 Finding every mod hook inside Shattered's own code by hand would have taken hours. Two read only helpers split the 432 changed Shattered files (actors and items, everything else) and listed what still fires in a plain run, and a class list from the first commit (`assets/shattered-classes.txt`) filters items, rooms, recipes, enchantments and badges in one rule each. `LockedModeTest` then caught the three hooks both missed (Goblins pets, a helmet through the default item roll, Tower hero badges). Rebuild the class list the same way if the base ever moves.
+
+
+## 2026-11-02 Tower PD leftovers
+A Python heredoc in Bash turned the two characters backslash n into a line break again, this time inside a message line, and the broken text went into a commit before check-props caught it. `sed -i` on a CRLF message file also rewrote every line ending. Write such scripts with the Write tool and run them from a file, and edit message files with `append-props.py` or a script file, never `sed -i`. About 100 Tower strings still had the mod's `#1` colour markers, `scripts/tower-markers.py` converts them (run it on any later Tower string copy).
