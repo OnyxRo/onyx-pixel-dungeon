@@ -16,6 +16,9 @@ public class ItemSpriteTest {
 	//Transformation PD's second sheet (EXItemSpriteSheet) marks its numbers with a flag, ItemSprite draws those from ex_items.png
 	static boolean hasPicture( int image ) {
 		//ex_items.png is 256 by 512, 16 columns and 32 rows
+		//Tower PD pictures added after its first port are files of their own
+		if (com.shatteredpixel.shatteredpixeldungeon.sprites.TowerItemSprites.is( image ))
+			return new java.io.File( com.shatteredpixel.shatteredpixeldungeon.sprites.TowerItemSprites.file( image ) ).exists();
 		if (EXItemSpriteSheet.isEX( image )) return (image & 0xFFFF) < 16 * 32;
 		return ItemSpriteSheet.film.get( image ) != null;
 	}

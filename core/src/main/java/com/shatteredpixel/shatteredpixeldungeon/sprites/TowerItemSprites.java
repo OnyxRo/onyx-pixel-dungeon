@@ -21,7 +21,7 @@ public final class TowerItemSprites {
 		return image >= BASE && image < BASE + PICTURES.length;
 	}
 
-	private static String file( int image ){
+	public static String file( int image ){
 		return (String)PICTURES[image - BASE][0];
 	}
 
