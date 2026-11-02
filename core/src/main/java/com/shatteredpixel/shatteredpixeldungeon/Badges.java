@@ -343,6 +343,23 @@ public class Badges {
 		RATS_4                      ( 139 ),
 		PAT_RAT                     ( 140 ),
 		KETCHUP                     ( 141 ),
+		//Shittened PD item skins, kept in the journal like the catalog badges
+		ALL_SEAL_SKINS              ( 142, BadgeType.JOURNAL ),
+		ALL_CLOAK_SKINS             ( 143, BadgeType.JOURNAL ),
+		ALL_BOW_SKINS               ( 144, BadgeType.JOURNAL ),
+		ALL_WAND_SKINS              ( 145, BadgeType.JOURNAL ),
+		ALL_ARMOR_SKINS             ( 146, BadgeType.JOURNAL ),
+		ALL_BOOK_SKINS              ( 147, BadgeType.JOURNAL ),
+		ALL_RUNIC_SKINS             ( 148, BadgeType.JOURNAL ),
+		ALL_LSWORD_SKINS            ( 149, BadgeType.JOURNAL ),
+		ALL_GLAIVE_SKINS            ( 150, BadgeType.JOURNAL ),
+		ALL_AXE_SKINS               ( 151, BadgeType.JOURNAL ),
+		SKINS_1                     ( 152, BadgeType.JOURNAL ),
+		SKINS_2                     ( 153, BadgeType.JOURNAL ),
+		SKINS_3                     ( 154, BadgeType.JOURNAL ),
+		SKINS_4                     ( 155, BadgeType.JOURNAL ),
+		ALL_SKINS                   ( 156, BadgeType.JOURNAL ),
+		ALL_HAMMER_SKINS            ( 157, BadgeType.JOURNAL ),
 		JACKPOT                     ( 160 ),
 		NIGHTMARE_SLAIN             ( 161 ), //summoning
 		SPIRIT_SLAIN                ( 162 ), //summoning
@@ -1453,6 +1470,29 @@ public class Badges {
 		if (new java.util.HashSet<>( mods ).size() >= 5) displayBadge( Badge.MIXTAPE );
 	}
 
+	//Shittened PD item skins, called whenever a skin is seen for the first time. The mod had this switched off.
+	public static void validateSkinsFound() {
+		com.shatteredpixel.shatteredpixeldungeon.journal.SkinCatalog[] cats = com.shatteredpixel.shatteredpixeldungeon.journal.SkinCatalog.values();
+		boolean allKinds = true;
+		for (com.shatteredpixel.shatteredpixeldungeon.journal.SkinCatalog cat : cats) {
+			Badge b = cat.badge();
+			if (b == null) continue;
+			if (cat.allSeen()) {
+				if (!isUnlocked(b)) displayBadge(b);
+			} else {
+				allKinds = false;
+			}
+		}
+		int found = com.shatteredpixel.shatteredpixeldungeon.journal.SkinCatalog.totalFound();
+		Badge badge = null;
+		if (found >= 25)  badge = Badge.SKINS_1;
+		if (found >= 100) { unlock(badge); badge = Badge.SKINS_2; }
+		if (found >= 200) { unlock(badge); badge = Badge.SKINS_3; }
+		if (found >= 350) { unlock(badge); badge = Badge.SKINS_4; }
+		if (allKinds)     { unlock(badge); badge = Badge.ALL_SKINS; }
+		if (badge != null && !isUnlocked(badge)) displayBadge(badge);
+	}
+
 	//Shittened PD
 	public static void validateVictoryWithSaul() {
 		Badge badge = Badge.VICTORY_SAUL;
@@ -1955,7 +1995,8 @@ public class Badges {
 			{Badge.GAMES_PLAYED_1, Badge.GAMES_PLAYED_2, Badge.GAMES_PLAYED_3, Badge.GAMES_PLAYED_4, Badge.GAMES_PLAYED_5},
 			{Badge.CHAMPION_1, Badge.CHAMPION_2, Badge.CHAMPION_3},
 			{Badge.TURD_1, Badge.TURD_2, Badge.TURD_3},
-			{Badge.RATS_1, Badge.RATS_2, Badge.RATS_3, Badge.RATS_4}
+			{Badge.RATS_1, Badge.RATS_2, Badge.RATS_3, Badge.RATS_4},
+			{Badge.SKINS_1, Badge.SKINS_2, Badge.SKINS_3, Badge.SKINS_4, Badge.ALL_SKINS}
 	};
 
 	//don't show the later badge if the earlier one isn't unlocked

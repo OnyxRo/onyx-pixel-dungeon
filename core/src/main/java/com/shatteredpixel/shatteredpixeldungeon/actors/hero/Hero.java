@@ -1512,6 +1512,7 @@ public class Hero extends Char {
 		if (Random.Int(8000) == 0) {
 			GameScene.friendRequest();
 		}
+		com.shatteredpixel.shatteredpixeldungeon.items.SkinPaint.onHeroAct(this); //Shittened PD, the sheep seal bleats
 
 		//calls to dungeon.observe will also update hero's local FOV.
 		fieldOfView = Dungeon.level.heroFOV;
@@ -3441,6 +3442,7 @@ public class Hero extends Char {
 		if (Random.Int(300) == 69 && buff(com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Lavage.class) != null) {
 			defecate(3f);
 		}
+		com.shatteredpixel.shatteredpixeldungeon.items.SkinPaint.onHeroMove(this); //Shittened PD, the hero may step on a lego
 
 		int tfFrom = pos;
 		super.move( step, travelling);

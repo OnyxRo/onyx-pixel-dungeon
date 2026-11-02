@@ -213,6 +213,8 @@ Mods on Shattered 0.8 and older hit these. The first two are fixed by `port-mob.
 ## Added after the Tower PD finish (2026-10-22)
 
 - **Item sheets wider than 16 cells.** `port-itemsprites.py` reads the mod's `WIDTH` from its ItemSpriteSheet (Tower PD uses 32). If a copied picture looks wrong or "EMPTY CELL" shows for an item the mod draws, check that constant first.
+- **Hundreds of item pictures (2026-11-01, Shittened skins).** Do not grow `items.png`, other agents grow it in parallel. Copy the mod's sheet whole to `sprites/<key>/` and give its pictures numbers from a base past the end of items.png, as `SkinSprites` does (`BASE = 0x8000`, checked first in `ItemSprite.frame` and `pick`). `scripts/port-skins.py` shows how to make the constants and sizes from the mod's ItemSpriteSheet. Strip `//` comments before reading a mod's sheet, Shittened had commented out lines that reuse names like SCIMITAR.
+- **A system the mod spread over many item classes** (an action, a picker, a name rule) goes in one helper class that `Item` calls, keyed on the item's exact class. Nothing in the 16 items had to change for the skins.
 - **Text color markers.** Tower PD writes `#1text#1` for colored text. This game only reads `_text_`, convert them when copying strings.
 - **A mod hero with no subclasses or talents** (Tower PD's BETA and ALPHA placeholders) gets Shattered subclasses, talents and armor abilities that work without that class's own gear, picked to suit. Run `TransformationHeroesTest <CLASS> ...` on it, the test now takes class names and casts each starting hero spell.
 

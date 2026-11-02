@@ -292,10 +292,19 @@ public abstract class YogFist extends Mob {
 			spriteClass = FistSprite.Soiled.class;
 		}
 
+		//Shittened PD, the soiled fist talks to its papa. 0 before the first line, 1 after it, 2 after the half health line
+		int speech = 0;
+
 		@Override
 		public boolean act() {
 
 			boolean result = super.act();
+
+			if (speech == 0) {
+				speech++;
+				yell(Messages.get(SoiledFist.class, "speech_1"));
+				GLog.n(Messages.get(SoiledFist.class, "speech_1_respond"));
+			}
 
 			//1.33 grass tiles on average
 			int furrowedTiles = Random.chances(new float[]{0, 2, 1});
@@ -338,7 +347,32 @@ public abstract class YogFist extends Mob {
 				return;
 			}
 
+			if (speech == 1 && HP <= HT / 2) {
+				speech++;
+				yell(Messages.get(SoiledFist.class, "speech_2"));
+			}
+
 			super.damage(dmg, src);
+		}
+
+		@Override
+		public void die(Object cause) {
+			super.die(cause);
+			yell(Messages.get(SoiledFist.class, "speech_3"));
+		}
+
+		private static final String SPEECH = "speech";
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(SPEECH, speech);
+		}
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			speech = bundle.getInt(SPEECH);
 		}
 
 		@Override

@@ -186,3 +186,6 @@ Onyx saw rows of locked doors in 33 worlds. Earlier sessions assumed old-base sh
 ## 2026-11-01 Spawn tables
 - Porting gave monsters depth 1 to 99 to make them spawn, which put Cursed's floor 31 to 49 monsters on floor 2. Spawning now comes from a script that copies each mod's table, so this cannot drift again. The port-mod skill says so.
 - An earlier fix sat unbuilt for hours because the game was open during the hook. When Onyx reports a bug that was already fixed, check `build/auto-update.log` first.
+
+## 2026-11-01 Shittened skins
+The mod spread its skins over 15 item classes, each with a copy of the same picker. One helper class called from Item replaced all of them, so no item file changed and the port stayed small for merging. The 549 pictures went on their own sheet with a number range past items.png, which kept items.png still while other agents grow it. A generator script from the mod's own Skin.java made the 532 entries in one go. Commented out lines in the mod's sheet reused names, which pointed three pictures at the wrong cell until comments were stripped, port-itemsprites.py now strips them too. Several of the mod's special steps compared the new skin instead of the current one and never worked. Reading each step against the skin list found them, and SkinPaintTest now walks every step.

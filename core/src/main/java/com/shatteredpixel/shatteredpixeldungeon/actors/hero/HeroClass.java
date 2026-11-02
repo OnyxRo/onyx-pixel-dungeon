@@ -513,6 +513,7 @@ public enum HeroClass {
 		(hero.belongings.weapon = new Dagger()).identify();
 
 		CloakOfShadows cloak = new CloakOfShadows();
+		com.shatteredpixel.shatteredpixeldungeon.items.SkinPaint.holidaySkin(cloak); //Shittened PD, Dracula's cloak at Halloween
 		(hero.belongings.artifact = cloak).identify();
 		hero.belongings.artifact.activate( hero );
 
@@ -530,6 +531,7 @@ public enum HeroClass {
 
 		(hero.belongings.weapon = new Gloves()).identify();
 		SpiritBow bow = new SpiritBow();
+		com.shatteredpixel.shatteredpixeldungeon.items.SkinPaint.holidaySkin(bow); //Shittened PD, the egg bow at Easter
 		bow.identify().collect();
 
 		Dungeon.quickslot.setSlot(0, bow);

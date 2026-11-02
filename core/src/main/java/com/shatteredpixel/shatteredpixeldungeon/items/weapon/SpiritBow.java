@@ -314,7 +314,9 @@ public class SpiritBow extends Weapon {
 	}
 	
 	public SpiritArrow knockArrow(){
-		return new SpiritArrow();
+		SpiritArrow arrow = new SpiritArrow();
+		com.shatteredpixel.shatteredpixeldungeon.items.SkinPaint.knockArrow(this, arrow); //Shittened PD, a painted bow shoots its own arrows
+		return arrow;
 	}
 	
 	public class SpiritArrow extends com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.DisposableMissileWeapon {
@@ -405,10 +407,10 @@ public class SpiritBow extends Weapon {
 			Char enemy = Actor.findChar( cell );
 			if (enemy == null || enemy == curUser) {
 				parent = null;
-				Splash.at( cell, 0xCC99FFFF, 1 );
+				com.shatteredpixel.shatteredpixeldungeon.items.SkinPaint.arrowSplash(SpiritBow.this, cell, true); //Shittened PD, the splash takes the bow skin's colour
 			} else {
 				if (!curUser.shoot( enemy, this )) {
-					Splash.at(cell, 0xCC99FFFF, 1);
+					com.shatteredpixel.shatteredpixeldungeon.items.SkinPaint.arrowSplash(SpiritBow.this, cell, false);
 				}
 				com.shatteredpixel.shatteredpixeldungeon.actors.hero.SummoningHooks.onMissileUsed(0.125f); //summoning, silky quiver
 				if (sniperSpecial && SpiritBow.this.augment != Augment.SPEED) sniperSpecial = false;

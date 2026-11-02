@@ -830,6 +830,8 @@ public class Armor extends EquipableItem {
 	@Override
 	public Emitter emitter() {
 		if (seal == null) return super.emitter();
+		Emitter skinned = com.shatteredpixel.shatteredpixeldungeon.items.SkinPaint.sealEmitter(this, seal); //Shittened PD seal skins
+		if (skinned != null) return skinned;
 		Emitter emitter = new Emitter();
 		emitter.pos(ItemSpriteSheet.film.width(image)/2f + 2f, ItemSpriteSheet.film.height(image)/3f);
 		emitter.fillTarget = false;

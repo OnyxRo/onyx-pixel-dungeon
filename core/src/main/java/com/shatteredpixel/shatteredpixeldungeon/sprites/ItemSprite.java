@@ -256,6 +256,16 @@ public class ItemSprite extends MovieClip {
 	}
 
 	public void frame( int image ){
+		//Shittened PD item skins draw from their own sheet
+		if (SkinSprites.is(image)) {
+			SmartTexture skinTexture = TextureCache.get(SkinSprites.SHEET);
+			if (texture != skinTexture) texture(skinTexture);
+			RectF skinFrame = SkinSprites.frame(image);
+			frame(skinFrame);
+			float h = SkinSprites.height(image);
+			if (h < 8f) perspectiveRaise = (5 + 8 - h) / 16f;
+			return;
+		}
 		//Transformation PD items draw from a second sheet, their image number carries the sheet and size
 		SmartTexture targetTexture = TextureCache.get(EXItemSpriteSheet.textureFor(image));
 		if (texture != targetTexture) {
@@ -420,6 +430,9 @@ public class ItemSprite extends MovieClip {
 	}
 
 	public static int pick( int index, int x, int y ) {
+		if (SkinSprites.is(index)) {
+			return TextureCache.get(SkinSprites.SHEET).getPixel(SkinSprites.cellX(index) + x, SkinSprites.cellY(index) + y);
+		}
 		SmartTexture tx = TextureCache.get( EXItemSpriteSheet.textureFor(index) );
 		index = EXItemSpriteSheet.frameFor(index);
 		int rows = tx.width / SIZE;

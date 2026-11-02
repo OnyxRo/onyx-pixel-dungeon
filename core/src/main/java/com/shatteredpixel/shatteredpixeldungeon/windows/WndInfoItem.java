@@ -101,7 +101,8 @@ public class WndInfoItem extends Window {
 		if (item instanceof com.shatteredpixel.shatteredpixeldungeon.items.food.Food) {
 			txtInfo = PixelScene.renderTextBlock( item.info() + "\n\n" + ((com.shatteredpixel.shatteredpixeldungeon.items.food.Food) item).nutritionalInfo(), 6 );
 		} else {
-			txtInfo = PixelScene.renderTextBlock( item.info(), 6 );
+			//Shittened PD, a painted item says which skin it wears
+			txtInfo = PixelScene.renderTextBlock( item.info() + com.shatteredpixel.shatteredpixeldungeon.items.SkinPaint.info(item), 6 );
 		}
 		
 		layoutFields(titlebar, txtInfo);
